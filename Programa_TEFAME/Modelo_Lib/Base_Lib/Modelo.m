@@ -269,8 +269,6 @@ classdef Modelo < handle
             % Se definen e informan los desplazmientos a cada nodo
             numeroNodos = length(modeloObj.nodos);
             for i = 1:numeroNodos
-                %%%%%%%%%%%%%%%%%%%%
-                % Se debe agregar aqui el codigo
                 
                 % Nodo
                 nodo = modeloObj.nodos{i};
@@ -288,18 +286,12 @@ classdef Modelo < handle
                 % Guarda los desplazamientos
                 modeloObj.nodos{i}.definirDesplazamientos(d');
                 
-                %%%%%%%%%%%%%%%%%%%%
             end % for i
             
             % Agregamos las fuerzas resistentes a las reacciones
             numeroElementos = length(modeloObj.elementos);
             for i = 1:numeroElementos
-                %%%%%%%%%%%%%%%%%%%%
-                % Se debe agregar aqui el codigo
-                
                 modeloObj.elementos{i}.agregarFuerzaResistenteAReacciones();
-                
-                %%%%%%%%%%%%%%%%%%%%
             end % for i
             
         end % actualizar function
@@ -341,7 +333,6 @@ classdef Modelo < handle
             fprintf(archivoSalida, 'Elementos:\n');
             nElementos = length(modeloObj.elementos);
             fprintf(archivoSalida, '\tNumero de elementos: %d\n', nElementos);
-            
             for iElem = 1:nElementos
                 modeloObj.elementos{iElem}.guardarPropiedades(archivoSalida);
             end % for iElem
@@ -360,30 +351,17 @@ classdef Modelo < handle
             fprintf(archivoSalida, '\n');
             
             % Se procede a guardar las reacciones
-            %%%%%%%%%%%%%%%%%%%%
             fprintf(archivoSalida, 'Reacciones:\n');
-            
-            % Se debe agregar aqui el codigo para guardar las reacciones
             for iNodo = 1:nNodos
                 modeloObj.nodos{iNodo}.guardarReacciones(archivoSalida);
             end % for iNodo
             fprintf(archivoSalida, '\n');
             
-            %%%%%%%%%%%%%%%%%%%%
-            
             % Se procede a guardar los esfuerzos en los elementos
-            %%%%%%%%%%%%%%%%%%%%
             fprintf(archivoSalida, 'Esfuerzos Elementos:');
-            % Se debe agregar aqui el codigo para guardar las propiedades
-            % de los elementos
-            
             for i = 1:length(modeloObj.elementos)
-                
                 modeloObj.elementos{i}.guardarEsfuerzosInternos(archivoSalida);
-                
             end % for i
-            
-            %%%%%%%%%%%%%%%%%%%%
             fclose(archivoSalida);
             
         end % guardarResultados function

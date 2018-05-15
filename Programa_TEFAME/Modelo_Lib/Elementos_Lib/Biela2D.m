@@ -126,9 +126,6 @@ classdef Biela2D < Elemento
         
         function k_global = obtenerMatrizRigidezCoordGlobal(biela2DObj)
             
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
-            
             % Obtiene la matriz de coordenadas locales
             k_local = biela2DObj.obtenerMatrizRigidezCoordLocal();
             
@@ -144,28 +141,19 @@ classdef Biela2D < Elemento
             % Multiplica k*t_theta
             k_global = t_theta' * k_local * t_theta;
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % obtenerMatrizRigidezGlobal function
         
         function k_local = obtenerMatrizRigidezCoordLocal(biela2DObj)
             
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
-            
+            % Genera matriz
             k_local = [1, 0, -1, 0; 0, 0, 0, 0; -1, 0, 1, 0; 0, 0, 0, 0];
             
             % Multiplica por AoEo/L
             k_local = k_local .* (biela2DObj.Eo * biela2DObj.Ao / biela2DObj.L);
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % obtenerMatrizRigidezLocal function
         
         function fr_global = obtenerFuerzaResistenteCoordGlobal(biela2DObj)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             % Obtiene fr local
             fr_local = biela2DObj.obtenerFuerzaResistenteCoordLocal();
@@ -180,14 +168,9 @@ classdef Biela2D < Elemento
             % Calcula fuerza resistente global
             fr_global = t_theta' * fr_local;
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % obtenerFuerzaResistenteCoordGlobal function
         
         function fr_local = obtenerFuerzaResistenteCoordLocal(biela2DObj)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             % Obtiene los nodos
             nodo1 = biela2DObj.nodosObj{1};
@@ -216,14 +199,9 @@ classdef Biela2D < Elemento
             % Calcula F
             fr_local = k_local * f;
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % obtenerFuerzaResistenteCoordLocal function
         
         function definirGDLID(biela2DObj)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             % Se obtienen los nodos extremos
             nodo1 = biela2DObj.nodosObj{1};
@@ -241,14 +219,9 @@ classdef Biela2D < Elemento
             gdl(4) = gdlnodo2(2);
             biela2DObj.gdlID = gdl;
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % definirGDLID function
         
         function agregarFuerzaResistenteAReacciones(biela2DObj)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             % Se calcula la fuerza resistente
             fr_global = biela2DObj.obtenerFuerzaResistenteCoordGlobal();
@@ -261,27 +234,17 @@ classdef Biela2D < Elemento
             nodo1.agregarCarga([-fr_global(1); -fr_global(2)]);
             nodo2.agregarCarga([-fr_global(3); -fr_global(4)]);
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % agregarFuerzaResistenteAReacciones function
         
         function guardarPropiedades(biela2DObj, archivoSalidaHandle)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             fprintf(archivoSalidaHandle, '\tBiela2D %s:\n\t\tLargo:\t%s\n\t\tArea:\t%s\n\t\tEo:\t\t%s\n', ...
                 biela2DObj.obtenerEtiqueta(), num2str(biela2DObj.L), ...
                 num2str(biela2DObj.Ao), num2str(biela2DObj.Eo));
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % guardarPropiedades function
         
         function guardarEsfuerzosInternos(biela2DObj, archivoSalidaHandle)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             esf_int = biela2DObj.obtenerFuerzaResistenteCoordLocal();
             f = esf_int(1);
@@ -295,19 +258,13 @@ classdef Biela2D < Elemento
             fprintf(archivoSalidaHandle, '\n\tBiela2D %s:\t%s%s', biela2DObj.obtenerEtiqueta(), ...
                 pad(num2str(f), 15), t);
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % guardarEsfuerzosInternos function
         
         function disp(biela2DObj)
             
+            % Imprime propiedades
             fprintf('Propiedades Biela2D :\n\t');
-            
             disp@ComponenteModelo(biela2DObj);
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
-            
             fprintf('\tLargo:\t\t%sArea:%sE:%s\n', pad(num2str(biela2DObj.L), 12), ...
                 pad(num2str(biela2DObj.Ao), 10), pad(num2str(biela2DObj.Eo), 10));
             
@@ -321,8 +278,6 @@ classdef Biela2D < Elemento
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');
-            
-            %%%%%%%%%%%%%%%%%%%%
             
         end % disp function
         

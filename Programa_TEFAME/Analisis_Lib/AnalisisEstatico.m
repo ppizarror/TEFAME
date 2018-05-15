@@ -107,8 +107,6 @@ classdef AnalisisEstatico < handle
             contadorGDL = 0;
             
             for i = 1:numeroNodos
-                %%%%%%%%%%%%%%%%%%%%
-                % Se debe agregar aqui el codigo
                 
                 gdlidNodo = nodoObjetos{i}.obtenerGDLID;
                 
@@ -119,11 +117,8 @@ classdef AnalisisEstatico < handle
                         gdlidNodo(j) = contadorGDL;
                     end % if
                 end % for j
-                %                disp(gdlidNodo);
-                
                 nodoObjetos{i}.definirGDLID(gdlidNodo);
                 
-                %%%%%%%%%%%%%%%%%%%%
             end % for i
             
             % Guardamos el numero de GDL, es decir el numero de ecuaciones
@@ -149,9 +144,6 @@ classdef AnalisisEstatico < handle
             % Analiza estaticamente el Modelo lineal y elastico sometido a un
             % set de cargas.
             
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
-            
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
             
@@ -169,8 +161,6 @@ classdef AnalisisEstatico < handle
             
             % Actualiza el modelo
             analisisObj.modeloObj.actualizar(analisisObj.u);
-            
-            %%%%%%%%%%%%%%%%%%%%
             
         end % analizar function
         
@@ -192,8 +182,6 @@ classdef AnalisisEstatico < handle
             
             % Definimos los GDLID en los elementos
             for i = 1:numeroElementos
-                %%%%%%%%%%%%%%%%%%%%
-                % Se debe agregar aqui el codigo
                 
                 % Se obienen los gdl del elemento método indicial
                 gdl = elementoObjetos{i}.obtenerGDLID();
@@ -217,7 +205,6 @@ classdef AnalisisEstatico < handle
                     end % for s
                 end % for r
                 
-                %%%%%%%%%%%%%%%%%%%%
             end % for i
             
         end % ensamblarMatrizRigidez function
@@ -240,8 +227,6 @@ classdef AnalisisEstatico < handle
             
             % Definimos los GDLID en los nodos
             for i = 1:numeroNodos
-                %%%%%%%%%%%%%%%%%%%%
-                % Se debe agregar aqui el codigo
                 
                 ngdlid = nodoObjetos{i}.obtenerNumeroGDL(); % Número grados de libertad del nodo
                 gdl = nodoObjetos{i}.obtenerGDLID(); % Grados de libertad del nodo
@@ -256,7 +241,6 @@ classdef AnalisisEstatico < handle
                     end
                 end % for j
                 
-                %%%%%%%%%%%%%%%%%%%%
             end % for i
             
         end % ensamblarVectorFuerzas function

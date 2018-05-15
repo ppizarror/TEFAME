@@ -138,21 +138,14 @@ classdef Viga2D < Elemento
         
         function k_global = obtenerMatrizRigidezCoordGlobal(viga2DObj)
             
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
-            
-            % Obtiene la matriz de coordenadas locales
+            % Matriz global igual a la local
             k_global = viga2DObj.obtenerMatrizRigidezCoordLocal();
-            
-            %%%%%%%%%%%%%%%%%%%%
             
         end % obtenerMatrizRigidezGlobal function
         
         function k_local = obtenerMatrizRigidezCoordLocal(viga2DObj)
             
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
-            
+            % Genera la matriz de rigidez local
             L1 = viga2DObj.L;
             L2 = L1.^2;
             k_local = [12, 6 * L1, -12, 6 * L1; ...
@@ -163,28 +156,19 @@ classdef Viga2D < Elemento
             % Multiplica por EoIo/L
             k_local = k_local .* (viga2DObj.Eo * viga2DObj.Io / (viga2DObj.L^3));
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % obtenerMatrizRigidezLocal function
         
         function fr_global = obtenerFuerzaResistenteCoordGlobal(viga2DObj)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             % Obtiene fr local
             fr_local = viga2DObj.obtenerFuerzaResistenteCoordLocal();
             
             % Resta a fuerza equivalente para obtener la fuerza global
             fr_global = fr_local - viga2DObj.Feq;
-            %%%%%%%%%%%%%%%%%%%%
             
         end % obtenerFuerzaResistenteCoordGlobal function
         
         function fr_local = obtenerFuerzaResistenteCoordLocal(viga2DObj)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             % Obtiene los nodos
             nodo1 = viga2DObj.nodosObj{1};
@@ -203,14 +187,9 @@ classdef Viga2D < Elemento
             % Calcula F
             fr_local = k_local * u;
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % obtenerFuerzaResistenteCoordLocal function
         
         function definirGDLID(viga2DObj)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             % Se obtienen los nodos extremos
             nodo1 = viga2DObj.nodosObj{1};
@@ -228,8 +207,6 @@ classdef Viga2D < Elemento
             gdl(4) = gdlnodo2(3);
             viga2DObj.gdlID = gdl;
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % definirGDLID function
         
         function sumarFuerzaEquivalente(viga2DObj, f)
@@ -241,9 +218,6 @@ classdef Viga2D < Elemento
         end % guardarFuerzaEquivalente function
         
         function agregarFuerzaResistenteAReacciones(viga2DObj)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             % Se calcula la fuerza resistente global
             fr_global = viga2DObj.obtenerFuerzaResistenteCoordGlobal();
@@ -259,27 +233,18 @@ classdef Viga2D < Elemento
             % Agrega fuerzas resistentes como cargas
             nodo1.agregarEsfuerzosElementoAReaccion([0, fr_global(1), fr_global(2)]');
             nodo2.agregarEsfuerzosElementoAReaccion([0, fr_global(3), fr_global(4)]');
-            %%%%%%%%%%%%%%%%%%%%
             
         end % agregarFuerzaResistenteAReacciones function
         
         function guardarPropiedades(viga2DObj, archivoSalidaHandle)
             
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
-            
             fprintf(archivoSalidaHandle, '\tViga2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n', ...
                 viga2DObj.obtenerEtiqueta(), num2str(viga2DObj.L), ...
                 num2str(viga2DObj.Io), num2str(viga2DObj.Eo), num2str(viga2DObj.Eo*viga2DObj.Io));
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % guardarPropiedades function
         
         function guardarEsfuerzosInternos(viga2DObj, archivoSalidaHandle)
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
             
             fr = viga2DObj.obtenerFuerzaResistenteCoordGlobal();
             m1 = num2str(fr(2), '%.04f');
@@ -290,19 +255,13 @@ classdef Viga2D < Elemento
             fprintf(archivoSalidaHandle, '\n\tViga2D %s:\n\t\tMomento:\t%s %s\n\t\tCorte:\t\t%s %s', ...
                 viga2DObj.obtenerEtiqueta(), m1, m2, v1, v2);
             
-            %%%%%%%%%%%%%%%%%%%%
-            
         end % guardarEsfuerzosInternos function
         
         function disp(viga2DObj)
             
+            % Imprime propiedades de la viga 2D
             fprintf('Propiedades Viga2D :\n\t');
-            
             disp@ComponenteModelo(viga2DObj);
-            
-            %%%%%%%%%%%%%%%%%%%%
-            % Se debe agregar aqui el codigo
-            
             fprintf('Largo:\t\t%sArea:%sE:%s\n', pad(num2str(viga2DObj.L), 12), ...
                 pad(num2str(viga2DObj.Ao), 10), pad(num2str(viga2DObj.Eo), 10));
             
@@ -316,8 +275,6 @@ classdef Viga2D < Elemento
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');
-            
-            %%%%%%%%%%%%%%%%%%%%
             
         end % disp function
         
