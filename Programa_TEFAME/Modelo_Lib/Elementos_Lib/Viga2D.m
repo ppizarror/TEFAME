@@ -283,9 +283,9 @@ classdef Viga2D < Elemento
             
             fr = viga2DObj.obtenerFuerzaResistenteCoordGlobal();
             m1 = num2str(fr(2), '%.04f');
-            m2 = num2str(fr(4), '%.04f');
+            m2 = num2str(-fr(4), '%.04f');
             v1 = num2str(fr(1), '%.04f');
-            v2 = num2str(fr(3), '%.04f');
+            v2 = num2str(-fr(3), '%.04f');
             
             fprintf(archivoSalidaHandle, '\n\tViga2D %s:\n\t\tMomento:\t%s %s\n\t\tCorte:\t\t%s %s', ...
                 viga2DObj.obtenerEtiqueta(), m1, m2, v1, v2);

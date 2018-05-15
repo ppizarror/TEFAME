@@ -30,9 +30,12 @@
 %| 'output' ubicada en directorio raíz.                                 |
 %|______________________________________________________________________|
 
-% Añade la carpeta de tests al path
-clc;
+% Añade carpetas al PATH
+iniciar_TEFAME;
 addpath('test');
+
+% Inicia los tests
+clc;
 fprintf('CORRIENDO TESTS\n');
 
 % Código tarea 3
