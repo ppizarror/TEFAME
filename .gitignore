@@ -1,0 +1,5 @@
+# Ignora los resultados
+output/*
+
+# Archivos residuales
+*.asv
