@@ -31,8 +31,8 @@
 %|______________________________________________________________________|
 
 % Añade carpetas al PATH
-iniciar_TEFAME;
 addpath('test');
+iniciar_TEFAME;
 
 % Inicia los tests
 clc;

@@ -78,7 +78,7 @@ classdef CargaVigaDistribuida < Carga
                 distancia2 = 0;
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase Carga
+            % Llamamos al constructor de la SuperClass que es la clase Carga
             cargaVigaDistribuidaObj = cargaVigaDistribuidaObj@Carga(etiquetaCarga);
             
             % Guarda los valores

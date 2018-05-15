@@ -73,7 +73,7 @@ classdef CargaVigaPuntual < Carga
                 distancia = 0;
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase Carga
+            % Llamamos al constructor de la SuperClass que es la clase Carga
             cargaVigaPuntualObj = cargaVigaPuntualObj@Carga(etiquetaCarga);
             
             % Guarda los valores
@@ -106,8 +106,7 @@ classdef CargaVigaPuntual < Carga
             % otro. Esto se hizo al no tener la función dirac(x) y
             % distintos errores fruto de la evaluación de la integral. El
             % caso con las funciones de interpolación N1..N4 se realizó
-            % correctamente para el caso de la carga distribuída. Esto
-            % retorna un resultado exacto.
+            % correctamente para el caso de la carga distribuída.
             v1 = P * ((L - d)^2 / L^2)*(3-2*(L - d)/L);
             v2 = P * (d^2 / L^2)*(3-2*d/L);
             theta1 = P * d * (L - d)^2 / (L^2);
