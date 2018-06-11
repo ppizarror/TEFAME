@@ -107,7 +107,7 @@ classdef CargaVigaColumnaPuntual < Carga
             P = cargaVigaColumnaPuntualObj.carga * cos(cargaVigaColumnaPuntualObj.theta);
             
             % Carga axial
-            H = cargaVigaColumnaPuntualObj.carga * sin(cargaVigaColumnaPuntualObj.theta);
+            H = -cargaVigaColumnaPuntualObj.carga * sin(cargaVigaColumnaPuntualObj.theta);
             
             % Se calculan apoyos y reacciones en un caso de viga empotrada
             % sometida a una carga P aplicada a (L-d) de un apoyo y d del
@@ -125,7 +125,7 @@ classdef CargaVigaColumnaPuntual < Carga
             u1 = H * Nu1(d);
             u2 = H * Nu2(d);
             
-            vectorCarga = [u1, v1, theta1, u2, v2, theta2]';
+            vectorCarga = -[u1, v1, theta1, u2, v2, theta2]';
             cargaVigaColumnaPuntualObj.elemObj.sumarFuerzaEquivalente(vectorCarga);
             
             % Aplica vectores de carga en coordenadas globales
