@@ -1,5 +1,5 @@
 clear all; %#ok<CLALL>
-fprintf('>\tMODELO_TAREA4\n');
+fprintf('>\tTEST_VIGA2D\n');
 
 % Test viga con carga simple a distancia D (% del largo) del nodo 1,
 % reacciones verticales R1,R3 y horizontales R2,R4. Teóricamente:

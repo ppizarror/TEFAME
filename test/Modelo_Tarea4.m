@@ -1,5 +1,5 @@
 clear all; %#ok<CLALL>
-fprintf('>\tEJEMPLOCLASE_VIGACOLUMMNA_2D\n');
+fprintf('>\tMODELO_TAREA4\n');
 
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
@@ -49,6 +49,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el Analsis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-disp(analisisObj);
 
 modeloObj.guardarResultados('output/Modelo_Tarea4.txt');
