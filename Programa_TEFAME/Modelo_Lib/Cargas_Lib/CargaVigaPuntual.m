@@ -43,8 +43,9 @@
 %       cargaNodoObj = CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
 %       aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
 %       disp(cargaVigaPuntualObj)
-%  Methods Suplerclass (Carga):
-%  Methods Suplerclass (ComponenteModelo):
+%
+%  Methods SuperClass (Carga):
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
 classdef CargaVigaPuntual < Carga
@@ -124,15 +125,15 @@ classdef CargaVigaPuntual < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la información de la Carga Viga Puntual en pantalla
+        % Métodos para mostar la información de la Carga Viga Puntual en pantalla
         
         function disp(cargaVigaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
-            % command Window la informacion de la carga aplicada sobre el
+            % command Window la información de la carga aplicada sobre el
             % elemento
             %
             % disp(cargaVigaPuntualObj)
-            % Imprime la informacion guardada en la Carga Puntual de la
+            % Imprime la información guardada en la Carga Puntual de la
             % Viga (cargaVigaPuntualObj) en pantalla
             
             fprintf('Propiedades Carga Viga Puntual:\n');          

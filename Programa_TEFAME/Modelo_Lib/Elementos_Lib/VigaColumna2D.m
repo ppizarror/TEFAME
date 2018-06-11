@@ -61,7 +61,8 @@
 %       guardarPropiedades(vigaColumna2DObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(vigaColumna2DObj,archivoSalidaHandle)
 %       disp(vigaColumna2DObj)
-%  Methods Suplerclass (ComponenteModelo):
+%
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
 classdef VigaColumna2D < Elemento

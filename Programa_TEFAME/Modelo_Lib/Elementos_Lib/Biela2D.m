@@ -32,6 +32,7 @@
 %| Fecha: 05/08/2015                                                    |
 %|                                                                      |
 %| Modificado por: FR - 24/10/2016                                      |
+%|                 PABLO PIZARRO @ppizarror - 14/05/2018                |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
@@ -58,7 +59,8 @@
 %       guardarPropiedades(biela2DObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(biela2DObj,archivoSalidaHandle)
 %       disp(biela2DObj)
-%  Methods Suplerclass (ComponenteModelo):
+%
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
 classdef Biela2D < Elemento

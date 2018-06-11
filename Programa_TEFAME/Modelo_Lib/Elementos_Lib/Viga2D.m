@@ -58,7 +58,8 @@
 %       guardarPropiedades(biela2DObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(biela2DObj,archivoSalidaHandle)
 %       disp(biela2DObj)
-%  Methods Suplerclass (ComponenteModelo):
+%
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
 classdef Viga2D < Elemento
@@ -262,6 +263,7 @@ classdef Viga2D < Elemento
             % Imprime propiedades de la viga 2D
             fprintf('Propiedades Viga2D:\n\t');
             disp@ComponenteModelo(viga2DObj);
+            
             fprintf('\t\tLargo: %s\tI: %s\tE: %s\n', pad(num2str(viga2DObj.L), 12), ...
                 pad(num2str(viga2DObj.Io), 10), pad(num2str(viga2DObj.Eo), 10));
             

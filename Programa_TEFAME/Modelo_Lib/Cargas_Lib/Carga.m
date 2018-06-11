@@ -42,7 +42,8 @@
 %       cargaObj = Carga(etiquetaCarga)
 %       aplicarCarga(cargaObj)
 %       disp(cargaObj)
-%  Methods Suplerclass (ComponenteModelo):
+%
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
 

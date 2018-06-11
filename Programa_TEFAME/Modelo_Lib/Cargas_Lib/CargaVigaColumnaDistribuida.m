@@ -48,8 +48,9 @@
 %                                        distancia1,carga2,distancia2,theta)
 %       aplicarCarga(cargaVigaColumnaDistribuidaObj,factorDeCarga)
 %       disp(cargaVigaColumnaDistribuidaObj)
-%  Methods Suplerclass (Carga):
-%  Methods Suplerclass (ComponenteModelo):
+%
+%  Methods SuperClass (Carga):
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
 classdef CargaVigaColumnaDistribuida < Carga
@@ -71,11 +72,13 @@ classdef CargaVigaColumnaDistribuida < Carga
             %
             % cargaVigaColumnaDistribuidaObj=CargaVigaColumnaDistribuida(etiquetaCarga,
             %   elemObjeto,carga1,distancia1,carga2,distancia2,theta)
+            %
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas, las distancias de
             % aplicación y el ángulo de la carga con respecto a la normal
-            % (0=Completamente normal, pi/2=Carga axial a la viga)
+            % (0=Completamente normal, pi/2=Carga axial a la viga).
             
+            % Si no se pasan argumentos se crea una carga vacía
             if nargin == 0
                 etiquetaCarga = '';
                 elemObjeto = [];
@@ -161,12 +164,12 @@ classdef CargaVigaColumnaDistribuida < Carga
         % Métodos para mostar la información de la Carga Viga-Columna Distribuída en pantalla
         
         function disp(cargaVigaColumnaDistribuidaObj)
-            % disp: es un metodo de la clase Carga que se usa para imprimir en
-            % command Window la informacion de la carga aplicada sobre el
+            % disp: es un método de la clase Carga que se usa para imprimir en
+            % command Window la información de la carga aplicada sobre el
             % elemento
             %
             % disp(cargaVigaColumnaDistribuidaObj)
-            % Imprime la informacion guardada en la Carga Viga-Columna Distribuída
+            % Imprime la información guardada en la Carga Viga-Columna Distribuída
             % (cargaVigaColumnaDistribuidaObj) en pantalla
             
             fprintf('Propiedades Carga Viga-Columna Distribuida:\n');

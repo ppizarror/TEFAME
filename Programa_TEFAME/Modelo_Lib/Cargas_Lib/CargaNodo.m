@@ -44,8 +44,9 @@
 %       cargaNodoObj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)
 %       aplicarCarga(cargaNodoObj,factorDeCarga)
 %       disp(cargaNodoObj)
-%  Methods Suplerclass (Carga):
-%  Methods Suplerclass (ComponenteModelo):
+%
+%  Methods SuperClass (Carga):
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
 classdef CargaNodo < Carga

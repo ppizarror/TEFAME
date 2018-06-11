@@ -46,10 +46,9 @@
 %       patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arreigloCargas)
 %       aplicarCargas(patronDeCargasObj)
 %       disp(patronDeCargasObj)
-%  Methods Suplerclass (PatronDeCargas):
-%  Methods Suplerclass (ComponenteModelo):
+%  Methods SuperClass (PatronDeCargas):
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
-
 
 classdef PatronDeCargasConstante < PatronDeCargas
     
@@ -67,24 +66,24 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % (etiquetaPatronDeCargas) y guarda el arreiglo con las cargas (arreigloCargas)
             % a aplicar en el modelo
             
+            % Si no se pasan argumentos se crean vacíos
             if nargin == 0
-                % If no argument input we create empty arguments
                 etiquetaPatronDeCargas = '';
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
+            % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             patronDeCargasObj = patronDeCargasObj@PatronDeCargas(etiquetaPatronDeCargas);
             
-            % Se guarda el arreiglo con las cargas
+            % Se guarda el arreglo con las cargas
             patronDeCargasObj.cargas = arregloCargas;
             
         end % PatronDeCargasConstante constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar las Carga guardadas en el patron de cargas durante el analisis
+        % Métodos para aplicar las Carga guardadas en el patrón de cargas durante el análisis
         
         function aplicarCargas(patronDeCargasObj)
-            % aplicarCargas: es un metodo de la clase PatronDeCargasConstante que
+            % aplicarCargas: es un método de la clase PatronDeCargasConstante que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
             % aplicarCargas(patronDeCargasObj)
@@ -100,18 +99,17 @@ classdef PatronDeCargasConstante < PatronDeCargas
         end % aplicarCargas function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del PatronDeCargas en pantalla
+        % Métodos para mostar la información del PatronDeCargas en pantalla
         
         function disp(patronDeCargasObj)
             % disp: es un metodo de la clase PatronDeCargasConstante que se usa para imprimir en
             % command Window la informacion del Patron de Cargas
             %
             % disp(patronDeCargasObj)
-            % Imprime la informacion guardada en el Patron de Cargas Constante (patronDeCargasObj)
+            % Imprime la información guardada en el Patron de Cargas Constante (patronDeCargasObj)
             % en pantalla
             
-            fprintf('Propiedades Patron de Cargas Constante :\n');
-            
+            fprintf('Propiedades Patron de Cargas Constante :\n');            
             disp@ComponenteModelo(patronDeCargasObj);
             
         end % disp function

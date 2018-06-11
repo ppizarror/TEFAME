@@ -56,7 +56,8 @@
 %       guardarPropiedades(elementoObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(elementoObj,archivoSalidaHandle)
 %       disp(elementoObj)
-%  Methods Suplerclass (ComponenteModelo):
+%
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
 classdef Elemento < ComponenteModelo
@@ -73,8 +74,8 @@ classdef Elemento < ComponenteModelo
             % Crea un objeto de la clase Elemento, con un identificador unico
             % (etiquetaElemento)
             
+            % Si no se pasan argumentos se crean vacíos
             if nargin == 0
-                % If no argument input we create empty arguments
                 etiquetaElemento = '';
             end % if
             
@@ -84,8 +85,7 @@ classdef Elemento < ComponenteModelo
         end % Elemento constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener informacion del Elemento
-        % Los metodos explicados acontinuacion necesitan ser implementados en cada subclase
+        % Métodos para obtener información del Elemento
         
         function numeroNodos = obtenerNumeroNodos(elementoObj) %#ok<MANU>
             % obtenerNumeroNodos: es un metodo de la clase Elemento que se usa para

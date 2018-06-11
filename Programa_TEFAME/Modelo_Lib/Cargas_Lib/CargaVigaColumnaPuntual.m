@@ -46,8 +46,9 @@
 %       cargaNodoObj = CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
 %       aplicarCarga(cargaVigaColumnaPuntualObj,factorDeCarga)
 %       disp(cargaVigaColumnaPuntualObj)
-%  Methods Suplerclass (Carga):
-%  Methods Suplerclass (ComponenteModelo):
+%
+%  Methods SuperClass (Carga):
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
 classdef CargaVigaColumnaPuntual < Carga
@@ -93,8 +94,8 @@ classdef CargaVigaColumnaPuntual < Carga
         % Metodos para aplicar la Carga Puntual de la Viga-Columna durante el análisis
         
         function aplicarCarga(cargaVigaColumnaPuntualObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase CargaVigaColumnaPuntual que se usa para aplicar
-            % la carga sobre los dos nodos del elemento.
+            % aplicarCarga: es un metodo de la clase CargaVigaColumnaPuntual
+            % que se usa para aplicar la carga sobre los dos nodos del elemento.
             %
             % aplicarCarga(cargaVigaColumnaPuntualObj,factorDeCarga)
             
@@ -138,18 +139,18 @@ classdef CargaVigaColumnaPuntual < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la información de la Carga Viga-Columna Puntual en pantalla
+        % Métodos para mostar la información de la Carga Viga-Columna Puntual en pantalla
         
         function disp(cargaVigaColumnaPuntualObj)
-            % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
-            % command Window la informacion de la carga aplicada sobre el
+            % disp: es un método de la clase CargaVigaPuntual que se usa para imprimir en
+            % command Window la información de la carga aplicada sobre el
             % elemento
             %
-            % disp(cargaVigaPuntualObj)
-            % Imprime la informacion guardada en la Carga Puntual de la
-            % Viga (cargaVigaPuntualObj) en pantalla
+            % disp(cargaVigaColumnaPuntualObj)
+            % Imprime la información guardada en la Carga Puntual de la
+            % Viga-Columna (cargaVigaColumnaPuntualObj) en pantalla
             
-            fprintf('Propiedades Carga Viga-Columna Puntual:\n');       
+            fprintf('Propiedades Carga Viga-Columna Puntual:\n');
             disp@Carga(cargaVigaColumnaPuntualObj);
             
             % Obtiene la etiqueta del elemento
