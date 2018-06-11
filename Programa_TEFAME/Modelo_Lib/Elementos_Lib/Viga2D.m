@@ -79,8 +79,8 @@ classdef Viga2D < Elemento
         
         function viga2DObj = Viga2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial)
             
+            % Si no se pasan argumentos se crean vacíos
             if nargin == 0
-                % If no argument input we create empty arguments
                 etiquetaViga = '';
             end % if
             

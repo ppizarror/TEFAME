@@ -124,7 +124,7 @@ classdef CargaVigaPuntual < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion de la Carga Viga Puntual en pantalla
+        % Metodos para mostar la información de la Carga Viga Puntual en pantalla
         
         function disp(cargaVigaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
@@ -135,8 +135,7 @@ classdef CargaVigaPuntual < Carga
             % Imprime la informacion guardada en la Carga Puntual de la
             % Viga (cargaVigaPuntualObj) en pantalla
             
-            fprintf('Propiedades Carga Viga Puntual:\n');
-            
+            fprintf('Propiedades Carga Viga Puntual:\n');          
             disp@Carga(cargaVigaPuntualObj);
             
             % Obtiene la etiqueta del elemento
@@ -148,6 +147,9 @@ classdef CargaVigaPuntual < Carga
             
             fprintf('\tCarga: %.3f aplicada en Elemento: %s a %.3f del Nodo: %s\n', ...
                 cargaVigaPuntualObj.carga, etiqueta, cargaVigaPuntualObj.dist, nodo1etiqueta);
+            
+            fprintf('-------------------------------------------------\n');
+            fprintf('\n');
             
         end % disp function
         

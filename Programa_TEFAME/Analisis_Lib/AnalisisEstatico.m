@@ -33,7 +33,7 @@
 %| Fecha: 05/08/2015                                                    |
 %|                                                                      |
 %| Modificado por: FR - 24/10/2016                                      |
-%|                 PABLO PIZARRO @ppizarror Fecha: 14/05/2018           |
+%|                 PABLO PIZARRO @ppizarror - 14/05/2018                |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
@@ -311,11 +311,14 @@ classdef AnalisisEstatico < handle
             
             fprintf('Propiedades Analisis:\n');
             
-            fprintf('Matriz de Rigidez:\n');
+            fprintf('\tMatriz de Rigidez:\n');
             disp(analisisObj.Kt);
             
-            fprintf('Vector de Fuerzas:\n');
+            fprintf('\tVector de Fuerzas:\n');
             disp(analisisObj.F);
+            
+            fprintf('-------------------------------------------------\n');
+            fprintf('\n');
             
         end % disp function
         

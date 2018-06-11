@@ -110,12 +110,14 @@ classdef CargaNodo < Carga
             % Imprime la informacion guardada en la Carga Nodal (cargaObj) en pantalla
             
             fprintf('Propiedades Carga Nodo:\n');
-            
             disp@Carga(cargaNodoObj);
             
             numGDL = length(cargaNodoObj.cargas);
             cargaNodo = arrayNum2str(cargaNodoObj.cargas, numGDL);
-            fprintf('Cargas : %s\n', [cargaNodo{:}]);
+            fprintf('Cargas: %s\n', [cargaNodo{:}]);
+            
+            fprintf('-------------------------------------------------\n');
+            fprintf('\n');
             
         end % disp function
         

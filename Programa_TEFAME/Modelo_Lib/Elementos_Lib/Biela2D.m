@@ -77,8 +77,8 @@ classdef Biela2D < Elemento
         
         function biela2DObj = Biela2D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial)
             
+            % Si no hay argumentos completa con ceros
             if nargin == 0
-                % If no argument input we create empty arguments
                 etiquetaBiela = '';
             end % if
             
@@ -255,7 +255,7 @@ classdef Biela2D < Elemento
                 t = 'COMPRESION';
             end
             
-            fprintf(archivoSalidaHandle, '\n\tBiela2D %s:\t%s%s', biela2DObj.obtenerEtiqueta(), ...
+            fprintf(archivoSalidaHandle, '\n\tBiela 2D %s:\t%s%s', biela2DObj.obtenerEtiqueta(), ...
                 pad(num2str(f), 15), t);
             
         end % guardarEsfuerzosInternos function
@@ -263,9 +263,9 @@ classdef Biela2D < Elemento
         function disp(biela2DObj)
             
             % Imprime propiedades
-            fprintf('Propiedades Biela2D:\n\t');
+            fprintf('Propiedades Biela 2D:\n\t');
             disp@ComponenteModelo(biela2DObj);
-            fprintf('\tLargo:\t\t%sArea:%s\tE:%s\n', pad(num2str(biela2DObj.L), 12), ...
+            fprintf('\t\tLargo: %s\tArea: %s\tE: %s\n', pad(num2str(biela2DObj.L), 12), ...
                 pad(num2str(biela2DObj.Ao), 10), pad(num2str(biela2DObj.Eo), 10));
             
             % Se imprime matriz de rigidez local

@@ -21,14 +21,15 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase CargaVigaDistribuida                                           |
+%| Clase CargaVigaColumnaDistribuida                                    |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase CargaVigaColumnaDist |
 %| ribuida, CargaVigaDistribuida es una subclase de la clase Carga y    |
 %| corresponde a la representación de una carga distribuida en un       |
 %| elemento tipo Viga. La clase CargaVigaDistribuida es una clase que   |
 %| contiene el elemento, al que se le va a aplicar la carga, las cargas |
-%| en cada punto y las distancias de las dos cargas.                    |
+%| en cada punto, las distancias de las dos cargas y el ángulo con      |
+%| respecto a la normal.                                                |
 %|                                                                      |
 %| Programado: PABLO PIZARRO @ppizarror.com                             |
 %| Fecha: 11/06/2018                                                    |
@@ -37,15 +38,16 @@
 %  Properties (Access=private):
 %       elemObj
 %       carga1
-%       dist1
 %       carga2
+%       dist1
 %       dist2
+%       theta
 %
 %  Methods:
 %       cargaVigaColumnaDistribuidaObj = CargaVigaColumnaDistribuida(etiquetaCarga,elemObjeto,carga1,
 %                                        distancia1,carga2,distancia2,theta)
-%       aplicarCarga(cargaNodoObj,factorDeCarga)
-%       disp(cargaNodoObj)
+%       aplicarCarga(cargaVigaColumnaDistribuidaObj,factorDeCarga)
+%       disp(cargaVigaColumnaDistribuidaObj)
 %  Methods Suplerclass (Carga):
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
@@ -56,9 +58,9 @@ classdef CargaVigaColumnaDistribuida < Carga
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga1 % Valor de la carga 1
         carga2 % Valor de la carga 2
-        theta % Ángulo de la carga
         dist1 % Distancia de la carga 1 al primer nodo del elemento
         dist2 % Distancia de la carga 2 al primer nodo del elemento
+        theta % Ángulo de la carga
     end % properties CargaVigaDistribuida
     
     methods
@@ -104,7 +106,7 @@ classdef CargaVigaColumnaDistribuida < Carga
             % aplicarCarga: es un metodo de la clase cargaVigaColumnaDistribuidaObj que se usa para aplicar
             % la carga sobre los dos nodos del elemento.
             %
-            % aplicarCarga(cargaVigaDistribuidaObj, factorDeCarga)
+            % aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
             
             % Largo de la viga
             L = cargaVigaColumnaDistribuidaObj.elemObj.obtenerLargo();
@@ -156,7 +158,7 @@ classdef CargaVigaColumnaDistribuida < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para mostar la informacién de la Carga Viga Distribuída en pantalla
+        % Métodos para mostar la información de la Carga Viga-Columna Distribuída en pantalla
         
         function disp(cargaVigaColumnaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
@@ -168,7 +170,6 @@ classdef CargaVigaColumnaDistribuida < Carga
             % (cargaVigaColumnaDistribuidaObj) en pantalla
             
             fprintf('Propiedades Carga Viga-Columna Distribuida:\n');
-            
             disp@Carga(cargaVigaColumnaDistribuidaObj);
             
             % Obtiene la etiqueta del elemento
@@ -191,6 +192,9 @@ classdef CargaVigaColumnaDistribuida < Carga
             fprintf('\tCarga distribuída entre los Nodos: %s y %s del Elemento: %s\n', nodo1etiqueta, nodo2etiqueta, etiqueta);
             fprintf('\t\tComponente NORMAL:\t%.3f en %.3f hasta %.3f en %.3f\n', P1, a, P2, b);
             fprintf('\t\tComponente AXIAL:\t%.3f en %.3f hasta %.3f en %.3f\n', H1, a, H2, b);
+            
+            fprintf('-------------------------------------------------\n');
+            fprintf('\n');
             
         end % disp function
         

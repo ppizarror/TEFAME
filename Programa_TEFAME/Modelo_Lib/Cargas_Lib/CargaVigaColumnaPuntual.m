@@ -21,7 +21,7 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase CargaVigaPuntual                                               |
+%| Clase CargaVigaColumnaPuntual                                        |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase CargaVigaColumnaPuntual|
 %| CargaVigaColumnaPuntual es una subclase de la clase Carga y          |
@@ -40,6 +40,7 @@
 %       elemObj
 %       carga
 %       dist
+%       theta
 %
 %  Methods:
 %       cargaNodoObj = CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
@@ -137,7 +138,7 @@ classdef CargaVigaColumnaPuntual < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion de la Carga Nodal en pantalla
+        % Metodos para mostar la información de la Carga Viga-Columna Puntual en pantalla
         
         function disp(cargaVigaColumnaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
@@ -148,8 +149,7 @@ classdef CargaVigaColumnaPuntual < Carga
             % Imprime la informacion guardada en la Carga Puntual de la
             % Viga (cargaVigaPuntualObj) en pantalla
             
-            fprintf('Propiedades Carga Viga-Columna Puntual:\n');
-            
+            fprintf('Propiedades Carga Viga-Columna Puntual:\n');       
             disp@Carga(cargaVigaColumnaPuntualObj);
             
             % Obtiene la etiqueta del elemento
@@ -166,6 +166,9 @@ classdef CargaVigaColumnaPuntual < Carga
             fprintf('\tCarga aplicada en Elemento: %s a %.3f del Nodo: %s\n', etiqueta, cargaVigaColumnaPuntualObj.dist, nodo1etiqueta);
             fprintf('\t\tComponente NORMAL:\t%.3f\n', P);
             fprintf('\t\tComponente AXIAL:\t%.3f\n', H);
+            
+            fprintf('-------------------------------------------------\n');
+            fprintf('\n');
             
         end % disp function
         

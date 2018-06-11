@@ -21,7 +21,7 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase Viga2D                                                         |
+%| Clase VigaColumna2D                                                  |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase VigaColumna 2D       |
 %| ColumnaViga2D es una  subclase de la clase Elemento y  corresponde a |
@@ -84,6 +84,8 @@ classdef VigaColumna2D < Elemento
     methods
         
         function vigaColumna2DObj = VigaColumna2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, Amaterial)
+            
+            % Completa con ceros si no hay argumentos
             if nargin == 0
                 etiquetaViga = '';
             end % if
@@ -284,7 +286,7 @@ classdef VigaColumna2D < Elemento
         
         function guardarPropiedades(vigaColumna2DObj, archivoSalidaHandle)
             
-            fprintf(archivoSalidaHandle, '\tViga2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n', ...
+            fprintf(archivoSalidaHandle, '\tViga-Columna 2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n', ...
                 vigaColumna2DObj.obtenerEtiqueta(), num2str(vigaColumna2DObj.L), ...
                 num2str(vigaColumna2DObj.Io), num2str(vigaColumna2DObj.Eo), num2str(vigaColumna2DObj.Eo*vigaColumna2DObj.Io));
             
@@ -293,22 +295,22 @@ classdef VigaColumna2D < Elemento
         function guardarEsfuerzosInternos(vigaColumna2DObj, archivoSalidaHandle)
             
             fr = vigaColumna2DObj.obtenerFuerzaResistenteCoordGlobal();
-            m1 = num2str(fr(3), '%.04f');
-            m2 = num2str(fr(6), '%.04f');
-            v1 = num2str(fr(2), '%.04f');
-            v2 = num2str(fr(5), '%.04f');
             n1 = num2str(fr(1), '%.04f');
             n2 = num2str(fr(4), '%.04f');
+            v1 = num2str(fr(2), '%.04f');
+            v2 = num2str(fr(5), '%.04f');
+            m1 = num2str(fr(3), '%.04f');
+            m2 = num2str(fr(6), '%.04f');
             
-            fprintf(archivoSalidaHandle, '\n\tViga2D %s:\n\t\tAxial:\t\t%s %s\n\t\tCorte:\t\t%s %s\n\t\tMomento:\t%s %s', ...
+            fprintf(archivoSalidaHandle, '\n\tViga-Columna 2D %s:\n\t\tAxial:\t\t%s %s\n\t\tCorte:\t\t%s %s\n\t\tMomento:\t%s %s', ...
                 vigaColumna2DObj.obtenerEtiqueta(), n1, n2, v1, v2, m1, m2);
             
         end % guardarEsfuerzosInternos function
         
         function disp(vigaColumna2DObj)
             
-            % Imprime propiedades de la viga-columna 2D
-            fprintf('Propiedades VigaColumna2D :\n\t');
+            % Imprime propiedades de la Viga-Columna 2D
+            fprintf('Propiedades Viga-Columna 2D:\n\t');
             disp@ComponenteModelo(vigaColumna2DObj);
             fprintf('\t\tLargo: %s\tArea: %s\tI: %s\tE: %s\n', pad(num2str(vigaColumna2DObj.L), 12), ...
                 pad(num2str(vigaColumna2DObj.Ao), 10), pad(num2str(vigaColumna2DObj.Io), 10), ...
@@ -327,6 +329,6 @@ classdef VigaColumna2D < Elemento
             
         end % disp function
         
-    end % methods Viga2D
+    end % methods VigaColumna2D
     
-end % class Viga2D
+end % class VigaColumna2D
