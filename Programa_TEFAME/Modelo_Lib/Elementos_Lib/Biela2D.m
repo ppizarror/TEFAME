@@ -263,9 +263,9 @@ classdef Biela2D < Elemento
         function disp(biela2DObj)
             
             % Imprime propiedades
-            fprintf('Propiedades Biela2D :\n\t');
+            fprintf('Propiedades Biela2D:\n\t');
             disp@ComponenteModelo(biela2DObj);
-            fprintf('\tLargo:\t\t%sArea:%sE:%s\n', pad(num2str(biela2DObj.L), 12), ...
+            fprintf('\tLargo:\t\t%sArea:%s\tE:%s\n', pad(num2str(biela2DObj.L), 12), ...
                 pad(num2str(biela2DObj.Ao), 10), pad(num2str(biela2DObj.Eo), 10));
             
             % Se imprime matriz de rigidez local

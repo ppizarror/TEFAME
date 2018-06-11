@@ -35,8 +35,8 @@
 %  Properties (Access=private):
 %       nodosObj
 %       gdlID
+%       Io
 %       Eo
-%       Ao
 %       dx
 %       dy
 %       L
@@ -260,10 +260,10 @@ classdef Viga2D < Elemento
         function disp(viga2DObj)
             
             % Imprime propiedades de la viga 2D
-            fprintf('Propiedades Viga2D :\n\t');
+            fprintf('Propiedades Viga2D:\n\t');
             disp@ComponenteModelo(viga2DObj);
-            fprintf('Largo:\t\t%sArea:%sE:%s\n', pad(num2str(viga2DObj.L), 12), ...
-                pad(num2str(viga2DObj.Ao), 10), pad(num2str(viga2DObj.Eo), 10));
+            fprintf('\t\tLargo: %s\tI: %s\tE: %s\n', pad(num2str(viga2DObj.L), 12), ...
+                pad(num2str(viga2DObj.Io), 10), pad(num2str(viga2DObj.Eo), 10));
             
             % Se imprime matriz de rigidez local
             fprintf('\tMatriz de rigidez coordenadas locales:\n');
