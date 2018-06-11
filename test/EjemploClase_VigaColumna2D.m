@@ -1,44 +1,44 @@
 clear all; %#ok<CLALL>
-fprintf('>\tEJEMPLOCLASE_VIGA2D\n');
+fprintf('>\tEJEMPLOCLASE_VIGACOLUMMNA_2D\n');
 
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
 
 % Creamos los Nodos
-nodos = cell(4, 1);
+nodos = cell(3, 1);
 nodos{1} = Nodo('N1', 3, [0, 0]');
-nodos{2} = Nodo('N2', 3, [400, 0]');
-nodos{3} = Nodo('N3', 3, [800, 0]');
-nodos{4} = Nodo('N4', 3, [1000, 0]');
+nodos{2} = Nodo('N2', 3, [4, 8]');
+nodos{3} = Nodo('N3', 3, [10, 8]');
 
 % Agregamos los nodos al modelo
 modeloObj.agregarNodos(nodos);
 
 % Creamos los elementos
-Eo = 2000;
-Io = 20000;
-elementos = cell(3, 1);
-elementos{1} = Viga2D('V1', nodos{1}, nodos{2}, Io, Eo);
-elementos{2} = Viga2D('V2', nodos{2}, nodos{3}, Io, Eo);
-elementos{3} = Viga2D('V3', nodos{3}, nodos{4}, Io, Eo);
+Ao = 0.005;
+Eo = 21000000;
+Io = 0.0004;
+elementos = cell(2, 1);
+elementos{1} = VigaColumna2D('VC1', nodos{1}, nodos{2}, Io, Eo, Ao);
+elementos{2} = VigaColumna2D('VC2', nodos{2}, nodos{3}, Io, Eo, Ao);
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
 
 % Creamos las restricciones
-restricciones = cell(4, 1);
+restricciones = cell(2, 1);
 restricciones{1} = RestriccionNodo('R1', nodos{1}, [1, 2, 3]');
-restricciones{2} = RestriccionNodo('R2', nodos{2}, [1, 2]');
-restricciones{3} = RestriccionNodo('R3', nodos{3}, [1, 2]');
-restricciones{4} = RestriccionNodo('R4', nodos{4}, [1]'); %#ok<NBRAK>
+restricciones{2} = RestriccionNodo('R3', nodos{3}, [1, 2, 3]');
 
 % Agregamos las restricciones al modelo
 modeloObj.agregarRestricciones(restricciones);
 
 % Creamos la carga
-cargas = cell(2, 1);
-cargas{1} = CargaNodo('Momento nodo 2', nodos{2}, [0, 0, -5000]');
-cargas{2} = CargaNodo('Carga vertical', nodos{4}, [0, -25, 0]');
+cargas = cell(5, 1);
+cargas{1} = CargaNodo('Momento nodo 2', nodos{2}, [0, 0, -120]');
+cargas{2} = CargaNodo('Carga vertical nodo 2', nodos{2}, [0, -40, 0]');
+cargas{3} = CargaVigaColumnaPuntual('Carga elem 1 80[ton]', elementos{1}, 80, 0.5, pi/2+1.107);
+cargas{4} = CargaVigaColumnaDistribuida('Carga dist elem 1 @15[ton]', elementos{1}, 15, 0, 15, 1, -1.107);
+cargas{5} = CargaVigaColumnaDistribuida('Carga dist elem 2 @30[ton]', elementos{2}, 30, 0, 30, 1, 0);
 
 % Creamos el Patron de Cargas
 PatronesDeCargas = cell(1, 1);
@@ -51,4 +51,4 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
 
-modeloObj.guardarResultados('output/EjemploClase_Viga2D.txt');
+modeloObj.guardarResultados('output/EjemploClase_VigaColumna2D.txt');

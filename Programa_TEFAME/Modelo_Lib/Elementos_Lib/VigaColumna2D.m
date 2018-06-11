@@ -67,6 +67,7 @@ classdef VigaColumna2D < Elemento
     properties(Access = private)
         nodosObj
         gdlID
+        Ao
         Eo
         Io
         dx
@@ -74,14 +75,14 @@ classdef VigaColumna2D < Elemento
         L
         theta
         Feq
+        T
+        Klp
     end % properties VigaColumna2D
     
     methods
         
         function vigaColumna2DObj = VigaColumna2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, Amaterial)
-            
             if nargin == 0
-                % If no argument input we create empty arguments
                 etiquetaViga = '';
             end % if
             
@@ -96,12 +97,12 @@ classdef VigaColumna2D < Elemento
             vigaColumna2DObj.gdlID = [];
             
             % Calcula componentes geométricas
-            theta = atan(vigaColumna2DObj.dy/vigaColumna2DObj.dx);
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             vigaColumna2DObj.dx = (coordNodo2(1) - coordNodo1(1));
             vigaColumna2DObj.dy = (coordNodo2(2) - coordNodo1(2));
             vigaColumna2DObj.L = sqrt(vigaColumna2DObj.dx^2+vigaColumna2DObj.dy^2);
+            theta = atan(vigaColumna2DObj.dy/vigaColumna2DObj.dx);
             vigaColumna2DObj.theta = theta;
             
             % Calcula matriz de transformación dado el ángulo
@@ -123,7 +124,7 @@ classdef VigaColumna2D < Elemento
                 0, 6 * E * I / (L^2), 4 * E * I / L, 0, - 6 * E * I / (L^2), 2 * E * I / L; ...
                 -A * E / L, 0, 0, A * E / L, 0, 0; ...
                 0, -12 * E * I / (L^3), - 6 * E * I / (L^2), 0, 12 * E * I / (L^3), -6 * E * I / (L^2); ...
-                0, 6 * E * I / (L^2), 2 * E * I / L, 0, - 6 * E * I / (L^2), 2 * E * I / L];
+                0, 6 * E * I / (L^2), 2 * E * I / L, 0, - 6 * E * I / (L^2), 4 * E * I / L];
             vigaColumna2DObj.Klp = Klp;
             
             % Fuerza equivalente de la viga
@@ -158,6 +159,12 @@ classdef VigaColumna2D < Elemento
         function gdlIDViga = obtenerGDLID(vigaColumna2DObj)
             
             gdlIDViga = vigaColumna2DObj.gdlID;
+            
+        end % obtenerNumeroGDL function
+        
+        function T = obtenerMatrizTransformacion(vigaColumna2DObj)
+            
+            T = vigaColumna2DObj.T;
             
         end % obtenerNumeroGDL function
         
@@ -207,6 +214,9 @@ classdef VigaColumna2D < Elemento
             % Obtiene K local
             k_local = vigaColumna2DObj.obtenerMatrizRigidezCoordLocal();
             
+            % Obtiene u''
+            u = vigaColumna2DObj.obtenerMatrizTransformacion() * u;
+            
             % Calcula F
             fr_local = k_local * u;
             
@@ -223,7 +233,7 @@ classdef VigaColumna2D < Elemento
             gdlnodo2 = nodo2.obtenerGDLID();
             
             % Se establecen gdl
-            gdl = [0, 0,00, 0, 0];
+            gdl = [0, 0, 0, 0, 0, 0];
             gdl(1) = gdlnodo1(1);
             gdl(2) = gdlnodo1(2);
             gdl(3) = gdlnodo1(3);
@@ -251,9 +261,12 @@ classdef VigaColumna2D < Elemento
             nodo1 = vigaColumna2DObj.nodosObj{1};
             nodo2 = vigaColumna2DObj.nodosObj{2};
             
+            % Transforma la carga equivalente como carga puntual
+            F_eq = vigaColumna2DObj.T' * vigaColumna2DObj.Feq;
+            
             % Agrega fuerzas equivalentes como cargas
-            nodo1.agregarCarga([-vigaColumna2DObj.Feq(1), -vigaColumna2DObj.Feq(2), -vigaColumna2DObj.Feq(3)]')
-            nodo2.agregarCarga([-vigaColumna2DObj.Feq(4), -vigaColumna2DObj.Feq(5), -vigaColumna2DObj.Feq(6)]')
+            nodo1.agregarCarga([-F_eq(1), -F_eq(2), -F_eq(3)]')
+            nodo2.agregarCarga([-F_eq(4), -F_eq(5), -F_eq(6)]')
             
             % Agrega fuerzas resistentes como cargas
             nodo1.agregarEsfuerzosElementoAReaccion([fr_global(1), fr_global(2), fr_global(3)]');
@@ -272,13 +285,15 @@ classdef VigaColumna2D < Elemento
         function guardarEsfuerzosInternos(vigaColumna2DObj, archivoSalidaHandle)
             
             fr = vigaColumna2DObj.obtenerFuerzaResistenteCoordGlobal();
-            m1 = num2str(fr(2), '%.04f');
-            m2 = num2str(-fr(4), '%.04f');
-            v1 = num2str(fr(1), '%.04f');
-            v2 = num2str(-fr(3), '%.04f');
+            m1 = num2str(fr(3), '%.04f');
+            m2 = num2str(-fr(6), '%.04f');
+            v1 = num2str(fr(2), '%.04f');
+            v2 = num2str(-fr(5), '%.04f');
+            n1 = num2str(fr(1), '%.04f');
+            n2 = num2str(fr(4), '%.04f');
             
-            fprintf(archivoSalidaHandle, '\n\tViga2D %s:\n\t\tMomento:\t%s %s\n\t\tCorte:\t\t%s %s', ...
-                vigaColumna2DObj.obtenerEtiqueta(), m1, m2, v1, v2);
+            fprintf(archivoSalidaHandle, '\n\tViga2D %s:\n\t\tAxial:\t\t%s %s\n\t\tCorte:\t\t%s %s\n\t\tMomento:\t%s %s', ...
+                vigaColumna2DObj.obtenerEtiqueta(), n1, n2, v1, v2, m1, m2);
             
         end % guardarEsfuerzosInternos function
         

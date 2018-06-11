@@ -53,7 +53,7 @@ classdef CargaVigaPuntual < Carga
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga % Valor de la carga
         dist % Distancia de la carga al primer nodo del elemento
-    end % properties CargaNodo
+    end % properties CargaVigaPuntual
     
     methods
         
@@ -90,7 +90,7 @@ classdef CargaVigaPuntual < Carga
             % aplicarCarga: es un metodo de la clase CargaVigaPuntual que se usa para aplicar
             % la carga sobre los dos nodos del elemento.
             %
-            % aplicarCarga(cargaVigaPuntualObj, factorDeCarga)
+            % aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
             
             % Largo de la viga
             L = cargaVigaPuntualObj.elemObj.obtenerLargo();
@@ -124,7 +124,7 @@ classdef CargaVigaPuntual < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion de la Carga Nodal en pantalla
+        % Metodos para mostar la informacion de la Carga Viga Puntual en pantalla
         
         function disp(cargaVigaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
@@ -146,7 +146,7 @@ classdef CargaVigaPuntual < Carga
             nodo1etiqueta = cargaVigaPuntualObj.elemObj.obtenerNodos();
             nodo1etiqueta = nodo1etiqueta{1}.obtenerEtiqueta();
             
-            fprintf('\tCarga: %.3f aplicada en Elemento:%s a %.3f del Nodo:%s\n', ...
+            fprintf('\tCarga: %.3f aplicada en Elemento: %s a %.3f del Nodo: %s\n', ...
                 cargaVigaPuntualObj.carga, etiqueta, cargaVigaPuntualObj.dist, nodo1etiqueta);
             
         end % disp function

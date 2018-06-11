@@ -144,14 +144,14 @@ classdef CargaVigaColumnaDistribuida < Carga
             theta1 = integral(@(x) rhoV(x).*Nv2(x), d1, d2);
             theta2 = integral(@(x) rhoV(x).*Nv4(x), d1, d2);
             
-            vectorCarga1 = [-u1, -v1, -theta1]';
-            vectorCarga2 = [-u2, -v2, -theta2]';
-            cargaVigaColumnaDistribuidaObj.elemObj.sumarFuerzaEquivalente([-u1, -v1, -theta1, -u2, -v2, -theta2]');
+            vectorCarga = -[u1, v1, theta1, u2, v2, theta2]';
+            cargaVigaColumnaDistribuidaObj.elemObj.sumarFuerzaEquivalente(vectorCarga);
             
-            % Aplica vectores de carga
+            % Aplica vectores de carga en coordenadas globales
+            vectorCarga = cargaVigaColumnaDistribuidaObj.elemObj.obtenerMatrizTransformacion()' * vectorCarga;
             nodos = cargaVigaColumnaDistribuidaObj.elemObj.obtenerNodos();
-            nodos{1}.agregarCarga(factorDeCarga*vectorCarga1);
-            nodos{2}.agregarCarga(factorDeCarga*vectorCarga2);
+            nodos{1}.agregarCarga(factorDeCarga*[vectorCarga(1), vectorCarga(2), vectorCarga(3)]');
+            nodos{2}.agregarCarga(factorDeCarga*[vectorCarga(4), vectorCarga(5), vectorCarga(6)]');
             
         end % aplicarCarga function
         
@@ -179,18 +179,18 @@ classdef CargaVigaColumnaDistribuida < Carga
             nodo1etiqueta = nodosetiqueta{1}.obtenerEtiqueta();
             nodo2etiqueta = nodosetiqueta{2}.obtenerEtiqueta();
             
-            % Obtiene cargas horizontales y verticales     
+            % Obtiene cargas horizontales y verticales
             ang = cargaVigaColumnaDistribuidaObj.theta;
             P1 = cargaVigaColumnaDistribuidaObj.carga1 * cos(ang);
             P2 = cargaVigaColumnaDistribuidaObj.carga2 * cos(ang);
             H1 = cargaVigaColumnaDistribuidaObj.carga1 * sin(ang);
             H2 = cargaVigaColumnaDistribuidaObj.carga2 * sin(ang);
-            a = cargaVigaDistribuidaObj.dist1;
-            b = cargaVigaDistribuidaObj.dist2;
+            a = cargaVigaColumnaDistribuidaObj.dist1;
+            b = cargaVigaColumnaDistribuidaObj.dist2;
             
             fprintf('\tCarga distribuída entre los Nodos: %s y %s del Elemento:%s\n', nodo1etiqueta, nodo2etiqueta, etiqueta);
             fprintf('\t\tComponente NORMAL: %.3f en %.3f hasta %.3f en %.3f\n', P1, a, P2, b);
-            fprintf('\t\tComponente AXIAL: %.3f en %.3f hasta %.3f en %.3f\n\n', H1, a, H2, b);
+            fprintf('\t\tComponente AXIAL: %.3f en %.3f hasta %.3f en %.3f\n', H1, a, H2, b);
             
         end % disp function
         
