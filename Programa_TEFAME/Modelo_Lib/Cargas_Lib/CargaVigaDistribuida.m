@@ -42,9 +42,9 @@
 %       dist2
 %
 %  Methods:
-%       cargaNodoObj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)
-%       aplicarCarga(cargaNodoObj,factorDeCarga)
-%       disp(cargaNodoObj)
+%       cargaVigaDistribuidaObj = CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
+%       aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
+%       disp(cargaVigaDistribuidaObj)
 %  Methods Suplerclass (Carga):
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
@@ -144,9 +144,9 @@ classdef CargaVigaDistribuida < Carga
             % command Window la informacion de la carga aplicada sobre el
             % elemento
             %
-            % disp(cargaVigaPuntualObj)
-            % Imprime la informacion guardada en la Carga Puntual de la
-            % Viga (cargaVigaPuntualObj) en pantalla
+            % disp(cargaVigaDistribuidaObj)
+            % Imprime la informacion guardada en la Carga Distribuida de la
+            % Viga (cargaVigaDistribuidaObj) en pantalla
             
             fprintf('Propiedades Carga Viga Distribuida:\n');
             
@@ -160,7 +160,7 @@ classdef CargaVigaDistribuida < Carga
             nodo1etiqueta = nodosetiqueta{1}.obtenerEtiqueta();
             nodo2etiqueta = nodosetiqueta{2}.obtenerEtiqueta();
             
-            fprintf('\tCarga distribuída:%.3f en %.3f hasta %.3f en %.3f entre los Nodos:%s y %s del Elemento:%s', ...
+            fprintf('\tCarga distribuída: %.3f en %.3f hasta %.3f en %.3f entre los Nodos: %s y %s del Elemento: %s', ...
                 cargaVigaDistribuidaObj.carga1, cargaVigaDistribuidaObj.dist1, cargaVigaDistribuidaObj.carga2, ...
                 cargaVigaDistribuidaObj.dist2, nodo1etiqueta, nodo2etiqueta, etiqueta);
             

@@ -40,9 +40,9 @@
 %       dist
 %
 %  Methods:
-%       cargaNodoObj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)
-%       aplicarCarga(cargaNodoObj,factorDeCarga)
-%       disp(cargaNodoObj)
+%       cargaNodoObj = CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
+%       aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
+%       disp(cargaVigaPuntualObj)
 %  Methods Suplerclass (Carga):
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
