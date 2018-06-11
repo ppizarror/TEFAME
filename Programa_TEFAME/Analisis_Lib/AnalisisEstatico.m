@@ -312,10 +312,10 @@ classdef AnalisisEstatico < handle
             fprintf('Propiedades Analisis:\n');
             
             fprintf('Matriz de Rigidez:\n');
-            analisisObj.Kt
+            disp(analisisObj.Kt);
             
             fprintf('Vector de Fuerzas:\n');
-            analisisObj.F
+            disp(analisisObj.F);
             
         end % disp function
         

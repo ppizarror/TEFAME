@@ -54,6 +54,8 @@
 %       fr_global = obtenerFuerzaResistenteCoordGlobal(vigaColumna2DObj)
 %       fr_local = obtenerFuerzaResistenteCoordLocal(vigaColumna2DObj)
 %       l = obtenerLargo(vigaColumna2DObj)
+%       T = obtenerMatrizTransformacion(vigaColumna2DObj)
+%       theta = obtenerAngulo(vigaColumna2DObj)
 %       definirGDLID(vigaColumna2DObj)
 %       agregarFuerzaResistenteAReacciones(vigaColumna2DObj)
 %       guardarPropiedades(vigaColumna2DObj,archivoSalidaHandle)
@@ -167,6 +169,12 @@ classdef VigaColumna2D < Elemento
             T = vigaColumna2DObj.T;
             
         end % obtenerNumeroGDL function
+        
+        function theta = obtenerAngulo(vigaColumna2DObj)
+            
+            theta = vigaColumna2DObj.theta;
+            
+        end % obtenerAngulo function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(vigaColumna2DObj)
             
@@ -286,9 +294,9 @@ classdef VigaColumna2D < Elemento
             
             fr = vigaColumna2DObj.obtenerFuerzaResistenteCoordGlobal();
             m1 = num2str(fr(3), '%.04f');
-            m2 = num2str(-fr(6), '%.04f');
+            m2 = num2str(fr(6), '%.04f');
             v1 = num2str(fr(2), '%.04f');
-            v2 = num2str(-fr(5), '%.04f');
+            v2 = num2str(fr(5), '%.04f');
             n1 = num2str(fr(1), '%.04f');
             n2 = num2str(fr(4), '%.04f');
             

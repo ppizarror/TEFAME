@@ -105,6 +105,8 @@ classdef CargaVigaColumnaPuntual < Carga
             
             % Carga normal
             P = cargaVigaColumnaPuntualObj.carga * cos(cargaVigaColumnaPuntualObj.theta);
+            
+            % Carga axial
             H = cargaVigaColumnaPuntualObj.carga * sin(cargaVigaColumnaPuntualObj.theta);
             
             % Se calculan apoyos y reacciones en un caso de viga empotrada
@@ -162,8 +164,8 @@ classdef CargaVigaColumnaPuntual < Carga
             H = cargaVigaColumnaPuntualObj.carga * sin(cargaVigaColumnaPuntualObj.theta);
             
             fprintf('\tCarga aplicada en Elemento: %s a %.3f del Nodo: %s\n', etiqueta, cargaVigaColumnaPuntualObj.dist, nodo1etiqueta);
-            fprintf('\t\tComponente NORMAL: %s\n', P);
-            fprintf('\t\tCarga aplicada en Elemento: %s\n', H);
+            fprintf('\t\tComponente NORMAL:\t%.3f\n', P);
+            fprintf('\t\tComponente AXIAL:\t%.3f\n', H);
             
         end % disp function
         
