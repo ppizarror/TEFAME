@@ -23,7 +23,7 @@
 %|                                                                      |
 %| Clase CargaVigaColumnaPuntual                                        |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase CargaVigaColumnaPuntual|
+%| Este archivo contiene la definición de la Clase CargaVigaColumnaPuntual|
 %| CargaVigaColumnaPuntual es una subclase de la clase Carga y          |
 %| corresponde a la representacion de una carga puntual en un elemento  |
 %| tipo Viga-Columna.                                                   |

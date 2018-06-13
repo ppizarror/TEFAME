@@ -23,7 +23,7 @@
 %|                                                                      |
 %| Clase CargaVigaPuntual                                               |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase CargaVigaPuntual     |
+%| Este archivo contiene la definición de la Clase CargaVigaPuntual     |
 %| CargaVigaPuntual es una subclase de la clase Carga y corresponde a la|
 %| representacion de una carga puntual en un elemento tipo Viga.        |
 %| La clase CargaVigaPuntual es una clase que contiene el elemento al   |

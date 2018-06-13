@@ -54,7 +54,10 @@
 %       k_local = obtenerMatrizRigidezCoordLocal(biela2DObj)
 %       fr_global = obtenerFuerzaResistenteCoordGlobal(biela2DObj)
 %       fr_local = obtenerFuerzaResistenteCoordLocal(biela2DObj)
+%       ae = obtenerAE(biela2DObj)
+%       theta = obtenerAngulo(biela2DObj)
 %       definirGDLID(biela2DObj)
+%       sumarCargaTemperaturaReaccion(biela2DObj,f)
 %       agregarFuerzaResistenteAReacciones(biela2DObj)
 %       guardarPropiedades(biela2DObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(biela2DObj,archivoSalidaHandle)
@@ -73,6 +76,8 @@ classdef Biela2D < Elemento
         dx
         dy
         L
+        Theta
+        TcargaReacc
     end % properties Biela2D
     
     methods
@@ -97,8 +102,10 @@ classdef Biela2D < Elemento
             
             biela2DObj.dx = (coordNodo2(1) - coordNodo1(1));
             biela2DObj.dy = (coordNodo2(2) - coordNodo1(2));
+            biela2DObj.Theta = atan(biela2DObj.dy/biela2DObj.dx);
             
             biela2DObj.L = sqrt(biela2DObj.dx^2+biela2DObj.dy^2);
+            biela2DObj.TcargaReacc = [0, 0, 0, 0]';
             
         end % Biela2D constructor
         
@@ -124,15 +131,27 @@ classdef Biela2D < Elemento
             
             gdlIDBiela = biela2DObj.gdlID;
             
-        end % obtenerNumeroGDL function
+        end % gdlIDBiela function
+        
+        function ae = obtenerAE(biela2DObj)
+            
+            ae = biela2DObj.Ao * biela2DObj.Eo;
+            
+        end % obtenerAE function
+        
+        function theta = obtenerAngulo(biela2DObj)
+            
+            theta = biela2DObj.Theta;
+            
+        end % obtenerAngulo function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(biela2DObj)
             
             % Obtiene la matriz de coordenadas locales
             k_local = biela2DObj.obtenerMatrizRigidezCoordLocal();
             
-            % Calcula el ángulo
-            theta = atan(biela2DObj.dy/biela2DObj.dx);
+            % Obtiene el ángulo
+            theta = biela2DObj.obtenerAngulo();
             
             % Se crea matriz de transformación
             t_theta = [cos(theta), sin(theta), 0, 0; ...
@@ -161,7 +180,7 @@ classdef Biela2D < Elemento
             fr_local = biela2DObj.obtenerFuerzaResistenteCoordLocal();
             
             % Calcula matriz transformación
-            theta = atan(biela2DObj.dy/biela2DObj.dx);
+            theta = biela2DObj.obtenerAngulo();
             t_theta = [cos(theta), sin(theta), 0, 0; ...
                 -sin(theta), cos(theta), 0, 0; ...
                 0, 0, cos(theta), sin(theta); ...
@@ -186,7 +205,7 @@ classdef Biela2D < Elemento
             u = [u1(1); u1(2); u2(1); u2(2)];
             
             % Calcula matriz de transformación
-            theta = atan(biela2DObj.dy/biela2DObj.dx);
+            theta = biela2DObj.obtenerAngulo();
             t_theta = [cos(theta), sin(theta), 0, 0; ...
                 -sin(theta), cos(theta), 0, 0; ...
                 0, 0, cos(theta), sin(theta); ...
@@ -223,6 +242,16 @@ classdef Biela2D < Elemento
             
         end % definirGDLID function
         
+        function sumarCargaTemperaturaReaccion(biela2DObj, f)
+            
+            for i = 1:length(f)
+                if(biela2DObj.gdlID(i) == 0)
+                    biela2DObj.TcargaReacc(i) = biela2DObj.TcargaReacc(i) + f(i);
+                end
+            end
+            
+        end % guardarFuerzaEquivalente function
+        
         function agregarFuerzaResistenteAReacciones(biela2DObj)
             
             % Se calcula la fuerza resistente
@@ -232,9 +261,13 @@ classdef Biela2D < Elemento
             nodo1 = biela2DObj.nodosObj{1};
             nodo2 = biela2DObj.nodosObj{2};
             
+            % Suma fuerza de temperatura en reacciones
+            nodo1.agregarCarga([biela2DObj.TcargaReacc(1); biela2DObj.TcargaReacc(2)]);
+            nodo2.agregarCarga([biela2DObj.TcargaReacc(3); biela2DObj.TcargaReacc(4)]);
+            
             % Agrega fuerzas resistentes como cargas
-            nodo1.agregarCarga([-fr_global(1); -fr_global(2)]);
-            nodo2.agregarCarga([-fr_global(3); -fr_global(4)]);
+            nodo1.agregarCarga(-[fr_global(1); fr_global(2)]);
+            nodo2.agregarCarga(-[fr_global(3); fr_global(4)]);
             
         end % agregarFuerzaResistenteAReacciones function
         

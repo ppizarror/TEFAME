@@ -216,7 +216,7 @@ classdef Viga2D < Elemento
                 viga2DObj.Feq(i) = viga2DObj.Feq(i) + f(i);
             end
             
-        end % guardarFuerzaEquivalente function
+        end % sumarFuerzaEquivalente function
         
         function agregarFuerzaResistenteAReacciones(viga2DObj)
             
@@ -228,8 +228,8 @@ classdef Viga2D < Elemento
             nodo2 = viga2DObj.nodosObj{2};
             
             % Agrega fuerzas equivalentes como cargas
-            nodo1.agregarCarga([0, -viga2DObj.Feq(1), -viga2DObj.Feq(2)]')
-            nodo2.agregarCarga([0, -viga2DObj.Feq(3), -viga2DObj.Feq(4)]')
+            nodo1.agregarCarga([0, -viga2DObj.Feq(1), -viga2DObj.Feq(2)]');
+            nodo2.agregarCarga([0, -viga2DObj.Feq(3), -viga2DObj.Feq(4)]');
             
             % Agrega fuerzas resistentes como cargas
             nodo1.agregarEsfuerzosElementoAReaccion([0, fr_global(1), fr_global(2)]');

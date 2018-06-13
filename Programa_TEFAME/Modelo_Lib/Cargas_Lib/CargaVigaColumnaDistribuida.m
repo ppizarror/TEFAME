@@ -23,7 +23,7 @@
 %|                                                                      |
 %| Clase CargaVigaColumnaDistribuida                                    |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase CargaVigaColumnaDist |
+%| Este archivo contiene la definición de la Clase CargaVigaColumnaDist |
 %| ribuida, CargaVigaDistribuida es una subclase de la clase Carga y    |
 %| corresponde a la representación de una carga distribuida en un       |
 %| elemento tipo Viga. La clase CargaVigaDistribuida es una clase que   |

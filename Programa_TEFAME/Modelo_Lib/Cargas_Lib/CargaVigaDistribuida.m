@@ -23,7 +23,7 @@
 %|                                                                      |
 %| Clase CargaVigaDistribuida                                           |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase CargaVigaDistribuida |
+%| Este archivo contiene la definición de la Clase CargaVigaDistribuida |
 %| CargaVigaDistribuida es una subclase de la clase Carga y corresponde |
 %| a la representacion de una carga distribuida en un elemento tipo Viga|
 %| La clase CargaVigaDistribuida es una clase que contiene el elemento  |

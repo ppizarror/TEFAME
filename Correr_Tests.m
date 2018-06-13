@@ -38,8 +38,8 @@ iniciar_TEFAME;
 clc;
 fprintf('CORRIENDO TESTS\n');
 
-% Código tarea 4
-Modelo_Tarea4;
+% Modelo tarea 5
+Modelo_Tarea5;
 
 % Ejemplos clase
 EjemploClase_Enrejado2D;
@@ -49,6 +49,7 @@ EjemploClase_VigaCargaDistribuida2D;
 % Otros
 Modelo_Tarea2;
 Modelo_Tarea3;
+Modelo_Tarea4;
 Test_Viga2D;
 
 % Elimina espacio en memoria
