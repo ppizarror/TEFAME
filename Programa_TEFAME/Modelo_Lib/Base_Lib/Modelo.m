@@ -367,19 +367,19 @@ classdef Modelo < handle
         end % guardarResultados function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del Modelo en pantalla
+        % Metodos para mostar la información del Modelo en pantalla
         
         function disp(modeloObj)
-            % disp: es un metodo de la clase Modelo que se usa para imprimir en
-            % command Window la informacion del Modelo
+            % disp: es un método de la clase Modelo que se usa para imprimir en
+            % command Window la información del Modelo
             %
             % disp(modeloObj)
             % Imprime la informacion guardada en el Modelo (modeloObj) en
             % pantalla
             
-            fprintf('Propiedades Modelo :\n');
-            fprintf('Dimensiones Modelo :%iD\n', modeloObj.nDimensiones);
-            fprintf('Numero de GDL del Modelo :%iD\n', modeloObj.nGDL);
+            fprintf('Propiedades Modelo:\n');
+            fprintf('\tDimensiones Modelo: %iD\n', modeloObj.nDimensiones);
+            fprintf('\tNumero de GDL del Modelo: %i\n', modeloObj.nGDL);
             
         end % disp function
         

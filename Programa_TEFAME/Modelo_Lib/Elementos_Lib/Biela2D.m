@@ -45,7 +45,7 @@
 %       L
 %
 %  Methods:
-%       bielaObj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial)
+%       biela2DObj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial)
 %       numeroNodos = obtenerNumeroNodos(biela2DObj)
 %       nodosBiela = obtenerNodos(biela2DObj)
 %       numeroGDL = obtenerNumeroGDL(biela2DObj)

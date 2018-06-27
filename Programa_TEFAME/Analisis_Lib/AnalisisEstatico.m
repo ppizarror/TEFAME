@@ -141,7 +141,7 @@ classdef AnalisisEstatico < handle
             % realizar el analisis estatico
             %
             % analizar(analisisObj)
-            % Analiza estaticamente el Modelo lineal y elastico sometido a un
+            % Analiza estaticamente el Modelo lineal y elástico sometido a un
             % set de cargas.
             
             % Se definen los grados de libertad por nodo -> elementos
@@ -165,11 +165,11 @@ classdef AnalisisEstatico < handle
         end % analizar function
         
         function ensamblarMatrizRigidez(analisisObj)
-            % ensamblarMatrizRigidez: es un metodo de la clase AnalisisEstatico que se usa para
+            % ensamblarMatrizRigidez: es un método de la clase AnalisisEstatico que se usa para
             % realizar el armado de la matriz de rigidez del modelo analizado
             %
             % ensamblarMatrizRigidez(analisisObj)
-            % Ensambla la matriz de Rigidez del modelo analizado usando el metodo
+            % Ensambla la matriz de Rigidez del modelo analizado usando el método
             % indicial
             
             analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
@@ -316,6 +316,9 @@ classdef AnalisisEstatico < handle
             
             fprintf('\tVector de Fuerzas:\n');
             disp(analisisObj.F);
+            
+            fprintf('\tVector de Desplazamientos:\n');
+            disp(analisisObj.u);
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');
