@@ -174,8 +174,6 @@ classdef AnalisisEstatico < handle
             
             analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
-            % En esta funcion se tiene que ensamblar la matriz de rigidez
-            
             % Extraemos los Elementos
             elementoObjetos = analisisObj.modeloObj.obtenerElementos();
             numeroElementos = length(elementoObjetos);
@@ -313,6 +311,10 @@ classdef AnalisisEstatico < handle
             
             fprintf('\tMatriz de Rigidez:\n');
             disp(analisisObj.Kt);
+            
+            fprintf('\tDeterminante: %f\n\n', det(analisisObj.Kt));
+            
+            fprintf('\tSimétrica: %s\n\n', bool2str(analisisObj.Kt == analisisObj.Kt'));
             
             fprintf('\tVector de Fuerzas:\n');
             disp(analisisObj.F);
