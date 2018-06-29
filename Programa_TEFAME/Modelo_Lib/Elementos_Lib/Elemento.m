@@ -74,7 +74,7 @@ classdef Elemento < ComponenteModelo
             % Crea un objeto de la clase Elemento, con un identificador unico
             % (etiquetaElemento)
             
-            % Si no se pasan argumentos se crean vacíos
+            % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaElemento = '';
             end % if
@@ -85,7 +85,7 @@ classdef Elemento < ComponenteModelo
         end % Elemento constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para obtener información del Elemento
+        % Metodos para obtener informacion del Elemento
         
         function numeroNodos = obtenerNumeroNodos(elementoObj) %#ok<MANU>
             % obtenerNumeroNodos: es un metodo de la clase Elemento que se usa para

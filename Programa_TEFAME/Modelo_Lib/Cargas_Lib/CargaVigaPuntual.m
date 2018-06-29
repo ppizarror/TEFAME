@@ -23,7 +23,7 @@
 %|                                                                      |
 %| Clase CargaVigaPuntual                                               |
 %|                                                                      |
-%| Este archivo contiene la definición de la Clase CargaVigaPuntual     |
+%| Este archivo contiene la definicion de la Clase CargaVigaPuntual     |
 %| CargaVigaPuntual es una subclase de la clase Carga y corresponde a la|
 %| representacion de una carga puntual en un elemento tipo Viga.        |
 %| La clase CargaVigaPuntual es una clase que contiene el elemento al   |
@@ -85,7 +85,7 @@ classdef CargaVigaPuntual < Carga
         end % CargaVigaPuntual constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Puntual durante el análisis
+        % Metodos para aplicar la Carga Puntual durante el analisis
         
         function aplicarCarga(cargaVigaPuntualObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaVigaPuntual que se usa para aplicar
@@ -96,7 +96,7 @@ classdef CargaVigaPuntual < Carga
             % Largo de la viga
             L = cargaVigaPuntualObj.elemObj.obtenerLargo();
             
-            % Posición de la carga
+            % Posicion de la carga
             d = cargaVigaPuntualObj.dist;
             
             % Carga
@@ -104,10 +104,10 @@ classdef CargaVigaPuntual < Carga
             
             % Se calculan apoyos y reacciones en un caso de viga empotrada
             % sometida a una carga P aplicada a (L-d) de un apoyo y d del
-            % otro. Esto se hizo al no tener la función dirac(x) y
-            % distintos errores fruto de la evaluación de la integral. El
-            % caso con las funciones de interpolación N1..N4 se realizó
-            % correctamente para el caso de la carga distribuída.
+            % otro. Esto se hizo al no tener la funcion dirac(x) y
+            % distintos errores fruto de la evaluacion de la integral. El
+            % caso con las funciones de interpolacion N1..N4 se realizo
+            % correctamente para el caso de la carga distribuida.
             v1 = P * ((L - d)^2 / L^2)*(3-2*(L - d)/L);
             v2 = P * (d^2 / L^2)*(3-2*d/L);
             theta1 = P * d * (L - d)^2 / (L^2);
@@ -125,15 +125,15 @@ classdef CargaVigaPuntual < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para mostar la información de la Carga Viga Puntual en pantalla
+        % Metodos para mostar la informacion de la Carga Viga Puntual en pantalla
         
         function disp(cargaVigaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
-            % command Window la información de la carga aplicada sobre el
+            % command Window la informacion de la carga aplicada sobre el
             % elemento
             %
             % disp(cargaVigaPuntualObj)
-            % Imprime la información guardada en la Carga Puntual de la
+            % Imprime la informacion guardada en la Carga Puntual de la
             % Viga (cargaVigaPuntualObj) en pantalla
             
             fprintf('Propiedades Carga Viga Puntual:\n');          

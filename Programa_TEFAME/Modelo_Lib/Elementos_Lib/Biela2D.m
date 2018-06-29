@@ -150,10 +150,10 @@ classdef Biela2D < Elemento
             % Obtiene la matriz de coordenadas locales
             k_local = biela2DObj.obtenerMatrizRigidezCoordLocal();
             
-            % Obtiene el ángulo
+            % Obtiene el angulo
             theta = biela2DObj.obtenerAngulo();
             
-            % Se crea matriz de transformación
+            % Se crea matriz de transformacion
             t_theta = [cos(theta), sin(theta), 0, 0; ...
                 -sin(theta), cos(theta), 0, 0; ...
                 0, 0, cos(theta), sin(theta); ...
@@ -179,7 +179,7 @@ classdef Biela2D < Elemento
             % Obtiene fr local
             fr_local = biela2DObj.obtenerFuerzaResistenteCoordLocal();
             
-            % Calcula matriz transformación
+            % Calcula matriz transformacion
             theta = biela2DObj.obtenerAngulo();
             t_theta = [cos(theta), sin(theta), 0, 0; ...
                 -sin(theta), cos(theta), 0, 0; ...
@@ -204,7 +204,7 @@ classdef Biela2D < Elemento
             % Vector desplazamientos u'
             u = [u1(1); u1(2); u2(1); u2(2)];
             
-            % Calcula matriz de transformación
+            % Calcula matriz de transformacion
             theta = biela2DObj.obtenerAngulo();
             t_theta = [cos(theta), sin(theta), 0, 0; ...
                 -sin(theta), cos(theta), 0, 0; ...
@@ -284,7 +284,7 @@ classdef Biela2D < Elemento
             esf_int = biela2DObj.obtenerFuerzaResistenteCoordLocal();
             f = esf_int(1);
             
-            % Determina si es tracción o compresión
+            % Determina si es traccion o compresion
             t = 'TRACCION';
             if f > 0
                 t = 'COMPRESION';

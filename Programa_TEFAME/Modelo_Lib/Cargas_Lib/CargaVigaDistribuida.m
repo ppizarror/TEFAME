@@ -23,7 +23,7 @@
 %|                                                                      |
 %| Clase CargaVigaDistribuida                                           |
 %|                                                                      |
-%| Este archivo contiene la definición de la Clase CargaVigaDistribuida |
+%| Este archivo contiene la definicion de la Clase CargaVigaDistribuida |
 %| CargaVigaDistribuida es una subclase de la clase Carga y corresponde |
 %| a la representacion de una carga distribuida en un elemento tipo Viga|
 %| La clase CargaVigaDistribuida es una clase que contiene el elemento  |
@@ -68,7 +68,7 @@ classdef CargaVigaDistribuida < Carga
             % cargaVigaDistribuidaObj=CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas y las distancias de
-            % aplicación.
+            % aplicacion.
             
             if nargin == 0
                 etiquetaCarga = '';
@@ -92,7 +92,7 @@ classdef CargaVigaDistribuida < Carga
         end % CargaVigaDistribuida constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para aplicar la Carga Viga Distribuída durante el análisis
+        % Metodos para aplicar la Carga Viga Distribuï¿½da durante el anï¿½lisis
         
         function aplicarCarga(cargaVigaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaVigaDistribuidaObj que se usa para aplicar
@@ -103,7 +103,7 @@ classdef CargaVigaDistribuida < Carga
             % Largo de la viga
             L = cargaVigaDistribuidaObj.elemObj.obtenerLargo();
             
-            % Límites de las cargas
+            % Limites de las cargas
             d1 = cargaVigaDistribuidaObj.dist1;
             d2 = cargaVigaDistribuidaObj.dist2;
             
@@ -111,10 +111,10 @@ classdef CargaVigaDistribuida < Carga
             P1 = cargaVigaDistribuidaObj.carga1;
             P2 = cargaVigaDistribuidaObj.carga2;
             
-            % Crea función de carga distribuída
+            % Crea funcion de carga distribuï¿½da
             rho = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
             
-            % Funciones de interpolación
+            % Funciones de interpolacion
             N1 = @(x) 1 - 3 * (x / L).^2 + 2 * (x / L).^3;
             N2 = @(x) x .* (1 - x / L).^2;
             N3 = @(x) 3 * (x / L).^2 - 2 * (x / L).^3;
@@ -138,15 +138,15 @@ classdef CargaVigaDistribuida < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para mostar la información de la Carga Viga Distribuída en pantalla
+        % Metodos para mostar la informacion de la Carga Viga Distribuida en pantalla
         
         function disp(cargaVigaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
-            % command Window la información de la carga aplicada sobre el
+            % command Window la informacion de la carga aplicada sobre el
             % elemento
             %
             % disp(cargaVigaDistribuidaObj)
-            % Imprime la información guardada en la Carga Distribuida de la
+            % Imprime la informacion guardada en la Carga Distribuida de la
             % Viga (cargaVigaDistribuidaObj) en pantalla
             
             fprintf('Propiedades Carga Viga Distribuida:\n');           
@@ -160,7 +160,7 @@ classdef CargaVigaDistribuida < Carga
             nodo1etiqueta = nodosetiqueta{1}.obtenerEtiqueta();
             nodo2etiqueta = nodosetiqueta{2}.obtenerEtiqueta();
             
-            fprintf('\tCarga distribuída: %.3f en %.3f hasta %.3f en %.3f entre los Nodos: %s y %s del Elemento: %s', ...
+            fprintf('\tCarga distribuida: %.3f en %.3f hasta %.3f en %.3f entre los Nodos: %s y %s del Elemento: %s', ...
                 cargaVigaDistribuidaObj.carga1, cargaVigaDistribuidaObj.dist1, cargaVigaDistribuidaObj.carga2, ...
                 cargaVigaDistribuidaObj.dist2, nodo1etiqueta, nodo2etiqueta, etiqueta);
             

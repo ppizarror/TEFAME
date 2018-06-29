@@ -310,7 +310,7 @@ classdef Modelo < handle
             % los resultados del analisis que tienen guardados los diferentes
             % componentes en un archivo (nombreArchivo)
             
-            % Abre el archivo donde se guardara la informaci?n
+            % Abre el archivo donde se guardara la informacion
             archivoSalida = fopen(nombreArchivo, 'w');
             fprintf(archivoSalida, 'TEFAME - Toolbox para Elemento Finitos y Analisis\n');
             fprintf(archivoSalida, '         Matricial de Estructuras en MATLAB\n');
@@ -367,11 +367,11 @@ classdef Modelo < handle
         end % guardarResultados function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la información del Modelo en pantalla
+        % Metodos para mostar la informacion del Modelo en pantalla
         
         function disp(modeloObj)
-            % disp: es un método de la clase Modelo que se usa para imprimir en
-            % command Window la información del Modelo
+            % disp: es un metodo de la clase Modelo que se usa para imprimir en
+            % command Window la informacion del Modelo
             %
             % disp(modeloObj)
             % Imprime la informacion guardada en el Modelo (modeloObj) en

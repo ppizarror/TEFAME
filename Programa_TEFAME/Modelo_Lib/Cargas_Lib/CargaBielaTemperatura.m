@@ -23,14 +23,14 @@
 %|                                                                      |
 %| Clase CargaBielaTemperatura                                          |
 %|                                                                      |
-%| Este archivo contiene la definición de la Clase CargaBielaTemperatura|
+%| Este archivo contiene la definicion de la Clase CargaBielaTemperatura|
 %| CargaBielaTemperatura es una subclase de la clase Carga y corresponde|
 %| a la representacion de una carga producto de un incremento de la     |
 %| temperatura en una biela, que genera esfuerzos axiales dependiendo de|
 %| dT.                                                                  |
 %| La clase CargaBielaTemperatura es una clase que contiene el elemento |
 %| al que se le va a aplicar la diferencia de temperatura y el coefici- |
-%| ente de dilatación del material alpha.                               |
+%| ente de dilatacion del material alpha.                               |
 %|                                                                      |
 %| Programado: PABLO PIZARRO @ppizarror.com                             |
 %| Fecha: 12/06/2018                                                    |
@@ -55,7 +55,7 @@ classdef CargaBielaTemperatura < Carga
     properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         deltaTemperatura % Diferencia de temperatura aplicada al material
-        alpha % Coeficiente de dilatación térmica de la biela
+        alpha % Coeficiente de dilatacion termica de la biela
         carga % Carga generada por la temperatura
     end % properties CargaBielaTemperatura
     
@@ -67,7 +67,7 @@ classdef CargaBielaTemperatura < Carga
             % cargaBielaTemperaturaObj=CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
             % Crea un objeto de la clase CargaBielaTemperatura, en donde toma como atributo
             % el objeto a aplicar la carga, la diferencia de temperatura y
-            % el coeficiente de dilatación térmica del material (alpha).
+            % el coeficiente de dilatacion termica del material (alpha).
             
             if nargin == 0
                 etiquetaCarga = '';
@@ -89,7 +89,7 @@ classdef CargaBielaTemperatura < Carga
         end % CargaBielaTemperatura constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga durante el análisis
+        % Metodos para aplicar la Carga durante el analisis
         
         function aplicarCarga(cargaBielaTemperaturaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaBielaTemperatura
@@ -97,10 +97,10 @@ classdef CargaBielaTemperatura < Carga
             %
             % aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
             
-            % Obtiene el ángulo de la Biela
+            % Obtiene el angulo de la Biela
             theta = cargaBielaTemperaturaObj.elemObj.obtenerAngulo();
             
-            % Carga sin cambiar el ángulo
+            % Carga sin cambiar el angulo
             c = cargaBielaTemperaturaObj.carga;
             
             % Genera las cargas nodales
@@ -117,16 +117,16 @@ classdef CargaBielaTemperatura < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para mostar la información de la Carga Biela Temperatura en pantalla
+        % Mï¿½todos para mostar la informacion de la Carga Biela Temperatura en pantalla
         
         function disp(cargaBielaTemperaturaObj)
             % disp: es un metodo de la clase CargaBielaTemperatura que se usa para imprimir en
-            % command Window la información de la carga generada en los
+            % command Window la informacion de la carga generada en los
             % nodos fruto de la diferencia de temperatura y el coeficiente
             % del material.
             %
             % disp(cargaBielaTemperaturaObj)
-            % Imprime la información guardada en la Carga fruto de la
+            % Imprime la informacion guardada en la Carga fruto de la
             % diferencia de temperatura de la Biela (cargaBielaTemperaturaObj)
             % en pantalla
             

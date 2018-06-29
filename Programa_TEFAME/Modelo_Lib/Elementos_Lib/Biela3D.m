@@ -96,7 +96,7 @@ classdef Biela3D < Elemento
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             
-            % Calcula propiedades geométricas
+            % Calcula propiedades geometricas
             biela3DObj.dx = (coordNodo2(1) - coordNodo1(1));
             biela3DObj.dy = (coordNodo2(2) - coordNodo1(2));
             biela3DObj.dz = (coordNodo2(3) - coordNodo1(3));
@@ -105,7 +105,7 @@ classdef Biela3D < Elemento
             % Largo de la biela
             biela3DObj.L = sqrt(biela3DObj.dx^2+biela3DObj.dy^2+biela3DObj.dz^2);
             
-            % Calcula matriz de transformación
+            % Calcula matriz de transformacion
             cosx = biela3DObj.dx / biela3DObj.L;
             cosy = biela3DObj.dy / biela3DObj.L;
             cosz = biela3DObj.dz / biela3DObj.L;
@@ -253,7 +253,7 @@ classdef Biela3D < Elemento
             esf_int = biela3DObj.obtenerFuerzaResistenteCoordLocal();
             f = esf_int(1);
             
-            % Determina si es tracción o compresión
+            % Determina si es traccion o compresion
             t = 'TRACCION';
             if f > 0
                 t = 'COMPRESION';
@@ -272,8 +272,8 @@ classdef Biela3D < Elemento
             fprintf('\tLargo: %s\tArea: %s\tE: %s\n', pad(num2str(biela3DObj.L), 12), ...
                 pad(num2str(biela3DObj.Ao), 10), pad(num2str(biela3DObj.Eo), 10));
             
-            % Imprime la matiz de transformación
-            fprintf('\tMatriz de transformación:\n');
+            % Imprime la matiz de transformacion
+            fprintf('\tMatriz de transformacion:\n');
             disp(biela3DObj.T);
             
             % Se imprime matriz de rigidez local

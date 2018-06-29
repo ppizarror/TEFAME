@@ -66,7 +66,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % (etiquetaPatronDeCargas) y guarda el arreiglo con las cargas (arreigloCargas)
             % a aplicar en el modelo
             
-            % Si no se pasan argumentos se crean vacíos
+            % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaPatronDeCargas = '';
             end % if
@@ -80,10 +80,10 @@ classdef PatronDeCargasConstante < PatronDeCargas
         end % PatronDeCargasConstante constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para aplicar las Carga guardadas en el patrón de cargas durante el análisis
+        % Metodos para aplicar las Carga guardadas en el patron de cargas durante el analisis
         
         function aplicarCargas(patronDeCargasObj)
-            % aplicarCargas: es un método de la clase PatronDeCargasConstante que
+            % aplicarCargas: es un metodo de la clase PatronDeCargasConstante que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
             % aplicarCargas(patronDeCargasObj)
@@ -99,14 +99,14 @@ classdef PatronDeCargasConstante < PatronDeCargas
         end % aplicarCargas function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para mostar la información del PatronDeCargas en pantalla
+        % Mï¿½todos para mostar la informacion del PatronDeCargas en pantalla
         
         function disp(patronDeCargasObj)
             % disp: es un metodo de la clase PatronDeCargasConstante que se usa para imprimir en
             % command Window la informacion del Patron de Cargas
             %
             % disp(patronDeCargasObj)
-            % Imprime la información guardada en el Patron de Cargas Constante (patronDeCargasObj)
+            % Imprime la informacion guardada en el Patron de Cargas Constante (patronDeCargasObj)
             % en pantalla
             
             fprintf('Propiedades Patron de Cargas Constante :\n');            

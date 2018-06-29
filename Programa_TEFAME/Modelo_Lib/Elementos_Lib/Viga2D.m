@@ -25,7 +25,7 @@
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase Viga 2D              |
 %| Viga2D  es una  subclase de la  clase Elemento y  corresponde a  la  |
-%| representacion del elemento viga que sólo transmite esfuerzo de      |
+%| representacion del elemento viga que solo transmite esfuerzo de      |
 %| corte.                                                               |
 %|                                                                      |
 %| Programado: PABLO PIZARRO @ppizarror.com                             |
@@ -80,7 +80,7 @@ classdef Viga2D < Elemento
         
         function viga2DObj = Viga2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial)
             
-            % Si no se pasan argumentos se crean vacíos
+            % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaViga = '';
             end % if
@@ -94,7 +94,7 @@ classdef Viga2D < Elemento
             viga2DObj.Io = Imaterial;
             viga2DObj.gdlID = [];
             
-            % Calcula componentes geométricas
+            % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             viga2DObj.dx = (coordNodo2(1) - coordNodo1(1));
@@ -249,9 +249,9 @@ classdef Viga2D < Elemento
             
             fr = viga2DObj.obtenerFuerzaResistenteCoordGlobal();
             m1 = num2str(fr(2), '%.04f');
-            m2 = num2str(fr(4), '%.04f'); % Aplicar menos (?)
+            m2 = num2str(fr(4), '%.04f');
             v1 = num2str(fr(1), '%.04f');
-            v2 = num2str(fr(3), '%.04f'); % Aplicar menos (?)
+            v2 = num2str(fr(3), '%.04f');
             
             fprintf(archivoSalidaHandle, '\n\tViga2D %s:\n\t\tMomento:\t%s %s\n\t\tCorte:\t\t%s %s', ...
                 viga2DObj.obtenerEtiqueta(), m1, m2, v1, v2);

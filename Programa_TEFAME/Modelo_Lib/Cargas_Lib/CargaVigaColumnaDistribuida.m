@@ -23,12 +23,12 @@
 %|                                                                      |
 %| Clase CargaVigaColumnaDistribuida                                    |
 %|                                                                      |
-%| Este archivo contiene la definición de la Clase CargaVigaColumnaDist |
+%| Este archivo contiene la definicion de la Clase CargaVigaColumnaDist |
 %| ribuida, CargaVigaDistribuida es una subclase de la clase Carga y    |
-%| corresponde a la representación de una carga distribuida en un       |
+%| corresponde a la representacion de una carga distribuida en un       |
 %| elemento tipo Viga. La clase CargaVigaDistribuida es una clase que   |
 %| contiene el elemento, al que se le va a aplicar la carga, las cargas |
-%| en cada punto, las distancias de las dos cargas y el ángulo con      |
+%| en cada punto, las distancias de las dos cargas y el angulo con      |
 %| respecto a la normal.                                                |
 %|                                                                      |
 %| Programado: PABLO PIZARRO @ppizarror.com                             |
@@ -61,7 +61,7 @@ classdef CargaVigaColumnaDistribuida < Carga
         carga2 % Valor de la carga 2
         dist1 % Distancia de la carga 1 al primer nodo del elemento
         dist2 % Distancia de la carga 2 al primer nodo del elemento
-        theta % Ángulo de la carga
+        theta % Angulo de la carga
     end % properties CargaVigaDistribuida
     
     methods
@@ -75,10 +75,10 @@ classdef CargaVigaColumnaDistribuida < Carga
             %
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas, las distancias de
-            % aplicación y el ángulo de la carga con respecto a la normal
+            % aplicacion y el angulo de la carga con respecto a la normal
             % (0=Completamente normal, pi/2=Carga axial a la viga).
             
-            % Si no se pasan argumentos se crea una carga vacía
+            % Si no se pasan argumentos se crea una carga vacia
             if nargin == 0
                 etiquetaCarga = '';
                 elemObjeto = [];
@@ -103,7 +103,7 @@ classdef CargaVigaColumnaDistribuida < Carga
         end % CargaVigaColumnaDistribuida constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para aplicar la Carga Viga-Columna Distribuída durante el análisis
+        % Metodos para aplicar la Carga Viga-Columna Distribuida durante el analisis
         
         function aplicarCarga(cargaVigaColumnaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaVigaColumnaDistribuidaObj que se usa para aplicar
@@ -114,11 +114,11 @@ classdef CargaVigaColumnaDistribuida < Carga
             % Largo de la viga
             L = cargaVigaColumnaDistribuidaObj.elemObj.obtenerLargo();
             
-            % Límites de las cargas
+            % Limites de las cargas
             d1 = cargaVigaColumnaDistribuidaObj.dist1;
             d2 = cargaVigaColumnaDistribuidaObj.dist2;
             
-            % Ángulo de la carga
+            % Angulo de la carga
             ang = cargaVigaColumnaDistribuidaObj.theta;
             
             % Cargas normales
@@ -129,11 +129,11 @@ classdef CargaVigaColumnaDistribuida < Carga
             H1 = cargaVigaColumnaDistribuidaObj.carga1 * sin(ang);
             H2 = cargaVigaColumnaDistribuidaObj.carga2 * sin(ang);
             
-            % Crea función de carga distribuída normal y axial
+            % Crea funcion de carga distribuida normal y axial
             rhoV = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
             rhoH = @(x) H1 + (x - d1) * ((H2 - H1) / d2);
             
-            % Funciones de interpolación
+            % Funciones de interpolacion
             Nu1 = @(x) - (1 - x / L);
             Nu2 = @(x) - x / L;
             Nv1 = @(x) 1 - 3 * (x / L).^2 + 2 * (x / L).^3;
@@ -161,15 +161,15 @@ classdef CargaVigaColumnaDistribuida < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para mostar la información de la Carga Viga-Columna Distribuída en pantalla
+        % Metodos para mostar la informacion de la Carga Viga-Columna Distribuida en pantalla
         
         function disp(cargaVigaColumnaDistribuidaObj)
-            % disp: es un método de la clase Carga que se usa para imprimir en
-            % command Window la información de la carga aplicada sobre el
+            % disp: es un metodo de la clase Carga que se usa para imprimir en
+            % command Window la informacion de la carga aplicada sobre el
             % elemento
             %
             % disp(cargaVigaColumnaDistribuidaObj)
-            % Imprime la información guardada en la Carga Viga-Columna Distribuída
+            % Imprime la informacion guardada en la Carga Viga-Columna Distribuida
             % (cargaVigaColumnaDistribuidaObj) en pantalla
             
             fprintf('Propiedades Carga Viga-Columna Distribuida:\n');
@@ -192,7 +192,7 @@ classdef CargaVigaColumnaDistribuida < Carga
             a = cargaVigaColumnaDistribuidaObj.dist1;
             b = cargaVigaColumnaDistribuidaObj.dist2;
             
-            fprintf('\tCarga distribuída entre los Nodos: %s y %s del Elemento: %s\n', nodo1etiqueta, nodo2etiqueta, etiqueta);
+            fprintf('\tCarga distribuida entre los Nodos: %s y %s del Elemento: %s\n', nodo1etiqueta, nodo2etiqueta, etiqueta);
             fprintf('\t\tComponente NORMAL:\t%.3f en %.3f hasta %.3f en %.3f\n', P1, a, P2, b);
             fprintf('\t\tComponente AXIAL:\t%.3f en %.3f hasta %.3f en %.3f\n', H1, a, H2, b);
             

@@ -1,4 +1,4 @@
-% Añade las carpetas de la plataforma TEFAME al PATH
+% Agrega las carpetas de la plataforma TEFAME al PATH
 addpath('Programa_TEFAME');
 addpath('Programa_TEFAME/Analisis_Lib');
 addpath('Programa_TEFAME/Modelo_Lib');

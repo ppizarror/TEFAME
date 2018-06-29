@@ -110,7 +110,7 @@ classdef AnalisisEstatico < handle
                 
                 gdlidNodo = nodoObjetos{i}.obtenerGDLID;
                 
-                % Si no es reacción entonces se añade como GDL
+                % Si no es reaccion entonces se agrega como GDL
                 for j = 1:length(gdlidNodo)
                     if (gdlidNodo(j) == - 1)
                         contadorGDL = contadorGDL + 1;
@@ -141,13 +141,13 @@ classdef AnalisisEstatico < handle
             % realizar el analisis estatico
             %
             % analizar(analisisObj)
-            % Analiza estaticamente el Modelo lineal y elástico sometido a un
+            % Analiza estaticamente el Modelo lineal y elastico sometido a un
             % set de cargas.
             
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
             
-            % Se aplica patrón de carga
+            % Se aplica patron de carga
             analisisObj.modeloObj.aplicarPatronesDeCargas();
             
             % Se calcula la matriz de rigidez
@@ -156,7 +156,7 @@ classdef AnalisisEstatico < handle
             % Se ensambla el vector de fuerzas
             analisisObj.ensamblarVectorFuerzas();
             
-            % Se resuelve la ecuación
+            % Se resuelve la ecuacion
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
             
             % Actualiza el modelo
@@ -165,11 +165,11 @@ classdef AnalisisEstatico < handle
         end % analizar function
         
         function ensamblarMatrizRigidez(analisisObj)
-            % ensamblarMatrizRigidez: es un método de la clase AnalisisEstatico que se usa para
+            % ensamblarMatrizRigidez: es un metodo de la clase AnalisisEstatico que se usa para
             % realizar el armado de la matriz de rigidez del modelo analizado
             %
             % ensamblarMatrizRigidez(analisisObj)
-            % Ensambla la matriz de Rigidez del modelo analizado usando el método
+            % Ensambla la matriz de Rigidez del modelo analizado usando el metodo
             % indicial
             
             analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
@@ -181,21 +181,21 @@ classdef AnalisisEstatico < handle
             % Definimos los GDLID en los elementos
             for i = 1:numeroElementos
                 
-                % Se obienen los gdl del elemento método indicial
+                % Se obienen los gdl del elemento metodo indicial
                 gdl = elementoObjetos{i}.obtenerGDLID();
                 ngdl = elementoObjetos{i}.obtenerNumeroGDL;
                 
                 % Se obtiene la matriz de rigidez global del elemento-i
                 k_globl_elem = elementoObjetos{i}.obtenerMatrizRigidezCoordGlobal();
                 
-                % Se calcula el método indicial
+                % Se calcula el metodo indicial
                 for r = 1:ngdl
                     for s = 1:ngdl
                         i_ = gdl(r);
                         j_ = gdl(s);
                         
                         % Si corresponden a grados de libertad -> puntos en (i,j)
-                        % se suma contribución método indicial
+                        % se suma contribucion metodo indicial
                         if (i_ ~= 0 && j_ ~= 0)
                             analisisObj.Kt(i_, j_) = analisisObj.Kt(i_, j_) + k_globl_elem(r, s);
                         end
@@ -226,7 +226,7 @@ classdef AnalisisEstatico < handle
             % Definimos los GDLID en los nodos
             for i = 1:numeroNodos
                 
-                ngdlid = nodoObjetos{i}.obtenerNumeroGDL(); % Número grados de libertad del nodo
+                ngdlid = nodoObjetos{i}.obtenerNumeroGDL(); % Numero grados de libertad del nodo
                 gdl = nodoObjetos{i}.obtenerGDLID(); % Grados de libertad del nodo
                 reacc = nodoObjetos{i}.obtenerReacciones(); % Reacciones del nodo
                 
@@ -314,7 +314,7 @@ classdef AnalisisEstatico < handle
             
             fprintf('\tDeterminante: %f\n\n', det(analisisObj.Kt));
             
-            fprintf('\tSimétrica: %s\n\n', bool2str(analisisObj.Kt == analisisObj.Kt'));
+            fprintf('\tSimetrica: %s\n\n', bool2str(analisisObj.Kt == analisisObj.Kt'));
             
             fprintf('\tVector de Fuerzas:\n');
             disp(analisisObj.F);

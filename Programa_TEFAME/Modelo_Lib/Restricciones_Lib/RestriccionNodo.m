@@ -28,7 +28,7 @@
 %| corresponde a la representacion abstracta de los restricciones en un |
 %| Nodo en elementos finitos o analisis matricial de estructuras.       |
 %| La clase  RestriccionNodo  controla y guarda  los GDL restringidos y |
-%| los valores de restricci?n en el Nodo.                               |
+%| los valores de restriccion en el Nodo.                               |
 %|                                                                      |
 %| Programado: FR                                                       |
 %| Fecha: 05/08/2015                                                    |
@@ -94,7 +94,7 @@ classdef RestriccionNodo < ComponenteModelo
         end % RestriccionNodo constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para realizar la aplicación de las restricciones
+        % Metodos para realizar la aplicacion de las restricciones
         
         function aplicarRestriccion(restriccionNodoObj)
             % aplicarRestriccion: es un metodo de la clase RestriccionNodo que
@@ -107,7 +107,7 @@ classdef RestriccionNodo < ComponenteModelo
             % Se extraen los ID del GDL
             gdlID = restriccionNodoObj.nodoObj.obtenerGDLID();
             
-            % Se coloca zero en los GDL que se indicaron en la restricción
+            % Se coloca zero en los GDL que se indicaron en la restriccion
             gdlID(restriccionNodoObj.gdlRestringidos, 1) = zeros(length(restriccionNodoObj.gdlRestringidos), 1);
             
             % Se asigna el nuevo valor de GDLID al Nodo

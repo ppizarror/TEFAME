@@ -23,14 +23,14 @@
 %|                                                                      |
 %| Clase CargaVigaColumnaPuntual                                        |
 %|                                                                      |
-%| Este archivo contiene la definición de la Clase CargaVigaColumnaPuntual|
+%| Este archivo contiene la definicion de la Clase CargaVigaColumnaPuntual|
 %| CargaVigaColumnaPuntual es una subclase de la clase Carga y          |
 %| corresponde a la representacion de una carga puntual en un elemento  |
 %| tipo Viga-Columna.                                                   |
 %| La clase CargaVigaColumnaPuntual es una clase que contiene el        |
 %| elemento al al que se le va a aplicar la carga, el valor de esta     |
 %| carga, la distancia a uno de los nodos como porcentaje del largo y   |
-%| el ángulo de aplicación.                                             |
+%| el angulo de aplicacion.                                             |
 %|                                                                      |
 %| Programado: PABLO PIZARRO @ppizarror.com                             |
 %| Fecha: 11/06/2018                                                    |
@@ -57,7 +57,7 @@ classdef CargaVigaColumnaPuntual < Carga
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga % Valor de la carga
         dist % Distancia de la carga al primer nodo del elemento
-        theta % Ángulo de aplicación de la carga
+        theta % Angulo de aplicacion de la carga
     end % properties CargaVigaColumnaPuntual
     
     methods
@@ -69,7 +69,7 @@ classdef CargaVigaColumnaPuntual < Carga
             % Crea un objeto de la clase CargaVigaColumnaPuntual, en donde toma como atributo
             % el objeto a aplicar la carga, la distancia como porcentaje
             % del largo del elemento con respecto al primer nodo, el
-            % elemento tipo viga y el ángulo de aplicación de la carga con respecto a la normal.
+            % elemento tipo viga y el angulo de aplicacion de la carga con respecto a la normal.
             
             if nargin == 0
                 etiquetaCarga = '';
@@ -91,7 +91,7 @@ classdef CargaVigaColumnaPuntual < Carga
         end % CargaVigaColumnaPuntual constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Puntual de la Viga-Columna durante el análisis
+        % Metodos para aplicar la Carga Puntual de la Viga-Columna durante el analisis
         
         function aplicarCarga(cargaVigaColumnaPuntualObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaVigaColumnaPuntual
@@ -102,7 +102,7 @@ classdef CargaVigaColumnaPuntual < Carga
             % Largo de la viga
             L = cargaVigaColumnaPuntualObj.elemObj.obtenerLargo();
             
-            % Posición de la carga
+            % Posicion de la carga
             d = cargaVigaColumnaPuntualObj.dist;
             
             % Carga normal
@@ -113,15 +113,15 @@ classdef CargaVigaColumnaPuntual < Carga
             
             % Se calculan apoyos y reacciones en un caso de viga empotrada
             % sometida a una carga P aplicada a (L-d) de un apoyo y d del
-            % otro. Esto se hizo al no tener la función dirac(x) y
-            % distintos errores fruto de la evaluación de la integral.
+            % otro. Esto se hizo al no tener la funcion dirac(x) y
+            % distintos errores fruto de la evaluacion de la integral.
             v1 = P * ((L - d)^2 / L^2) * (3 - 2 * (L - d) / L);
             v2 = P * (d^2 / L^2) * (3 - 2 * d / L);
             theta1 = P * d * (L - d)^2 / (L^2);
             theta2 = -P * (d^2) * (L - d) / (L^2);
             
             % Para el caso de las cargas normales se usan las funciones de
-            % interpolación
+            % interpolacion
             Nu1 = @(x) (1 - x / L);
             Nu2 = @(x) x / L;
             u1 = H * Nu1(d);
@@ -139,15 +139,15 @@ classdef CargaVigaColumnaPuntual < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Métodos para mostar la información de la Carga Viga-Columna Puntual en pantalla
+        % Metodos para mostar la informacion de la Carga Viga-Columna Puntual en pantalla
         
         function disp(cargaVigaColumnaPuntualObj)
-            % disp: es un método de la clase CargaVigaPuntual que se usa para imprimir en
-            % command Window la información de la carga aplicada sobre el
+            % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
+            % command Window la informacion de la carga aplicada sobre el
             % elemento
             %
             % disp(cargaVigaColumnaPuntualObj)
-            % Imprime la información guardada en la Carga Puntual de la
+            % Imprime la informacion guardada en la Carga Puntual de la
             % Viga-Columna (cargaVigaColumnaPuntualObj) en pantalla
             
             fprintf('Propiedades Carga Viga-Columna Puntual:\n');

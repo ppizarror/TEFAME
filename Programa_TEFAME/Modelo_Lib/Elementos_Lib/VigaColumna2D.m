@@ -101,7 +101,7 @@ classdef VigaColumna2D < Elemento
             vigaColumna2DObj.Io = Imaterial;
             vigaColumna2DObj.gdlID = [];
             
-            % Calcula componentes geométricas
+            % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             vigaColumna2DObj.dx = (coordNodo2(1) - coordNodo1(1));
@@ -110,7 +110,7 @@ classdef VigaColumna2D < Elemento
             theta = atan(vigaColumna2DObj.dy/vigaColumna2DObj.dx);
             vigaColumna2DObj.theta = theta;
             
-            % Calcula matriz de transformación dado el ángulo
+            % Calcula matriz de transformacion dado el angulo
             T = [cos(theta), sin(theta), 0, 0, 0, 0; ...
                 -sin(theta), cos(theta), 0, 0, 0, 0; ...
                 0, 0, 1, 0, 0, 0; ...
@@ -181,7 +181,7 @@ classdef VigaColumna2D < Elemento
         
         function k_global = obtenerMatrizRigidezCoordGlobal(vigaColumna2DObj)
             
-            % Multiplica por la matriz de transformación
+            % Multiplica por la matriz de transformacion
             k_local = vigaColumna2DObj.obtenerMatrizRigidezCoordLocal();
             t_theta = vigaColumna2DObj.T;
             k_global = t_theta' * k_local * t_theta;

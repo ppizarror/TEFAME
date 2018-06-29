@@ -48,8 +48,7 @@ PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
-% Creamos el Analsis
+% Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-
 modeloObj.guardarResultados('output/EjemploClase_Enrejado2D.txt');

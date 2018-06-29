@@ -85,8 +85,8 @@ classdef Nodo < ComponenteModelo
             % con el el numero de GDL (nGDLNodo) y un vector que contine las
             % coordenadas globales del nodo (coordenadasNodo)
             
+            % Si no hay argumentos completa con ceros
             if nargin == 0
-                % If no argument input we create empty arguments
                 etiquetaNodo = '';
                 nGDLNodo = 0;
                 coordenadasNodo = [];

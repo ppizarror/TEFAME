@@ -9,28 +9,27 @@
 %|                                                                      |
 %| Correr_Tests ejecuta cada uno de los tests implementados en la pla-  |
 %| taforma TEFAME en el contexto de las tareas computacionales del cur- |
-%| so de Análisis Matricial de Estructuras CI5211-1 semestre Otoño 2018 |
+%| so de Analisis Matricial de Estructuras CI5211-1 semestre Otono 2018 |
 %|                                                                      |
-%| Los tests implementados hasta la fecha exploran las tareas numéricas |
+%| Los tests implementados hasta la fecha exploran las tareas numericas |
 %| y los ejemplos vistos en clase (material docente) con el fin de eva- |
-%| luar los resultados numéricos entregados por las funciones implemen- |
+%| luar los resultados numericos entregados por las funciones implemen- |
 %| tadas.                                                               |
 %|                                                                      |
 %| Desarrollado por:                                                    |
 %|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Ingeniería Civil en Construcción-Estructuras     |
-%|       Estudiante Magister en Ciencias de la Computación              |
+%|       Estudiante de Ingenieria Civil en Construccion-Estructuras     |
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 %|                                                                      |
-%| Para ejecutar la tarea se debe añadir la carpeta 'Programa_TEFAME'   |
-%| al PATH de Matlab. Luego se debe ejecutar este script. Automática-   |
-%| mente se añadirá la carpeta 'test' al path para poder correr cada    |
+%| Para ejecutar la tarea se debe anadir la carpeta 'Programa_TEFAME'   |
+%| al PATH de Matlab. Luego se debe ejecutar este script. Automatica-   |
+%| mente se anadira la carpeta 'test' al path para poder correr cada    |
 %| uno de los tests. Los resultados son almacenados en la carpeta       |
-%| 'output' ubicada en directorio raíz.                                 |
+%| 'output' ubicada en directorio raiz.                                 |
 %|______________________________________________________________________|
 
-% Añade carpetas al PATH
+% Anade carpetas al PATH
 addpath('test');
 iniciar_TEFAME;
 

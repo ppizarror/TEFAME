@@ -2,7 +2,7 @@ clear all; %#ok<CLALL>
 fprintf('>\tTEST_VIGA2D\n');
 
 % Test viga con carga simple a distancia D (% del largo) del nodo 1,
-% reacciones verticales R1,R3 y horizontales R2,R4. Teóricamente:
+% reacciones verticales R1,R3 y horizontales R2,R4. Teoricamente:
 % R2=R4=0, R1+R3=P, R1=P*(L-D)/L, R2=P*D/L.
 %
 %   <-- D -->
@@ -61,8 +61,7 @@ PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
-% Creamos el Analsis
+% Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-
 modeloObj.guardarResultados('output/Ejemplo_Viga2D.txt');

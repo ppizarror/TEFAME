@@ -62,7 +62,6 @@ classdef Carga < ComponenteModelo
             % (etiquetaCarga)
             
             if nargin == 0
-                % If no argument input we create empty arguments
                 etiquetaCarga = '';
             end % if
             
