@@ -258,6 +258,10 @@ classdef Biela3D < Elemento
             if f > 0
                 t = 'COMPRESION';
             end
+            if abs(f) < 1e-10
+                t = '--';
+                f = 0;
+            end
             
             fprintf(archivoSalidaHandle, '\n\tBiela 3D %s:\t%s%s', biela3DObj.obtenerEtiqueta(), ...
                 pad(num2str(f), 15), t);

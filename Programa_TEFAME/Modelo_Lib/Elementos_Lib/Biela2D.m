@@ -289,6 +289,10 @@ classdef Biela2D < Elemento
             if f > 0
                 t = 'COMPRESION';
             end
+            if abs(f) < 1e-10
+                t = '--';
+                f = 0;
+            end
             
             fprintf(archivoSalidaHandle, '\n\tBiela 2D %s:\t%s%s', biela2DObj.obtenerEtiqueta(), ...
                 pad(num2str(f), 15), t);

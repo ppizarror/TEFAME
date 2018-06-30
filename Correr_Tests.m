@@ -51,6 +51,7 @@ Modelo_Tarea2;
 Modelo_Tarea3;
 Modelo_Tarea4;
 Modelo_Tarea5;
+Modelo_TareaComputacionalAntiguo4;
 Test_Viga2D;
 
 % Elimina espacio en memoria
