@@ -154,7 +154,7 @@ classdef Biela3D < Elemento
             % Obtiene la matriz de coordenadas locales
             k_local = biela3DObj.obtenerMatrizRigidezCoordLocal();
             
-            % Multiplica k*t_theta
+            % Premultiplica y multiplica por [T]
             k_global = biela3DObj.T' * k_local * biela3DObj.T;
             
         end % obtenerMatrizRigidezGlobal function
