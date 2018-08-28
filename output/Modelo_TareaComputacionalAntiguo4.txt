@@ -1,0 +1,103 @@
+TEFAME - Toolbox para Elemento Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nodos:
+	Numero de nodos: 7
+	Nodo a1: -400.0000  -400.0000  0         
+	Nodo a2: 0          0          0         
+	Nodo b1: 400.0000   -400.0000  600.0000  
+	Nodo b2: 400.0000   0          300.0000  
+	Nodo c1: 500.0000   -400.0000  0         
+	Nodo c2: 450.0000   0          0         
+	Nodo d: 400.0000   400.0000   0         
+
+Elementos:
+	Numero de elementos: 12
+	Biela3D E1:
+		Largo:	565.6854
+		Area:	40
+		Eo:		2100
+	Biela3D E2:
+		Largo:	500
+		Area:	40
+		Eo:		2100
+	Biela3D E3:
+		Largo:	403.1129
+		Area:	40
+		Eo:		2100
+	Biela3D E4:
+		Largo:	500
+		Area:	40
+		Eo:		2100
+	Biela3D E5:
+		Largo:	304.1381
+		Area:	40
+		Eo:		2100
+	Biela3D E6:
+		Largo:	450
+		Area:	40
+		Eo:		2100
+	Biela3D E7:
+		Largo:	565.6854
+		Area:	40
+		Eo:		2100
+	Biela3D E8:
+		Largo:	500
+		Area:	40
+		Eo:		2100
+	Biela3D E9:
+		Largo:	403.1129
+		Area:	40
+		Eo:		2100
+	Biela3D E10:
+		Largo:	943.3981
+		Area:	40
+		Eo:		2100
+	Biela3D E11:
+		Largo:	722.8416
+		Area:	40
+		Eo:		2100
+	Biela3D E12:
+		Largo:	640.3124
+		Area:	40
+		Eo:		2100
+
+-------------------------------------------------------------------------------
+Resultados del analisis
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo a1: 0          0          0         
+	Nodo a2: 0.0328     0.0410     0.0141    
+	Nodo b1: 0          0          0         
+	Nodo b2: 0.0302     -0.0736    0.0176    
+	Nodo c1: 0          0          0         
+	Nodo c2: 0.0328     0.0229     0.0180    
+	Nodo d: 0.0979     0.0498     0.2979    
+
+Reacciones:
+	Nodo a1: -5.4815    -5.4815    0         
+	Nodo a2: 0          0          0         
+	Nodo b1: 0          9.3333     -7.0000   
+	Nodo b2: 0          0          0         
+	Nodo c1: 0.4815     -3.8519    0         
+	Nodo c2: 0          0          0         
+	Nodo d: 0          0          0         
+
+Esfuerzos Elementos:
+	Biela 3D E1:	-7.752         TRACCION
+	Biela 3D E2:	11.6667        COMPRESION
+	Biela 3D E3:	-3.8818        TRACCION
+	Biela 3D E4:	0              --
+	Biela 3D E5:	0              --
+	Biela 3D E6:	0              --
+	Biela 3D E7:	-7.752         TRACCION
+	Biela 3D E8:	11.6667        COMPRESION
+	Biela 3D E9:	-3.8818        TRACCION
+	Biela 3D E10:	0              --
+	Biela 3D E11:	0              --
+	Biela 3D E12:	0              --

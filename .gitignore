@@ -1,5 +1,5 @@
-# Ignora los resultados
-output/*
-
 # Archivos residuales
 *.asv
+
+# Ignora archivos idea
+*.idea

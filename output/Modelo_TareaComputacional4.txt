@@ -1,0 +1,106 @@
+TEFAME - Toolbox para Elemento Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nodos:
+	Numero de nodos: 8
+	Nodo p1: -4.0000    0          4.0000    
+	Nodo p2: 4.0000     0          4.0000    
+	Nodo p3: 4.0000     0          -4.0000   
+	Nodo p4: -4.0000    0          -4.0000   
+	Nodo p5: -2.0000    10.0000    2.0000    
+	Nodo p6: 2.0000     10.0000    2.0000    
+	Nodo p7: 2.0000     10.0000    -2.0000   
+	Nodo p8: -2.0000    10.0000    -2.0000   
+
+Elementos:
+	Numero de elementos: 12
+	Biela3D E1:
+		Largo:	10.3923
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E2:
+		Largo:	10.3923
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E3:
+		Largo:	10.3923
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E4:
+		Largo:	10.3923
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E5:
+		Largo:	11.8322
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E6:
+		Largo:	11.8322
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E7:
+		Largo:	11.8322
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E8:
+		Largo:	11.8322
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E9:
+		Largo:	4
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E10:
+		Largo:	4
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E11:
+		Largo:	4
+		Area:	0.004
+		Eo:		200000000
+	Biela3D E12:
+		Largo:	4
+		Area:	0.004
+		Eo:		200000000
+
+-------------------------------------------------------------------------------
+Resultados del analisis
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo p1: 0          0          0         
+	Nodo p2: 0          0          0         
+	Nodo p3: 0          0          0         
+	Nodo p4: 0          0          0         
+	Nodo p5: 0.0043     -0.0018    0.0016    
+	Nodo p6: 0.0040     -0.0016    -0.0017   
+	Nodo p7: 0.0008     -0.0008    -0.0016   
+	Nodo p8: 0.0009     -0.0010    0.0017    
+
+Reacciones:
+	Nodo p1: -15.7500   33.7500    -6.7500   
+	Nodo p2: -29.2500   146.2500   -29.2500  
+	Nodo p3: -51.7500   146.2500   29.2500   
+	Nodo p4: 6.7500     33.7500    6.7500    
+	Nodo p5: 0          0          0         
+	Nodo p6: 0          0          0         
+	Nodo p7: 0          0          0         
+	Nodo p8: 0          0          0         
+
+Esfuerzos Elementos:
+	Biela 3D E1:	93.5307        COMPRESION
+	Biela 3D E2:	151.9875       COMPRESION
+	Biela 3D E3:	93.5307        COMPRESION
+	Biela 3D E4:	35.074         COMPRESION
+	Biela 3D E5:	-66.5559       TRACCION
+	Biela 3D E6:	0              --
+	Biela 3D E7:	66.5559        COMPRESION
+	Biela 3D E8:	0              --
+	Biela 3D E9:	63             COMPRESION
+	Biela 3D E10:	18             COMPRESION
+	Biela 3D E11:	18             COMPRESION
+	Biela 3D E12:	18             COMPRESION

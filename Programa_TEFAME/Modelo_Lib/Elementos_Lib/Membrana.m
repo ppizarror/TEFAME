@@ -509,7 +509,7 @@ classdef Membrana < Elemento
                 membranaObj.obtenerEtiqueta(), n1x, n1y, n2x, n2y, n3x, n3y, n4x, n4y);
             
             % Dibuja las tensiones
-            fprintf(archivoSalidaHandle, '\n\t\tTensiones %s [X Y SIGMAX SIGMAY SIGMAXY]:\n', membranaObj.obtenerEtiqueta());
+            fprintf(archivoSalidaHandle, '\n\t\tTensiones %s [X Y SIGMAX SIGMAY SIGMAXY]:', membranaObj.obtenerEtiqueta());
             
             % Crea la lista de tensiones y las dibuja
             tension = membranaObj.crearListaTensiones();
@@ -519,7 +519,7 @@ classdef Membrana < Elemento
                 sigmax = pad(num2str(tension(i, 3), '%.04f'), 10);
                 sigmay = pad(num2str(tension(i, 4), '%.04f'), 10);
                 sigmaxy = pad(num2str(tension(i, 5), '%.04f'), 10);
-                fprintf(archivoSalidaHandle, '\t\t\t%s\t%s\t%s\t%s\t%s\n', x, y, sigmax, sigmay, sigmaxy);
+                fprintf(archivoSalidaHandle, '\n\t\t\t%s\t%s\t%s\t%s\t%s', x, y, sigmax, sigmay, sigmaxy);
             end
             
         end % guardarEsfuerzosInternos function
