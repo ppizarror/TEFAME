@@ -64,6 +64,7 @@ classdef CargaMembranaDistribuida < Carga
         nodo1 % Nodo 1 de aplicacion
         nodo2 % Nodo 2 de aplicacion
         L % Largo de aplicacion de las cargas
+        theta % Angulo de aplicacion
     end % properties CargaVigaDistribuida
     
     methods
@@ -122,6 +123,12 @@ classdef CargaMembranaDistribuida < Carga
             membranaNodo2 = nodoMembrana{nodo2}.obtenerCoordenadas();
             largo = sqrt((membranaNodo1(1) - membranaNodo2(1))^2+(membranaNodo1(2) - membranaNodo2(2))^2);
             
+            % Calcula el angulo de aplicacion, puede ser 0 (en eje y) o 90
+            % (eje x).
+            dx = (membranaNodo2(1) - membranaNodo1(1));
+            dy = (membranaNodo2(2) - membranaNodo1(2));
+            cargaMembranaDistribuidaObj.theta = atan(dy/dx);
+            
             % Guarda los valores
             cargaMembranaDistribuidaObj.elemObj = elemObjeto;
             cargaMembranaDistribuidaObj.L = largo;
@@ -148,7 +155,7 @@ classdef CargaMembranaDistribuida < Carga
             % Limites de las cargas
             d1 = cargaMembranaDistribuidaObj.dist1;
             d2 = cargaMembranaDistribuidaObj.dist2;
-            
+             
             % Cargas
             P1 = cargaMembranaDistribuidaObj.carga1;
             P2 = cargaMembranaDistribuidaObj.carga2;
@@ -157,25 +164,31 @@ classdef CargaMembranaDistribuida < Carga
             rho = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
             
             % Funciones de interpolacion
-            N1 = @(x) 1 - 3 * (x / L).^2 + 2 * (x / L).^3;
-            N2 = @(x) x .* (1 - x / L).^2;
-            N3 = @(x) 3 * (x / L).^2 - 2 * (x / L).^3;
-            N4 = @(x) ((x.^2) / L) .* (x / L - 1);
+            N1 = @(x) 1 - 3 * (x / cargaMembranaDistribuidaObj.L).^2 + 2 * (x / cargaMembranaDistribuidaObj.L).^3;
+            % N2 = @(x) x .* (1 - x / cargaMembranaDistribuidaObj.L).^2;
+            N3 = @(x) 3 * (x / cargaMembranaDistribuidaObj.L).^2 - 2 * (x / cargaMembranaDistribuidaObj.L).^3;
+            % N4 = @(x) ((x.^2) / cargaMembranaDistribuidaObj.L) .* (x / cargaMembranaDistribuidaObj.L - 1);
             
             % Calcula cada valor
             v1 = integral(@(x) rho(x).*N1(x), d1, d2);
-            theta1 = integral(@(x) rho(x).*N2(x), d1, d2);
+            % theta1 = integral(@(x) rho(x).*N2(x), d1, d2);
             v2 = integral(@(x) rho(x).*N3(x), d1, d2);
-            theta2 = integral(@(x) rho(x).*N4(x), d1, d2);
+            % theta2 = integral(@(x) rho(x).*N4(x), d1, d2);
             
-            vectorCarga1 = [0, -v1, -theta1]';
-            vectorCarga2 = [0, -v2, -theta2]';
-            cargaMembranaDistribuidaObj.elemObj.sumarFuerzaEquivalente([-v1, -theta1, -v2, -theta2]');
+            % Aplica el angulo
+            v1x = v1*sin(cargaMembranaDistribuidaObj.theta);
+            v1y = v1*cos(cargaMembranaDistribuidaObj.theta);
+            v2x = v2*sin(cargaMembranaDistribuidaObj.theta);
+            v2y = v2*cos(cargaMembranaDistribuidaObj.theta);
+            
+            vectorCarga1 = [-v1x, -v1y]'
+            vectorCarga2 = [-v2x, -v2y]'
+            % cargaMembranaDistribuidaObj.elemObj.sumarFuerzaEquivalente([-v1, -theta1, -v2, -theta2]');
             
             % Aplica vectores de carga
             nodos = cargaMembranaDistribuidaObj.elemObj.obtenerNodos();
-            nodos{1}.agregarCarga(factorDeCarga*vectorCarga1);
-            nodos{2}.agregarCarga(factorDeCarga*vectorCarga2);
+            % nodos{1}.agregarCarga(factorDeCarga*vectorCarga1);
+            % nodos{2}.agregarCarga(factorDeCarga*vectorCarga2);
             
         end % aplicarCarga function
         
