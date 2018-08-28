@@ -59,8 +59,8 @@ classdef CargaVigaColumnaDistribuida < Carga
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga1 % Valor de la carga 1
         carga2 % Valor de la carga 2
-        dist1 % Distancia de la carga 1 al primer nodo del elemento
-        dist2 % Distancia de la carga 2 al primer nodo del elemento
+        dist1 % Distancia de la carga 1 al primer nodo del elemento (porcentaje del largo)
+        dist2 % Distancia de la carga 2 al primer nodo del elemento (porcentaje del largo)
         theta % Angulo de la carga
     end % properties CargaVigaDistribuida
     
@@ -91,6 +91,16 @@ classdef CargaVigaColumnaDistribuida < Carga
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
             cargaVigaColumnaDistribuidaObj = cargaVigaColumnaDistribuidaObj@Carga(etiquetaCarga);
+            
+            % Aplica limites al minimo y maximo
+            if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
+                warning('Distancias deben estar dentro del rango [0, 1] @CargaVigaColumnaDistribuida %s', etiquetaCarga);
+            end
+            if (distancia1 == distancia2)
+                warning('Distancias son iguales @CargaVigaColumnaDistribuida %s', etiquetaCarga);
+            end
+            distancia1 = max(0, min(distancia1, 1));
+            distancia2 = min(1, max(distancia2, 0));
             
             % Guarda los valores
             cargaVigaColumnaDistribuidaObj.elemObj = elemObjeto;

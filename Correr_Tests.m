@@ -37,8 +37,11 @@ iniciar_TEFAME;
 clc;
 fprintf('CORRIENDO TESTS\n');
 
-% Modelo membranas
+% Tarea computacional 5
+
+% Test de membranas
 Test_Membrana1;
+% Test_MembranaCargaDistribuida;
 
 % Ejemplos clase
 EjemploClase_Enrejado3D;

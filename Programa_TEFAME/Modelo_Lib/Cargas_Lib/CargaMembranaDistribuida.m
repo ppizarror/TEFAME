@@ -21,28 +21,31 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase CargaVigaDistribuida                                           |
+%| Clase CargaMembranaDistribuida                                       |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase CargaVigaDistribuida |
-%| CargaVigaDistribuida es una subclase de la clase Carga y corresponde |
-%| a la representacion de una carga distribuida en un elemento tipo Viga|
-%| La clase CargaVigaDistribuida es una clase que contiene el elemento  |
-%| al que se le va a aplicar la carga, las cargas en cada punto y las   |
-%| distancias de las dos cargas.                                        |
+%| Este archivo contiene la definicion de la Clase CargaMembranaDistribuida |
+%| CargaMembranaDistribuida es una subclase de la clase Carga y corresponde |
+%| a la representacion de una carga distribuida en un elemento tipo     |
+%| Membrana.                                                            |
+%| La clase CargaMembranaDistribuida es una clase que contiene el       |
+%| elemento al que se le va a aplicar la carga, los nodos al que se     |
+%| aplica las cargas y las distancias de las dos cargas.                |
 %|                                                                      |
 %| Programado: PABLO PIZARRO @ppizarror.com                             |
-%| Fecha: 14/05/2018                                                    |
+%| Fecha: 28/08/2018                                                    |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
 %       elemObj
+%       nodo1
+%       nodo2
 %       carga1
 %       dist1
 %       carga2
 %       dist2
 %
 %  Methods:
-%       cargaVigaDistribuidaObj = CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
+%       cargaMembranaDistribuidaObj = CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
 %       aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
 %       disp(cargaVigaDistribuidaObj)
 %
@@ -50,7 +53,7 @@
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
-classdef CargaVigaDistribuida < Carga
+classdef CargaMembranaDistribuida < Carga
     
     properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
@@ -58,17 +61,29 @@ classdef CargaVigaDistribuida < Carga
         carga2 % Valor de la carga 2
         dist1 % Distancia de la carga 1 al primer nodo del elemento
         dist2 % Distancia de la carga 2 al primer nodo del elemento
+        nodo1 % Nodo 1 de aplicacion
+        nodo2 % Nodo 2 de aplicacion
     end % properties CargaVigaDistribuida
     
     methods
         
-        function cargaVigaDistribuidaObj = CargaVigaDistribuida(etiquetaCarga, elemObjeto, carga1, distancia1, carga2, distancia2)
-            % Elemento: es el constructor de la clase CargaVigaDistribuida
+        function cargaMembranaDistribuidaObj = CargaMembranaDistribuida(etiquetaCarga, elemObjeto, nodo1, nodo2, carga1, distancia1, carga2, distancia2)
+            % Elemento: es el constructor de la clase CargaMembranaDistribuida
             %
-            % cargaVigaDistribuidaObj=CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
+            % cargaMembranaDistribuidaObj=CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas y las distancias de
-            % aplicacion (en porcentaje con respecto al largo).
+            % aplicacion.
+            % La enumeracion de los nodos de la membrana corresponde a
+            %
+            %       4 ------------- 3
+            %       |               |
+            %       |               |
+            %       |               |
+            %       1 ------------- 2
+            %
+            % No se pueden aplicar cargas cruzadas, ie solo se permiten las
+            % combinaciones 1-2, 2-3, 3-4 o 1-4
             
             if nargin == 0
                 etiquetaCarga = '';
@@ -80,46 +95,45 @@ classdef CargaVigaDistribuida < Carga
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaVigaDistribuidaObj = cargaVigaDistribuidaObj@Carga(etiquetaCarga);
+            cargaMembranaDistribuidaObj = cargaMembranaDistribuidaObj@Carga(etiquetaCarga);
             
-            % Aplica limites al minimo y maximo
-            if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
-                warning('Distancias deben estar dentro del rango [0, 1] @CargaVigaDistribuida %s', etiquetaCarga);
+            % Verifica que se cumplan los nodos
+            if abs(nodo1-nodo2) > 1
+                error('Nodo no puede ser cruzado @CargaMembranaDistribuida %s', etiquetaCarga);
             end
-            if (distancia1 == distancia2)
-                warning('Distancias son iguales @CargaVigaDistribuida %s', etiquetaCarga);
-            end
-            distancia1 = max(0, min(distancia1, 1));
-            distancia2 = min(1, max(distancia2, 0));
             
             % Guarda los valores
-            cargaVigaDistribuidaObj.elemObj = elemObjeto;
-            cargaVigaDistribuidaObj.carga1 = carga1;
-            cargaVigaDistribuidaObj.dist1 = distancia1 * elemObjeto.obtenerLargo();
-            cargaVigaDistribuidaObj.carga2 = carga2;
-            cargaVigaDistribuidaObj.dist2 = distancia2 * elemObjeto.obtenerLargo();
+            cargaMembranaDistribuidaObj.elemObj = elemObjeto;
+            cargaMembranaDistribuidaObj.carga1 = carga1;
+            % cargaMembranaDistribuidaObj.dist1 = distancia1 * elemObjeto.obtenerLargo();
+            cargaMembranaDistribuidaObj.carga2 = carga2;
+            % cargaMembranaDistribuidaObj.dist2 = distancia2 * elemObjeto.obtenerLargo();
+            cargaMembranaDistribuidaObj.nodo1 = nodo1;
+            cargaMembranaDistribuidaObj.nodo2 = nodo2;
             
-        end % CargaVigaDistribuida constructor
+        end % CargaMembranaDistribuida constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Viga Distribuida durante el analisis
+        % Metodos para aplicar la Carga Membrana Distribuida durante el analisis
         
-        function aplicarCarga(cargaVigaDistribuidaObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase cargaVigaDistribuidaObj que se usa para aplicar
-            % la carga sobre los dos nodos del elemento.
+        function aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
+            % aplicarCarga: es un metodo de la clase cargaMembranaDistribuidaObj que se usa para aplicar
+            % la carga sobre los dos nodos correspondientes del elemento.
             %
-            % aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
+            % aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
+            
+            % Obtiene los nodos
             
             % Largo de la viga
-            L = cargaVigaDistribuidaObj.elemObj.obtenerLargo();
+            L = cargaMembranaDistribuidaObj.elemObj.obtenerLargo();
             
             % Limites de las cargas
-            d1 = cargaVigaDistribuidaObj.dist1;
-            d2 = cargaVigaDistribuidaObj.dist2;
+            d1 = cargaMembranaDistribuidaObj.dist1;
+            d2 = cargaMembranaDistribuidaObj.dist2;
             
             % Cargas
-            P1 = cargaVigaDistribuidaObj.carga1;
-            P2 = cargaVigaDistribuidaObj.carga2;
+            P1 = cargaMembranaDistribuidaObj.carga1;
+            P2 = cargaMembranaDistribuidaObj.carga2;
             
             % Crea funcion de carga distribuida
             rho = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
@@ -138,47 +152,47 @@ classdef CargaVigaDistribuida < Carga
             
             vectorCarga1 = [0, -v1, -theta1]';
             vectorCarga2 = [0, -v2, -theta2]';
-            cargaVigaDistribuidaObj.elemObj.sumarFuerzaEquivalente([-v1, -theta1, -v2, -theta2]');
+            cargaMembranaDistribuidaObj.elemObj.sumarFuerzaEquivalente([-v1, -theta1, -v2, -theta2]');
             
             % Aplica vectores de carga
-            nodos = cargaVigaDistribuidaObj.elemObj.obtenerNodos();
+            nodos = cargaMembranaDistribuidaObj.elemObj.obtenerNodos();
             nodos{1}.agregarCarga(factorDeCarga*vectorCarga1);
             nodos{2}.agregarCarga(factorDeCarga*vectorCarga2);
             
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion de la Carga Viga Distribuida en pantalla
+        % Metodos para mostar la informacion de la Carga Membrana Distribuida en pantalla
         
-        function disp(cargaVigaDistribuidaObj)
+        function disp(cargaMembranaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
             % elemento
             %
-            % disp(cargaVigaDistribuidaObj)
+            % disp(cargaMembranaDistribuidaObj)
             % Imprime la informacion guardada en la Carga Distribuida de la
-            % Viga (cargaVigaDistribuidaObj) en pantalla
+            % Membrana (cargaMembranaDistribuidaObj) en pantalla
             
-            fprintf('Propiedades Carga Viga Distribuida:\n');           
-            disp@Carga(cargaVigaDistribuidaObj);
+            fprintf('Propiedades Carga Membrana Distribuida:\n');
+            disp@Carga(cargaMembranaDistribuidaObj);
             
             % Obtiene la etiqueta del elemento
-            etiqueta = cargaVigaDistribuidaObj.elemObj.obtenerEtiqueta();
+            etiqueta = cargaMembranaDistribuidaObj.elemObj.obtenerEtiqueta();
             
             % Obtiene la etiqueta del primer nodo
-            nodosetiqueta = cargaVigaDistribuidaObj.elemObj.obtenerNodos();
+            nodosetiqueta = cargaMembranaDistribuidaObj.elemObj.obtenerNodos();
             nodo1etiqueta = nodosetiqueta{1}.obtenerEtiqueta();
             nodo2etiqueta = nodosetiqueta{2}.obtenerEtiqueta();
             
             fprintf('\tCarga distribuida: %.3f en %.3f hasta %.3f en %.3f entre los Nodos: %s y %s del Elemento: %s', ...
-                cargaVigaDistribuidaObj.carga1, cargaVigaDistribuidaObj.dist1, cargaVigaDistribuidaObj.carga2, ...
-                cargaVigaDistribuidaObj.dist2, nodo1etiqueta, nodo2etiqueta, etiqueta);
+                cargaMembranaDistribuidaObj.carga1, cargaMembranaDistribuidaObj.dist1, cargaMembranaDistribuidaObj.carga2, ...
+                cargaMembranaDistribuidaObj.dist2, nodo1etiqueta, nodo2etiqueta, etiqueta);
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');
             
         end % disp function
         
-    end % methods CargaVigaDistribuida
+    end % methods CargaMembranaDistribuida
     
-end % class CargaVigaDistribuida
+end % class CargaMembranaDistribuida
