@@ -333,35 +333,47 @@ classdef Membrana < Elemento
             % Carga los nodos
             nodo1 = membranaObj.nodosObj{1};
             nodo2 = membranaObj.nodosObj{2};
+            nodo3 = membranaObj.nodosObj{3};
+            nodo4 = membranaObj.nodosObj{4};
             
             % Agrega fuerzas equivalentes como cargas
-            % nodo1.agregarCarga([0, -membranaObj.Feq(1), -membranaObj.Feq(2)]');
-            % nodo2.agregarCarga([0, -membranaObj.Feq(3), -membranaObj.Feq(4)]');
+            nodo1.agregarCarga([-membranaObj.Feq(1), -membranaObj.Feq(2)]');
+            nodo2.agregarCarga([-membranaObj.Feq(3), -membranaObj.Feq(4)]');
+            nodo3.agregarCarga([-membranaObj.Feq(5), -membranaObj.Feq(6)]');
+            nodo4.agregarCarga([-membranaObj.Feq(7), -membranaObj.Feq(8)]');
             
             % Agrega fuerzas resistentes como cargas
-            % nodo1.agregarEsfuerzosElementoAReaccion([0, fr_global(1), fr_global(2)]');
-            % nodo2.agregarEsfuerzosElementoAReaccion([0, fr_global(3), fr_global(4)]');
+            nodo1.agregarEsfuerzosElementoAReaccion([fr_global(1), fr_global(2)]');
+            nodo2.agregarEsfuerzosElementoAReaccion([fr_global(3), fr_global(4)]');
+            nodo3.agregarEsfuerzosElementoAReaccion([fr_global(5), fr_global(6)]');
+            nodo4.agregarEsfuerzosElementoAReaccion([fr_global(7), fr_global(8)]');
             
         end % agregarFuerzaResistenteAReacciones function
         
         function guardarPropiedades(membranaObj, archivoSalidaHandle)
             
-            % fprintf(archivoSalidaHandle, '\tMembrana %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n', ...
-            %    membranaObj.obtenerEtiqueta(), num2str(membranaObj.L), ...
-            %    num2str(membranaObj.Io), num2str(membranaObj.Eo), num2str(membranaObj.Eo*membranaObj.Io));
+            fprintf(archivoSalidaHandle, '\tMembrana %s:\n\t\tAncho (2b):\t\t%s\n\t\tAlto (2h):\t\t%s\n\t\tEspesor (t):\t%s\n\t\tE:\t\t\t\t%s\n\t\tv:\t\t\t\t%s\n', ...
+                membranaObj.obtenerEtiqueta(), num2str(2*membranaObj.b), num2str(membranaObj.t), ...
+                num2str(2*membranaObj.h), num2str(membranaObj.E), num2str(membranaObj.nu));
             
         end % guardarPropiedades function
         
         function guardarEsfuerzosInternos(membranaObj, archivoSalidaHandle)
             
-            %fr = membranaObj.obtenerFuerzaResistenteCoordGlobal();
-            %m1 = num2str(fr(2), '%.04f');
-            %m2 = num2str(fr(4), '%.04f');
-            %v1 = num2str(fr(1), '%.04f');
-            %v2 = num2str(fr(3), '%.04f');
-             
-            %fprintf(archivoSalidaHandle, '\n\tViga2D %s:\n\t\tMomento:\t%s %s\n\t\tCorte:\t\t%s %s', ...
-            %    membranaObj.obtenerEtiqueta(), m1, m2, v1, v2);
+            fr = membranaObj.obtenerFuerzaResistenteCoordGlobal();
+            
+            % Obtiene las fuerzas para cada elemento
+            n1x = pad(num2str(fr(1), '%.04f'), 10);
+            n1y = pad(num2str(fr(2), '%.04f'), 10);
+            n2x = pad(num2str(fr(3), '%.04f'), 10);
+            n2y = pad(num2str(fr(4), '%.04f'), 10);
+            n3x = pad(num2str(fr(5), '%.04f'), 10);
+            n3y = pad(num2str(fr(6), '%.04f'), 10);
+            n4x = pad(num2str(fr(7), '%.04f'), 10);
+            n4y = pad(num2str(fr(8), '%.04f'), 10);
+            
+            fprintf(archivoSalidaHandle, '\n\tMembrana %s:\n\t\tNodo 1 (-b, -h): %s\t%s\n\t\tNodo 2 (+b, -h): %s\t%s\n\t\tNodo 3 (+b, +h): %s\t%s\n\t\tNodo 4 (-b, +h): %s\t%s', ...
+                membranaObj.obtenerEtiqueta(), n1x, n1y, n2x, n2y, n3x, n3y, n4x, n4y);
             
         end % guardarEsfuerzosInternos function
         
@@ -371,8 +383,8 @@ classdef Membrana < Elemento
             fprintf('Propiedades Membrana:\n\t');
             disp@ComponenteModelo(membranaObj);
             
-            fprintf('\t\tAncho (b): %s\tAlto (h): %s\tE: %s\tv: %s\n', pad(num2str(membranaObj.b), 10), ...
-                pad(num2str(membranaObj.h), 10), pad(num2str(membranaObj.E), 10), pad(num2str(membranaObj.nu), 10));
+            fprintf('\t\tAncho (2b): %s\tAlto (2h): %s\tE: %s\tv: %s\n', pad(num2str(2*membranaObj.b), 10), ...
+                pad(num2str(2*membranaObj.h), 10), pad(num2str(membranaObj.E), 10), pad(num2str(membranaObj.nu), 10));
             
             % Se imprime matriz de rigidez local
             fprintf('\tMatriz de rigidez coordenadas locales:\n');

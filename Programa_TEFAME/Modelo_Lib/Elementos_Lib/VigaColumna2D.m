@@ -296,12 +296,12 @@ classdef VigaColumna2D < Elemento
         function guardarEsfuerzosInternos(vigaColumna2DObj, archivoSalidaHandle)
             
             fr = vigaColumna2DObj.obtenerFuerzaResistenteCoordGlobal();
-            n1 = num2str(fr(1), '%.04f');
-            n2 = num2str(fr(4), '%.04f');
-            v1 = num2str(fr(2), '%.04f');
-            v2 = num2str(fr(5), '%.04f');
-            m1 = num2str(fr(3), '%.04f');
-            m2 = num2str(fr(6), '%.04f');
+            n1 = pad(num2str(fr(1), '%.04f'), 10);
+            n2 = pad(num2str(fr(4), '%.04f'), 10);
+            v1 = pad(num2str(fr(2), '%.04f'), 10);
+            v2 = pad(num2str(fr(5), '%.04f'), 10);
+            m1 = pad(num2str(fr(3), '%.04f'), 10);
+            m2 = pad(num2str(fr(6), '%.04f'), 10);
             
             fprintf(archivoSalidaHandle, '\n\tViga-Columna 2D %s:\n\t\tAxial:\t\t%s %s\n\t\tCorte:\t\t%s %s\n\t\tMomento:\t%s %s', ...
                 vigaColumna2DObj.obtenerEtiqueta(), n1, n2, v1, v2, m1, m2);
