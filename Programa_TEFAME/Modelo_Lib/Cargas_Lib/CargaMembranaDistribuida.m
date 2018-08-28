@@ -63,6 +63,7 @@ classdef CargaMembranaDistribuida < Carga
         dist2 % Distancia de la carga 2 al primer nodo del elemento
         nodo1 % Nodo 1 de aplicacion
         nodo2 % Nodo 2 de aplicacion
+        L % Largo de aplicacion de las cargas
     end % properties CargaVigaDistribuida
     
     methods
@@ -101,14 +102,36 @@ classdef CargaMembranaDistribuida < Carga
             if abs(nodo1-nodo2) > 1
                 error('Nodo no puede ser cruzado @CargaMembranaDistribuida %s', etiquetaCarga);
             end
+            if (nodo1 < 1 || nodo1 > 4 || nodo2 < 1 || nodo2 > 4)
+                error('Etiqueta nodo invalido, debe ser entre 1 y 4 @CargaMembranaDistribuida %s', etiquetaCarga);
+            end
+            
+            % Aplica limites al minimo y maximo
+            if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
+                warning('Distancias deben estar dentro del rango [0, 1] @CargaVigaColumnaDistribuida %s', etiquetaCarga);
+            end
+            if (distancia1 == distancia2)
+                warning('Distancias son iguales @CargaVigaColumnaDistribuida %s', etiquetaCarga);
+            end
+            distancia1 = max(0, min(distancia1, 1));
+            distancia2 = min(1, max(distancia2, 0));
+            
+            % Obtiene el largo entre los nodos
+            nodoMembrana = elemObjeto.obtenerNodos();
+            membranaNodo1 = nodoMembrana{nodo1}.obtenerCoordenadas();
+            membranaNodo2 = nodoMembrana{nodo2}.obtenerCoordenadas();
+            largo = sqrt((membranaNodo1(1) - membranaNodo2(1))^2+(membranaNodo1(2) - membranaNodo2(2))^2);
             
             % Guarda los valores
             cargaMembranaDistribuidaObj.elemObj = elemObjeto;
+            cargaMembranaDistribuidaObj.L = largo;
+            
             cargaMembranaDistribuidaObj.carga1 = carga1;
-            % cargaMembranaDistribuidaObj.dist1 = distancia1 * elemObjeto.obtenerLargo();
-            cargaMembranaDistribuidaObj.carga2 = carga2;
-            % cargaMembranaDistribuidaObj.dist2 = distancia2 * elemObjeto.obtenerLargo();
+            cargaMembranaDistribuidaObj.dist1 = distancia1 * largo;
             cargaMembranaDistribuidaObj.nodo1 = nodo1;
+            
+            cargaMembranaDistribuidaObj.carga2 = carga2;
+            cargaMembranaDistribuidaObj.dist2 = distancia2 * largo;
             cargaMembranaDistribuidaObj.nodo2 = nodo2;
             
         end % CargaMembranaDistribuida constructor

@@ -47,7 +47,7 @@
 %  Methods:
 %       nodoObj = Nodo(etiquetaNodo,nGDLNodo,coordenadasNodo)
 %       nGDLNodo = obtenerNumeroGDL(nodoObj)
-%       coordenadasNodo = obtenerCoordenadas
+%       coordenadasNodo = obtenerCoordenadas(nodoObj)
 %       gdlIDNodo = obtenerGDLID(nodoObj)
 %       cargasResultantesNodo = obtenerCargasResultantes(nodoObj)
 %       desplazmientosNodo = obtenerDesplazamientos(nodoObj)
