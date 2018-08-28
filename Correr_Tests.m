@@ -37,8 +37,8 @@ iniciar_TEFAME;
 clc;
 fprintf('CORRIENDO TESTS\n');
 
-% Modelo tarea computacional Bielas 3D
-Modelo_TareaComputacional4;
+% Modelo membranas
+Test_Membrana1;
 
 % Ejemplos clase
 EjemploClase_Enrejado3D;
@@ -52,6 +52,7 @@ Modelo_Tarea3;
 Modelo_Tarea4;
 Modelo_Tarea5;
 Modelo_TareaComputacionalAntiguo4;
+Modelo_TareaComputacional4;
 Test_Viga2D;
 
 % Elimina espacio en memoria

@@ -22,7 +22,7 @@ fprintf('>\tTEST_MEMBRANA1\n');
 % Espesor, en metros. En el enunciado sale 0.25m sin embargo los resultados
 % que muestran son con t=1m. Se prefirio usar este valor para poder
 % comparar mejor los resultados obtenidos.
-t = 1;
+t = 0.25;
 E = 2 * 10^3; % kN/m^2
 nu = 0.2; % Modulo de Poisson
 

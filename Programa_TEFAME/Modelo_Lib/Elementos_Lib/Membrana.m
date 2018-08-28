@@ -269,8 +269,8 @@ classdef Membrana < Elemento
             % Obtiene los nodos
             nodo1 = membranaObj.nodosObj{1};
             nodo2 = membranaObj.nodosObj{2};
-            nodo3 = membranaObj.nodosObj{2};
-            nodo4 = membranaObj.nodosObj{2};
+            nodo3 = membranaObj.nodosObj{3};
+            nodo4 = membranaObj.nodosObj{4};
             
             % Obtiene los desplazamientos
             u1 = nodo1.obtenerDesplazamientos();
@@ -353,8 +353,8 @@ classdef Membrana < Elemento
         function guardarPropiedades(membranaObj, archivoSalidaHandle)
             
             fprintf(archivoSalidaHandle, '\tMembrana %s:\n\t\tAncho (2b):\t\t%s\n\t\tAlto (2h):\t\t%s\n\t\tEspesor (t):\t%s\n\t\tE:\t\t\t\t%s\n\t\tv:\t\t\t\t%s\n', ...
-                membranaObj.obtenerEtiqueta(), num2str(2*membranaObj.b), num2str(membranaObj.t), ...
-                num2str(2*membranaObj.h), num2str(membranaObj.E), num2str(membranaObj.nu));
+                membranaObj.obtenerEtiqueta(), num2str(2*membranaObj.b), num2str(2*membranaObj.h), ...
+                num2str(membranaObj.t), num2str(membranaObj.E), num2str(membranaObj.nu));
             
         end % guardarPropiedades function
         
