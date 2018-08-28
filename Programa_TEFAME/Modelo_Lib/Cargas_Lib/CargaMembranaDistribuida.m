@@ -145,11 +145,6 @@ classdef CargaMembranaDistribuida < Carga
             %
             % aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
             
-            % Obtiene los nodos
-            
-            % Largo de la viga
-            L = cargaMembranaDistribuidaObj.elemObj.obtenerLargo();
-            
             % Limites de las cargas
             d1 = cargaMembranaDistribuidaObj.dist1;
             d2 = cargaMembranaDistribuidaObj.dist2;
