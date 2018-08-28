@@ -92,7 +92,7 @@ classdef CargaVigaDistribuida < Carga
         end % CargaVigaDistribuida constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Viga Distribu�da durante el an�lisis
+        % Metodos para aplicar la Carga Viga Distribuida durante el analisis
         
         function aplicarCarga(cargaVigaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaVigaDistribuidaObj que se usa para aplicar
@@ -111,7 +111,7 @@ classdef CargaVigaDistribuida < Carga
             P1 = cargaVigaDistribuidaObj.carga1;
             P2 = cargaVigaDistribuidaObj.carga2;
             
-            % Crea funcion de carga distribu�da
+            % Crea funcion de carga distribuida
             rho = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
             
             % Funciones de interpolacion
