@@ -155,10 +155,10 @@ classdef CargaMembranaDistribuida < Carga
             % Limites de las cargas
             d1 = cargaMembranaDistribuidaObj.dist1;
             d2 = cargaMembranaDistribuidaObj.dist2;
-             
+            
             % Cargas
-            P1 = cargaMembranaDistribuidaObj.carga1 * factorDeCarga;
-            P2 = cargaMembranaDistribuidaObj.carga2 * factorDeCarga;
+            P1 = cargaMembranaDistribuidaObj.carga1;
+            P2 = cargaMembranaDistribuidaObj.carga2;
             
             % Crea funcion de carga distribuida
             rho = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
@@ -176,19 +176,22 @@ classdef CargaMembranaDistribuida < Carga
             % theta2 = integral(@(x) rho(x).*N4(x), d1, d2);
             
             % Aplica el angulo
-            v1x = v1*sin(cargaMembranaDistribuidaObj.theta);
-            v1y = v1*cos(cargaMembranaDistribuidaObj.theta);
-            v2x = v2*sin(cargaMembranaDistribuidaObj.theta);
-            v2y = v2*cos(cargaMembranaDistribuidaObj.theta);
+            v1x = v1 * sin(cargaMembranaDistribuidaObj.theta);
+            v1y = v1 * cos(cargaMembranaDistribuidaObj.theta);
+            v2x = v2 * sin(cargaMembranaDistribuidaObj.theta);
+            v2y = v2 * cos(cargaMembranaDistribuidaObj.theta);
             
-            vectorCarga1 = [v1x, v1y]'
-            vectorCarga2 = [v2x, v2y]'
-            % cargaMembranaDistribuidaObj.elemObj.sumarFuerzaEquivalente([-v1, -theta1, -v2, -theta2]');
+            vectorCarga1 = [v1x, v1y]';
+            vectorCarga2 = [v2x, v2y]';
+            
+            % Aplica fuerzas equivalentes;
+            cargaMembranaDistribuidaObj.elemObj.sumarFuerzaEquivalente(cargaMembranaDistribuidaObj.nodo1, vectorCarga1');
+            cargaMembranaDistribuidaObj.elemObj.sumarFuerzaEquivalente(cargaMembranaDistribuidaObj.nodo2, vectorCarga2');
             
             % Aplica vectores de carga
             nodos = cargaMembranaDistribuidaObj.elemObj.obtenerNodos();
-            % nodos{1}.agregarCarga(factorDeCarga*vectorCarga1);
-            % nodos{2}.agregarCarga(factorDeCarga*vectorCarga2);
+            nodos{cargaMembranaDistribuidaObj.nodo1}.agregarCarga(factorDeCarga*vectorCarga1);
+            nodos{cargaMembranaDistribuidaObj.nodo2}.agregarCarga(factorDeCarga*vectorCarga2);
             
         end % aplicarCarga function
         

@@ -54,6 +54,10 @@
 %       fr_local = obtenerFuerzaResistenteCoordLocal(membranaObj)
 %       b = obtenerAncho(membranaObj)
 %       h = obtenerAlto(membranaObj)
+%       u = obtenerDesplazamiento(membranaObj, x, y)
+%       e = obtenerDeformaciones(membranaObj, x, y)
+%       sigma = obtenerTensiones(membranaObj, x, y)
+%       lista = crearListaTensiones(membranaObj)
 %       definirGDLID(membranaObj)
 %       agregarFuerzaResistenteAReacciones(membranaObj)
 %       guardarPropiedades(membranaObj,archivoSalidaHandle)
@@ -75,6 +79,7 @@ classdef Membrana < Elemento
         h
         b
         Feq
+        NPOINTS
     end % properties Membrana
     
     methods
@@ -133,6 +138,9 @@ classdef Membrana < Elemento
             
             % Fuerza equivalente de la membrana
             membranaObj.Feq = [0, 0, 0, 0, 0, 0, 0, 0]'; % 8x1
+            
+            % Numero de puntos de la malla, itera segun alto y largo
+            membranaObj.NPOINTS = 5;
             
         end % Membrana constructor
         
@@ -254,6 +262,85 @@ classdef Membrana < Elemento
             
         end % obtenerMatrizRigidezLocal function
         
+        function u = obtenerDesplazamiento(membranaObj, x, y)
+            % Calcula el desplazamiento en cualquier punto de la membrana
+            
+            % Obtiene los factores N1, N2, N3, N4
+            N1 = (membranaObj.b - x) * (membranaObj.h - y) / (4 * membranaObj.b * membranaObj.h);
+            N2 = (membranaObj.b + x) * (membranaObj.h - y) / (4 * membranaObj.b * membranaObj.h);
+            N3 = (membranaObj.b + x) * (membranaObj.h + y) / (4 * membranaObj.b * membranaObj.h);
+            N4 = (membranaObj.b - x) * (membranaObj.h + y) / (4 * membranaObj.b * membranaObj.h);
+            
+            % Calcula la matriz N [2x8]
+            N = [N1, 0, N2, 0, N3, 0, N4, 0; ...
+                0, N1, 0, N2, 0, N3, 0, N4];
+            
+            % Obtiene los nodos
+            nodo1 = membranaObj.nodosObj{1};
+            nodo2 = membranaObj.nodosObj{2};
+            nodo3 = membranaObj.nodosObj{3};
+            nodo4 = membranaObj.nodosObj{4};
+            
+            % Obtiene los desplazamientos
+            u1 = nodo1.obtenerDesplazamientos();
+            u2 = nodo2.obtenerDesplazamientos();
+            u3 = nodo3.obtenerDesplazamientos();
+            u4 = nodo4.obtenerDesplazamientos();
+            
+            % Vector desplazamientos u'
+            d = [u1(1), u1(2), u2(1), u2(2), u3(1), u3(2), u4(1), u4(2)]';
+            
+            % Multiplica por d [8x1] => vector u [2x8]x[8x1] => [2x1]
+            u = N * d;
+            
+        end % obtenerDesplazamiento function
+        
+        function e = obtenerDeformaciones(membranaObj, x, y)
+            % Obtiene el vector de deformaciones [3x1] una vez se tiene el
+            % vector de desplazamientos.
+            
+            % Calcula los factores a1,a2,a3 y a4
+            a1 = (membranaObj.b + x) / (4 * membranaObj.b * membranaObj.h);
+            a2 = (membranaObj.b - x) / (4 * membranaObj.b * membranaObj.h);
+            a3 = (membranaObj.h + y) / (4 * membranaObj.b * membranaObj.h);
+            a4 = (membranaObj.h - y) / (4 * membranaObj.b * membranaObj.h);
+            
+            % Calcula el vector B [3x8]
+            B = [-a4, 0, a4, 0, a3, 0, -a3, 0; ...
+                0, -a2, 0, -a1, 0, a1, 0, a2; ...
+                -a2, -a4, -a1, a4, a1, a3, a2, -a3];
+            
+            % Obtiene los nodos
+            nodo1 = membranaObj.nodosObj{1};
+            nodo2 = membranaObj.nodosObj{2};
+            nodo3 = membranaObj.nodosObj{3};
+            nodo4 = membranaObj.nodosObj{4};
+            
+            % Obtiene el vector de desplazamientos de los nodos
+            u1 = nodo1.obtenerDesplazamientos();
+            u2 = nodo2.obtenerDesplazamientos();
+            u3 = nodo3.obtenerDesplazamientos();
+            u4 = nodo4.obtenerDesplazamientos();
+            
+            % Vector desplazamientos u' [8x1]
+            d = [u1(1), u1(2), u2(1), u2(2), u3(1), u3(2), u4(1), u4(2)]';
+            
+            % Calcula las deformaciones [3x8]x[8x1] = [3x1]
+            e = B * d;
+            
+        end % obtenerDeformaciones function
+        
+        function sigma = obtenerTensiones(membranaObj, x, y)
+            % Retorna las tensiones una vez se corre el analisis
+            
+            % Obtiene las deformaciones
+            e = membranaObj.obtenerDeformaciones(x, y);
+            
+            % Retorna las tensiones [3x3]x[3x1] = [3x1]
+            sigma = membranaObj.D * e;
+            
+        end % obtenerTensiones function
+        
         function fr_global = obtenerFuerzaResistenteCoordGlobal(membranaObj)
             
             % Obtiene fr local
@@ -317,10 +404,16 @@ classdef Membrana < Elemento
             
         end % definirGDLID function
         
-        function sumarFuerzaEquivalente(membranaObj, f)
+        function sumarFuerzaEquivalente(membranaObj, nodo, f)
             
-            for i = 1:length(f)
-                membranaObj.Feq(i) = membranaObj.Feq(i) + f(i);
+            fnodo = length(f); % Largo del vector
+            nodo = floor(nodo); % Se redondea
+            if (nodo < 0 || nodo > 4)
+                error('Numero de nodo invalido @sumarFuerzaEquivalente Nodo %s', nodo);
+            end
+            pos = nodo * fnodo - 1; % Posicion de la fuerza
+            for i = 1:fnodo
+                membranaObj.Feq(pos+i-1) = membranaObj.Feq(pos+i-1) + f(i);
             end
             
         end % sumarFuerzaEquivalente function
@@ -358,6 +451,46 @@ classdef Membrana < Elemento
             
         end % guardarPropiedades function
         
+        function lista = crearListaTensiones(membranaObj)
+            % Itera segun x e y
+            
+            % Elementos totales
+            el = (membranaObj.NPOINTS + 1)^2;
+            lista = zeros(el, 5);
+            
+            % Calcula los dx y dy para avanzar segun NPOINTS
+            dx = (2 * membranaObj.b) / (membranaObj.NPOINTS + 1);
+            dy = (2 * membranaObj.h) / (membranaObj.NPOINTS + 1);
+            
+            % Obtiene las coordenadas del elemento con respecto al
+            % global (0,0) asociado al nodo 1
+            cglob = membranaObj.nodosObj{1}.obtenerCoordenadas();
+            
+            % Avanza por cada NPOINT y obtiene tensiones
+            k = 1;
+            for i = 1:(membranaObj.NPOINTS + 2) % Avanza en el ancho
+                for j = 1:(membranaObj.NPOINTS + 2) % Avanza en el alto
+                    
+                    % Obtiene coordenadas (x,y)
+                    x = -membranaObj.b + (i - 1) * dx;
+                    y = -membranaObj.h + (j - 1) * dy;
+                    
+                    % Obtiene tensiones y las guarda
+                    ten = membranaObj.obtenerTensiones(x, y);
+                    lista(k, 1) = cglob(1) + x + membranaObj.b;
+                    lista(k, 2) = cglob(2) + y + membranaObj.h;
+                    lista(k, 3) = ten(1);
+                    lista(k, 4) = ten(2);
+                    lista(k, 5) = ten(3);
+                    
+                    % Aumenta el contador
+                    k = k + 1;
+                    
+                end
+            end
+            
+        end
+        
         function guardarEsfuerzosInternos(membranaObj, archivoSalidaHandle)
             
             fr = membranaObj.obtenerFuerzaResistenteCoordGlobal();
@@ -374,6 +507,20 @@ classdef Membrana < Elemento
             
             fprintf(archivoSalidaHandle, '\n\tMembrana %s:\n\t\tNodo 1 (-b, -h): %s\t%s\n\t\tNodo 2 (+b, -h): %s\t%s\n\t\tNodo 3 (+b, +h): %s\t%s\n\t\tNodo 4 (-b, +h): %s\t%s', ...
                 membranaObj.obtenerEtiqueta(), n1x, n1y, n2x, n2y, n3x, n3y, n4x, n4y);
+            
+            % Dibuja las tensiones
+            fprintf(archivoSalidaHandle, '\n\t\tTensiones %s [X Y SIGMAX SIGMAY SIGMAXY]:\n', membranaObj.obtenerEtiqueta());
+            
+            % Crea la lista de tensiones y las dibuja
+            tension = membranaObj.crearListaTensiones();
+            for i = 1:length(tension)
+                x = pad(num2str(tension(i, 1), '%.04f'), 10);
+                y = pad(num2str(tension(i, 2), '%.04f'), 10);
+                sigmax = pad(num2str(tension(i, 3), '%.04f'), 10);
+                sigmay = pad(num2str(tension(i, 4), '%.04f'), 10);
+                sigmaxy = pad(num2str(tension(i, 5), '%.04f'), 10);
+                fprintf(archivoSalidaHandle, '\t\t\t%s\t%s\t%s\t%s\t%s\n', x, y, sigmax, sigmay, sigmaxy);
+            end
             
         end % guardarEsfuerzosInternos function
         

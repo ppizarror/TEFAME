@@ -56,7 +56,7 @@ modeloObj.agregarRestricciones(restricciones);
 
 % Creamos la carga
 cargas = cell(1, 1);
-cargas{1} = CargaMembranaDistribuida('D100KN V', elementos{1}, 1,4, 0, 0, 100, 1);
+cargas{1} = CargaMembranaDistribuida('D100KN V', elementos{1}, 1, 4, 0, 0, 100, 1);
 
 % Creamos el Patron de Cargas
 PatronesDeCargas = cell(1, 1);
