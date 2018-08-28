@@ -7,7 +7,7 @@ fprintf('>\tTEST_MEMBRANA1\n');
 %   Autor: JORGE EDUARDO HURTADO GÓMEZ
 %   http://bdigital.unal.edu.co/10002/6/958932276X.2002.pdf
 %   Pagina 92
-% 
+%
 %           1000 kN
 %             |
 %             v
@@ -23,8 +23,8 @@ fprintf('>\tTEST_MEMBRANA1\n');
 % que muestran son con t=1m. Se prefirio usar este valor para poder
 % comparar mejor los resultados obtenidos.
 t = 1;
-E = 2*10^7; % kN/m^2
-nu = 0.2; % Modulo de Poisson 
+E = 2 * 10^3; % kN/m^2
+nu = 0.2; % Modulo de Poisson
 
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
@@ -74,4 +74,4 @@ analisisObj.analizar();
 modeloObj.guardarResultados('output/Ejemplo_Membrana1.txt');
 
 % Resultados esperados:
-% u = [0.2691, -0.2130, 0, -0.7345, 0, -0.9476, -0.2691, -0.2130] * 10^-4 m
+% u = [0.2691, -0.2130, 0, -0.7345, 0, -0.9476, -0.2691, -0.2130]
