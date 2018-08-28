@@ -127,7 +127,7 @@ classdef CargaVigaColumnaPuntual < Carga
             u1 = H * Nu1(d);
             u2 = H * Nu2(d);
             
-            vectorCarga = -[u1, v1, theta1, u2, v2, theta2]';
+            vectorCarga = [u1, v1, theta1, u2, v2, theta2]';
             cargaVigaColumnaPuntualObj.elemObj.sumarFuerzaEquivalente(vectorCarga);
             
             % Aplica vectores de carga en coordenadas globales

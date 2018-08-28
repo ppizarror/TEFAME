@@ -100,7 +100,7 @@ classdef CargaMembranaDistribuida < Carga
             cargaMembranaDistribuidaObj = cargaMembranaDistribuidaObj@Carga(etiquetaCarga);
             
             % Verifica que se cumplan los nodos
-            if abs(nodo1-nodo2) > 1
+            if abs(nodo1-nodo2) == 2
                 error('Nodo no puede ser cruzado @CargaMembranaDistribuida %s', etiquetaCarga);
             end
             if (nodo1 < 1 || nodo1 > 4 || nodo2 < 1 || nodo2 > 4)
@@ -157,8 +157,8 @@ classdef CargaMembranaDistribuida < Carga
             d2 = cargaMembranaDistribuidaObj.dist2;
              
             % Cargas
-            P1 = cargaMembranaDistribuidaObj.carga1;
-            P2 = cargaMembranaDistribuidaObj.carga2;
+            P1 = cargaMembranaDistribuidaObj.carga1 * factorDeCarga;
+            P2 = cargaMembranaDistribuidaObj.carga2 * factorDeCarga;
             
             % Crea funcion de carga distribuida
             rho = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
@@ -181,8 +181,8 @@ classdef CargaMembranaDistribuida < Carga
             v2x = v2*sin(cargaMembranaDistribuidaObj.theta);
             v2y = v2*cos(cargaMembranaDistribuidaObj.theta);
             
-            vectorCarga1 = [-v1x, -v1y]'
-            vectorCarga2 = [-v2x, -v2y]'
+            vectorCarga1 = [v1x, v1y]'
+            vectorCarga2 = [v2x, v2y]'
             % cargaMembranaDistribuidaObj.elemObj.sumarFuerzaEquivalente([-v1, -theta1, -v2, -theta2]');
             
             % Aplica vectores de carga

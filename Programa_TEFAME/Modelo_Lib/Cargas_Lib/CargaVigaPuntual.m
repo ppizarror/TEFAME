@@ -113,9 +113,9 @@ classdef CargaVigaPuntual < Carga
             theta1 = P * d * (L - d)^2 / (L^2);
             theta2 = -P * (d^2) * (L - d) / (L^2);
             
-            vectorCarga1 = [0, -v1, -theta1]';
-            vectorCarga2 = [0, -v2, -theta2]';
-            cargaVigaPuntualObj.elemObj.sumarFuerzaEquivalente([-v1, -theta1, -v2, -theta2]');
+            vectorCarga1 = [0, v1, theta1]';
+            vectorCarga2 = [0, v2, theta2]';
+            cargaVigaPuntualObj.elemObj.sumarFuerzaEquivalente([v1, theta1, v2, theta2]');
             
             % Aplica vectores de carga
             nodos = cargaVigaPuntualObj.elemObj.obtenerNodos();

@@ -52,7 +52,7 @@ modeloObj.agregarRestricciones(restricciones);
 
 % Creamos la carga
 cargas = cell(1, 1);
-cargas{1} = CargaVigaPuntual('P', elementos{1}, P, D);
+cargas{1} = CargaVigaPuntual('P', elementos{1}, -P, D);
 
 % Creamos el Patron de Cargas
 PatronesDeCargas = cell(1, 1);

@@ -37,8 +37,8 @@ modeloObj.agregarRestricciones(restricciones);
 
 % Creamos la carga
 cargas = cell(2, 1);
-cargas{1} = CargaVigaPuntual('Carga puntual V1', elementos{1}, 15, 0.5);
-cargas{2} = CargaVigaDistribuida('Carga disribuida V3', elementos{3}, 3.8, 0.0, 3.8, 1.0);
+cargas{1} = CargaVigaPuntual('Carga puntual V1', elementos{1}, -15, 0.5);
+cargas{2} = CargaVigaDistribuida('Carga disribuida V3', elementos{3}, -3.8, 0.0, -3.8, 1.0);
 
 % Creamos el Patron de Cargas
 PatronesDeCargas = cell(1, 1);

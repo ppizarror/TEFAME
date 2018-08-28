@@ -159,7 +159,7 @@ classdef CargaVigaColumnaDistribuida < Carga
             theta1 = integral(@(x) rhoV(x).*Nv2(x), d1, d2);
             theta2 = integral(@(x) rhoV(x).*Nv4(x), d1, d2);
             
-            vectorCarga = -[u1, v1, theta1, u2, v2, theta2]';
+            vectorCarga = [u1, v1, theta1, u2, v2, theta2]';
             cargaVigaColumnaDistribuidaObj.elemObj.sumarFuerzaEquivalente(vectorCarga);
             
             % Aplica vectores de carga en coordenadas globales

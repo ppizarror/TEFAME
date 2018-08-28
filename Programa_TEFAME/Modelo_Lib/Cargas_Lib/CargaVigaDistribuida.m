@@ -136,9 +136,9 @@ classdef CargaVigaDistribuida < Carga
             v2 = integral(@(x) rho(x).*N3(x), d1, d2);
             theta2 = integral(@(x) rho(x).*N4(x), d1, d2);
             
-            vectorCarga1 = [0, -v1, -theta1]';
-            vectorCarga2 = [0, -v2, -theta2]';
-            cargaVigaDistribuidaObj.elemObj.sumarFuerzaEquivalente([-v1, -theta1, -v2, -theta2]');
+            vectorCarga1 = [0, v1, theta1]';
+            vectorCarga2 = [0, v2, theta2]';
+            cargaVigaDistribuidaObj.elemObj.sumarFuerzaEquivalente([v1, theta1, v2, theta2]');
             
             % Aplica vectores de carga
             nodos = cargaVigaDistribuidaObj.elemObj.obtenerNodos();
