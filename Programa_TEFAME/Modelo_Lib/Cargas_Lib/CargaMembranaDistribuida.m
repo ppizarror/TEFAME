@@ -165,15 +165,11 @@ classdef CargaMembranaDistribuida < Carga
             
             % Funciones de interpolacion
             N1 = @(x) 1 - 3 * (x / cargaMembranaDistribuidaObj.L).^2 + 2 * (x / cargaMembranaDistribuidaObj.L).^3;
-            % N2 = @(x) x .* (1 - x / cargaMembranaDistribuidaObj.L).^2;
             N3 = @(x) 3 * (x / cargaMembranaDistribuidaObj.L).^2 - 2 * (x / cargaMembranaDistribuidaObj.L).^3;
-            % N4 = @(x) ((x.^2) / cargaMembranaDistribuidaObj.L) .* (x / cargaMembranaDistribuidaObj.L - 1);
             
             % Calcula cada valor
             v1 = integral(@(x) rho(x).*N1(x), d1, d2);
-            % theta1 = integral(@(x) rho(x).*N2(x), d1, d2);
             v2 = integral(@(x) rho(x).*N3(x), d1, d2);
-            % theta2 = integral(@(x) rho(x).*N4(x), d1, d2);
             
             % Aplica el angulo
             v1x = v1 * sin(cargaMembranaDistribuidaObj.theta);
@@ -201,11 +197,11 @@ classdef CargaMembranaDistribuida < Carga
         function disp(cargaMembranaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % elemento
+            % elemento membrana.
             %
             % disp(cargaMembranaDistribuidaObj)
             % Imprime la informacion guardada en la Carga Distribuida de la
-            % Membrana (cargaMembranaDistribuidaObj) en pantalla
+            % Membrana (cargaMembranaDistribuidaObj) en pantalla.
             
             fprintf('Propiedades Carga Membrana Distribuida:\n');
             disp@Carga(cargaMembranaDistribuidaObj);

@@ -26,7 +26,7 @@
 %| Este archivo contiene la definicion de la Clase Membrana             |
 %| Membrana es una subclase de la clase Elemento y  corresponde a  la   |
 %| representacion del elemento membrana bidimensional sencilla de secc- |
-%| ión rectangular de cuatro nodos sometida a un estado de fuerzas.     |
+%| ion rectangular de cuatro nodos sometida a un estado de fuerzas.     |
 %|                                                                      |
 %| Programado: PABLO PIZARRO @ppizarror.com                             |
 %| Fecha: 27/08/2018                                                    |
@@ -117,6 +117,7 @@ classdef Membrana < Elemento
             %           |               |
             %           1 ------------- 2
             %                  2b
+            %
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             coordNodo3 = nodo3Obj.obtenerCoordenadas();
@@ -183,14 +184,14 @@ classdef Membrana < Elemento
         
         function k_global = obtenerMatrizRigidezCoordGlobal(membranaObj)
             
-            % Matriz global igual a la local, no hay rotación
+            % Matriz global igual a la local, no hay rotacion
             k_global = membranaObj.obtenerMatrizRigidezCoordLocal();
             
         end % obtenerMatrizRigidezGlobal function
         
         function k_local = obtenerMatrizRigidezCoordLocal(membranaObj)
             
-            % Crea la matriz vacía de 8x8
+            % Crea la matriz vacia de 8x8
             k_local = zeros(8, 8);
             
             % Calcula valores iniciales

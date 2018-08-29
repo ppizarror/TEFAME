@@ -128,7 +128,7 @@ classdef CargaBielaTemperatura < Carga
             % disp(cargaBielaTemperaturaObj)
             % Imprime la informacion guardada en la Carga fruto de la
             % diferencia de temperatura de la Biela (cargaBielaTemperaturaObj)
-            % en pantalla
+            % en pantalla.
             
             fprintf('Propiedades Carga Biela Temperatura:\n');
             disp@Carga(cargaBielaTemperaturaObj);
