@@ -58,6 +58,7 @@
 %       e = obtenerDeformaciones(membranaObj, x, y)
 %       sigma = obtenerTensiones(membranaObj, x, y)
 %       lista = crearListaTensiones(membranaObj)
+%       validarXY(membranaObj, x, y)
 %       definirGDLID(membranaObj)
 %       agregarFuerzaResistenteAReacciones(membranaObj)
 %       guardarPropiedades(membranaObj,archivoSalidaHandle)
@@ -140,7 +141,7 @@ classdef Membrana < Elemento
             membranaObj.Feq = [0, 0, 0, 0, 0, 0, 0, 0]'; % 8x1
             
             % Numero de puntos de la malla, itera segun alto y largo
-            membranaObj.NPOINTS = 5;
+            membranaObj.NPOINTS = 15;
             
         end % Membrana constructor
         
@@ -262,8 +263,19 @@ classdef Membrana < Elemento
             
         end % obtenerMatrizRigidezLocal function
         
+        function validarXY(membranaObj, x, y)
+            
+            if (abs(x) > membranaObj.b || abs(y) > membranaObj.h)
+                error('Valores x e y exceden dimensiones permitidas');
+            end
+            
+        end % validarXY function
+        
         function u = obtenerDesplazamiento(membranaObj, x, y)
             % Calcula el desplazamiento en cualquier punto de la membrana
+            
+            % Verifica que x e y sean validos
+            membranaObj.validarXY(x, y);
             
             % Obtiene los factores N1, N2, N3, N4
             N1 = (membranaObj.b - x) * (membranaObj.h - y) / (4 * membranaObj.b * membranaObj.h);
@@ -298,6 +310,9 @@ classdef Membrana < Elemento
         function e = obtenerDeformaciones(membranaObj, x, y)
             % Obtiene el vector de deformaciones [3x1] una vez se tiene el
             % vector de desplazamientos.
+            
+            % Verifica que x e y sean validos
+            membranaObj.validarXY(x, y);
             
             % Calcula los factores a1,a2,a3 y a4
             a1 = (membranaObj.b + x) / (4 * membranaObj.b * membranaObj.h);
@@ -456,7 +471,7 @@ classdef Membrana < Elemento
             
             % Elementos totales
             el = (membranaObj.NPOINTS + 1)^2;
-            lista = zeros(el, 5);
+            lista = zeros(el, 7);
             
             % Calcula los dx y dy para avanzar segun NPOINTS
             dx = (2 * membranaObj.b) / (membranaObj.NPOINTS + 1);
@@ -479,9 +494,11 @@ classdef Membrana < Elemento
                     ten = membranaObj.obtenerTensiones(x, y);
                     lista(k, 1) = cglob(1) + x + membranaObj.b;
                     lista(k, 2) = cglob(2) + y + membranaObj.h;
-                    lista(k, 3) = ten(1);
-                    lista(k, 4) = ten(2);
-                    lista(k, 5) = ten(3);
+                    lista(k, 3) = x;
+                    lista(k, 4) = y;
+                    lista(k, 5) = ten(1);
+                    lista(k, 6) = ten(2);
+                    lista(k, 7) = ten(3);
                     
                     % Aumenta el contador
                     k = k + 1;
@@ -509,17 +526,19 @@ classdef Membrana < Elemento
                 membranaObj.obtenerEtiqueta(), n1x, n1y, n2x, n2y, n3x, n3y, n4x, n4y);
             
             % Dibuja las tensiones
-            fprintf(archivoSalidaHandle, '\n\t\tTensiones %s [X Y SIGMAX SIGMAY SIGMAXY]:', membranaObj.obtenerEtiqueta());
+            fprintf(archivoSalidaHandle, '\n\t\tTensiones %s [GLOBALX GLOBALY X Y SIGMAX SIGMAY SIGMAXY]:', membranaObj.obtenerEtiqueta());
             
             % Crea la lista de tensiones y las dibuja
             tension = membranaObj.crearListaTensiones();
             for i = 1:length(tension)
-                x = pad(num2str(tension(i, 1), '%.04f'), 10);
-                y = pad(num2str(tension(i, 2), '%.04f'), 10);
-                sigmax = pad(num2str(tension(i, 3), '%.04f'), 10);
-                sigmay = pad(num2str(tension(i, 4), '%.04f'), 10);
-                sigmaxy = pad(num2str(tension(i, 5), '%.04f'), 10);
-                fprintf(archivoSalidaHandle, '\n\t\t\t%s\t%s\t%s\t%s\t%s', x, y, sigmax, sigmay, sigmaxy);
+                globalx = pad(num2str(tension(i, 1), '%.04f'), 10);
+                globaly = pad(num2str(tension(i, 2), '%.04f'), 10);
+                x = pad(num2str(tension(i, 3), '%.04f'), 10);
+                y = pad(num2str(tension(i, 4), '%.04f'), 10);
+                sigmax = pad(num2str(tension(i, 5), '%.04f'), 10);
+                sigmay = pad(num2str(tension(i, 6), '%.04f'), 10);
+                sigmaxy = pad(num2str(tension(i, 7), '%.04f'), 10);
+                fprintf(archivoSalidaHandle, '\n\t\t\t%s\t%s\t%s\t%s\t%s\t%s\t%s', globalx, globaly, x, y, sigmax, sigmay, sigmaxy);
             end
             
         end % guardarEsfuerzosInternos function
