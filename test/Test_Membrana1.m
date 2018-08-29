@@ -71,7 +71,7 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-modeloObj.guardarResultados('output/Ejemplo_Membrana1.txt');
+modeloObj.guardarResultados('test/out/Ejemplo_Membrana1.txt');
 
 % Resultados esperados:
 % u = [0.2691, -0.2130, 0, -0.7345, 0, -0.9476, -0.2691, -0.2130]

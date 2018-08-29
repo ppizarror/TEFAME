@@ -38,10 +38,12 @@ clc;
 fprintf('CORRIENDO TESTS\n');
 
 % Tarea computacional 5
+Modelo_TareaComputacional5;
 
 % Test de membranas
 Test_Membrana1;
-% Test_MembranaCargaDistribuida;
+Test_MembranaCargaDistribuidaHor;
+Test_MembranaCargaDistribuidaVer;
 
 % Ejemplos clase
 EjemploClase_Enrejado3D;

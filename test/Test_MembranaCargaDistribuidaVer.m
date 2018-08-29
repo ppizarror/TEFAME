@@ -68,4 +68,4 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-modeloObj.guardarResultados('output/Ejemplo_MembranaCargaDistribuidaVer.txt');
+modeloObj.guardarResultados('test/out/Ejemplo_MembranaCargaDistribuidaVer.txt');

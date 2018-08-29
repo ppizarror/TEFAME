@@ -50,4 +50,4 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-modeloObj.guardarResultados('output/EjemploClase_VigaCargaDistribuida2D.txt');
+modeloObj.guardarResultados('test/out/EjemploClase_VigaCargaDistribuida2D.txt');
