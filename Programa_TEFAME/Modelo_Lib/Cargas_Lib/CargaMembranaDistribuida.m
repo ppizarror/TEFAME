@@ -215,12 +215,23 @@ classdef CargaMembranaDistribuida < Carga
             
             % Obtiene la etiqueta del primer nodo
             nodosetiqueta = cargaMembranaDistribuidaObj.elemObj.obtenerNodos();
-            nodo1etiqueta = nodosetiqueta{1}.obtenerEtiqueta();
-            nodo2etiqueta = nodosetiqueta{2}.obtenerEtiqueta();
+            nodo1etiqueta = nodosetiqueta{cargaMembranaDistribuidaObj.nodo1}.obtenerEtiqueta();
+            nodo2etiqueta = nodosetiqueta{cargaMembranaDistribuidaObj.nodo2}.obtenerEtiqueta();
             
-            fprintf('\tCarga distribuida: %.3f en %.3f hasta %.3f en %.3f entre los Nodos: %s y %s del Elemento: %s', ...
+            % Obtiene si la carga es horizontal o vertical
+            if (cargaMembranaDistribuidaObj.theta == 0)
+                dirc = 'Horizontal';
+            elseif (cargaMembranaDistribuidaObj.theta == pi / 2)
+                dirc = 'Vertical';
+            else
+                dirc = sprintf('Diagonal theta=%.3f', cargaMembranaDistribuidaObj.theta);
+            end
+            
+            fprintf('\tCarga distribuida: %.3f en %.3f hasta %.3f en %.3f (%s)\n', ...
                 cargaMembranaDistribuidaObj.carga1, cargaMembranaDistribuidaObj.dist1, cargaMembranaDistribuidaObj.carga2, ...
-                cargaMembranaDistribuidaObj.dist2, nodo1etiqueta, nodo2etiqueta, etiqueta);
+                cargaMembranaDistribuidaObj.dist2, dirc);
+            fprintf('\t                   entre los Nodos: %s (%d) y %s (%d) del Elemento: %s\n', ...
+                nodo1etiqueta, cargaMembranaDistribuidaObj.nodo1, nodo2etiqueta, cargaMembranaDistribuidaObj.nodo2, etiqueta);
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');

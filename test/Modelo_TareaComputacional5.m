@@ -16,7 +16,7 @@ fprintf('>\tTEST_TAREACOMPUTACIONAL5\n');
 %                         cm
 
 t = 20; % Espesor [cm]
-E = 300000; % Modulo de Elasticidad [kgf/cm^2]
+E = 300; % Modulo de Elasticidad [tonf/cm^2]
 nu = 0.15; % Modulo de Poisson
 
 % Creamos el modelo
@@ -93,19 +93,20 @@ modeloObj.agregarRestricciones(restricciones);
 cargas = cell(8, 1);
 
 % Cargas verticales
-cargas{1} = CargaMembranaDistribuida('V 1TONF/M @10', elementos{10}, 4, 3, -10, 0, -10, 1); % 1 tonf/m = 10 kgf/cm
-cargas{2} = CargaMembranaDistribuida('V 1TONF/M @11', elementos{11}, 4, 3, -10, 0, -10, 1);
-cargas{3} = CargaMembranaDistribuida('V 1TONF/M @12', elementos{12}, 4, 3, -10, 0, -10, 1);
-cargas{4} = CargaMembranaDistribuida('V 1TONF/M @13', elementos{13}, 4, 3, -10, 0, -10, 1);
+vmax = 0.01; % 1 tonf/m = 0.01 tonf/cm
+cargas{1} = CargaMembranaDistribuida('V 1TONF/M @10', elementos{10}, 4, 3, -vmax, 0, -vmax, 1); % 1 tonf/m = 10 kgf/cm
+cargas{2} = CargaMembranaDistribuida('V 1TONF/M @11', elementos{11}, 4, 3, -vmax, 0, -vmax, 1);
+cargas{3} = CargaMembranaDistribuida('V 1TONF/M @12', elementos{12}, 4, 3, -vmax, 0, -vmax, 1);
+cargas{4} = CargaMembranaDistribuida('V 1TONF/M @13', elementos{13}, 4, 3, -vmax, 0, -vmax, 1);
 
-vmax = 200; % 20 tonf/m = 200 kgf/cm
-hmax = 5; % Altura maxima, asi calcula por tramos cuanto es el triangulo que corresponde
+hmax = 0.2; % 20 tonf/m = 0.2tonf/cm
+h = 5; % Altura maxima, asi calcula por tramos cuanto es el triangulo que corresponde
 
 % Cargas horizontales, triangular
-cargas{5} = CargaMembranaDistribuida('H 20TONF/M @1', elementos{1}, 1, 4, 0, 0, vmax*(1 / hmax), 1);
-cargas{6} = CargaMembranaDistribuida('H 20TONF/M @5', elementos{5}, 1, 4, vmax*(1 / hmax), 0, vmax*(2 / hmax), 1);
-cargas{7} = CargaMembranaDistribuida('H 20TONF/M @8', elementos{8}, 1, 4, vmax*(2 / hmax), 0, vmax*(3.5 / hmax), 1);
-cargas{8} = CargaMembranaDistribuida('H 20TONF/M @10', elementos{10}, 1, 4, vmax*(3.5 / hmax), 0, vmax, 1);
+cargas{5} = CargaMembranaDistribuida('H 20TONF/M @1', elementos{1}, 1, 4, 0, 0, hmax*(1 / h), 1);
+cargas{6} = CargaMembranaDistribuida('H 20TONF/M @5', elementos{5}, 1, 4, hmax*(1 / h), 0, hmax*(2 / h), 1);
+cargas{7} = CargaMembranaDistribuida('H 20TONF/M @8', elementos{8}, 1, 4, hmax*(2 / h), 0, hmax*(3.5 / h), 1);
+cargas{8} = CargaMembranaDistribuida('H 20TONF/M @10', elementos{10}, 1, 4, hmax*(3.5 / h), 0, hmax, 1);
 
 % Creamos el Patron de Cargas
 PatronesDeCargas = cell(1, 1);

@@ -98,7 +98,7 @@ classdef ComponenteModelo < handle
             if (isnumeric(componenteModeloObj.etiquetaID) == 1)
                 etiquetaStr = num2str(etiquetaStr);
             end
-            fprintf('\tEtiqueta:\t%s\n', etiquetaStr);
+            fprintf('\tEtiqueta: %s\n', etiquetaStr);
             
         end % disp function
         
