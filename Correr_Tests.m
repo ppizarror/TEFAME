@@ -31,6 +31,7 @@
 
 % Anade carpetas al PATH
 addpath('test');
+addpath('test/out');
 iniciar_TEFAME;
 
 % Inicia los tests
