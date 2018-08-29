@@ -16,7 +16,7 @@ fprintf('>\tTEST_TAREACOMPUTACIONAL5\n');
 %                         cm
 
 t = 20; % Espesor [cm]
-E = 300; % Modulo de Elasticidad [tonf/cm^2]
+E = 300000; % Modulo de Elasticidad [kgf/cm^2]
 nu = 0.15; % Modulo de Poisson
 
 % Creamos el modelo
@@ -93,13 +93,13 @@ modeloObj.agregarRestricciones(restricciones);
 cargas = cell(8, 1);
 
 % Cargas verticales
-vmax = 0.01; % 1 tonf/m = 0.01 tonf/cm
+vmax = 10; % 1 tonf/m = 0.01 tonf/cm = 10 kgf/cm
 cargas{1} = CargaMembranaDistribuida('V 1TONF/M @10', elementos{10}, 4, 3, -vmax, 0, -vmax, 1); % 1 tonf/m = 10 kgf/cm
 cargas{2} = CargaMembranaDistribuida('V 1TONF/M @11', elementos{11}, 4, 3, -vmax, 0, -vmax, 1);
 cargas{3} = CargaMembranaDistribuida('V 1TONF/M @12', elementos{12}, 4, 3, -vmax, 0, -vmax, 1);
 cargas{4} = CargaMembranaDistribuida('V 1TONF/M @13', elementos{13}, 4, 3, -vmax, 0, -vmax, 1);
 
-hmax = 0.2; % 20 tonf/m = 0.2tonf/cm
+hmax = 200; % 20 tonf/m = 0.2tonf/cm = 200 kgf/cm
 h = 5; % Altura maxima, asi calcula por tramos cuanto es el triangulo que corresponde
 
 % Cargas horizontales, triangular

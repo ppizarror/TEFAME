@@ -18,11 +18,11 @@ PLOT_DIM_SIZE = 1000
 
 # Si no tiene argumentos imprime la ayuda
 if len(sys.argv) == 2:
-    print('uso: graficarTensiones Titulo Archivo.txt TIPO output.png UNIDAD X1,Y1,X2,Y2,N X1,Y1....')
-    print('en donde TIPO: geom,sigmax,sigmay,sigmaxy y la UNIDAD es aquello que va en las etiquetas')
+    print('uso: graficarTensiones Titulo Archivo.txt TIPO output.png UNIDAD COLORBARLBL X1,Y1,X2,Y2,N X1,Y1....')
+    print('en donde TIPO: geom,sigmax,sigmay,sigmaxy,desplx,desply y la UNIDAD es aquello que va en las etiquetas')
 
 # Carga el archivo a partir de la linea de comandos
-if len(sys.argv) < 6:
+if len(sys.argv) < 7:
     exit('Argumentos no son correctos')
 
 titulo = str(sys.argv[1]).strip().replace('::', ' ')
@@ -30,9 +30,10 @@ archivo = sys.argv[2]
 modo = str(sys.argv[3]).lower()
 output = str(sys.argv[4])
 unidad = str(sys.argv[5])
+unidadclb = str(sys.argv[6])
 
 areas = []
-for k in range(6, len(sys.argv)):
+for k in range(7, len(sys.argv)):
     u = sys.argv[k].strip().split(',')
     if len(u) != 5:
         exit('Recuadro no valido @' + sys.argv[k])
@@ -51,8 +52,9 @@ for k in range(6, len(sys.argv)):
     # Agrega el punto
     areas.append([x1, y1, x2, y2, n])
 
-if modo not in ['sigmax', 'sigmay', 'sigmaxy', 'geom']:
-    exit('Modo de dibujo no es correcto')
+if modo not in ['sigmax', 'sigmay', 'sigmaxy', 'geom', 'desplx', 'desply']:
+    exit('Modo de dibujo no es correcto ({0}), valores correctos: \
+    geom,sigmax,sigmay,sigmaxy,desplx,desply'.format(modo))
 
 """
 Lee el archivo y obtiene la lista completa de tensiones
@@ -103,6 +105,12 @@ elif modo == 'sigmay':
 elif modo == 'sigmaxy':
     p = 6
     plt_title = r'$\sigma_{xy}$ ' + titulo
+elif modo == 'desplx':
+    p = 7
+    plt_title = r'$\epsilon_{x}$ ' + titulo
+elif modo == 'desply':
+    p = 8
+    plt_title = r'$\epsilon_{y}$ ' + titulo
 else:
     p = 4  # Solo grafica la geometria, el resto no importa
     mod_geom = True
@@ -210,7 +218,9 @@ if not mod_geom:
     # noinspection PyUnresolvedReferences
     cs1 = plt.contourf(xi, yi, zi, con.levels, extend='max', alpha=ALPHACON)
     plt.gcf().canvas.draw()
-    plt.colorbar(cs1, pad=0.05)
+    cbar = plt.colorbar(cs1, pad=0.05)
+    cbar.ax.get_yaxis().labelpad = 15
+    cbar.ax.set_ylabel(unidadclb, rotation=270)
 
 else:
     """
