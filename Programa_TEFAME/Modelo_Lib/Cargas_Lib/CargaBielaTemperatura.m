@@ -40,6 +40,7 @@
 %       elemObj
 %       deltaTemepratura
 %       alpha
+%       carga
 %
 %  Methods:
 %       cargaBielaTemperaturaObj = CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
@@ -53,10 +54,10 @@
 classdef CargaBielaTemperatura < Carga
     
     properties(Access = private)
-        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-        deltaTemperatura % Diferencia de temperatura aplicada al material
-        alpha % Coeficiente de dilatacion termica de la biela
-        carga % Carga generada por la temperatura
+        elemObj             % Variable que guarda el elemento que se le va a aplicar la carga
+        deltaTemperatura    % Diferencia de temperatura aplicada al material
+        alpha               % Coeficiente de dilatacion termica de la biela
+        carga               % Carga generada por la temperatura
     end % properties CargaBielaTemperatura
     
     methods
@@ -117,7 +118,7 @@ classdef CargaBielaTemperatura < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % M�todos para mostar la informacion de la Carga Biela Temperatura en pantalla
+        % Metodos para mostar la informacion de la Carga Biela Temperatura en pantalla
         
         function disp(cargaBielaTemperaturaObj)
             % disp: es un metodo de la clase CargaBielaTemperatura que se usa para imprimir en

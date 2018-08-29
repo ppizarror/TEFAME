@@ -78,7 +78,7 @@ classdef Carga < ComponenteModelo
             % la carga.
             %
             % aplicarCarga(cargaObj)
-            % Aplica el carga que estan guardada en el componente que corresponda
+            % Aplica el carga que estan guardada en el componente que corresponda.
             
         end % aplicarCarga function
         
@@ -88,10 +88,10 @@ classdef Carga < ComponenteModelo
         function disp(cargaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % componente que corresponda
+            % componente que corresponda.
             %
             % disp(patronDeCargasObj)
-            % Imprime la informacion guardada en la Carga (cargaObj) en pantalla
+            % Imprime la informacion guardada en la Carga (cargaObj) en pantalla.
             
             disp@ComponenteModelo(cargaObj);
             

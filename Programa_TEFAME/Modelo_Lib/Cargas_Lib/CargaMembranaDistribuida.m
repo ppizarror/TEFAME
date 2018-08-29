@@ -37,17 +37,19 @@
 %
 %  Properties (Access=private):
 %       elemObj
+%       carga1
+%       carga2
+%       dist1
+%       dist2
 %       nodo1
 %       nodo2
-%       carga1
-%       dist1
-%       carga2
-%       dist2
+%       L
+%       theta
 %
 %  Methods:
 %       cargaMembranaDistribuidaObj = CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
-%       aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
-%       disp(cargaVigaDistribuidaObj)
+%       aplicarCarga(cargaMembranaDistribuidaObj,factorDeCarga)
+%       disp(cargaMembranaDistribuidaObj)
 %
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
@@ -57,15 +59,15 @@ classdef CargaMembranaDistribuida < Carga
     
     properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-        carga1 % Valor de la carga 1
-        carga2 % Valor de la carga 2
-        dist1 % Distancia de la carga 1 al primer nodo del elemento
-        dist2 % Distancia de la carga 2 al primer nodo del elemento
-        nodo1 % Nodo 1 de aplicacion
-        nodo2 % Nodo 2 de aplicacion
-        L % Largo de aplicacion de las cargas
-        theta % Angulo de aplicacion
-    end % properties CargaVigaDistribuida
+        carga1  % Valor de la carga 1
+        carga2  % Valor de la carga 2
+        dist1   % Distancia de la carga 1 al primer nodo del elemento
+        dist2   % Distancia de la carga 2 al primer nodo del elemento
+        nodo1   % Nodo 1 de aplicacion
+        nodo2   % Nodo 2 de aplicacion
+        L       % Largo de aplicacion de las cargas
+        theta   % Angulo de aplicacion
+    end % properties CargaMembranaDistribuida
     
     methods
         
@@ -76,7 +78,7 @@ classdef CargaMembranaDistribuida < Carga
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas y las distancias de
             % aplicacion.
-            % La enumeracion de los nodos de la membrana corresponde a
+            % La enumeracion de los nodos de la membrana corresponde a:
             %
             %       4 ------------- 3
             %       |               |
@@ -85,7 +87,7 @@ classdef CargaMembranaDistribuida < Carga
             %       1 ------------- 2
             %
             % No se pueden aplicar cargas cruzadas, ie solo se permiten las
-            % combinaciones 1-2, 2-3, 3-4 o 1-4
+            % combinaciones 1-2, 2-3, 3-4 o 1-4.
             
             if nargin == 0
                 etiquetaCarga = '';
