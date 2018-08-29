@@ -15,6 +15,7 @@ ALPHACON = 1.0
 PLOT_DIM_X_ADD = 0.2
 PLOT_DIM_Y_ADD = 0.2
 PLOT_DIM_SIZE = 1000
+PLOT_SCALE_LIMX = False
 
 # Si no tiene argumentos imprime la ayuda
 if len(sys.argv) == 2:
@@ -186,15 +187,27 @@ minx = float(min(x)) - dx * PLOT_DIM_X_ADD
 maxx = float(max(x)) + dx * PLOT_DIM_X_ADD
 
 miny = float(min(y)) - dy * PLOT_DIM_Y_ADD
+if min(y) >= 0 and miny < 0:
+    miny = 0
 maxy = float(max(y)) + dy * PLOT_DIM_Y_ADD
 
 numcols = PLOT_DIM_SIZE
-numrows = int(PLOT_DIM_SIZE * (dy / dx))
+numrows = PLOT_DIM_SIZE
+
+limmn = min(minx, miny)
+limmx = max(maxx, maxy)
+limm_x = [limmn, limmx]  # Los limites de los ejes corresponde al maximo entre ambos para respetar escala
+limm_y = [limmn, limmx]
+if min(y) >= 0 and miny < 0:
+    limm_y[0] = 0
 
 """
 Crea el grafico
 """
-fig = plt.figure(figsize=(10, 10 * dy / dx))
+if PLOT_SCALE_LIMX:
+    fig = plt.figure(figsize=(10, 10))
+else:
+    fig = plt.figure(figsize=(10, max(2.5, 10 * dy / dx)))
 plt.title(plt_title)
 plt.xlabel('x ({0})'.format(unidad))
 plt.ylabel('y ({0})'.format(unidad))
@@ -222,6 +235,11 @@ if not mod_geom:
     cbar.ax.get_yaxis().labelpad = 15
     cbar.ax.set_ylabel(unidadclb, rotation=270)
 
+    # Aplica factor de escala
+    if PLOT_SCALE_LIMX:
+        plt.xlim(limm_x)
+        plt.ylim(limm_y)
+
 else:
     """
     Modo geometrico
@@ -234,6 +252,12 @@ else:
 
     plt.xlim([minx, maxx])
     plt.ylim([miny, maxy])
+
+    # Aplica factor de escala
+    if PLOT_SCALE_LIMX:
+        plt.xlim(limm_x)
+        plt.ylim(limm_y)
+
     plt.legend(loc=1)
 
 # Dibuja el grafico

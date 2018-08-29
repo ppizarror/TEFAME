@@ -3,23 +3,24 @@ fprintf('>\tTEST_MEMBRANA_CARGADISTRIBUIDA_VER\n');
 
 % Test Membrana Sencillo
 % Corresponde al ejemplo 4.4 del libro modificado con carga distribuida
-% rectangular vertical
+% rectangular
 %   INTRODUCCION AL ANALISIS ESTRUCTURAL POR ELEMENTOS FINITOS
 %   Autor: JORGE EDUARDO HURTADO GÓMEZ
 %   http://bdigital.unal.edu.co/10002/6/958932276X.2002.pdf
 %   Pagina 92
 %
-%   100 kN/m
-%    -----> 2 ------ 4 ------ 6
-%     ----> |        |        |
-%      ---> |   (1)  |   (2)  |  2m
-%       --> |        |        |
-%        -> 1 ------ 3 ------ 5
-%         > ^   2m       2m   ^
-%     0 kN/m
-% ===================================
+%           100 kN/m
+%    |||||||||||||||||||         
+%    vvvvvvvvvvvvvvvvvvv
+%    2 ------ 4 ------ 6
+%    |        |        |
+%    |   (1)  |   (2)  |  2m
+%    |        |        |
+%    1 ------ 3 ------ 5
+%    ^   2m       2m   ^
+% ==========================
 
-t = 0.25;
+t = 0.25; % Espesor, en metros
 E = 2 * 10^3; % kN/m^2
 nu = 0.2; % Modulo de Poisson
 
@@ -55,8 +56,9 @@ restricciones{2} = RestriccionNodo('R2', nodos{5}, [1, 2]');
 modeloObj.agregarRestricciones(restricciones);
 
 % Creamos la carga
-cargas = cell(1, 1);
-cargas{1} = CargaMembranaDistribuida('D100KN V', elementos{1}, 1, 4, 0, 0, 100, 1);
+cargas = cell(2, 1);
+cargas{1} = CargaMembranaDistribuida('DV100KN V', elementos{1}, 4, 3, -100, 0, -100, 1);
+cargas{2} = CargaMembranaDistribuida('DV100KN V', elementos{2}, 4, 3, -100, 0, -100, 1);
 
 % Creamos el Patron de Cargas
 PatronesDeCargas = cell(1, 1);
@@ -68,4 +70,4 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-modeloObj.guardarResultados('test/out/Ejemplo_MembranaCargaDistribuidaVer.txt');
+modeloObj.guardarResultados('test/out/Ejemplo_MembranaCargaDistribuidaHor.txt');
