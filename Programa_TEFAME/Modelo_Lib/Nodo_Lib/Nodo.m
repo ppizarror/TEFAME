@@ -67,12 +67,12 @@
 classdef Nodo < ComponenteModelo
     
     properties(Access = private)
-        nGDL % Numbero de grados de libertad (GDL)
-        coords % Coordenadas del nodo
-        gdlID % Vector que guarda el ID de los grados de libertad
-        despl % Vector que guarda los desplazamientos del nodo
-        cargas % Vector que guarda las cargas aplicadas sobre el nodo
-        reacciones % Vector que guarda las reacciones del nodo
+        nGDL        % Numbero de grados de libertad (GDL)
+        coords      % Coordenadas del nodo
+        gdlID       % Vector que guarda el ID de los grados de libertad
+        despl       % Vector que guarda los desplazamientos del nodo
+        cargas      % Vector que guarda las cargas aplicadas sobre el nodo
+        reacciones  % Vector que guarda las reacciones del nodo
     end % properties Nodo
     
     methods

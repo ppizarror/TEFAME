@@ -37,10 +37,12 @@
 %       gdlID
 %       E
 %       nu
-%       dx
-%       dy
-%       L
+%       D
+%       t
+%       h
+%       b
 %       Feq
+%       NPOINTS
 %
 %  Methods:
 %       membranaObj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,E,nu)
@@ -71,16 +73,16 @@
 classdef Membrana < Elemento
     
     properties(Access = private)
-        nodosObj
-        gdlID
-        E
-        nu
-        D
-        t
-        h
-        b
-        Feq
-        NPOINTS
+        nodosObj    % Lista de nodos de la membrana
+        gdlID       % ID de los grados de libertad
+        E           % Constante elastica del material
+        nu          % Modulo de Poisson
+        D           % Matriz de constantes elasticas
+        t           % Ancho de la membrana
+        h           % Alto de la membrana desde el eje (r,s)
+        b           % Largo de la membrana desde el eje (r,s)
+        Feq         % Vector de fuerzas equivalentes en nodos
+        NPOINTS     % Numero de interpolaciones
     end % properties Membrana
     
     methods
@@ -150,13 +152,13 @@ classdef Membrana < Elemento
             
             b = 2 * membranaObj.b;
             
-        end % obtenerLargo function
+        end % obtenerAncho function
         
         function h = obtenerAlto(membranaObj)
             
             h = 2 * membranaObj.h;
             
-        end % obtenerLargo function
+        end % obtenerAlto function
         
         function numeroNodos = obtenerNumeroNodos(membranaObj) %#ok<MANU>
             
