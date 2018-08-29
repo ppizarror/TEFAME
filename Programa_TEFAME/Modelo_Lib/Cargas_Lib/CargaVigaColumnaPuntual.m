@@ -54,10 +54,10 @@
 classdef CargaVigaColumnaPuntual < Carga
     
     properties(Access = private)
-        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-        carga % Valor de la carga
-        dist % Distancia de la carga al primer nodo del elemento
-        theta % Angulo de aplicacion de la carga
+        elemObj     % Variable que guarda el elemento que se le va a aplicar la carga
+        carga       % Valor de la carga
+        dist        % Distancia de la carga al primer nodo del elemento
+        theta       % Angulo de aplicacion de la carga
     end % properties CargaVigaColumnaPuntual
     
     methods
@@ -144,11 +144,11 @@ classdef CargaVigaColumnaPuntual < Carga
         function disp(cargaVigaColumnaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % elemento
+            % elemento.
             %
             % disp(cargaVigaColumnaPuntualObj)
             % Imprime la informacion guardada en la Carga Puntual de la
-            % Viga-Columna (cargaVigaColumnaPuntualObj) en pantalla
+            % Viga-Columna (cargaVigaColumnaPuntualObj) en pantalla.
             
             fprintf('Propiedades Carga Viga-Columna Puntual:\n');
             disp@Carga(cargaVigaColumnaPuntualObj);

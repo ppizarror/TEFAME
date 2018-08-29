@@ -53,11 +53,11 @@
 classdef CargaVigaDistribuida < Carga
     
     properties(Access = private)
-        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-        carga1 % Valor de la carga 1
-        carga2 % Valor de la carga 2
-        dist1 % Distancia de la carga 1 al primer nodo del elemento
-        dist2 % Distancia de la carga 2 al primer nodo del elemento
+        elemObj     % Variable que guarda el elemento que se le va a aplicar la carga
+        carga1      % Valor de la carga 1
+        carga2      % Valor de la carga 2
+        dist1       % Distancia de la carga 1 al primer nodo del elemento
+        dist2       % Distancia de la carga 2 al primer nodo del elemento
     end % properties CargaVigaDistribuida
     
     methods
@@ -153,11 +153,11 @@ classdef CargaVigaDistribuida < Carga
         function disp(cargaVigaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % elemento
+            % elemento.
             %
             % disp(cargaVigaDistribuidaObj)
             % Imprime la informacion guardada en la Carga Distribuida de la
-            % Viga (cargaVigaDistribuidaObj) en pantalla
+            % Viga (cargaVigaDistribuidaObj) en pantalla.
             
             fprintf('Propiedades Carga Viga Distribuida:\n');           
             disp@Carga(cargaVigaDistribuidaObj);

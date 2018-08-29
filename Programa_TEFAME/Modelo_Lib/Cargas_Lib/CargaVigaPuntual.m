@@ -130,11 +130,11 @@ classdef CargaVigaPuntual < Carga
         function disp(cargaVigaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % elemento
+            % elemento.
             %
             % disp(cargaVigaPuntualObj)
             % Imprime la informacion guardada en la Carga Puntual de la
-            % Viga (cargaVigaPuntualObj) en pantalla
+            % Viga (cargaVigaPuntualObj) en pantalla.
             
             fprintf('Propiedades Carga Viga Puntual:\n');          
             disp@Carga(cargaVigaPuntualObj);

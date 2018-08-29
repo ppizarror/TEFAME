@@ -52,7 +52,7 @@
 classdef CargaNodo < Carga
     
     properties(Access = private)
-        nodoObj % Variable que guarda el Nodo que se le va a aplicar la carga
+        nodoObj     % Variable que guarda el Nodo que se le va a aplicar la carga
         vectorCarga % Variable que guarda el vector de cargas a aplicar
     end % properties CargaNodo
     
@@ -64,7 +64,7 @@ classdef CargaNodo < Carga
             % cargaNodoObj = CargaNodo(etiquetaCargaNodo,nodoObjeto,cargaNodo)
             % Crea un objeto de la clase CargaNodo, con un identificador unico
             % (etiquetaCargaNodo), guarda el nodo que sera cargado y el vector
-            % con los valores de la carga a aplicar
+            % con los valores de la carga a aplicar.
             
             if nargin == 0
                 etiquetaCargaNodo = '';
@@ -94,7 +94,7 @@ classdef CargaNodo < Carga
             %
             % aplicarCarga(cargaNodoObj,factorDeCarga)
             % Aplica el vector de carga que esta guardada en el nodo que corresponde
-            % amplificada por el factor (factorDeCarga)
+            % amplificada por el factor (factorDeCarga).
             
             cargaNodoObj.nodoObj.agregarCarga(factorDeCarga*cargaNodoObj.vectorCarga);
             
@@ -105,10 +105,10 @@ classdef CargaNodo < Carga
         
         function disp(cargaNodoObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
-            % command Window la informacion de la carga aplicada sobre el nodo
+            % command Window la informacion de la carga aplicada sobre el nodo.
             %
             % disp(cargaNodoObj)
-            % Imprime la informacion guardada en la Carga Nodal (cargaObj) en pantalla
+            % Imprime la informacion guardada en la Carga Nodal (cargaObj) en pantalla.
             
             fprintf('Propiedades Carga Nodo:\n');
             disp@Carga(cargaNodoObj);
