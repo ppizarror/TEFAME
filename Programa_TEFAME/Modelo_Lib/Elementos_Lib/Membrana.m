@@ -144,7 +144,7 @@ classdef Membrana < Elemento
             membranaObj.Feq = [0, 0, 0, 0, 0, 0, 0, 0]'; % 8x1
             
             % Numero de puntos de la malla, itera segun alto y largo
-            membranaObj.NPOINTS = 15;
+            membranaObj.NPOINTS = 15; % (NPOINTS+1)^2 puntos totales 
             
         end % Membrana constructor
         

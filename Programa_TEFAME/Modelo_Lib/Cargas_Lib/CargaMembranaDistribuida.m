@@ -59,14 +59,14 @@ classdef CargaMembranaDistribuida < Carga
     
     properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-        carga1  % Valor de la carga 1
-        carga2  % Valor de la carga 2
-        dist1   % Distancia de la carga 1 al primer nodo del elemento
-        dist2   % Distancia de la carga 2 al primer nodo del elemento
-        nodo1   % Nodo 1 de aplicacion
-        nodo2   % Nodo 2 de aplicacion
-        L       % Largo de aplicacion de las cargas
-        theta   % Angulo de aplicacion
+        carga1 % Valor de la carga 1
+        carga2 % Valor de la carga 2
+        dist1 % Distancia de la carga 1 al primer nodo del elemento
+        dist2 % Distancia de la carga 2 al primer nodo del elemento
+        nodo1 % Nodo 1 de aplicacion
+        nodo2 % Nodo 2 de aplicacion
+        L % Largo de aplicacion de las cargas
+        theta % Angulo de aplicacion
     end % properties CargaMembranaDistribuida
     
     methods

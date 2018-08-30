@@ -55,11 +55,13 @@ nodos{25} = Nodo('N25', 2, [7, 5]'*m_cm);
 modeloObj.agregarNodos(nodos);
 
 % Creamos los elementos
+%
 % 4 ------------- 3      Esta es la notacion que se usa para crear los
 % |       y       |      elementos.
 % |       #x      |
 % |               |
 % 1 ------------- 2
+%
 elementos = cell(2, 1);
 elementos{1} = Membrana('MEM1', nodos{1}, nodos{2}, nodos{7}, nodos{6}, E, nu, t);
 elementos{2} = Membrana('MEM2', nodos{2}, nodos{3}, nodos{8}, nodos{7}, E, nu, t);
