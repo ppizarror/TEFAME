@@ -47,7 +47,7 @@
 %       numeroNodos = obtenerNumeroNodos(viga2DObj)
 %       nodosBiela = obtenerNodos(viga2DObj)
 %       numeroGDL = obtenerNumeroGDL(viga2DObj)
-%       gdlIDBiela = obtenerGDLID(viga2DObj)
+%       gdlIDViga = obtenerGDLID(viga2DObj)
 %       k_global = obtenerMatrizRigidezCoordGlobal(viga2DObj)
 %       k_local = obtenerMatrizRigidezCoordLocal(viga2DObj)
 %       fr_global = obtenerFuerzaResistenteCoordGlobal(viga2DObj)
@@ -135,7 +135,7 @@ classdef Viga2D < Elemento
             
             gdlIDViga = viga2DObj.gdlID;
             
-        end % obtenerNumeroGDL function
+        end % obtenerGDLID function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(viga2DObj)
             

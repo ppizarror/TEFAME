@@ -49,7 +49,7 @@
 %       numeroNodos = obtenerNumeroNodos(membranaObj)
 %       nodosMembrana = obtenerNodos(membranaObj)
 %       numeroGDL = obtenerNumeroGDL(membranaObj)
-%       gdlIDBiela = obtenerGDLID(membranaObj)
+%       gdlIDMembrana = obtenerGDLID(membranaObj)
 %       k_global = obtenerMatrizRigidezCoordGlobal(membranaObj)
 %       k_local = obtenerMatrizRigidezCoordLocal(membranaObj)
 %       fr_global = obtenerFuerzaResistenteCoordGlobal(membranaObj)
@@ -178,11 +178,11 @@ classdef Membrana < Elemento
             
         end % obtenerNumeroGDL function
         
-        function gdlIDViga = obtenerGDLID(membranaObj)
+        function gdlIDMembrana = obtenerGDLID(membranaObj)
             
-            gdlIDViga = membranaObj.gdlID;
+            gdlIDMembrana = membranaObj.gdlID;
             
-        end % obtenerNumeroGDL function
+        end % obtenerGDLID function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(membranaObj)
             
