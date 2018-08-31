@@ -139,7 +139,7 @@ classdef CargaVigaDistribuida < Carga
             vectorCarga1 = factorDeCarga * [0, v1, theta1]';
             vectorCarga2 = factorDeCarga * [0, v2, theta2]';
             cargaVigaDistribuidaObj.elemObj.sumarFuerzaEquivalente( ...
-                [vectorCarga1(2), vectorCarga1(3), vectorCarga2(2), vectorCarga1(3)]');
+                [vectorCarga1(2), vectorCarga1(3), vectorCarga2(2), vectorCarga2(3)]');
             
             % Aplica vectores de carga
             nodos = cargaVigaDistribuidaObj.elemObj.obtenerNodos();
