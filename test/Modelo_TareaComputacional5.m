@@ -62,7 +62,7 @@ modeloObj.agregarNodos(nodos);
 % |               |
 % 1 ------------- 2
 %
-elementos = cell(2, 1);
+elementos = cell(13, 1);
 elementos{1} = Membrana('MEM1', nodos{1}, nodos{2}, nodos{7}, nodos{6}, E, nu, t);
 elementos{2} = Membrana('MEM2', nodos{2}, nodos{3}, nodos{8}, nodos{7}, E, nu, t);
 elementos{3} = Membrana('MEM3', nodos{3}, nodos{4}, nodos{9}, nodos{8}, E, nu, t);
