@@ -1,29 +1,32 @@
 clear all; %#ok<CLALL>
-fprintf('>\tTEST_MEMBRANA2\n');
+fprintf('>\tTEST_MEMBRANA3\n');
 
-% Test Membrana muro largo con carga distribuida encima, simplemente
-% apoyado en sus dos extremos
+% Testea cargas en un muro muy alto formado por varios elementos
+% CARGA VERTICAL EN EL ULTIMO ELEMENTO
 %
 N = 11; % Numero de bloques
 b = 100; % Ancho de cada bloque
 h = 100; % Alto de cada bloque
 %
-%    N = 2
-%       4 ------ 5 ------ 6
-%       |        |        |
-%     h |   (1)  |   (2)  |  ......
-%       |        |        |
-%       1 ------ 2 ------ 3 .....
-%       ^    b        b   ^
+% N = 2
 %
-%    N = 3
-%       4 ------ 5 ------ 6 ------- 8
-%       |        |        |         |
-%     h |   (1)  |   (2)  |   (3)   |
-%       |        |        |         |
-%       1 ------ 2 ------ 3 ------- 4
-%       ^    b                      ^
-% ==========================
+%    3---6
+%    |   |
+%    2---5
+%    |   |
+%    1---4
+% =============
+%
+% N = 3
+%
+%    4---8
+%    |   |
+%    3---7
+%    |   |
+%    2---6
+%    |   |
+%    1---5
+% =============
 
 t = 15; % cm
 E = 300000; % Modulo de Elasticidad [kgf/cm^2]
@@ -38,9 +41,9 @@ modeloObj = Modelo(2, gdl);
 % Creamos los Nodos
 nodos = cell(gdl, 1);
 for i = 1:(N + 1)
-    j = N + 1 + i; % Nodo superior a <i>
-    nodos{i} = Nodo(sprintf('N%d', i), 2, [b * (i - 1), 0]');
-    nodos{j} = Nodo(sprintf('N%d', j), 2, [b * (i - 1), h]');
+    j = N + 1 + i;
+    nodos{i} = Nodo(sprintf('N%d', i), 2, [0, h * (i - 1)]');
+    nodos{j} = Nodo(sprintf('N%d', j), 2, [b, h * (i - 1)]');
 end
 
 % Agregamos los nodos al modelo
@@ -55,9 +58,9 @@ for i = 1:N
     %  |              |
     % n1 ------------ n2
     n1 = i;
-    n2 = i + 1;
+    n2 = N + i + 1;
     n3 = N + i + 2;
-    n4 = N + i + 1;
+    n4 = i + 1;
     elementos{i} = Membrana(sprintf('MEM%d', i), nodos{n1}, nodos{n2}, nodos{n3}, nodos{n4}, E, nu, t);
 end
 
@@ -67,16 +70,14 @@ modeloObj.agregarElementos(elementos);
 % Creamos las restricciones
 restricciones = cell(2, 1);
 restricciones{1} = RestriccionNodo('R1', nodos{1}, [1, 2]'); % Apoyo simple en ambos
-restricciones{2} = RestriccionNodo('R2', nodos{N+1}, [1, 2]');
+restricciones{2} = RestriccionNodo('R2', nodos{N+2}, [1, 2]');
 
 % Agregamos las restricciones al modelo
 modeloObj.agregarRestricciones(restricciones);
 
 % Creamos la carga
-cargas = cell(N, 1);
-for i = 1:N
-    cargas{i} = CargaMembranaDistribuida(sprintf('DV100KN V @%d', i), elementos{i}, 4, 3, -100, 0, -100, 1);
-end
+cargas = cell(1, 1);
+cargas{1} = CargaMembranaDistribuida(sprintf('DV100KN V@%d', N), elementos{N}, 4, 3, -100, 0, -100, 1);
 
 % Creamos el Patron de Cargas
 PatronesDeCargas = cell(1, 1);
@@ -88,4 +89,4 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-modeloObj.guardarResultados('test/out/Test_Membrana2.txt');
+modeloObj.guardarResultados('test/out/Test_Membrana3.txt');
