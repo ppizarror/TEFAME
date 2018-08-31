@@ -22,12 +22,14 @@ Elementos:
 		Espesor (t):	0.25
 		E:				2000
 		v:				0.2
+		Nodos:			N1 N3 N4 N2
 	Membrana MEM2:
 		Ancho (2b):		2
 		Alto (2h):		2
 		Espesor (t):	0.25
 		E:				2000
 		v:				0.2
+		Nodos:			N3 N5 N6 N4
 
 -------------------------------------------------------------------------------
 Resultados del analisis

@@ -44,6 +44,7 @@ Modelo_TareaComputacional5;
 % Test de membranas
 Test_Membrana1;
 Test_Membrana2;
+Test_Membrana3;
 Test_MembranaCargaDistribuidaHor;
 Test_MembranaCargaDistribuidaVer;
 

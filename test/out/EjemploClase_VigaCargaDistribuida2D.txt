@@ -54,5 +54,5 @@ Esfuerzos Elementos:
 		Momento:	3.6514     -1.9338   
 		Corte:		0.6871     -0.6871   
 	Viga2D V3:
-		Momento:	1.9338     -6.6331   
+		Momento:	1.9338     3.5002    
 		Corte:		6.4252     8.7748    

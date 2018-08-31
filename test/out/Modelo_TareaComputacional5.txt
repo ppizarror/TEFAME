@@ -41,78 +41,91 @@ Elementos:
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N1 N2 N7 N6
 	Membrana MEM2:
 		Ancho (2b):		100
 		Alto (2h):		100
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N2 N3 N8 N7
 	Membrana MEM3:
 		Ancho (2b):		150
 		Alto (2h):		100
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N3 N4 N9 N8
 	Membrana MEM4:
 		Ancho (2b):		200
 		Alto (2h):		100
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N4 N5 N10 N9
 	Membrana MEM5:
 		Ancho (2b):		250
 		Alto (2h):		100
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N6 N7 N12 N11
 	Membrana MEM6:
 		Ancho (2b):		150
 		Alto (2h):		100
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N8 N9 N14 N13
 	Membrana MEM7:
 		Ancho (2b):		200
 		Alto (2h):		100
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N9 N10 N15 N14
 	Membrana MEM8:
 		Ancho (2b):		250
 		Alto (2h):		150
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N11 N12 N17 N16
 	Membrana MEM9:
 		Ancho (2b):		200
 		Alto (2h):		150
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N14 N15 N20 N19
 	Membrana MEM10:
 		Ancho (2b):		250
 		Alto (2h):		150
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N16 N17 N22 N21
 	Membrana MEM11:
 		Ancho (2b):		100
 		Alto (2h):		150
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N17 N18 N23 N22
 	Membrana MEM12:
 		Ancho (2b):		150
 		Alto (2h):		150
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N18 N19 N24 N23
 	Membrana MEM13:
 		Ancho (2b):		200
 		Alto (2h):		150
 		Espesor (t):	20
 		E:				300000
 		v:				0.15
+		Nodos:			N19 N20 N25 N24
 
 -------------------------------------------------------------------------------
 Resultados del analisis

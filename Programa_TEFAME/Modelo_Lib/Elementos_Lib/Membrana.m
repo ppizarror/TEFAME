@@ -463,9 +463,17 @@ classdef Membrana < Elemento
         
         function guardarPropiedades(membranaObj, archivoSalidaHandle)
             
-            fprintf(archivoSalidaHandle, '\tMembrana %s:\n\t\tAncho (2b):\t\t%s\n\t\tAlto (2h):\t\t%s\n\t\tEspesor (t):\t%s\n\t\tE:\t\t\t\t%s\n\t\tv:\t\t\t\t%s\n', ...
+            % Carga los nodos
+            nodo1 = membranaObj.nodosObj{1};
+            nodo2 = membranaObj.nodosObj{2};
+            nodo3 = membranaObj.nodosObj{3};
+            nodo4 = membranaObj.nodosObj{4};
+            
+            % Escribe la membrana en el archivo
+            fprintf(archivoSalidaHandle, '\tMembrana %s:\n\t\tAncho (2b):\t\t%s\n\t\tAlto (2h):\t\t%s\n\t\tEspesor (t):\t%s\n\t\tE:\t\t\t\t%s\n\t\tv:\t\t\t\t%s\n\t\tNodos:\t\t\t%s %s %s %s\n', ...
                 membranaObj.obtenerEtiqueta(), num2str(2*membranaObj.b), num2str(2*membranaObj.h), ...
-                num2str(membranaObj.t), num2str(membranaObj.E), num2str(membranaObj.nu));
+                num2str(membranaObj.t), num2str(membranaObj.E), num2str(membranaObj.nu), ...
+                nodo1.obtenerEtiqueta(), nodo2.obtenerEtiqueta(), nodo3.obtenerEtiqueta(), nodo4.obtenerEtiqueta());
             
         end % guardarPropiedades function
         
@@ -515,6 +523,9 @@ classdef Membrana < Elemento
             
             fr = membranaObj.obtenerFuerzaResistenteCoordGlobal();
             
+            % Indica si se guardan las tensiones
+            GUARDAR_TENSIONES = true;
+            
             % Obtiene las fuerzas para cada elemento
             n1x = pad(num2str(fr(1), '%.04f'), 10);
             n1y = pad(num2str(fr(2), '%.04f'), 10);
@@ -525,6 +536,7 @@ classdef Membrana < Elemento
             n4x = pad(num2str(fr(7), '%.04f'), 10);
             n4y = pad(num2str(fr(8), '%.04f'), 10);
             
+            % Dibuja las fuerzas (fx,fy) en cada nodo
             fprintf(archivoSalidaHandle, '\n\tMembrana %s:\n\t\tNodo 1 (-b, -h): %s\t%s\n\t\tNodo 2 (+b, -h): %s\t%s\n\t\tNodo 3 (+b, +h): %s\t%s\n\t\tNodo 4 (-b, +h): %s\t%s', ...
                 membranaObj.obtenerEtiqueta(), n1x, n1y, n2x, n2y, n3x, n3y, n4x, n4y);
             
@@ -532,20 +544,22 @@ classdef Membrana < Elemento
             fprintf(archivoSalidaHandle, '\n\t\tTensiones %s [GLOBALX GLOBALY X Y SIGMAX SIGMAY SIGMAXY DESPLX DESPLY]:', membranaObj.obtenerEtiqueta());
             
             % Crea la lista de tensiones y las dibuja
-            tension = membranaObj.crearListaTensiones();
-            for i = 1:length(tension)
-                globalx = pad(num2str(tension(i, 1), '%.04f'), 10);
-                globaly = pad(num2str(tension(i, 2), '%.04f'), 10);
-                x = pad(num2str(tension(i, 3), '%.04f'), 10);
-                y = pad(num2str(tension(i, 4), '%.04f'), 10);
-                sigmax = pad(num2str(tension(i, 5), '%.04f'), 10);
-                sigmay = pad(num2str(tension(i, 6), '%.04f'), 10);
-                sigmaxy = pad(num2str(tension(i, 7), '%.04f'), 10);
-                despl = membranaObj.obtenerDesplazamiento(tension(i, 3), tension(i, 4));
-                desplx = pad(num2str(despl(1), '%.04f'), 10);
-                desply = pad(num2str(despl(2), '%.04f'), 10);
-                fprintf(archivoSalidaHandle, '\n\t\t\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s', ...
-                    globalx, globaly, x, y, sigmax, sigmay, sigmaxy, desplx, desply);
+            if GUARDAR_TENSIONES
+                tension = membranaObj.crearListaTensiones(); %#ok<UNRCH>
+                for i = 1:length(tension)
+                    globalx = pad(num2str(tension(i, 1), '%.04f'), 10);
+                    globaly = pad(num2str(tension(i, 2), '%.04f'), 10);
+                    x = pad(num2str(tension(i, 3), '%.04f'), 10);
+                    y = pad(num2str(tension(i, 4), '%.04f'), 10);
+                    sigmax = pad(num2str(tension(i, 5), '%.04f'), 10);
+                    sigmay = pad(num2str(tension(i, 6), '%.04f'), 10);
+                    sigmaxy = pad(num2str(tension(i, 7), '%.04f'), 10);
+                    despl = membranaObj.obtenerDesplazamiento(tension(i, 3), tension(i, 4));
+                    desplx = pad(num2str(despl(1), '%.04f'), 10);
+                    desply = pad(num2str(despl(2), '%.04f'), 10);
+                    fprintf(archivoSalidaHandle, '\n\t\t\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s', ...
+                        globalx, globaly, x, y, sigmax, sigmay, sigmaxy, desplx, desply);
+                end
             end
             
         end % guardarEsfuerzosInternos function
