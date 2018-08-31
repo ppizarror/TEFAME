@@ -108,10 +108,10 @@ elif modo == 'sigmaxy':
     plt_title = r'$\sigma_{xy}$ ' + titulo
 elif modo == 'desplx':
     p = 7
-    plt_title = r'$\epsilon_{x}$ ' + titulo
+    plt_title = r'$D_{x}$ ' + titulo
 elif modo == 'desply':
     p = 8
-    plt_title = r'$\epsilon_{y}$ ' + titulo
+    plt_title = r'$D_{y}$ ' + titulo
 else:
     p = 4  # Solo grafica la geometria, el resto no importa
     mod_geom = True
@@ -261,4 +261,4 @@ else:
     plt.legend(loc=1)
 
 # Dibuja el grafico
-fig.savefig(output, dpi=500)
+fig.savefig(output, dpi=300)
