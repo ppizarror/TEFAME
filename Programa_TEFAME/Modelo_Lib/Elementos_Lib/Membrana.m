@@ -448,10 +448,10 @@ classdef Membrana < Elemento
             nodo4 = membranaObj.nodosObj{4};
             
             % Agrega fuerzas equivalentes como cargas
-            nodo1.agregarCarga([-membranaObj.Feq(1), -membranaObj.Feq(2)]');
-            nodo2.agregarCarga([-membranaObj.Feq(3), -membranaObj.Feq(4)]');
-            nodo3.agregarCarga([-membranaObj.Feq(5), -membranaObj.Feq(6)]');
-            nodo4.agregarCarga([-membranaObj.Feq(7), -membranaObj.Feq(8)]');
+            nodo1.agregarCarga(-[membranaObj.Feq(1), membranaObj.Feq(2)]');
+            nodo2.agregarCarga(-[membranaObj.Feq(3), membranaObj.Feq(4)]');
+            nodo3.agregarCarga(-[membranaObj.Feq(5), membranaObj.Feq(6)]');
+            nodo4.agregarCarga(-[membranaObj.Feq(7), membranaObj.Feq(8)]');
             
             % Agrega fuerzas resistentes como cargas
             nodo1.agregarEsfuerzosElementoAReaccion([fr_global(1), fr_global(2)]');
@@ -545,7 +545,7 @@ classdef Membrana < Elemento
             
             % Crea la lista de tensiones y las dibuja
             if GUARDAR_TENSIONES
-                tension = membranaObj.crearListaTensiones(); %#ok<UNRCH>
+                tension = membranaObj.crearListaTensiones();
                 for i = 1:length(tension)
                     globalx = pad(num2str(tension(i, 1), '%.04f'), 10);
                     globaly = pad(num2str(tension(i, 2), '%.04f'), 10);
