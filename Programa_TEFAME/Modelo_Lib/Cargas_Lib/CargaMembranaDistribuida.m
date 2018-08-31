@@ -179,8 +179,8 @@ classdef CargaMembranaDistribuida < Carga
             v2x = v2 * sin(cargaMembranaDistribuidaObj.theta);
             v2y = v2 * cos(cargaMembranaDistribuidaObj.theta);
             
-            vectorCarga1 = [v1x, v1y]';
-            vectorCarga2 = [v2x, v2y]';
+            vectorCarga1 = factorDeCarga * [v1x, v1y]';
+            vectorCarga2 = factorDeCarga * [v2x, v2y]';
             
             % Aplica fuerzas equivalentes;
             cargaMembranaDistribuidaObj.elemObj.sumarFuerzaEquivalente(cargaMembranaDistribuidaObj.nodo1, vectorCarga1');
@@ -188,8 +188,8 @@ classdef CargaMembranaDistribuida < Carga
             
             % Aplica vectores de carga
             nodos = cargaMembranaDistribuidaObj.elemObj.obtenerNodos();
-            nodos{cargaMembranaDistribuidaObj.nodo1}.agregarCarga(factorDeCarga*vectorCarga1);
-            nodos{cargaMembranaDistribuidaObj.nodo2}.agregarCarga(factorDeCarga*vectorCarga2);
+            nodos{cargaMembranaDistribuidaObj.nodo1}.agregarCarga(vectorCarga1);
+            nodos{cargaMembranaDistribuidaObj.nodo2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
         

@@ -54,10 +54,10 @@
 classdef CargaVigaColumnaPuntual < Carga
     
     properties(Access = private)
-        elemObj     % Variable que guarda el elemento que se le va a aplicar la carga
-        carga       % Valor de la carga
-        dist        % Distancia de la carga al primer nodo del elemento
-        theta       % Angulo de aplicacion de la carga
+        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
+        carga % Valor de la carga
+        dist % Distancia de la carga al primer nodo del elemento
+        theta % Angulo de aplicacion de la carga
     end % properties CargaVigaColumnaPuntual
     
     methods
@@ -127,14 +127,14 @@ classdef CargaVigaColumnaPuntual < Carga
             u1 = H * Nu1(d);
             u2 = H * Nu2(d);
             
-            vectorCarga = [u1, v1, theta1, u2, v2, theta2]';
+            vectorCarga = factorDeCarga * [u1, v1, theta1, u2, v2, theta2]';
             cargaVigaColumnaPuntualObj.elemObj.sumarFuerzaEquivalente(vectorCarga);
             
             % Aplica vectores de carga en coordenadas globales
             vectorCarga = cargaVigaColumnaPuntualObj.elemObj.obtenerMatrizTransformacion()' * vectorCarga;
             nodos = cargaVigaColumnaPuntualObj.elemObj.obtenerNodos();
-            nodos{1}.agregarCarga(factorDeCarga*[vectorCarga(1), vectorCarga(2), vectorCarga(3)]');
-            nodos{2}.agregarCarga(factorDeCarga*[vectorCarga(4), vectorCarga(5), vectorCarga(6)]');
+            nodos{1}.agregarCarga([vectorCarga(1), vectorCarga(2), vectorCarga(3)]');
+            nodos{2}.agregarCarga([vectorCarga(4), vectorCarga(5), vectorCarga(6)]');
             
         end % aplicarCarga function
         

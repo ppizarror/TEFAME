@@ -54,10 +54,10 @@
 classdef CargaBielaTemperatura < Carga
     
     properties(Access = private)
-        elemObj             % Variable que guarda el elemento que se le va a aplicar la carga
-        deltaTemperatura    % Diferencia de temperatura aplicada al material
-        alpha               % Coeficiente de dilatacion termica de la biela
-        carga               % Carga generada por la temperatura
+        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
+        deltaTemperatura % Diferencia de temperatura aplicada al material
+        alpha % Coeficiente de dilatacion termica de la biela
+        carga % Carga generada por la temperatura
     end % properties CargaBielaTemperatura
     
     methods
@@ -105,15 +105,15 @@ classdef CargaBielaTemperatura < Carga
             c = cargaBielaTemperaturaObj.carga;
             
             % Genera las cargas nodales
-            vectorCarga1 = [-c * cos(theta), -c * sin(theta)]';
-            vectorCarga2 = [c * cos(theta), c * sin(theta)]';
-            cargaBielaTemperaturaObj.elemObj.sumarCargaTemperaturaReaccion([-c * cos(theta), ...
-                -c * sin(theta), c * cos(theta), c * sin(theta)]');
+            vectorCarga1 = factorDeCarga * [-c * cos(theta), -c * sin(theta)]';
+            vectorCarga2 = factorDeCarga * [c * cos(theta), c * sin(theta)]';
+            cargaBielaTemperaturaObj.elemObj.sumarCargaTemperaturaReaccion( ...
+                factorDeCarga*[vectorCarga1(1), vectorCarga1(2), vectorCarga2(1), vectorCarga2(2)]');
             
             % Aplica vectores de carga
             nodos = cargaBielaTemperaturaObj.elemObj.obtenerNodos();
-            nodos{1}.agregarCarga(factorDeCarga*vectorCarga1);
-            nodos{2}.agregarCarga(factorDeCarga*vectorCarga2);
+            nodos{1}.agregarCarga(vectorCarga1);
+            nodos{2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
         

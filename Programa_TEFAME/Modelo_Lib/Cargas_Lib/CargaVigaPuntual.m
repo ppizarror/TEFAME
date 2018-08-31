@@ -108,19 +108,20 @@ classdef CargaVigaPuntual < Carga
             % distintos errores fruto de la evaluacion de la integral. El
             % caso con las funciones de interpolacion N1..N4 se realizo
             % correctamente para el caso de la carga distribuida.
-            v1 = P * ((L - d)^2 / L^2)*(3-2*(L - d)/L);
-            v2 = P * (d^2 / L^2)*(3-2*d/L);
+            v1 = P * ((L - d)^2 / L^2) * (3 - 2 * (L - d) / L);
+            v2 = P * (d^2 / L^2) * (3 - 2 * d / L);
             theta1 = P * d * (L - d)^2 / (L^2);
             theta2 = -P * (d^2) * (L - d) / (L^2);
             
-            vectorCarga1 = [0, v1, theta1]';
-            vectorCarga2 = [0, v2, theta2]';
-            cargaVigaPuntualObj.elemObj.sumarFuerzaEquivalente([v1, theta1, v2, theta2]');
+            vectorCarga1 = factorDeCarga * [0, v1, theta1]';
+            vectorCarga2 = factorDeCarga * [0, v2, theta2]';
+            cargaVigaPuntualObj.elemObj.sumarFuerzaEquivalente([ ...
+                vectorCarga1(2), vectorCarga1(3), vectorCarga2(2), vectorCarga2(3)]');
             
             % Aplica vectores de carga
             nodos = cargaVigaPuntualObj.elemObj.obtenerNodos();
-            nodos{1}.agregarCarga(factorDeCarga*vectorCarga1);
-            nodos{2}.agregarCarga(factorDeCarga*vectorCarga2);
+            nodos{1}.agregarCarga(vectorCarga1);
+            nodos{2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
         
@@ -136,7 +137,7 @@ classdef CargaVigaPuntual < Carga
             % Imprime la informacion guardada en la Carga Puntual de la
             % Viga (cargaVigaPuntualObj) en pantalla.
             
-            fprintf('Propiedades Carga Viga Puntual:\n');          
+            fprintf('Propiedades Carga Viga Puntual:\n');
             disp@Carga(cargaVigaPuntualObj);
             
             % Obtiene la etiqueta del elemento

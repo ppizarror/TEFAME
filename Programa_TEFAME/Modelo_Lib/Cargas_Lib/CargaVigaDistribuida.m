@@ -53,11 +53,11 @@
 classdef CargaVigaDistribuida < Carga
     
     properties(Access = private)
-        elemObj     % Variable que guarda el elemento que se le va a aplicar la carga
-        carga1      % Valor de la carga 1
-        carga2      % Valor de la carga 2
-        dist1       % Distancia de la carga 1 al primer nodo del elemento
-        dist2       % Distancia de la carga 2 al primer nodo del elemento
+        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
+        carga1 % Valor de la carga 1
+        carga2 % Valor de la carga 2
+        dist1 % Distancia de la carga 1 al primer nodo del elemento
+        dist2 % Distancia de la carga 2 al primer nodo del elemento
     end % properties CargaVigaDistribuida
     
     methods
@@ -136,14 +136,15 @@ classdef CargaVigaDistribuida < Carga
             v2 = integral(@(x) rho(x).*N3(x), d1, d2);
             theta2 = integral(@(x) rho(x).*N4(x), d1, d2);
             
-            vectorCarga1 = [0, v1, theta1]';
-            vectorCarga2 = [0, v2, theta2]';
-            cargaVigaDistribuidaObj.elemObj.sumarFuerzaEquivalente([v1, theta1, v2, theta2]');
+            vectorCarga1 = factorDeCarga * [0, v1, theta1]';
+            vectorCarga2 = factorDeCarga * [0, v2, theta2]';
+            cargaVigaDistribuidaObj.elemObj.sumarFuerzaEquivalente( ...
+                [vectorCarga1(2), vectorCarga1(3), vectorCarga2(2), vectorCarga1(3)]');
             
             % Aplica vectores de carga
             nodos = cargaVigaDistribuidaObj.elemObj.obtenerNodos();
-            nodos{1}.agregarCarga(factorDeCarga*vectorCarga1);
-            nodos{2}.agregarCarga(factorDeCarga*vectorCarga2);
+            nodos{1}.agregarCarga(vectorCarga1);
+            nodos{2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
         
@@ -159,7 +160,7 @@ classdef CargaVigaDistribuida < Carga
             % Imprime la informacion guardada en la Carga Distribuida de la
             % Viga (cargaVigaDistribuidaObj) en pantalla.
             
-            fprintf('Propiedades Carga Viga Distribuida:\n');           
+            fprintf('Propiedades Carga Viga Distribuida:\n');
             disp@Carga(cargaVigaDistribuidaObj);
             
             % Obtiene la etiqueta del elemento

@@ -73,16 +73,16 @@
 classdef Membrana < Elemento
     
     properties(Access = private)
-        nodosObj    % Lista de nodos de la membrana
-        gdlID       % ID de los grados de libertad
-        E           % Constante elastica del material
-        nu          % Modulo de Poisson
-        D           % Matriz de constantes elasticas
-        t           % Ancho de la membrana
-        h           % Alto de la membrana desde el eje (r,s)
-        b           % Largo de la membrana desde el eje (r,s)
-        Feq         % Vector de fuerzas equivalentes en nodos
-        NPOINTS     % Numero de interpolaciones
+        nodosObj % Lista de nodos de la membrana
+        gdlID % ID de los grados de libertad
+        E % Constante elastica del material
+        nu % Modulo de Poisson
+        D % Matriz de constantes elasticas
+        t % Ancho de la membrana
+        h % Alto de la membrana desde el eje (r,s)
+        b % Largo de la membrana desde el eje (r,s)
+        Feq % Vector de fuerzas equivalentes en nodos
+        NPOINTS % Numero de interpolaciones
     end % properties Membrana
     
     methods

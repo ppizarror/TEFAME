@@ -56,12 +56,12 @@
 classdef CargaVigaColumnaDistribuida < Carga
     
     properties(Access = private)
-        elemObj     % Variable que guarda el elemento que se le va a aplicar la carga
-        carga1      % Valor de la carga 1
-        carga2      % Valor de la carga 2
-        dist1       % Distancia de la carga 1 al primer nodo del elemento (porcentaje del largo)
-        dist2       % Distancia de la carga 2 al primer nodo del elemento (porcentaje del largo)
-        theta       % Angulo de la carga
+        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
+        carga1 % Valor de la carga 1
+        carga2 % Valor de la carga 2
+        dist1 % Distancia de la carga 1 al primer nodo del elemento (porcentaje del largo)
+        dist2 % Distancia de la carga 2 al primer nodo del elemento (porcentaje del largo)
+        theta % Angulo de la carga
     end % properties CargaVigaColumnaDistribuida
     
     methods
@@ -159,14 +159,14 @@ classdef CargaVigaColumnaDistribuida < Carga
             theta1 = integral(@(x) rhoV(x).*Nv2(x), d1, d2);
             theta2 = integral(@(x) rhoV(x).*Nv4(x), d1, d2);
             
-            vectorCarga = [u1, v1, theta1, u2, v2, theta2]';
+            vectorCarga = factorDeCarga * [u1, v1, theta1, u2, v2, theta2]';
             cargaVigaColumnaDistribuidaObj.elemObj.sumarFuerzaEquivalente(vectorCarga);
             
             % Aplica vectores de carga en coordenadas globales
             vectorCarga = cargaVigaColumnaDistribuidaObj.elemObj.obtenerMatrizTransformacion()' * vectorCarga;
             nodos = cargaVigaColumnaDistribuidaObj.elemObj.obtenerNodos();
-            nodos{1}.agregarCarga(factorDeCarga*[vectorCarga(1), vectorCarga(2), vectorCarga(3)]');
-            nodos{2}.agregarCarga(factorDeCarga*[vectorCarga(4), vectorCarga(5), vectorCarga(6)]');
+            nodos{1}.agregarCarga([vectorCarga(1), vectorCarga(2), vectorCarga(3)]');
+            nodos{2}.agregarCarga([vectorCarga(4), vectorCarga(5), vectorCarga(6)]');
             
         end % aplicarCarga function
         

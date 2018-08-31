@@ -1,7 +1,7 @@
 clear all; %#ok<CLALL>
 fprintf('>\tTEST_TAREACOMPUTACIONAL5\n');
 
-% Test Tarea computacional 5
+% Modelo tarea computacional 5
 %
 %                    1 Tonf/m
 %            |||||||||||||||||||||||||||           |
