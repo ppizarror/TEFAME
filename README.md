@@ -1,4 +1,4 @@
-# TEFAME-CI5211-1
+# TEFAME
 Resuelve estructuras de varios grados de libertad utilizando métodos numéricos matriciales.
 
 ## Métodos de análisis
