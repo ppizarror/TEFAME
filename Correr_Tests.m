@@ -7,10 +7,6 @@
 %|              Facultad de Ciencias Fisicas y Matematicas              |
 %|                         Universidad de Chile                         |
 %|                                                                      |
-%| Correr_Tests ejecuta cada uno de los tests implementados en la pla-  |
-%| taforma TEFAME en el contexto de las tareas computacionales del cur- |
-%| so de Analisis Matricial de Estructuras CI5211-1 semestre Otono 2018 |
-%|                                                                      |
 %| Los tests implementados hasta la fecha exploran las tareas numericas |
 %| y los ejemplos vistos en clase (material docente) con el fin de eva- |
 %| luar los resultados numericos entregados por las funciones implemen- |
@@ -30,16 +26,11 @@
 %|______________________________________________________________________|
 
 % Anade carpetas al PATH
-addpath('test');
-addpath('test/out');
-iniciar_TEFAME;
+Iniciar_Lib;
 
 % Inicia los tests
 clc;
 fprintf('CORRIENDO TESTS\n');
-
-% Tarea computacional 5
-Modelo_TareaComputacional5;
 
 % Test de membranas
 Test_Membrana1;
@@ -61,6 +52,7 @@ Modelo_Tarea4;
 Modelo_Tarea5;
 Modelo_TareaComputacionalAntiguo4;
 Modelo_TareaComputacional4;
+Modelo_TareaComputacional5;
 Test_Viga2D;
 
 % Elimina espacio en memoria
