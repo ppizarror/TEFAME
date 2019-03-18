@@ -21,14 +21,14 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase VigaColumna2D                                                  |
+%| Clase VigaColumnaMasa2D                                                  |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase VigaColumna 2D       |
 %| ColumnaViga2D es una  subclase de la clase Elemento y  corresponde a |
 %| la representacion del elemento viga-columna que transmite esfuerzos  |
 %| axiales y de corte.                                                  |
 %|                                                                      |
-%| Programado: Pablo Pizarro @ppizarror.com                             |
+%| Programado: PABLO PIZARRO @ppizarror.com                             |
 %| Fecha: 10/06/2018                                                    |
 %|______________________________________________________________________|
 %
@@ -44,33 +44,36 @@
 %       Feq
 %
 %  Methods:
-%       vigaColumna2DObj = VigaColumna2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial)
-%       numeroNodos = obtenerNumeroNodos(vigaColumna2DObj)
-%       nodosBiela = obtenerNodos(vigaColumna2DObj)
-%       numeroGDL = obtenerNumeroGDL(vigaColumna2DObj)
-%       gdlIDBiela = obtenerGDLID(vigaColumna2DObj)
-%       k_global = obtenerMatrizRigidezCoordGlobal(vigaColumna2DObj)
-%       k_local = obtenerMatrizRigidezCoordLocal(vigaColumna2DObj)
-%       fr_global = obtenerFuerzaResistenteCoordGlobal(vigaColumna2DObj)
-%       fr_local = obtenerFuerzaResistenteCoordLocal(vigaColumna2DObj)
-%       l = obtenerLargo(vigaColumna2DObj)
-%       T = obtenerMatrizTransformacion(vigaColumna2DObj)
-%       theta = obtenerAngulo(vigaColumna2DObj)
-%       definirGDLID(vigaColumna2DObj)
-%       agregarFuerzaResistenteAReacciones(vigaColumna2DObj)
-%       guardarPropiedades(vigaColumna2DObj,archivoSalidaHandle)
-%       guardarEsfuerzosInternos(vigaColumna2DObj,archivoSalidaHandle)
-%       disp(vigaColumna2DObj)
+%       vigaColumnaMasa2DObj = VigaColumnaMasa2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial)
+%       numeroNodos = obtenerNumeroNodos(vigaColumnaMasa2DObj)
+%       nodosBiela = obtenerNodos(vigaColumnaMasa2DObj)
+%       numeroGDL = obtenerNumeroGDL(vigaColumnaMasa2DObj)
+%       gdlIDBiela = obtenerGDLID(vigaColumnaMasa2DObj)
+%       k_global = obtenerMatrizRigidezCoordGlobal(vigaColumnaMasa2DObj)
+%       k_local = obtenerMatrizRigidezCoordLocal(vigaColumnaMasa2DObj)
+%       m_masa = obtenerMatrizMasa(vigaColumnaMasa2DObj)
+%       m = obtenerMasa(vigaColumnaMasa2DObj)
+%       fr_global = obtenerFuerzaResistenteCoordGlobal(vigaColumnaMasa2DObj)
+%       fr_local = obtenerFuerzaResistenteCoordLocal(vigaColumnaMasa2DObj)
+%       l = obtenerLargo(vigaColumnaMasa2DObj)
+%       T = obtenerMatrizTransformacion(vigaColumnaMasa2DObj)
+%       theta = obtenerAngulo(vigaColumnaMasa2DObj)
+%       definirGDLID(vigaColumnaMasa2DObj)
+%       agregarFuerzaResistenteAReacciones(vigaColumnaMasa2DObj)
+%       guardarPropiedades(vigaColumnaMasa2DObj,archivoSalidaHandle)
+%       guardarEsfuerzosInternos(vigaColumnaMasa2DObj,archivoSalidaHandle)
+%       disp(vigaColumnaMasa2DObj)
 %
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
-classdef VigaColumna2D < Elemento
+classdef VigaColumnaMasa2D < Elemento
     
     properties(Access = private)
         nodosObj
         gdlID
         Ao
+        rho
         Eo
         Io
         dx
@@ -80,11 +83,11 @@ classdef VigaColumna2D < Elemento
         Feq
         T
         Klp
-    end % properties VigaColumna2D
+    end % properties VigaColumnaMasa2D
     
     methods
         
-        function vigaColumna2DObj = VigaColumna2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, Amaterial)
+        function vigaColumnaMasa2DObj = VigaColumnaMasa2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, Amaterial, Densidad)
             
             % Completa con ceros si no hay argumentos
             if nargin == 0
@@ -92,23 +95,24 @@ classdef VigaColumna2D < Elemento
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Elemento
-            vigaColumna2DObj = vigaColumna2DObj@Elemento(etiquetaViga);
+            vigaColumnaMasa2DObj = vigaColumnaMasa2DObj@Elemento(etiquetaViga);
             
             % Guarda material
-            vigaColumna2DObj.nodosObj = {nodo1Obj; nodo2Obj};
-            vigaColumna2DObj.Ao = Amaterial;
-            vigaColumna2DObj.Eo = Ematerial;
-            vigaColumna2DObj.Io = Imaterial;
-            vigaColumna2DObj.gdlID = [];
+            vigaColumnaMasa2DObj.nodosObj = {nodo1Obj; nodo2Obj};
+            vigaColumnaMasa2DObj.Ao = Amaterial;
+            vigaColumnaMasa2DObj.Eo = Ematerial;
+            vigaColumnaMasa2DObj.Io = Imaterial;
+            vigaColumnaMasa2DObj.rho = Densidad;
+            vigaColumnaMasa2DObj.gdlID = [];
             
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
-            vigaColumna2DObj.dx = (coordNodo2(1) - coordNodo1(1));
-            vigaColumna2DObj.dy = (coordNodo2(2) - coordNodo1(2));
-            vigaColumna2DObj.L = sqrt(vigaColumna2DObj.dx^2+vigaColumna2DObj.dy^2);
-            theta = atan(vigaColumna2DObj.dy/vigaColumna2DObj.dx);
-            vigaColumna2DObj.theta = theta;
+            vigaColumnaMasa2DObj.dx = (coordNodo2(1) - coordNodo1(1));
+            vigaColumnaMasa2DObj.dy = (coordNodo2(2) - coordNodo1(2));
+            vigaColumnaMasa2DObj.L = sqrt(vigaColumnaMasa2DObj.dx^2+vigaColumnaMasa2DObj.dy^2);
+            theta = atan(vigaColumnaMasa2DObj.dy/vigaColumnaMasa2DObj.dx);
+            vigaColumnaMasa2DObj.theta = theta;
             
             % Calcula matriz de transformacion dado el angulo
             T = [cos(theta), sin(theta), 0, 0, 0, 0; ...
@@ -117,103 +121,136 @@ classdef VigaColumna2D < Elemento
                 0, 0, 0, cos(theta), sin(theta), 0; ...
                 0, 0, 0, -sin(theta), cos(theta), 0; ...
                 0, 0, 0, 0, 0, 1];
-            vigaColumna2DObj.T = T;
+            vigaColumnaMasa2DObj.T = T;
             
             % Calcula matriz de rigidez local
             A = Amaterial;
             E = Ematerial;
             I = Imaterial;
-            L = vigaColumna2DObj.L;
+            L = vigaColumnaMasa2DObj.L;
             Klp = [A * E / L, 0, 0, -A * E / L, 0, 0; ...
                 0, 12 * E * I / (L^3), 6 * E * I / (L^2), 0, - 12 * E * I / (L^3), 6 * E * I / (L^2); ...
                 0, 6 * E * I / (L^2), 4 * E * I / L, 0, - 6 * E * I / (L^2), 2 * E * I / L; ...
                 -A * E / L, 0, 0, A * E / L, 0, 0; ...
                 0, -12 * E * I / (L^3), - 6 * E * I / (L^2), 0, 12 * E * I / (L^3), -6 * E * I / (L^2); ...
                 0, 6 * E * I / (L^2), 2 * E * I / L, 0, - 6 * E * I / (L^2), 4 * E * I / L];
-            vigaColumna2DObj.Klp = Klp;
+            vigaColumnaMasa2DObj.Klp = Klp;
             
             % Fuerza equivalente de la viga
-            vigaColumna2DObj.Feq = [0, 0, 0, 0, 0, 0]';
+            vigaColumnaMasa2DObj.Feq = [0, 0, 0, 0, 0, 0]';
             
-        end % VigaColumna2D constructor
+            % Agrega el elemento a los nodos
+            nodo1Obj.agregarElementos(vigaColumnaMasa2DObj);
+            nodo2Obj.agregarElementos(vigaColumnaMasa2DObj);
+            
+        end % VigaColumnaMasa2D constructor
         
-        function l = obtenerLargo(vigaColumna2DObj)
+        function l = obtenerLargo(vigaColumnaMasa2DObj)
             
-            l = vigaColumna2DObj.L;
+            l = vigaColumnaMasa2DObj.L;
             
         end % obtenerLargo function
         
-        function numeroNodos = obtenerNumeroNodos(vigaColumna2DObj) %#ok<MANU>
+        function numeroNodos = obtenerNumeroNodos(vigaColumnaMasa2DObj) %#ok<MANU>
             
             numeroNodos = 2;
             
         end % obtenerNumeroNodos function
         
-        function nodosViga = obtenerNodos(vigaColumna2DObj)
+        function nodosViga = obtenerNodos(vigaColumnaMasa2DObj)
             
-            nodosViga = vigaColumna2DObj.nodosObj;
+            nodosViga = vigaColumnaMasa2DObj.nodosObj;
             
         end % obtenerNodos function
         
-        function numeroGDL = obtenerNumeroGDL(vigaColumna2DObj) %#ok<MANU>
+        function numeroGDL = obtenerNumeroGDL(vigaColumnaMasa2DObj) %#ok<MANU>
             
             numeroGDL = 6;
             
         end % obtenerNumeroGDL function
         
-        function gdlIDViga = obtenerGDLID(vigaColumna2DObj)
+        function gdlIDViga = obtenerGDLID(vigaColumnaMasa2DObj)
             
-            gdlIDViga = vigaColumna2DObj.gdlID;
-            
-        end % obtenerNumeroGDL function
-        
-        function T = obtenerMatrizTransformacion(vigaColumna2DObj)
-            
-            T = vigaColumna2DObj.T;
+            gdlIDViga = vigaColumnaMasa2DObj.gdlID;
             
         end % obtenerNumeroGDL function
         
-        function theta = obtenerAngulo(vigaColumna2DObj)
+        function T = obtenerMatrizTransformacion(vigaColumnaMasa2DObj)
             
-            theta = vigaColumna2DObj.theta;
+            T = vigaColumnaMasa2DObj.T;
+            
+        end % obtenerNumeroGDL function
+        
+        function theta = obtenerAngulo(vigaColumnaMasa2DObj)
+            
+            theta = vigaColumnaMasa2DObj.theta;
             
         end % obtenerAngulo function
         
-        function k_global = obtenerMatrizRigidezCoordGlobal(vigaColumna2DObj)
+        function k_global = obtenerMatrizRigidezCoordGlobal(vigaColumnaMasa2DObj)
             
             % Multiplica por la matriz de transformacion
-            k_local = vigaColumna2DObj.obtenerMatrizRigidezCoordLocal();
-            t_theta = vigaColumna2DObj.T;
+            k_local = vigaColumnaMasa2DObj.obtenerMatrizRigidezCoordLocal();
+            t_theta = vigaColumnaMasa2DObj.T;
             k_global = t_theta' * k_local * t_theta;
             
         end % obtenerMatrizRigidezGlobal function
         
-        function k_local = obtenerMatrizRigidezCoordLocal(vigaColumna2DObj)
+        function k_local = obtenerMatrizRigidezCoordLocal(vigaColumnaMasa2DObj)
             
             % Retorna la matriz calculada en el consturctor
-            k_local = vigaColumna2DObj.Klp;
+            k_local = vigaColumnaMasa2DObj.Klp;
             
         end % obtenerMatrizRigidezLocal function
         
-        function fr_global = obtenerFuerzaResistenteCoordGlobal(vigaColumna2DObj)
+        function m_masa = obtenerMatrizMasa(vigaColumnaMasa2DObj)
+            
+            % Retorna la matriz calculada en el constructor
+            m_masa = zeros(6, 1);
+            
+            % Inicializamos la masa de los grados
+            elem_nodo1 = vigaColumnaMasa2DObj.nodosObj{1}.obtenerElementos();
+            elem_nodo2 = vigaColumnaMasa2DObj.nodosObj{2}.obtenerElementos();
+            
+            % Agrega la tributacion de las masas
+            for i=1:length(elem_nodo1)
+                m_masa(1) = m_masa(1) + elem_nodo1{i}.obtenerMasa() * 0.5;
+                m_masa(2) = m_masa(2) + elem_nodo1{i}.obtenerMasa() * 0.5;
+                m_masa(3) = m_masa(3) + elem_nodo1{i}.obtenerMasa() * 0.5 * 0.01;
+            end
+            for i=1:length(elem_nodo2)
+                m_masa(4) = m_masa(4) + elem_nodo2{i}.obtenerMasa() * 0.5;
+                m_masa(5) = m_masa(5) + elem_nodo2{i}.obtenerMasa() * 0.5;
+                m_masa(6) = m_masa(6) + elem_nodo2{i}.obtenerMasa() * 0.5 * 0.01;
+            end
+            
+        end % obtenerMatrizRigidezLocal function
+        
+        function m = obtenerMasa(vigaColumnaMasa2DObj)
+            
+            m = vigaColumnaMasa2DObj.rho * vigaColumnaMasa2DObj.L * vigaColumnaMasa2DObj.Ao;
+            
+        end % obtenerMasa function
+        
+        function fr_global = obtenerFuerzaResistenteCoordGlobal(vigaColumnaMasa2DObj)
             
             % Obtiene fr local
-            fr_local = vigaColumna2DObj.obtenerFuerzaResistenteCoordLocal();
+            fr_local = vigaColumnaMasa2DObj.obtenerFuerzaResistenteCoordLocal();
             
             % Resta a fuerza equivalente para obtener la fuerza global
-            fr_local_c = fr_local - vigaColumna2DObj.Feq;
+            fr_local_c = fr_local - vigaColumnaMasa2DObj.Feq;
             
             % Calcula fuerza resistente global
-            T_theta = vigaColumna2DObj.T;
+            T_theta = vigaColumnaMasa2DObj.T;
             fr_global = T_theta' * fr_local_c;
             
         end % obtenerFuerzaResistenteCoordGlobal function
         
-        function fr_local = obtenerFuerzaResistenteCoordLocal(vigaColumna2DObj)
+        function fr_local = obtenerFuerzaResistenteCoordLocal(vigaColumnaMasa2DObj)
             
             % Obtiene los nodos
-            nodo1 = vigaColumna2DObj.nodosObj{1};
-            nodo2 = vigaColumna2DObj.nodosObj{2};
+            nodo1 = vigaColumnaMasa2DObj.nodosObj{1};
+            nodo2 = vigaColumnaMasa2DObj.nodosObj{2};
             
             % Obtiene los desplazamientos
             u1 = nodo1.obtenerDesplazamientos();
@@ -223,21 +260,21 @@ classdef VigaColumna2D < Elemento
             u = [u1(1), u1(2), u1(3), u2(1), u2(2), u2(3)]';
             
             % Obtiene K local
-            k_local = vigaColumna2DObj.obtenerMatrizRigidezCoordLocal();
+            k_local = vigaColumnaMasa2DObj.obtenerMatrizRigidezCoordLocal();
             
             % Obtiene u''
-            u = vigaColumna2DObj.obtenerMatrizTransformacion() * u;
+            u = vigaColumnaMasa2DObj.obtenerMatrizTransformacion() * u;
             
             % Calcula F
             fr_local = k_local * u;
             
         end % obtenerFuerzaResistenteCoordLocal function
         
-        function definirGDLID(vigaColumna2DObj)
+        function definirGDLID(vigaColumnaMasa2DObj)
             
             % Se obtienen los nodos extremos
-            nodo1 = vigaColumna2DObj.nodosObj{1};
-            nodo2 = vigaColumna2DObj.nodosObj{2};
+            nodo1 = vigaColumnaMasa2DObj.nodosObj{1};
+            nodo2 = vigaColumnaMasa2DObj.nodosObj{2};
             
             % Se obtienen los gdl de los nodos
             gdlnodo1 = nodo1.obtenerGDLID();
@@ -251,29 +288,29 @@ classdef VigaColumna2D < Elemento
             gdl(4) = gdlnodo2(1);
             gdl(5) = gdlnodo2(2);
             gdl(6) = gdlnodo2(3);
-            vigaColumna2DObj.gdlID = gdl;
+            vigaColumnaMasa2DObj.gdlID = gdl;
             
         end % definirGDLID function
         
-        function sumarFuerzaEquivalente(vigaColumna2DObj, f)
+        function sumarFuerzaEquivalente(vigaColumnaMasa2DObj, f)
             
             for i = 1:length(f)
-                vigaColumna2DObj.Feq(i) = vigaColumna2DObj.Feq(i) + f(i);
+                vigaColumnaMasa2DObj.Feq(i) = vigaColumnaMasa2DObj.Feq(i) + f(i);
             end
             
         end % guardarFuerzaEquivalente function
         
-        function agregarFuerzaResistenteAReacciones(vigaColumna2DObj)
+        function agregarFuerzaResistenteAReacciones(vigaColumnaMasa2DObj)
             
             % Se calcula la fuerza resistente global
-            fr_global = vigaColumna2DObj.obtenerFuerzaResistenteCoordGlobal();
+            fr_global = vigaColumnaMasa2DObj.obtenerFuerzaResistenteCoordGlobal();
             
             % Carga los nodos
-            nodo1 = vigaColumna2DObj.nodosObj{1};
-            nodo2 = vigaColumna2DObj.nodosObj{2};
+            nodo1 = vigaColumnaMasa2DObj.nodosObj{1};
+            nodo2 = vigaColumnaMasa2DObj.nodosObj{2};
             
             % Transforma la carga equivalente como carga puntual
-            F_eq = vigaColumna2DObj.T' * vigaColumna2DObj.Feq;
+            F_eq = vigaColumnaMasa2DObj.T' * vigaColumnaMasa2DObj.Feq;
             
             % Agrega fuerzas equivalentes como cargas
             nodo1.agregarCarga([-F_eq(1), -F_eq(2), -F_eq(3)]')
@@ -285,17 +322,17 @@ classdef VigaColumna2D < Elemento
             
         end % agregarFuerzaResistenteAReacciones function
         
-        function guardarPropiedades(vigaColumna2DObj, archivoSalidaHandle)
+        function guardarPropiedades(vigaColumnaMasa2DObj, archivoSalidaHandle)
             
-            fprintf(archivoSalidaHandle, '\tViga-Columna 2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n', ...
-                vigaColumna2DObj.obtenerEtiqueta(), num2str(vigaColumna2DObj.L), ...
-                num2str(vigaColumna2DObj.Io), num2str(vigaColumna2DObj.Eo), num2str(vigaColumna2DObj.Eo*vigaColumna2DObj.Io));
+            fprintf(archivoSalidaHandle, '\tViga-Columna-Masa 2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n', ...
+                vigaColumnaMasa2DObj.obtenerEtiqueta(), num2str(vigaColumnaMasa2DObj.L), ...
+                num2str(vigaColumnaMasa2DObj.Io), num2str(vigaColumnaMasa2DObj.Eo), num2str(vigaColumnaMasa2DObj.Eo*vigaColumnaMasa2DObj.Io));
             
         end % guardarPropiedades function
         
-        function guardarEsfuerzosInternos(vigaColumna2DObj, archivoSalidaHandle)
+        function guardarEsfuerzosInternos(vigaColumnaMasa2DObj, archivoSalidaHandle)
             
-            fr = vigaColumna2DObj.obtenerFuerzaResistenteCoordGlobal();
+            fr = vigaColumnaMasa2DObj.obtenerFuerzaResistenteCoordGlobal();
             n1 = pad(num2str(fr(1), '%.04f'), 10);
             n2 = pad(num2str(fr(4), '%.04f'), 10);
             v1 = pad(num2str(fr(2), '%.04f'), 10);
@@ -304,32 +341,36 @@ classdef VigaColumna2D < Elemento
             m2 = pad(num2str(fr(6), '%.04f'), 10);
             
             fprintf(archivoSalidaHandle, '\n\tViga-Columna 2D %s:\n\t\tAxial:\t\t%s %s\n\t\tCorte:\t\t%s %s\n\t\tMomento:\t%s %s', ...
-                vigaColumna2DObj.obtenerEtiqueta(), n1, n2, v1, v2, m1, m2);
+                vigaColumnaMasa2DObj.obtenerEtiqueta(), n1, n2, v1, v2, m1, m2);
             
         end % guardarEsfuerzosInternos function
         
-        function disp(vigaColumna2DObj)
+        function disp(vigaColumnaMasa2DObj)
             
-            % Imprime propiedades de la Viga-Columna 2D
-            fprintf('Propiedades Viga-Columna 2D:\n\t');
-            disp@ComponenteModelo(vigaColumna2DObj);
-            fprintf('\t\tLargo: %s\tArea: %s\tI: %s\tE: %s\n', pad(num2str(vigaColumna2DObj.L), 12), ...
-                pad(num2str(vigaColumna2DObj.Ao), 10), pad(num2str(vigaColumna2DObj.Io), 10), ...
-                pad(num2str(vigaColumna2DObj.Eo), 10));
+            % Imprime propiedades de la Viga-Columna-Masa2D
+            fprintf('Propiedades Viga-Columna-Masa 2D:\n\t');
+            disp@ComponenteModelo(vigaColumnaMasa2DObj);
+            fprintf('\t\tLargo: %s\tArea: %s\tI: %s\tE: %s\tMasa: %s\n', pad(num2str(vigaColumnaMasa2DObj.L), 12), ...
+                pad(num2str(vigaColumnaMasa2DObj.Ao), 10), pad(num2str(vigaColumnaMasa2DObj.Io), 10), ...
+                pad(num2str(vigaColumnaMasa2DObj.Eo), 10), pad(num2str(vigaColumnaMasa2DObj.obtenerMasa()), 10));
             
             % Se imprime matriz de rigidez local
             fprintf('\tMatriz de rigidez coordenadas locales:\n');
-            disp(vigaColumna2DObj.obtenerMatrizRigidezCoordLocal());
+            disp(vigaColumnaMasa2DObj.obtenerMatrizRigidezCoordLocal());
             
             % Se imprime matriz de rigidez global
             fprintf('\tMatriz de rigidez coordenadas globales:\n');
-            disp(vigaColumna2DObj.obtenerMatrizRigidezCoordGlobal());
+            disp(vigaColumnaMasa2DObj.obtenerMatrizRigidezCoordGlobal());
+            
+            % Imprime vector de masa
+            fprintf('\tVector de masa:\n');
+            disp(vigaColumnaMasa2DObj.obtenerMatrizMasa());
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');
             
         end % disp function
         
-    end % methods VigaColumna2D
+    end % methods VigaColumnaMasa2D
     
-end % class VigaColumna2D
+end % class VigaColumnaMasa2D

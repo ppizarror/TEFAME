@@ -61,6 +61,8 @@
 %       guardarDesplazamientos(nodoObj,archivoSalidaHandle)
 %       guardarReacciones(nodoObj,archivoSalidaHandle)
 %       Disp(nodoObj)
+%       agregarElementos(nodoObj, elemObj)
+%       obtenerElementos(nodoObj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
@@ -73,6 +75,7 @@ classdef Nodo < ComponenteModelo
         despl       % Vector que guarda los desplazamientos del nodo
         cargas      % Vector que guarda las cargas aplicadas sobre el nodo
         reacciones  % Vector que guarda las reacciones del nodo
+        elementos   % Cell que guarda los elementos que conectan el nodo
     end % properties Nodo
     
     methods
@@ -113,6 +116,9 @@ classdef Nodo < ComponenteModelo
             nodoObj.despl = zeros(nodoObj.nGDL, 1);
             nodoObj.reacciones = zeros(nodoObj.nGDL, 1);
             nodoObj.cargas = zeros(nodoObj.nGDL, 1);
+            
+            % Crea el vector de eleentos
+            nodoObj.elementos = {};
             
         end % Nodo constructor
         
@@ -243,6 +249,19 @@ classdef Nodo < ComponenteModelo
             nodoObj.reacciones = nodoObj.reacciones - cargaNodo;
             
         end % agregarCarga function
+        
+        function agregarElementos(nodoObj, elemObj)
+            
+            n = length(nodoObj.elementos);
+            nodoObj.elementos{n+1} = elemObj;
+        
+        end % agregarElementos function
+        
+        function elem_nodos = obtenerElementos(nodoObj)
+        
+            elem_nodos = nodoObj.elementos;
+            
+        end % obtenerElementos function
         
         function agregarEsfuerzosElementoAReaccion(nodoObj, esfuerzosElemento)
             % agregarEsfuerzosElementoAReaccion: es un metodo de la clase Nodo

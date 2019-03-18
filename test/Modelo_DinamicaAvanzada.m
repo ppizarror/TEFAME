@@ -24,10 +24,14 @@ modeloObj.agregarNodos(nodos);
 Av = 0.013;
 Ev = 200000000;
 Iv = 0.000762;
+
 % Propiedades de la Columna
 Ac = 0.013;
 Ec = 200000000;
 Ic = 0.000762;
+
+% Densidad del material
+Rhoh = 2.5;
 
 Modelo_DinamicaAvanzadaElementos
 
@@ -65,5 +69,5 @@ PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 % Creamos el analisis
-analisisObj = AnalisisEstatico(modeloObj);
+analisisObj = ModalEspectral(modeloObj);
 analisisObj.analizar();
