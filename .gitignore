@@ -3,3 +3,6 @@
 
 # Ignora archivos idea
 *.idea
+
+# Otros
+*.pdf
