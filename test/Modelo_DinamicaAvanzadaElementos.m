@@ -129,7 +129,6 @@ elementos{82} = VigaColumnaMasa2D('V191-192', nodos{113}, nodos{114}, Iv, Ev, Av
 % Piso 20
 elementos{83} = VigaColumnaMasa2D('V201-202', nodos{115}, nodos{116}, Iv, Ev, Av, Rhoh);
 
-
 %% COLUMNAS
 % Piso 0-1
 elementos{84} = VigaColumnaMasa2D('C01-11', nodos{1}, nodos{11}, Ic, Ec, Ac, Rhoh);

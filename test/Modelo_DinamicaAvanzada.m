@@ -1,39 +1,28 @@
-clear all;  %#ok<CLALL>
+clear all; %#ok<CLALL>
 
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
 
 % Nodos Modelo
-Modelo_DinamicaAvanzadaNodo
+Modelo_DinamicaAvanzadaNodo;
 
-n = length(nodos);
-
-for i = 1:n
-    coord = nodos{i}.obtenerCoordenadas;
-    x_plot(i) = coord(1);
-    y_plot(i) = coord(2);
-end
-plot(x_plot,y_plot,'o')
 % Agregamos los nodos al modelo
 modeloObj.agregarNodos(nodos);
 
-
-
 % Creamos los elementos
-% Propiedades de la Viga
-Av = 0.013;
+Av = 0.013; % Propiedades de la viga
 Ev = 200000000;
 Iv = 0.000762;
 
-% Propiedades de la Columna
-Ac = 0.013;
+Ac = 0.013; % Propiedades de la columna
 Ec = 200000000;
 Ic = 0.000762;
 
 % Densidad del material
 Rhoh = 2.5;
 
-Modelo_DinamicaAvanzadaElementos
+% Crea los elementos
+Modelo_DinamicaAvanzadaElementos;
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
@@ -58,10 +47,10 @@ modeloObj.agregarRestricciones(restricciones);
 ncol = 95;
 cargas = cell(ncol, 1);
 for i = 84:length(elementos)
-    cargas{i-83} = CargaVigaColumnaDistribuida('Carga dist elem 2 @24[kN/m]', elementos{i}, -1, 0, -1, 1, 0);
+    cargas{i-83} = CargaVigaColumnaDistribuida('Carga distribuida piso', elementos{i}, -1, 0, -1, 1, 0);
 end
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 
@@ -71,3 +60,4 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
 analisisObj.analizar();
+analisisObj.disp();

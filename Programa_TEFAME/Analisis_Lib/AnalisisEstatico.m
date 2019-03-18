@@ -112,7 +112,7 @@ classdef AnalisisEstatico < handle
                 
                 % Si no es reaccion entonces se agrega como GDL
                 for j = 1:length(gdlidNodo)
-                    if (gdlidNodo(j) == - 1)
+                    if (gdlidNodo(j) == -1)
                         contadorGDL = contadorGDL + 1;
                         gdlidNodo(j) = contadorGDL;
                     end % if
@@ -235,7 +235,7 @@ classdef AnalisisEstatico < handle
                 % lograr el equilibrio
                 for j = 1:ngdlid
                     if (gdl(j) ~= 0)
-                        analisisObj.F(gdl(j)) = - reacc(j);
+                        analisisObj.F(gdl(j)) = -reacc(j);
                     end
                 end % for j
                 
@@ -295,6 +295,63 @@ classdef AnalisisEstatico < handle
             u_Modelo = analisisObj.u;
             
         end % obtenerDesplazamientos function
+        
+        function plt = plot(analisisObj, deformada, factor)
+            %PLOTMODELO Grafica un modelo
+            %
+            % plt = plot(factor, deformada)
+            
+            if ~exist('deformada', 'var')
+                deformada = false;
+            end
+            
+            if ~exist('factor', 'var')
+                factor =1;
+            end
+            
+            % Grafica la estructura
+            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            numeroNodos = length(nodoObjetos);
+            
+            plt = figure();
+            hold on;
+            
+            % Obtiene cuantos GDL tiene el modelo
+            gdl = 2;
+            for i = 1:numeroNodos
+                ngdlid = nodoObjetos{i}.obtenerNumeroGDL();
+                coords = nodoObjetos{i}.obtenerCoordenadas();
+                gdl = max(gdl, ngdlid);
+                if ngdlid == 2
+                    plot(coords(1), coords(2), 'b.', 'MarkerSize', 20);
+                else
+                    plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 20);
+                end
+            end
+            if gdl == 2
+                xlabel('X');
+                ylabel('Y');
+            else
+                xlabel('X');
+                ylabel('Y');
+                zlabel('Z');
+            end
+            
+            % Grafica los elementos
+            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(elementoObjetos);
+            
+            % Definimos los GDLID en los elementos
+            for i = 1:numeroElementos
+                
+                % Se obienen los gdl del elemento metodo indicial
+                nodoElemento = elementoObjetos{i}.obtenerNodos();
+                coord1 = nodoElemento{1}.obtenerCoordenadas();
+                coord2 = nodoElemento{2}.obtenerCoordenadas();
+                
+            end
+            
+        end
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostar la informacion del Analisis Estatico en pantalla

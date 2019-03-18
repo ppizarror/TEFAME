@@ -64,10 +64,10 @@ classdef Modelo < handle
     properties(Access = private)
         nDimensiones % Variable que guarda las dimensiones del sistema de coordenadas del modelo
         nGDL % Variable que guarda el numero de grados de libertad de cada nodo (GDL)
-        nodos % Variable que guarda en un arreiglo de celdas todos los nodos del modelo
-        elementos % Variable que guarda en un arreiglo de celdas todos los elementos del modelo
-        restricciones % Variable que guarda en un arreiglo de celdas todos las restricciones del modelo
-        patronesDeCargas % Variable que guarda en un arreiglo de celdas todos los patrones de cargas aplicadas sobre el modelo
+        nodos % Variable que guarda en un arreglo de celdas todos los nodos del modelo
+        elementos % Variable que guarda en un arreglo de celdas todos los elementos del modelo
+        restricciones % Variable que guarda en un arreglo de celdas todos las restricciones del modelo
+        patronesDeCargas % Variable que guarda en un arreglo de celdas todos los patrones de cargas aplicadas sobre el modelo
     end % properties Modelo
     
     methods

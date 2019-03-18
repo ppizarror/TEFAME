@@ -6,7 +6,7 @@ fprintf('>\tMODELO_TAREA3\n');
 % Creamos el modelo
 modeloObj = Modelo(2, 4);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(4, 1);
 nodos{1} = Nodo('N1', 3, [0, 0]');
 nodos{2} = Nodo('N2', 3, [15, 0]');
@@ -45,7 +45,7 @@ cargas{3} = CargaVigaPuntual('Puntual 90kN @10m', elementos{2}, -90, 2/3);
 cargas{4} = CargaVigaDistribuida('Triangular 25kN', elementos{3}, -25, 0.0, 0, 1.0);
 cargas{5} = CargaNodo('Momento 120kN-m', nodos{4}, [0, 0, 120])';
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

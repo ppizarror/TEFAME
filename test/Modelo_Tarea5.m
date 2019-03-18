@@ -43,7 +43,7 @@ cargas{1} = CargaBielaTemperatura('T BIELA 2 DT=30', elementos{2}, 30, alpha);
 cargas{2} = CargaBielaTemperatura('T BIELA 3 DT=30', elementos{3}, 30, alpha);
 cargas{3} = CargaBielaTemperatura('T BIELA 5 DT=20', elementos{5}, 20, alpha);
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

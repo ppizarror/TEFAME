@@ -343,7 +343,7 @@ classdef ModalEspectral < handle
         end % obtenerDesplazamientos function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del Analisis Estatico en pantalla
+        % Metodos para mostar la informacion del Analisis Modal Espectral en pantalla
         
         function disp(analisisObj)
             % disp: es un metodo de la clase ModalEspectral que se usa para imprimir en
@@ -355,17 +355,19 @@ classdef ModalEspectral < handle
             
             fprintf('Propiedades Analisis:\n');
             
-            fprintf('\tMatriz de Rigidez:\n');
-            disp(analisisObj.Kt);
-            
-            fprintf('\tMatriz de Masa:\n');
-            disp(analisisObj.Mt);
-            
             fprintf('\tVector de Fuerzas:\n');
             disp(analisisObj.F);
             
             fprintf('\tVector de Desplazamientos:\n');
             disp(analisisObj.u);
+            
+            fprintf('\tMatriz de Rigidez:\n');
+            fprintf('\t\tDeterminante: %f\n', det(analisisObj.Kt));
+            fprintf('\t\tSimetrica: %s\n\n', bool2str(analisisObj.Kt == analisisObj.Kt'));
+            
+            fprintf('\tMatriz de Masa:\n');
+            fprintf('\t\tDeterminante: %f\n', det(analisisObj.Mt));
+            fprintf('\t\tSimetrica: %s\n\n', bool2str(analisisObj.Mt == analisisObj.Mt'));
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');

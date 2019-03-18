@@ -48,4 +48,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
+analisisObj.plot();
 modeloObj.guardarResultados('test/out/EjemploClase_Enrejado3D.txt');
