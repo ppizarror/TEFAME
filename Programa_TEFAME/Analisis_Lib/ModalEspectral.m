@@ -51,6 +51,7 @@
 %       K_Modelo = obtenerMatrizRigidez(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
+%       plot(analisisObj)
 %       disp(analisisObj)
 
 classdef ModalEspectral < handle
@@ -341,6 +342,113 @@ classdef ModalEspectral < handle
             u_Modelo = analisisObj.u;
             
         end % obtenerDesplazamientos function
+        
+        function plt = plot(analisisObj, deformada, factor)
+            %PLOTMODELO Grafica un modelo
+            %
+            % plt = plot(factor, deformada)
+            
+            if ~exist('deformada', 'var')
+                deformada = false;
+            end
+            
+            if ~exist('factor', 'var')
+                factor = 2;
+            end
+            
+            % Grafica la estructura
+            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            numeroNodos = length(nodoObjetos);
+            
+            plt = figure();
+            if ~deformada
+                title('Analisis Estatico');
+            else
+                title(sprintf('Analisis Estatico / Escala deformacion: %d%%', factor*100));
+            end
+            
+            hold on;
+            grid on;
+            
+            % Obtiene cuantos GDL tiene el modelo
+            gdl = 2;
+            for i = 1:numeroNodos
+                coords = nodoObjetos{i}.obtenerCoordenadas();
+                ngdlid = length(coords);
+                gdl = max(gdl, ngdlid);
+                if ngdlid == 2
+                    plot(coords(1), coords(2), 'b.', 'MarkerSize', 20);
+                else
+                    plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 20);
+                end
+            end
+            if gdl == 2
+                xlabel('X');
+                ylabel('Y');
+            else
+                xlabel('X');
+                ylabel('Y');
+                zlabel('Z');
+                view(45, 45);
+            end
+            
+            % Grafica los elementos
+            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(elementoObjetos);
+            
+            limx = [inf, -inf];
+            limy = [inf, -inf];
+            limz = [inf, -inf];
+            for i = 1:numeroElementos
+                
+                % Se obienen los gdl del elemento metodo indicial
+                nodoElemento = elementoObjetos{i}.obtenerNodos();
+                coord1 = nodoElemento{1}.obtenerCoordenadas();
+                coord2 = nodoElemento{2}.obtenerCoordenadas();
+                
+                if gdl == 2
+                    plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b-', 'LineWidth', 1);                 
+                else
+                    plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], 'b-', 'LineWidth', 1);
+                end
+                
+                if deformada
+                    def1 = nodoElemento{1}.obtenerDesplazamientos();
+                    def2 = nodoElemento{2}.obtenerDesplazamientos();
+                    
+                    % Suma las deformaciones
+                    coord1 = coord1 + def1 .* factor;
+                    coord2 = coord2 + def2 .* factor;
+                    
+                    % Grafica
+                    if gdl == 2
+                        plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b--', 'LineWidth', 1);
+                    else
+                        plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
+                            'b--', 'LineWidth', 1);
+                    end
+                end
+                
+                % Actualiza los limites
+                limx(1) = min([limx(1), coord1(1), coord2(1)]);
+                    limy(1) = min([limy(1), coord1(2), coord2(2)]);
+                    limx(2) = max([limx(2), coord1(1), coord2(1)]);
+                    limy(2) = max([limy(2), coord1(2), coord2(2)]);
+                if gdl == 3
+                    limz(1) = min([limz(1), coord1(3), coord2(3)]);
+                    limz(2) = max([limz(2), coord1(3), coord2(3)]);
+                end
+                
+            end
+            
+            % Limita en los ejes
+            xlim(limx);
+            ylim(limy);
+            if gdl == 3
+            zlim(limz);
+            end
+            
+        end
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostar la informacion del Analisis Modal Espectral en pantalla

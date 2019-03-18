@@ -53,6 +53,7 @@
 %       K_Modelo = obtenerMatrizRigidez(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
+%       plot(analisisObj)
 %       disp(analisisObj)
 
 classdef AnalisisEstatico < handle
@@ -306,7 +307,7 @@ classdef AnalisisEstatico < handle
             end
             
             if ~exist('factor', 'var')
-                factor =1;
+                factor = 2;
             end
             
             % Grafica la estructura
@@ -314,13 +315,20 @@ classdef AnalisisEstatico < handle
             numeroNodos = length(nodoObjetos);
             
             plt = figure();
+            if ~deformada
+                title('Analisis Estatico');
+            else
+                title(sprintf('Analisis Estatico / Escala deformacion: %d%%', factor*100));
+            end
+            
             hold on;
+            grid on;
             
             % Obtiene cuantos GDL tiene el modelo
             gdl = 2;
             for i = 1:numeroNodos
-                ngdlid = nodoObjetos{i}.obtenerNumeroGDL();
                 coords = nodoObjetos{i}.obtenerCoordenadas();
+                ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
                 if ngdlid == 2
                     plot(coords(1), coords(2), 'b.', 'MarkerSize', 20);
@@ -335,6 +343,7 @@ classdef AnalisisEstatico < handle
                 xlabel('X');
                 ylabel('Y');
                 zlabel('Z');
+                view(45, 45);
             end
             
             % Grafica los elementos
@@ -348,6 +357,29 @@ classdef AnalisisEstatico < handle
                 nodoElemento = elementoObjetos{i}.obtenerNodos();
                 coord1 = nodoElemento{1}.obtenerCoordenadas();
                 coord2 = nodoElemento{2}.obtenerCoordenadas();
+                
+                if gdl == 2
+                    plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b-', 'LineWidth', 1);
+                else
+                    plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], 'b-', 'LineWidth', 1);
+                end
+                
+                if deformada
+                    def1 = nodoElemento{1}.obtenerDesplazamientos();
+                    def2 = nodoElemento{2}.obtenerDesplazamientos();
+                    
+                    % Suma las deformaciones
+                    coord1 = coord1 + def1 .* factor;
+                    coord2 = coord2 + def2 .* factor;
+                    
+                    % Grafica
+                    if gdl == 2
+                        plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b--', 'LineWidth', 1);
+                    else
+                        plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
+                            'b--', 'LineWidth', 1);
+                    end
+                end
                 
             end
             
