@@ -1,5 +1,10 @@
 # TEFAME-CI5211-1
-Resuelve estructuras de varios grados de libertad utilizando métodos numéricos matriciales. Tarea computacional semestral curso Analisis Matricial de Estructuras CI5211, uchile.
+Resuelve estructuras de varios grados de libertad utilizando métodos numéricos matriciales.
 
-## Créditos
-Fabian Rojas, PhD (frojas@ing.uchile.cl)
+## Métodos de análisis
+- Método de rigidez, análisis estático
+- Método modal espectral
+
+## Autor
+Pablo Pizarro (pablo.pizarro@ing.uchile.cl)
+Fabián Rojas (frojas@ing.uchile.cl)
