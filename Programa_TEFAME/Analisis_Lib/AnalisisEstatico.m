@@ -326,16 +326,31 @@ classdef AnalisisEstatico < handle
             
             % Obtiene cuantos GDL tiene el modelo
             gdl = 2;
+            limx = [inf, -inf];
+            limy = [inf, -inf];
+            limz = [inf, -inf];
             for i = 1:numeroNodos
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
+                
                 if ngdlid == 2
                     plot(coords(1), coords(2), 'b.', 'MarkerSize', 20);
                 else
                     plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 20);
                 end
+                
+                % Actualiza los limites
+                limx(1) = min([limx(1), coords(1)]);
+                limy(1) = min([limy(1), coords(2)]);
+                limx(2) = max([limx(2), coords(1)]);
+                limy(2) = max([limy(2), coords(2)]);
+                if gdl == 3
+                    limz(1) = min([limz(1), coords(3)]);
+                    limz(2) = max([limz(2), coords(3)]);
+                end
             end
+            
             if gdl == 2
                 xlabel('X');
                 ylabel('Y');
@@ -379,8 +394,43 @@ classdef AnalisisEstatico < handle
                         plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
                             'b--', 'LineWidth', 1);
                     end
+                    
+                    % Actualiza los limites
+                    limx(1) = min([limx(1), coord1(1), coord2(1)]);
+                    limy(1) = min([limy(1), coord1(2), coord2(2)]);
+                    limx(2) = max([limx(2), coord1(1), coord1(1)]);
+                    limy(2) = max([limy(2), coord1(2), coord2(2)]);
+                    if gdl == 3
+                        limz(1) = min([limz(1), coord1(3), coord2(3)]);
+                        limz(2) = max([limz(2), coord1(3), coord2(3)]);
+                    end
                 end
                 
+            end
+            
+            % Grafica los nodos deformados
+            if deformada
+                for i = 1:numeroNodos
+                    coords = nodoObjetos{i}.obtenerCoordenadas();
+                    def = nodoObjetos{i}.obtenerDesplazamientos();
+                    coords = coords + def .* factor;
+                    ngdlid = length(coords);
+                    gdl = max(gdl, ngdlid);
+                    
+                    if ngdlid == 2
+                        plot(coords(1), coords(2), 'b*', 'MarkerSize', 10);
+                    else
+                        plot3(coords(1), coords(2), coords(3), 'b*', 'MarkerSize', 10);
+                    end
+                    
+                end
+            end
+            
+            % Limita en los ejes
+            xlim(limx);
+            ylim(limy);
+            if gdl == 3
+                zlim(limz);
             end
             
         end

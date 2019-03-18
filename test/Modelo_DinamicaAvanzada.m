@@ -1,4 +1,5 @@
 clear all; %#ok<CLALL>
+fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 
 % Creamos el modelo
 modeloObj = Modelo(2, 6);

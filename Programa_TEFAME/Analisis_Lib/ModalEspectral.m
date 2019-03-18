@@ -113,7 +113,7 @@ classdef ModalEspectral < handle
                 
                 % Si no es reaccion entonces se agrega como GDL
                 for j = 1:length(gdlidNodo)
-                    if (gdlidNodo(j) == - 1)
+                    if (gdlidNodo(j) == -1)
                         contadorGDL = contadorGDL + 1;
                         gdlidNodo(j) = contadorGDL;
                     end % if
@@ -282,7 +282,7 @@ classdef ModalEspectral < handle
                 % lograr el equilibrio
                 for j = 1:ngdlid
                     if (gdl(j) ~= 0)
-                        analisisObj.F(gdl(j)) = - reacc(j);
+                        analisisObj.F(gdl(j)) = -reacc(j);
                     end
                 end % for j
                 
@@ -372,16 +372,31 @@ classdef ModalEspectral < handle
             
             % Obtiene cuantos GDL tiene el modelo
             gdl = 2;
+            limx = [inf, -inf];
+            limy = [inf, -inf];
+            limz = [inf, -inf];
             for i = 1:numeroNodos
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
+                
                 if ngdlid == 2
                     plot(coords(1), coords(2), 'b.', 'MarkerSize', 20);
                 else
                     plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 20);
                 end
+                
+                % Actualiza los limites
+                limx(1) = min([limx(1), coords(1)]);
+                limy(1) = min([limy(1), coords(2)]);
+                limx(2) = max([limx(2), coords(1)]);
+                limy(2) = max([limy(2), coords(2)]);
+                if gdl == 3
+                    limz(1) = min([limz(1), coords(3)]);
+                    limz(2) = max([limz(2), coords(3)]);
+                end
             end
+            
             if gdl == 2
                 xlabel('X');
                 ylabel('Y');
@@ -396,9 +411,6 @@ classdef ModalEspectral < handle
             elementoObjetos = analisisObj.modeloObj.obtenerElementos();
             numeroElementos = length(elementoObjetos);
             
-            limx = [inf, -inf];
-            limy = [inf, -inf];
-            limz = [inf, -inf];
             for i = 1:numeroElementos
                 
                 % Se obienen los gdl del elemento metodo indicial
@@ -407,7 +419,7 @@ classdef ModalEspectral < handle
                 coord2 = nodoElemento{2}.obtenerCoordenadas();
                 
                 if gdl == 2
-                    plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b-', 'LineWidth', 1);                 
+                    plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b-', 'LineWidth', 1);
                 else
                     plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], 'b-', 'LineWidth', 1);
                 end
@@ -427,25 +439,43 @@ classdef ModalEspectral < handle
                         plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
                             'b--', 'LineWidth', 1);
                     end
-                end
-                
-                % Actualiza los limites
-                limx(1) = min([limx(1), coord1(1), coord2(1)]);
+                    
+                    % Actualiza los limites
+                    limx(1) = min([limx(1), coord1(1), coord2(1)]);
                     limy(1) = min([limy(1), coord1(2), coord2(2)]);
-                    limx(2) = max([limx(2), coord1(1), coord2(1)]);
+                    limx(2) = max([limx(2), coord1(1), coord1(1)]);
                     limy(2) = max([limy(2), coord1(2), coord2(2)]);
-                if gdl == 3
-                    limz(1) = min([limz(1), coord1(3), coord2(3)]);
-                    limz(2) = max([limz(2), coord1(3), coord2(3)]);
+                    if gdl == 3
+                        limz(1) = min([limz(1), coord1(3), coord2(3)]);
+                        limz(2) = max([limz(2), coord1(3), coord2(3)]);
+                    end
                 end
                 
+            end
+            
+            % Grafica los nodos deformados
+            if deformada
+                for i = 1:numeroNodos
+                    coords = nodoObjetos{i}.obtenerCoordenadas();
+                    def = nodoObjetos{i}.obtenerDesplazamientos();
+                    coords = coords + def .* factor;
+                    ngdlid = length(coords);
+                    gdl = max(gdl, ngdlid);
+                    
+                    if ngdlid == 2
+                        plot(coords(1), coords(2), 'b*', 'MarkerSize', 10);
+                    else
+                        plot3(coords(1), coords(2), coords(3), 'b*', 'MarkerSize', 10);
+                    end
+                    
+                end
             end
             
             % Limita en los ejes
             xlim(limx);
             ylim(limy);
             if gdl == 3
-            zlim(limz);
+                zlim(limz);
             end
             
         end
