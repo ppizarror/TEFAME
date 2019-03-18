@@ -374,9 +374,10 @@ classdef AnalisisEstatico < handle
                 coord2 = nodoElemento{2}.obtenerCoordenadas();
                 
                 if gdl == 2
-                    plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b-', 'LineWidth', 1);
+                    plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b-', 'LineWidth', 1.25);
                 else
-                    plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], 'b-', 'LineWidth', 1);
+                    plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
+                        'b-', 'LineWidth', 1.25);
                 end
                 
                 if deformada
@@ -389,10 +390,10 @@ classdef AnalisisEstatico < handle
                     
                     % Grafica
                     if gdl == 2
-                        plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b--', 'LineWidth', 1);
+                        plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'k--', 'LineWidth', 0.7);
                     else
                         plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
-                            'b--', 'LineWidth', 1);
+                            'k--', 'LineWidth', 0.7);
                     end
                     
                     % Actualiza los limites
@@ -418,9 +419,9 @@ classdef AnalisisEstatico < handle
                     gdl = max(gdl, ngdlid);
                     
                     if ngdlid == 2
-                        plot(coords(1), coords(2), 'b*', 'MarkerSize', 10);
+                        plot(coords(1), coords(2), 'k*', 'MarkerSize', 10);
                     else
-                        plot3(coords(1), coords(2), coords(3), 'b*', 'MarkerSize', 10);
+                        plot3(coords(1), coords(2), coords(3), 'k*', 'MarkerSize', 10);
                     end
                     
                 end
