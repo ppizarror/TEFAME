@@ -12,14 +12,14 @@ modeloObj.agregarNodos(nodos);
 
 %% Creamos los elementos
 % Propiedades de la viga
-Av = 0.65*0.4; % [m2]
-Ev = 20000000; % [Tonf/m2]
-Iv = (0.4*0.65^3)/12;
+Av = 0.65 * 0.4; % [m2]
+Ev = 2625051; % [Tonf/m2]
+Iv = (0.4 * 0.65^3) / 12;
 
 % Propiedades de la columna
 Ac = 1; % [m2]
-Ec = 20000000; % [Tonf/m2]
-Ic = 1/12;
+Ec = 2625051; % [Tonf/m2]
+Ic = 1 / 12;
 
 % Densidad del material
 Rhoh = 2.5; % [Tonf/m3]
@@ -62,6 +62,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
 analisisObj.analizar();
-k = analisisObj.obtenerMatrizRigidez();
-m = analisisObj.obtenerMatrizMasa();
-analisisObj.plot(true, 10);
+analisisObj.disp();
+% analisisObj.plot(true, 10);

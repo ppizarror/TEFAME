@@ -63,6 +63,16 @@ classdef ModalEspectral < handle
         Mt % Matriz de Masa del modelo
         F % Vector de Fuerzas aplicadas sobre el modelo
         u % Vector con los desplazamientos de los grados de libertad del modelo
+        wn % Frecuencias del sistema
+        Tn % Periodos del sistema
+        phin % Vectores propios del sistema
+        Mm % Matriz masa modal
+        Km % Matriz rigidez modal
+        r % Vector influencia
+        Lm % Factor de participacion modal
+        Mmeff % Masa modal efectiva
+        Mmeffacum % Masa modal efectiva acumulada
+        Mmeffacump % Masa modal efectiva acumulada porcentaje
     end % properties ModalEspectral
     
     methods
@@ -160,8 +170,75 @@ classdef ModalEspectral < handle
             % Se ensambla el vector de fuerzas
             analisisObj.ensamblarVectorFuerzas();
             
+            % Test
+            % analisisObj.Mt = diag([122.5, 122.5, 122.5, 122.5]);
+            % analisisObj.Kt = 5597.67 .* [1, -1, 0, 0; -1, 2, -1, 0; 0,-1, 2, -1; 0, 0, -1, 2];
+            
+            % Calcula las frecuencias del sistema
+            modalWn = sqrt(eig(analisisObj.Mt^-1*analisisObj.Kt));
+            
+            % Calcula los periodos
+            modalTn = (modalWn.^-1) .* 2 * pi;
+            
+            % Calcula los vectores propios
+            [~, ~, modalPhin] = eig(analisisObj.Mt^-1*analisisObj.Kt);
+            
+            % Calcula la matriz de masa
+            ngdl = length(analisisObj.Mt);
+            modalMm = modalPhin' * analisisObj.Mt * modalPhin;
+            modalPhin = modalPhin * diag(diag(modalMm).^-0.5);
+            modalMm = eye(ngdl);
+            % modalMm = diag(diag(modalPhin' * analisisObj.Mt * modalPhin));
+            modalKm = diag(diag(modalPhin'*analisisObj.Kt*modalPhin));
+            
+            % Reordena los periodos
+            Torder = zeros(ngdl, 1);
+            Tpos = 1;
+            for i = 1:ngdl
+                maxt = 0; % Periodo
+                maxi = 0; % Indice
+                for j = 1:ngdl % Se busca el elemento para etiquetar
+                    if Torder(j) == 0 % Si aun no se ha etiquetado
+                        if modalTn(j) > maxt
+                            maxt = modalTn(j);
+                            maxi = j;
+                        end
+                    end
+                end
+                Torder(maxi) = Tpos;
+                Tpos = Tpos + 1;
+            end
+            
+            % Asigna valores
+            analisisObj.Tn = zeros(ngdl, 1);
+            analisisObj.wn = zeros(ngdl, 1);
+            analisisObj.phin = zeros(ngdl, ngdl);
+            analisisObj.Mm = modalMm;
+            analisisObj.Km = modalKm;
+            for i = 1:ngdl
+                analisisObj.Tn(Torder(i)) = modalTn(i);
+                analisisObj.wn(Torder(i)) = modalWn(i);
+                analisisObj.phin(:, Torder(i)) = modalPhin(:, i);
+            end
+            
+            % Crea vector influencia
+            analisisObj.r = ones(ngdl, 1);
+            analisisObj.Lm = analisisObj.phin' * analisisObj.Mt * analisisObj.r;
+            analisisObj.Mmeff = analisisObj.Lm.^2 ./ diag(analisisObj.Mm);
+            
+            Mtotal = sum(analisisObj.Mmeff);
+            analisisObj.Mmeffacum = zeros(ngdl, 1);
+            analisisObj.Mmeffacum(1) = analisisObj.Mmeff(1);
+            for i = 2:ngdl
+                analisisObj.Mmeffacum(i) = analisisObj.Mmeffacum(i-1) + analisisObj.Mmeff(i);
+            end
+            
+            % Calcula porcentaje por edificio
+            analisisObj.Mmeffacump = analisisObj.Mmeffacum ./ Mtotal;
+            analisisObj.Mmeffacump
+            
             % Se resuelve la ecuacion
-            analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
+            analisisObj.u = zeros(length(analisisObj.F), 1);
             
             % Actualiza el modelo
             analisisObj.modeloObj.actualizar(analisisObj.u);
@@ -266,11 +343,12 @@ classdef ModalEspectral < handle
                 analisisObj.Mt(gly, gly) = analisisObj.Mt(gly, gly) + carga(2);
             end
             
-            % Chequea que el vector de masa sea consistente
+            % Chequea que la matriz de masa sea consistente
             for i = 1:analisisObj.numeroGDL
                 if analisisObj.Mt(i, i) <= 0
                     error('La matriz de masa esta mal definida, Mt(%d,%d)<=0', i, i);
                 end
+                analisisObj.Mt(i, i) = analisisObj.Mt(i, i) / 9.80665; % [tonf->ton]
             end
             
         end % ensamblarMatrizMasa function
@@ -533,21 +611,21 @@ classdef ModalEspectral < handle
             % Imprime la informacion guardada en el ModalEspectral (analisisObj) en
             % pantalla
             
-            fprintf('Propiedades Analisis:\n');
-            
-            fprintf('\tVector de Fuerzas:\n');
-            disp(analisisObj.F);
-            
-            fprintf('\tVector de Desplazamientos:\n');
-            disp(analisisObj.u);
+            fprintf('Propiedades Analisis Modal:\n');
             
             fprintf('\tMatriz de Rigidez:\n');
             fprintf('\t\tDeterminante: %f\n', det(analisisObj.Kt));
-            fprintf('\t\tSimetrica: %s\n\n', bool2str(analisisObj.Kt == analisisObj.Kt'));
             
             fprintf('\tMatriz de Masa:\n');
             fprintf('\t\tDeterminante: %f\n', det(analisisObj.Mt));
-            fprintf('\t\tSimetrica: %s\n\n', bool2str(analisisObj.Mt == analisisObj.Mt'));
+            
+            fprintf('\tPeriodos:\n');
+            fprintf('\t\tN°\t|\tT (s)\t\t|\tw (s^-1)\n');
+            fprintf('\t\t---------------------------------\n');
+            for i=1:10
+                fprintf('\t\t%d\t|\t%f\t|\t%f\n', i, analisisObj.Tn(i), analisisObj.wn(i));
+            end
+            fprintf('\n');
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');

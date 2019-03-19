@@ -1,7 +1,7 @@
 % Nodos Modelo
 
-v = 8; %Vanos
-h1 = 3; %Altura primer piso
+v = 8; % Vanos
+h1 = 3; % Altura primer piso
 h = 2.5; % Altura resto de los pisos
 
 nodos = cell(144, 1);

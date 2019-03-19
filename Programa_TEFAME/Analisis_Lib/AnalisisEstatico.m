@@ -458,8 +458,6 @@ classdef AnalisisEstatico < handle
             
             fprintf('\tDeterminante: %f\n\n', det(analisisObj.Kt));
             
-            fprintf('\tSimetrica: %s\n\n', bool2str(analisisObj.Kt == analisisObj.Kt'));
-            
             fprintf('\tVector de Fuerzas:\n');
             disp(analisisObj.F);
             

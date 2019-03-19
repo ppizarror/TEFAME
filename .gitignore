@@ -6,4 +6,14 @@
 
 # Otros
 *.pdf
+
+# SAP2000
 *.sdb
+*.sbk
+*.msh
+*.ico
+*.Y*
+*.K*
+*.$*
+*.LOG
+*.OUT
