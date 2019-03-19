@@ -17,3 +17,6 @@
 *.$*
 *.LOG
 *.OUT
+
+# Salidas
+test/out/*
