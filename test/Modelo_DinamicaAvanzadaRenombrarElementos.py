@@ -26,7 +26,7 @@ for i in fl:
     d.append(nj)
 fl.close()
 
-fln = open('Modelo_DinamicaAvanzadaElementos2.m', 'w')
+fln = open('Modelo_DinamicaAvanzadaElementos.m', 'w')
 for i in d:
     fln.write(i)
 fln.close()
