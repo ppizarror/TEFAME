@@ -4,7 +4,7 @@ fprintf('>\tEJEMPLOCLASE_VIGACOLUMNA_2D\n');
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(3, 1);
 nodos{1} = Nodo('N1', 3, [0, 0]');
 nodos{2} = Nodo('N2', 3, [4, 8]');
@@ -40,7 +40,7 @@ cargas{3} = CargaVigaColumnaPuntual('Carga elem 1 80[ton]', elementos{1}, -80, 0
 cargas{4} = CargaVigaColumnaDistribuida('Carga dist elem 1 @15[ton]', elementos{1}, -15, 0, -15, 1, -1.107);
 cargas{5} = CargaVigaColumnaDistribuida('Carga dist elem 2 @30[ton]', elementos{2}, -30, 0, -30, 1, 0);
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

@@ -38,7 +38,7 @@ gdl = N * 2 + 2;
 % Creamos el modelo
 modeloObj = Modelo(2, gdl);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(gdl, 1);
 for i = 1:(N + 1)
     j = N + 1 + i;
@@ -79,7 +79,7 @@ modeloObj.agregarRestricciones(restricciones);
 cargas = cell(1, 1);
 cargas{1} = CargaMembranaDistribuida(sprintf('DV100KN V@%d', N), elementos{N}, 4, 3, -100, 0, -100, 1);
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

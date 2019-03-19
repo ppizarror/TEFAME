@@ -23,7 +23,7 @@ L = 10;
 % Creamos el modelo
 modeloObj = Modelo(2, 2);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(2, 1);
 nodos{1} = Nodo('N1', 3, [0, 0]');
 nodos{2} = Nodo('N2', 3, [L, 0]');
@@ -54,7 +54,7 @@ modeloObj.agregarRestricciones(restricciones);
 cargas = cell(1, 1);
 cargas{1} = CargaVigaPuntual('P', elementos{1}, -P, D);
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

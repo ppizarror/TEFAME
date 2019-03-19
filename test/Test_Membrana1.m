@@ -29,7 +29,7 @@ nu = 0.2; % Modulo de Poisson
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(6, 1);
 nodos{1} = Nodo('N1', 2, [0, 0]');
 nodos{2} = Nodo('N2', 2, [0, 2]');
@@ -61,7 +61,7 @@ modeloObj.agregarRestricciones(restricciones);
 cargas = cell(1, 1);
 cargas{1} = CargaNodo('P', nodos{4}, [0, -1000]');
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

@@ -15,8 +15,8 @@
 %| MATLAB.                                                              |
 %|                                                                      |
 %| Desarrollado por:                                                    |
-%|       Fabian Rojas, PhD (frojas@ing.uchile.cl)                       |
-%|       Prof. Asistente, Departamento de Ingenieria Civil              |
+%|       Pablo Pizarro R. @ppizarror.com                                |
+%|       Estudiante de Magister en Ingeniería Civil Estructural         |
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________

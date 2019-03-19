@@ -22,7 +22,7 @@ nu = 0.15; % Modulo de Poisson
 % Creamos el modelo
 modeloObj = Modelo(2, 25);
 
-% Creamos los Nodos
+% Creamos los nodos
 m_cm = 100;
 nodos = cell(25, 1);
 nodos{1} = Nodo('N1', 2, [0, 0]'*m_cm);
@@ -110,7 +110,7 @@ cargas{6} = CargaMembranaDistribuida('H 20TONF/M @5', elementos{5}, 1, 4, hmax*(
 cargas{7} = CargaMembranaDistribuida('H 20TONF/M @8', elementos{8}, 1, 4, hmax*(2 / h), 0, hmax*(3.5 / h), 1);
 cargas{8} = CargaMembranaDistribuida('H 20TONF/M @10', elementos{10}, 1, 4, hmax*(3.5 / h), 0, hmax, 1);
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

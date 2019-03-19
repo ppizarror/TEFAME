@@ -4,7 +4,7 @@ fprintf('>\tEJEMPLOCLASE_ENREJADO2D\n');
 % Creamos el modelo
 modeloObj = Modelo(2, 2);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(4, 1);
 nodos{1} = Nodo('N1', 2, [0, 600]');
 nodos{2} = Nodo('N2', 2, [400, 600]');
@@ -41,7 +41,7 @@ cargas = cell(2, 1);
 cargas{1} = CargaNodo('C1', nodos{2}, [35, -80]');
 cargas{2} = CargaNodo('C2', nodos{4}, [35, 0]');
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

@@ -4,7 +4,7 @@ fprintf('>\tEJEMPLOCLASE_ENREJADO3D\n');
 % Creamos el modelo
 modeloObj = Modelo(3, 1);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(4, 1);
 nodos{1} = Nodo('N1', 3, [-200, 0, 0]');
 nodos{2} = Nodo('N2', 3, [200, -200, 0]');
@@ -38,7 +38,7 @@ modeloObj.agregarRestricciones(restricciones);
 cargas = cell(1, 1);
 cargas{1} = CargaNodo('Carga nodo 4', nodos{4}, [50, 0, -30]');
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

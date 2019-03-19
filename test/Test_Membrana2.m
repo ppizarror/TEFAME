@@ -35,7 +35,7 @@ gdl = N * 2 + 2;
 % Creamos el modelo
 modeloObj = Modelo(2, gdl);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(gdl, 1);
 for i = 1:(N + 1)
     j = N + 1 + i; % Nodo superior a <i>
@@ -78,7 +78,7 @@ for i = 1:N
     cargas{i} = CargaMembranaDistribuida(sprintf('DV100KN V @%d', i), elementos{i}, 4, 3, -100, 0, -100, 1);
 end
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

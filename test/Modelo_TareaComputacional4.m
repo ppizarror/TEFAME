@@ -4,7 +4,7 @@ fprintf('>\tMODELO_TAREACOMPUTACIONAL4\n');
 % Creamos el modelo
 modeloObj = Modelo(3, 12);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(8, 1);
 nodos{1} = Nodo('p1', 3, [-4, 0, 4]');
 nodos{2} = Nodo('p2', 3, [4, 0, 4]');
@@ -55,7 +55,7 @@ cargas{2} = CargaNodo('Carga nodo p6', nodos{6}, [0, -90, 0]');
 cargas{3} = CargaNodo('Carga nodo p7', nodos{7}, [0, -90, 0]');
 cargas{4} = CargaNodo('Carga nodo p8', nodos{8}, [45, -90, 0]');
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

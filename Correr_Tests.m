@@ -14,7 +14,7 @@
 %|                                                                      |
 %| Desarrollado por:                                                    |
 %|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Ingenieria Civil en Construccion-Estructuras     |
+%|       Estudiante de Magister en Ingeniería Civil Estructural         |
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 %|                                                                      |
@@ -31,6 +31,9 @@ Iniciar_Lib;
 % Inicia los tests
 clc;
 fprintf('CORRIENDO TESTS\n');
+
+% Test modal espectral
+Modelo_DinamicaAvanzada;
 
 % Test de membranas
 Test_Membrana1;

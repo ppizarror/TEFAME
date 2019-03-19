@@ -16,7 +16,7 @@
 %|                                                                      |
 %| Desarrollado por:                                                    |
 %|       Pablo Pizarro                                                  |
-%|       Estudiante de Magíster, Ingeniero Civil Estructural            |
+%|       Estudiante de Magister en Ingeniería Civil Estructural         |
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
@@ -38,6 +38,16 @@
 %       Kt
 %       F
 %       u
+%       wn
+%       Tn
+%       phin
+%       Mm
+%       Km
+%       r
+%       Lm
+%       Mmeff
+%       Mmeffacum
+%       Mmeffacump
 %
 %  Methods:
 %       analisisObj = ModalEspectral(modeloObjeto)
@@ -68,7 +78,7 @@ classdef ModalEspectral < handle
         phin % Vectores propios del sistema
         Mm % Matriz masa modal
         Km % Matriz rigidez modal
-        r % Vector influencia
+        rm % Vector influencia
         Lm % Factor de participacion modal
         Mmeff % Masa modal efectiva
         Mmeffacum % Masa modal efectiva acumulada
@@ -170,10 +180,6 @@ classdef ModalEspectral < handle
             % Se ensambla el vector de fuerzas
             analisisObj.ensamblarVectorFuerzas();
             
-            % Test
-            % analisisObj.Mt = diag([122.5, 122.5, 122.5, 122.5]);
-            % analisisObj.Kt = 5597.67 .* [1, -1, 0, 0; -1, 2, -1, 0; 0,-1, 2, -1; 0, 0, -1, 2];
-            
             % Calcula las frecuencias del sistema
             modalWn = sqrt(eig(analisisObj.Mt^-1*analisisObj.Kt));
             
@@ -222,8 +228,8 @@ classdef ModalEspectral < handle
             end
             
             % Crea vector influencia
-            analisisObj.r = ones(ngdl, 1);
-            analisisObj.Lm = analisisObj.phin' * analisisObj.Mt * analisisObj.r;
+            analisisObj.rm = ones(ngdl, 1);
+            analisisObj.Lm = analisisObj.phin' * analisisObj.Mt * analisisObj.rm;
             analisisObj.Mmeff = analisisObj.Lm.^2 ./ diag(analisisObj.Mm);
             
             Mtotal = sum(analisisObj.Mmeff);
@@ -622,7 +628,7 @@ classdef ModalEspectral < handle
             fprintf('\tPeriodos:\n');
             fprintf('\t\tN°\t|\tT (s)\t\t|\tw (s^-1)\n');
             fprintf('\t\t---------------------------------\n');
-            for i=1:10
+            for i = 1:10
                 fprintf('\t\t%d\t|\t%f\t|\t%f\n', i, analisisObj.Tn(i), analisisObj.wn(i));
             end
             fprintf('\n');

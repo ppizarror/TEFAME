@@ -11,7 +11,7 @@ modeloObj = Modelo(3, 12);
 % Unidad
 un = 100.0;
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(7, 1);
 nodos{1} = Nodo('a1', 3, [-4, -4, 0]'*un);
 nodos{2} = Nodo('a2', 3, [0, 0, 0]'*un);
@@ -57,7 +57,7 @@ modeloObj.agregarRestricciones(restricciones);
 cargas = cell(1, 1);
 cargas{1} = CargaNodo('Carga nodo d', nodos{7}, [5, 0, 7]');
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

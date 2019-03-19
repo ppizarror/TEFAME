@@ -4,7 +4,7 @@ fprintf('>\tMODELO_TAREA4\n');
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(3, 1);
 nodos{1} = Nodo('N1', 3, [0, 8]');
 nodos{2} = Nodo('N2', 3, [6, 0]');

@@ -4,7 +4,7 @@ fprintf('>\tEJEMPLOCLASE_VIGA2D\n');
 % Creamos el modelo
 modeloObj = Modelo(2, 4);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(4, 1);
 nodos{1} = Nodo('N1', 3, [0, 0]');
 nodos{2} = Nodo('N2', 3, [400, 0]');
@@ -40,7 +40,7 @@ cargas = cell(2, 1);
 cargas{1} = CargaNodo('Momento nodo 2', nodos{2}, [0, 0, -5000]');
 cargas{2} = CargaNodo('Carga vertical', nodos{4}, [0, -25, 0]');
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 

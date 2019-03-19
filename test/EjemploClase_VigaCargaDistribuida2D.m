@@ -4,7 +4,7 @@ fprintf('>\tEJEMPLOCLASE_VIGACARGADISTRIBUIDA2D\n');
 % Creamos el modelo
 modeloObj = Modelo(2, 2);
 
-% Creamos los Nodos
+% Creamos los nodos
 nodos = cell(4, 1);
 nodos{1} = Nodo('N1', 3, [0, 0]');
 nodos{2} = Nodo('N2', 3, [4, 0]');
@@ -40,7 +40,7 @@ cargas = cell(2, 1);
 cargas{1} = CargaVigaPuntual('Carga puntual V1', elementos{1}, -15, 0.5);
 cargas{2} = CargaVigaDistribuida('Carga disribuida V3', elementos{3}, -3.8, 0.0, -3.8, 1.0);
 
-% Creamos el Patron de Cargas
+% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 
