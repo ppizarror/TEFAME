@@ -1,34 +1,36 @@
 clear all; %#ok<CLALL>
 fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 
-% Creamos el modelo
+%% Creamos el modelo
 modeloObj = Modelo(2, 6);
 
-% Nodos modelo
+%% Nodos modelo
 Modelo_DinamicaAvanzadaNodo;
 
 % Agregamos los nodos al modelo
 modeloObj.agregarNodos(nodos);
 
-% Creamos los elementos
-Av = 0.013; % Propiedades de la viga
-Ev = 200000000;
-Iv = 0.000762;
+%% Creamos los elementos
+% Propiedades de la viga
+Av = 0.65*0.4; % [m2]
+Ev = 20000000; % [Tonf/m2]
+Iv = (0.4*0.65^3)/12;
 
-Ac = 0.013; % Propiedades de la columna
-Ec = 200000000;
-Ic = 0.000762;
+% Propiedades de la columna
+Ac = 1; % [m2]
+Ec = 20000000; % [Tonf/m2]
+Ic = 1/12;
 
 % Densidad del material
-Rhoh = 2.5;
+Rhoh = 2.5; % [Tonf/m3]
 
-% Crea los elementos
+%% Crea los elementos
 Modelo_DinamicaAvanzadaElementos;
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
 
-% Creamos las restricciones
+%% Creamos las restricciones
 restricciones = cell(10, 1);
 restricciones{1} = RestriccionNodo('R1', nodos{1}, [1, 2, 3]');
 restricciones{2} = RestriccionNodo('R2', nodos{2}, [1, 2, 3]');
@@ -44,22 +46,22 @@ restricciones{10} = RestriccionNodo('R10', nodos{10}, [1, 2, 3]');
 % Agregamos las restricciones al modelo
 modeloObj.agregarRestricciones(restricciones);
 
-% Creamos la carga
+%% Creamos la carga
 cargas = cell(1, 103);
 for i = 1:103
-    cargas{i} = CargaVigaColumnaDistribuida('Carga distribuida piso', elementos{i}, -1000, 0, -1000, 1, 0);
+    cargas{i} = CargaVigaColumnaDistribuida('Carga distribuida piso', elementos{i}, -1, 0, -1, 1, 0);
 end
 
-% Creamos el patron de cargas
+%% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
-% Creamos el analisis
+%% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
 analisisObj.analizar();
 k = analisisObj.obtenerMatrizRigidez();
-analisisObj.disp();
+m = analisisObj.obtenerMatrizMasa();
 analisisObj.plot(true, 10);

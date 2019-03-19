@@ -48,6 +48,7 @@
 %       ensamblarVectorFuerzas(analisisObj)
 %       numeroEquaciones = obtenerNumeroEquaciones(analisisObj)
 %       K_Modelo = obtenerMatrizRigidez(analisisObj)
+%       M_Modelo = obtenerMatrizMasa(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
 %       plot(analisisObj)
@@ -251,6 +252,27 @@ classdef ModalEspectral < handle
                 
             end % for i
             
+            % Agrega las cargas de los nodos
+            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            numeroNodos = length(nodoObjetos);
+            
+            for i = 1:numeroNodos
+                gdlidNodo = nodoObjetos{i}.obtenerGDLID; % (x, y, giro)
+                gly = gdlidNodo(2);
+                carga = nodoObjetos{i}.obtenerReacciones(); % (x, y, giro)
+                if gly == 0
+                    continue;
+                end
+                analisisObj.Mt(gly, gly) = analisisObj.Mt(gly, gly) + carga(2);
+            end
+            
+            % Chequea que el vector de masa sea consistente
+            for i = 1:analisisObj.numeroGDL
+                if analisisObj.Mt(i, i) <= 0
+                    error('La matriz de masa esta mal definida, Mt(%d,%d)<=0', i, i);
+                end
+            end
+            
         end % ensamblarMatrizMasa function
         
         function ensamblarVectorFuerzas(analisisObj)
@@ -316,6 +338,18 @@ classdef ModalEspectral < handle
             K_Modelo = analisisObj.Kt;
             
         end % obtenerMatrizRigidez function
+        
+        function M_Modelo = obtenerMatrizMasa(analisisObj)
+            % obtenerMatrizMasa: es un metodo de la clase ModalEspectral
+            % que se usa para obtener la matriz de masa del modelo
+            %
+            % M_Modelo = obtenerMatrizRigidez(analisisObj)
+            % Obtiene la matriz de masa (M_Modelo) del modelo que se genero
+            % en el Analisis (analisisObj)
+            
+            M_Modelo = analisisObj.Mt;
+            
+        end % obtenerMatrizMasa function
         
         function F_Modelo = obtenerVectorFuerzas(analisisObj)
             % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
@@ -476,10 +510,14 @@ classdef ModalEspectral < handle
             end
             
             % Limita en los ejes
-            xlim(limx);
-            ylim(limy);
-            if gdl == 3
-                %zlim(limz);
+            if limx(1) < limx(2)
+                xlim(limx);
+            end
+            if limy(1) < limy(2)
+                ylim(limy);
+            end
+            if gdl == 3 && limz(1) < limz(2)
+                zlim(limz);
             end
             
         end
