@@ -163,28 +163,28 @@ elementos{103} = VigaColumnaMasa2D('V271-272', nodos{143}, nodos{144}, Iv, Ev, A
 
 %% COLUMNAS
 % Piso 0-1
-elementos{84} = VigaColumnaMasa2D('C01-11', nodos{1}, nodos{11}, Ic, Ec, Ac, Rhoh);
-elementos{85} = VigaColumnaMasa2D('C02-12', nodos{2}, nodos{12}, Ic, Ec, Ac, Rhoh);
-elementos{86} = VigaColumnaMasa2D('C03-13', nodos{3}, nodos{13}, Ic, Ec, Ac, Rhoh);
-elementos{87} = VigaColumnaMasa2D('C04-14', nodos{4}, nodos{14}, Ic, Ec, Ac, Rhoh);
-elementos{88} = VigaColumnaMasa2D('C05-15', nodos{5}, nodos{15}, Ic, Ec, Ac, Rhoh);
-elementos{89} = VigaColumnaMasa2D('C06-16', nodos{6}, nodos{16}, Ic, Ec, Ac, Rhoh);
-elementos{90} = VigaColumnaMasa2D('C07-17', nodos{7}, nodos{17}, Ic, Ec, Ac, Rhoh);
-elementos{91} = VigaColumnaMasa2D('C08-18', nodos{8}, nodos{18}, Ic, Ec, Ac, Rhoh);
-elementos{92} = VigaColumnaMasa2D('C09-19', nodos{9}, nodos{19}, Ic, Ec, Ac, Rhoh);
-elementos{93} = VigaColumnaMasa2D('C010-110', nodos{10}, nodos{20}, Ic, Ec, Ac, Rhoh);
+elementos{217} = VigaColumnaMasa2D('C01-11', nodos{1}, nodos{11}, Ic, Ec, Ac, Rhoh);
+elementos{218} = VigaColumnaMasa2D('C02-12', nodos{2}, nodos{12}, Ic, Ec, Ac, Rhoh);
+elementos{219} = VigaColumnaMasa2D('C03-13', nodos{3}, nodos{13}, Ic, Ec, Ac, Rhoh);
+elementos{220} = VigaColumnaMasa2D('C04-14', nodos{4}, nodos{14}, Ic, Ec, Ac, Rhoh);
+elementos{221} = VigaColumnaMasa2D('C05-15', nodos{5}, nodos{15}, Ic, Ec, Ac, Rhoh);
+elementos{222} = VigaColumnaMasa2D('C06-16', nodos{6}, nodos{16}, Ic, Ec, Ac, Rhoh);
+elementos{223} = VigaColumnaMasa2D('C07-17', nodos{7}, nodos{17}, Ic, Ec, Ac, Rhoh);
+elementos{224} = VigaColumnaMasa2D('C08-18', nodos{8}, nodos{18}, Ic, Ec, Ac, Rhoh);
+elementos{225} = VigaColumnaMasa2D('C09-19', nodos{9}, nodos{19}, Ic, Ec, Ac, Rhoh);
+elementos{226} = VigaColumnaMasa2D('C010-110', nodos{10}, nodos{20}, Ic, Ec, Ac, Rhoh);
 
 % Piso 1-2
-elementos{94} = VigaColumnaMasa2D('C11-21', nodos{11}, nodos{21}, Ic, Ec, Ac, Rhoh);
-elementos{95} = VigaColumnaMasa2D('C12-22', nodos{12}, nodos{22}, Ic, Ec, Ac, Rhoh);
-elementos{96} = VigaColumnaMasa2D('C13-23', nodos{13}, nodos{23}, Ic, Ec, Ac, Rhoh);
-elementos{97} = VigaColumnaMasa2D('C14-24', nodos{14}, nodos{24}, Ic, Ec, Ac, Rhoh);
-elementos{98} = VigaColumnaMasa2D('C15-25', nodos{15}, nodos{25}, Ic, Ec, Ac, Rhoh);
-elementos{99} = VigaColumnaMasa2D('C16-26', nodos{16}, nodos{26}, Ic, Ec, Ac, Rhoh);
-elementos{100} = VigaColumnaMasa2D('C17-27', nodos{17}, nodos{27}, Ic, Ec, Ac, Rhoh);
-elementos{101} = VigaColumnaMasa2D('C18-28', nodos{18}, nodos{28}, Ic, Ec, Ac, Rhoh);
-elementos{102} = VigaColumnaMasa2D('C19-29', nodos{19}, nodos{29}, Ic, Ec, Ac, Rhoh);
-elementos{103} = VigaColumnaMasa2D('C110-210', nodos{20}, nodos{30}, Ic, Ec, Ac, Rhoh);
+elementos{227} = VigaColumnaMasa2D('C11-21', nodos{11}, nodos{21}, Ic, Ec, Ac, Rhoh);
+elementos{228} = VigaColumnaMasa2D('C12-22', nodos{12}, nodos{22}, Ic, Ec, Ac, Rhoh);
+elementos{229} = VigaColumnaMasa2D('C13-23', nodos{13}, nodos{23}, Ic, Ec, Ac, Rhoh);
+elementos{230} = VigaColumnaMasa2D('C14-24', nodos{14}, nodos{24}, Ic, Ec, Ac, Rhoh);
+elementos{231} = VigaColumnaMasa2D('C15-25', nodos{15}, nodos{25}, Ic, Ec, Ac, Rhoh);
+elementos{232} = VigaColumnaMasa2D('C16-26', nodos{16}, nodos{26}, Ic, Ec, Ac, Rhoh);
+elementos{233} = VigaColumnaMasa2D('C17-27', nodos{17}, nodos{27}, Ic, Ec, Ac, Rhoh);
+elementos{234} = VigaColumnaMasa2D('C18-28', nodos{18}, nodos{28}, Ic, Ec, Ac, Rhoh);
+elementos{235} = VigaColumnaMasa2D('C19-29', nodos{19}, nodos{29}, Ic, Ec, Ac, Rhoh);
+elementos{236} = VigaColumnaMasa2D('C110-210', nodos{20}, nodos{30}, Ic, Ec, Ac, Rhoh);
 
 % Piso 2-3
 elementos{104} = VigaColumnaMasa2D('C21-31', nodos{21}, nodos{31}, Ic, Ec, Ac, Rhoh);
@@ -265,7 +265,7 @@ elementos{160} = VigaColumnaMasa2D('C113-123', nodos{83}, nodos{87}, Ic, Ec, Ac,
 elementos{161} = VigaColumnaMasa2D('C114-124', nodos{84}, nodos{88}, Ic, Ec, Ac, Rhoh);
 
 % Piso 12-13
-elementos{161} = VigaColumnaMasa2D('C121-131', nodos{85}, nodos{89}, Ic, Ec, Ac, Rhoh);
+elementos{237} = VigaColumnaMasa2D('C121-131', nodos{85}, nodos{89}, Ic, Ec, Ac, Rhoh);
 elementos{162} = VigaColumnaMasa2D('C122-132', nodos{86}, nodos{90}, Ic, Ec, Ac, Rhoh);
 elementos{163} = VigaColumnaMasa2D('C123-133', nodos{87}, nodos{91}, Ic, Ec, Ac, Rhoh);
 elementos{164} = VigaColumnaMasa2D('C124-134', nodos{88}, nodos{92}, Ic, Ec, Ac, Rhoh);

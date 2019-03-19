@@ -69,13 +69,13 @@
 classdef Nodo < ComponenteModelo
     
     properties(Access = private)
-        nGDL        % Numbero de grados de libertad (GDL)
-        coords      % Coordenadas del nodo
-        gdlID       % Vector que guarda el ID de los grados de libertad
-        despl       % Vector que guarda los desplazamientos del nodo
-        cargas      % Vector que guarda las cargas aplicadas sobre el nodo
-        reacciones  % Vector que guarda las reacciones del nodo
-        elementos   % Cell que guarda los elementos que conectan el nodo
+        nGDL % Numbero de grados de libertad (GDL)
+        coords % Coordenadas del nodo
+        gdlID % Vector que guarda el ID de los grados de libertad
+        despl % Vector que guarda los desplazamientos del nodo
+        cargas % Vector que guarda las cargas aplicadas sobre el nodo
+        reacciones % Vector que guarda las reacciones del nodo
+        elementos % Cell que guarda los elementos que conectan el nodo
     end % properties Nodo
     
     methods
@@ -209,7 +209,7 @@ classdef Nodo < ComponenteModelo
         function definirGDLID(nodoObj, gdlIDNodo)
             % definirGDLID: es un metodo de la clase Nodo que se usa para definir
             % los ID de los GDL que tiene el Nodo asignados durante el proceso
-            % de enumeraci?n de estos
+            % de enumeracion de estos
             %
             % definirGDLID(nodoObj,gdlIDNodo)
             % Guarda el ID que se fueron asignados a los grados de libertad (gdlIDNodo)
@@ -218,6 +218,21 @@ classdef Nodo < ComponenteModelo
             nodoObj.gdlID = gdlIDNodo;
             
         end % definirGDLID function
+        
+        function y = tipoApoyoRestringido(nodoObj)
+            % tipoApoyoRestringido: El nodo esta completamente restringido
+            % al movimiento
+            
+            y = false;
+            n = length(nodoObj.gdlID);
+            for i = 1:n
+                if nodoObj.gdlID(i) ~= 0
+                    return;
+                end
+            end
+            y = true;
+            
+        end % tipoApoyoRestringido function
         
         function definirDesplazamientos(nodoObj, desplazamientosNodo)
             % definirDesplazamientos: es un metodo de la clase Nodo que se usa
@@ -254,11 +269,11 @@ classdef Nodo < ComponenteModelo
             
             n = length(nodoObj.elementos);
             nodoObj.elementos{n+1} = elemObj;
-        
+            
         end % agregarElementos function
         
         function elem_nodos = obtenerElementos(nodoObj)
-        
+            
             elem_nodos = nodoObj.elementos;
             
         end % obtenerElementos function

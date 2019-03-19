@@ -334,10 +334,12 @@ classdef AnalisisEstatico < handle
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
                 
-                if ngdlid == 2
-                    plot(coords(1), coords(2), 'b.', 'MarkerSize', 20);
-                else
-                    plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 20);
+                if ~nodoObjetos{i}.tipoApoyoRestringido()
+                    if ngdlid == 2
+                        plot(coords(1), coords(2), 'b.', 'MarkerSize', 20);
+                    else
+                        plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 20);
+                    end
                 end
                 
                 % Actualiza los limites
@@ -418,10 +420,12 @@ classdef AnalisisEstatico < handle
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
                     
-                    if ngdlid == 2
-                        plot(coords(1), coords(2), 'k*', 'MarkerSize', 10);
-                    else
-                        plot3(coords(1), coords(2), coords(3), 'k*', 'MarkerSize', 10);
+                    if ~nodoObjetos{i}.tipoApoyoRestringido()
+                        if ngdlid == 2
+                            plot(coords(1), coords(2), 'k*', 'MarkerSize', 10);
+                        else
+                            plot3(coords(1), coords(2), coords(3), 'k*', 'MarkerSize', 10);
+                        end
                     end
                     
                 end
