@@ -4,7 +4,7 @@ fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
 
-% Nodos Modelo
+% Nodos modelo
 Modelo_DinamicaAvanzadaNodo;
 
 % Agregamos los nodos al modelo
@@ -45,10 +45,9 @@ restricciones{10} = RestriccionNodo('R10', nodos{10}, [1, 2, 3]');
 modeloObj.agregarRestricciones(restricciones);
 
 % Creamos la carga
-ncol = 95;
-cargas = cell(ncol, 1);
-for i = 84:length(elementos)
-    cargas{i-83} = CargaVigaColumnaDistribuida('Carga distribuida piso', elementos{i}, -1, 0, -1, 1, 0);
+cargas = cell(1, 103);
+for i = 1:103
+    cargas{i} = CargaVigaColumnaDistribuida('Carga distribuida piso', elementos{i}, -1000, 0, -1000, 1, 0);
 end
 
 % Creamos el patron de cargas
@@ -61,4 +60,6 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
 analisisObj.analizar();
-analisisObj.plot();
+k = analisisObj.obtenerMatrizRigidez();
+analisisObj.disp();
+analisisObj.plot(true, 10);

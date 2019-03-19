@@ -63,6 +63,7 @@
 %       Disp(nodoObj)
 %       agregarElementos(nodoObj, elemObj)
 %       obtenerElementos(nodoObj)
+%       tipoApoyoRestringido(nodoObj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
@@ -220,7 +221,7 @@ classdef Nodo < ComponenteModelo
         end % definirGDLID function
         
         function y = tipoApoyoRestringido(nodoObj)
-            % tipoApoyoRestringido: El nodo esta completamente restringido
+            % tipoApoyoRestringido: el nodo esta completamente restringido
             % al movimiento
             
             y = false;

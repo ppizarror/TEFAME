@@ -23,11 +23,10 @@
 %|                                                                      |
 %| Clase ModalEspectral                                                 |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase ModalEspectral     |
-%| ModalEspectral es una clase que se usa para resolver estaticamente |
-%| una  estructura  lineal y  elastica, sometida  a un  set de  cargas, |
-%| usando  el  metodo de  elementos finitos  y  analisis matricial  de  |
-%| estructuras.                                                         |
+%| Este archivo contiene la definicion de la Clase ModalEspectral       |
+%| ModalEspectral es una clase que se usa para resolver la estructura   |
+%| aplicando el metodo modal espectral. Para ello se calcula la matriz  |
+%| de masa y de rigidez.                                                |
 %|                                                                      |
 %| Programado: Pablo Pizarro @ppizarror                                 |
 %| Fecha: 18/03/2019                                                    |
@@ -57,10 +56,10 @@
 classdef ModalEspectral < handle
     
     properties(Access = private)
-        modeloObj % Guarda el objeto que contiene el Modelo
+        modeloObj % Guarda el objeto que contiene el modelo
         numeroGDL % Guarda el numero de grados de libertad totales del modelo
-        Kt % Matriz de Rigidez del Modelo
-        Mt % Matriz de Masa del Modelo
+        Kt % Matriz de Rigidez del modelo
+        Mt % Matriz de Masa del modelo
         F % Vector de Fuerzas aplicadas sobre el modelo
         u % Vector con los desplazamientos de los grados de libertad del modelo
     end % properties ModalEspectral
@@ -71,7 +70,7 @@ classdef ModalEspectral < handle
             % ModalEspectral: es el constructor de la clase ModalEspectral
             %
             % analisisObj = ModalEspectral(modeloObjeto)
-            % Crea un objeto de la clase ModalEspectral, y guarda el Modelo,
+            % Crea un objeto de la clase ModalEspectral, y guarda el modelo,
             % que necesita ser analizado
             
             if nargin == 0
@@ -92,10 +91,10 @@ classdef ModalEspectral < handle
         
         function definirNumeracionGDL(analisisObj)
             % definirNumeracionGDL: es un metodo de la clase ModalEspectral que
-            % se usa para definir como se enumeran los GDL en el Modelo
+            % se usa para definir como se enumeran los GDL en el modelo
             %
             % definirNumeracionGDL(analisisObj)
-            % Define y asigna la enumeracion de los GDL en el Modelo
+            % Define y asigna la enumeracion de los GDL en el modelo
             
             % Primero se aplican las restricciones al modelo
             analisisObj.modeloObj.aplicarRestricciones();
@@ -142,7 +141,7 @@ classdef ModalEspectral < handle
             % realizar el analisis estatico
             %
             % analizar(analisisObj)
-            % Analiza estaticamente el Modelo lineal y elastico sometido a un
+            % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas.
             
             % Se definen los grados de libertad por nodo -> elementos
@@ -296,7 +295,7 @@ classdef ModalEspectral < handle
         function numeroEquaciones = obtenerNumeroEquaciones(analisisObj)
             % obtenerNumeroEquaciones: es un metodo de la clase ModalEspectral
             % que se usa para obtener el numero total de GDL, es decir, ecuaciones
-            % del Modelo
+            % del modelo
             %
             % numeroEquaciones = obtenerNumeroEquaciones(analisisObj)
             % Obtiene el numero total de GDL (numeroEquaciones) que esta guardado
@@ -308,10 +307,10 @@ classdef ModalEspectral < handle
         
         function K_Modelo = obtenerMatrizRigidez(analisisObj)
             % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
-            % que se usa para obtener la matriz de rigidez del Modelo
+            % que se usa para obtener la matriz de rigidez del modelo
             %
             % K_Modelo = obtenerMatrizRigidez(analisisObj)
-            % Obtiene la matriz de rigidez (K_Modelo) del Modelo que se genero
+            % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
             K_Modelo = analisisObj.Kt;
@@ -320,10 +319,10 @@ classdef ModalEspectral < handle
         
         function F_Modelo = obtenerVectorFuerzas(analisisObj)
             % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
-            % que se usa para obtener el vector de fuerza del Modelo
+            % que se usa para obtener el vector de fuerza del modelo
             %
             % F_Modelo = obtenerVectorFuerzas(analisisObj)
-            % Obtiene el vector de fuerza (F_Modelo) del Modelo que se genero
+            % Obtiene el vector de fuerza (F_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
             F_Modelo = analisisObj.F;
@@ -332,11 +331,11 @@ classdef ModalEspectral < handle
         
         function u_Modelo = obtenerDesplazamientos(analisisObj)
             % obtenerDesplazamientos: es un metodo de la clase ModalEspectral
-            % que se usa para obtener el vector de desplazamiento del Modelo
+            % que se usa para obtener el vector de desplazamiento del modelo
             % obtenido del analisis
             %
             % u_Modelo = obtenerDesplazamientos(analisisObj)
-            % Obtiene el vector de desplazamiento (u_Modelo) del Modelo que se
+            % Obtiene el vector de desplazamiento (u_Modelo) del modelo que se
             % genero como resultado del Analisis (analisisObj)
             
             u_Modelo = analisisObj.u;
@@ -480,7 +479,7 @@ classdef ModalEspectral < handle
             xlim(limx);
             ylim(limy);
             if gdl == 3
-                zlim(limz);
+                %zlim(limz);
             end
             
         end

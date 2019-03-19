@@ -126,7 +126,7 @@ classdef RestriccionNodo < ComponenteModelo
             % Imprime la informacion guardada en la restriccion (restriccionNodoObj)
             % en pantalla
             
-            fprintf('Propiedades Restricci?n Nodo:\n');
+            fprintf('Propiedades Restriccion Nodo:\n');
             
             disp@ComponenteModelo(restriccionNodoObj);
             
