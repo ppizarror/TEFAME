@@ -1,0 +1,59 @@
+TEFAME - Toolbox para Elemento Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nodos:
+	Numero de nodos: 4
+	Nodo N1: 0          600.0000  
+	Nodo N2: 400.0000   600.0000  
+	Nodo N3: 0          0         
+	Nodo N4: 400.0000   300.0000  
+
+Elementos:
+	Numero de elementos: 5
+	Biela2D E1:
+		Largo:	400
+		Area:	25
+		Eo:		850
+	Biela2D E2:
+		Largo:	300
+		Area:	25
+		Eo:		850
+	Biela2D E3:
+		Largo:	500
+		Area:	25
+		Eo:		850
+	Biela2D E4:
+		Largo:	721.1103
+		Area:	25
+		Eo:		850
+	Biela2D E5:
+		Largo:	500
+		Area:	25
+		Eo:		850
+
+-------------------------------------------------------------------------------
+Resultados del analisis
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo N1: 0          0         
+	Nodo N2: 0.7800     -0.9931   
+	Nodo N3: 0          0         
+	Nodo N4: 0.6434     0         
+
+Reacciones:
+	Nodo N1: -58.9354   13.1250   
+	Nodo N2: 0          0         
+	Nodo N3: -11.0646   -3.4719   
+	Nodo N4: 0          70.3469   
+
+Esfuerzos Elementos:
+	Biela 2D E1:	-41.4354       TRACCION
+	Biela 2D E2:	70.3469        COMPRESION
+	Biela 2D E3:	-21.875        TRACCION
+	Biela 2D E4:	11.6015        COMPRESION
+	Biela 2D E5:	-21.875        TRACCION
