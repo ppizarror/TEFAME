@@ -25,30 +25,25 @@
 %| 'output' ubicada en directorio raiz.                                 |
 %|______________________________________________________________________|
 
-% Anade carpetas al PATH
-Iniciar_Lib;
-
-% Inicia los tests
+%% Inicia los tests
 clc;
 fprintf('CORRIENDO TESTS\n');
 
-% Test modal espectral
+%% Test modal espectral
 Modelo_DinamicaAvanzada;
 
-% Test de membranas
+%% Test analisis estatico
 Test_Membrana1;
 Test_Membrana2;
 Test_Membrana3;
 Test_MembranaCargaDistribuidaHor;
 Test_MembranaCargaDistribuidaVer;
 
-% Ejemplos clase
 EjemploClase_Enrejado3D;
 EjemploClase_Enrejado2D;
 EjemploClase_Viga2D;
 EjemploClase_VigaCargaDistribuida2D;
 
-% Otros
 Modelo_Tarea2;
 Modelo_Tarea3;
 Modelo_Tarea4;
@@ -58,5 +53,5 @@ Modelo_TareaComputacional4;
 Modelo_TareaComputacional5;
 Test_Viga2D;
 
-% Elimina espacio en memoria
+%% Elimina espacio en memoria
 clear all; %#ok<CLALL>
