@@ -1,6 +1,6 @@
 % ______________________________________________________________________
 %|                                                                      |
-%|                 Iniciar_Lib - Inicia la librería TEFAME              |
+%|               Iniciar_TEFANE - Inicia la librería TEFAME             |
 %|                                                                      |
 %|                   Area  de Estructuras y Geotecnia                   |
 %|                   Departamento de Ingenieria Civil                   |
@@ -13,7 +13,19 @@
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 
-TEFAME_ver = 'v0.20';
+TEFAME_ver = 'v0.30';
+
+% Agrega las carpetas de la plataforma TEFAME al PATH
+addpath('Programa_TEFAME');
+addpath('Programa_TEFAME/Analisis_Lib');
+addpath('Programa_TEFAME/Modelo_Lib');
+addpath('Programa_TEFAME/Modelo_Lib/Base_Lib');
+addpath('Programa_TEFAME/Modelo_Lib/Cargas_Lib');
+addpath('Programa_TEFAME/Modelo_Lib/Elementos_Lib');
+addpath('Programa_TEFAME/Modelo_Lib/Nodo_Lib');
+addpath('Programa_TEFAME/Modelo_Lib/Restricciones_Lib');
+
+% Agrega los test al path
 addpath('test');
-addpath('test/out');
-iniciar_TEFAME;
+addpath('test/estatico');
+addpath('test/modal');
