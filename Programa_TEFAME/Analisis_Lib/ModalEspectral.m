@@ -176,7 +176,6 @@ classdef ModalEspectral < handle
             if ~exist('nModos', 'var')
                 nModos = 10;
             end
-            analisisObj.numModos = nModos;
             betasz = size(beta);
             if betasz(1) ~= 1
                 if betasz(2) == 1
@@ -197,6 +196,7 @@ classdef ModalEspectral < handle
             
             % Se calcula la matriz de masa
             analisisObj.ensamblarMatrizMasa();
+            analisisObj.Mtotal = sum(diag(analisisObj.Mt));
             
             % Se ensambla el vector de fuerzas
             analisisObj.ensamblarVectorFuerzas();
@@ -204,6 +204,8 @@ classdef ModalEspectral < handle
             % Obtiene los grados de libertad
             ngdl = length(analisisObj.Mt); % Numero de grados de libertad
             ndg = analisisObj.modeloObj.obtenerNumerosGDL(); % Grados de libertad por nodo
+            nModos = min(nModos, ngdl);
+            analisisObj.numModos = nModos;
             
             % Resuelve la ecuacion del sistema, para ello crea la matriz
             % inversa de la masa y calcula los valores propios
@@ -213,27 +215,26 @@ classdef ModalEspectral < handle
             end
             sysMat = invMt*analisisObj.Kt;
             
-            [v,d] = eigs(sysMat, nModos, 'smallestabs');
-            syseig = eig(sysMat);
-            [~, ~, modalPhin] = eig(sysMat);
-            
+            [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
+            syseig = diag(syseig);
+          
             % Calcula las frecuencias del sistema
             modalWn = sqrt(syseig);
             modalTn = (modalWn.^-1) .* 2 * pi; % Calcula los periodos
             
             % Calcula las matrices
-            modalMm = modalPhin' * analisisObj.Mt * modalPhin;
-            modalPhin = modalPhin * diag(diag(modalMm).^-0.5);
+            modalMmt = modalPhin' * analisisObj.Mt * modalPhin;
+            modalPhin = modalPhin * diag(diag(modalMmt).^-0.5);
             modalMm = diag(diag(modalPhin'*analisisObj.Mt*modalPhin));
             modalKm = diag(diag(modalPhin'*analisisObj.Kt*modalPhin));
             
             % Reordena los periodos
-            Torder = zeros(ngdl, 1);
+            Torder = zeros(nModos, 1);
             Tpos = 1;
-            for i = 1:ngdl
+            for i = 1:nModos
                 maxt = 0; % Periodo
                 maxi = 0; % Indice
-                for j = 1:ngdl % Se busca el elemento para etiquetar
+                for j = 1:nModos % Se busca el elemento para etiquetar
                     if Torder(j) == 0 % Si aun no se ha etiquetado
                         if modalTn(j) > maxt
                             maxt = modalTn(j);
@@ -246,12 +247,12 @@ classdef ModalEspectral < handle
             end
             
             % Asigna valores
-            analisisObj.Tn = zeros(ngdl, 1);
-            analisisObj.wn = zeros(ngdl, 1);
-            analisisObj.phin = zeros(ngdl, ngdl);
+            analisisObj.Tn = zeros(nModos, 1);
+            analisisObj.wn = zeros(nModos, 1);
+            analisisObj.phin = zeros(ngdl, nModos);
             analisisObj.Mm = modalMm;
             analisisObj.Km = modalKm;
-            for i = 1:ngdl
+            for i = 1:nModos
                 analisisObj.Tn(Torder(i)) = modalTn(i);
                 analisisObj.wn(Torder(i)) = modalWn(i);
                 analisisObj.phin(:, Torder(i)) = modalPhin(:, i);
@@ -268,24 +269,20 @@ classdef ModalEspectral < handle
             end
             
             % Realiza el calculo de las participaciones modales
-            analisisObj.Lm = zeros(ngdl, ndg);
-            analisisObj.Mmeff = zeros(ngdl, ndg);
-            analisisObj.Mmeffacum = zeros(ngdl, ndg);
-            analisisObj.Mmeffacump = zeros(ngdl, ndg);
+            analisisObj.Lm = zeros(nModos, ndg);
+            analisisObj.Mmeff = zeros(nModos, ndg);
+            analisisObj.Mmeffacum = zeros(nModos, ndg);
+            analisisObj.Mmeffacump = zeros(nModos, ndg);
             
             % Recorre cada grado de libertad (horizontal, vertical, giro)
             for j = 1:ndg
                 analisisObj.Lm(:, j) = analisisObj.phin' * analisisObj.Mt * analisisObj.rm(:, j);
-                analisisObj.Mmeff(:, j) = analisisObj.Lm(:, j).^2 ./ diag(analisisObj.Mm);
+                analisisObj.Mmeff(:, j) = analisisObj.Lm(:, j).^2 ./ diag(modalMmt);
                 
                 mtot = sum(analisisObj.Mmeff(:, j));
-                if j == 1
-                    analisisObj.Mtotal = mtot;
-                end
                 analisisObj.Mmeff(:, j) = analisisObj.Mmeff(:, j) ./ mtot;
-                analisisObj.Mmeffacum = zeros(ngdl, 1);
                 analisisObj.Mmeffacum(1, j) = analisisObj.Mmeff(1, j);
-                for i = 2:ngdl
+                for i = 2:nModos
                     analisisObj.Mmeffacum(i, j) = analisisObj.Mmeffacum(i-1, j) + analisisObj.Mmeff(i, j);
                 end
                 
@@ -729,7 +726,7 @@ classdef ModalEspectral < handle
                 fprintf('\t\t-----------------------------------------------------------------------------------------\n');
             end
             
-            for i = 1:10
+            for i = 1:analisisObj.numModos
                 if analisisObj.numDG == 2
                     fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
                         analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), ...
