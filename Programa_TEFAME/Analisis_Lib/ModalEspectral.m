@@ -163,20 +163,28 @@ classdef ModalEspectral < handle
             
         end % definirNumeracionGDL function
         
-        function analizar(analisisObj, nModos)
+        function analizar(analisisObj, nModos, beta)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
             % realizar el analisis estatico
             %
-            % analizar(analisisObj, nModos)
+            % analizar(analisisObj,nModos,beta)
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas, requiere el numero de modos para realizar el
-            % analisis. Por defecto es 10
+            % analisis y de los modos conocidos con sus beta
             
-            % Guarda el numero de modos
+            % Ajusta variables de entrada
             if ~exist('nModos', 'var')
                 nModos = 10;
             end
             analisisObj.numModos = nModos;
+            betasz = size(beta);
+            if betasz(1) ~= 1
+                if betasz(2) == 1
+                    beta = beta';
+                else
+                    error('Vector beta incorrecto, debe ser de tamaño 1x2');
+                end
+            end
             
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
@@ -193,18 +201,25 @@ classdef ModalEspectral < handle
             % Se ensambla el vector de fuerzas
             analisisObj.ensamblarVectorFuerzas();
             
-            % Calcula las frecuencias del sistema
-            modalWn = sqrt(eig(analisisObj.Mt^-1*analisisObj.Kt));
-            
-            % Calcula los periodos
-            modalTn = (modalWn.^-1) .* 2 * pi;
-            
-            % Calcula los vectores propios
-            [~, ~, modalPhin] = eig(analisisObj.Mt^-1*analisisObj.Kt);
-            
             % Obtiene los grados de libertad
             ngdl = length(analisisObj.Mt); % Numero de grados de libertad
             ndg = analisisObj.modeloObj.obtenerNumerosGDL(); % Grados de libertad por nodo
+            
+            % Resuelve la ecuacion del sistema, para ello crea la matriz
+            % inversa de la masa y calcula los valores propios
+            invMt = zeros(ngdl, ngdl);
+            for i=1:ngdl
+                invMt(i,i) = 1/analisisObj.Mt(i,i);
+            end
+            sysMat = invMt*analisisObj.Kt;
+            
+            [v,d] = eigs(sysMat, nModos, 'smallestabs');
+            syseig = eig(sysMat);
+            [~, ~, modalPhin] = eig(sysMat);
+            
+            % Calcula las frecuencias del sistema
+            modalWn = sqrt(syseig);
+            modalTn = (modalWn.^-1) .* 2 * pi; % Calcula los periodos
             
             % Calcula las matrices
             modalMm = modalPhin' * analisisObj.Mt * modalPhin;
@@ -278,20 +293,16 @@ classdef ModalEspectral < handle
             end
             
             % Calcula la matriz de amortiguamiento de Rayleigh
-            m = find(analisisObj.Mmeffacum(:, 1) == max(analisisObj.Mmeffacum(:, j)));
-            m
-            n = 8;
-            
-            % Amortiguamiento critico de los modos conocidos
-            beta_m = 2 / 100;
-            beta_n = 5 / 100;
+            m = maxArrayIndex(analisisObj.Mmeff(:, 1));
+            n = maxArrayIndex(analisisObj.Mmeff(:, 2));
             
             % Calculo de constantes de Rayleigh
-            a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
-                -1 / w(n), 1 / w(m)] * [beta_m; beta_n];
+            w = analisisObj.wn;
+            a = (2 * (m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
+                -1 / w(n), 1 / w(m)] * beta';
             
             % Matriz de amortiguamiento de Rayleigh
-            c_rayleigh = a(1) .* m + a(2) .* k;
+            analisisObj.cRayleigh = a(1) .* analisisObj.Mm + a(2) .* analisisObj.Km;
             
             % Se resuelve la ecuacion
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;

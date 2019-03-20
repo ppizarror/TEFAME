@@ -62,6 +62,6 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
-analisisObj.analizar();
+analisisObj.analizar(10, [0.02, 0.05]);
 analisisObj.disp();
 analisisObj.plot(true, 10);
