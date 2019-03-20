@@ -83,6 +83,11 @@ classdef ModalEspectral < handle
         Mmeff % Masa modal efectiva
         Mmeffacum % Masa modal efectiva acumulada
         Mmeffacump % Masa modal efectiva acumulada porcentaje
+        Mtotal % Masa total del modelo
+        analisisFinalizado % Indica que el analisis ha sido realizado
+        numModos % Numero de modos del analisis
+        numDG % Numero de grados de libertad por modo despues del analisis
+        cRayleigh % Matriz de amortiguamiento
     end % properties ModalEspectral
     
     methods
@@ -104,6 +109,7 @@ classdef ModalEspectral < handle
             analisisObj.Mt = [];
             analisisObj.u = [];
             analisisObj.F = [];
+            analisisObj.analisisFinalizado = false;
             
         end % ModalEspectral constructor
         
@@ -157,13 +163,20 @@ classdef ModalEspectral < handle
             
         end % definirNumeracionGDL function
         
-        function analizar(analisisObj)
+        function analizar(analisisObj, nModos)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
             % realizar el analisis estatico
             %
-            % analizar(analisisObj)
+            % analizar(analisisObj, nModos)
             % Analiza estaticamente el modelo lineal y elastico sometido a un
-            % set de cargas.
+            % set de cargas, requiere el numero de modos para realizar el
+            % analisis. Por defecto es 10
+            
+            % Guarda el numero de modos
+            if ~exist('nModos', 'var')
+                nModos = 10;
+            end
+            analisisObj.numModos = nModos;
             
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
@@ -189,11 +202,14 @@ classdef ModalEspectral < handle
             % Calcula los vectores propios
             [~, ~, modalPhin] = eig(analisisObj.Mt^-1*analisisObj.Kt);
             
-            % Calcula la matriz de masa
-            ngdl = length(analisisObj.Mt);
+            % Obtiene los grados de libertad
+            ngdl = length(analisisObj.Mt); % Numero de grados de libertad
+            ndg = analisisObj.modeloObj.obtenerNumerosGDL(); % Grados de libertad por nodo
+            
+            % Calcula las matrices
             modalMm = modalPhin' * analisisObj.Mt * modalPhin;
             modalPhin = modalPhin * diag(diag(modalMm).^-0.5);
-            modalMm = diag(diag(modalPhin' * analisisObj.Mt * modalPhin));
+            modalMm = diag(diag(modalPhin'*analisisObj.Mt*modalPhin));
             modalKm = diag(diag(modalPhin'*analisisObj.Kt*modalPhin));
             
             % Reordena los periodos
@@ -227,24 +243,65 @@ classdef ModalEspectral < handle
             end
             
             % Crea vector influencia
-            analisisObj.rm = zeros(ngdl, 1);
-            for i=1:ngdl
-                if mod(i, 3) == 0
-                    analisisObj.rm(i) = 1;
+            analisisObj.rm = zeros(ngdl, ndg);
+            for j = 1:ndg
+                for i = 1:ngdl
+                    if mod(i, ndg) == j || (mod(i, ndg) == 0 && j == ndg)
+                        analisisObj.rm(i, j) = 1;
+                    end
                 end
             end
-            analisisObj.Lm = analisisObj.phin' * analisisObj.Mt * analisisObj.rm;
-            analisisObj.Mmeff = analisisObj.Lm.^2 ./ diag(analisisObj.Mm);
             
-            Mtotal = sum(analisisObj.Mmeff);
-            analisisObj.Mmeffacum = zeros(ngdl, 1);
-            analisisObj.Mmeffacum(1) = analisisObj.Mmeff(1);
-            for i = 2:ngdl
-                analisisObj.Mmeffacum(i) = analisisObj.Mmeffacum(i-1) + analisisObj.Mmeff(i);
+            % Realiza el calculo de las participaciones modales
+            analisisObj.Lm = zeros(ngdl, ndg);
+            analisisObj.Mmeff = zeros(ngdl, ndg);
+            analisisObj.Mmeffacum = zeros(ngdl, ndg);
+            analisisObj.Mmeffacump = zeros(ngdl, ndg);
+            
+            % Recorre cada grado de libertad (horizontal, vertical, giro)
+            for j = 1:ndg
+                analisisObj.Lm(:, j) = analisisObj.phin' * analisisObj.Mt * analisisObj.rm(:, j);
+                analisisObj.Mmeff(:, j) = analisisObj.Lm(:, j).^2 ./ diag(analisisObj.Mm);
+                
+                mtot = sum(analisisObj.Mmeff(:, j));
+                if j == 1
+                    analisisObj.Mtotal = mtot;
+                end
+                analisisObj.Mmeff(:, j) = analisisObj.Mmeff(:, j) ./ mtot;
+                analisisObj.Mmeffacum = zeros(ngdl, 1);
+                analisisObj.Mmeffacum(1, j) = analisisObj.Mmeff(1, j);
+                for i = 2:ngdl
+                    analisisObj.Mmeffacum(i, j) = analisisObj.Mmeffacum(i-1, j) + analisisObj.Mmeff(i, j);
+                end
+                
+                analisisObj.Mmeffacump(:, j) = analisisObj.Mmeffacum(:, j);
             end
             
-            % Calcula porcentaje por edificio
-            analisisObj.Mmeffacump = analisisObj.Mmeffacum ./ Mtotal;
+            % Calcula la matriz de amortiguamiento de Rayleigh
+            m = find(analisisObj.Mmeffacum(:, 1) == max(analisisObj.Mmeffacum(:, j)));
+            m
+            n = 8;
+            
+            % Amortiguamiento critico de los modos conocidos
+            beta_m = 2 / 100;
+            beta_n = 5 / 100;
+            
+            % Calculo de constantes de Rayleigh
+            a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
+                -1 / w(n), 1 / w(m)] * [beta_m; beta_n];
+            
+            % Matriz de amortiguamiento de Rayleigh
+            c_rayleigh = a(1) .* m + a(2) .* k;
+            
+            % Se resuelve la ecuacion
+            analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
+            
+            % Actualiza el modelo
+            analisisObj.modeloObj.actualizar(analisisObj.u);
+            
+            % Termina el analisis
+            analisisObj.analisisFinalizado = true;
+            analisisObj.numDG = ndg;
             
         end % analizar function
         
@@ -470,7 +527,7 @@ classdef ModalEspectral < handle
             
         end % obtenerDesplazamientos function
         
-                      
+        
         function plt = plot(analisisObj, deformada, factor)
             %PLOTMODELO Grafica un modelo
             %
@@ -628,22 +685,53 @@ classdef ModalEspectral < handle
             % Imprime la informacion guardada en el ModalEspectral (analisisObj) en
             % pantalla
             
-            fprintf('Propiedades Analisis Modal:\n');
-            
-            fprintf('\tMatriz de Rigidez:\n');
-            fprintf('\t\tDeterminante: %f\n', det(analisisObj.Kt));
-            
-            fprintf('\tMatriz de Masa:\n');
-            fprintf('\t\tDeterminante: %f\n', det(analisisObj.Mt));
-            
-            fprintf('\tPeriodos:\n');
-            fprintf('\t\tN°\t|\tT (s)\t\t|\tw (s^-1)\n');
-            fprintf('\t\t---------------------------------\n');
-            for i = 1:10
-                fprintf('\t\t%d\t|\t%f\t|\t%f\n', i, analisisObj.Tn(i), analisisObj.wn(i));
+            if ~analisisObj.analisisFinalizado
+                fprintf('El analisis modal aun no ha sido calculado');
             end
-            fprintf('\n');
             
+            fprintf('Propiedades analisis modal espectral:\n');
+            
+            % Muestra los grados de libertad
+            fprintf('\tNumero de grados de libertad: %d\n', analisisObj.numeroGDL);
+            fprintf('\tNumero de direcciones por grado: %d\n', analisisObj.numDG);
+            fprintf('\tNumero de modos en el analisis: %d\n', analisisObj.numModos);
+            
+            % Propiedades de las matrices
+            detKt = det(analisisObj.Kt);
+            detMt = det(analisisObj.Mt);
+            if detKt ~= Inf
+                fprintf('\tMatriz de rigidez:\n');
+                fprintf('\t\tDeterminante: %f\n', detKt);
+            end
+            if abs(detMt) >= 1e-20
+                fprintf('\tMatriz de Masa:\n');
+                fprintf('\t\tDeterminante: %f\n', detMt);
+            end
+            
+            fprintf('\tPeriodos y participacion modal:\n');
+            analisisObj.numDG = 2;
+            if analisisObj.numDG == 2
+                fprintf('\t\tN°\t|\tT (s)\t|\tUx\t\t|\tUy\t\t|\tSum Ux\t|\tSum Uy\t|\n');
+                fprintf('\t\t------------------------------------------------------------------\n');
+            elseif analisisObj.numDG == 3
+                fprintf('\t\tN°\t|\tT (s)\t|\tUx\t\t|\tUy\t\t|\tUz\t\t|\tSum Ux\t|\tSum Uy\t|\tSum Uz\t|\n');
+                fprintf('\t\t-----------------------------------------------------------------------------------------\n');
+            end
+            
+            for i = 1:10
+                if analisisObj.numDG == 2
+                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
+                        analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), ...
+                        analisisObj.Mmeffacump(i, 1), analisisObj.Mmeffacump(i, 2));
+                elseif analisisObj.numDG == 3
+                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
+                        analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), analisisObj.Mmeff(i, 3), ...
+                        analisisObj.Mmeffacump(i, 1), analisisObj.Mmeffacump(i, 2), analisisObj.Mmeffacump(i, 3));
+                end
+                fprintf('\n');
+            end
+            
+            fprintf('\tMasa total de la estructura: %.3f\n', analisisObj.Mtotal);
             fprintf('-------------------------------------------------\n');
             fprintf('\n');
             

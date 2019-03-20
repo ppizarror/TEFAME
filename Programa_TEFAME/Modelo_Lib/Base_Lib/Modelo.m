@@ -52,6 +52,8 @@
 %       elementosModelo = obtenerElementos(modeloObj)
 %       restriccionesModelo = obtenerRestricciones(modeloObj)
 %       patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
+%       numDimensiones = obtenerNumeroDimensiones(modeloObj)
+%       numGDL = obtenerNumerosGDL(modeloObj)
 %       inicializar(modeloObj)
 %       aplicarRestricciones(modeloObj)
 %       aplicarPatronesDeCargas(modeloObj)
@@ -102,55 +104,55 @@ classdef Modelo < handle
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para agregar componentes del Modelo
         
-        function agregarNodos(modeloObj, arreigloNodos)
+        function agregarNodos(modeloObj, arregloNodos)
             % agregarNodos: es un metodo de la clase Modelo que se usa para
-            % entregarle el arreiglo con los nodos al Modelo
+            % entregarle el arreglo con los nodos al Modelo
             %
-            % agregarNodos(modeloObj,arreigloNodos)
-            % Agrega el arreiglo con los nodos (arreigloNodos) al Modelo (modeloObj)
+            % agregarNodos(modeloObj,arregloNodos)
+            % Agrega el arreglo con los nodos (arregloNodos) al Modelo (modeloObj)
             % para que esto lo guarde y tenga acceso a los nodos
             
-            modeloObj.nodos = arreigloNodos;
+            modeloObj.nodos = arregloNodos;
             
         end % agregarNodos function
         
-        function agregarElementos(modeloObj, arreigloElementos)
+        function agregarElementos(modeloObj, arregloElementos)
             % agregarElementos: es un metodo de la clase Modelo que se usa para
-            % entregarle el arreiglo con los elementos al Modelo
+            % entregarle el arreglo con los elementos al Modelo
             %
-            % agregarElementos(modeloObj,arreigloElementos)
-            % Agrega el arreiglo con los elementos (arreigloElementos) al Modelo
+            % agregarElementos(modeloObj,arregloElementos)
+            % Agrega el arreglo con los elementos (arregloElementos) al Modelo
             % (modeloObj) para que esto lo guarde y tenga acceso a los elementos
             
-            modeloObj.elementos = arreigloElementos;
+            modeloObj.elementos = arregloElementos;
             
         end % agregarElementos function
         
-        function agregarRestricciones(modeloObj, arreigloRestricciones)
+        function agregarRestricciones(modeloObj, arregloRestricciones)
             % agregarRestricciones: es un metodo de la clase Modelo que se usa
-            % para entregarle el arreiglo con los restricciones al Modelo
+            % para entregarle el arreglo con los restricciones al Modelo
             %
-            % agregarRestricciones(modeloObj,arreigloRestricciones)
-            % Agrega el arreiglo con los restricciones (arreigloRestricciones)
+            % agregarRestricciones(modeloObj,arregloRestricciones)
+            % Agrega el arreglo con los restricciones (arregloRestricciones)
             % al Modelo (modeloObj) para que esto lo guarde y tenga acceso a
             % los restricciones.
             
-            modeloObj.restricciones = arreigloRestricciones;
+            modeloObj.restricciones = arregloRestricciones;
             
         end % agregarRestricciones function
         
-        function agregarPatronesDeCargas(modeloObj, arreigloPatronDeCargas)
+        function agregarPatronesDeCargas(modeloObj, arregloPatronDeCargas)
             % agregarPatronesDeCargas: es un metodo de la clase Modelo que se usa
-            % para entregarle el arreiglo con los patrones de carga al Modelo
+            % para entregarle el arreglo con los patrones de carga al Modelo
             %
-            % agregarPatronesDeCargas(modeloObj,arreigloPatronDeCargas)
-            % Agrega el arreiglo con los patrones de carga (arreigloPatronDeCargas)
+            % agregarPatronesDeCargas(modeloObj,arregloPatronDeCargas)
+            % Agrega el arreglo con los patrones de carga (arregloPatronDeCargas)
             % al Modelo (modeloObj) para que esto lo guarde y tenga acceso a los
             % patrones de carga.
             % Los patrones de cargas contienen las cargas que se aplican en los
             % nodos y elementos.
             
-            modeloObj.patronesDeCargas = arreigloPatronDeCargas;
+            modeloObj.patronesDeCargas = arregloPatronDeCargas;
             
         end % agregarPatronesDeCargas function
         
@@ -159,10 +161,10 @@ classdef Modelo < handle
         
         function nodosModelo = obtenerNodos(modeloObj)
             % obtenerNodos: es un metodo de la clase Modelo que se usa para
-            % obtener el arreiglo con los nodos guardados en el Modelo
+            % obtener el arreglo con los nodos guardados en el Modelo
             %
             % nodosModelo = obtenerNodos(modeloObj)
-            % Obtiene el arreiglo con los nodos (nodosModelo) que esta guardado
+            % Obtiene el arreglo con los nodos (nodosModelo) que esta guardado
             % en el Modelo (modeloObj)
             
             nodosModelo = modeloObj.nodos;
@@ -171,10 +173,10 @@ classdef Modelo < handle
         
         function elementosModelo = obtenerElementos(modeloObj)
             % obtenerElementos: es un metodo de la clase Modelo que se usa para
-            % obtener el arreiglo con los elementos guardados en el Modelo
+            % obtener el arreglo con los elementos guardados en el Modelo
             %
             % elementosModelo = obtenerElementos(modeloObj)
-            % Obtiene el arreiglo con los elementos (elementosModelo) que esta
+            % Obtiene el arreglo con los elementos (elementosModelo) que esta
             % guardado en el Modelo (modeloObj)
             
             elementosModelo = modeloObj.elementos;
@@ -183,10 +185,10 @@ classdef Modelo < handle
         
         function restriccionesModelo = obtenerRestricciones(modeloObj)
             % obtenerPatronDeCargas: es un metodo de la clase Modelo que se usa para
-            % obtener el arreiglo con los patrones de carga guardados en el Modelo
+            % obtener el arreglo con los patrones de carga guardados en el Modelo
             %
             % patronDeCargasModelo = obtenerPatronDeCargas(modeloObj)
-            % Obtiene el arreiglo con los patrones de carga (patronDeCargasModelo)
+            % Obtiene el arreglo con los patrones de carga (patronDeCargasModelo)
             % que esta guardado en el Modelo (modeloObj)
             
             restriccionesModelo = modeloObj.restricciones;
@@ -195,15 +197,36 @@ classdef Modelo < handle
         
         function patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
             % obtenerPatronesDeCargas: es un metodo de la clase Modelo que se usa para
-            % obtener el arreiglo con los patrones de carga guardados en el Modelo
+            % obtener el arreglo con los patrones de carga guardados en el Modelo
             %
             % patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
-            % Obtiene el arreiglo con los patrones de carga (patronesDeCargasModelo)
+            % Obtiene el arreglo con los patrones de carga (patronesDeCargasModelo)
             % que esta guardado en el Modelo (modeloObj)
             
             patronesDeCargasModelo = modeloObj.patronesDeCargas;
             
         end % obtenerPatronesDeCargas function
+        
+        function numDimensiones = obtenerNumeroDimensiones(modeloObj)
+            % obtenerNumeroDimensiones: es un metodo de la clase Modelo que
+            % se usa para obtener el numero de dimensiones del modelo
+            %
+            % numDimensiones = obtenerNumeroDimensiones(modeloObj)
+        
+            numDimensiones = modeloObj.nDimensiones;
+        
+        end % obtenerNumeroDimensiones function
+        
+        function numGDL = obtenerNumerosGDL(modeloObj)
+            % obtenerNumerosGDL: es un metodo de la clase Modelo que
+            % se usa para obtener el numero de grados de libertad por nodo
+            % del modelo
+            %
+            % numGDL = obtenerNumerosGDL(modeloObj)
+        
+            numGDL = modeloObj.nGDL;
+        
+        end % obtenerNumerosGDL function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para inicializar y actualizar las componentes del Modelo
