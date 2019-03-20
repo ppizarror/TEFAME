@@ -63,4 +63,22 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 analisisObj = ModalEspectral(modeloObj);
 analisisObj.analizar();
 analisisObj.disp();
-% analisisObj.plot(true, 10);
+analisisObj.plot(true, 10);
+
+%% Creamos matriz de amortiguamiento de Rayleigh
+
+% Obtención de parámetros 
+w = analisisObj.obtenerValoresPropios;
+k = analisisObj.obtenerMatrizRigidez;
+m = analisisObj.obtenerMatrizMasa;
+
+% Modos en los cuales conozco su amortiguamiento crítico
+m = 1;
+n = 8;
+% Amortiguamiento crítico de los modos conocidos
+beta_m = 2/100;
+beta_n = 5/100;
+% Cálculo de constantes de Rayleigh
+a = (2*w(m)*w(n))/(w(n)^2-w(m)^2).*[w(n) -w(m) ; -1/w(n) 1/w(m)]*[beta_m ; beta_n];
+%Matriz de amortiguamiento de Rayleigh
+c_rayleigh = a(1).*m + a(2).*k;

@@ -193,8 +193,7 @@ classdef ModalEspectral < handle
             ngdl = length(analisisObj.Mt);
             modalMm = modalPhin' * analisisObj.Mt * modalPhin;
             modalPhin = modalPhin * diag(diag(modalMm).^-0.5);
-            modalMm = eye(ngdl);
-            % modalMm = diag(diag(modalPhin' * analisisObj.Mt * modalPhin));
+            modalMm = diag(diag(modalPhin' * analisisObj.Mt * modalPhin));
             modalKm = diag(diag(modalPhin'*analisisObj.Kt*modalPhin));
             
             % Reordena los periodos
@@ -228,7 +227,12 @@ classdef ModalEspectral < handle
             end
             
             % Crea vector influencia
-            analisisObj.rm = ones(ngdl, 1);
+            analisisObj.rm = zeros(ngdl, 1);
+            for i=1:ngdl
+                if mod(i, 3) == 0
+                    analisisObj.rm(i) = 1;
+                end
+            end
             analisisObj.Lm = analisisObj.phin' * analisisObj.Mt * analisisObj.rm;
             analisisObj.Mmeff = analisisObj.Lm.^2 ./ diag(analisisObj.Mm);
             
@@ -241,13 +245,6 @@ classdef ModalEspectral < handle
             
             % Calcula porcentaje por edificio
             analisisObj.Mmeffacump = analisisObj.Mmeffacum ./ Mtotal;
-            analisisObj.Mmeffacump
-            
-            % Se resuelve la ecuacion
-            analisisObj.u = zeros(length(analisisObj.F), 1);
-            
-            % Actualiza el modelo
-            analisisObj.modeloObj.actualizar(analisisObj.u);
             
         end % analizar function
         
@@ -460,6 +457,20 @@ classdef ModalEspectral < handle
             
         end % obtenerDesplazamientos function
         
+        function wn_Modelo = obtenerValoresPropios(analisisObj)
+            % obtenerValoresPropios: es un metodo de la clase ModalEspectral
+            % que se usa para obtener los valores propios del modelo
+            % obtenido del analisis
+            %
+            % w_Modelo = obtenerValoresPropios(analisisObj)
+            % Obtiene los valores propios (wn_Modelo) del modelo que se
+            % genero como resultado del Analisis (analisisObj)
+            
+            wn_Modelo = analisisObj.wn;
+            
+        end % obtenerDesplazamientos function
+        
+                      
         function plt = plot(analisisObj, deformada, factor)
             %PLOTMODELO Grafica un modelo
             %
