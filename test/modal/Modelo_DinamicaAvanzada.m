@@ -64,4 +64,8 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 analisisObj = ModalEspectral(modeloObj);
 analisisObj.analizar(10, [0.02, 0.05]);
 analisisObj.disp();
-% analisisObj.plot(true, 10);
+for i=1:10
+    analisisObj.plot(i, 50, 25, sprintf('test/modal/Modelo_DinamicaAvanzada_%d.gif', i));
+    close all;
+    pause(0.1);
+end

@@ -465,7 +465,6 @@ classdef AnalisisEstatico < handle
             disp(analisisObj.u);
             
             fprintf('-------------------------------------------------\n');
-            fprintf('\n');
             
         end % disp function
         
