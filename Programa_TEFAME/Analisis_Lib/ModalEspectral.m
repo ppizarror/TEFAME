@@ -66,7 +66,7 @@
 
 classdef ModalEspectral < handle
     
-    properties(Access = private)
+    properties(Access = public)
         modeloObj % Guarda el objeto que contiene el modelo
         numeroGDL % Guarda el numero de grados de libertad totales del modelo
         Kt % Matriz de Rigidez del modelo
@@ -87,7 +87,7 @@ classdef ModalEspectral < handle
         analisisFinalizado % Indica que el analisis ha sido realizado
         numModos % Numero de modos del analisis
         numDG % Numero de grados de libertad por modo despues del analisis
-        cRayleigh % Matriz de amortiguamiento
+        cRayleigh % Matriz de amortiguamiento de Rayleigh
     end % properties ModalEspectral
     
     methods
@@ -174,7 +174,7 @@ classdef ModalEspectral < handle
             
             % Ajusta variables de entrada
             if ~exist('nModos', 'var')
-                nModos = 10;
+                nModos = 20;
             end
             betasz = size(beta);
             if betasz(1) ~= 1
@@ -289,17 +289,49 @@ classdef ModalEspectral < handle
                 analisisObj.Mmeffacump(:, j) = analisisObj.Mmeffacum(:, j);
             end
             
-            % Calcula la matriz de amortiguamiento de Rayleigh
-            m = maxArrayIndex(analisisObj.Mmeff(:, 1));
-            n = maxArrayIndex(analisisObj.Mmeff(:, 2));
+            % CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH
             
-            % Calculo de constantes de Rayleigh
-            w = analisisObj.wn;
-            a = (2 * (m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
-                -1 / w(n), 1 / w(m)] * beta';
+            % Se declaran dos amortiguamientos críticos asociados a dos modos
+            % diferentes indicando si es horizontal o vertical (h o v)
+
+            modo= [1 , 3];
+            direc = ['h' , 'h'];
+            beta = [2 / 100 , 5/100];
+            count = [0 , 0];
+            m = 0;
+            n = 0;
+            analisisObj.Mmeff
+            for i = 1:nModos
+               if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2),analisisObj.Mmeff(i, 3))
+                   count(1) = count(1) + 1;
+                   if direc(1) == 'h' && modo(1) == count(1)
+                       m = i;
+                   elseif direc(2) == 'h' && modo(2) == count(1)
+                       n = i;
+                   end
+               elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1),analisisObj.Mmeff(i, 3))  
+                   count(2) = count(2) + 1;
+                   if direc(1) == 'v' && modo(1) == count(2)
+                       m = i;
+                   elseif direc(2) == 'h' && modo(2) == count(2)
+                       n = i;
+                   end
+               end 
+  
+            end
+            Calcular_cRayleigh = 1;
+            if m == 0 || n == 0
+                Calcular_cRayleigh = 0;
+                disp('Se requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh')
+            end
+            if Calcular_cRayleigh == 1
+                w = analisisObj.wn;
+                a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
+                    -1 / w(n), 1 / w(m)] * beta';
+                analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
+            end
+            % CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN
             
-            % Matriz de amortiguamiento de Rayleigh
-            analisisObj.cRayleigh = a(1) .* analisisObj.Mm + a(2) .* analisisObj.Km;
             
             % Se resuelve la ecuacion
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
@@ -742,7 +774,7 @@ classdef ModalEspectral < handle
             fprintf('\tMasa total de la estructura: %.3f\n', analisisObj.Mtotal);
             fprintf('-------------------------------------------------\n');
             fprintf('\n');
-            
+           
         end % disp function
         
     end % methods ModalEspectral
