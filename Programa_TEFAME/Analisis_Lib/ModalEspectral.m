@@ -88,6 +88,7 @@ classdef ModalEspectral < handle
         numModos % Numero de modos del analisis
         numDG % Numero de grados de libertad por modo despues del analisis
         cRayleigh % Matriz de amortiguamiento de Rayleigh
+        cPenzien % Matriz de amortiguamiento de Wilson-Penzien
     end % properties ModalEspectral
     
     methods
@@ -217,6 +218,7 @@ classdef ModalEspectral < handle
             
             [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
             syseig = diag(syseig);
+            modalPhi = modalPhin;
             
             % Calcula las frecuencias del sistema
             modalWn = sqrt(syseig);
@@ -294,30 +296,29 @@ classdef ModalEspectral < handle
             % Se declaran dos amortiguamientos críticos asociados a dos modos
             % diferentes indicando si es horizontal o vertical (h o v)
 
-            modo= [1 , 3];
-            direc = ['h' , 'h'];
-            beta = [2 / 100 , 5/100];
-            count = [0 , 0];
+            modocR= [1 , 3];
+            direcR = ['h' , 'h'];
+            betacR = [2 / 100 , 5/100];
+            countcR = [0 , 0];
             m = 0;
             n = 0;
             analisisObj.Mmeff
             for i = 1:nModos
                if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2),analisisObj.Mmeff(i, 3))
-                   count(1) = count(1) + 1;
-                   if direc(1) == 'h' && modo(1) == count(1)
+                   countcR(1) = countcR(1) + 1;
+                   if direcR(1) == 'h' && modocR(1) == countcR(1)
                        m = i;
-                   elseif direc(2) == 'h' && modo(2) == count(1)
+                   elseif direcR(2) == 'h' && modocR(2) == countcR(1)
                        n = i;
                    end
                elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1),analisisObj.Mmeff(i, 3))  
-                   count(2) = count(2) + 1;
-                   if direc(1) == 'v' && modo(1) == count(2)
+                   countcR(2) = countcR(2) + 1;
+                   if direcR(1) == 'v' && modocR(1) == countcR(2)
                        m = i;
-                   elseif direc(2) == 'h' && modo(2) == count(2)
+                   elseif direcR(2) == 'h' && modocR(2) == countcR(2)
                        n = i;
                    end
                end 
-  
             end
             Calcular_cRayleigh = 1;
             if m == 0 || n == 0
@@ -327,12 +328,29 @@ classdef ModalEspectral < handle
             if Calcular_cRayleigh == 1
                 w = analisisObj.wn;
                 a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
-                    -1 / w(n), 1 / w(m)] * beta';
+                    -1 / w(n), 1 / w(m)] * betacR';
                 analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
             end
             % CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN
             
+            % Se declaran todos los amortiguamientos críticos del sistema,
+            % (horizontal, vertical y traslacional)
             
+            betacP = [5 / 100 , 2 / 100 , 0 / 100];
+            d = zeros(nModos,nModos);
+            w = analisisObj.wn;
+            Mn = modalMmt;
+            for i = 1:nModos
+               if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2),analisisObj.Mmeff(i, 3))
+                   d(i,i) = 2 * betacP(1) * w(i) / Mn(i,i); 
+               elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1),analisisObj.Mmeff(i, 3))  
+                   d(i,i) = 2 * betacP(2) * w(i) / Mn(i,i); 
+               else
+                   d(i,i) = 2 * betacP(3) * w(i) / Mn(i,i); 
+               end 
+            end
+            analisisObj.cPenzien = analisisObj.Mt*modalPhi*d*modalPhi'*analisisObj.Mt;
+                       
             % Se resuelve la ecuacion
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
             
@@ -896,12 +914,8 @@ classdef ModalEspectral < handle
             
             fprintf('\tMasa total de la estructura: %.3f\n', analisisObj.Mtotal);
             fprintf('-------------------------------------------------\n');
-<<<<<<< HEAD
             fprintf('\n');
            
-=======
-            
->>>>>>> 87676512c55de1f3bde43e0492c7b46163085d73
         end % disp function
         
     end % methods ModalEspectral
