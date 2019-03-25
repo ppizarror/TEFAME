@@ -210,14 +210,14 @@ classdef ModalEspectral < handle
             % Resuelve la ecuacion del sistema, para ello crea la matriz
             % inversa de la masa y calcula los valores propios
             invMt = zeros(ngdl, ngdl);
-            for i=1:ngdl
-                invMt(i,i) = 1/analisisObj.Mt(i,i);
+            for i = 1:ngdl
+                invMt(i, i) = 1 / analisisObj.Mt(i, i);
             end
-            sysMat = invMt*analisisObj.Kt;
+            sysMat = invMt * analisisObj.Kt;
             
             [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
             syseig = diag(syseig);
-          
+            
             % Calcula las frecuencias del sistema
             modalWn = sqrt(syseig);
             modalTn = (modalWn.^-1) .* 2 * pi; % Calcula los periodos
@@ -568,60 +568,161 @@ classdef ModalEspectral < handle
         end % obtenerDesplazamientos function
         
         
-        function plt = plot(analisisObj, deformada, factor)
+        function plt = plot(analisisObj, modo, factor, numCuadros, guardaGif)
             %PLOTMODELO Grafica un modelo
             %
-            % plt = plot(factor, deformada)
+            % plt = plot(modo,factor,velocidad)
             
-            if ~exist('deformada', 'var')
-                deformada = false;
+            deformada = false;
+            if exist('modo', 'var')
+                deformada = true;
             end
             
             if ~exist('factor', 'var')
                 factor = 2;
             end
             
-            % Grafica la estructura
-            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
-            numeroNodos = length(nodoObjetos);
-            
-            plt = figure();
-            if ~deformada
-                title('Analisis Estatico');
-            else
-                title(sprintf('Analisis Estatico / Escala deformacion: %d%%', factor*100));
+            if ~exist('numCuadros', 'var')
+                numCuadros = 0;
             end
             
+            guardarGif = false;
+            if exist('guardaGif', 'var')
+                guardarGif = true;
+            end
+            
+            % Calcula los limites
+            [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(modo, factor);
+            
+            % Grafica la estructura
+            plt = figure();
+            fig_num = get(gcf, 'Number');
             hold on;
             grid on;
             
-            % Obtiene cuantos GDL tiene el modelo
-            gdl = 2;
+            plotAnimado(analisisObj, deformada, modo, factor, 1, limx, limy, limz);
+            hold off;
+            fprintf('Generando animacion analisis modal espectral:\n');
+            if numCuadros ~= 0
+                
+                % Obtiene el numero de cuadros
+                t = 0;
+                dt = 2 * pi / numCuadros;
+                reverse_porcent = '';
+                for i = 1:numCuadros
+                    
+                    % Si el usuario cierra el plot termina de graficar
+                    if ~ishandle(plt) || ~ishghandle(plt)
+                        delete(plt);
+                        close; % Cierra el grafico
+                        return;
+                    end
+                    
+                    t = t + dt;
+                    figure(fig_num); % Atrapa el foco
+                    plotAnimado(analisisObj, deformada, modo, factor, sin(t), limx, limy, limz);
+                    if guardarGif
+                        frame = getframe(fig_num);
+                        im = frame2im(frame);
+                        [imind, cm] = rgb2ind(im, 256);
+                        if i == 1
+                            imwrite(imind, cm, guardaGif, 'gif', 'Loopcount', inf, 'DelayTime', 0.1);
+                        else
+                            imwrite(imind, cm, guardaGif, 'gif', 'WriteMode', 'append', 'DelayTime', 0.1);
+                        end
+                    end
+                    hold off;
+                    
+                    msg = sprintf('\tCalculando... %.1f/100', i/numCuadros*100);
+                    fprintf([reverse_porcent, msg]);
+                    reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
+                    
+                end
+                if guardarGif
+                    fprintf('\n\tGuardando animacion gif en: %s\n', guardaGif);
+                end
+                
+            end
+            
+        end % plot function
+        
+        function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, modo, factor)
+            % Obtiene los limites de deformacion
+            
+            factor = 1.25 * factor;
             limx = [inf, -inf];
             limy = [inf, -inf];
             limz = [inf, -inf];
+            
+            % Carga objetos
+            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            numeroNodos = length(nodoObjetos);
+            gdl = 2;
+            for i = 1:numeroNodos
+                coords = nodoObjetos{i}.obtenerCoordenadas();
+                ngdlid = length(coords);
+                gdl = max(gdl, ngdlid);
+            end
+            
+            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(elementoObjetos);
+            for i = 1:numeroElementos
+                nodoElemento = elementoObjetos{i}.obtenerNodos();
+                coord1i = nodoElemento{1}.obtenerCoordenadas();
+                coord2i = nodoElemento{2}.obtenerCoordenadas();
+                def1 = analisisObj.obtenerDeformadaNodo(nodoElemento{1}, modo, gdl);
+                def2 = analisisObj.obtenerDeformadaNodo(nodoElemento{2}, modo, gdl);
+                coord1 = coord1i + def1 .* factor;
+                coord2 = coord2i + def2 .* factor;
+                limx(1) = min([limx(1), coord1(1), coord2(1)]);
+                limy(1) = min([limy(1), coord1(2), coord2(2)]);
+                limx(2) = max([limx(2), coord1(1), coord2(1)]);
+                limy(2) = max([limy(2), coord1(2), coord2(2)]);
+                if gdl == 3
+                    limz(1) = min([limz(1), coord1(3), coord2(3)]);
+                    limz(2) = max([limz(2), coord1(3), coord2(3)]);
+                end
+                coord1 = coord1i - def1 .* factor;
+                coord2 = coord2i - def2 .* factor;
+                limx(1) = min([limx(1), coord1(1), coord2(1)]);
+                limy(1) = min([limy(1), coord1(2), coord2(2)]);
+                limx(2) = max([limx(2), coord1(1), coord2(1)]);
+                limy(2) = max([limy(2), coord1(2), coord2(2)]);
+                if gdl == 3
+                    limz(1) = min([limz(1), coord1(3), coord2(3)]);
+                    limz(2) = max([limz(2), coord1(3), coord2(3)]);
+                end
+            end
+            
+        end % obtenerLimitesDeformada function
+        
+        function plotAnimado(analisisObj, deformada, modo, factor, phif, limx, limy, limz)
+            % Anima el grafico en funcion del numero del modo
+            
+            % Carga objetos
+            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            numeroNodos = length(nodoObjetos);
+            
+            % Obtiene cuantos GDL tiene el modelo
+            gdl = 2;
+            j = 1;
             for i = 1:numeroNodos
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
                 
-                if ~nodoObjetos{i}.tipoApoyoRestringido()
+                if ~nodoObjetos{i}.tipoApoyoRestringido() && ~deformada
                     if ngdlid == 2
-                        plot(coords(1), coords(2), 'b.', 'MarkerSize', 20);
+                        plot(coords(1), coords(2), 'b.', 'MarkerSize', 10);
                     else
-                        plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 20);
+                        plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 10);
                     end
+                    if j == 1
+                        hold on;
+                    end
+                    j = j + 1;
                 end
                 
-                % Actualiza los limites
-                limx(1) = min([limx(1), coords(1)]);
-                limy(1) = min([limy(1), coords(2)]);
-                limx(2) = max([limx(2), coords(1)]);
-                limy(2) = max([limy(2), coords(2)]);
-                if gdl == 3
-                    limz(1) = min([limz(1), coords(3)]);
-                    limz(2) = max([limz(2), coords(3)]);
-                end
             end
             
             if gdl == 2
@@ -645,38 +746,35 @@ classdef ModalEspectral < handle
                 coord1 = nodoElemento{1}.obtenerCoordenadas();
                 coord2 = nodoElemento{2}.obtenerCoordenadas();
                 
-                if gdl == 2
-                    plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b-', 'LineWidth', 1.25);
-                else
-                    plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
-                        'b-', 'LineWidth', 1.25);
-                end
+                if ~deformada
+                    
+                    if gdl == 2
+                        plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b-', 'LineWidth', 0.5);
+                    else
+                        plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
+                            'b-', 'LineWidth', 0.5);
+                    end
                 
-                if deformada
-                    def1 = nodoElemento{1}.obtenerDesplazamientos();
-                    def2 = nodoElemento{2}.obtenerDesplazamientos();
+                else
+                    
+                    def1 = analisisObj.obtenerDeformadaNodo(nodoElemento{1}, modo, gdl);
+                    def2 = analisisObj.obtenerDeformadaNodo(nodoElemento{2}, modo, gdl);
                     
                     % Suma las deformaciones
-                    coord1 = coord1 + def1 .* factor;
-                    coord2 = coord2 + def2 .* factor;
+                    coord1 = coord1 + def1 .* factor * phif;
+                    coord2 = coord2 + def2 .* factor * phif;
                     
                     % Grafica
                     if gdl == 2
-                        plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'k--', 'LineWidth', 0.7);
+                        plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'k-', 'LineWidth', 1.25);
                     else
                         plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
-                            'k--', 'LineWidth', 0.7);
+                            'k-', 'LineWidth', 1.25);
+                    end
+                    if i == 1
+                        hold on;
                     end
                     
-                    % Actualiza los limites
-                    limx(1) = min([limx(1), coord1(1), coord2(1)]);
-                    limy(1) = min([limy(1), coord1(2), coord2(2)]);
-                    limx(2) = max([limx(2), coord1(1), coord1(1)]);
-                    limy(2) = max([limy(2), coord1(2), coord2(2)]);
-                    if gdl == 3
-                        limz(1) = min([limz(1), coord1(3), coord2(3)]);
-                        limz(2) = max([limz(2), coord1(3), coord2(3)]);
-                    end
                 end
                 
             end
@@ -685,21 +783,32 @@ classdef ModalEspectral < handle
             if deformada
                 for i = 1:numeroNodos
                     coords = nodoObjetos{i}.obtenerCoordenadas();
-                    def = nodoObjetos{i}.obtenerDesplazamientos();
-                    coords = coords + def .* factor;
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
+                    def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, gdl);
+                    coords = coords + def .* factor * phif;
                     
                     if ~nodoObjetos{i}.tipoApoyoRestringido()
                         if ngdlid == 2
-                            plot(coords(1), coords(2), 'k*', 'MarkerSize', 10);
+                            plot(coords(1), coords(2), 'k.', 'MarkerSize', 20);
                         else
-                            plot3(coords(1), coords(2), coords(3), 'k*', 'MarkerSize', 10);
+                            plot3(coords(1), coords(2), coords(3), 'k.', 'MarkerSize', 20);
                         end
                     end
                     
                 end
+                
             end
+            
+            % Setea el titulo
+            if ~deformada
+                title('Analisis modal espectral');
+            else
+                a = sprintf('Analisis modal espectral - modo %d', modo);
+                b = sprintf('Escala deformacion x%d', factor);
+                title({a; b});
+            end
+            grid on;
             
             % Limita en los ejes
             if limx(1) < limx(2)
@@ -712,7 +821,21 @@ classdef ModalEspectral < handle
                 zlim(limz);
             end
             
-        end
+        end % plotAnimado function
+        
+        function def = obtenerDeformadaNodo(analisisObj, nodo, modo, gdl)
+            % Obtiene la deformada de un nodo
+            
+            ngdl = nodo.obtenerGDLID();
+            def = zeros(gdl, 1);
+            gdl = min(gdl, length(ngdl));
+            for i = 1:gdl
+                if ngdl(i) ~= 0
+                    def(i) = analisisObj.phin(ngdl(i), modo);
+                end
+            end
+            
+        end % obtenerDeformadaNodo function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostar la informacion del Analisis Modal Espectral en pantalla
@@ -773,8 +896,12 @@ classdef ModalEspectral < handle
             
             fprintf('\tMasa total de la estructura: %.3f\n', analisisObj.Mtotal);
             fprintf('-------------------------------------------------\n');
+<<<<<<< HEAD
             fprintf('\n');
            
+=======
+            
+>>>>>>> 87676512c55de1f3bde43e0492c7b46163085d73
         end % disp function
         
     end % methods ModalEspectral
