@@ -200,6 +200,52 @@ classdef ModalEspectral < handle
             nModos = min(nModos, ngdl);
             analisisObj.numModos = nModos;
             
+            % ----------------CONDENSACION ESTATICA DE GUYAN---------------
+            
+            % Primero se genera matriz para reordenar elementos (rot)
+            maxcond = 0.001; % Valor máximo de masa para realizar condensacion
+            vz = []; % Vector que identifica indices a condensar
+            j = 1;
+            for i=1:1:length(diagMt)
+               if diagMt < maxcond 
+                   vz(j) = i;
+                   j = j + 1;
+               end
+            end
+            lpasivos = length(vz);
+            lactivos = length(diagMt) - lpasivos;
+            rot = zeros(length(diagMt),length(diagMt));
+            aux1 = 1;
+            aux2 = length(diagMt) - lpasivos + 1;
+            for i = 1:1:length(rot)
+                if aux1 <= length(vz) && i == vz(aux1) 
+                    rot(i,aux2) = 1;
+                    aux2 = aux2+1;
+                else 
+                    rot(i,aux1) = 1;
+                    aux1 = aux1 + 1;
+                end
+            end
+            % Se realiza rotacion de matriz de rigidez
+            Krot = rot' * analisisObj.Kt * rot;
+            % Se determina matriz de rigidez condensada (Keq)
+            Kaa = Krot(1:lactivos,1:lactivos);
+            Kap = Krot(1:lactivos,lactivos+1:end);
+            Kpa = Krot(lactivos+1:end,1:lactivos);
+            Kpp = Krot(lactivos+1:end,lactivos+1:end);
+            Keq = Kaa - Kap * Kpp^(-1) * Kpa;
+            % Se determina matriz de masa condensada (Meq)
+            Meq = analisisObj.Mt;
+            j=0;          
+            for i = 1:1:length(vz)
+                Meq(i-j,:) = [];
+                Meq(:,i-j) = [];
+                j = j + 1;
+            end
+            
+            %--------------------------------------------------------------
+            
+            
             % Resuelve la ecuacion del sistema, para ello crea la matriz
             % inversa de la masa y calcula los valores propios
             invMt = zeros(ngdl, ngdl);
@@ -283,7 +329,8 @@ classdef ModalEspectral < handle
                 end
             end
             
-            % CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH
+            % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
+            
             % Se declaran dos amortiguamientos críticos asociados a dos modos
             % diferentes indicando si es horizontal o vertical (h o v)
             modocR = [1, 3];
@@ -316,8 +363,11 @@ classdef ModalEspectral < handle
             a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
                 -1 / w(n), 1 / w(m)] * betacR';
             analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
+           
+            %--------------------------------------------------------------
             
-            % CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN
+            % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN----------
+            
             % Se declaran todos los amortiguamientos criticos del sistema,
             % (horizontal, vertical y traslacional)
             d = zeros(nModos, nModos);
@@ -333,6 +383,8 @@ classdef ModalEspectral < handle
                 end
             end
             analisisObj.cPenzien = analisisObj.Mt * modalPhin * d * modalPhin' * analisisObj.Mt;
+            
+            %--------------------------------------------------------------
             
             % Se resuelve la ecuacion
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
