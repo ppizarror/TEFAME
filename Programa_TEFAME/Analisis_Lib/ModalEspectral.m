@@ -66,7 +66,7 @@
 
 classdef ModalEspectral < handle
     
-    properties(Access = public)
+    properties(Access = private)
         modeloObj % Guarda el objeto que contiene el modelo
         numeroGDL % Guarda el numero de grados de libertad totales del modelo
         Kt % Matriz de Rigidez del modelo
@@ -164,11 +164,11 @@ classdef ModalEspectral < handle
             
         end % definirNumeracionGDL function
         
-        function analizar(analisisObj, nModos, beta)
+        function analizar(analisisObj, nModos, betacR, betacP)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
             % realizar el analisis estatico
             %
-            % analizar(analisisObj,nModos,beta)
+            % analizar(analisisObj,nModos,betacR,betacP)
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas, requiere el numero de modos para realizar el
             % analisis y de los modos conocidos con sus beta
@@ -176,14 +176,6 @@ classdef ModalEspectral < handle
             % Ajusta variables de entrada
             if ~exist('nModos', 'var')
                 nModos = 20;
-            end
-            betasz = size(beta);
-            if betasz(1) ~= 1
-                if betasz(2) == 1
-                    beta = beta';
-                else
-                    error('Vector beta incorrecto, debe ser de tamaño 1x2');
-                end
             end
             
             % Se definen los grados de libertad por nodo -> elementos
@@ -292,65 +284,56 @@ classdef ModalEspectral < handle
             end
             
             % CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH
-            
             % Se declaran dos amortiguamientos críticos asociados a dos modos
             % diferentes indicando si es horizontal o vertical (h o v)
-
-            modocR= [1 , 3];
-            direcR = ['h' , 'h'];
-            betacR = [2 / 100 , 5/100];
-            countcR = [0 , 0];
+            modocR = [1, 3];
+            direcR = ['h', 'h'];
+            countcR = [0, 0];
             m = 0;
             n = 0;
             analisisObj.Mmeff
             for i = 1:nModos
-               if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2),analisisObj.Mmeff(i, 3))
-                   countcR(1) = countcR(1) + 1;
-                   if direcR(1) == 'h' && modocR(1) == countcR(1)
-                       m = i;
-                   elseif direcR(2) == 'h' && modocR(2) == countcR(1)
-                       n = i;
-                   end
-               elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1),analisisObj.Mmeff(i, 3))  
-                   countcR(2) = countcR(2) + 1;
-                   if direcR(1) == 'v' && modocR(1) == countcR(2)
-                       m = i;
-                   elseif direcR(2) == 'h' && modocR(2) == countcR(2)
-                       n = i;
-                   end
-               end 
+                if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2), analisisObj.Mmeff(i, 3))
+                    countcR(1) = countcR(1) + 1;
+                    if direcR(1) == 'h' && modocR(1) == countcR(1)
+                        m = i;
+                    elseif direcR(2) == 'h' && modocR(2) == countcR(1)
+                        n = i;
+                    end
+                elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 3))
+                    countcR(2) = countcR(2) + 1;
+                    if direcR(1) == 'v' && modocR(1) == countcR(2)
+                        m = i;
+                    elseif direcR(2) == 'h' && modocR(2) == countcR(2)
+                        n = i;
+                    end
+                end
             end
-            Calcular_cRayleigh = 1;
             if m == 0 || n == 0
-                Calcular_cRayleigh = 0;
-                disp('Se requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh')
+                error('Se requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh')
             end
-            if Calcular_cRayleigh == 1
-                w = analisisObj.wn;
-                a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
-                    -1 / w(n), 1 / w(m)] * betacR';
-                analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
-            end
+            w = analisisObj.wn;
+            a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
+                -1 / w(n), 1 / w(m)] * betacR';
+            analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
+            
             % CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN
-            
-            % Se declaran todos los amortiguamientos críticos del sistema,
+            % Se declaran todos los amortiguamientos criticos del sistema,
             % (horizontal, vertical y traslacional)
-            
-            betacP = [5 / 100 , 2 / 100 , 0 / 100];
-            d = zeros(nModos,nModos);
+            d = zeros(nModos, nModos);
             w = analisisObj.wn;
             Mn = modalMmt;
             for i = 1:nModos
-               if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2),analisisObj.Mmeff(i, 3))
-                   d(i,i) = 2 * betacP(1) * w(i) / Mn(i,i); 
-               elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1),analisisObj.Mmeff(i, 3))  
-                   d(i,i) = 2 * betacP(2) * w(i) / Mn(i,i); 
-               else
-                   d(i,i) = 2 * betacP(3) * w(i) / Mn(i,i); 
-               end 
+                if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2), analisisObj.Mmeff(i, 3))
+                    d(i, i) = 2 * betacP(1) * w(i) / Mn(i, i);
+                elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 3))
+                    d(i, i) = 2 * betacP(2) * w(i) / Mn(i, i);
+                else
+                    d(i, i) = 2 * betacP(3) * w(i) / Mn(i, i);
+                end
             end
-            analisisObj.cPenzien = analisisObj.Mt*modalPhi*d*modalPhi'*analisisObj.Mt;
-                       
+            analisisObj.cPenzien = analisisObj.Mt * modalPhi * d * modalPhi' * analisisObj.Mt;
+            
             % Se resuelve la ecuacion
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
             
@@ -609,6 +592,11 @@ classdef ModalEspectral < handle
                 guardarGif = true;
             end
             
+            if modo > length(analisisObj.numModos)
+                error('El modo a graficar %d excede la cantidad de modos del sistema (%d)', ...
+                    modo, analisisObj.numModos);
+            end
+            
             % Calcula los limites
             [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(modo, factor);
             
@@ -633,21 +621,27 @@ classdef ModalEspectral < handle
                     if ~ishandle(plt) || ~ishghandle(plt)
                         delete(plt);
                         close; % Cierra el grafico
+                        fprintf('\n\tSe ha cancelado el proceso del grafico\n');
                         return;
                     end
                     
                     t = t + dt;
-                    figure(fig_num); % Atrapa el foco
-                    plotAnimado(analisisObj, deformada, modo, factor, sin(t), limx, limy, limz);
-                    if guardarGif
-                        frame = getframe(fig_num);
-                        im = frame2im(frame);
-                        [imind, cm] = rgb2ind(im, 256);
-                        if i == 1
-                            imwrite(imind, cm, guardaGif, 'gif', 'Loopcount', inf, 'DelayTime', 0.1);
-                        else
-                            imwrite(imind, cm, guardaGif, 'gif', 'WriteMode', 'append', 'DelayTime', 0.1);
+                    try
+                        figure(fig_num); % Atrapa el foco
+                        plotAnimado(analisisObj, deformada, modo, factor, sin(t), limx, limy, limz);
+                        if guardarGif
+                            frame = getframe(fig_num);
+                            im = frame2im(frame);
+                            [imind, cm] = rgb2ind(im, 256);
+                            if i == 1
+                                imwrite(imind, cm, guardaGif, 'gif', 'Loopcount', inf, 'DelayTime', 0.1);
+                            else
+                                imwrite(imind, cm, guardaGif, 'gif', 'WriteMode', 'append', 'DelayTime', 0.1);
+                            end
                         end
+                    catch
+                        fprintf('\n\tSe ha cancelado el proceso del grafico\n');
+                        return;
                     end
                     hold off;
                     
@@ -772,7 +766,7 @@ classdef ModalEspectral < handle
                         plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
                             'b-', 'LineWidth', 0.5);
                     end
-                
+                    
                 else
                     
                     def1 = analisisObj.obtenerDeformadaNodo(nodoElemento{1}, modo, gdl);
@@ -892,10 +886,10 @@ classdef ModalEspectral < handle
             fprintf('\tPeriodos y participacion modal:\n');
             analisisObj.numDG = 2;
             if analisisObj.numDG == 2
-                fprintf('\t\tN°\t|\tT (s)\t|\tUx\t\t|\tUy\t\t|\tSum Ux\t|\tSum Uy\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tUx\t\t|\tUy\t\t|\tSum Ux\t|\tSum Uy\t|\n');
                 fprintf('\t\t------------------------------------------------------------------\n');
             elseif analisisObj.numDG == 3
-                fprintf('\t\tN°\t|\tT (s)\t|\tUx\t\t|\tUy\t\t|\tUz\t\t|\tSum Ux\t|\tSum Uy\t|\tSum Uz\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tUx\t\t|\tUy\t\t|\tUz\t\t|\tSum Ux\t|\tSum Uy\t|\tSum Uz\t|\n');
                 fprintf('\t\t-----------------------------------------------------------------------------------------\n');
             end
             
@@ -915,7 +909,7 @@ classdef ModalEspectral < handle
             fprintf('\tMasa total de la estructura: %.3f\n', analisisObj.Mtotal);
             fprintf('-------------------------------------------------\n');
             fprintf('\n');
-           
+            
         end % disp function
         
     end % methods ModalEspectral
