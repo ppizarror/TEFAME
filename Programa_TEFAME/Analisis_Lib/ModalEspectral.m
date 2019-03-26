@@ -82,7 +82,6 @@ classdef ModalEspectral < handle
         Lm % Factor de participacion modal
         Mmeff % Masa modal efectiva
         Mmeffacum % Masa modal efectiva acumulada
-        Mmeffacump % Masa modal efectiva acumulada porcentaje
         Mtotal % Masa total del modelo
         analisisFinalizado % Indica que el analisis ha sido realizado
         numModos % Numero de modos del analisis
@@ -189,7 +188,8 @@ classdef ModalEspectral < handle
             
             % Se calcula la matriz de masa
             analisisObj.ensamblarMatrizMasa();
-            analisisObj.Mtotal = sum(diag(analisisObj.Mt));
+            diagMt = diag(analisisObj.Mt);
+            analisisObj.Mtotal = sum(diagMt);
             
             % Se ensambla el vector de fuerzas
             analisisObj.ensamblarVectorFuerzas();
@@ -210,7 +210,6 @@ classdef ModalEspectral < handle
             
             [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
             syseig = diag(syseig);
-            modalPhi = modalPhin;
             
             % Calcula las frecuencias del sistema
             modalWn = sqrt(syseig);
@@ -218,6 +217,7 @@ classdef ModalEspectral < handle
             
             % Calcula las matrices
             modalMmt = modalPhin' * analisisObj.Mt * modalPhin;
+            sum(diag(modalMmt))
             modalPhin = modalPhin * diag(diag(modalMmt).^-0.5);
             modalMm = diag(diag(modalPhin'*analisisObj.Mt*modalPhin));
             modalKm = diag(diag(modalPhin'*analisisObj.Kt*modalPhin));
@@ -264,23 +264,23 @@ classdef ModalEspectral < handle
             
             % Realiza el calculo de las participaciones modales
             analisisObj.Lm = zeros(nModos, ndg);
-            analisisObj.Mmeff = zeros(nModos, ndg);
-            analisisObj.Mmeffacum = zeros(nModos, ndg);
-            analisisObj.Mmeffacump = zeros(nModos, ndg);
+            analisisObj.Mmeff = zeros(ngdl, ndg);
+            analisisObj.Mmeffacum = zeros(ngdl, ndg);
+            Mtotr = zeros(ndg, 1);
             
             % Recorre cada grado de libertad (horizontal, vertical, giro)
             for j = 1:ndg
-                analisisObj.Lm(:, j) = analisisObj.phin' * analisisObj.Mt * analisisObj.rm(:, j);
-                analisisObj.Mmeff(:, j) = analisisObj.Lm(:, j).^2 ./ diag(modalMmt);
-                
-                mtot = sum(analisisObj.Mmeff(:, j));
-                analisisObj.Mmeff(:, j) = analisisObj.Mmeff(:, j) ./ mtot;
+                Mtotr(j) = sum(analisisObj.Mt * analisisObj.rm(:, j));
+                for k = 1:nModos
+                    analisisObj.Lm(k, j) = analisisObj.phin(:, k)' * analisisObj.Mt * analisisObj.rm(:, j);
+                    analisisObj.Mmeff(k, j) = analisisObj.Lm(k, j).^2 ./ modalMm(k, k);
+                end
+                  
+                analisisObj.Mmeff(:, j) = analisisObj.Mmeff(:, j) ./ Mtotr(j);
                 analisisObj.Mmeffacum(1, j) = analisisObj.Mmeff(1, j);
                 for i = 2:nModos
                     analisisObj.Mmeffacum(i, j) = analisisObj.Mmeffacum(i-1, j) + analisisObj.Mmeff(i, j);
                 end
-                
-                analisisObj.Mmeffacump(:, j) = analisisObj.Mmeffacum(:, j);
             end
             
             % CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH
@@ -332,7 +332,7 @@ classdef ModalEspectral < handle
                     d(i, i) = 2 * betacP(3) * w(i) / Mn(i, i);
                 end
             end
-            analisisObj.cPenzien = analisisObj.Mt * modalPhi * d * modalPhi' * analisisObj.Mt;
+            analisisObj.cPenzien = analisisObj.Mt * modalPhin * d * modalPhin' * analisisObj.Mt;
             
             % Se resuelve la ecuacion
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
@@ -886,22 +886,22 @@ classdef ModalEspectral < handle
             fprintf('\tPeriodos y participacion modal:\n');
             analisisObj.numDG = 2;
             if analisisObj.numDG == 2
-                fprintf('\t\tN\t|\tT (s)\t|\tUx\t\t|\tUy\t\t|\tSum Ux\t|\tSum Uy\t|\n');
-                fprintf('\t\t------------------------------------------------------------------\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tUx\t\t|\tUy\t\t|\tSum Ux\t|\tSum Uy\t|\n');
+                fprintf('\t\t-----------------------------------------------------------------------------\n');
             elseif analisisObj.numDG == 3
-                fprintf('\t\tN\t|\tT (s)\t|\tUx\t\t|\tUy\t\t|\tUz\t\t|\tSum Ux\t|\tSum Uy\t|\tSum Uz\t|\n');
-                fprintf('\t\t-----------------------------------------------------------------------------------------\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tUx\t\t|\tUy\t\t|\tUz\t\t|\tSum Ux\t|\tSum Uy\t|\tSum Uz\t|\n');
+                fprintf('\t\t----------------------------------------------------------------------------------------------------\n');
             end
             
             for i = 1:analisisObj.numModos
                 if analisisObj.numDG == 2
-                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
-                        analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), ...
-                        analisisObj.Mmeffacump(i, 1), analisisObj.Mmeffacump(i, 2));
+                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
+                        analisisObj.wn(i), analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), ...
+                        analisisObj.Mmeffacum(i, 1), analisisObj.Mmeffacum(i, 2));
                 elseif analisisObj.numDG == 3
-                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
-                        analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), analisisObj.Mmeff(i, 3), ...
-                        analisisObj.Mmeffacump(i, 1), analisisObj.Mmeffacump(i, 2), analisisObj.Mmeffacump(i, 3));
+                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
+                        analisisObj.wn(i), analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), analisisObj.Mmeff(i, 3), ...
+                        analisisObj.Mmeffacum(i, 1), analisisObj.Mmeffacum(i, 2), analisisObj.Mmeffacum(i, 3));
                 end
                 fprintf('\n');
             end
