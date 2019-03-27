@@ -231,12 +231,14 @@ classdef ModalEspectral < handle
             lpasivos = length(vz);
             lactivos = length(diagMt) - lpasivos;
             rot = zeros(length(diagMt), length(diagMt));
+            aux0 = 1;
             aux1 = 1;
             aux2 = length(diagMt) - lpasivos + 1;
             for i = 1:1:length(rot)
-                if aux1 <= length(vz) && i == vz(aux1)
+                if aux0 <= length(vz) && i == vz(aux0)
                     rot(i, aux2) = 1;
                     aux2 = aux2 + 1;
+                    aux0 = aux0 + 1;
                 else
                     rot(i, aux1) = 1;
                     aux1 = aux1 + 1;
