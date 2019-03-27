@@ -16,7 +16,7 @@
 %|                                                                      |
 %| Desarrollado por:                                                    |
 %|       Pablo Pizarro                                                  |
-%|       Estudiante de Magister en Ingeniería Civil Estructural         |
+%|       Estudiante de Magister en Ingenierï¿½a Civil Estructural         |
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
@@ -180,7 +180,7 @@ classdef ModalEspectral < handle
             if ~exist('maxcond', 'var')
                 maxcond = 0.001;
             end
-            fprintf('Ejecuntando analisis modal espectral\n\tNumero de modos: %d\n', nModos);
+            fprintf('Ejecuntando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
             
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
@@ -208,68 +208,80 @@ classdef ModalEspectral < handle
             % Primero se genera matriz para reordenar elementos (rot)
             vz = []; % Vector que identifica indices a condensar
             j = 1;
-            for i = 1:length(diagMt)
-                if diagMt(i) <= maxcond
-                    vz(j) = i; %#ok<AGROW>
-                    j = j + 1;
-                end
-            end
-            
-            % Chequea cuantos grados quedan
-            nndg = ndg;
-            if length(vz) > 0 && ndg > 2 %#ok<ISMT>
-                for i = 2:ndg
-                    % Si todos los grados se dividen por 3, entonces se borra
-                    % el tercer grado de libertad (giro por ejemplo)
-                    if allDivMod(vz, i)
-                        nndg = nndg - 1;
+            if maxcond >= 0
+                for i = 1:length(diagMt)
+                    if diagMt(i) <= maxcond
+                        vz(j) = i; %#ok<AGROW>
+                        j = j + 1;
                     end
                 end
             end
-            ndg = nndg;
             
-            lpasivos = length(vz);
-            lactivos = length(diagMt) - lpasivos;
-            rot = zeros(length(diagMt), length(diagMt));
-            aux0 = 1;
-            aux1 = 1;
-            aux2 = length(diagMt) - lpasivos + 1;
-            for i = 1:1:length(rot)
-                if aux0 <= length(vz) && i == vz(aux0)
-                    rot(i, aux2) = 1;
-                    aux2 = aux2 + 1;
-                    aux0 = aux0 + 1;
-                else
-                    rot(i, aux1) = 1;
-                    aux1 = aux1 + 1;
+            % Si condensa grados
+            if length(vz) > 0 %#ok<ISMT>
+                
+                % Chequea cuantos grados quedan
+                nndg = ndg;
+                if ndg > 2
+                    for i = 2:ndg
+                        % Si todos los grados se dividen por 3, entonces se borra
+                        % el tercer grado de libertad (giro por ejemplo)
+                        if allDivMod(vz, i)
+                            nndg = nndg - 1;
+                        end
+                    end
                 end
+                ndg = nndg;
+                
+                lpasivos = length(vz);
+                lactivos = length(diagMt) - lpasivos;
+                rot = zeros(length(diagMt), length(diagMt));
+                aux0 = 1;
+                aux1 = 1;
+                aux2 = length(diagMt) - lpasivos + 1;
+                for i = 1:1:length(rot)
+                    if aux0 <= length(vz) && i == vz(aux0)
+                        rot(i, aux2) = 1;
+                        aux2 = aux2 + 1;
+                        aux0 = aux0 + 1;
+                    else
+                        rot(i, aux1) = 1;
+                        aux1 = aux1 + 1;
+                    end
+                end
+                
+                % Se realiza rotacion de matriz de rigidez
+                Krot = rot' * analisisObj.Kt * rot;
+                
+                % Se determina matriz de rigidez condensada (Keq)
+                Kaa = Krot(1:lactivos, 1:lactivos);
+                Kap = Krot(1:lactivos, lactivos+1:end);
+                Kpa = Krot(lactivos+1:end, 1:lactivos);
+                Kpp = Krot(lactivos+1:end, lactivos+1:end);
+                Keq = Kaa - Kap * Kpp^(-1) * Kpa;
+                
+                % Se determina matriz de masa condensada (Meq)
+                Meq = analisisObj.Mt;
+                j = 0;
+                for i = 1:1:length(vz)
+                    Meq(vz(i)-j, :) = [];
+                    Meq(:, vz(i)-j) = [];
+                    j = j + 1;
+                end
+                
+                % Actualiza los grados
+                cngdl = length(Meq);
+                if cngdl < ngdl
+                    fprintf('\tSe han condensado %d grados de libertad\n', ngdl-cngdl);
+                    ngdl = cngdl;
+                end
+                
+            else % No condensa grados
+                Meq = analisisObj.Mt;
+                Keq = analisisObj.Kt;
+                fprintf('\tNo se han condensado grados de libertad\n');
             end
             
-            % Se realiza rotacion de matriz de rigidez
-            Krot = rot' * analisisObj.Kt * rot;
-            
-            % Se determina matriz de rigidez condensada (Keq)
-            Kaa = Krot(1:lactivos, 1:lactivos);
-            Kap = Krot(1:lactivos, lactivos+1:end);
-            Kpa = Krot(lactivos+1:end, 1:lactivos);
-            Kpp = Krot(lactivos+1:end, lactivos+1:end);
-            Keq = Kaa - Kap * Kpp^(-1) * Kpa;
-            
-            % Se determina matriz de masa condensada (Meq)
-            Meq = analisisObj.Mt;
-            j = 0;
-            for i = 1:1:length(vz)
-                Meq(vz(i)-j, :) = [];
-                Meq(:, vz(i)-j) = [];
-                j = j + 1;
-            end
-            
-            % Actualiza los grados
-            cngdl = length(Meq);
-            if cngdl < ngdl
-                fprintf('\tSe han condensado %d grados de libertad\n', ngdl-cngdl);
-                ngdl = cngdl;
-            end
             fprintf('\tGrados de libertad totales: %d\n', ngdl);
             fprintf('\tNumero de direcciones de analisis: %d\n', ndg);
             nModos = min(nModos, ngdl);
@@ -320,7 +332,6 @@ classdef ModalEspectral < handle
             analisisObj.Tn = zeros(nModos, 1);
             analisisObj.wn = zeros(nModos, 1);
             analisisObj.phin = zeros(ngdl, nModos);
-            analisisObj.phinExt = zeros(ngdlExt, nModos);
             analisisObj.Mm = modalMm;
             analisisObj.Km = modalKm;
             for i = 1:nModos
@@ -362,8 +373,8 @@ classdef ModalEspectral < handle
             
             % Crea la matriz extendida de los modos, dejando en cero los
             % condensados
-            analisisObj.phinExt = zeros(ngdlExt, nModos);
             if ngdlExt ~= ngdl
+                analisisObj.phinExt = zeros(ngdlExt, nModos);
                 k = 1; % Mantiene el indice entre (1, ngdl)
                 for j = 1:ngdlExt
                     if isArrayMember(vz, j)
@@ -377,11 +388,13 @@ classdef ModalEspectral < handle
                         k = k + 1;
                     end
                 end
+            else
+                analisisObj.phinExt = analisisObj.phin;
             end
             
             % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
             
-            % Se declaran dos amortiguamientos críticos asociados a dos modos
+            % Se declaran dos amortiguamientos criticos asociados a dos modos
             % diferentes indicando si es horizontal o vertical (h o v)
             modocR = [1, 3];
             direcR = ['h', 'h'];
@@ -436,6 +449,7 @@ classdef ModalEspectral < handle
             % Termina el analisis
             analisisObj.analisisFinalizado = true;
             analisisObj.numDG = ndg;
+            fprintf('\n');
             
         end % analizar function
         
@@ -733,7 +747,6 @@ classdef ModalEspectral < handle
                             end
                         end
                     catch
-                        close(fig_num); % Cierra el grafico
                         fprintf('\n\tSe ha cancelado el proceso del grafico\n');
                         return;
                     end
@@ -978,12 +991,11 @@ classdef ModalEspectral < handle
             end
             
             fprintf('\tPeriodos y participacion modal:\n');
-            analisisObj.numDG = 2;
             if analisisObj.numDG == 2
-                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tUx\t\t|\tUy\t\t|\tSum Ux\t|\tSum Uy\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
                 fprintf('\t\t-----------------------------------------------------------------------------\n');
             elseif analisisObj.numDG == 3
-                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tUx\t\t|\tUy\t\t|\tUz\t\t|\tSum Ux\t|\tSum Uy\t|\tSum Uz\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tU1\t\t|\tU2\t\t|\tUz\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
                 fprintf('\t\t----------------------------------------------------------------------------------------------------\n');
             end
             
@@ -998,6 +1010,23 @@ classdef ModalEspectral < handle
                         analisisObj.Mmeffacum(i, 1), analisisObj.Mmeffacum(i, 2), analisisObj.Mmeffacum(i, 3));
                 end
                 fprintf('\n');
+            end
+            
+            % Busca los periodos para los cuales se logra el 90%
+            mt90p = zeros(analisisObj.numDG, 1);
+            for i = 1:analisisObj.numDG
+                fprintf('\t\tN periodo en U%d para el 90%% de la masa: ', i);
+                for j = 1:analisisObj.numModos
+                    if analisisObj.Mmeffacum(j, i) >= 0.90
+                        mt90p(i) = j;
+                        break;
+                    end
+                end
+                if mt90p(i) > 0
+                    fprintf('%d\n', mt90p(i));
+                else
+                    fprintf('INCREMENTAR NUMERO DE MODOS DE ANALISIS\n');
+                end
             end
             
             fprintf('\tMasa total de la estructura: %.3f\n', analisisObj.Mtotal);
