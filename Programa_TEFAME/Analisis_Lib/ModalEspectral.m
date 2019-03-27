@@ -201,50 +201,54 @@ classdef ModalEspectral < handle
             analisisObj.numModos = nModos;
             
             % ----------------CONDENSACION ESTATICA DE GUYAN---------------
-            
             % Primero se genera matriz para reordenar elementos (rot)
             maxcond = 0.001; % Valor máximo de masa para realizar condensacion
             vz = []; % Vector que identifica indices a condensar
             j = 1;
-            for i=1:1:length(diagMt)
-               if diagMt(i) < maxcond 
-                   vz(j) = i;
-                   j = j + 1;
-               end
+            for i = 1:length(diagMt)
+                if diagMt(i) <= maxcond
+                    vz(j) = i; %#ok<AGROW>
+                    j = j + 1;
+                end
             end
             lpasivos = length(vz);
             lactivos = length(diagMt) - lpasivos;
-            rot = zeros(length(diagMt),length(diagMt));
+            rot = zeros(length(diagMt), length(diagMt));
             aux1 = 1;
             aux2 = length(diagMt) - lpasivos + 1;
             for i = 1:1:length(rot)
-                if aux1 <= length(vz) && i == vz(aux1) 
-                    rot(i,aux2) = 1;
-                    aux2 = aux2+1;
-                else 
-                    rot(i,aux1) = 1;
+                if aux1 <= length(vz) && i == vz(aux1)
+                    rot(i, aux2) = 1;
+                    aux2 = aux2 + 1;
+                else
+                    rot(i, aux1) = 1;
                     aux1 = aux1 + 1;
                 end
             end
+            
             % Se realiza rotacion de matriz de rigidez
             Krot = rot' * analisisObj.Kt * rot;
+            
             % Se determina matriz de rigidez condensada (Keq)
-            Kaa = Krot(1:lactivos,1:lactivos);
-            Kap = Krot(1:lactivos,lactivos+1:end);
-            Kpa = Krot(lactivos+1:end,1:lactivos);
-            Kpp = Krot(lactivos+1:end,lactivos+1:end);
+            Kaa = Krot(1:lactivos, 1:lactivos);
+            Kap = Krot(1:lactivos, lactivos+1:end);
+            Kpa = Krot(lactivos+1:end, 1:lactivos);
+            Kpp = Krot(lactivos+1:end, lactivos+1:end);
             Keq = Kaa - Kap * Kpp^(-1) * Kpa;
+            
             % Se determina matriz de masa condensada (Meq)
             Meq = analisisObj.Mt;
-            j=0;          
+            j = 0;
             for i = 1:1:length(vz)
-                Meq(vz(i)-j,:) = [];
-                Meq(:,vz(i)-j) = [];
+                Meq(vz(i)-j, :) = [];
+                Meq(:, vz(i)-j) = [];
                 j = j + 1;
             end
             
-            %--------------------------------------------------------------
+            size(Keq)
+            size(Meq)
             
+            %--------------------------------------------------------------
             
             % Resuelve la ecuacion del sistema, para ello crea la matriz
             % inversa de la masa y calcula los valores propios
@@ -263,7 +267,6 @@ classdef ModalEspectral < handle
             
             % Calcula las matrices
             modalMmt = modalPhin' * analisisObj.Mt * modalPhin;
-            sum(diag(modalMmt))
             modalPhin = modalPhin * diag(diag(modalMmt).^-0.5);
             modalMm = diag(diag(modalPhin'*analisisObj.Mt*modalPhin));
             modalKm = diag(diag(modalPhin'*analisisObj.Kt*modalPhin));
@@ -316,12 +319,12 @@ classdef ModalEspectral < handle
             
             % Recorre cada grado de libertad (horizontal, vertical, giro)
             for j = 1:ndg
-                Mtotr(j) = sum(analisisObj.Mt * analisisObj.rm(:, j));
+                Mtotr(j) = sum(analisisObj.Mt*analisisObj.rm(:, j));
                 for k = 1:nModos
                     analisisObj.Lm(k, j) = analisisObj.phin(:, k)' * analisisObj.Mt * analisisObj.rm(:, j);
                     analisisObj.Mmeff(k, j) = analisisObj.Lm(k, j).^2 ./ modalMm(k, k);
                 end
-                  
+                
                 analisisObj.Mmeff(:, j) = analisisObj.Mmeff(:, j) ./ Mtotr(j);
                 analisisObj.Mmeffacum(1, j) = analisisObj.Mmeff(1, j);
                 for i = 2:nModos
@@ -338,7 +341,6 @@ classdef ModalEspectral < handle
             countcR = [0, 0];
             m = 0;
             n = 0;
-            analisisObj.Mmeff
             for i = 1:nModos
                 if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2), analisisObj.Mmeff(i, 3))
                     countcR(1) = countcR(1) + 1;
@@ -363,10 +365,8 @@ classdef ModalEspectral < handle
             a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
                 -1 / w(n), 1 / w(m)] * betacR';
             analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
-           
-            %--------------------------------------------------------------
             
-            % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN----------
+            % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------
             
             % Se declaran todos los amortiguamientos criticos del sistema,
             % (horizontal, vertical y traslacional)
@@ -517,7 +517,6 @@ classdef ModalEspectral < handle
             analisisObj.F = zeros(analisisObj.numeroGDL, 1);
             
             % En esta funcion se tiene que ensamblar el vector de fuerzas
-            
             % Extraemos los nodos
             nodoObjetos = analisisObj.modeloObj.obtenerNodos();
             numeroNodos = length(nodoObjetos);
@@ -644,7 +643,8 @@ classdef ModalEspectral < handle
                 guardarGif = true;
             end
             
-            if modo > length(analisisObj.numModos)
+            modo = ceil(modo);
+            if modo > length(analisisObj.numModos) || modo <= 0
                 error('El modo a graficar %d excede la cantidad de modos del sistema (%d)', ...
                     modo, analisisObj.numModos);
             end
@@ -672,7 +672,7 @@ classdef ModalEspectral < handle
                     % Si el usuario cierra el plot termina de graficar
                     if ~ishandle(plt) || ~ishghandle(plt)
                         delete(plt);
-                        close; % Cierra el grafico
+                        close(fig_num); % Cierra el grafico
                         fprintf('\n\tSe ha cancelado el proceso del grafico\n');
                         return;
                     end
@@ -692,6 +692,7 @@ classdef ModalEspectral < handle
                             end
                         end
                     catch
+                        close(fig_num); % Cierra el grafico
                         fprintf('\n\tSe ha cancelado el proceso del grafico\n');
                         return;
                     end
