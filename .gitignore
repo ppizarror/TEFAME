@@ -19,5 +19,5 @@
 *.OUT
 
 # Salidas
-test/out/*
+test/**/out/*
 *.gif
