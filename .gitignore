@@ -20,4 +20,4 @@
 
 # Salidas
 test/**/out/*
-*.gif
+test/**/*.gif
