@@ -91,6 +91,7 @@ classdef ModalEspectral < handle
         cRayleigh % Matriz de amortiguamiento de Rayleigh
         cPenzien % Matriz de amortiguamiento de Wilson-Penzien
         mostrarDeformada % Muestra la posicion no deformada en los graficos
+        cargarAnimacion % Carga la animacion del grafico una vez renderizado
     end % properties ModalEspectral
     
     methods
@@ -114,6 +115,7 @@ classdef ModalEspectral < handle
             analisisObj.F = [];
             analisisObj.analisisFinalizado = false;
             analisisObj.mostrarDeformada = false;
+            analisisObj.cargarAnimacion = true;
             
         end % ModalEspectral constructor
         
@@ -681,13 +683,6 @@ classdef ModalEspectral < handle
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para graficar la estructura
         
-        function activar_plot_deformada(analisisObj)
-            % Activa el grafico de la deformada
-            
-            analisisObj.mostrarDeformada = true;
-            
-        end % activar_plot_deformada function
-        
         function plt = plot(analisisObj, modo, factor, numCuadros, guardaGif)
             %PLOTMODELO Grafica un modelo
             %
@@ -789,10 +784,12 @@ classdef ModalEspectral < handle
                 
                 % Reproduce la pelicula y cierra el grafico anterior
                 close(fig_num);
-                fprintf('\n\tAbriendo animacion\n');
-                try
-                    gifPlayerGUI(guardaGif, 1/min(numCuadros, 60));
-                catch
+                if analisisObj.cargarAnimacion
+                    fprintf('\n\tAbriendo animacion\n');
+                    try
+                        gifPlayerGUI(guardaGif, 1/min(numCuadros, 60));
+                    catch
+                    end
                 end
                 
             end
@@ -997,6 +994,34 @@ classdef ModalEspectral < handle
             end
             
         end % obtenerDeformadaNodo function
+        
+        function activaCargaAnimacion(analisisObj)
+            % Carga la animacion  una vez calculada
+            
+            analisisObj.cargarAnimacion = true;
+            
+        end % activaCargaAnimacion funcion
+        
+        function desactivaCargaAnimacion(analisisObj)
+            % Desactiva la animacion una vez calculada
+            
+            analisisObj.cargarAnimacion = false;
+            
+        end % desactivaCargaAnimacion funcion
+        
+        function activarPlotDeformadaInicial(analisisObj)
+            % Activa el grafico de la deformada inicial
+            
+            analisisObj.mostrarDeformada = true;
+            
+        end % activarPlotDeformadaInicial function
+        
+        function desactivarPlotDeformadaInicial(analisisObj)
+            % Desactiva el grafico de la deformada inicial
+            
+            analisisObj.mostrarDeformada = false;
+            
+        end % desactivarPlotDeformadaInicial function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostar la informacion del Analisis Modal Espectral en pantalla
