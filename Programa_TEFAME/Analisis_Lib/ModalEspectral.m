@@ -207,7 +207,7 @@ classdef ModalEspectral < handle
             vz = []; % Vector que identifica indices a condensar
             j = 1;
             for i=1:1:length(diagMt)
-               if diagMt < maxcond 
+               if diagMt(i) < maxcond 
                    vz(j) = i;
                    j = j + 1;
                end
@@ -238,8 +238,8 @@ classdef ModalEspectral < handle
             Meq = analisisObj.Mt;
             j=0;          
             for i = 1:1:length(vz)
-                Meq(i-j,:) = [];
-                Meq(:,i-j) = [];
+                Meq(vz(i)-j,:) = [];
+                Meq(:,vz(i)-j) = [];
                 j = j + 1;
             end
             
