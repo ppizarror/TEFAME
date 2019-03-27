@@ -7,8 +7,8 @@
             "WIDTH": 200,
             "HEIGHT": 200
         },
-        "URL": "",
-        "URL_TITLE": ""
+        "URL": "https://ppizarror.com/TEFAME/",
+        "URL_TITLE": "TEFAME"
     },
     "AUTHOR": {
         "NAME": "Pablo Pizarro R.",
@@ -17,7 +17,7 @@
         "DATE": "2018 - 2019",
         "SECTION": {
             "TITLE": "Autor",
-            "SHOW": true
+            "SHOW": false
         }
     },
     "DESCRIPTION": "Resuelve estructuras de varios grados de libertad utilizando métodos numéricos matriciales",

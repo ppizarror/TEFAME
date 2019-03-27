@@ -1,5 +1,7 @@
 <h1 align="center">
-  <img alt="TEFAME" src="https://ppizarror.com/resources/other/matlab.png" width="200px" height="200px" />
+  <a href="https://ppizarror.com/TEFAME/" title="TEFAME">
+    <img alt="TEFAME" src="https://ppizarror.com/resources/other/matlab.png" width="200px" height="200px" />
+  </a>
   <br /><br />
   TEFAME</h1>
 <p align="center">Resuelve estructuras de varios grados de libertad utilizando métodos numéricos matriciales</p>
@@ -21,6 +23,3 @@
 
 ## Licencia
 Este proyecto está licenciado bajo la licencia MIT [https://opensource.org/licenses/MIT]
-
-## Autor
-<a href="https://ppizarror.com" title="ppizarror">Pablo Pizarro R.</a> | 2018 - 2019
