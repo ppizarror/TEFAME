@@ -68,18 +68,18 @@
 classdef VigaColumna2D < Elemento
     
     properties(Access = private)
-        nodosObj
-        gdlID
-        Ao
-        Eo
-        Io
-        dx
-        dy
-        L
-        theta
-        Feq
-        T
-        Klp
+        nodosObj % Cell con los nodos
+        gdlID % Lista con los ID de los grados de libertad
+        Ao % Area de la seccion transversal
+        Eo % Modulo de elasticidad
+        Io % Inercia de la seccion
+        dx % Distancia en el eje x entre los nodos
+        dy % Distancia en el eje y entre los nodos
+        L % Largo del elemento
+        theta % Angulo de inclinacion de la viga
+        Feq % Fuerza equivalente
+        T % Matriz de transformacion
+        Klp % Matriz de rigidez local del elemento
     end % properties VigaColumna2D
     
     methods

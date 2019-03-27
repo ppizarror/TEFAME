@@ -102,7 +102,7 @@ classdef Nodo < ComponenteModelo
             % Guardamos el numero de grados de libertad (GDL) que tiene el nodo
             nodoObj.nGDL = nGDLNodo;
             
-            % Revisamos la orientaci?n del vector de coordenadas, para dejarlo como columna
+            % Revisamos la orientacion del vector de coordenadas, para dejarlo como columna
             if size(coordenadasNodo, 1) == 1
                 nodoObj.coords = coordenadasNodo';
             else
@@ -306,7 +306,7 @@ classdef Nodo < ComponenteModelo
             % Inicializa los diferentes vectores del Nodo que estan guardados en
             % este (nodoObj), para poder preparar estos para realizar el analisis
             
-            % Se inicializan en zero los vectores del tama?o de los numero de GDL
+            % Se inicializan en zero los vectores del tamano de los numero de GDL
             nodoObj.despl = zeros(nodoObj.nGDL, 1);
             nodoObj.reacciones = zeros(nodoObj.nGDL, 1);
             nodoObj.cargas = zeros(nodoObj.nGDL, 1);

@@ -65,15 +65,15 @@
 classdef Viga2D < Elemento
     
     properties(Access = private)
-        nodosObj
-        gdlID
-        Eo
-        Io
-        dx
-        dy
-        L
-        theta
-        Feq
+        nodosObj % Cell con los nodos
+        gdlID % Lista con los ID de los grados de libertad
+        Eo % Modulo de elasticidad
+        Io % Inercia de la seccion
+        dx % Distancia en el eje x entre los nodos
+        dy % Distancia en el eje y entre los nodos
+        L % Largo del elemento
+        theta % Angulo de inclinacion de la viga
+        Feq % Fuerza equivalente
     end % properties Viga2D
     
     methods

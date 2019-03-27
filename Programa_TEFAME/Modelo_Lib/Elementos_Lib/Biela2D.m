@@ -69,15 +69,17 @@
 classdef Biela2D < Elemento
     
     properties(Access = private)
-        nodosObj
-        gdlID
-        Eo
-        Ao
-        dx
-        dy
-        L
-        Theta
-        TcargaReacc
+        nodosObj % Cell con los nodos
+        gdlID % Lista con los ID de los grados de libertad
+        Ao % Area de la seccion transversal
+        Eo % Modulo de elasticidad
+        dx % Distancia en el eje x entre los nodos
+        dy % Distancia en el eje y entre los nodos
+        dz % Distancia en el eje z entre los nodos
+        L % Largo del elemento
+        theta % Angulo de inclinacion de la viga
+        T % Matriz de transformacion
+        TcargaReacc % Reaccion de la biela guardada como un vector
     end % properties Biela2D
     
     methods
@@ -102,7 +104,7 @@ classdef Biela2D < Elemento
             
             biela2DObj.dx = (coordNodo2(1) - coordNodo1(1));
             biela2DObj.dy = (coordNodo2(2) - coordNodo1(2));
-            biela2DObj.Theta = atan(biela2DObj.dy/biela2DObj.dx);
+            biela2DObj.theta = atan(biela2DObj.dy/biela2DObj.dx);
             
             biela2DObj.L = sqrt(biela2DObj.dx^2+biela2DObj.dy^2);
             biela2DObj.TcargaReacc = [0, 0, 0, 0]';
@@ -141,7 +143,7 @@ classdef Biela2D < Elemento
         
         function theta = obtenerAngulo(biela2DObj)
             
-            theta = biela2DObj.Theta;
+            theta = biela2DObj.theta;
             
         end % obtenerAngulo function
         
@@ -151,13 +153,13 @@ classdef Biela2D < Elemento
             k_local = biela2DObj.obtenerMatrizRigidezCoordLocal();
             
             % Obtiene el angulo
-            theta = biela2DObj.obtenerAngulo();
+            tht = biela2DObj.obtenerAngulo();
             
             % Se crea matriz de transformacion
-            t_theta = [cos(theta), sin(theta), 0, 0; ...
-                -sin(theta), cos(theta), 0, 0; ...
-                0, 0, cos(theta), sin(theta); ...
-                0, 0, -sin(theta), cos(theta);];
+            t_theta = [cos(tht), sin(tht), 0, 0; ...
+                -sin(tht), cos(tht), 0, 0; ...
+                0, 0, cos(tht), sin(tht); ...
+                0, 0, -sin(tht), cos(tht);];
             
             % Multiplica k*t_theta
             k_global = t_theta' * k_local * t_theta;
@@ -180,11 +182,11 @@ classdef Biela2D < Elemento
             fr_local = biela2DObj.obtenerFuerzaResistenteCoordLocal();
             
             % Calcula matriz transformacion
-            theta = biela2DObj.obtenerAngulo();
-            t_theta = [cos(theta), sin(theta), 0, 0; ...
-                -sin(theta), cos(theta), 0, 0; ...
-                0, 0, cos(theta), sin(theta); ...
-                0, 0, -sin(theta), cos(theta);];
+            tht = biela2DObj.obtenerAngulo();
+            t_theta = [cos(tht), sin(tht), 0, 0; ...
+                -sin(tht), cos(tht), 0, 0; ...
+                0, 0, cos(tht), sin(tht); ...
+                0, 0, -sin(tht), cos(tht);];
             
             % Calcula fuerza resistente global
             fr_global = t_theta' * fr_local;
@@ -205,11 +207,11 @@ classdef Biela2D < Elemento
             u = [u1(1); u1(2); u2(1); u2(2)];
             
             % Calcula matriz de transformacion
-            theta = biela2DObj.obtenerAngulo();
-            t_theta = [cos(theta), sin(theta), 0, 0; ...
-                -sin(theta), cos(theta), 0, 0; ...
-                0, 0, cos(theta), sin(theta); ...
-                0, 0, -sin(theta), cos(theta);];
+            tht = biela2DObj.obtenerAngulo();
+            t_theta = [cos(tht), sin(tht), 0, 0; ...
+                -sin(tht), cos(tht), 0, 0; ...
+                0, 0, cos(tht), sin(tht); ...
+                0, 0, -sin(tht), cos(tht);];
             
             % Calcula u''
             f = t_theta * u;

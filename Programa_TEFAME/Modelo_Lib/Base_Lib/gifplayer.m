@@ -37,9 +37,9 @@ elseif nargin < 2
     delay_length = 0.2; %frame will be updated after 0.2 sec
 end
 
-try %\\ ?r11a
+try %\\ r11a
     [pathstr, name, ext, versn] = fileparts(gif_image);
-catch %\\ ?r11b
+catch %\\ r11b
     [pathstr, name, ext] = fileparts(gif_image);
 end
 

@@ -70,19 +70,19 @@
 classdef VigaColumnaMasa2D < Elemento
     
     properties(Access = private)
-        nodosObj
-        gdlID
-        Ao
-        rho
-        Eo
-        Io
-        dx
-        dy
-        L
-        theta
-        Feq
-        T
-        Klp
+        nodosObj % Cell con los nodos
+        gdlID % Lista con los ID de los grados de libertad
+        Ao % Area de la seccion transversal
+        rho % Densidad
+        Eo % Modulo de elasticidad
+        Io % Inercia de la seccion
+        dx % Distancia en el eje x entre los nodos
+        dy % Distancia en el eje y entre los nodos
+        L % Largo del elemento
+        theta % Angulo de inclinacion de la viga
+        Feq % Fuerza equivalente
+        T % Matriz de transformacion
+        Klp % Matriz de rigidez local del elemento
     end % properties VigaColumnaMasa2D
     
     methods
@@ -213,15 +213,18 @@ classdef VigaColumnaMasa2D < Elemento
             elem_nodo2 = vigaColumnaMasa2DObj.nodosObj{2}.obtenerElementos();
             
             % Agrega la tributacion de las masas
+            % 1,4: horizontal | 2,5: vertical | 3,6: giro
             for i=1:length(elem_nodo1)
                 m_masa(1) = m_masa(1) + elem_nodo1{i}.obtenerMasa() * 0.5;
                 m_masa(2) = m_masa(2) + elem_nodo1{i}.obtenerMasa() * 0.5;
-                m_masa(3) = m_masa(3) + elem_nodo1{i}.obtenerMasa() * 0.5 * 0.0001;
+                % m_masa(3) = m_masa(3) + elem_nodo1{i}.obtenerMasa() * 0.5 * 0.0001;
+                m_masa(3) = 0;
             end
             for i=1:length(elem_nodo2)
                 m_masa(4) = m_masa(4) + elem_nodo2{i}.obtenerMasa() * 0.5;
                 m_masa(5) = m_masa(5) + elem_nodo2{i}.obtenerMasa() * 0.5;
-                m_masa(6) = m_masa(6) + elem_nodo2{i}.obtenerMasa() * 0.5 * 0.0001;
+                % m_masa(6) = m_masa(6) + elem_nodo2{i}.obtenerMasa() * 0.5 * 0.0001;
+                m_masa(6) = 0;
             end
             
         end % obtenerMatrizRigidezLocal function
@@ -331,6 +334,8 @@ classdef VigaColumnaMasa2D < Elemento
         end % guardarPropiedades function
         
         function guardarEsfuerzosInternos(vigaColumnaMasa2DObj, archivoSalidaHandle)
+            % guardarEsfuerzosInternos: Guarda los esfuerzos internos del
+            % elemento
             
             fr = vigaColumnaMasa2DObj.obtenerFuerzaResistenteCoordGlobal();
             n1 = pad(num2str(fr(1), '%.04f'), 10);

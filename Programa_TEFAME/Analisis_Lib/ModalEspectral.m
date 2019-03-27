@@ -188,7 +188,6 @@ classdef ModalEspectral < handle
             end
             fprintf('Ejecuntando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
             
-            
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
             
