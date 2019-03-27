@@ -80,6 +80,7 @@ classdef VigaColumna2D < Elemento
         Feq % Fuerza equivalente
         T % Matriz de transformacion
         Klp % Matriz de rigidez local del elemento
+        PLOTNELEM % Numero de elementos en los que se discretiza para el grafico
     end % properties VigaColumna2D
     
     methods
@@ -104,8 +105,8 @@ classdef VigaColumna2D < Elemento
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
-            vigaColumna2DObj.dx = (coordNodo2(1) - coordNodo1(1));
-            vigaColumna2DObj.dy = (coordNodo2(2) - coordNodo1(2));
+            vigaColumna2DObj.dx = abs(coordNodo2(1) - coordNodo1(1));
+            vigaColumna2DObj.dy = abs(coordNodo2(2) - coordNodo1(2));
             vigaColumna2DObj.L = sqrt(vigaColumna2DObj.dx^2+vigaColumna2DObj.dy^2);
             theta = atan(vigaColumna2DObj.dy/vigaColumna2DObj.dx);
             vigaColumna2DObj.theta = theta;
@@ -134,6 +135,9 @@ classdef VigaColumna2D < Elemento
             
             % Fuerza equivalente de la viga
             vigaColumna2DObj.Feq = [0, 0, 0, 0, 0, 0]';
+            
+            % Otros
+            vigaColumna2DObj.PLOTNELEM = 10;
             
         end % VigaColumna2D constructor
         
@@ -317,13 +321,13 @@ classdef VigaColumna2D < Elemento
             coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
             coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
             
-            % Si hay deformadas
+            % Si hay deformacion
             if ~isempty(deformadas)
-                coord1 = coord1 + deformadas{1};
-                coord2 = coord2 + deformadas{2};
+                coord1 = coord1 + deformadas{1}(1:2);
+                coord2 = coord2 + deformadas{2}(1:2);
             end
             
-            % Grafica el elemento
+            % Grafica en forma lineal
             elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
             
         end % plot function

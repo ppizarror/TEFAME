@@ -97,9 +97,9 @@ classdef Biela3D < Elemento
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             
             % Calcula propiedades geometricas
-            biela3DObj.dx = (coordNodo2(1) - coordNodo1(1));
-            biela3DObj.dy = (coordNodo2(2) - coordNodo1(2));
-            biela3DObj.dz = (coordNodo2(3) - coordNodo1(3));
+            biela3DObj.dx = abs(coordNodo2(1) - coordNodo1(1));
+            biela3DObj.dy = abs(coordNodo2(2) - coordNodo1(2));
+            biela3DObj.dz = abs(coordNodo2(3) - coordNodo1(3));
             biela3DObj.theta = atan(biela3DObj.dy/biela3DObj.dx);
             
             % Largo de la biela

@@ -378,13 +378,15 @@ classdef AnalisisEstatico < handle
             
             % Obtiene cuantos GDL tiene el modelo
             gdl = 2;
+            ngdl = analisisObj.modeloObj.obtenerNumeroDimensiones();
+            
             for i = 1:numeroNodos
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
                 
                 if ~nodoObjetos{i}.tipoApoyoRestringido()
-                    if ngdlid == 2
+                    if ngdlid == 2 || ngdl == 2
                         plot(coords(1), coords(2), 'b.', 'MarkerSize', 20);
                     else
                         plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 20);
@@ -429,7 +431,7 @@ classdef AnalisisEstatico < handle
                     gdl = max(gdl, ngdlid);
                     
                     if ~nodoObjetos{i}.tipoApoyoRestringido()
-                        if ngdlid == 2
+                        if ngdlid == 2 || ngdl == 2
                             plot(coords(1), coords(2), 'k*', 'MarkerSize', 10);
                         else
                             plot3(coords(1), coords(2), coords(3), 'k*', 'MarkerSize', 10);
@@ -449,7 +451,7 @@ classdef AnalisisEstatico < handle
             if gdl == 3 && limz(1) < limz(2)
                 zlim(limz);
             end
-            if gdl == 2
+            if ngdl == 2
                 xlabel('X');
                 ylabel('Y');
             else
@@ -468,7 +470,7 @@ classdef AnalisisEstatico < handle
             % disp: es un metodo de la clase AnalisisEstatico que se usa para imprimir en
             % command Window la informacion del Analisis Estatico realizado
             %
-            % disp(modeloObj)
+            % disp(analisisObj)
             % Imprime la informacion guardada en el AnalisisEstatico (analisisObj) en
             % pantalla
             

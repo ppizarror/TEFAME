@@ -74,6 +74,7 @@ classdef Viga2D < Elemento
         L % Largo del elemento
         theta % Angulo de inclinacion de la viga
         Feq % Fuerza equivalente
+        PLOTNELEM % Numero de elementos en los que se discretiza para el grafico
     end % properties Viga2D
     
     methods
@@ -97,13 +98,16 @@ classdef Viga2D < Elemento
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
-            viga2DObj.dx = (coordNodo2(1) - coordNodo1(1));
-            viga2DObj.dy = (coordNodo2(2) - coordNodo1(2));
+            viga2DObj.dx = abs(coordNodo2(1) - coordNodo1(1));
+            viga2DObj.dy = abs(coordNodo2(2) - coordNodo1(2));
             viga2DObj.L = sqrt(viga2DObj.dx^2+viga2DObj.dy^2);
             viga2DObj.theta = atan(viga2DObj.dy/viga2DObj.dx);
             
             % Fuerza equivalente de la viga
             viga2DObj.Feq = [0, 0, 0, 0]';
+            
+            % Otros
+            viga2DObj.PLOTNELEM = 10;
             
         end % Viga2D constructor
         
@@ -258,6 +262,19 @@ classdef Viga2D < Elemento
             
         end % guardarEsfuerzosInternos function
         
+        function N = obtenerVectorN(elementoObj, x, l) %#ok<INUSL>
+            % obtenerVectorN: Obtiene el vector de transformada N a partir
+            % de x como porcentaje del largo
+            
+            x = x * l;
+            N = zeros(4, 1);
+            N(1) = 1 - 3 * (x / l)^2 + 2 * (x / l)^3;
+            N(2) = x * (1 - x / l)^2;
+            N(3) = 3 * (x / l)^2 - 2 * (x / l)^3;
+            N(4) = (x^2 / l) * (x / l - 1);
+            
+        end % obtenerVectorN function
+        
         function plot(elementoObj, deformadas, tipoLinea, grosorLinea)
             % plot: Grafica un elemento
             %
@@ -267,15 +284,33 @@ classdef Viga2D < Elemento
             coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
             coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
             
-            % Si hay deformadas
+            % Si hay deformacion
             if ~isempty(deformadas)
-                coord1 = coord1 + deformadas{1};
-                coord2 = coord2 + deformadas{2};
+                coord1 = coord1 + deformadas{1}(1:2);
+                coord2 = coord2 + deformadas{2}(1:2);
+                if length(deformadas{1}) == 3
+                    ndx = abs(coord2(1)-coord1(1));
+                    ndy = abs(coord2(2)-coord1(2));
+                    nl = sqrt(ndx^2+ndy^2);
+                    tht = elementoObj.theta;
+                    coordx = [coord1(1), deformadas{1}(3), coord2(1), deformadas{2}(3)];
+                    coordy = [coord1(2), deformadas{1}(3), coord2(2), deformadas{2}(3)];
+                    coordi = coord1;
+                    for i = 1:elementoObj.PLOTNELEM
+                        p = i / elementoObj.PLOTNELEM;
+                        n = elementoObj.obtenerVectorN(p, nl);
+                        coordf = [(coord1(1) + ndx * p) * cos(tht) + (coordx * n) * sin(tht), ...
+                            (coordy * n) * cos(tht) + (coord1(2) + ndy * p) * sin(elementoObj.theta)];
+                        elementoObj.graficarLinea(coordi, coordf, tipoLinea, grosorLinea);
+                        coordi = coordf;
+                    end
+                    return;
+                end
             end
             
-            % Grafica el elemento
+            % Grafica en forma lineal
             elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
-                
+            
         end % plot function
         
         function disp(viga2DObj)

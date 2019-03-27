@@ -694,15 +694,7 @@ classdef ModalEspectral < handle
             %
             % plt = plot(analisisObj,modo,factor,numCuadros,guardaGif)
             
-            if ~analisisObj.analisisFinalizado
-                figure();
-                movegui('center');
-                hold on;
-                grid on;
-                plotAnimado(analisisObj, false);
-                return;
-            end
-            
+            % Establece variables iniciales
             deformada = false;
             if exist('modo', 'var')
                 deformada = true;
@@ -716,6 +708,19 @@ classdef ModalEspectral < handle
                 numCuadros = 0;
             end
             
+            % Grafica la estructura si no se ha ejecutado el analisis
+            if ~analisisObj.analisisFinalizado
+                plt = figure();
+                movegui('center');
+                hold on;
+                grid on;
+                [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(0, factor);
+                plotAnimado(analisisObj, false, 0, factor, 0, limx, limy, limz);
+                figure(plt);
+                return;
+            end
+            
+            % Comprobaciones extras
             guardarGif = false;
             if exist('guardaGif', 'var')
                 guardarGif = true;
@@ -745,10 +750,12 @@ classdef ModalEspectral < handle
             % axis tight manual;
             % set(gca, 'nextplot', 'replacechildren');
             
-            plotAnimado(analisisObj, deformada, modo, factor, 1, limx, limy, limz, tn, 1, 1);
-            hold off;
             fprintf('Generando animacion analisis modal espectral:\n');
-            if numCuadros ~= 0
+            if numCuadros == 0
+                plotAnimado(analisisObj, deformada, modo, factor, 1, limx, limy, limz, tn, 1, 1);
+            else
+                plotAnimado(analisisObj, deformada, modo, factor, 0, limx, limy, limz, tn, 1, 1);
+                hold off;
                 
                 % Obtiene el numero de cuadros
                 t = 0;
@@ -781,6 +788,7 @@ classdef ModalEspectral < handle
                         else
                             imwrite(imind, cm, guardaGif, 'gif', 'WriteMode', 'append', 'DelayTime', 0.1);
                         end
+                        % pause(0.1);
                     catch
                         fprintf('\n\tSe ha cancelado el proceso del grafico\n');
                         return;
@@ -823,6 +831,7 @@ classdef ModalEspectral < handle
             
             % Obtiene cuantos GDL tiene el modelo
             gdl = 2;
+            ngdl = analisisObj.modeloObj.obtenerNumeroDimensiones();
             j = 1;
             for i = 1:numeroNodos
                 coords = nodoObjetos{i}.obtenerCoordenadas();
@@ -830,7 +839,7 @@ classdef ModalEspectral < handle
                 gdl = max(gdl, ngdlid);
                 
                 if ~nodoObjetos{i}.tipoApoyoRestringido() && ~deformada
-                    if ngdlid == 2
+                    if ngdlid == 2 || ngdl == 2
                         plot(coords(1), coords(2), 'b.', 'MarkerSize', 10);
                     else
                         plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 10);
@@ -860,7 +869,7 @@ classdef ModalEspectral < handle
                 if deformada
                     def = cell(numNodo, 1);
                     for j = 1:numNodo
-                        def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl);
+                        def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, analisisObj.numDG);
                     end
                     elementoObjetos{i}.plot(def, 'k-', 1.25);
                     if i == 1
@@ -880,7 +889,7 @@ classdef ModalEspectral < handle
                     coords = coords + def .* factor * phif;
                     
                     if ~nodoObjetos{i}.tipoApoyoRestringido()
-                        if ngdlid == 2
+                        if ngdlid == 2 || ngdl == 2
                             plot(coords(1), coords(2), 'k.', 'MarkerSize', 20);
                         else
                             plot3(coords(1), coords(2), coords(3), 'k.', 'MarkerSize', 20);
@@ -907,7 +916,7 @@ classdef ModalEspectral < handle
             grid on;
             
             % Limita en los ejes
-            if deformada
+            if deformada || modo == 0
                 if limx(1) < limx(2)
                     xlim(limx);
                 end
@@ -919,7 +928,7 @@ classdef ModalEspectral < handle
                 end
             end
             
-            if gdl == 2
+            if ngdl == 2
                 xlabel('X');
                 ylabel('Y');
             else
@@ -933,6 +942,8 @@ classdef ModalEspectral < handle
         
         function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, modo, factor)
             % Obtiene los limites de deformacion
+            %
+            % obtenerLimitesDeformada(analisisObj,modo,factor)
             
             factor = 1.25 * factor;
             limx = [inf, -inf];
@@ -981,14 +992,20 @@ classdef ModalEspectral < handle
         end % obtenerLimitesDeformada function
         
         function def = obtenerDeformadaNodo(analisisObj, nodo, modo, gdl)
-            % Obtiene la deformada de un nodo
+            % obtenerDeformadaNodo: Obtiene la deformada de un nodo
+            %
+            % obtenerDeformadaNodo(analisisObj,nodo,modo,gdl)
             
             ngdl = nodo.obtenerGDLID();
             def = zeros(gdl, 1);
             gdl = min(gdl, length(ngdl));
             for i = 1:gdl
                 if ngdl(i) ~= 0
-                    def(i) = analisisObj.phinExt(ngdl(i), modo);
+                    if modo ~= 0
+                        def(i) = analisisObj.phinExt(ngdl(i), modo);
+                    else
+                        def(i) = 0;
+                    end
                 end
             end
             
@@ -996,6 +1013,8 @@ classdef ModalEspectral < handle
         
         function activaCargaAnimacion(analisisObj)
             % Carga la animacion  una vez calculada
+            %
+            % activaCargaAnimacion(analisisObj)
             
             analisisObj.cargarAnimacion = true;
             
@@ -1003,6 +1022,8 @@ classdef ModalEspectral < handle
         
         function desactivaCargaAnimacion(analisisObj)
             % Desactiva la animacion una vez calculada
+            %
+            % desactivaCargaAnimacion(analisisObj)
             
             analisisObj.cargarAnimacion = false;
             
@@ -1010,6 +1031,8 @@ classdef ModalEspectral < handle
         
         function activarPlotDeformadaInicial(analisisObj)
             % Activa el grafico de la deformada inicial
+            %
+            % activarPlotDeformadaInicial(analisisObj)
             
             analisisObj.mostrarDeformada = true;
             
@@ -1017,6 +1040,8 @@ classdef ModalEspectral < handle
         
         function desactivarPlotDeformadaInicial(analisisObj)
             % Desactiva el grafico de la deformada inicial
+            %
+            % desactivarPlotDeformadaInicial(analisisObj)
             
             analisisObj.mostrarDeformada = false;
             
@@ -1029,7 +1054,7 @@ classdef ModalEspectral < handle
             % disp: es un metodo de la clase ModalEspectral que se usa para imprimir en
             % command Window la informacion del analisis espectral realizado
             %
-            % disp(modeloObj)
+            % disp(analisisObj)
             % Imprime la informacion guardada en el ModalEspectral (analisisObj) en
             % pantalla
             
