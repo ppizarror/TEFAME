@@ -290,6 +290,14 @@ classdef ModalEspectral < handle
                 fprintf('\tNo se han condensado grados de libertad\n');
             end
             
+            % Una vez pasado este punto no deberian haber masas nulas o
+            % incorrectas
+            for i = 1:ngdl
+                if Meq(i, i) <= 0
+                    error('La matriz de masa esta mal definida, M(%d,%d)<=0', i, i);
+                end
+            end
+            
             fprintf('\tGrados de libertad totales: %d\n', ngdl);
             fprintf('\tNumero de direcciones de analisis: %d\n', ndg);
             nModos = min(nModos, ngdl);
@@ -561,9 +569,6 @@ classdef ModalEspectral < handle
             
             % Chequea que la matriz de masa sea consistente
             for i = 1:analisisObj.numeroGDL
-                if analisisObj.Mt(i, i) <= 0
-                    error('La matriz de masa esta mal definida, Mt(%d,%d)<=0', i, i);
-                end
                 analisisObj.Mt(i, i) = analisisObj.Mt(i, i) / 9.80665; % [tonf->ton]
             end
             
@@ -853,15 +858,15 @@ classdef ModalEspectral < handle
                     elementoObjetos{i}.plot({}, 'b-', 0.5);
                 end
                 
-                if deformada                
+                if deformada
                     def = cell(numNodo, 1);
-                    for j = 1: numNodo
+                    for j = 1:numNodo
                         def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl);
                     end
                     elementoObjetos{i}.plot(def, 'k-', 1.25);
                     if i == 1
                         hold on;
-                    end                  
+                    end
                 end
                 
             end
@@ -950,7 +955,7 @@ classdef ModalEspectral < handle
             for i = 1:numeroElementos
                 nodoElemento = elementoObjetos{i}.obtenerNodos();
                 numNodo = length(nodoElemento);
-                for j=1:numNodo
+                for j = 1:numNodo
                     coord = nodoElemento{j}.obtenerCoordenadas();
                     def = analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl);
                     coordi = coord + def .* factor;
