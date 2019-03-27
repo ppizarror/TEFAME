@@ -163,11 +163,11 @@ classdef ModalEspectral < handle
             
         end % definirNumeracionGDL function
         
-        function analizar(analisisObj, nModos, betacR, betacP)
+        function analizar(analisisObj, nModos, betacR, betacP, maxcond)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
             % realizar el analisis estatico
             %
-            % analizar(analisisObj,nModos,betacR,betacP)
+            % analizar(analisisObj,nModos,betacR,betacP,maxcond)
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas, requiere el numero de modos para realizar el
             % analisis y de los modos conocidos con sus beta
@@ -176,6 +176,10 @@ classdef ModalEspectral < handle
             if ~exist('nModos', 'var')
                 nModos = 20;
             end
+            if ~exist('maxcond', 'var')
+                maxcond = 0.001;
+            end
+            fprintf('Ejecuntando analisis modal espectral\n\tNumero de modos: %d\n', nModos);
             
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
@@ -197,12 +201,9 @@ classdef ModalEspectral < handle
             % Obtiene los grados de libertad
             ngdl = length(analisisObj.Mt); % Numero de grados de libertad
             ndg = analisisObj.modeloObj.obtenerNumerosGDL(); % Grados de libertad por nodo
-            nModos = min(nModos, ngdl);
-            analisisObj.numModos = nModos;
             
             % ----------------CONDENSACION ESTATICA DE GUYAN---------------
             % Primero se genera matriz para reordenar elementos (rot)
-            maxcond = 0.001; % Valor máximo de masa para realizar condensacion
             vz = []; % Vector que identifica indices a condensar
             j = 1;
             for i = 1:length(diagMt)
@@ -211,6 +212,20 @@ classdef ModalEspectral < handle
                     j = j + 1;
                 end
             end
+            
+            % Chequea cuantos grados quedan
+            nndg = ndg;
+            if length(vz) > 0 && ndg>2 %#ok<ISMT>
+                for i=2:ndg
+                    % Si todos los grados se dividen por 3, entonces se borra
+                    % el tercer grado de libertad (giro por ejemplo)
+                    if allDivMod(vz, i)
+                        nndg = nndg - 1;
+                    end
+                end
+            end
+            ndg = nndg;
+            
             lpasivos = length(vz);
             lactivos = length(diagMt) - lpasivos;
             rot = zeros(length(diagMt), length(diagMt));
@@ -245,8 +260,16 @@ classdef ModalEspectral < handle
                 j = j + 1;
             end
             
-            size(Keq)
-            size(Meq)
+            % Actualiza los grados
+            cngdl = length(Meq);
+            if cngdl < ngdl
+                fprintf('\tSe han condensado %d grados de libertad\n', ngdl-cngdl);
+                ngdl = cngdl;
+            end
+            fprintf('\tGrados de libertad totales: %d\n', ngdl);
+            fprintf('\tNumero de direcciones de analisis: %d\n', ndg);
+            nModos = min(nModos, ngdl);
+            analisisObj.numModos = nModos;
             
             %--------------------------------------------------------------
             
@@ -254,9 +277,9 @@ classdef ModalEspectral < handle
             % inversa de la masa y calcula los valores propios
             invMt = zeros(ngdl, ngdl);
             for i = 1:ngdl
-                invMt(i, i) = 1 / analisisObj.Mt(i, i);
+                invMt(i, i) = 1 / Meq(i, i);
             end
-            sysMat = invMt * analisisObj.Kt;
+            sysMat = invMt * Keq;
             
             [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
             syseig = diag(syseig);
@@ -266,10 +289,10 @@ classdef ModalEspectral < handle
             modalTn = (modalWn.^-1) .* 2 * pi; % Calcula los periodos
             
             % Calcula las matrices
-            modalMmt = modalPhin' * analisisObj.Mt * modalPhin;
+            modalMmt = modalPhin' * Meq * modalPhin;
             modalPhin = modalPhin * diag(diag(modalMmt).^-0.5);
-            modalMm = diag(diag(modalPhin'*analisisObj.Mt*modalPhin));
-            modalKm = diag(diag(modalPhin'*analisisObj.Kt*modalPhin));
+            modalMm = diag(diag(modalPhin'*Meq*modalPhin));
+            modalKm = diag(diag(modalPhin'*Keq*modalPhin));
             
             % Reordena los periodos
             Torder = zeros(nModos, 1);
@@ -319,9 +342,9 @@ classdef ModalEspectral < handle
             
             % Recorre cada grado de libertad (horizontal, vertical, giro)
             for j = 1:ndg
-                Mtotr(j) = sum(analisisObj.Mt*analisisObj.rm(:, j));
+                Mtotr(j) = sum(Meq*analisisObj.rm(:, j));
                 for k = 1:nModos
-                    analisisObj.Lm(k, j) = analisisObj.phin(:, k)' * analisisObj.Mt * analisisObj.rm(:, j);
+                    analisisObj.Lm(k, j) = analisisObj.phin(:, k)' * Meq * analisisObj.rm(:, j);
                     analisisObj.Mmeff(k, j) = analisisObj.Lm(k, j).^2 ./ modalMm(k, k);
                 end
                 
@@ -342,14 +365,14 @@ classdef ModalEspectral < handle
             m = 0;
             n = 0;
             for i = 1:nModos
-                if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2), analisisObj.Mmeff(i, 3))
+                if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     countcR(1) = countcR(1) + 1;
                     if direcR(1) == 'h' && modocR(1) == countcR(1)
                         m = i;
                     elseif direcR(2) == 'h' && modocR(2) == countcR(1)
                         n = i;
                     end
-                elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 3))
+                elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, max(1, ndg)))
                     countcR(2) = countcR(2) + 1;
                     if direcR(1) == 'v' && modocR(1) == countcR(2)
                         m = i;
@@ -374,23 +397,17 @@ classdef ModalEspectral < handle
             w = analisisObj.wn;
             Mn = modalMmt;
             for i = 1:nModos
-                if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2), analisisObj.Mmeff(i, 3))
+                if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     d(i, i) = 2 * betacP(1) * w(i) / Mn(i, i);
-                elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 3))
+                elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, max(1, ndg)))
                     d(i, i) = 2 * betacP(2) * w(i) / Mn(i, i);
                 else
                     d(i, i) = 2 * betacP(3) * w(i) / Mn(i, i);
                 end
             end
-            analisisObj.cPenzien = analisisObj.Mt * modalPhin * d * modalPhin' * analisisObj.Mt;
+            analisisObj.cPenzien = Meq * modalPhin * d * modalPhin' * Meq;
             
             %--------------------------------------------------------------
-            
-            % Se resuelve la ecuacion
-            analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
-            
-            % Actualiza el modelo
-            analisisObj.modeloObj.actualizar(analisisObj.u);
             
             % Termina el analisis
             analisisObj.analisisFinalizado = true;
