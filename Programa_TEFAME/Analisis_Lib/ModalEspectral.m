@@ -179,6 +179,7 @@ classdef ModalEspectral < handle
             % analisis y de los modos conocidos con sus beta
             
             % Ajusta variables de entrada
+            tInicio = cputime;
             if ~exist('nModos', 'var')
                 nModos = 20;
             end
@@ -186,6 +187,7 @@ classdef ModalEspectral < handle
                 maxcond = 0.001;
             end
             fprintf('Ejecuntando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
+            
             
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
@@ -455,7 +457,7 @@ classdef ModalEspectral < handle
             % Termina el analisis
             analisisObj.analisisFinalizado = true;
             analisisObj.numDG = ndg;
-            fprintf('\n');
+            fprintf('\tSe completo el analisis en %.3f segundos\n\n', cputime-tInicio);
             
         end % analizar function
         
@@ -688,6 +690,15 @@ classdef ModalEspectral < handle
             %
             % plt = plot(analisisObj,modo,factor,numCuadros,guardaGif)
             
+            if ~analisisObj.analisisFinalizado
+                figure();
+                movegui('center');
+                hold on;
+                grid on;
+                plotAnimado(analisisObj, false);
+                return;
+            end
+            
             deformada = false;
             if exist('modo', 'var')
                 deformada = true;
@@ -909,14 +920,16 @@ classdef ModalEspectral < handle
             grid on;
             
             % Limita en los ejes
-            if limx(1) < limx(2)
-                xlim(limx);
-            end
-            if limy(1) < limy(2)
-                ylim(limy);
-            end
-            if gdl == 3 && limz(1) < limz(2)
-                zlim(limz);
+            if deformada
+                if limx(1) < limx(2)
+                    xlim(limx);
+                end
+                if limy(1) < limy(2)
+                    ylim(limy);
+                end
+                if gdl == 3 && limz(1) < limz(2)
+                    zlim(limz);
+                end
             end
             
             if gdl == 2

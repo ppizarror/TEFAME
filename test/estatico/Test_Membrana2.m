@@ -88,4 +88,4 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-modeloObj.guardarResultados('test/out/Test_Membrana2.txt');
+modeloObj.guardarResultados('test/estatico/out/Test_Membrana2.txt');
