@@ -76,6 +76,7 @@ classdef ModalEspectral < handle
         wn % Frecuencias del sistema
         Tn % Periodos del sistema
         phin % Vectores propios del sistema
+        phinExt % Vector propio del sistema extendido considerando grados condensados
         Mm % Matriz masa modal
         Km % Matriz rigidez modal
         rm % Vector influencia
@@ -200,6 +201,7 @@ classdef ModalEspectral < handle
             
             % Obtiene los grados de libertad
             ngdl = length(analisisObj.Mt); % Numero de grados de libertad
+            ngdlExt = ngdl;
             ndg = analisisObj.modeloObj.obtenerNumerosGDL(); % Grados de libertad por nodo
             
             % ----------------CONDENSACION ESTATICA DE GUYAN---------------
@@ -215,8 +217,8 @@ classdef ModalEspectral < handle
             
             % Chequea cuantos grados quedan
             nndg = ndg;
-            if length(vz) > 0 && ndg>2 %#ok<ISMT>
-                for i=2:ndg
+            if length(vz) > 0 && ndg > 2 %#ok<ISMT>
+                for i = 2:ndg
                     % Si todos los grados se dividen por 3, entonces se borra
                     % el tercer grado de libertad (giro por ejemplo)
                     if allDivMod(vz, i)
@@ -316,6 +318,7 @@ classdef ModalEspectral < handle
             analisisObj.Tn = zeros(nModos, 1);
             analisisObj.wn = zeros(nModos, 1);
             analisisObj.phin = zeros(ngdl, nModos);
+            analisisObj.phinExt = zeros(ngdlExt, nModos);
             analisisObj.Mm = modalMm;
             analisisObj.Km = modalKm;
             for i = 1:nModos
@@ -352,6 +355,25 @@ classdef ModalEspectral < handle
                 analisisObj.Mmeffacum(1, j) = analisisObj.Mmeff(1, j);
                 for i = 2:nModos
                     analisisObj.Mmeffacum(i, j) = analisisObj.Mmeffacum(i-1, j) + analisisObj.Mmeff(i, j);
+                end
+            end
+            
+            % Crea la matriz extendida de los modos, dejando en cero los
+            % condensados
+            analisisObj.phinExt = zeros(ngdlExt, nModos);
+            if ngdlExt ~= ngdl
+                k = 1; % Mantiene el indice entre (1, ngdl)
+                for j = 1:ngdlExt
+                    if isArrayMember(vz, j)
+                        for i = 1:nModos
+                            analisisObj.phinExt(j, i) = 0;
+                        end
+                    else
+                        for i = 1:nModos
+                            analisisObj.phinExt(j, i) = analisisObj.phin(k, i);
+                        end
+                        k = k + 1;
+                    end
                 end
             end
             
@@ -913,7 +935,7 @@ classdef ModalEspectral < handle
             gdl = min(gdl, length(ngdl));
             for i = 1:gdl
                 if ngdl(i) ~= 0
-                    def(i) = analisisObj.phin(ngdl(i), modo);
+                    def(i) = analisisObj.phinExt(ngdl(i), modo);
                 end
             end
             
