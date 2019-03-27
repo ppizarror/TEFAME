@@ -20,6 +20,8 @@
 ## Autor
 - Pablo Pizarro (pablo.pizarro@ing.uchile.cl)
 - Fabián Rojas (frojas@ing.uchile.cl)
+- Carlos López O.
+- Jaime Reveco
 
 ## Licencia
 Este proyecto está licenciado bajo la licencia MIT [https://opensource.org/licenses/MIT]
