@@ -207,7 +207,7 @@ classdef ModalEspectral < handle
             ngdlExt = ngdl;
             ndg = analisisObj.modeloObj.obtenerNumerosGDL(); % Grados de libertad por nodo
             
-            % ----------------CONDENSACION ESTATICA DE GUYAN---------------
+            % ---------------- CONDENSACION ESTATICA DE GUYAN ---------------
             % Primero se genera matriz para reordenar elementos (rot)
             vz = []; % Vector que identifica indices a condensar
             j = 1;
