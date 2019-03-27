@@ -363,6 +363,17 @@ classdef VigaColumnaMasa2D < Elemento
             
         end % obtenerVectorN function
         
+        function y = plotVigaDeformar(elementoObj, deformadas) %#ok<INUSL>
+            % plotVigaDeformar: Evalua si se grafica una viga con
+            % deformacion
+            %
+            % plotVigaDeformar(elementoObj, deformadas)
+            
+            y = length(deformadas{1}) == 3 && (abs(deformadas{1}(3)) > 1e-2 && ...
+                abs(deformadas{2}(3)) > 1e-2);
+            
+        end % plotVigaDeformar function
+        
         function plot(elementoObj, deformadas, tipoLinea, grosorLinea)
             % plot: Grafica un elemento
             %
@@ -376,7 +387,7 @@ classdef VigaColumnaMasa2D < Elemento
             if ~isempty(deformadas)
                 coord1 = coord1 + deformadas{1}(1:2);
                 coord2 = coord2 + deformadas{2}(1:2);
-                if length(deformadas{1}) == 3
+                if elementoObj.plotVigaDeformar(deformadas)
                     ndx = abs(coord2(1)-coord1(1));
                     ndy = abs(coord2(2)-coord1(2));
                     nl = sqrt(ndx^2+ndy^2);
