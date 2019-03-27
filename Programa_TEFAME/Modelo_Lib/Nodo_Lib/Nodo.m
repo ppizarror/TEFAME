@@ -183,7 +183,7 @@ classdef Nodo < ComponenteModelo
             %
             % desplazmientosNodo = obtenerDesplazamientos(nodoObj)
             % Entrega el vector con los desplazamientos o rotaciones (desplazmientosNodo)
-            % que sufrio el Nodo (nodoObj) debido a la aplicaci?n de los patrones
+            % que sufrio el Nodo (nodoObj) debido a la aplicacion de los patrones
             % de carga.
             
             desplazmientosNodo = nodoObj.despl;

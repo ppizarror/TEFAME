@@ -54,5 +54,6 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
-analisisObj.analizar();
+analisisObj.analizar
+analisisObj.plot(true);
 modeloObj.guardarResultados('test/estatico/out/Modelo_Tarea3.txt');

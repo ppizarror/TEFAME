@@ -847,38 +847,21 @@ classdef ModalEspectral < handle
                 
                 % Se obienen los gdl del elemento metodo indicial
                 nodoElemento = elementoObjetos{i}.obtenerNodos();
-                coord1 = nodoElemento{1}.obtenerCoordenadas();
-                coord2 = nodoElemento{2}.obtenerCoordenadas();
+                numNodo = length(nodoElemento);
                 
                 if ~deformada || analisisObj.mostrarDeformada
-                    if gdl == 2
-                        plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b-', 'LineWidth', 0.5);
-                    else
-                        plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
-                            'b-', 'LineWidth', 0.5);
-                    end
+                    elementoObjetos{i}.plot({}, 'b-', 0.5);
                 end
                 
-                if deformada
-                    
-                    def1 = analisisObj.obtenerDeformadaNodo(nodoElemento{1}, modo, gdl);
-                    def2 = analisisObj.obtenerDeformadaNodo(nodoElemento{2}, modo, gdl);
-                    
-                    % Suma las deformaciones
-                    coord1 = coord1 + def1 .* factor * phif;
-                    coord2 = coord2 + def2 .* factor * phif;
-                    
-                    % Grafica
-                    if gdl == 2
-                        plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'k-', 'LineWidth', 1.25);
-                    else
-                        plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
-                            'k-', 'LineWidth', 1.25);
+                if deformada                
+                    def = cell(numNodo, 1);
+                    for j = 1: numNodo
+                        def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl);
                     end
+                    elementoObjetos{i}.plot(def, 'k-', 1.25);
                     if i == 1
                         hold on;
-                    end
-                    
+                    end                  
                 end
                 
             end
@@ -966,29 +949,28 @@ classdef ModalEspectral < handle
             numeroElementos = length(elementoObjetos);
             for i = 1:numeroElementos
                 nodoElemento = elementoObjetos{i}.obtenerNodos();
-                coord1i = nodoElemento{1}.obtenerCoordenadas();
-                coord2i = nodoElemento{2}.obtenerCoordenadas();
-                def1 = analisisObj.obtenerDeformadaNodo(nodoElemento{1}, modo, gdl);
-                def2 = analisisObj.obtenerDeformadaNodo(nodoElemento{2}, modo, gdl);
-                coord1 = coord1i + def1 .* factor;
-                coord2 = coord2i + def2 .* factor;
-                limx(1) = min([limx(1), coord1(1), coord2(1)]);
-                limy(1) = min([limy(1), coord1(2), coord2(2)]);
-                limx(2) = max([limx(2), coord1(1), coord2(1)]);
-                limy(2) = max([limy(2), coord1(2), coord2(2)]);
-                if gdl == 3
-                    limz(1) = min([limz(1), coord1(3), coord2(3)]);
-                    limz(2) = max([limz(2), coord1(3), coord2(3)]);
-                end
-                coord1 = coord1i - def1 .* factor;
-                coord2 = coord2i - def2 .* factor;
-                limx(1) = min([limx(1), coord1(1), coord2(1)]);
-                limy(1) = min([limy(1), coord1(2), coord2(2)]);
-                limx(2) = max([limx(2), coord1(1), coord2(1)]);
-                limy(2) = max([limy(2), coord1(2), coord2(2)]);
-                if gdl == 3
-                    limz(1) = min([limz(1), coord1(3), coord2(3)]);
-                    limz(2) = max([limz(2), coord1(3), coord2(3)]);
+                numNodo = length(nodoElemento);
+                for j=1:numNodo
+                    coord = nodoElemento{j}.obtenerCoordenadas();
+                    def = analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl);
+                    coordi = coord + def .* factor;
+                    limx(1) = min(limx(1), coordi(1));
+                    limy(1) = min(limy(1), coordi(2));
+                    limx(2) = max(limx(2), coordi(1));
+                    limy(2) = max(limy(2), coordi(2));
+                    if gdl == 3
+                        limz(1) = min(limz(1), coordi(3));
+                        limz(2) = max(limz(2), coordi(3));
+                    end
+                    coordf = coord - def .* factor;
+                    limx(1) = min(limx(1), coordf(1));
+                    limy(1) = min(limy(1), coordf(2));
+                    limx(2) = max(limx(2), coordf(1));
+                    limy(2) = max(limy(2), coordf(2));
+                    if gdl == 3
+                        limz(1) = min(limz(1), coordf(3));
+                        limz(2) = max(limz(2), coordf(3));
+                    end
                 end
             end
             

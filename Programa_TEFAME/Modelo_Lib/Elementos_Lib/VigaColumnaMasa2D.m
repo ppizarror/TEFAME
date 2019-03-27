@@ -345,6 +345,26 @@ classdef VigaColumnaMasa2D < Elemento
             
         end % guardarEsfuerzosInternos function
         
+        function plot(elementoObj, deformadas, tipoLinea, grosorLinea)
+            % plot: Grafica un elemento
+            %
+            % plot(elementoObj,deformadas,tipoLinea,grosorLinea)
+            
+            % Obtiene las coordenadas de los objetos
+            coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
+            coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
+            
+            % Si hay deformadas
+            if ~isempty(deformadas)
+                coord1 = coord1 + deformadas{1};
+                coord2 = coord2 + deformadas{2};
+            end
+            
+            % Grafica el elemento
+            elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
+            
+        end % plot function
+        
         function disp(vigaColumnaMasa2DObj)
             
             % Imprime propiedades de la Viga-Columna-Masa2D

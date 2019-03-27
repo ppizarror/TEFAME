@@ -297,6 +297,55 @@ classdef AnalisisEstatico < handle
             
         end % obtenerDesplazamientos function
         
+        function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, factor)
+            % Obtiene los limites de deformacion
+            
+            factor = 1.25 * factor;
+            limx = [inf, -inf];
+            limy = [inf, -inf];
+            limz = [inf, -inf];
+            
+            % Carga objetos
+            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            numeroNodos = length(nodoObjetos);
+            gdl = 2;
+            for i = 1:numeroNodos
+                coords = nodoObjetos{i}.obtenerCoordenadas();
+                ngdlid = length(coords);
+                gdl = max(gdl, ngdlid);
+            end
+            
+            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(elementoObjetos);
+            for i = 1:numeroElementos
+                nodoElemento = elementoObjetos{i}.obtenerNodos();
+                numNodo = length(nodoElemento);
+                for j = 1:numNodo
+                    coord = nodoElemento{j}.obtenerCoordenadas();
+                    def = nodoElemento{j}.obtenerDesplazamientos();
+                    coordi = coord + def .* factor;
+                    limx(1) = min(limx(1), coordi(1));
+                    limy(1) = min(limy(1), coordi(2));
+                    limx(2) = max(limx(2), coordi(1));
+                    limy(2) = max(limy(2), coordi(2));
+                    if gdl == 3
+                        limz(1) = min(limz(1), coordi(3));
+                        limz(2) = max(limz(2), coordi(3));
+                    end
+                    coordf = coord - def .* factor;
+                    limx(1) = min(limx(1), coordf(1));
+                    limy(1) = min(limy(1), coordf(2));
+                    limx(2) = max(limx(2), coordf(1));
+                    limy(2) = max(limy(2), coordf(2));
+                    if gdl == 3
+                        limz(1) = min(limz(1), coordf(3));
+                        limz(2) = max(limz(2), coordf(3));
+                    end
+                end
+            end
+            
+        end % obtenerLimitesDeformada function
+        
         function plt = plot(analisisObj, deformada, factor)
             %PLOTMODELO Grafica un modelo
             %
@@ -307,12 +356,15 @@ classdef AnalisisEstatico < handle
             end
             
             if ~exist('factor', 'var')
-                factor = 2;
+                factor = 1.5;
             end
             
             % Grafica la estructura
             nodoObjetos = analisisObj.modeloObj.obtenerNodos();
             numeroNodos = length(nodoObjetos);
+            
+            % Calcula los limites
+            [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(factor);
             
             plt = figure();
             if ~deformada
@@ -326,9 +378,6 @@ classdef AnalisisEstatico < handle
             
             % Obtiene cuantos GDL tiene el modelo
             gdl = 2;
-            limx = [inf, -inf];
-            limy = [inf, -inf];
-            limz = [inf, -inf];
             for i = 1:numeroNodos
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
@@ -341,26 +390,6 @@ classdef AnalisisEstatico < handle
                         plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 20);
                     end
                 end
-                
-                % Actualiza los limites
-                limx(1) = min([limx(1), coords(1)]);
-                limy(1) = min([limy(1), coords(2)]);
-                limx(2) = max([limx(2), coords(1)]);
-                limy(2) = max([limy(2), coords(2)]);
-                if gdl == 3
-                    limz(1) = min([limz(1), coords(3)]);
-                    limz(2) = max([limz(2), coords(3)]);
-                end
-            end
-            
-            if gdl == 2
-                xlabel('X');
-                ylabel('Y');
-            else
-                xlabel('X');
-                ylabel('Y');
-                zlabel('Z');
-                view(45, 45);
             end
             
             % Grafica los elementos
@@ -372,41 +401,15 @@ classdef AnalisisEstatico < handle
                 
                 % Se obienen los gdl del elemento metodo indicial
                 nodoElemento = elementoObjetos{i}.obtenerNodos();
-                coord1 = nodoElemento{1}.obtenerCoordenadas();
-                coord2 = nodoElemento{2}.obtenerCoordenadas();
-                
-                if gdl == 2
-                    plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'b-', 'LineWidth', 1.25);
-                else
-                    plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
-                        'b-', 'LineWidth', 1.25);
-                end
+                numNodo = length(nodoElemento);
+                elementoObjetos{i}.plot({}, 'b-', 0.5);
                 
                 if deformada
-                    def1 = nodoElemento{1}.obtenerDesplazamientos();
-                    def2 = nodoElemento{2}.obtenerDesplazamientos();
-                    
-                    % Suma las deformaciones
-                    coord1 = coord1 + def1 .* factor;
-                    coord2 = coord2 + def2 .* factor;
-                    
-                    % Grafica
-                    if gdl == 2
-                        plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], 'k--', 'LineWidth', 0.7);
-                    else
-                        plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
-                            'k--', 'LineWidth', 0.7);
+                    def = cell(numNodo, 1);
+                    for j = 1:numNodo
+                        def{j} = factor * nodoElemento{j}.obtenerDesplazamientos();
                     end
-                    
-                    % Actualiza los limites
-                    limx(1) = min([limx(1), coord1(1), coord2(1)]);
-                    limy(1) = min([limy(1), coord1(2), coord2(2)]);
-                    limx(2) = max([limx(2), coord1(1), coord1(1)]);
-                    limy(2) = max([limy(2), coord1(2), coord2(2)]);
-                    if gdl == 3
-                        limz(1) = min([limz(1), coord1(3), coord2(3)]);
-                        limz(2) = max([limz(2), coord1(3), coord2(3)]);
-                    end
+                    elementoObjetos{i}.plot(def, 'k-', 1.25);
                 end
                 
             end
@@ -416,6 +419,11 @@ classdef AnalisisEstatico < handle
                 for i = 1:numeroNodos
                     coords = nodoObjetos{i}.obtenerCoordenadas();
                     def = nodoObjetos{i}.obtenerDesplazamientos();
+                    for j = 1:length(def)
+                        if isnan(def(j))
+                            def(j) = 0;
+                        end
+                    end
                     coords = coords + def .* factor;
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
@@ -431,11 +439,24 @@ classdef AnalisisEstatico < handle
                 end
             end
             
-            % Limita en los ejes
-            xlim(limx);
-            ylim(limy);
-            if gdl == 3
+            % Actualiza los ejes
+            if limx(1) < limx(2)
+                xlim(limx);
+            end
+            if limy(1) < limy(2)
+                ylim(limy);
+            end
+            if gdl == 3 && limz(1) < limz(2)
                 zlim(limz);
+            end
+            if gdl == 2
+                xlabel('X');
+                ylabel('Y');
+            else
+                xlabel('X');
+                ylabel('Y');
+                zlabel('Z');
+                view(45, 45);
             end
             
         end
