@@ -1,6 +1,6 @@
 % ______________________________________________________________________
 %|                                                                      |
-%|               Iniciar_TEFANE - Inicia la librería TEFAME             |
+%|               Iniciar_TEFANE - Inicia la libreria TEFAME             |
 %|                                                                      |
 %|                   Area  de Estructuras y Geotecnia                   |
 %|                   Departamento de Ingenieria Civil                   |
@@ -9,7 +9,7 @@
 %|                                                                      |
 %| Desarrollado por:                                                    |
 %|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingeniería Civil Estructural         |
+%|       Estudiante de Magister en Ingenieria Civil Estructural         |
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 

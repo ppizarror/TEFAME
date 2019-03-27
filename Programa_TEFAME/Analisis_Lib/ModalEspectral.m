@@ -16,7 +16,7 @@
 %|                                                                      |
 %| Desarrollado por:                                                    |
 %|       Pablo Pizarro                                                  |
-%|       Estudiante de Magister en Ingenier�a Civil Estructural         |
+%|       Estudiante de Magister en Ingenieria Civil Estructural         |
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
