@@ -689,23 +689,30 @@ classdef ModalEspectral < handle
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para graficar la estructura
         
-        function plt = plot(analisisObj, modo, factor, numCuadros, guardaGif)
-            %PLOTMODELO Grafica un modelo
+        function plt = plot(analisisObj, varargin)
+            % plot: Grafica un modelo
             %
-            % plt = plot(analisisObj,modo,factor,numCuadros,guardaGif)
+            % plt = plot(analisisObj,varargin)
             
             % Establece variables iniciales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'modo', 0);
+            addOptional(p, 'factor', 2);
+            addOptional(p, 'numcuadros', 0);
+            addOptional(p, 'gif', 0);
+            parse(p, varargin{:})
+            r = p.Results;
+            modo = r.modo;
+            factor = r.factor;
+            numCuadros = r.numcuadros;
+            guardaGif = r.gif;
+            
+            % Chequea condiciones
             deformada = false;
-            if exist('modo', 'var')
+            modo = floor(modo);
+            if exist('modo', 'var') && modo > 0
                 deformada = true;
-            end
-            
-            if ~exist('factor', 'var')
-                factor = 2;
-            end
-            
-            if ~exist('numCuadros', 'var')
-                numCuadros = 0;
             end
             
             % Grafica la estructura si no se ha ejecutado el analisis
@@ -720,9 +727,9 @@ classdef ModalEspectral < handle
                 return;
             end
             
-            % Comprobaciones extras
+            % Guarda gif
             guardarGif = false;
-            if exist('guardaGif', 'var')
+            if exist('guardaGif', 'var') && ~strcmp(guardaGif, '')
                 guardarGif = true;
                 guardaGif = sprintf(guardaGif, modo);
             else
@@ -777,7 +784,7 @@ classdef ModalEspectral < handle
                     
                     t = t + dt;
                     try
-                        figure(fig_num); % Atrapa el foco
+                        % figure(fig_num); % Atrapa el foco
                         plotAnimado(analisisObj, deformada, modo, factor, sin(t), limx, limy, limz, tn, i, numCuadros);
                         drawnow;
                         Fr(i) = getframe(plt);
@@ -945,7 +952,7 @@ classdef ModalEspectral < handle
             %
             % obtenerLimitesDeformada(analisisObj,modo,factor)
             
-            factor = 1.25 * factor;
+            factor = 2.5 * factor;
             limx = [inf, -inf];
             limy = [inf, -inf];
             limz = [inf, -inf];
