@@ -1019,7 +1019,7 @@ classdef ModalEspectral < handle
         end % obtenerDeformadaNodo function
         
         function activaCargaAnimacion(analisisObj)
-            % Carga la animacion  una vez calculada
+            % activaCargaAnimacion: Carga la animacion  una vez calculada
             %
             % activaCargaAnimacion(analisisObj)
             
@@ -1028,7 +1028,7 @@ classdef ModalEspectral < handle
         end % activaCargaAnimacion funcion
         
         function desactivaCargaAnimacion(analisisObj)
-            % Desactiva la animacion una vez calculada
+            % desactivaCargaAnimacion: Desactiva la animacion una vez calculada
             %
             % desactivaCargaAnimacion(analisisObj)
             
@@ -1037,7 +1037,7 @@ classdef ModalEspectral < handle
         end % desactivaCargaAnimacion funcion
         
         function activarPlotDeformadaInicial(analisisObj)
-            % Activa el grafico de la deformada inicial
+            % activarPlotDeformadaInicial: Activa el grafico de la deformada inicial
             %
             % activarPlotDeformadaInicial(analisisObj)
             
@@ -1046,7 +1046,7 @@ classdef ModalEspectral < handle
         end % activarPlotDeformadaInicial function
         
         function desactivarPlotDeformadaInicial(analisisObj)
-            % Desactiva el grafico de la deformada inicial
+            % desactivarPlotDeformadaInicial: Desactiva el grafico de la deformada inicial
             %
             % desactivarPlotDeformadaInicial(analisisObj)
             
