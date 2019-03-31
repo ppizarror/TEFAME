@@ -568,6 +568,63 @@ classdef ModalEspectral < handle
             
         end % obtenerDesplazamientos function
         
+        function eff = NewmarkLineal(analisisObj,Reg,dt,beta)
+            % NewmarkLineal: es un metodo de la clase ModalEspectral
+            % que se usa para obtener los valores de aceleracion
+            % velociadad y desplazamiento de los grados de libertad
+            % a partir del metodo de Newmark
+            
+            % Parametros obtenidos del modelo
+            KT = analisisObj.obtenerMatrizRigidez();
+            MT = analisisObj.obtenerMatrizMasa();
+            CT = analisisObj.cRayleigh();
+            
+            %Registro de aceleracion
+            p = Reg;
+            
+            n = length(p);
+            tmax = dt*n;
+            t = linspace(0,tmax,n)';
+            gamma = 0.5;
+            ngl = length(KT);
+
+            % Constantes
+            
+            C1 = 1/(beta*dt);
+            C2 = gamma/(beta*dt);
+            C3 = 1/(beta*dt*dt);
+            C4 = (1/(2*beta)) - 1;
+            C5 = 1 - (gamma/beta);
+            C6 = 1 - (gamma/(2*beta));
+            
+            % Calculo de K sombrero
+            
+            Ks = KT + C3*MT + C2*CT;
+            
+            % Condiciones iniciales
+            
+            x = zeros(ngl,1);
+            v = zeros(ngl,1);
+            a = zeros(ngl,1);
+            
+            % Respuesta en el tiempo
+            
+            for i = 1:n - 1
+                Fint = -MT*p(i + 1) + MT*(C1*v + C4*a) - CT*(C5*v + C6*dt*a) - KT*x;
+                dq = Ks\Fint;
+                aa = C3*dq - C1*v - C4*a;
+                vv = C2*dq + C5*v + C6*dt*a;
+                dd = dq + x;
+                tt(i) = dt*i;
+                x = dd;
+                v = vv;
+                a = aa;
+            end
+            
+            eff = [x, v, a];
+            
+        end % NewmarkLineal function
+        
         
         function plt = plot(analisisObj, modo, factor, numCuadros, guardaGif)
             %PLOTMODELO Grafica un modelo
