@@ -229,16 +229,16 @@ classdef ModalEspectral < handle
                 
                 % Chequea cuantos grados quedan
                 nndg = ndg;
-                if ndg > 2
-                    for i = 2:ndg
-                        % Si todos los grados se dividen por 3, entonces se borra
-                        % el tercer grado de libertad (giro por ejemplo)
-                        if allDivMod(vz, i)
-                            nndg = nndg - 1;
-                        end
-                    end
-                end
-                ndg = nndg;
+%                 if ndg > 2
+%                     for i = 2:ndg
+%                         % Si todos los grados se dividen por 3, entonces se borra
+%                         % el tercer grado de libertad (giro por ejemplo)
+%                         if allDivMod(vz, i)
+%                             nndg = nndg - 1;
+%                         end
+%                     end
+%                 end
+%                 ndg = nndg;
                 
                 lpasivos = length(vz);
                 lactivos = length(diagMt) - lpasivos;
@@ -266,7 +266,12 @@ classdef ModalEspectral < handle
                 Kpa = Krot(lactivos+1:end, 1:lactivos);
                 Kpp = Krot(lactivos+1:end, lactivos+1:end);
                 Keq = Kaa - Kap * Kpp^(-1) * Kpa;
-                
+                size(Keq)
+                % Generación de matriz T de condensacion
+                If = size(Kaa,1);
+                T1 = eye(If);
+                T2 = -(Kpp)^(-1)*(Kpa);
+                T = vertcat(T1,T2);
                 % Se determina matriz de masa condensada (Meq)
                 Meq = analisisObj.Mt;
                 j = 0;
@@ -314,16 +319,21 @@ classdef ModalEspectral < handle
             
             [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
             syseig = diag(syseig);
+            % Se recuperan los grados de libertad condensados y se
+            % ordenan de acuerdo a la configuración original
+            modalPhin = T * modalPhin;            
+            rot_inv = rot^(-1);
+            modalPhin =  rot_inv' * modalPhin;
             
             % Calcula las frecuencias del sistema
             modalWn = sqrt(syseig);
             modalTn = (modalWn.^-1) .* 2 * pi; % Calcula los periodos
             
             % Calcula las matrices
-            modalMmt = modalPhin' * Meq * modalPhin;
+            modalMmt = modalPhin' * analisisObj.Mt * modalPhin;
             modalPhin = modalPhin * diag(diag(modalMmt).^-0.5);
-            modalMm = diag(diag(modalPhin'*Meq*modalPhin));
-            modalKm = diag(diag(modalPhin'*Keq*modalPhin));
+            modalMm = diag(diag(modalPhin'*analisisObj.Mt*modalPhin));
+            modalKm = diag(diag(modalPhin'*analisisObj.Kt*modalPhin));
             
             % Reordena los periodos
             Torder = zeros(nModos, 1);
@@ -342,7 +352,7 @@ classdef ModalEspectral < handle
                 Torder(maxi) = Tpos;
                 Tpos = Tpos + 1;
             end
-            
+            ngdl = length(analisisObj.Mt); % Numero de grados de libertad
             % Asigna valores
             analisisObj.Tn = zeros(nModos, 1);
             analisisObj.wn = zeros(nModos, 1);
@@ -373,9 +383,9 @@ classdef ModalEspectral < handle
             
             % Recorre cada grado de libertad (horizontal, vertical, giro)
             for j = 1:ndg
-                Mtotr(j) = sum(Meq*analisisObj.rm(:, j));
+                Mtotr(j) = sum(analisisObj.Mt*analisisObj.rm(:, j));
                 for k = 1:nModos
-                    analisisObj.Lm(k, j) = analisisObj.phin(:, k)' * Meq * analisisObj.rm(:, j);
+                    analisisObj.Lm(k, j) = analisisObj.phin(:, k)' * analisisObj.Mt * analisisObj.rm(:, j);
                     analisisObj.Mmeff(k, j) = analisisObj.Lm(k, j).^2 ./ modalMm(k, k);
                 end
                 
@@ -411,12 +421,12 @@ classdef ModalEspectral < handle
             
             % Se declaran dos amortiguamientos criticos asociados a dos modos
             % diferentes indicando si es horizontal o vertical (h o v)
-            modocR = [1, 3];
+            modocR = [1, 8];
             direcR = ['h', 'h'];
             countcR = [0, 0];
             m = 0;
             n = 0;
-            for i = 1:nModos
+            for i = 1:length(analisisObj.Mmeff)
                 if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     countcR(1) = countcR(1) + 1;
                     if direcR(1) == 'h' && modocR(1) == countcR(1)
@@ -440,15 +450,18 @@ classdef ModalEspectral < handle
             a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
                 -1 / w(n), 1 / w(m)] * betacR';
             analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
-            
+            cRayleigh_eq = T' * analisisObj.cRayleigh * T;
+            "Rayleigh"
+            size(analisisObj.cRayleigh)
+            size(cRayleigh_eq)
             % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------
             
             % Se declaran todos los amortiguamientos criticos del sistema,
-            % (horizontal, vertical y traslacional)
-            d = zeros(nModos, nModos);
+            % (horizontal, vertical y rotacional)
+            d = zeros(length(analisisObj.Mmeff), length(analisisObj.Mmeff));
             w = analisisObj.wn;
             Mn = modalMmt;
-            for i = 1:nModos
+            for i = 1:length(Mn)
                 if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     d(i, i) = 2 * betacP(1) * w(i) / Mn(i, i);
                 elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, max(1, ndg)))
@@ -457,8 +470,13 @@ classdef ModalEspectral < handle
                     d(i, i) = 2 * betacP(3) * w(i) / Mn(i, i);
                 end
             end
-            analisisObj.cPenzien = Meq * modalPhin * d * modalPhin' * Meq;
-            
+            size(d)
+            size(modalPhin)
+            analisisObj.cPenzien = analisisObj.Mt * modalPhin * d * modalPhin' * analisisObj.Mt;
+            cPenzien_eq = T' * analisisObj.cPenzien * T;
+            "Wilson"
+            size(analisisObj.cPenzien)
+            size(cPenzien_eq)
             %--------------------------------------------------------------
             
             % Termina el analisis
