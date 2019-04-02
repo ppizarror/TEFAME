@@ -12,7 +12,7 @@ for i in fl:
     nl += 1
     j = i # Copia el string
     nj = ''
-    if not ('elementos' in j) or nl <= 6 :
+    if not ('elementos' in j) or nl <= 6 or ('VigaColumnaMasa2D' not in j):
         d.append(j)
         continue
 

@@ -384,13 +384,8 @@ classdef AnalisisEstatico < handle
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
-                
-                if ~nodoObjetos{i}.tipoApoyoRestringido()
-                    if ngdlid == 2 || ngdl == 2
-                        plot(coords(1), coords(2), 'b.', 'MarkerSize', 20);
-                    else
-                        plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 20);
-                    end
+                if ~deformada
+                    nodoObjetos{i}.plot([], 'b', 10);
                 end
             end
             
@@ -429,15 +424,7 @@ classdef AnalisisEstatico < handle
                     coords = coords + def .* factor;
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
-                    
-                    if ~nodoObjetos{i}.tipoApoyoRestringido()
-                        if ngdlid == 2 || ngdl == 2
-                            plot(coords(1), coords(2), 'k*', 'MarkerSize', 10);
-                        else
-                            plot3(coords(1), coords(2), coords(3), 'k*', 'MarkerSize', 10);
-                        end
-                    end
-                    
+                    nodoObjetos{i}.plot(def.*factor, 'k', 20);
                 end
             end
             

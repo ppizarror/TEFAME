@@ -66,7 +66,6 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 analisisObj = ModalEspectral(modeloObj);
 analisisObj.activarPlotDeformadaInicial();
 analisisObj.activarCargaAnimacion();
-
 analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0]);
 analisisObj.disp();
 analisisObj.plot('modo', 8, 'factor', 10, 'numcuadros', 25, ...
