@@ -477,10 +477,32 @@ classdef ModalEspectral < handle
         end % analizar function
         
         % ---------- MÉTODO DE NEWMARK PARA SISTEMAS LINEALES ------------
-        
-        function Newmark(gamma,beta,p
-        
-        
+        gamma = 1/2;
+        beta = 1/6;
+        KT = analisisObj.obtenerMatrizRigidez();
+        MT = analisisObj.obtenerMatrizMasa();
+        CT = analisisObj.cRayleigh();
+        function NW = Newmark(gamma,beta,p,dt)
+            n = length(p);
+            tmax = dt * (n-1);
+            t = linspace(0,tmax,n)';
+            ngl = length(KT);
+            x=zeros(ngl,length(p));
+            v=zeros(ngl,length(p));
+            z=zeros(ngl,length(p));
+            a1 = 1 /(beta * dt^2) * MT + gamma / (beta * dt) * CT;
+            a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
+            a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) *CT;
+            ks = KT + a1;
+            ps = z=zeros(ngl,length(p));
+            for i = 1:1:(n-1)
+                ps(:,i+1) = p(:,i+1) + a1 * x(:,i) + a2 * v(:,i) + a3 * z(:,i);
+                x(:,i+1) = ps(:,i+1) * ks^(-1);
+                v(:,i+1) = (gamma / (beta * dt)) * (x(:,i+1) - x(:,i)) + (1-gamma/beta) * v(:,i) + dt * (1 - gamma / (2 * beta)) * z(:,i);
+                z(:,i+1) = (1 / (beta * dt^2)) * (x(:,i+1) - x(:,i)) - (1 / (beta * dt)) * v(:,i) - (1 / (2 * beta) - 1) * z(:,i);
+            end
+            NW = [x , v , z];
+        end
         
         % ----------------------------------------------------------------
         
