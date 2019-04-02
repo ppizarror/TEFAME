@@ -273,14 +273,8 @@ classdef ModalEspectral < handle
                 T2 = -(Kpp)^(-1)*(Kpa);
                 T = vertcat(T1,T2);
                 % Se determina matriz de masa condensada (Meq)
-                Meq = analisisObj.Mt;
-                j = 0;
-                for i = 1:1:length(vz)
-                    Meq(vz(i)-j, :) = [];
-                    Meq(:, vz(i)-j) = [];
-                    j = j + 1;
-                end
-                
+                Mrot = rot' * analisisObj.Mt * rot;
+                Meq = T' * Mrot * T;
                 % Actualiza los grados
                 cngdl = length(Meq);
                 if cngdl < ngdl
@@ -450,10 +444,9 @@ classdef ModalEspectral < handle
             a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
                 -1 / w(n), 1 / w(m)] * betacR';
             analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
-            cRayleigh_eq = T' * analisisObj.cRayleigh * T;
-            "Rayleigh"
-            size(analisisObj.cRayleigh)
-            size(cRayleigh_eq)
+            cRayleigh_rot = rot' * analisisObj.cRayleigh * rot;
+            cRayleigh_eq = T' * cRayleigh_rot * T;
+
             % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------
             
             % Se declaran todos los amortiguamientos criticos del sistema,
@@ -461,6 +454,7 @@ classdef ModalEspectral < handle
             d = zeros(length(analisisObj.Mmeff), length(analisisObj.Mmeff));
             w = analisisObj.wn;
             Mn = modalMmt;
+            analisisObj.cPenzien = 0;
             for i = 1:length(Mn)
                 if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     d(i, i) = 2 * betacP(1) * w(i) / Mn(i, i);
@@ -469,14 +463,11 @@ classdef ModalEspectral < handle
                 else
                     d(i, i) = 2 * betacP(3) * w(i) / Mn(i, i);
                 end
+                analisisObj.cPenzien = analisisObj.cPenzien + analisisObj.Mt * (d(i,i) * modalPhin(:,i) * modalPhin(:,i)') * analisisObj.Mt;
             end
-            size(d)
-            size(modalPhin)
-            analisisObj.cPenzien = analisisObj.Mt * modalPhin * d * modalPhin' * analisisObj.Mt;
-            cPenzien_eq = T' * analisisObj.cPenzien * T;
-            "Wilson"
-            size(analisisObj.cPenzien)
-            size(cPenzien_eq)
+            cPenzien_rot = rot' * analisisObj.cPenzien * rot;
+            cPenzien_eq = T' * cPenzien_rot * T;
+
             %--------------------------------------------------------------
             
             % Termina el analisis
