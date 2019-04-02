@@ -380,7 +380,7 @@ classdef Nodo < ComponenteModelo
             
             % Grafica el nodo
             ngdlid = length(coord);
-            if ngdlid == 2 || ngdl == 2
+            if ngdlid == 2
                 plot(coord(1), coord(2), color, 'MarkerSize', escala);
             else
                 plot3(coord(1), coord(2), coord(3), color, 'MarkerSize', escala);
