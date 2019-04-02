@@ -478,6 +478,14 @@ classdef ModalEspectral < handle
             
         end % analizar function
         
+        % ---------- MÉTODO DE NEWMARK PARA SISTEMAS LINEALES ------------
+        
+        function Newmark(gamma,beta,p
+        
+        
+        
+        % ----------------------------------------------------------------
+        
         function ensamblarMatrizRigidez(analisisObj)
             % ensamblarMatrizRigidez: es un metodo de la clase ModalEspectral que se usa para
             % realizar el armado de la matriz de rigidez del modelo analizado
