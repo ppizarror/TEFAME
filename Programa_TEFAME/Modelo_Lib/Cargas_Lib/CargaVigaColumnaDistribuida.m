@@ -116,8 +116,8 @@ classdef CargaVigaColumnaDistribuida < Carga
         % Metodos para aplicar la Carga Viga-Columna Distribuida durante el analisis
         
         function aplicarCarga(cargaVigaColumnaDistribuidaObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase cargaVigaColumnaDistribuidaObj que se usa para aplicar
-            % la carga sobre los dos nodos del elemento.
+            % aplicarCarga: es un metodo de la clase cargaVigaColumnaDistribuidaObj
+            % que se usa para aplicar la carga sobre los dos nodos del elemento.
             %
             % aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
             
@@ -202,7 +202,8 @@ classdef CargaVigaColumnaDistribuida < Carga
             a = cargaVigaColumnaDistribuidaObj.dist1;
             b = cargaVigaColumnaDistribuidaObj.dist2;
             
-            fprintf('\tCarga distribuida entre los Nodos: %s y %s del Elemento: %s\n', nodo1etiqueta, nodo2etiqueta, etiqueta);
+            fprintf('\tCarga distribuida entre los Nodos: %s y %s del Elemento: %s\n', ...
+                nodo1etiqueta, nodo2etiqueta, etiqueta);
             fprintf('\t\tComponente NORMAL:\t%.3f en %.3f hasta %.3f en %.3f\n', P1, a, P2, b);
             fprintf('\t\tComponente AXIAL:\t%.3f en %.3f hasta %.3f en %.3f\n', H1, a, H2, b);
             

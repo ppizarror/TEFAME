@@ -2,7 +2,7 @@
 
 %% VIGAS
 % Piso 1
-elementos{1} = VigaColumnaMasa2D('V11-12', nodos{11}, nodos{12}, Iv, Ev, Av, Rhoh);
+elementos{1} = VigaColumnaMasa2D('V11-12', nodos{11}, nodos{12}, Iv, Ev, Av, Rhoh); %#ok<*SUSENS>
 elementos{2} = VigaColumnaMasa2D('V12-13', nodos{12}, nodos{13}, Iv, Ev, Av, Rhoh);
 elementos{3} = VigaColumnaMasa2D('V13-14', nodos{13}, nodos{14}, Iv, Ev, Av, Rhoh);
 elementos{4} = VigaColumnaMasa2D('V14-15', nodos{14}, nodos{15}, Iv, Ev, Av, Rhoh);

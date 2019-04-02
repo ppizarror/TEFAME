@@ -71,7 +71,7 @@ classdef Carga < ComponenteModelo
         end % Carga constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga sobre la componente que corresponda durante el analisis
+        % Metodos para aplicar la carga sobre la componente que corresponda durante el analisis
         
         function aplicarCarga(cargaObj, varargin) %#ok<INUSD>
             % aplicarCarga: es un metodo de la clase Carga que se usa para aplicar

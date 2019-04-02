@@ -67,7 +67,9 @@ analisisObj = ModalEspectral(modeloObj);
 analisisObj.activarPlotDeformadaInicial();
 analisisObj.activarCargaAnimacion();
 
+analisisObj.plot();
+return;
 analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0]);
 analisisObj.disp();
-analisisObj.plot('modo', 2, 'factor', 25, 'numcuadros', 25, ...
-    'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', false);
+analisisObj.plot('modo', 8, 'factor', 25, 'numcuadros', 25, ...
+    'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', true);
