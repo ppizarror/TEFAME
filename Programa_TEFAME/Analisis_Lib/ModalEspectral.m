@@ -329,8 +329,6 @@ classdef ModalEspectral < handle
                 modalPhinFull = modalPhin;
             end
             
-            modalPhinFull(:, 1)
-            
             % Calcula las frecuencias del sistema
             modalWn = sqrt(syseig);
             modalTn = (modalWn.^-1) .* 2 * pi; % Calcula los periodos
@@ -439,10 +437,10 @@ classdef ModalEspectral < handle
                 -1 / w(n), 1 / w(m)] * betacR';
             analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
             if realizaCond
-                cRayleigh_rot = rot' * analisisObj.cRayleigh * rot;
-                cRayleigh_eq = T' * cRayleigh_rot * T;
+                % cRayleigh_rot = rot' * analisisObj.cRayleigh * rot;
+                % cRayleigh_eq = T' * cRayleigh_rot * T;
             else
-                cRayleigh_rot = analisisObj.cRayleigh;
+                % cRayleigh_eq = analisisObj.cRayleigh;
             end
             
             % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------
@@ -873,20 +871,14 @@ classdef ModalEspectral < handle
             for i = 1:numeroNodos
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
-                gdl = max(gdl, ngdlid);
-                
-                if ~nodoObjetos{i}.tipoApoyoRestringido() && ~deformada
-                    if ngdlid == 2 || ngdl == 2
-                        plot(coords(1), coords(2), 'b.', 'MarkerSize', 10);
-                    else
-                        plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 10);
-                    end
+                gdl = max(gdl, ngdlid);      
+                if ~deformada
+                    nodoObjetos{i}.plot([], 'b', 10);
                     if j == 1
                         hold on;
                     end
                     j = j + 1;
-                end
-                
+                end               
             end
             
             % Grafica los elementos
@@ -924,16 +916,7 @@ classdef ModalEspectral < handle
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
                     def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, gdl);
-                    coords = coords + def .* factor * phif;
-                    
-                    if ~nodoObjetos{i}.tipoApoyoRestringido()
-                        if ngdlid == 2 || ngdl == 2
-                            plot(coords(1), coords(2), 'k.', 'MarkerSize', 20);
-                        else
-                            plot3(coords(1), coords(2), coords(3), 'k.', 'MarkerSize', 20);
-                        end
-                    end
-                    
+                    nodoObjetos{i}.plot(def .* factor * phif, 'k', 20); 
                 end
                 
             end
