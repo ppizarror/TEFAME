@@ -482,7 +482,7 @@ classdef ModalEspectral < handle
         KT = analisisObj.obtenerMatrizRigidez();
         MT = analisisObj.obtenerMatrizMasa();
         CT = analisisObj.cRayleigh();
-        function NW = Newmark(gamma,beta,p,dt)
+        function NW = Newmark(gamma,beta,p,dt,xo,vo)
             n = length(p);
             tmax = dt * (n-1);
             t = linspace(0,tmax,n)';
@@ -490,6 +490,9 @@ classdef ModalEspectral < handle
             x=zeros(ngl,length(p));
             v=zeros(ngl,length(p));
             z=zeros(ngl,length(p));
+            x(:,1) = xo;
+            v(:,1) = vo;
+            z(:,1) = (p(:,1) - CT * v(:,1) - KT * x(:,1)) * MT^(-1)
             a1 = 1 /(beta * dt^2) * MT + gamma / (beta * dt) * CT;
             a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
             a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) *CT;
