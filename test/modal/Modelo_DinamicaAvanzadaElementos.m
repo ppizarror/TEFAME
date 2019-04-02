@@ -1,7 +1,5 @@
 % Elementos Modelo
 
-elementos = {};
-
 %% VIGAS
 % Piso 1
 elementos{1} = VigaColumnaMasa2D('V11-12', nodos{11}, nodos{12}, Iv, Ev, Av, Rhoh);

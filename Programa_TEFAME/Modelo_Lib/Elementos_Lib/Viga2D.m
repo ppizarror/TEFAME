@@ -275,10 +275,10 @@ classdef Viga2D < Elemento
             
         end % obtenerVectorN function
         
-        function plot(elementoObj, deformadas, tipoLinea, grosorLinea)
+        function plot(elementoObj, deformadas, tipoLinea, grosorLinea, defElem)
             % plot: Grafica un elemento
             %
-            % plot(elementoObj,deformadas,tipoLinea,grosorLinea)
+            % plot(elementoObj,deformadas,tipoLinea,grosorLinea,defElem)
             
             % Obtiene las coordenadas de los objetos
             coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
@@ -288,7 +288,7 @@ classdef Viga2D < Elemento
             if ~isempty(deformadas)
                 coord1 = coord1 + deformadas{1}(1:2);
                 coord2 = coord2 + deformadas{2}(1:2);
-                if length(deformadas{1}) == 3
+                if length(deformadas{1}) == 3 && defElem
                     ndx = abs(coord2(1)-coord1(1));
                     ndy = abs(coord2(2)-coord1(2));
                     nl = sqrt(ndx^2+ndy^2);

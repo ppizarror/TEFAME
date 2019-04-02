@@ -5,6 +5,7 @@ fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 modeloObj = Modelo(2, 3);
 
 %% Nodos modelo
+nodos = {};
 Modelo_DinamicaAvanzadaNodo;
 
 % Agregamos los nodos al modelo
@@ -25,6 +26,7 @@ Ic = 1 / 12;
 Rhoh = 2.5; % [Tonf/m3]
 
 %% Crea los elementos
+elementos = {};
 Modelo_DinamicaAvanzadaElementos;
 
 % Agregamos los elementos al modelo
@@ -65,6 +67,7 @@ analisisObj = ModalEspectral(modeloObj);
 analisisObj.activarPlotDeformadaInicial();
 analisisObj.activarCargaAnimacion();
 
-analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], 1);
+analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0]);
 analisisObj.disp();
-analisisObj.plot('modo', 2, 'factor', 25, 'numcuadros', 25, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif');
+analisisObj.plot('modo', 2, 'factor', 25, 'numcuadros', 25, ...
+    'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', false);

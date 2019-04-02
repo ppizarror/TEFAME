@@ -301,7 +301,7 @@ classdef Biela2D < Elemento
             
         end % guardarEsfuerzosInternos function
         
-        function plot(elementoObj, deformadas, tipoLinea, grosorLinea)
+        function plot(elementoObj, deformadas, tipoLinea, grosorLinea, ~)
             % plot: Grafica un elemento
             %
             % plot(elementoObj,deformadas,tipoLinea,grosorLinea)

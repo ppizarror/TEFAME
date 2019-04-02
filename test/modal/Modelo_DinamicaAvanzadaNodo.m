@@ -4,8 +4,6 @@ v = 8; % Vanos
 h1 = 3; % Altura primer piso
 h = 2.5; % Altura resto de los pisos
 
-nodos = cell(144, 1);
-
 % Piso 0
 nodos{1} = Nodo('N01', 3, [0, 0]');
 nodos{2} = Nodo('N02', 3, [v, 0]');
