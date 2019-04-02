@@ -55,6 +55,9 @@
 %       actualizar(elementoObj)
 %       guardarPropiedades(elementoObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(elementoObj,archivoSalidaHandle)
+%       activarGraficoDeformada(elementoObj)
+%       desactivarGraficoDeformada(elementoObj)
+%       graficaDeformada(elementoObj)
 %       disp(elementoObj)
 %
 %  Methods SuperClass (ComponenteModelo):
@@ -63,6 +66,7 @@
 classdef Elemento < ComponenteModelo
     
     properties(Access = private)
+        graficaDeformadaElem % Grafica la deformada del elemento
     end % properties Elemento
     
     methods
@@ -81,6 +85,7 @@ classdef Elemento < ComponenteModelo
             
             %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             elementoObj = elementoObj@ComponenteModelo(etiquetaElemento);
+            elementoObj.graficaDeformadaElem = true;
             
         end % Elemento constructor
         
@@ -202,7 +207,6 @@ classdef Elemento < ComponenteModelo
             % Inicializa los diferentes componetes del Elemento (elementoObj),
             % para poder preparar estos para realizar el analisis
             
-            
         end % inicializar function
         
         function definirGDLID(elementoObj) %#ok<MANU>
@@ -211,8 +215,7 @@ classdef Elemento < ComponenteModelo
             %
             % definirGDLID(elementoObj)
             % Define los ID de los grados de libertad del Elemento (elementoObj)
-            
-            
+              
         end % definirGDLID function
         
         function agregarFuerzaResistenteAReacciones(elementoObj) %#ok<MANU>
@@ -223,8 +226,7 @@ classdef Elemento < ComponenteModelo
             % agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)
             % Agrega al vector de reacciones del Nodo (nodoObj), el vector de
             % fuerzas resistente de un elemento entregados (cargaNodo)
-            
-            
+
         end % agregarFuerzaResistenteAReacciones function
         
         function actualizar(elementoObj) %#ok<MANU>
@@ -234,8 +236,7 @@ classdef Elemento < ComponenteModelo
             %
             % actualizar(elementoObj)
             % Actualizar los diferentes componetes del Elemento (elementoObj),
-            % despues de realizar el analisis
-            
+            % despues de realizar el analisis    
             
         end % actualizar function
         
@@ -250,7 +251,6 @@ classdef Elemento < ComponenteModelo
             % Guarda las propiedades de los Elemento (elementoObj), en un archivo
             % de salida (archivoSalidaHandle)
             
-            
         end % guardarPropiedades function
         
         function guardarEsfuerzosInternos(elementoObj, archivoSalidaHandle) %#ok<INUSD>
@@ -262,7 +262,6 @@ classdef Elemento < ComponenteModelo
             % Guarda los esfuerzos internos de los Elemento (elementoObj), en un
             % archivo de salida (archivoSalidaHandle)
             
-            
         end % guardarEsfuerzosInternos function
         
         function plot(elementoObj, deformadas, tipoLinea, grosorLinea, gdl) %#ok<INUSD>
@@ -271,6 +270,30 @@ classdef Elemento < ComponenteModelo
             % plot(elementoObj,deformadas,tipoLinea,grosorLinea,gdl)
             
         end % plot function
+        
+        function activarGraficoDeformada(elementoObj)
+            % activarGraficoDeformada: Activa el grafico de la
+            % deformada del elemento
+            
+            elementoObj.graficaDeformadaElem = true;
+            
+        end % activarGraficoDeformada function
+        
+        function desactivarGraficoDeformada(elementoObj)
+            % desactivarGraficoDeformada: Desactiva el grafico de la
+            % deformada del elemento
+            
+            elementoObj.graficaDeformadaElem = false;
+            
+        end % desactivarGraficoDeformada function
+        
+        function def = graficaDeformada(elementoObj)
+            % graficaDeformada: Indica si el objeto grafica su deformada o
+            % no
+            
+            def = elementoObj.graficaDeformadaElem;
+            
+        end % graficaDeformada function
         
         function graficarLinea(elementoObj, coord1, coord2, tipoLinea, grosorLinea) %#ok<INUSL>
             % graficarLinea: Grafica una linea para un elemento

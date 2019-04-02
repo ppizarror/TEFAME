@@ -387,7 +387,7 @@ classdef VigaColumnaMasa2D < Elemento
             if ~isempty(deformadas)
                 coord1 = coord1 + deformadas{1}(1:2);
                 coord2 = coord2 + deformadas{2}(1:2);
-                if defElem && elementoObj.plotVigaDeformar(deformadas)
+                if defElem && elementoObj.plotVigaDeformar(deformadas) && elementoObj.graficaDeformada
                     ndx = abs(coord2(1)-coord1(1));
                     ndy = abs(coord2(2)-coord1(2));
                     nl = sqrt(ndx^2+ndy^2);
