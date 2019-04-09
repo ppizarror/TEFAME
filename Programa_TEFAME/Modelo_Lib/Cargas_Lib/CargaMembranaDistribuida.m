@@ -71,7 +71,8 @@ classdef CargaMembranaDistribuida < Carga
     
     methods
         
-        function cargaMembranaDistribuidaObj = CargaMembranaDistribuida(etiquetaCarga, elemObjeto, nodo1, nodo2, carga1, distancia1, carga2, distancia2)
+        function cargaMembranaDistribuidaObj = CargaMembranaDistribuida(etiquetaCarga, elemObjeto, ...
+                nodo1, nodo2, carga1, distancia1, carga2, distancia2)
             % Elemento: es el constructor de la clase CargaMembranaDistribuida
             %
             % cargaMembranaDistribuidaObj=CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
@@ -149,8 +150,8 @@ classdef CargaMembranaDistribuida < Carga
         % Metodos para aplicar la Carga Membrana Distribuida durante el analisis
         
         function aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase cargaMembranaDistribuidaObj que se usa para aplicar
-            % la carga sobre los dos nodos correspondientes del elemento.
+            % aplicarCarga: es un metodo de la clase cargaMembranaDistribuidaObj
+            % que se usa para aplicar la carga sobre los dos nodos correspondientes del elemento.
             %
             % aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
             

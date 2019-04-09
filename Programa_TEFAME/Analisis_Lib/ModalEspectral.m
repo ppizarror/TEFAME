@@ -87,7 +87,8 @@ classdef ModalEspectral < handle
         Mtotal % Masa total del modelo
         analisisFinalizado % Indica que el analisis ha sido realizado
         numModos % Numero de modos del analisis
-        numDG % Numero de grados de libertad por modo despues del analisis
+        numDG % Numero de ejes de analisis despues de condensar
+        numDGReal % Numero de ejes de analisis antes de condensar
         cRayleigh % Matriz de amortiguamiento de Rayleigh
         cPenzien % Matriz de amortiguamiento de Wilson-Penzien
         mostrarDeformada % Muestra la posicion no deformada en los graficos
@@ -207,7 +208,6 @@ classdef ModalEspectral < handle
             
             % Obtiene los grados de libertad
             ngdl = length(analisisObj.Mt); % Numero de grados de libertad
-            ngdlExt = ngdl;
             ndg = analisisObj.modeloObj.obtenerNumerosGDL(); % Grados de libertad por nodo
             
             % ---------------- CONDENSACION ESTATICA DE GUYAN ---------------
@@ -225,7 +225,10 @@ classdef ModalEspectral < handle
             
             % Si condensa grados
             analisisObj.gdlCond = length(vz);
+            realizaCond = false;
             if analisisObj.gdlCond > 0
+                
+                realizaCond = true;
                 
                 % Chequea cuantos grados quedan
                 nndg = ndg;
@@ -267,14 +270,15 @@ classdef ModalEspectral < handle
                 Kpp = Krot(lactivos+1:end, lactivos+1:end);
                 Keq = Kaa - Kap * Kpp^(-1) * Kpa;
                 
+                % Generacion de matriz T de condensacion
+                If = size(Kaa, 1);
+                T1 = eye(If);
+                T2 = -(Kpp)^(-1) * (Kpa);
+                T = vertcat(T1, T2);
+                
                 % Se determina matriz de masa condensada (Meq)
-                Meq = analisisObj.Mt;
-                j = 0;
-                for i = 1:1:length(vz)
-                    Meq(vz(i)-j, :) = [];
-                    Meq(:, vz(i)-j) = [];
-                    j = j + 1;
-                end
+                Mrot = rot' * analisisObj.Mt * rot;
+                Meq = T' * Mrot * T;
                 
                 % Actualiza los grados
                 cngdl = length(Meq);
@@ -315,6 +319,16 @@ classdef ModalEspectral < handle
             [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
             syseig = diag(syseig);
             
+            % Se recuperan los grados de libertad condensados y se
+            % ordenan de acuerdo a la configuración original
+            if realizaCond
+                modalPhinFull = T * modalPhin;
+                rot_inv = rot^(-1);
+                modalPhinFull = rot_inv' * modalPhinFull;
+            else
+                modalPhinFull = modalPhin;
+            end
+            
             % Calcula las frecuencias del sistema
             modalWn = sqrt(syseig);
             modalTn = (modalWn.^-1) .* 2 * pi; % Calcula los periodos
@@ -342,8 +356,10 @@ classdef ModalEspectral < handle
                 Torder(maxi) = Tpos;
                 Tpos = Tpos + 1;
             end
+            % ngdl = length(Meq); % Numero de grados de libertad
             
             % Asigna valores
+            analisisObj.phinExt = modalPhinFull;
             analisisObj.Tn = zeros(nModos, 1);
             analisisObj.wn = zeros(nModos, 1);
             analisisObj.phin = zeros(ngdl, nModos);
@@ -386,37 +402,16 @@ classdef ModalEspectral < handle
                 end
             end
             
-            % Crea la matriz extendida de los modos, dejando en cero los
-            % condensados
-            if ngdlExt ~= ngdl
-                analisisObj.phinExt = zeros(ngdlExt, nModos);
-                k = 1; % Mantiene el indice entre (1, ngdl)
-                for j = 1:ngdlExt
-                    if isArrayMember(vz, j)
-                        for i = 1:nModos
-                            analisisObj.phinExt(j, i) = 0;
-                        end
-                    else
-                        for i = 1:nModos
-                            analisisObj.phinExt(j, i) = analisisObj.phin(k, i);
-                        end
-                        k = k + 1;
-                    end
-                end
-            else
-                analisisObj.phinExt = analisisObj.phin;
-            end
-            
             % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
             
             % Se declaran dos amortiguamientos criticos asociados a dos modos
             % diferentes indicando si es horizontal o vertical (h o v)
-            modocR = [1, 3];
+            modocR = [1, 8];
             direcR = ['h', 'h'];
             countcR = [0, 0];
             m = 0;
             n = 0;
-            for i = 1:nModos
+            for i = 1:length(analisisObj.Mmeff)
                 if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     countcR(1) = countcR(1) + 1;
                     if direcR(1) == 'h' && modocR(1) == countcR(1)
@@ -424,7 +419,8 @@ classdef ModalEspectral < handle
                     elseif direcR(2) == 'h' && modocR(2) == countcR(1)
                         n = i;
                     end
-                elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, max(1, ndg)))
+                elseif analisisObj.Mmeff(i, 2) > ...
+                        max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, max(1, ndg)))
                     countcR(2) = countcR(2) + 1;
                     if direcR(1) == 'v' && modocR(1) == countcR(2)
                         m = i;
@@ -440,33 +436,78 @@ classdef ModalEspectral < handle
             a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
                 -1 / w(n), 1 / w(m)] * betacR';
             analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
+            if realizaCond
+                % cRayleigh_rot = rot' * analisisObj.cRayleigh * rot;
+                % cRayleigh_eq = T' * cRayleigh_rot * T;
+            else
+                % cRayleigh_eq = analisisObj.cRayleigh;
+            end
             
             % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------
             
             % Se declaran todos los amortiguamientos criticos del sistema,
-            % (horizontal, vertical y traslacional)
-            d = zeros(nModos, nModos);
+            % (horizontal, vertical y rotacional)
+            d = zeros(length(analisisObj.Mmeff), length(analisisObj.Mmeff));
             w = analisisObj.wn;
             Mn = modalMmt;
-            for i = 1:nModos
+            analisisObj.cPenzien = 0;
+            for i = 1:length(Mn)
                 if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     d(i, i) = 2 * betacP(1) * w(i) / Mn(i, i);
-                elseif analisisObj.Mmeff(i, 2) > max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, max(1, ndg)))
+                elseif analisisObj.Mmeff(i, 2) > ...
+                        max(analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, max(1, ndg)))
                     d(i, i) = 2 * betacP(2) * w(i) / Mn(i, i);
                 else
                     d(i, i) = 2 * betacP(3) * w(i) / Mn(i, i);
                 end
+                analisisObj.cPenzien = analisisObj.cPenzien + ...
+                    Meq * (d(i, i) * modalPhin(:, i) * modalPhin(:, i)') * Meq;
             end
-            analisisObj.cPenzien = Meq * modalPhin * d * modalPhin' * Meq;
+            % cPenzien_rot = rot' * analisisObj.cPenzien * rot;
+            % cPenzien_eq = T' * cPenzien_rot * T;
             
             %--------------------------------------------------------------
             
             % Termina el analisis
             analisisObj.analisisFinalizado = true;
             analisisObj.numDG = ndg;
+            analisisObj.numDGReal = analisisObj.modeloObj.obtenerNumerosGDL();
             fprintf('\tSe completo el analisis en %.3f segundos\n\n', cputime-tInicio);
             
         end % analizar function
+        
+        % ---------- MÉTODO DE NEWMARK PARA SISTEMAS LINEALES ------------
+        gamma = 1/2;
+        beta = 1/6;
+        KT = analisisObj.obtenerMatrizRigidez();
+        MT = analisisObj.obtenerMatrizMasa();
+        CT = analisisObj.cRayleigh();
+        function NW = Newmark(gamma,beta,p,dt,xo,vo)
+            n = length(p);
+            tmax = dt * (n-1);
+            t = linspace(0,tmax,n)';
+            ngl = length(KT);
+            x=zeros(ngl,length(p));
+            v=zeros(ngl,length(p));
+            z=zeros(ngl,length(p));
+            x(:,1) = xo;
+            v(:,1) = vo;
+            z(:,1) = (p(:,1) - CT * v(:,1) - KT * x(:,1)) * MT^(-1)
+            a1 = 1 /(beta * dt^2) * MT + gamma / (beta * dt) * CT;
+            a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
+            a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) *CT;
+            ks = KT + a1;
+            ps = z=zeros(ngl,length(p));
+            for i = 1:1:(n-1)
+                ps(:,i+1) = p(:,i+1) + a1 * x(:,i) + a2 * v(:,i) + a3 * z(:,i);
+                x(:,i+1) = ps(:,i+1) * ks^(-1);
+                v(:,i+1) = (gamma / (beta * dt)) * (x(:,i+1) - x(:,i)) + (1-gamma/beta) * v(:,i) + dt * (1 - gamma / (2 * beta)) * z(:,i);
+                z(:,i+1) = (1 / (beta * dt^2)) * (x(:,i+1) - x(:,i)) - (1 / (beta * dt)) * v(:,i) - (1 / (2 * beta) - 1) * z(:,i);
+            end
+            NW = [x , v , z];
+        end
+        
+        % ----------------------------------------------------------------
         
         function ensamblarMatrizRigidez(analisisObj)
             % ensamblarMatrizRigidez: es un metodo de la clase ModalEspectral que se usa para
@@ -752,31 +793,41 @@ classdef ModalEspectral < handle
         function plt = plot(analisisObj, varargin)
             % plot: Grafica un modelo
             %
-            % plt = plot(analisisObj,varargin)
+            % plt = plot(analisisObj,'var1',val1,'var2',val2)
+            %
+            % Parametros opcionales:
+            %   modo        Numero de modo a graficar
+            %   factor      Escala de la deformacion
+            %   numcuadros  Numero de cuadros de la animacion
+            %   gif         Archivo en el que se guarda la animacion
+            %   defelem     Dibuja la deformada de cada elemento
             
             % Establece variables iniciales
+            fprintf('Generando animacion analisis modal espectral:\n');
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'modo', 0);
             addOptional(p, 'factor', 2);
             addOptional(p, 'numcuadros', 0);
-            addOptional(p, 'gif', 0);
+            addOptional(p, 'gif', '');
+            addOptional(p, 'defelem', true);
             parse(p, varargin{:})
             r = p.Results;
             modo = r.modo;
             factor = r.factor;
             numCuadros = r.numcuadros;
             guardaGif = r.gif;
+            defElem = r.defelem;
             
             % Chequea condiciones
             deformada = false;
-            modo = floor(modo);
+            modo = ceil(modo);
             if exist('modo', 'var') && modo > 0
                 deformada = true;
             end
             
             % Grafica la estructura si no se ha ejecutado el analisis
-            if ~analisisObj.analisisFinalizado
+            if ~analisisObj.analisisFinalizado || modo <= 0
                 plt = figure();
                 movegui('center');
                 hold on;
@@ -796,7 +847,6 @@ classdef ModalEspectral < handle
                 guardaGif = tempname;
             end
             
-            modo = ceil(modo);
             if modo > analisisObj.numModos || modo <= 0
                 error('El modo a graficar %d excede la cantidad de modos del sistema (%d)', ...
                     modo, analisisObj.numModos);
@@ -817,11 +867,22 @@ classdef ModalEspectral < handle
             % axis tight manual;
             % set(gca, 'nextplot', 'replacechildren');
             
-            fprintf('Generando animacion analisis modal espectral:\n');
+            % Imprime mensajes en consola
+            if ~defElem
+                fprintf('\tSe ha desactivado la deformada de los elementos\n');
+            end
+            if guardarGif && numCuadros ~= 0
+                fprintf('\tEl proceso generara un archivo gif\n');
+            end
+            
+            % Grafica el sistema
             if numCuadros == 0
-                plotAnimado(analisisObj, deformada, modo, factor, 1, limx, limy, limz, tn, 1, 1);
+                fprintf('\tSe grafica el caso con la deformacion maxima\n');
+                plotAnimado(analisisObj, deformada, modo, factor, 1, ...
+                    limx, limy, limz, tn, 1, 1, defElem);
             else
-                plotAnimado(analisisObj, deformada, modo, factor, 0, limx, limy, limz, tn, 1, 1);
+                plotAnimado(analisisObj, deformada, modo, factor, 0, ...
+                    limx, limy, limz, tn, 1, 1, defElem);
                 hold off;
                 
                 % Obtiene el numero de cuadros
@@ -845,7 +906,8 @@ classdef ModalEspectral < handle
                     t = t + dt;
                     try
                         % figure(fig_num); % Atrapa el foco
-                        plotAnimado(analisisObj, deformada, modo, factor, sin(t), limx, limy, limz, tn, i, numCuadros);
+                        plotAnimado(analisisObj, deformada, modo, factor, sin(t), ...
+                            limx, limy, limz, tn, i, numCuadros, defElem);
                         drawnow;
                         Fr(i) = getframe(plt);
                         im = frame2im(Fr(i));
@@ -856,7 +918,7 @@ classdef ModalEspectral < handle
                             imwrite(imind, cm, guardaGif, 'gif', 'WriteMode', 'append', 'DelayTime', 0.1);
                         end
                         % pause(0.1);
-                    catch
+                    catch %#ok<*CTCH>
                         fprintf('\n\tSe ha cancelado el proceso del grafico\n');
                         return;
                     end
@@ -887,10 +949,9 @@ classdef ModalEspectral < handle
             
         end % plot function
         
-        function plotAnimado(analisisObj, deformada, modo, factor, phif, limx, limy, limz, per, cuadro, totCuadros)
+        function plotAnimado(analisisObj, deformada, modo, factor, phif, limx, limy, limz, ...
+                per, cuadro, totCuadros, defElem)
             % Anima el grafico en funcion del numero del modo
-            %
-            % plotAnimado(analisisObj,deformada,modo,factor,phif,limx,limy,limz,per,cuadro,totCuadros)
             
             % Carga objetos
             nodoObjetos = analisisObj.modeloObj.obtenerNodos();
@@ -903,20 +964,14 @@ classdef ModalEspectral < handle
             for i = 1:numeroNodos
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
-                gdl = max(gdl, ngdlid);
-                
-                if ~nodoObjetos{i}.tipoApoyoRestringido() && ~deformada
-                    if ngdlid == 2 || ngdl == 2
-                        plot(coords(1), coords(2), 'b.', 'MarkerSize', 10);
-                    else
-                        plot3(coords(1), coords(2), coords(3), 'b.', 'MarkerSize', 10);
-                    end
+                gdl = max(gdl, ngdlid);      
+                if ~deformada
+                    nodoObjetos{i}.plot([], 'b', 10);
                     if j == 1
                         hold on;
                     end
                     j = j + 1;
-                end
-                
+                end               
             end
             
             % Grafica los elementos
@@ -930,15 +985,16 @@ classdef ModalEspectral < handle
                 numNodo = length(nodoElemento);
                 
                 if ~deformada || analisisObj.mostrarDeformada
-                    elementoObjetos{i}.plot({}, 'b-', 0.5);
+                    elementoObjetos{i}.plot({}, 'b-', 0.5, false);
                 end
                 
                 if deformada
                     def = cell(numNodo, 1);
                     for j = 1:numNodo
-                        def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, analisisObj.numDG);
+                        def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoElemento{j}, ...
+                            modo, analisisObj.numDGReal);
                     end
-                    elementoObjetos{i}.plot(def, 'k-', 1.25);
+                    elementoObjetos{i}.plot(def, 'k-', 1.25, defElem);
                     if i == 1
                         hold on;
                     end
@@ -953,16 +1009,7 @@ classdef ModalEspectral < handle
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
                     def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, gdl);
-                    coords = coords + def .* factor * phif;
-                    
-                    if ~nodoObjetos{i}.tipoApoyoRestringido()
-                        if ngdlid == 2 || ngdl == 2
-                            plot(coords(1), coords(2), 'k.', 'MarkerSize', 20);
-                        else
-                            plot3(coords(1), coords(2), coords(3), 'k.', 'MarkerSize', 20);
-                        end
-                    end
-                    
+                    nodoObjetos{i}.plot(def .* factor * phif, 'k', 20); 
                 end
                 
             end
@@ -1012,6 +1059,7 @@ classdef ModalEspectral < handle
             %
             % obtenerLimitesDeformada(analisisObj,modo,factor)
             
+            fprintf('\tCalculando los limites del grafico\n');
             factor = 2.5 * factor;
             limx = [inf, -inf];
             limy = [inf, -inf];
@@ -1034,8 +1082,12 @@ classdef ModalEspectral < handle
                 numNodo = length(nodoElemento);
                 for j = 1:numNodo
                     coord = nodoElemento{j}.obtenerCoordenadas();
-                    def = analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl);
-                    coordi = coord + def .* factor;
+                    if analisisObj.analisisFinalizado && modo > 0
+                        def = analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl);
+                        coordi = coord + def .* factor;
+                    else
+                        coordi = coord;
+                    end
                     limx(1) = min(limx(1), coordi(1));
                     limy(1) = min(limy(1), coordi(2));
                     limx(2) = max(limx(2), coordi(1));
@@ -1044,7 +1096,11 @@ classdef ModalEspectral < handle
                         limz(1) = min(limz(1), coordi(3));
                         limz(2) = max(limz(2), coordi(3));
                     end
-                    coordf = coord - def .* factor;
+                    if analisisObj.analisisFinalizado && modo > 0
+                        coordf = coord - def .* factor;
+                    else
+                        coordf = coord;
+                    end
                     limx(1) = min(limx(1), coordf(1));
                     limy(1) = min(limy(1), coordf(2));
                     limx(2) = max(limx(2), coordf(1));
@@ -1067,12 +1123,10 @@ classdef ModalEspectral < handle
             def = zeros(gdl, 1);
             gdl = min(gdl, length(ngdl));
             for i = 1:gdl
-                if ngdl(i) ~= 0
-                    if modo ~= 0
-                        def(i) = analisisObj.phinExt(ngdl(i), modo);
-                    else
-                        def(i) = 0;
-                    end
+                if ngdl(i) > 0
+                    def(i) = analisisObj.phinExt(ngdl(i), modo);
+                else
+                    def(i) = 0;
                 end
             end
             
@@ -1132,7 +1186,8 @@ classdef ModalEspectral < handle
             fprintf('Propiedades analisis modal espectral:\n');
             
             % Muestra los grados de libertad
-            fprintf('\tNumero de grados de libertad: %d\n', analisisObj.numeroGDL-analisisObj.gdlCond);
+            fprintf('\tNumero de grados de libertad: %d\n', ...
+                analisisObj.numeroGDL-analisisObj.gdlCond);
             fprintf('\tNumero de grados condensados: %d\n', analisisObj.gdlCond);
             fprintf('\tNumero de direcciones por grado: %d\n', analisisObj.numDG);
             fprintf('\tNumero de modos en el analisis: %d\n', analisisObj.numModos);
@@ -1155,7 +1210,7 @@ classdef ModalEspectral < handle
                 fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
                 fprintf('\t\t-----------------------------------------------------------------------------\n');
             elseif analisisObj.numDG == 3
-                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tU1\t\t|\tU2\t\t|\tUz\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
                 fprintf('\t\t----------------------------------------------------------------------------------------------------\n');
             end
             

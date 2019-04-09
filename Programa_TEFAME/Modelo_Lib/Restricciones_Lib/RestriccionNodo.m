@@ -43,7 +43,7 @@
 %
 %  Methods:
 %       restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo)
-%       restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo, valoresRestrinccionNodo)
+%       restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo,valoresRestrinccionNodo)
 %       aplicarRestriccion(restriccionNodoObj)
 %       disp(restriccionNodoObj)
 %  Methods Suplerclass (ComponenteModelo):
@@ -108,7 +108,8 @@ classdef RestriccionNodo < ComponenteModelo
             gdlID = restriccionNodoObj.nodoObj.obtenerGDLID();
             
             % Se coloca zero en los GDL que se indicaron en la restriccion
-            gdlID(restriccionNodoObj.gdlRestringidos, 1) = zeros(length(restriccionNodoObj.gdlRestringidos), 1);
+            gdlID(restriccionNodoObj.gdlRestringidos, 1) = ...
+                zeros(length(restriccionNodoObj.gdlRestringidos), 1);
             
             % Se asigna el nuevo valor de GDLID al Nodo
             restriccionNodoObj.nodoObj.definirGDLID(gdlID);

@@ -62,7 +62,8 @@ classdef CargaVigaColumnaPuntual < Carga
     
     methods
         
-        function cargaVigaColumnaPuntualObj = CargaVigaColumnaPuntual(etiquetaCarga, elemObjeto, carga, distancia, theta)
+        function cargaVigaColumnaPuntualObj = CargaVigaColumnaPuntual(etiquetaCarga, ...
+                elemObjeto, carga, distancia, theta)
             % Elemento: es el constructor de la clase CargaVigaColumnaPuntual
             %
             % cargaVigaColumnaPuntualObj=CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
@@ -164,7 +165,8 @@ classdef CargaVigaColumnaPuntual < Carga
             P = cargaVigaColumnaPuntualObj.carga * cos(cargaVigaColumnaPuntualObj.theta);
             H = cargaVigaColumnaPuntualObj.carga * sin(cargaVigaColumnaPuntualObj.theta);
             
-            fprintf('\tCarga aplicada en Elemento: %s a %.3f del Nodo: %s\n', etiqueta, cargaVigaColumnaPuntualObj.dist, nodo1etiqueta);
+            fprintf('\tCarga aplicada en Elemento: %s a %.3f del Nodo: %s\n', ...
+                etiqueta, cargaVigaColumnaPuntualObj.dist, nodo1etiqueta);
             fprintf('\t\tComponente NORMAL:\t%.3f\n', P);
             fprintf('\t\tComponente AXIAL:\t%.3f\n', H);
             

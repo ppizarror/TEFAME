@@ -224,14 +224,7 @@ classdef Nodo < ComponenteModelo
             % tipoApoyoRestringido: el nodo esta completamente restringido
             % al movimiento
             
-            y = false;
-            n = length(nodoObj.gdlID);
-            for i = 1:n
-                if nodoObj.gdlID(i) ~= 0
-                    return;
-                end
-            end
-            y = true;
+            y = isArrayEqual(nodoObj.gdlID, 0) || isArrayEqual(nodoObj.gdlID, -1);
             
         end % tipoApoyoRestringido function
         
@@ -363,6 +356,37 @@ classdef Nodo < ComponenteModelo
             fprintf(archivoSalidaHandle, '%s\n', [reacc{2:end-1}]);
             
         end % guardarReacciones function
+        
+        function plot(nodoObj, deformada, color, escala)
+            %plot: Grafica el nodo
+            %
+            % plot(nodoObj,deformada,estilo)
+            
+            if ~exist('escala', 'var')
+                escala = 20;
+            end
+            
+            coord = nodoObj.obtenerCoordenadas();
+            if ~length(deformada) == 0
+                coord = coord + deformada;
+            end
+            
+            % Determina el tipo de apoyo
+            if nodoObj.tipoApoyoRestringido()
+                return
+            else
+                color = strcat(color, '.');
+            end
+            
+            % Grafica el nodo
+            ngdlid = length(coord);
+            if ngdlid == 2
+                plot(coord(1), coord(2), color, 'MarkerSize', escala);
+            else
+                plot3(coord(1), coord(2), coord(3), color, 'MarkerSize', escala);
+            end
+            
+        end % plot function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostar la informacion del Nodo en pantalla
