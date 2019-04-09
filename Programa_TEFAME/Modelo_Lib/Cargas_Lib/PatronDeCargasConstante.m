@@ -99,7 +99,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
         end % aplicarCargas function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % M�todos para mostar la informacion del PatronDeCargas en pantalla
+        % Metodos para mostar la informacion del PatronDeCargas en pantalla
         
         function disp(patronDeCargasObj)
             % disp: es un metodo de la clase PatronDeCargasConstante que se usa para imprimir en

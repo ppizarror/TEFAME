@@ -17,7 +17,7 @@ modeloObj.agregarNodos(nodos);
 % Creamos los elementos
 Ao = 0.002; % [m2]
 Eo = 200000000; % [kN/m2]
-alpha = 1.2*10^-5; % Coeficiente de dilataci�n t�rmica
+alpha = 1.2*10^-5; % Coeficiente de dilatacion termica
 elementos = cell(6, 1);
 elementos{1} = Biela2D('E1', nodos{1}, nodos{2}, Ao, Eo);
 elementos{2} = Biela2D('E2', nodos{1}, nodos{3}, Ao, Eo);
@@ -53,4 +53,4 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-modeloObj.guardarResultados('test/out/Modelo_Tarea5.txt');
+modeloObj.guardarResultados('test/estatico/out/Modelo_Tarea5.txt');

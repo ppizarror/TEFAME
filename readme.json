@@ -1,0 +1,37 @@
+{
+    "PROJECT": {
+        "NAME": "TEFAME",
+        "ICON": {
+            "IMAGE": "https://ppizarror.com/resources/other/matlab.png",
+            "ALT": "TEFAME",
+            "WIDTH": 200,
+            "HEIGHT": 200
+        },
+        "URL": "https://ppizarror.com/TEFAME/",
+        "URL_TITLE": "TEFAME"
+    },
+    "AUTHOR": {
+        "NAME": "Pablo Pizarro R.",
+        "URL": "https://ppizarror.com",
+        "ALT": "ppizarror",
+        "DATE": "2018 - 2019",
+        "SECTION": {
+            "TITLE": "Autor",
+            "SHOW": false
+        }
+    },
+    "DESCRIPTION": "Resuelve estructuras de varios grados de libertad utilizando métodos numéricos matriciales",
+    "BADGES": {
+        "0": {
+            "IMAGE": "https://ppizarror.com/badges/autor.svg",
+            "HREF": "https://ppizarror.com",
+            "ALT": "@ppizarror"
+        },
+        "1": {
+            "IMAGE": "https://ppizarror.com/badges/licenciamit.svg",
+            "HREF": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
+            "ALT": "MIT"
+        }
+    },
+    "CONTENT": "readme.content.md"
+}

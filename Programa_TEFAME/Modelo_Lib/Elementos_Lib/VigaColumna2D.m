@@ -68,18 +68,19 @@
 classdef VigaColumna2D < Elemento
     
     properties(Access = private)
-        nodosObj
-        gdlID
-        Ao
-        Eo
-        Io
-        dx
-        dy
-        L
-        theta
-        Feq
-        T
-        Klp
+        nodosObj % Cell con los nodos
+        gdlID % Lista con los ID de los grados de libertad
+        Ao % Area de la seccion transversal
+        Eo % Modulo de elasticidad
+        Io % Inercia de la seccion
+        dx % Distancia en el eje x entre los nodos
+        dy % Distancia en el eje y entre los nodos
+        L % Largo del elemento
+        theta % Angulo de inclinacion de la viga
+        Feq % Fuerza equivalente
+        T % Matriz de transformacion
+        Klp % Matriz de rigidez local del elemento
+        PLOTNELEM % Numero de elementos en los que se discretiza para el grafico
     end % properties VigaColumna2D
     
     methods
@@ -104,8 +105,8 @@ classdef VigaColumna2D < Elemento
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
-            vigaColumna2DObj.dx = (coordNodo2(1) - coordNodo1(1));
-            vigaColumna2DObj.dy = (coordNodo2(2) - coordNodo1(2));
+            vigaColumna2DObj.dx = abs(coordNodo2(1) - coordNodo1(1));
+            vigaColumna2DObj.dy = abs(coordNodo2(2) - coordNodo1(2));
             vigaColumna2DObj.L = sqrt(vigaColumna2DObj.dx^2+vigaColumna2DObj.dy^2);
             theta = atan(vigaColumna2DObj.dy/vigaColumna2DObj.dx);
             vigaColumna2DObj.theta = theta;
@@ -134,6 +135,9 @@ classdef VigaColumna2D < Elemento
             
             % Fuerza equivalente de la viga
             vigaColumna2DObj.Feq = [0, 0, 0, 0, 0, 0]';
+            
+            % Otros
+            vigaColumna2DObj.PLOTNELEM = 10;
             
         end % VigaColumna2D constructor
         
@@ -307,6 +311,26 @@ classdef VigaColumna2D < Elemento
                 vigaColumna2DObj.obtenerEtiqueta(), n1, n2, v1, v2, m1, m2);
             
         end % guardarEsfuerzosInternos function
+        
+        function plot(elementoObj, deformadas, tipoLinea, grosorLinea)
+            % plot: Grafica un elemento
+            %
+            % plot(elementoObj,deformadas,tipoLinea,grosorLinea)
+            
+            % Obtiene las coordenadas de los objetos
+            coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
+            coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
+            
+            % Si hay deformacion
+            if ~isempty(deformadas)
+                coord1 = coord1 + deformadas{1}(1:2);
+                coord2 = coord2 + deformadas{2}(1:2);
+            end
+            
+            % Grafica en forma lineal
+            elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
+            
+        end % plot function
         
         function disp(vigaColumna2DObj)
             

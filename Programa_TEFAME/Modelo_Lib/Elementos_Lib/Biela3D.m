@@ -64,16 +64,16 @@
 classdef Biela3D < Elemento
     
     properties(Access = private)
-        nodosObj
-        gdlID
-        Eo
-        Ao
-        dx
-        dy
-        dz
-        L
-        Theta
-        T
+        nodosObj % Cell con los nodos
+        gdlID % Lista con los ID de los grados de libertad
+        Ao % Area de la seccion transversal
+        Eo % Modulo de elasticidad
+        dx % Distancia en el eje x entre los nodos
+        dy % Distancia en el eje y entre los nodos
+        dz % Distancia en el eje z entre los nodos
+        L % Largo del elemento
+        theta % Angulo de inclinacion de la viga
+        T % Matriz de transformacion
     end % properties Biela3D
     
     methods
@@ -97,10 +97,10 @@ classdef Biela3D < Elemento
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             
             % Calcula propiedades geometricas
-            biela3DObj.dx = (coordNodo2(1) - coordNodo1(1));
-            biela3DObj.dy = (coordNodo2(2) - coordNodo1(2));
-            biela3DObj.dz = (coordNodo2(3) - coordNodo1(3));
-            biela3DObj.Theta = atan(biela3DObj.dy/biela3DObj.dx);
+            biela3DObj.dx = abs(coordNodo2(1) - coordNodo1(1));
+            biela3DObj.dy = abs(coordNodo2(2) - coordNodo1(2));
+            biela3DObj.dz = abs(coordNodo2(3) - coordNodo1(3));
+            biela3DObj.theta = atan(biela3DObj.dy/biela3DObj.dx);
             
             % Largo de la biela
             biela3DObj.L = sqrt(biela3DObj.dx^2+biela3DObj.dy^2+biela3DObj.dz^2);
@@ -145,7 +145,7 @@ classdef Biela3D < Elemento
         
         function theta = obtenerAngulo(biela3DObj)
             
-            theta = biela3DObj.Theta;
+            theta = biela3DObj.theta;
             
         end % obtenerAngulo function
         
@@ -267,6 +267,26 @@ classdef Biela3D < Elemento
                 pad(num2str(f), 15), t);
             
         end % guardarEsfuerzosInternos function
+        
+        function plot(elementoObj, deformadas, tipoLinea, grosorLinea)
+            % plot: Grafica un elemento
+            %
+            % plot(elementoObj,deformadas,tipoLinea,grosorLinea)
+            
+            % Obtiene las coordenadas de los objetos
+            coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
+            coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
+            
+            % Si hay deformadas
+            if ~isempty(deformadas)
+                coord1 = coord1 + deformadas{1};
+                coord2 = coord2 + deformadas{2};
+            end
+            
+            % Grafica el elemento
+            elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
+            
+        end % plot function
         
         function disp(biela3DObj)
             

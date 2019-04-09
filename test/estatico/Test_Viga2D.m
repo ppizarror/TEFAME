@@ -64,4 +64,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-modeloObj.guardarResultados('test/out/Ejemplo_Viga2D.txt');
+analisisObj.plot(true);
+modeloObj.guardarResultados('test/estatico/out/Ejemplo_Viga2D.txt');
