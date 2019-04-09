@@ -6,6 +6,7 @@
 
 # Otros
 *.pdf
+.vscode/
 
 # SAP2000
 *.sdb
