@@ -99,12 +99,59 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
             % y elementos.
            
+            % Obtiene los parametros de la estructura
+            r = patronDeCargasObj.analisisObj.obtenerVectorInfluencia();
+            
             % Se aplica la carga con un factor de carga = 1
             for i = 1:length(patronDeCargasObj.cargas)
                 patronDeCargasObj.cargas{i}.aplicarCarga(1, r);
             end
             
         end % aplicarCargas function
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Algoritmos de resolucion
+        
+        function NW = Newmark(patronDeCargasObj, p, dt, xo, vo)
+            % NewmarkLineal: es un metodo de la clase ModalEspectral que se
+            % usa para obtener los valores de aceleracion, velociadad y desplazamiento
+            % de los grados de libertad a partir del metodo de Newmark
+            %
+            % Newmark(patronDeCargasObj, p, dt, xo, vo)
+            
+            % Define coeficientes
+            gamma = 1 / 2;
+            beta = 1 / 6;
+            
+            % Obtiene parametros del modelo
+            KT = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
+            MT = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
+            CT = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(true); % false: cPenzien
+            
+            n = length(p);
+            % tmax = dt * (n - 1);
+            % t = linspace(0, tmax, n)';
+            ngl = length(KT);
+            x = zeros(ngl, length(p));
+            v = zeros(ngl, length(p));
+            z = zeros(ngl, length(p));
+            x(:, 1) = xo;
+            v(:, 1) = vo;
+            z(:, 1) = MT^(-1) * (p(:, 1) - CT * v(:, 1) - KT * x(:, 1));
+            a1 = 1 / (beta * dt^2) * MT + gamma / (beta * dt) * CT;
+            a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
+            a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) * CT;
+            ks = KT + a1;
+            ps = zeros(ngl, length(p));
+            for i = 1:1:(n - 1)
+                ps(:, i+1) = p(:, i+1) + a1 * x(:, i) + a2 * v(:, i) + a3 * z(:, i);
+                x(:, i+1) = ks^(-1) * ps(:, i+1);
+                v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
+                z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
+            end
+            NW = [x, v, z];
+            
+        end % NewmarkLineal function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostrar la informacion del PatronDeCargas en pantalla

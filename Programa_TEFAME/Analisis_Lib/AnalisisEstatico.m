@@ -49,7 +49,7 @@
 %       analizar(analisisObj)
 %       ensamblarMatrizRigidez(analisisObj)
 %       ensamblarVectorFuerzas(analisisObj)
-%       numeroEquaciones = obtenerNumeroEquaciones(analisisObj)
+%       numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
 %       K_Modelo = obtenerMatrizRigidez(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
@@ -247,18 +247,18 @@ classdef AnalisisEstatico < handle
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para obtener la informacion del analisis
         
-        function numeroEquaciones = obtenerNumeroEquaciones(analisisObj)
-            % obtenerNumeroEquaciones: es un metodo de la clase AnalisisEstatico
+        function numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
+            % obtenerNumeroEcuaciones: es un metodo de la clase AnalisisEstatico
             % que se usa para obtener el numero total de GDL, es decir, ecuaciones
             % del modelo
             %
-            % numeroEquaciones = obtenerNumeroEquaciones(analisisObj)
+            % numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
             % Obtiene el numero total de GDL (numeroEquaciones) que esta guardado
             % en el Analisis (analisisObj)
             
             numeroEquaciones = analisisObj.numeroGDL;
             
-        end % obtenerNumeroEquaciones function
+        end % obtenerNumeroEcuaciones function
         
         function K_Modelo = obtenerMatrizRigidez(analisisObj)
             % obtenerMatrizRigidez: es un metodo de la clase AnalisisEstatico

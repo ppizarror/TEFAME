@@ -56,12 +56,14 @@
 %       ensamblarMatrizRigidez(analisisObj)
 %       ensamblarMatrizMasa(analisisObj)
 %       ensamblarVectorFuerzas(analisisObj)
-%       numeroEquaciones = obtenerNumeroEquaciones(analisisObj)
-%       K_Modelo = obtenerMatrizRigidez(analisisObj)
+%       numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
 %       M_Modelo = obtenerMatrizMasa(analisisObj)
+%       C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)
+%       K_Modelo = obtenerMatrizRigidez(analisisObj)
+%       r_Modelo = obtenerVectorInfluencia(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
-%       plot(analisisObj)
+%       plot(analisisObj,varargin)
 %       disp(analisisObj)
 
 classdef ModalEspectral < handle
@@ -638,18 +640,46 @@ classdef ModalEspectral < handle
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para obtener la informacion del analisis
         
-        function numeroEquaciones = obtenerNumeroEquaciones(analisisObj)
-            % obtenerNumeroEquaciones: es un metodo de la clase ModalEspectral
+        function numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
+            % obtenerNumeroEcuaciones: es un metodo de la clase ModalEspectral
             % que se usa para obtener el numero total de GDL, es decir, ecuaciones
             % del modelo
             %
-            % numeroEquaciones = obtenerNumeroEquaciones(analisisObj)
+            % numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
             % Obtiene el numero total de GDL (numeroEquaciones) que esta guardado
             % en el Analisis (analisisObj)
             
             numeroEquaciones = analisisObj.numeroGDL;
             
-        end % obtenerNumeroEquaciones function
+        end % obtenerNumeroEcuaciones function
+        
+        function M_Modelo = obtenerMatrizMasa(analisisObj)
+            % obtenerMatrizMasa: es un metodo de la clase ModalEspectral
+            % que se usa para obtener la matriz de masa del modelo
+            %
+            % M_Modelo = obtenerMatrizRigidez(analisisObj)
+            % Obtiene la matriz de masa (M_Modelo) del modelo que se genero
+            % en el Analisis (analisisObj)
+            
+            M_Modelo = analisisObj.Mt;
+            
+        end % obtenerMatrizMasa function
+        
+        function C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, rayleigh)
+            % obtenerMatrizAmortiguamiento: es un metodo de la clase ModalEspectral
+            % que se usa para obtener la matriz de amortiguamiento del modelo
+            %
+            % C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, rayleigh)
+            % Obtiene la matriz de amortiguamiento (C_Modelo) del modelo que se genero
+            % en el Analisis (analisisObj)
+            
+            if rayleigh
+                C_Modelo = analisisObj.cRayleigh;
+            else
+                C_Modelo = analisisObj.cPenzien;
+            end
+            
+        end % obtenerMatrizAmortiguamiento function
         
         function K_Modelo = obtenerMatrizRigidez(analisisObj)
             % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
@@ -663,15 +693,15 @@ classdef ModalEspectral < handle
             
         end % obtenerMatrizRigidez function
         
-        function M_Modelo = obtenerMatrizMasa(analisisObj)
-            % obtenerMatrizMasa: es un metodo de la clase ModalEspectral
-            % que se usa para obtener la matriz de masa del modelo
+        function r_Modelo = obtenerVectorInfluencia(analisisObj)
+            % obtenerVectorInfluencia: es un metodo de la clase ModalEspectral
+            % que se usa para obtener el vector de influencia del modelo
             %
-            % M_Modelo = obtenerMatrizRigidez(analisisObj)
-            % Obtiene la matriz de masa (M_Modelo) del modelo que se genero
+            % r_Modelo = obtenerVectorInfluencia(analisisObj)
+            % Obtiene el vector de influencia (r) del modelo que se genero
             % en el Analisis (analisisObj)
             
-            M_Modelo = analisisObj.Mt;
+            r_Modelo = analisisObj.rm;
             
         end % obtenerMatrizMasa function
         
@@ -712,41 +742,6 @@ classdef ModalEspectral < handle
             wn_Modelo = analisisObj.wn;
             
         end % obtenerDesplazamientos function
-        
-        function NW = Newmark(analisisObj, p, dt, xo, vo)
-            % NewmarkLineal: es un metodo de la clase ModalEspectral
-            % que se usa para obtener los valores de aceleracion
-            % velociadad y desplazamiento de los grados de libertad
-            % a partir del metodo de Newmark
-            gamma = 1 / 2;
-            beta = 1 / 6;
-            KT = analisisObj.obtenerMatrizRigidez();
-            MT = analisisObj.obtenerMatrizMasa();
-            CT = analisisObj.cRayleigh();
-            n = length(p);
-            % tmax = dt * (n - 1);
-            % t = linspace(0, tmax, n)';
-            ngl = length(KT);
-            x = zeros(ngl, length(p));
-            v = zeros(ngl, length(p));
-            z = zeros(ngl, length(p));
-            x(:, 1) = xo;
-            v(:, 1) = vo;
-            z(:, 1) = MT^(-1) * (p(:, 1) - CT * v(:, 1) - KT * x(:, 1));
-            a1 = 1 / (beta * dt^2) * MT + gamma / (beta * dt) * CT;
-            a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
-            a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) * CT;
-            ks = KT + a1;
-            ps = zeros(ngl, length(p));
-            for i = 1:1:(n - 1)
-                ps(:, i+1) = p(:, i+1) + a1 * x(:, i) + a2 * v(:, i) + a3 * z(:, i);
-                x(:, i+1) = ks^(-1) * ps(:, i+1);
-                v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
-                z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
-            end
-            NW = [x, v, z];
-            
-        end % NewmarkLineal function
         
         function plt = plot(analisisObj, varargin)
             % plot: Grafica un modelo
