@@ -1,6 +1,6 @@
 % ______________________________________________________________________
 %|                                                                      |
-%|               Iniciar_TEFANE - Inicia la libreria TEFAME             |
+%|               Iniciar_TEFAME - Inicia la libreria TEFAME             |
 %|                                                                      |
 %|                   Area  de Estructuras y Geotecnia                   |
 %|                   Departamento de Ingenieria Civil                   |
@@ -13,7 +13,7 @@
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 
-TEFAME_ver = 'v0.40';
+TEFAME_ver = 'v0.50';
 
 % Agrega las carpetas de la plataforma TEFAME al PATH
 addpath('Programa_TEFAME');
