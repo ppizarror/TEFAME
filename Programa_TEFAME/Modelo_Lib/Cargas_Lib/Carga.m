@@ -73,7 +73,7 @@ classdef Carga < ComponenteModelo
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para aplicar la carga sobre la componente que corresponda durante el analisis
         
-        function aplicarCarga(cargaObj, varargin) %#ok<INUSD>
+        function aplicarCarga(cargaObj, varargin) %#ok<*VANUS,INUSD>
             % aplicarCarga: es un metodo de la clase Carga que se usa para aplicar
             % la carga.
             %
@@ -83,7 +83,7 @@ classdef Carga < ComponenteModelo
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion de la Carga en pantalla
+        % Metodos para mostrar la informacion de la Carga en pantalla
         
         function disp(cargaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en

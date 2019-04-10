@@ -16,7 +16,7 @@
 %|                                                                      |
 %| Desarrollado por:                                                    |
 %|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingeniería Civil Estructural         |
+%|       Estudiante de Magister en Ingenierï¿½a Civil Estructural         |
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
@@ -118,7 +118,7 @@ classdef CargaBielaTemperatura < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion de la Carga Biela Temperatura en pantalla
+        % Metodos para mostrar la informacion de la Carga Biela Temperatura en pantalla
         
         function disp(cargaBielaTemperaturaObj)
             % disp: es un metodo de la clase CargaBielaTemperatura que se usa para imprimir en

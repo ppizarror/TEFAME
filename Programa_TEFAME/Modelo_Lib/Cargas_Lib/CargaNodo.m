@@ -101,7 +101,7 @@ classdef CargaNodo < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion de la Carga Nodal en pantalla
+        % Metodos para mostrar la informacion de la Carga Nodal en pantalla
         
         function disp(cargaNodoObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en

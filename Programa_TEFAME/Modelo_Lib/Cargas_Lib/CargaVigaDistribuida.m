@@ -16,7 +16,7 @@
 %|                                                                      |
 %| Desarrollado por:                                                    |
 %|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingeniería Civil Estructural         |
+%|       Estudiante de Magister en Ingenierï¿½a Civil Estructural         |
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
@@ -150,7 +150,7 @@ classdef CargaVigaDistribuida < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion de la Carga Viga Distribuida en pantalla
+        % Metodos para mostrar la informacion de la Carga Viga Distribuida en pantalla
         
         function disp(cargaVigaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en

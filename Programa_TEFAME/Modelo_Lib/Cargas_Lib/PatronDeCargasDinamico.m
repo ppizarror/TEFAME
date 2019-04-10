@@ -98,16 +98,16 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
             % y elementos.
-            
+           
             % Se aplica la carga con un factor de carga = 1
             for i = 1:length(patronDeCargasObj.cargas)
-                patronDeCargasObj.cargas{i}.aplicarCarga(1);
+                patronDeCargasObj.cargas{i}.aplicarCarga(1, r);
             end
             
         end % aplicarCargas function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del PatronDeCargas en pantalla
+        % Metodos para mostrar la informacion del PatronDeCargas en pantalla
         
         function disp(patronDeCargasObj)
             % disp: es un metodo de la clase PatronDeCargasDinamico que se usa para imprimir en

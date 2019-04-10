@@ -409,7 +409,7 @@ classdef Modelo < handle
         end % guardarResultados function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del Modelo en pantalla
+        % Metodos para mostrar la informacion del Modelo en pantalla
         
         function disp(modeloObj)
             % disp: es un metodo de la clase Modelo que se usa para imprimir en

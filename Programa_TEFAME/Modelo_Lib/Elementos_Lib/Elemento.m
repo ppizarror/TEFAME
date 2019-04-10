@@ -311,7 +311,7 @@ classdef Elemento < ComponenteModelo
         end % graficarLinea function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del Elemento en pantalla
+        % Metodos para mostrar la informacion del Elemento en pantalla
         
         function disp(elementoObj)
             % disp: es un metodo de la clase Elemento que se usa para impimir en

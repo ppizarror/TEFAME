@@ -83,7 +83,7 @@ classdef ComponenteModelo < handle
         end % obtenerEtiqueta function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del ComponenteModelo en pantalla
+        % Metodos para mostrar la informacion del ComponenteModelo en pantalla
         
         function disp(componenteModeloObj)
             % disp: es un metodo de la clase ComponenteModelo que se usa para

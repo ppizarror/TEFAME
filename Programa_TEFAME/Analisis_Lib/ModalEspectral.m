@@ -339,7 +339,7 @@ classdef ModalEspectral < handle
             syseig = diag(syseig);
             
             % Se recuperan los grados de libertad condensados y se
-            % ordenan de acuerdo a la configuración original
+            % ordenan de acuerdo a la configuraciï¿½n original
             if realizaCond
                 modalPhinFull = T * modalPhin;
                 rot_inv = rot^(-1);
@@ -1127,7 +1127,7 @@ classdef ModalEspectral < handle
         end % desactivarPlotDeformadaInicial function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del Analisis Modal Espectral en pantalla
+        % Metodos para mostrar la informacion del Analisis Modal Espectral en pantalla
         
         function disp(analisisObj)
             % disp: es un metodo de la clase ModalEspectral que se usa para imprimir en

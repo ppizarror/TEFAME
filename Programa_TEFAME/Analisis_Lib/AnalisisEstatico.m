@@ -451,7 +451,7 @@ classdef AnalisisEstatico < handle
         end
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del Analisis Estatico en pantalla
+        % Metodos para mostrar la informacion del Analisis Estatico en pantalla
         
         function disp(analisisObj)
             % disp: es un metodo de la clase AnalisisEstatico que se usa para imprimir en

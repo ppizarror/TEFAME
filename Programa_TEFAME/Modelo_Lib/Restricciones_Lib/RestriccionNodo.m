@@ -117,7 +117,7 @@ classdef RestriccionNodo < ComponenteModelo
         end % aplicarRestriccion function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del RestriccionNodo en pantalla
+        % Metodos para mostrar la informacion del RestriccionNodo en pantalla
         
         function disp(restriccionNodoObj)
             % disp: es un metodo de la clase RestriccionNodo que se usa para

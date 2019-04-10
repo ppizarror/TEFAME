@@ -16,7 +16,7 @@
 %|                                                                      |
 %| Desarrollado por:                                                    |
 %|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingeniería Civil Estructural         |
+%|       Estudiante de Magister en Ingenierï¿½a Civil Estructural         |
 %|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
@@ -195,7 +195,7 @@ classdef CargaMembranaDistribuida < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion de la Carga Membrana Distribuida en pantalla
+        % Metodos para mostrar la informacion de la Carga Membrana Distribuida en pantalla
         
         function disp(cargaMembranaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en

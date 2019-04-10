@@ -389,7 +389,7 @@ classdef Nodo < ComponenteModelo
         end % plot function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostar la informacion del Nodo en pantalla
+        % Metodos para mostrar la informacion del Nodo en pantalla
         
         function disp(nodoObj)
             % disp: es un metodo de la clase Nodo que se usa para imprimir en

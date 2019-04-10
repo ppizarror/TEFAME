@@ -48,7 +48,7 @@ restricciones{10} = RestriccionNodo('R10', nodos{10}, [1, 2, 3]');
 % Agregamos las restricciones al modelo
 modeloObj.agregarRestricciones(restricciones);
 
-%% Creamos la carga
+%% Creamos las cargas estaticas
 cargas = cell(1, 103);
 for i = 1:103
     cargas{i} = CargaVigaColumnaDistribuida('Carga distribuida piso', ...
