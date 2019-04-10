@@ -70,13 +70,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 %% Resuelve el sistema
 analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0]);
 analisisObj.disp();
-pt = analisisObj.plot('modo', 1, 'factor', 10, 'numcuadros', 25, ...
-'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', true);
-
-% for i = 1:8
-%     pt = analisisObj.plot('modo', i, 'factor', 10, 'numcuadros', 0, ...
-%     'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', true);
-%     saveas(pt,strcat('Diagramas/Diagramamodo',num2str(i)),'epsc')
-%     close all
-% end
-   
+pt = analisisObj.plot('modo', 8, 'factor', 10, 'numcuadros', 25, ...
+    'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', true);

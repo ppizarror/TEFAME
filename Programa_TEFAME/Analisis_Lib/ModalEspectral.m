@@ -180,7 +180,6 @@ classdef ModalEspectral < handle
             % analisis y de los modos conocidos con sus beta
             
             % Ajusta variables de entrada
-            tInicio = cputime;
             if ~exist('nModos', 'var')
                 nModos = 20;
             end
@@ -200,11 +199,31 @@ classdef ModalEspectral < handle
             
             % Se calcula la matriz de masa
             analisisObj.ensamblarMatrizMasa();
+            
+            % Calcula el metodo modal espectral
+            analisisObj.calcularModalEspectral(nModos, betacR, betacP, maxcond)
+            
+            % Guarda el resultado para las cargas estaticas
+            analisisObj.ensamblarVectorFuerzas();
+            analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
+            analisisObj.modeloObj.actualizar(analisisObj.u);
+            
+            % Guarda el resultado para las cargas dinamicas
+            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico();
+            
+        end % analizar function
+        
+        function calcularModalEspectral(analisisObj, nModos, betacR, betacP, maxcond)
+            % calcularModalEspectral: Calcula el metodo modal espectral
+            %
+            % calcularModalEspectral(analisisObj,nModos,betacR,betacP,maxcond)
+            
+            % Calcula tiempo inicio
+            tInicio = cputime;
+            
+            % Obtiene matriz de masa
             diagMt = diag(analisisObj.Mt);
             analisisObj.Mtotal = sum(diagMt);
-            
-            % Se ensambla el vector de fuerzas
-            analisisObj.ensamblarVectorFuerzas();
             
             % Obtiene los grados de libertad
             ngdl = length(analisisObj.Mt); % Numero de grados de libertad
@@ -474,13 +493,7 @@ classdef ModalEspectral < handle
             analisisObj.numDGReal = analisisObj.modeloObj.obtenerNumerosGDL();
             fprintf('\tSe completo el analisis en %.3f segundos\n\n', cputime-tInicio);
             
-        end % analizar function
-        
-        % ---------- MÉTODO DE NEWMARK PARA SISTEMAS LINEALES ------------
-%         
-%         end
-        % ACA AUN NO ESTAN DEFINIDAS LAS COAS
-        % ----------------------------------------------------------------
+        end % calcularModalEspectral function
         
         function ensamblarMatrizRigidez(analisisObj)
             % ensamblarMatrizRigidez: es un metodo de la clase ModalEspectral que se usa para
@@ -700,47 +713,40 @@ classdef ModalEspectral < handle
             
         end % obtenerDesplazamientos function
         
-
-        function NW = Newmark(analisisObj,p,dt,xo,vo)
+        function NW = Newmark(analisisObj, p, dt, xo, vo)
             % NewmarkLineal: es un metodo de la clase ModalEspectral
             % que se usa para obtener los valores de aceleracion
             % velociadad y desplazamiento de los grados de libertad
             % a partir del metodo de Newmark
-            
-            gamma = 1/2;
-            beta = 1/6;
+            gamma = 1 / 2;
+            beta = 1 / 6;
             KT = analisisObj.obtenerMatrizRigidez();
             MT = analisisObj.obtenerMatrizMasa();
             CT = analisisObj.cRayleigh();
             n = length(p);
-            tmax = dt * (n-1);
-            t = linspace(0,tmax,n)';
+            % tmax = dt * (n - 1);
+            % t = linspace(0, tmax, n)';
             ngl = length(KT);
-            x=zeros(ngl,length(p));
-            v=zeros(ngl,length(p));
-            z=zeros(ngl,length(p));
-            x(:,1) = xo;
-            v(:,1) = vo;
-            z(:,1) =  MT^(-1) * (p(:,1) - CT * v(:,1) - KT * x(:,1));
-            a1 = 1 /(beta * dt^2) * MT + gamma / (beta * dt) * CT;
+            x = zeros(ngl, length(p));
+            v = zeros(ngl, length(p));
+            z = zeros(ngl, length(p));
+            x(:, 1) = xo;
+            v(:, 1) = vo;
+            z(:, 1) = MT^(-1) * (p(:, 1) - CT * v(:, 1) - KT * x(:, 1));
+            a1 = 1 / (beta * dt^2) * MT + gamma / (beta * dt) * CT;
             a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
-            a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) *CT;
+            a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) * CT;
             ks = KT + a1;
-            ps = zeros(ngl,length(p));
-            for i = 1:1:(n-1)
-                ps(:,i+1) = p(:,i+1) + a1 * x(:,i) + a2 * v(:,i) + a3 * z(:,i);
-                x(:,i+1) = ks^(-1) * ps(:,i+1);
-                v(:,i+1) = (gamma / (beta * dt)) * (x(:,i+1) - x(:,i)) + (1-gamma/beta) * v(:,i) + dt * (1 - gamma / (2 * beta)) * z(:,i);
-                z(:,i+1) = (1 / (beta * dt^2)) * (x(:,i+1) - x(:,i)) - (1 / (beta * dt)) * v(:,i) - (1 / (2 * beta) - 1) * z(:,i);
+            ps = zeros(ngl, length(p));
+            for i = 1:1:(n - 1)
+                ps(:, i+1) = p(:, i+1) + a1 * x(:, i) + a2 * v(:, i) + a3 * z(:, i);
+                x(:, i+1) = ks^(-1) * ps(:, i+1);
+                v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
+                z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
             end
-            NW = [x , v , z];
+            NW = [x, v, z];
             
         end % NewmarkLineal function
-        
-
-
-        % Metodos para graficar la estructura
-
         
         function plt = plot(analisisObj, varargin)
             % plot: Grafica un modelo
@@ -916,14 +922,14 @@ classdef ModalEspectral < handle
             for i = 1:numeroNodos
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
-                gdl = max(gdl, ngdlid);      
+                gdl = max(gdl, ngdlid);
                 if ~deformada
                     nodoObjetos{i}.plot([], 'b', 10);
                     if j == 1
                         hold on;
                     end
                     j = j + 1;
-                end               
+                end
             end
             
             % Grafica los elementos
@@ -961,7 +967,7 @@ classdef ModalEspectral < handle
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
                     def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, gdl);
-                    nodoObjetos{i}.plot(def .* factor * phif, 'k', 20); 
+                    nodoObjetos{i}.plot(def.*factor*phif, 'k', 20);
                 end
                 
             end
