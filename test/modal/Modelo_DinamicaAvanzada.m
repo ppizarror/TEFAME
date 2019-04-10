@@ -55,6 +55,9 @@ for i = 1:103
         elementos{i}, -1, 0, -1, 1, 0);
 end
 
+%% Creamos las cargas dinamicas
+
+
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
 analisisObj.activarPlotDeformadaInicial();
