@@ -80,7 +80,7 @@ classdef CargaNodo < Carga
         end % Carga constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Nodal durante el analisis
+        % Metodos para aplicar la carga nodal durante el analisis
         
         function aplicarCarga(cargaNodoObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaNodo que se usa para aplicar
@@ -95,16 +95,16 @@ classdef CargaNodo < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la Carga Nodal en pantalla
+        % Metodos para mostrar la informacion de la carga nodal en pantalla
         
         function disp(cargaNodoObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el nodo.
             %
             % disp(cargaNodoObj)
-            % Imprime la informacion guardada en la Carga Nodal (cargaObj) en pantalla.
+            % Imprime la informacion guardada en la carga nodal (cargaObj) en pantalla.
             
-            fprintf('Propiedades Carga Nodo:\n');
+            fprintf('Propiedades carga nodo:\n');
             disp@Carga(cargaNodoObj);
             
             numGDL = length(cargaNodoObj.cargas);

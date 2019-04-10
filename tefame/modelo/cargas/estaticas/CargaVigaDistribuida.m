@@ -96,7 +96,7 @@ classdef CargaVigaDistribuida < Carga
         end % CargaVigaDistribuida constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Viga Distribuida durante el analisis
+        % Metodos para aplicar la carga viga distribuida durante el analisis
         
         function aplicarCarga(cargaVigaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaVigaDistribuidaObj que se usa para aplicar
@@ -143,7 +143,7 @@ classdef CargaVigaDistribuida < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la Carga Viga Distribuida en pantalla
+        % Metodos para mostrar la informacion de la carga viga distribuida en pantalla
         
         function disp(cargaVigaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
@@ -151,10 +151,10 @@ classdef CargaVigaDistribuida < Carga
             % elemento.
             %
             % disp(cargaVigaDistribuidaObj)
-            % Imprime la informacion guardada en la Carga Distribuida de la
+            % Imprime la informacion guardada en la carga distribuida de la
             % Viga (cargaVigaDistribuidaObj) en pantalla.
             
-            fprintf('Propiedades Carga Viga Distribuida:\n');
+            fprintf('Propiedades carga viga distribuida:\n');
             disp@Carga(cargaVigaDistribuidaObj);
             
             % Obtiene la etiqueta del elemento

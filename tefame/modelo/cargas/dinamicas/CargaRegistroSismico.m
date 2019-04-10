@@ -33,9 +33,9 @@
 %       nodoObj
 %       vectorCarga
 %  Methods:
-%       cargaNodoObj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)
-%       aplicarCarga(cargaNodoObj,factorDeCarga)
-%       disp(cargaNodoObj)
+%       cargaRegistroObj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)
+%       aplicarCarga(cargaRegistroObj,factorDeCarga)
+%       disp(cargaRegistroObj)
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
@@ -49,13 +49,10 @@ classdef CargaRegistroSismico < Carga
     
     methods
         
-        function cargaNodoObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, archivoRegistro, nCol, header, dt, tAnalisis)
+        function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, archivoRegistro, nCol, header, dt, tAnalisis)
             % CargaRegistroSismico: es el constructor de la clase CargaNodo
             %
-            % cargaNodoObj = CargaNodo(etiquetaCargaNodo,nodoObjeto,cargaNodo)
-            % Crea un objeto de la clase CargaNodo, con un identificador unico
-            % (etiquetaCargaNodo), guarda el nodo que sera cargado y el vector
-            % con los valores de la carga a aplicar.
+            % cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, archivoRegistro, nCol, header, dt, tAnalisis)
             
             if nargin == 0
                 etiquetaCargaNodo = '';
@@ -64,49 +61,46 @@ classdef CargaRegistroSismico < Carga
             end % if
             
             % Llamamos al cosntructor de la SuperClass que es la clase Carga
-            cargaNodoObj = cargaNodoObj@Carga(etiquetaCargaNodo);
+            cargaRegistroObj = cargaRegistroObj@Carga(etiquetaCargaNodo);
             
-            cargaNodoObj.nodoObj = nodoObjeto;
+            cargaRegistroObj.nodoObj = nodoObjeto;
             
             if size(cargaNodo, 1) == 1
-                cargaNodoObj.vectorCarga = cargaNodo';
+                cargaRegistroObj.vectorCarga = cargaNodo';
             else
-                cargaNodoObj.vectorCarga = cargaNodo;
+                cargaRegistroObj.vectorCarga = cargaNodo;
             end % if
             
         end % Carga constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Nodal durante el analisis
+        % Metodos para aplicar la carga durante el analisis
         
-        function aplicarCarga(cargaNodoObj, factorDeCarga)
+        function aplicarCarga(cargaRegistroObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaNodo que se usa para aplicar
-            % la carga sobre un nodo.
+            % la carga creando el vector de carga P.
             %
-            % aplicarCarga(cargaNodoObj,factorDeCarga)
+            % aplicarCarga(cargaRegistroObj,factorDeCarga)
             % Aplica el vector de carga que esta guardada en el nodo que corresponde
             % amplificada por el factor (factorDeCarga).
             
-            cargaNodoObj.nodoObj.agregarCarga(factorDeCarga*cargaNodoObj.vectorCarga);
+            cargaRegistroObj.nodoObj.agregarCarga(factorDeCarga*cargaRegistroObj.vectorCarga);
             
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la Carga Nodal en pantalla
+        % Metodos para mostrar la informacion de la carga en pantalla
         
-        function disp(cargaNodoObj)
+        function disp(cargaRegistroObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
-            % command Window la informacion de la carga aplicada sobre el nodo.
+            % command Window la informacion de la carga del tipo registro
+            % sismico.
             %
-            % disp(cargaNodoObj)
-            % Imprime la informacion guardada en la Carga Nodal (cargaObj) en pantalla.
+            % disp(cargaRegistroObj)
+            % Imprime la informacion guardada en la carga (cargaRegistroObj) en pantalla.
             
-            fprintf('Propiedades Carga Nodo:\n');
-            disp@Carga(cargaNodoObj);
-            
-            numGDL = length(cargaNodoObj.cargas);
-            cargaNodo = arrayNum2str(cargaNodoObj.cargas, numGDL);
-            fprintf('Cargas: %s\n', [cargaNodo{:}]);
+            fprintf('Propiedades Carga Registro Sismico:\n');
+            disp@Carga(cargaRegistroObj);
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');

@@ -83,7 +83,7 @@ classdef CargaBielaTemperatura < Carga
         end % CargaBielaTemperatura constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga durante el analisis
+        % Metodos para aplicar la carga durante el analisis
         
         function aplicarCarga(cargaBielaTemperaturaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaBielaTemperatura
@@ -111,7 +111,7 @@ classdef CargaBielaTemperatura < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la Carga Biela Temperatura en pantalla
+        % Metodos para mostrar la informacion de la carga Biela Temperatura en pantalla
         
         function disp(cargaBielaTemperaturaObj)
             % disp: es un metodo de la clase CargaBielaTemperatura que se usa para imprimir en
@@ -120,11 +120,11 @@ classdef CargaBielaTemperatura < Carga
             % del material.
             %
             % disp(cargaBielaTemperaturaObj)
-            % Imprime la informacion guardada en la Carga fruto de la
+            % Imprime la informacion guardada en la carga fruto de la
             % diferencia de temperatura de la Biela (cargaBielaTemperaturaObj)
             % en pantalla.
             
-            fprintf('Propiedades Carga Biela Temperatura:\n');
+            fprintf('Propiedades carga biela temperatura:\n');
             disp@Carga(cargaBielaTemperaturaObj);
             
             % Obtiene la etiqueta del elemento

@@ -85,7 +85,7 @@ classdef CargaVigaColumnaPuntual < Carga
         end % CargaVigaColumnaPuntual constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Puntual de la Viga-Columna durante el analisis
+        % Metodos para aplicar la carga puntual de la viga-columna durante el analisis
         
         function aplicarCarga(cargaVigaColumnaPuntualObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaVigaColumnaPuntual
@@ -133,7 +133,7 @@ classdef CargaVigaColumnaPuntual < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la Carga Viga-Columna Puntual en pantalla
+        % Metodos para mostrar la informacion de la carga Viga-columna puntual en pantalla
         
         function disp(cargaVigaColumnaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
@@ -141,10 +141,10 @@ classdef CargaVigaColumnaPuntual < Carga
             % elemento.
             %
             % disp(cargaVigaColumnaPuntualObj)
-            % Imprime la informacion guardada en la Carga Puntual de la
+            % Imprime la informacion guardada en la carga puntual de la
             % Viga-Columna (cargaVigaColumnaPuntualObj) en pantalla.
             
-            fprintf('Propiedades Carga Viga-Columna Puntual:\n');
+            fprintf('Propiedades carga viga-columna puntual:\n');
             disp@Carga(cargaVigaColumnaPuntualObj);
             
             % Obtiene la etiqueta del elemento

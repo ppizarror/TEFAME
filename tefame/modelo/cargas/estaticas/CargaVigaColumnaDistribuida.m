@@ -106,7 +106,7 @@ classdef CargaVigaColumnaDistribuida < Carga
         end % CargaVigaColumnaDistribuida constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Viga-Columna Distribuida durante el analisis
+        % Metodos para aplicar la carga viga-columna distribuida durante el analisis
         
         function aplicarCarga(cargaVigaColumnaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaVigaColumnaDistribuidaObj
@@ -164,7 +164,7 @@ classdef CargaVigaColumnaDistribuida < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la Carga Viga-Columna Distribuida en pantalla
+        % Metodos para mostrar la informacion de la carga viga-columna distribuida en pantalla
         
         function disp(cargaVigaColumnaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
@@ -172,10 +172,10 @@ classdef CargaVigaColumnaDistribuida < Carga
             % elemento.
             %
             % disp(cargaVigaColumnaDistribuidaObj)
-            % Imprime la informacion guardada en la Carga Viga-Columna Distribuida
+            % Imprime la informacion guardada en la carga viga-columna distribuida
             % (cargaVigaColumnaDistribuidaObj) en pantalla.
             
-            fprintf('Propiedades Carga Viga-Columna Distribuida:\n');
+            fprintf('Propiedades carga viga-columna distribuida:\n');
             disp@Carga(cargaVigaColumnaDistribuidaObj);
             
             % Obtiene la etiqueta del elemento

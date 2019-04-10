@@ -78,7 +78,7 @@ classdef CargaVigaPuntual < Carga
         end % CargaVigaPuntual constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Puntual durante el analisis
+        % Metodos para aplicar la carga puntual durante el analisis
         
         function aplicarCarga(cargaVigaPuntualObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaVigaPuntual que se usa para aplicar
@@ -119,7 +119,7 @@ classdef CargaVigaPuntual < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la Carga Viga Puntual en pantalla
+        % Metodos para mostrar la informacion de la carga viga puntual en pantalla
         
         function disp(cargaVigaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
@@ -127,10 +127,10 @@ classdef CargaVigaPuntual < Carga
             % elemento.
             %
             % disp(cargaVigaPuntualObj)
-            % Imprime la informacion guardada en la Carga Puntual de la
+            % Imprime la informacion guardada en la carga puntual de la
             % Viga (cargaVigaPuntualObj) en pantalla.
             
-            fprintf('Propiedades Carga Viga Puntual:\n');
+            fprintf('Propiedades carga viga puntual:\n');
             disp@Carga(cargaVigaPuntualObj);
             
             % Obtiene la etiqueta del elemento

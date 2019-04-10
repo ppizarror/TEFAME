@@ -85,7 +85,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         end % PatronDeCargasDinamico constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar las Carga guardadas en el patron de cargas durante el analisis
+        % Metodos para aplicar las cargas guardadas en el patron de cargas durante el analisis
         
         function aplicarCargas(patronDeCargasObj)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que

@@ -77,7 +77,7 @@ classdef Carga < ComponenteModelo
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la Carga en pantalla
+        % Metodos para mostrar la informacion de la carga en pantalla
         
         function disp(cargaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
@@ -85,7 +85,7 @@ classdef Carga < ComponenteModelo
             % componente que corresponda.
             %
             % disp(patronDeCargasObj)
-            % Imprime la informacion guardada en la Carga (cargaObj) en pantalla.
+            % Imprime la informacion guardada en la carga (cargaObj) en pantalla.
             
             disp@ComponenteModelo(cargaObj);
             

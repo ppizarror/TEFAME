@@ -142,7 +142,7 @@ classdef CargaMembranaDistribuida < Carga
         end % CargaMembranaDistribuida constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la Carga Membrana Distribuida durante el analisis
+        % Metodos para aplicar la carga membrana distribuida durante el analisis
         
         function aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaMembranaDistribuidaObj
@@ -190,7 +190,7 @@ classdef CargaMembranaDistribuida < Carga
         end % aplicarCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la Carga Membrana Distribuida en pantalla
+        % Metodos para mostrar la informacion de la carga membrana distribuida en pantalla
         
         function disp(cargaMembranaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
@@ -198,10 +198,10 @@ classdef CargaMembranaDistribuida < Carga
             % elemento membrana.
             %
             % disp(cargaMembranaDistribuidaObj)
-            % Imprime la informacion guardada en la Carga Distribuida de la
-            % Membrana (cargaMembranaDistribuidaObj) en pantalla.
+            % Imprime la informacion guardada en la carga distribuida de la
+            % membrana (cargaMembranaDistribuidaObj) en pantalla.
             
-            fprintf('Propiedades Carga Membrana Distribuida:\n');
+            fprintf('Propiedades carga membrana distribuida:\n');
             disp@Carga(cargaMembranaDistribuidaObj);
             
             % Obtiene la etiqueta del elemento
