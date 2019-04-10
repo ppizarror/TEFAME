@@ -477,36 +477,9 @@ classdef ModalEspectral < handle
         end % analizar function
         
         % ---------- MÉTODO DE NEWMARK PARA SISTEMAS LINEALES ------------
-        gamma = 1/2;
-        beta = 1/6;
-        KT = analisisObj.obtenerMatrizRigidez();
-        MT = analisisObj.obtenerMatrizMasa();
-        CT = analisisObj.cRayleigh();
-        function NW = Newmark(gamma,beta,p,dt,xo,vo)
-            n = length(p);
-            tmax = dt * (n-1);
-            t = linspace(0,tmax,n)';
-            ngl = length(KT);
-            x=zeros(ngl,length(p));
-            v=zeros(ngl,length(p));
-            z=zeros(ngl,length(p));
-            x(:,1) = xo;
-            v(:,1) = vo;
-            z(:,1) = (p(:,1) - CT * v(:,1) - KT * x(:,1)) * MT^(-1)
-            a1 = 1 /(beta * dt^2) * MT + gamma / (beta * dt) * CT;
-            a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
-            a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) *CT;
-            ks = KT + a1;
-            ps = z=zeros(ngl,length(p));
-            for i = 1:1:(n-1)
-                ps(:,i+1) = p(:,i+1) + a1 * x(:,i) + a2 * v(:,i) + a3 * z(:,i);
-                x(:,i+1) = ps(:,i+1) * ks^(-1);
-                v(:,i+1) = (gamma / (beta * dt)) * (x(:,i+1) - x(:,i)) + (1-gamma/beta) * v(:,i) + dt * (1 - gamma / (2 * beta)) * z(:,i);
-                z(:,i+1) = (1 / (beta * dt^2)) * (x(:,i+1) - x(:,i)) - (1 / (beta * dt)) * v(:,i) - (1 / (2 * beta) - 1) * z(:,i);
-            end
-            NW = [x , v , z];
-        end
-        
+%         
+%         end
+        % ACA AUN NO ESTAN DEFINIDAS LAS COAS
         % ----------------------------------------------------------------
         
         function ensamblarMatrizRigidez(analisisObj)
@@ -727,68 +700,47 @@ classdef ModalEspectral < handle
             
         end % obtenerDesplazamientos function
         
-<<<<<<< HEAD
-        function eff = NewmarkLineal(analisisObj,Reg,dt,beta)
+
+        function NW = Newmark(analisisObj,p,dt,xo,vo)
             % NewmarkLineal: es un metodo de la clase ModalEspectral
             % que se usa para obtener los valores de aceleracion
             % velociadad y desplazamiento de los grados de libertad
             % a partir del metodo de Newmark
             
-            % Parametros obtenidos del modelo
+            gamma = 1/2;
+            beta = 1/6;
             KT = analisisObj.obtenerMatrizRigidez();
             MT = analisisObj.obtenerMatrizMasa();
             CT = analisisObj.cRayleigh();
-            
-            %Registro de aceleracion
-            p = Reg;
-            
             n = length(p);
-            tmax = dt*n;
+            tmax = dt * (n-1);
             t = linspace(0,tmax,n)';
-            gamma = 0.5;
             ngl = length(KT);
-
-            % Constantes
-            
-            C1 = 1/(beta*dt);
-            C2 = gamma/(beta*dt);
-            C3 = 1/(beta*dt*dt);
-            C4 = (1/(2*beta)) - 1;
-            C5 = 1 - (gamma/beta);
-            C6 = 1 - (gamma/(2*beta));
-            
-            % Calculo de K sombrero
-            
-            Ks = KT + C3*MT + C2*CT;
-            
-            % Condiciones iniciales
-            
-            x = zeros(ngl,1);
-            v = zeros(ngl,1);
-            a = zeros(ngl,1);
-            
-            % Respuesta en el tiempo
-            
-            for i = 1:n - 1
-                Fint = -MT*p(i + 1) + MT*(C1*v + C4*a) - CT*(C5*v + C6*dt*a) - KT*x;
-                dq = Ks\Fint;
-                aa = C3*dq - C1*v - C4*a;
-                vv = C2*dq + C5*v + C6*dt*a;
-                dd = dq + x;
-                tt(i) = dt*i;
-                x = dd;
-                v = vv;
-                a = aa;
+            x=zeros(ngl,length(p));
+            v=zeros(ngl,length(p));
+            z=zeros(ngl,length(p));
+            x(:,1) = xo;
+            v(:,1) = vo;
+            z(:,1) =  MT^(-1) * (p(:,1) - CT * v(:,1) - KT * x(:,1));
+            a1 = 1 /(beta * dt^2) * MT + gamma / (beta * dt) * CT;
+            a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
+            a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) *CT;
+            ks = KT + a1;
+            ps = zeros(ngl,length(p));
+            for i = 1:1:(n-1)
+                ps(:,i+1) = p(:,i+1) + a1 * x(:,i) + a2 * v(:,i) + a3 * z(:,i);
+                x(:,i+1) = ks^(-1) * ps(:,i+1);
+                v(:,i+1) = (gamma / (beta * dt)) * (x(:,i+1) - x(:,i)) + (1-gamma/beta) * v(:,i) + dt * (1 - gamma / (2 * beta)) * z(:,i);
+                z(:,i+1) = (1 / (beta * dt^2)) * (x(:,i+1) - x(:,i)) - (1 / (beta * dt)) * v(:,i) - (1 / (2 * beta) - 1) * z(:,i);
             end
-            
-            eff = [x, v, a];
+            NW = [x , v , z];
             
         end % NewmarkLineal function
         
-=======
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
         % Metodos para graficar la estructura
->>>>>>> 2d9177ed6429b5c8fda0eeb8a84cb2f31922692f
+
         
         function plt = plot(analisisObj, varargin)
             % plot: Grafica un modelo
