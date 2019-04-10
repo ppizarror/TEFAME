@@ -68,7 +68,7 @@ classdef CargaMembranaDistribuida < Carga
         
         function cargaMembranaDistribuidaObj = CargaMembranaDistribuida(etiquetaCarga, elemObjeto, ...
                 nodo1, nodo2, carga1, distancia1, carga2, distancia2)
-            % Elemento: es el constructor de la clase CargaMembranaDistribuida
+            % CargaMembranaDistribuida: es el constructor de la clase CargaMembranaDistribuida
             %
             % cargaMembranaDistribuidaObj=CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
             % Crea un objeto de la clase Carga, en donde toma como atributo

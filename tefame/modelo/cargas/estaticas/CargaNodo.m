@@ -53,7 +53,7 @@ classdef CargaNodo < Carga
     methods
         
         function cargaNodoObj = CargaNodo(etiquetaCargaNodo, nodoObjeto, cargaNodo)
-            % Elemento: es el constructor de la clase CargaNodo
+            % CargaNodo: es el constructor de la clase CargaNodo
             %
             % cargaNodoObj = CargaNodo(etiquetaCargaNodo,nodoObjeto,cargaNodo)
             % Crea un objeto de la clase CargaNodo, con un identificador unico

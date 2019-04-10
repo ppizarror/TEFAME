@@ -56,7 +56,7 @@ classdef CargaBielaTemperatura < Carga
     methods
         
         function cargaBielaTemperaturaObj = CargaBielaTemperatura(etiquetaCarga, elemObjeto, deltaTemperatura, alpha)
-            % Elemento: es el constructor de la clase CargaBielaTemperatura
+            % CargaBielaTemperatura: es el constructor de la clase CargaBielaTemperatura
             %
             % cargaBielaTemperaturaObj=CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
             % Crea un objeto de la clase CargaBielaTemperatura, en donde toma como atributo

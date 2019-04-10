@@ -57,7 +57,7 @@ classdef CargaVigaColumnaPuntual < Carga
         
         function cargaVigaColumnaPuntualObj = CargaVigaColumnaPuntual(etiquetaCarga, ...
                 elemObjeto, carga, distancia, theta)
-            % Elemento: es el constructor de la clase CargaVigaColumnaPuntual
+            % CargaVigaColumnaPuntual: es el constructor de la clase CargaVigaColumnaPuntual
             %
             % cargaVigaColumnaPuntualObj=CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
             % Crea un objeto de la clase CargaVigaColumnaPuntual, en donde toma como atributo

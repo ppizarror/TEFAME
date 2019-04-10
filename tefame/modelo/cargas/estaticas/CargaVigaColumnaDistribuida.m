@@ -61,7 +61,7 @@ classdef CargaVigaColumnaDistribuida < Carga
         
         function cargaVigaColumnaDistribuidaObj = CargaVigaColumnaDistribuida(etiquetaCarga, ...
                 elemObjeto, carga1, distancia1, carga2, distancia2, theta)
-            % Elemento: es el constructor de la clase CargaVigaColumnaDistribuida
+            % CargaVigaColumnaDistribuida: es el constructor de la clase CargaVigaColumnaDistribuida
             %
             % cargaVigaColumnaDistribuidaObj=CargaVigaColumnaDistribuida(etiquetaCarga,
             %   elemObjeto,carga1,distancia1,carga2,distancia2,theta)

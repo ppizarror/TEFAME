@@ -52,7 +52,7 @@ classdef CargaVigaPuntual < Carga
     methods
         
         function cargaVigaPuntualObj = CargaVigaPuntual(etiquetaCarga, elemObjeto, carga, distancia)
-            % Elemento: es el constructor de la clase CargaVigaPuntual
+            % CargaVigaPuntual: es el constructor de la clase CargaVigaPuntual
             %
             % cargaVigaPuntualObj=CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
             % Crea un objeto de la clase CargaVigaPuntual, en donde toma como atributo

@@ -57,7 +57,7 @@ classdef CargaVigaDistribuida < Carga
         
         function cargaVigaDistribuidaObj = CargaVigaDistribuida(etiquetaCarga, ...
                 elemObjeto, carga1, distancia1, carga2, distancia2)
-            % Elemento: es el constructor de la clase CargaVigaDistribuida
+            % CargaVigaDistribuida: es el constructor de la clase CargaVigaDistribuida
             %
             % cargaVigaDistribuidaObj=CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
             % Crea un objeto de la clase Carga, en donde toma como atributo
