@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Fabian Rojas, PhD (frojas@ing.uchile.cl)                       |
-%|       Prof. Asistente, Departamento de Ingenieria Civil              |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -34,13 +29,13 @@
 %| Fecha: 05/08/2015                                                    |
 %|                                                                      |
 %| Modificado por: FR - 24/10/2016                                      |
+%|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
 %       nodoObj
 %       gdlRestringidos
 %       valoresRestriccion
-%
 %  Methods:
 %       restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo)
 %       restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo,valoresRestrinccionNodo)

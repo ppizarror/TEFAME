@@ -25,11 +25,8 @@
 %| La clase CargaNodo es una clase que contiene el nodo al que se le va |
 %| aplicar la carga y el valor de esta carga.                           |
 %|                                                                      |
-%| Programado: FR                                                       |
-%| Fecha: 05/08/2015                                                    |
-%|                                                                      |
-%| Modificado por: FR - 24/10/2016                                      |
-%|                 Pablo Pizarro @ppizarror - 10/04/2019                |
+%| Programado: Pablo Pizarro @ppizarror                                 |
+%| Fecha: 10/04/2019                                                    |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
@@ -43,7 +40,7 @@
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
-classdef CargaNodo < Carga
+classdef CargaRegistroSismico < Carga
     
     properties(Access = private)
         nodoObj     % Variable que guarda el Nodo que se le va a aplicar la carga

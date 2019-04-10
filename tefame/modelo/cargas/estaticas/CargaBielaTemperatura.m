@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingenier�a Civil Estructural         |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -32,7 +27,7 @@
 %| al que se le va a aplicar la diferencia de temperatura y el coefici- |
 %| ente de dilatacion del material alpha.                               |
 %|                                                                      |
-%| Programado: PABLO PIZARRO @ppizarror.com                             |
+%| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 12/06/2018                                                    |
 %|______________________________________________________________________|
 %
@@ -41,12 +36,10 @@
 %       deltaTemepratura
 %       alpha
 %       carga
-%
 %  Methods:
 %       cargaBielaTemperaturaObj = CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
 %       aplicarCarga(cargaBielaTemperaturaObj,factorDeCarga)
 %       disp(cargaBielaTemperaturaObj)
-%
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)

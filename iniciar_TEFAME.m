@@ -6,24 +6,22 @@
 %|                   Departamento de Ingenieria Civil                   |
 %|              Facultad de Ciencias Fisicas y Matematicas              |
 %|                         Universidad de Chile                         |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingenieria Civil Estructural         |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 
-TEFAME_ver = 'v0.50';
+TEFAME_ver = 'v0.60';
 
 % Agrega las carpetas de la plataforma TEFAME al PATH
-addpath('Programa_TEFAME');
-addpath('Programa_TEFAME/Analisis_Lib');
-addpath('Programa_TEFAME/Modelo_Lib');
-addpath('Programa_TEFAME/Modelo_Lib/Base_Lib');
-addpath('Programa_TEFAME/Modelo_Lib/Cargas_Lib');
-addpath('Programa_TEFAME/Modelo_Lib/Elementos_Lib');
-addpath('Programa_TEFAME/Modelo_Lib/Nodo_Lib');
-addpath('Programa_TEFAME/Modelo_Lib/Restricciones_Lib');
+addpath('tefame');
+addpath('tefame/analisis');
+addpath('tefame/modelo');
+addpath('tefame/modelo/base');
+addpath('tefame/modelo/cargas');
+addpath('tefame/modelo/cargas/dinamicas');
+addpath('tefame/modelo/cargas/estaticas');
+addpath('tefame/modelo/cargas/patrones');
+addpath('tefame/modelo/elementos');
+addpath('tefame/modelo/nodo');
+addpath('tefame/modelo/restricciones');
 
 % Agrega los test al path
 addpath('test');

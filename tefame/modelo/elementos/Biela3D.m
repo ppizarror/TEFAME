@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Fabian Rojas, PhD (frojas@ing.uchile.cl)                       |
-%|       Prof. Asistente, Departamento de Ingenieria Civil              |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -28,7 +23,7 @@
 %| representacion del elemento  biela o  barra que solo tiene  esfuerzo |
 %| Axiales en un sistema de tres coordenadas.                           |
 %|                                                                      |
-%| Programado por: PABLO PIZARRO @ppizarror - 14/05/2018                |
+%| Programado por: Pablo Pizarro @ppizarror - 14/05/2018                |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
@@ -39,7 +34,6 @@
 %       dx
 %       dy
 %       L
-%
 %  Methods:
 %       biela3DObj = Biela3D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial)
 %       numeroNodos = obtenerNumeroNodos(biela3DObj)
@@ -57,7 +51,6 @@
 %       guardarPropiedades(biela3DObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(biela3DObj,archivoSalidaHandle)
 %       disp(biela3DObj)
-%
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
@@ -97,9 +90,9 @@ classdef Biela3D < Elemento
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             
             % Calcula propiedades geometricas
-            biela3DObj.dx = abs(coordNodo2(1) - coordNodo1(1));
-            biela3DObj.dy = abs(coordNodo2(2) - coordNodo1(2));
-            biela3DObj.dz = abs(coordNodo2(3) - coordNodo1(3));
+            biela3DObj.dx = abs(coordNodo2(1)-coordNodo1(1));
+            biela3DObj.dy = abs(coordNodo2(2)-coordNodo1(2));
+            biela3DObj.dz = abs(coordNodo2(3)-coordNodo1(3));
             biela3DObj.theta = atan(biela3DObj.dy/biela3DObj.dx);
             
             % Largo de la biela

@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingenier�a Civil Estructural         |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -32,7 +27,7 @@
 %| carga, la distancia a uno de los nodos como porcentaje del largo y   |
 %| el angulo de aplicacion.                                             |
 %|                                                                      |
-%| Programado: PABLO PIZARRO @ppizarror.com                             |
+%| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 11/06/2018                                                    |
 %|______________________________________________________________________|
 %
@@ -41,12 +36,10 @@
 %       carga
 %       dist
 %       theta
-%
 %  Methods:
 %       cargaNodoObj = CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
 %       aplicarCarga(cargaVigaColumnaPuntualObj,factorDeCarga)
 %       disp(cargaVigaColumnaPuntualObj)
-%
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)

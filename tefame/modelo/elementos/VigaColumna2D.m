@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingeniería Civil Estructural         |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -42,7 +37,6 @@
 %       dy
 %       L
 %       Feq
-%
 %  Methods:
 %       vigaColumna2DObj = VigaColumna2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial)
 %       numeroNodos = obtenerNumeroNodos(vigaColumna2DObj)
@@ -61,7 +55,6 @@
 %       guardarPropiedades(vigaColumna2DObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(vigaColumna2DObj,archivoSalidaHandle)
 %       disp(vigaColumna2DObj)
-%
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
@@ -105,8 +98,8 @@ classdef VigaColumna2D < Elemento
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
-            vigaColumna2DObj.dx = abs(coordNodo2(1) - coordNodo1(1));
-            vigaColumna2DObj.dy = abs(coordNodo2(2) - coordNodo1(2));
+            vigaColumna2DObj.dx = abs(coordNodo2(1)-coordNodo1(1));
+            vigaColumna2DObj.dy = abs(coordNodo2(2)-coordNodo1(2));
             vigaColumna2DObj.L = sqrt(vigaColumna2DObj.dx^2+vigaColumna2DObj.dy^2);
             theta = atan(vigaColumna2DObj.dy/vigaColumna2DObj.dx);
             vigaColumna2DObj.theta = theta;

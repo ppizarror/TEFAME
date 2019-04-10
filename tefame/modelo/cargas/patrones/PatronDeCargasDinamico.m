@@ -33,16 +33,13 @@
 %| y controla las cargas que son de caracter dinamico, los que se calcu |
 %| lan usando el metodo de newmark.                                     |
 %|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Pablo Pizarro                                                  |
-%|       Estudiante de Magister en Ingenieria Civil Estructural         |
-%|       Universidad de Chile                                           |
+%| Programado: Pablo Pizarro @ppizarror.com                             |
+%| Fecha: 10/04/2019                                                    |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
 %       cargas
 %       analisisObj
-%
 %  Methods:
 %       patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj)
 %       aplicarCargas(patronDeCargasObj)
@@ -55,7 +52,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
     
     properties(Access = private)
         cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
-        analisisObj % Guarda el objeto de analisis con tal de obtener M,K,C
+        analisisObj % Guarda el objeto de analisis con tal de obtener M, K, C y el vector de influencia
     end % properties PatronDeCargasDinamico
     
     methods

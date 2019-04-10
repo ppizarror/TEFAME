@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingenier�a Civil Estructural         |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -31,7 +26,7 @@
 %| elemento al que se le va a aplicar la carga, los nodos al que se     |
 %| aplica las cargas y las distancias de las dos cargas.                |
 %|                                                                      |
-%| Programado: PABLO PIZARRO @ppizarror.com                             |
+%| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 28/08/2018                                                    |
 %|______________________________________________________________________|
 %

@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Fabian Rojas, PhD (frojas@ing.uchile.cl)                       |
-%|       Prof. Asistente, Departamento de Ingenieria Civil              |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -28,7 +23,7 @@
 %| representacion del elemento viga que solo transmite esfuerzo de      |
 %| corte.                                                               |
 %|                                                                      |
-%| Programado: PABLO PIZARRO @ppizarror.com                             |
+%| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 14/05/2018                                                    |
 %|______________________________________________________________________|
 %
@@ -41,7 +36,6 @@
 %       dy
 %       L
 %       Feq
-%
 %  Methods:
 %       viga2DObj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial)
 %       numeroNodos = obtenerNumeroNodos(viga2DObj)
@@ -58,7 +52,6 @@
 %       guardarPropiedades(biela2DObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(biela2DObj,archivoSalidaHandle)
 %       disp(biela2DObj)
-%
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
@@ -98,8 +91,8 @@ classdef Viga2D < Elemento
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
-            viga2DObj.dx = abs(coordNodo2(1) - coordNodo1(1));
-            viga2DObj.dy = abs(coordNodo2(2) - coordNodo1(2));
+            viga2DObj.dx = abs(coordNodo2(1)-coordNodo1(1));
+            viga2DObj.dy = abs(coordNodo2(2)-coordNodo1(2));
             viga2DObj.L = sqrt(viga2DObj.dx^2+viga2DObj.dy^2);
             viga2DObj.theta = atan(viga2DObj.dy/viga2DObj.dx);
             

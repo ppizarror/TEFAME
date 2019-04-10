@@ -13,22 +13,17 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingenieria Civil Estructural         |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase VigaColumnaMasa2D                                                  |
+%| Clase VigaColumnaMasa2D                                              |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase VigaColumna 2D       |
 %| ColumnaViga2D es una  subclase de la clase Elemento y  corresponde a |
 %| la representacion del elemento viga-columna que transmite esfuerzos  |
 %| axiales y de corte.                                                  |
 %|                                                                      |
-%| Programado: PABLO PIZARRO @ppizarror.com                             |
+%| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 10/06/2018                                                    |
 %|______________________________________________________________________|
 %

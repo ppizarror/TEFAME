@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Pablo Pizarro                                                  |
-%|       Estudiante de Magister en Ingenieria Civil Estructural         |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -48,7 +43,6 @@
 %       Mmeff
 %       Mmeffacum
 %       Mmeffacump
-%
 %  Methods:
 %       analisisObj = ModalEspectral(modeloObjeto)
 %       definirNumeracionGDL(analisisObj)

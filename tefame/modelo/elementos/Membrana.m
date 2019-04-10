@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Pablo Pizarro R. @ppizarror.com                                |
-%|       Estudiante de Magister en Ingeniería Civil Estructural         |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -28,7 +23,7 @@
 %| representacion del elemento membrana bidimensional sencilla de secc- |
 %| ion rectangular de cuatro nodos sometida a un estado de fuerzas.     |
 %|                                                                      |
-%| Programado: PABLO PIZARRO @ppizarror.com                             |
+%| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 27/08/2018                                                    |
 %|______________________________________________________________________|
 %
@@ -43,7 +38,6 @@
 %       b
 %       Feq
 %       NPOINTS
-%
 %  Methods:
 %       membranaObj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,E,nu)
 %       numeroNodos = obtenerNumeroNodos(membranaObj)
@@ -66,7 +60,6 @@
 %       guardarPropiedades(membranaObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(membranaObj,archivoSalidaHandle)
 %       disp(membranaObj)
-%
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 

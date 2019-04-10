@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Fabian Rojas, PhD (frojas@ing.uchile.cl)                       |
-%|       Prof. Asistente, Departamento de Ingenieria Civil              |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -35,10 +30,10 @@
 %| Fecha: 05/08/2015                                                    |
 %|                                                                      |
 %| Modificado por: FR - 24/10/2016                                      |
+%|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%
 %  Methods:
 %       elementoObj = Elemento(etiquetaElemento)
 %       numeroNodos = obtenerNumeroNodos(elementoObj)
@@ -59,7 +54,6 @@
 %       desactivarGraficoDeformada(elementoObj)
 %       graficaDeformada(elementoObj)
 %       disp(elementoObj)
-%
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
@@ -215,7 +209,7 @@ classdef Elemento < ComponenteModelo
             %
             % definirGDLID(elementoObj)
             % Define los ID de los grados de libertad del Elemento (elementoObj)
-              
+            
         end % definirGDLID function
         
         function agregarFuerzaResistenteAReacciones(elementoObj) %#ok<MANU>
@@ -226,7 +220,7 @@ classdef Elemento < ComponenteModelo
             % agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)
             % Agrega al vector de reacciones del Nodo (nodoObj), el vector de
             % fuerzas resistente de un elemento entregados (cargaNodo)
-
+            
         end % agregarFuerzaResistenteAReacciones function
         
         function actualizar(elementoObj) %#ok<MANU>
@@ -236,7 +230,7 @@ classdef Elemento < ComponenteModelo
             %
             % actualizar(elementoObj)
             % Actualizar los diferentes componetes del Elemento (elementoObj),
-            % despues de realizar el analisis    
+            % despues de realizar el analisis
             
         end % actualizar function
         
