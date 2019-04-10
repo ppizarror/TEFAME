@@ -55,6 +55,11 @@ for i = 1:103
         elementos{i}, -1, 0, -1, 1, 0);
 end
 
+%% Creamos el analisis
+analisisObj = ModalEspectral(modeloObj);
+analisisObj.activarPlotDeformadaInicial();
+analisisObj.activarCargaAnimacion();
+
 %% Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
@@ -62,10 +67,7 @@ PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
-%% Creamos el analisis
-analisisObj = ModalEspectral(modeloObj);
-analisisObj.activarPlotDeformadaInicial();
-analisisObj.activarCargaAnimacion();
+%% Resuelve el sistema
 analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0]);
 analisisObj.disp();
 analisisObj.plot('modo', 8, 'factor', 10, 'numcuadros', 25, ...

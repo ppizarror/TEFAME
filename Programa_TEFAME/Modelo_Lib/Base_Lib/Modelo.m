@@ -263,11 +263,11 @@ classdef Modelo < handle
             
         end % aplicarRestricciones function
         
-        function aplicarPatronesDeCargas(modeloObj)
+        function aplicarPatronesDeCargasEstatico(modeloObj)
             % aplicarPatronesDeCargas: es un metodo de la clase Modelo que se usa
             % para aplicar las patrones de cargas en el Modelo
             %
-            % aplicarPatronesDeCargas(modeloObj)
+            % aplicarPatronesDeCargasEstatico(modeloObj)
             % Aplica los patrones de cargas que estan guardados en el Modelo
             % (modeloObj), es decir, aplica las cargas sobre los nodos y
             % elementos.
@@ -276,7 +276,22 @@ classdef Modelo < handle
                 modeloObj.patronesDeCargas{i}.aplicarCargas()
             end
             
-        end % aplicarPatronesDeCargas function
+        end % aplicarPatronesDeCargasEstatico function
+        
+        function aplicarPatronesDeCargasDinamico(modeloObj)
+            % aplicarPatronesDeCargasDinamico: es un metodo de la clase Modelo que se usa
+            % para aplicar las patrones de cargas en el Modelo
+            %
+            % aplicarPatronesDeCargasDinamico(modeloObj)
+            % Aplica los patrones de cargas que estan guardados en el Modelo
+            % (modeloObj), es decir, aplica las cargas sobre los nodos y
+            % elementos.
+            
+            for i = 1:length(modeloObj.patronesDeCargas)
+                modeloObj.patronesDeCargas{i}.aplicarCargas();
+            end
+            
+        end % aplicarPatronesDeCargasDinamico function
         
         function actualizar(modeloObj, u)
             % actualizar: es un metodo de la clase Modelo que se usa para actualizar

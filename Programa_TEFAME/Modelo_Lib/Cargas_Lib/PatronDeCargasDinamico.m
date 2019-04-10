@@ -21,19 +21,17 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase PatronDeCargas                                                 |
+%| Clase PatronDeCargasConstante                                        |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase PatronDeCargas       |
-%| PatronDeCargas es  una  subclase  de  la  clase  ComponenteModelo  y |
-%| corresponde  a la  representacion  abstracta  del  patron de  cargas |
+%| Este archivo contiene la definicion de la Clase                      |
+%| PatronDeCargasConstante.                                             |
+%| PatronDeCargasConstante es una subclase de la clase PatronDeCargas y |
+%| corresponde  a la  representacion de un  patron de  cargas constante |
 %| en  el   metodo  de   elementos  finitos  o  analisis  matricial  de |
 %| estructuras.                                                         |
-%| La clase  PatronDeCargas se usa  como  una superclase para todos los |
-%| tipos  de PatronDeCargas que  hay  en  la plataforma. Y  define  los |
-%| metodos minimos que tiene que ser implementados en cada subclase.    |
-%| Adicionalmente, la  clase  PatronDeCargas  es  una  clase contenedor |
-%| que  guarda y controla como varian  las cargas  que son aplicadas en |
-%| los nodos y elementos                                                |
+%| La clase PatronDeCargasConstante  es una clase contenedor que guarda |
+%| y controla se  aplica en forma  constante las cargas  en los nodos y |
+%| elementos, en este caso se mantiene constante.                       |
 %|                                                                      |
 %| Programado: FR                                                       |
 %| Fecha: 05/08/2015                                                    |
@@ -42,75 +40,83 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
+%       cargas
 %
 %  Methods:
-%       patronDeCargasObj = PatronDeCargas(etiquetaPatronDeCargas,arreigloCargas)
+%       patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arreigloCargas)
 %       aplicarCargas(patronDeCargasObj)
 %       disp(patronDeCargasObj)
-%  Methods Suplerclass (ComponenteModelo):
+%  Methods SuperClass (PatronDeCargas):
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
-
-classdef PatronDeCargas < ComponenteModelo
+classdef PatronDeCargasDinamico < PatronDeCargas
     
     properties(Access = private)
-    end % properties PatronDeCargas
-    
-    properties(Access = public)
-        patronEsDinamico
-    end
+        cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
+    end % properties PatronDeCargasConstante
     
     methods
         
-        function patronDeCargasObj = PatronDeCargas(etiquetaPatronDeCargas)
-            % PatronDeCargas: es el constructor de la clase PatronDeCargas
+        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas)
+            % PatronDeCargasDinamico: es el constructor de la clase PatronDeCargas
             %
-            % patronDeCargasObj = PatronDeCargas(etiquetaPatronDeCargas)
+            % patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arreigloCargas)
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
-            % (etiquetaPatronDeCargas)
+            % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)
+            % a aplicar en el modelo
             
+            % Si no se pasan argumentos se crean vacios
             if nargin == 0
-                % If no argument input we create empty arguments
                 etiquetaPatronDeCargas = '';
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
-            patronDeCargasObj = patronDeCargasObj@ComponenteModelo(etiquetaPatronDeCargas);
+            % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
+            patronDeCargasObj = patronDeCargasObj@PatronDeCargas(etiquetaPatronDeCargas);
             
-        end % PatronDeCargas constructor
+            % Se guarda el arreglo con las cargas
+            patronDeCargasObj.cargas = arregloCargas;
+            
+            % Define propiedades
+            patronDeCargasObj.patronEsDinamico = false;
+            
+        end % PatronDeCargasConstante constructor
         
-        function aplicarCargas(patronDeCargasObj) %#ok<MANU>
-            % aplicarCargas: es un metodo de la clase PatronDeCargas que se usa
-            % para aplicar las cargas guardadas en el Patron de Cargas
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Metodos para aplicar las Carga guardadas en el patron de cargas durante el analisis
+        
+        function aplicarCargas(patronDeCargasObj)
+            % aplicarCargas: es un metodo de la clase PatronDeCargasConstante que
+            % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
             % aplicarCargas(patronDeCargasObj)
-            % Aplica las cargas que estan guardadas en el PatronDeCargas (patronDeCargasObj),
-            % es decir, se aplican las cargas sobre los nodos y elementos.
+            % Aplica las cargas que estan guardadas en el PatronDeCargasConstante
+            % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
+            % y elementos.
+            
+            % Se aplica la carga con un factor de carga = 1
+            for i = 1:length(patronDeCargasObj.cargas)
+                patronDeCargasObj.cargas{i}.aplicarCarga(1)
+            end
             
         end % aplicarCargas function
-        
-        function y = patronDinamico(patronDeCargasObj)
-            % patron_dinamico: Indica si el patron es dinamico o no
-            
-            y = patronDeCargasObj.patronEsDinamico;
-            
-        end % patronDinamico function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostar la informacion del PatronDeCargas en pantalla
         
         function disp(patronDeCargasObj)
-            % disp: es un metodo de la clase PatronDeCargas que se usa para imprimir en
+            % disp: es un metodo de la clase PatronDeCargasConstante que se usa para imprimir en
             % command Window la informacion del Patron de Cargas
             %
             % disp(patronDeCargasObj)
-            % Imprime la informacion guardada en el Patron de Cargas (patronDeCargasObj)
+            % Imprime la informacion guardada en el Patron de Cargas Constante (patronDeCargasObj)
             % en pantalla
             
+            fprintf('Propiedades Patron de Cargas Dinamico:\n');            
             disp@ComponenteModelo(patronDeCargasObj);
             
         end % disp function
         
-    end % methods PatronDeCargas
+    end % methods PatronDeCargasConstante
     
-end % class PatronDeCargas
+end % class PatronDeCargasConstante

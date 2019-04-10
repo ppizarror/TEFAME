@@ -53,7 +53,7 @@
 classdef PatronDeCargasConstante < PatronDeCargas
     
     properties(Access = private)
-        cargas % Variable que guarda en un arreiglo de celdas todas las cargas aplicadas en el patron de cargas
+        cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
     end % properties PatronDeCargasConstante
     
     methods
@@ -63,7 +63,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             %
             % patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arreigloCargas)
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
-            % (etiquetaPatronDeCargas) y guarda el arreiglo con las cargas (arreigloCargas)
+            % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arreigloCargas)
             % a aplicar en el modelo
             
             % Si no se pasan argumentos se crean vacios
@@ -76,6 +76,9 @@ classdef PatronDeCargasConstante < PatronDeCargas
             
             % Se guarda el arreglo con las cargas
             patronDeCargasObj.cargas = arregloCargas;
+            
+            % Define propiedades
+            patronDeCargasObj.patronEsDinamico = false;
             
         end % PatronDeCargasConstante constructor
         

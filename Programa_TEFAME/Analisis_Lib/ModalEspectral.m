@@ -193,7 +193,7 @@ classdef ModalEspectral < handle
             analisisObj.definirNumeracionGDL();
             
             % Se aplica patron de carga
-            analisisObj.modeloObj.aplicarPatronesDeCargas();
+            analisisObj.modeloObj.aplicarPatronesDeCargasEstatico();
             
             % Se calcula la matriz de rigidez
             analisisObj.ensamblarMatrizRigidez();
