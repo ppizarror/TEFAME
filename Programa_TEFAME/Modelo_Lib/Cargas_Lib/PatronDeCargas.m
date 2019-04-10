@@ -44,12 +44,12 @@
 %  Properties (Access=private):
 %
 %  Methods:
-%       patronDeCargasObj = PatronDeCargas(etiquetaPatronDeCargas,arreigloCargas)
+%       patronDeCargasObj = PatronDeCargas(etiquetaPatronDeCargas,arregloCargas)
 %       aplicarCargas(patronDeCargasObj)
+%       patronDinamico(patronDeCargasObj)
 %       disp(patronDeCargasObj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
-
 
 classdef PatronDeCargas < ComponenteModelo
     

@@ -273,7 +273,9 @@ classdef Modelo < handle
             % elementos.
             
             for i = 1:length(modeloObj.patronesDeCargas)
-                modeloObj.patronesDeCargas{i}.aplicarCargas()
+                if ~modeloObj.patronesDeCargas{i}.patronDinamico()
+                    modeloObj.patronesDeCargas{i}.aplicarCargas();
+                end
             end
             
         end % aplicarPatronesDeCargasEstatico function
@@ -288,7 +290,9 @@ classdef Modelo < handle
             % elementos.
             
             for i = 1:length(modeloObj.patronesDeCargas)
-                modeloObj.patronesDeCargas{i}.aplicarCargas();
+                if modeloObj.patronesDeCargas{i}.patronDinamico()
+                    modeloObj.patronesDeCargas{i}.aplicarCargas();
+                end
             end
             
         end % aplicarPatronesDeCargasDinamico function

@@ -21,29 +21,30 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase PatronDeCargasConstante                                        |
+%| Clase PatronDeCargasDinamico                                         |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase                      |
-%| PatronDeCargasConstante.                                             |
-%| PatronDeCargasConstante es una subclase de la clase PatronDeCargas y |
-%| corresponde  a la  representacion de un  patron de  cargas constante |
+%| PatronDeCargasDinamico.                                              |
+%| PatronDeCargasDinamico es una subclase de la clase PatronDeCargas y  |
+%| corresponde  a la  representacion de un  patron de  cargas dinamico  |
 %| en  el   metodo  de   elementos  finitos  o  analisis  matricial  de |
 %| estructuras.                                                         |
-%| La clase PatronDeCargasConstante  es una clase contenedor que guarda |
-%| y controla se  aplica en forma  constante las cargas  en los nodos y |
-%| elementos, en este caso se mantiene constante.                       |
+%| La clase PatronDeCargasDinamico  es una clase contenedor que guarda  |
+%| y controla las cargas que son de caracter dinamico, los que se calcu |
+%| lan usando el metodo de newmark.                                     |
 %|                                                                      |
-%| Programado: FR                                                       |
-%| Fecha: 05/08/2015                                                    |
-%|                                                                      |
-%| Modificado por: FR - 24/10/2016                                      |
+%| Desarrollado por:                                                    |
+%|       Pablo Pizarro                                                  |
+%|       Estudiante de Magister en Ingenieria Civil Estructural         |
+%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
 %       cargas
+%       analisisObj
 %
 %  Methods:
-%       patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arreigloCargas)
+%       patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj)
 %       aplicarCargas(patronDeCargasObj)
 %       disp(patronDeCargasObj)
 %  Methods SuperClass (PatronDeCargas):
@@ -54,14 +55,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
     
     properties(Access = private)
         cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
-    end % properties PatronDeCargasConstante
+        analisisObj % Guarda el objeto de analisis con tal de obtener M,K,C
+    end % properties PatronDeCargasDinamico
     
     methods
         
-        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas)
+        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas, analisisObj)
             % PatronDeCargasDinamico: es el constructor de la clase PatronDeCargas
             %
-            % patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arreigloCargas)
+            % patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj)
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
             % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)
             % a aplicar en el modelo
@@ -78,25 +80,28 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             patronDeCargasObj.cargas = arregloCargas;
             
             % Define propiedades
-            patronDeCargasObj.patronEsDinamico = false;
+            patronDeCargasObj.patronEsDinamico = true;
             
-        end % PatronDeCargasConstante constructor
+            % Guarda el analisis
+            patronDeCargasObj.analisisObj = analisisObj;
+            
+        end % PatronDeCargasDinamico constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para aplicar las Carga guardadas en el patron de cargas durante el analisis
         
         function aplicarCargas(patronDeCargasObj)
-            % aplicarCargas: es un metodo de la clase PatronDeCargasConstante que
+            % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
             % aplicarCargas(patronDeCargasObj)
-            % Aplica las cargas que estan guardadas en el PatronDeCargasConstante
+            % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
             % y elementos.
             
             % Se aplica la carga con un factor de carga = 1
             for i = 1:length(patronDeCargasObj.cargas)
-                patronDeCargasObj.cargas{i}.aplicarCarga(1)
+                patronDeCargasObj.cargas{i}.aplicarCarga(1);
             end
             
         end % aplicarCargas function
@@ -105,7 +110,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         % Metodos para mostar la informacion del PatronDeCargas en pantalla
         
         function disp(patronDeCargasObj)
-            % disp: es un metodo de la clase PatronDeCargasConstante que se usa para imprimir en
+            % disp: es un metodo de la clase PatronDeCargasDinamico que se usa para imprimir en
             % command Window la informacion del Patron de Cargas
             %
             % disp(patronDeCargasObj)
@@ -117,6 +122,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % disp function
         
-    end % methods PatronDeCargasConstante
+    end % methods PatronDeCargasDinamico
     
-end % class PatronDeCargasConstante
+end % class PatronDeCargasDinamico

@@ -61,8 +61,9 @@ analisisObj.activarPlotDeformadaInicial();
 analisisObj.activarCargaAnimacion();
 
 %% Creamos el patron de cargas
-PatronesDeCargas = cell(1, 1);
+PatronesDeCargas = cell(2, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
+PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', {}, analisisObj);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);

@@ -106,10 +106,10 @@ classdef Elemento < ComponenteModelo
         
         function nodosElemento = obtenerNodos(elementoObj) %#ok<MANU>
             % obtenerNodos: es un metodo de la clase Elemento que se usa para
-            % obtener un arreiglo con los nodos que tiene el Elemento
+            % obtener un arreglo con los nodos que tiene el Elemento
             %
             % nodosElemento = obtenerNumeroNodos(elementoObj)
-            % Entrega un arreiglo con los Nodos (nodosElemento) que tiene el Elemento
+            % Entrega un arreglo con los Nodos (nodosElemento) que tiene el Elemento
             % (elementoObj)
             
             nodosElemento = [];
@@ -129,11 +129,11 @@ classdef Elemento < ComponenteModelo
         
         function gdlID = obtenerGDL(elementoObj) %#ok<MANU>
             % obtenerGDL: es un metodo de la clase Elemento que se usa para
-            % obtener un arreiglo con los ID de los grados de libertad que estan
+            % obtener un arreglo con los ID de los grados de libertad que estan
             % asociados al Elemento
             %
             % gdlID = obtenerGDL(elementoObj)
-            % Entrega un arreiglo con los ID de los GDL (gdlID) que tiene el Elemento
+            % Entrega un arreglo con los ID de los GDL (gdlID) que tiene el Elemento
             % (elementoObj)
             
             gdlID = [];

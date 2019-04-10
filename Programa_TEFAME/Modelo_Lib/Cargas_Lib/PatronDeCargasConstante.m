@@ -43,7 +43,7 @@
 %       cargas
 %
 %  Methods:
-%       patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arreigloCargas)
+%       patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arregloCargas)
 %       aplicarCargas(patronDeCargasObj)
 %       disp(patronDeCargasObj)
 %  Methods SuperClass (PatronDeCargas):
@@ -61,9 +61,9 @@ classdef PatronDeCargasConstante < PatronDeCargas
         function patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas, arregloCargas)
             % PatronDeCargasConstante: es el constructor de la clase PatronDeCargas
             %
-            % patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arreigloCargas)
+            % patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arregloCargas)
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
-            % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arreigloCargas)
+            % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)
             % a aplicar en el modelo
             
             % Si no se pasan argumentos se crean vacios
@@ -96,7 +96,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             
             % Se aplica la carga con un factor de carga = 1
             for i = 1:length(patronDeCargasObj.cargas)
-                patronDeCargasObj.cargas{i}.aplicarCarga(1)
+                patronDeCargasObj.cargas{i}.aplicarCarga(1);
             end
             
         end % aplicarCargas function
@@ -112,7 +112,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % Imprime la informacion guardada en el Patron de Cargas Constante (patronDeCargasObj)
             % en pantalla
             
-            fprintf('Propiedades Patron de Cargas Constante :\n');            
+            fprintf('Propiedades Patron de Cargas Constante :\n');
             disp@ComponenteModelo(patronDeCargasObj);
             
         end % disp function

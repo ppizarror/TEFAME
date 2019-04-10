@@ -192,7 +192,7 @@ classdef ModalEspectral < handle
             analisisObj.definirNumeracionGDL();
             
             % Se aplica patron de carga
-            analisisObj.modeloObj.aplicarPatronesDeCargasEstatico();
+            % analisisObj.modeloObj.aplicarPatronesDeCargasEstatico();
             
             % Se calcula la matriz de rigidez
             analisisObj.ensamblarMatrizRigidez();
@@ -200,13 +200,13 @@ classdef ModalEspectral < handle
             % Se calcula la matriz de masa
             analisisObj.ensamblarMatrizMasa();
             
-            % Calcula el metodo modal espectral
-            analisisObj.calcularModalEspectral(nModos, betacR, betacP, maxcond)
-            
             % Guarda el resultado para las cargas estaticas
             analisisObj.ensamblarVectorFuerzas();
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
             analisisObj.modeloObj.actualizar(analisisObj.u);
+            
+            % Calcula el metodo modal espectral
+            analisisObj.calcularModalEspectral(nModos, betacR, betacP, maxcond); % M,C,K
             
             % Guarda el resultado para las cargas dinamicas
             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico();
