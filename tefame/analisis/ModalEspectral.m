@@ -74,6 +74,10 @@ classdef ModalEspectral < handle
         Tn % Periodos del sistema
         phin % Vectores propios del sistema
         phinExt % Vector propio del sistema extendido considerando grados condensados
+        condMatT % Matriz de condensacion T
+        condMatRot % Matriz de condensacion rotacion
+        Mteq % Matriz masa equivalente
+        Kteq % Matriz rigidez equivalente
         Mm % Matriz masa modal
         Km % Matriz rigidez modal
         rm % Vector influencia
@@ -126,6 +130,8 @@ classdef ModalEspectral < handle
             % definirNumeracionGDL(analisisObj)
             % Define y asigna la enumeracion de los GDL en el modelo
             
+            fprintf('\tDefiniendo numeracion GDL\n');
+            
             % Primero se aplican las restricciones al modelo
             analisisObj.modeloObj.aplicarRestricciones();
             
@@ -134,8 +140,7 @@ classdef ModalEspectral < handle
             numeroNodos = length(nodoObjetos);
             
             % Inicializamos en cero el contador de GDL
-            contadorGDL = 0;
-            
+            contadorGDL = 0;          
             for i = 1:numeroNodos
                 
                 gdlidNodo = nodoObjetos{i}.obtenerGDLID;
@@ -188,7 +193,7 @@ classdef ModalEspectral < handle
             analisisObj.definirNumeracionGDL();
             
             % Se aplica patron de carga
-            % analisisObj.modeloObj.aplicarPatronesDeCargasEstatico();
+            analisisObj.modeloObj.aplicarPatronesDeCargasEstatico();
             
             % Se calcula la matriz de rigidez
             analisisObj.ensamblarMatrizRigidez();
@@ -197,17 +202,27 @@ classdef ModalEspectral < handle
             analisisObj.ensamblarMatrizMasa();
             
             % Guarda el resultado para las cargas estaticas
+            fprintf('\tCalculando resultado carga estatica\n');
             analisisObj.ensamblarVectorFuerzas();
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
             analisisObj.modeloObj.actualizar(analisisObj.u);
             
             % Calcula el metodo modal espectral
             analisisObj.calcularModalEspectral(nModos, betacR, betacP, maxcond); % M,C,K
+              
+        end % analizar function
+        
+        function resolverCargasDinamicas(analisisObj)
+            % resolverCargasDinamicas: Resuelve las cargas dinamicas del
+            % sistema.
             
-            % Guarda el resultado para las cargas dinamicas
+            if ~analisisObj.analisisFinalizado
+                error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
+            end
+            fprintf('Metodo modal espectral:\n');
             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico();
             
-        end % analizar function
+        end % resolverCargasDinamicas function
         
         function calcularModalEspectral(analisisObj, nModos, betacR, betacP, maxcond)
             % calcularModalEspectral: Calcula el metodo modal espectral
@@ -215,6 +230,7 @@ classdef ModalEspectral < handle
             % calcularModalEspectral(analisisObj,nModos,betacR,betacP,maxcond)
             
             % Calcula tiempo inicio
+            fprintf('\tCalculando metodo modal espectral\n');
             tInicio = cputime;
             
             % Obtiene matriz de masa
@@ -298,14 +314,14 @@ classdef ModalEspectral < handle
                 % Actualiza los grados
                 cngdl = length(Meq);
                 if cngdl < ngdl
-                    fprintf('\tSe han condensado %d grados de libertad\n', ngdl-cngdl);
+                    fprintf('\t\tSe han condensado %d grados de libertad\n', ngdl-cngdl);
                     ngdl = cngdl;
                 end
                 
             else % No condensa grados
                 Meq = analisisObj.Mt;
                 Keq = analisisObj.Kt;
-                fprintf('\tNo se han condensado grados de libertad\n');
+                fprintf('\t\tNo se han condensado grados de libertad\n');
             end
             
             % Una vez pasado este punto no deberian haber masas nulas o
@@ -316,8 +332,8 @@ classdef ModalEspectral < handle
                 end
             end
             
-            fprintf('\tGrados de libertad totales: %d\n', ngdl);
-            fprintf('\tNumero de direcciones de analisis: %d\n', ndg);
+            fprintf('\t\tGrados de libertad totales: %d\n', ngdl);
+            fprintf('\t\tNumero de direcciones de analisis: %d\n', ndg);
             nModos = min(nModos, ngdl);
             analisisObj.numModos = nModos;
             
@@ -335,13 +351,17 @@ classdef ModalEspectral < handle
             syseig = diag(syseig);
             
             % Se recuperan los grados de libertad condensados y se
-            % ordenan de acuerdo a la configuraci�n original
+            % ordenan de acuerdo a la configuracion original
             if realizaCond
                 modalPhinFull = T * modalPhin;
                 rot_inv = rot^(-1);
                 modalPhinFull = rot_inv' * modalPhinFull;
+                analisisObj.condMatT = T;
+                analisisObj.condMatRot = rot_inv;
             else
                 modalPhinFull = modalPhin;
+                analisisObj.condMatT = eye(length(modalPhin));
+                analisisObj.condMatRot = eye(length(modalPhin));
             end
             
             % Calcula las frecuencias del sistema
@@ -380,6 +400,8 @@ classdef ModalEspectral < handle
             analisisObj.phin = zeros(ngdl, nModos);
             analisisObj.Mm = modalMm;
             analisisObj.Km = modalKm;
+            analisisObj.Mteq = Meq;
+            analisisObj.Kteq = Keq;
             for i = 1:nModos
                 analisisObj.Tn(Torder(i)) = modalTn(i);
                 analisisObj.wn(Torder(i)) = modalWn(i);
@@ -445,18 +467,12 @@ classdef ModalEspectral < handle
                 end
             end
             if m == 0 || n == 0
-                error('\tSe requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh')
+                error('\t\tSe requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh')
             end
             w = analisisObj.wn;
             a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
                 -1 / w(n), 1 / w(m)] * betacR';
-            analisisObj.cRayleigh = a(1) .* analisisObj.Mt + a(2) .* analisisObj.Kt;
-            if realizaCond
-                % cRayleigh_rot = rot' * analisisObj.cRayleigh * rot;
-                % cRayleigh_eq = T' * cRayleigh_rot * T;
-            else
-                % cRayleigh_eq = analisisObj.cRayleigh;
-            end
+            analisisObj.cRayleigh = a(1) .* Meq + a(2) .* Keq;
             
             % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------
             
@@ -478,8 +494,6 @@ classdef ModalEspectral < handle
                 analisisObj.cPenzien = analisisObj.cPenzien + ...
                     Meq * (d(i, i) * modalPhin(:, i) * modalPhin(:, i)') * Meq;
             end
-            % cPenzien_rot = rot' * analisisObj.cPenzien * rot;
-            % cPenzien_eq = T' * cPenzien_rot * T;
             
             %--------------------------------------------------------------
             
@@ -487,7 +501,7 @@ classdef ModalEspectral < handle
             analisisObj.analisisFinalizado = true;
             analisisObj.numDG = ndg;
             analisisObj.numDGReal = analisisObj.modeloObj.obtenerNumerosGDL();
-            fprintf('\tSe completo el analisis en %.3f segundos\n\n', cputime-tInicio);
+            fprintf('\tSe completo el analisis en %.3f segundos\n', cputime-tInicio);
             
         end % calcularModalEspectral function
         
@@ -499,6 +513,7 @@ classdef ModalEspectral < handle
             % Ensambla la matriz de rigidez del modelo analizado usando el metodo
             % indicial
             
+            fprintf('\tEnsamblando matriz de rigidez\n');
             analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
             % Extraemos los Elementos
@@ -542,6 +557,7 @@ classdef ModalEspectral < handle
             % Ensambla la matriz de masa del modelo analizado usando el metodo
             % indicial
             
+            fprintf('\tEnsamblando matriz de masa\n');
             analisisObj.Mt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
             % Extraemos los Elementos
@@ -640,7 +656,7 @@ classdef ModalEspectral < handle
             % del modelo
             %
             % numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
-            % Obtiene el numero total de GDL (numeroEquaciones) que esta guardado
+            % Obtiene el numero total de GDL (numeroEcuaciones) que esta guardado
             % en el Analisis (analisisObj)
             
             numeroEquaciones = analisisObj.numeroGDL;
@@ -655,7 +671,7 @@ classdef ModalEspectral < handle
             % Obtiene la matriz de masa (M_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
-            M_Modelo = analisisObj.Mt;
+            M_Modelo = analisisObj.Mteq;
             
         end % obtenerMatrizMasa function
         
@@ -683,7 +699,7 @@ classdef ModalEspectral < handle
             % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
-            K_Modelo = analisisObj.Kt;
+            K_Modelo = analisisObj.Kteq;
             
         end % obtenerMatrizRigidez function
         

@@ -77,7 +77,7 @@ classdef CargaNodo < Carga
                 cargaNodoObj.vectorCarga = cargaNodo;
             end % if
             
-        end % Carga constructor
+        end % CargaNodo constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para aplicar la carga nodal durante el analisis

@@ -30,69 +30,82 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       nodoObj
-%       vectorCarga
 %  Methods:
-%       cargaRegistroObj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)
+%       CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(cargaRegistroObj,factorDeCarga)
 %       disp(cargaRegistroObj)
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
-classdef CargaRegistroSismico < Carga
+classdef CargaRegistroSismico < CargaDinamica
     
     properties(Access = private)
-        nodoObj     % Variable que guarda el Nodo que se le va a aplicar la carga
-        vectorCarga % Variable que guarda el vector de cargas a aplicar
+        registro % Matriz del registro
+        direccion % Vector de direcciones
     end % properties CargaNodo
     
     methods
         
-        function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, archivoRegistro, nCol, header, dt, tAnalisis)
+        function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tAnalisis)
             % CargaRegistroSismico: es el constructor de la clase CargaNodo
             %
-            % cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, archivoRegistro, nCol, header, dt, tAnalisis)
+            % cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,dt,tAnalisis)
+            %
+            % Crea una carga del tipo registro de aceleracion, requiere un
+            % vector registro [Nxr], una direccion [1xr] y un tiempo maximo
+            % de analisis.
             
             if nargin == 0
-                etiquetaCargaNodo = '';
-                nodoObjeto = [];
-                cargaNodo = [];
+                etiquetaCargaRegistroSismico = '';
             end % if
             
-            % Llamamos al cosntructor de la SuperClass que es la clase Carga
-            cargaRegistroObj = cargaRegistroObj@Carga(etiquetaCargaNodo);
+            % Llamamos al constructor de la SuperClass que es la clase Carga
+            cargaRegistroObj = cargaRegistroObj@CargaDinamica(etiquetaCargaRegistroSismico);
             
-            cargaRegistroObj.nodoObj = nodoObjeto;
+            % Guarda el registro
+            cargaRegistroObj.registro = registro;
+            cargaRegistroObj.direccion = direccion;
+            cargaRegistroObj.tAnalisis = tAnalisis;
+            cargaRegistroObj.dt = registro(2, 1) - registro(1, 1);
             
-            if size(cargaNodo, 1) == 1
-                cargaRegistroObj.vectorCarga = cargaNodo';
-            else
-                cargaRegistroObj.vectorCarga = cargaNodo;
-            end % if
-            
-        end % Carga constructor
+        end % CargaRegistroSismico constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la carga durante el analisis
+        % Metodos para calcular la carga
         
-        function aplicarCarga(cargaRegistroObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase CargaNodo que se usa para aplicar
-            % la carga creando el vector de carga P.
+        function p = calcularCarga(cargaRegistroObj, factor, m, r)
+            % calcularCarga: es un metodo de la clase Carga que se usa para
+            % calcular la carga a aplicar.
             %
-            % aplicarCarga(cargaRegistroObj,factorDeCarga)
-            % Aplica el vector de carga que esta guardada en el nodo que corresponde
-            % amplificada por el factor (factorDeCarga).
+            % calcularCarga(cargaObj,factor,m,r)
             
-            cargaRegistroObj.nodoObj.agregarCarga(factorDeCarga*cargaRegistroObj.vectorCarga);
+            % Crea la matriz de carga
+            ng = length(m);
+            nt = cargaRegistroObj.tAnalisis / cargaRegistroObj.dt;
+            nd = length(cargaRegistroObj.direccion);
+            p = zeros(ng, nt);
+
+            % Crea el vector de influencia equivalente
+            rf = zeros(ng, 1);
+            for i=1:ng
+                for j=1:nd
+                    rf(i) = rf(i) + r(i, j) * cargaRegistroObj.direccion(j);
+                end
+            end
             
-        end % aplicarCarga function
+            % Para cada aceleracion calcula la carga como -m*a
+            for i=1:nt
+                p(:, i) = m * rf .* cargaRegistroObj.registro(i, 2);
+            end
+            
+        end % calcularCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostrar la informacion de la carga en pantalla
         
         function disp(cargaRegistroObj)
-            % disp: es un metodo de la clase Carga que se usa para imprimir en
+            % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en
             % command Window la informacion de la carga del tipo registro
             % sismico.
             %
@@ -100,7 +113,7 @@ classdef CargaRegistroSismico < Carga
             % Imprime la informacion guardada en la carga (cargaRegistroObj) en pantalla.
             
             fprintf('Propiedades Carga Registro Sismico:\n');
-            disp@Carga(cargaRegistroObj);
+            disp@CargaDinamica(cargaRegistroObj);
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');

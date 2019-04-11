@@ -91,6 +91,8 @@ classdef AnalisisEstatico < handle
             % definirNumeracionGDL(analisisObj)
             % Define y asigna la enumeracion de los GDL en el modelo
             
+            fprintf('\tDefiniendo numeracion GDL\n');
+            
             % Primero se aplican las restricciones al modelo
             analisisObj.modeloObj.aplicarRestricciones();
             
@@ -139,6 +141,8 @@ classdef AnalisisEstatico < handle
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas.
             
+            fprintf('Ejecuntando analisis estatico\n');
+            
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
             
@@ -148,13 +152,10 @@ classdef AnalisisEstatico < handle
             % Se calcula la matriz de rigidez
             analisisObj.ensamblarMatrizRigidez();
             
-            % Se ensambla el vector de fuerzas
+            % Guarda el resultado para las cargas estaticas
+            fprintf('\tCalculando resultado carga estatica\n');
             analisisObj.ensamblarVectorFuerzas();
-            
-            % Se resuelve la ecuacion
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
-            
-            % Actualiza el modelo
             analisisObj.modeloObj.actualizar(analisisObj.u);
             
         end % analizar function
@@ -167,6 +168,7 @@ classdef AnalisisEstatico < handle
             % Ensambla la matriz de Rigidez del modelo analizado usando el metodo
             % indicial
             
+            fprintf('\tEnsamblando matriz de rigidez\n');
             analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
             % Extraemos los Elementos

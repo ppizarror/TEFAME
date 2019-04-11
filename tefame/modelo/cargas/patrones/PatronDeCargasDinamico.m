@@ -95,21 +95,46 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
             % y elementos.
-           
+            
             % Obtiene los parametros de la estructura
+            k = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
+            m = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
+            c = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(true); % false: cPenzien
             r = patronDeCargasObj.analisisObj.obtenerVectorInfluencia();
             
-            % Se aplica la carga con un factor de carga = 1
-            for i = 1:length(patronDeCargasObj.cargas)
-                patronDeCargasObj.cargas{i}.aplicarCarga(1, r);
+            % Chequea que las dimensiones sean apropiadas
+            if ~equalMatrixSize(k, m) || ~equalMatrixSize(m, c) || length(r) ~= length(m)
+                error('Tamaño incorrecto de matrices K, M, C o r');
             end
+            tInicioProceso = cputime;
+            
+            % Se calcula carga una de las cargas dinamicas
+            for i = 1:length(patronDeCargasObj.cargas)
+                
+                % Obtiene la carga
+                tInicio = cputime;
+                p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r);
+                fprintf('\t\tAplicando carga %s\n', patronDeCargasObj.cargas{i}.obtenerEtiqueta());
+                
+                % Resuelve newmark
+                [u, du, ddu] = patronDeCargasObj.newmark(k, m, c, p, patronDeCargasObj.cargas{i}.dt, 0, 0);
+            
+                % Guarda los resultados
+                patronDeCargasObj.cargas{i}.guardarDesplazamiento(u);
+                patronDeCargasObj.cargas{i}.guardarVelocidad(du);
+                patronDeCargasObj.cargas{i}.guardarAceleracion(ddu);
+                fprintf('\n\t\t\tSe completo calculo en %.3f segundos\n', cputime-tInicio);
+                
+            end
+            
+            fprintf('\tProceso finalizado en %.3f segundos\n', cputime-tInicioProceso);
             
         end % aplicarCargas function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Algoritmos de resolucion
         
-        function NW = Newmark(patronDeCargasObj, p, dt, xo, vo)
+        function [x, v, z] = newmark(patronDeCargasObj, k, m, c, p, dt, xo, vo) %#ok<*INUSL>
             % NewmarkLineal: es un metodo de la clase ModalEspectral que se
             % usa para obtener los valores de aceleracion, velociadad y desplazamiento
             % de los grados de libertad a partir del metodo de Newmark
@@ -120,33 +145,36 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             gamma = 1 / 2;
             beta = 1 / 6;
             
-            % Obtiene parametros del modelo
-            KT = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
-            MT = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
-            CT = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(true); % false: cPenzien
-            
             n = length(p);
             % tmax = dt * (n - 1);
             % t = linspace(0, tmax, n)';
-            ngl = length(KT);
+            ngl = length(k);
             x = zeros(ngl, length(p));
             v = zeros(ngl, length(p));
             z = zeros(ngl, length(p));
             x(:, 1) = xo;
             v(:, 1) = vo;
-            z(:, 1) = MT^(-1) * (p(:, 1) - CT * v(:, 1) - KT * x(:, 1));
-            a1 = 1 / (beta * dt^2) * MT + gamma / (beta * dt) * CT;
-            a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
-            a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) * CT;
-            ks = KT + a1;
+            z(:, 1) = m^(-1) * (p(:, 1) - c * v(:, 1) - k * x(:, 1));
+            a1 = 1 / (beta * dt^2) * m + gamma / (beta * dt) * c;
+            a2 = 1 / (beta * dt) * m + (gamma / beta-1) * c;
+            a3 = (1 / (2 * beta) - 1) * m + dt * (gamma / (2 * beta) - 1) * c;
+            ks = k + a1;
             ps = zeros(ngl, length(p));
+            reverse_porcent = '';
+            
             for i = 1:1:(n - 1)
+                
+                % Calcula
                 ps(:, i+1) = p(:, i+1) + a1 * x(:, i) + a2 * v(:, i) + a3 * z(:, i);
                 x(:, i+1) = ks^(-1) * ps(:, i+1);
                 v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
                 z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
+            
+                % Imprime estado
+                msg = sprintf('\t\t\tCalculando... %.1f/100', i/(n-1)*100);
+                fprintf([reverse_porcent, msg]);
+                reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
             end
-            NW = [x, v, z];
             
         end % NewmarkLineal function
         
@@ -161,7 +189,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Imprime la informacion guardada en el Patron de Cargas Constante (patronDeCargasObj)
             % en pantalla
             
-            fprintf('Propiedades Patron de Cargas Dinamico:\n');            
+            fprintf('Propiedades Patron de Cargas Dinamico:\n');
             disp@ComponenteModelo(patronDeCargasObj);
             
         end % disp function

@@ -84,7 +84,7 @@ classdef Carga < ComponenteModelo
             % command Window la informacion de la carga aplicada sobre el
             % componente que corresponda.
             %
-            % disp(patronDeCargasObj)
+            % disp(cargaObj)
             % Imprime la informacion guardada en la carga (cargaObj) en pantalla.
             
             disp@ComponenteModelo(cargaObj);

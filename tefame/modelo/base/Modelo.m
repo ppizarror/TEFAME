@@ -267,6 +267,7 @@ classdef Modelo < handle
             % (modeloObj), es decir, aplica las cargas sobre los nodos y
             % elementos.
             
+            fprintf('\tAplica patron de cargas estatico\n');
             for i = 1:length(modeloObj.patronesDeCargas)
                 if ~modeloObj.patronesDeCargas{i}.patronDinamico()
                     modeloObj.patronesDeCargas{i}.aplicarCargas();
@@ -284,6 +285,7 @@ classdef Modelo < handle
             % (modeloObj), es decir, aplica las cargas sobre los nodos y
             % elementos.
             
+            fprintf('\tAplica patron de cargas dinamico\n');
             for i = 1:length(modeloObj.patronesDeCargas)
                 if modeloObj.patronesDeCargas{i}.patronDinamico()
                     modeloObj.patronesDeCargas{i}.aplicarCargas();

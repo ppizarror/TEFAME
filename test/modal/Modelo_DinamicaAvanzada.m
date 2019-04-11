@@ -1,4 +1,3 @@
-clear all; %#ok<CLALL>
 fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 
 %% Creamos el modelo
@@ -49,14 +48,20 @@ restricciones{10} = RestriccionNodo('R10', nodos{10}, [1, 2, 3]');
 modeloObj.agregarRestricciones(restricciones);
 
 %% Creamos las cargas estaticas
-cargas = cell(1, 103);
+cargasEstaticas = cell(103, 1);
 for i = 1:103
-    cargas{i} = CargaVigaColumnaDistribuida('Carga distribuida piso', ...
+    cargasEstaticas{i} = CargaVigaColumnaDistribuida('Carga distribuida piso', ...
         elementos{i}, -1, 0, -1, 1, 0);
 end
 
 %% Creamos las cargas dinamicas
+cargasDinamicas = cell(1, 1);
 
+% Registro sismico
+if ~exist('sis_reg', 'var') % Carga el registro
+    sis_reg = cargaRegistroArchivo('test/modal/registro.txt', '\n', ' ', 0, 0, 1, 0.005);
+end
+cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', sis_reg, [1, 0], 100);
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
@@ -65,14 +70,15 @@ analisisObj.activarCargaAnimacion();
 
 %% Creamos el patron de cargas
 PatronesDeCargas = cell(2, 1);
-PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargas);
-PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', {}, analisisObj);
+PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
+PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 %% Resuelve el sistema
 analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0]);
+analisisObj.resolverCargasDinamicas();
 analisisObj.disp();
 pt = analisisObj.plot('modo', 8, 'factor', 10, 'numcuadros', 25, ...
     'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', true);
