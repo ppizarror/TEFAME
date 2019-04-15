@@ -212,15 +212,24 @@ classdef ModalEspectral < handle
               
         end % analizar function
         
-        function resolverCargasDinamicas(analisisObj)
+        function resolverCargasDinamicas(analisisObj, cpenzien)
             % resolverCargasDinamicas: Resuelve las cargas dinamicas del
             % sistema.
+            %
+            % resolverCargasDinamicas(analisisObj,cpenzien)
+            %
+            % Por defecto se usa el amortiguamiento de Rayleigh.
             
             if ~analisisObj.analisisFinalizado
                 error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
             end
+            
+            if ~exist('cpenzien', 'var')
+                cpenzien = false;
+            end
+            
             fprintf('Metodo modal espectral:\n');
-            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico();
+            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(cpenzien);
             
         end % resolverCargasDinamicas function
         

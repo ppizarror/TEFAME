@@ -87,11 +87,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para aplicar las cargas guardadas en el patron de cargas durante el analisis
         
-        function aplicarCargas(patronDeCargasObj)
+        function aplicarCargas(patronDeCargasObj, cpenzien)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj)
+            % aplicarCargas(patronDeCargasObj,cpenzien)
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
             % y elementos.
@@ -99,7 +99,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Obtiene los parametros de la estructura
             k = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
             m = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
-            c = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(true); % false: cPenzien
+            c = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(~cpenzien); % false: cPenzien
             r = patronDeCargasObj.analisisObj.obtenerVectorInfluencia();
             
             % Chequea que las dimensiones sean apropiadas

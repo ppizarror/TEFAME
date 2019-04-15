@@ -276,19 +276,21 @@ classdef Modelo < handle
             
         end % aplicarPatronesDeCargasEstatico function
         
-        function aplicarPatronesDeCargasDinamico(modeloObj)
+        function aplicarPatronesDeCargasDinamico(modeloObj, cpenzien)
             % aplicarPatronesDeCargasDinamico: es un metodo de la clase Modelo que se usa
             % para aplicar las patrones de cargas en el Modelo
             %
-            % aplicarPatronesDeCargasDinamico(modeloObj)
+            % aplicarPatronesDeCargasDinamico(modeloObj,cpenzien)
             % Aplica los patrones de cargas que estan guardados en el Modelo
             % (modeloObj), es decir, aplica las cargas sobre los nodos y
-            % elementos.
+            % elementos. Requiere ademas si se usa la matriz de
+            % amortiguamiento de penzien, por defecto es falso, o sea usa
+            % Rayleigh.
             
             fprintf('\tAplica patron de cargas dinamico\n');
             for i = 1:length(modeloObj.patronesDeCargas)
                 if modeloObj.patronesDeCargas{i}.patronDinamico()
-                    modeloObj.patronesDeCargas{i}.aplicarCargas();
+                    modeloObj.patronesDeCargas{i}.aplicarCargas(cpenzien);
                 end
             end
             
