@@ -61,14 +61,9 @@ cargasDinamicas = cell(1, 1);
 if ~exist('sis_reg', 'var') % Carga el registro
     sis_reg = cargaRegistroArchivo('test/modal/registro.txt', '\n', ' ', 0, 0, 1, 0.005);
 end
-<<<<<<< HEAD
-%cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', sis_reg, [1, 0], 100); % Horizontal
-cargasDinamicas{1} = CargaPulso('Pulso', 1000, 0.2, [1, 0], 100, 102, 20); % Horizontal
-
-=======
+% cargasDinamicas{1} = CargaPulso('Pulso', 1000, 0.2, [1, 0], 100, 102, 5); % Horizontal
 cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', {sis_reg, sis_reg.*0}, ...
     [1, 0], 0.005, 100); % Horizontal
->>>>>>> 4bf48a1d23407fb486a1c028bf872ea91c5194a0
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
@@ -89,3 +84,21 @@ analisisObj.resolverCargasDinamicas();
 analisisObj.disp();
 pt = analisisObj.plot('modo', 8, 'factor', 10, 'numcuadros', 25, ...
     'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', true);
+
+%% Prueba 
+qnodos = {};
+k = 1;
+mapa = [];
+for i = 1:length(nodos)
+coordNodo = nodos{i}.obtenerCoordenadas;
+if coordNodo(2) == 3 % Nodos con altura 3 (Primer Piso)
+    qnodos{k} = nodos{i};
+    mapa(k) = i;
+    k = k + 1;
+end
+end
+
+
+% cargasDinamicas{1}.obtenerDesplazamiento
+% cargasDinamicas{1}.obtenerAceleracion
+% analisisObj.obtenerMatrizMasa

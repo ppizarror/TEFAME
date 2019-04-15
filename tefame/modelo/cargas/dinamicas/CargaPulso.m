@@ -99,9 +99,9 @@ classdef CargaPulso < CargaDinamica
             rf = zeros(ng, 1);
             
             if CargaPulsoObj.direccion(1) == 1
-                rf(2 * CargaPulsoObj.Nodo) = 1;
+                rf(2 * CargaPulsoObj.Nodo - 1) = 1;
             elseif CargaPulsoObj.direccion(2) == 1
-                rf(2 * CargaPulsoObj.Nodo + 1) = 1;
+                rf(2 * CargaPulsoObj.Nodo) = 1;
             end
             
             % Carga Pulso
