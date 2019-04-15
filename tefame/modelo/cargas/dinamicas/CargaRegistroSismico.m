@@ -41,13 +41,13 @@
 classdef CargaRegistroSismico < CargaDinamica
     
     properties(Access = private)
-        registro % Matriz del registro
+        registro % Cell con matrices de registro
         direccion % Vector de direcciones
     end % properties CargaNodo
     
     methods
         
-        function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tAnalisis)
+        function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, dt, tAnalisis)
             % CargaRegistroSismico: es el constructor de la clase CargaNodo
             %
             % cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,dt,tAnalisis)
@@ -60,6 +60,10 @@ classdef CargaRegistroSismico < CargaDinamica
                 etiquetaCargaRegistroSismico = '';
             end % if
             
+            if length(registro) ~= length(direccion)
+                error('Cell registro no tiene igual dimension a las direcciones de analisis');
+            end
+            
             % Llamamos al constructor de la SuperClass que es la clase Carga
             cargaRegistroObj = cargaRegistroObj@CargaDinamica(etiquetaCargaRegistroSismico);
             
@@ -67,14 +71,14 @@ classdef CargaRegistroSismico < CargaDinamica
             cargaRegistroObj.registro = registro;
             cargaRegistroObj.direccion = direccion;
             cargaRegistroObj.tAnalisis = tAnalisis;
-            cargaRegistroObj.dt = registro(2, 1) - registro(1, 1);
+            cargaRegistroObj.dt = dt;
             
         end % CargaRegistroSismico constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para calcular la carga
         
-        function p = calcularCarga(cargaRegistroObj, factor, m, r)
+        function p = calcularCarga(cargaRegistroObj, factor, m, r) %#ok<INUSL>
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar.
             %
@@ -95,8 +99,13 @@ classdef CargaRegistroSismico < CargaDinamica
             end
             
             % Para cada aceleracion calcula la carga como -m*a
-            for i=1:nt
-                p(:, i) = m * rf .* cargaRegistroObj.registro(i, 2);
+            for i=1:nt % Recorre tiempo
+                for j=1:ng % Recorre grado de libertad
+                    for k=1:nd % Recorre direccion
+                        reg = cargaRegistroObj.registro{k}; % Registro direccion de estudio
+                        p(j, i) = p(j, i) + m(j, j) * r(j, k) * cargaRegistroObj.direccion(k) * reg(i, 2);
+                    end
+                end
             end
             
         end % calcularCarga function
