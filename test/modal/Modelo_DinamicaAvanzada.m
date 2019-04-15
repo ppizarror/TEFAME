@@ -61,7 +61,9 @@ cargasDinamicas = cell(1, 1);
 if ~exist('sis_reg', 'var') % Carga el registro
     sis_reg = cargaRegistroArchivo('test/modal/registro.txt', '\n', ' ', 0, 0, 1, 0.005);
 end
-cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', sis_reg, [1, 0], 100); % Horizontal
+%cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', sis_reg, [1, 0], 100); % Horizontal
+cargasDinamicas{1} = CargaPulso('Pulso', 1000, 0.2, [1, 0], 100, 102, 20); % Horizontal
+
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);

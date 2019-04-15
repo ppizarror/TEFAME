@@ -1170,10 +1170,10 @@ classdef ModalEspectral < handle
             
             fprintf('\tPeriodos y participacion modal:\n');
             if analisisObj.numDG == 2
-                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tw (rad/s)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
                 fprintf('\t\t-----------------------------------------------------------------------------\n');
             elseif analisisObj.numDG == 3
-                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tw (rad/s)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
                 fprintf('\t\t----------------------------------------------------------------------------------------------------\n');
             end
             

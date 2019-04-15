@@ -135,7 +135,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         % Algoritmos de resolucion
         
         function [x, v, z] = newmark(patronDeCargasObj, k, m, c, p, dt, xo, vo) %#ok<*INUSL>
-            % NewmarkLineal: es un metodo de la clase ModalEspectral que se
+            % Newmark: es un metodo de la clase ModalEspectral que se
             % usa para obtener los valores de aceleracion, velociadad y desplazamiento
             % de los grados de libertad a partir del metodo de Newmark
             %
