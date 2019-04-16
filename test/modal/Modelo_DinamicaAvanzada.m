@@ -62,6 +62,7 @@ if ~exist('sis_reg', 'var') % Carga el registro
     sis_reg = cargaRegistroArchivo('test/modal/registro.txt', '\n', ' ', 0, 0, 1, 0.005);
 end
 % cargasDinamicas{1} = CargaPulso('Pulso', 1000, 0.2, [1, 0], 100, 102, 5); % Horizontal
+% cargasDinamicas{1} = CargaSinusoidal('Sinusoidal', 300, 7, [1, 0], 0.05, 102, 30); % Horizontal
 cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', {sis_reg, sis_reg.*0}, ...
     [1, 0], 0.005, 100); % Horizontal
 
