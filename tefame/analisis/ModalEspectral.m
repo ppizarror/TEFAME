@@ -140,7 +140,7 @@ classdef ModalEspectral < handle
             numeroNodos = length(nodoObjetos);
             
             % Inicializamos en cero el contador de GDL
-            contadorGDL = 0;          
+            contadorGDL = 0;
             for i = 1:numeroNodos
                 
                 gdlidNodo = nodoObjetos{i}.obtenerGDLID;
@@ -209,7 +209,7 @@ classdef ModalEspectral < handle
             
             % Calcula el metodo modal espectral
             analisisObj.calcularModalEspectral(nModos, betacR, betacP, maxcond); % M,C,K
-              
+            
         end % analizar function
         
         function resolverCargasDinamicas(analisisObj, cpenzien)

@@ -89,19 +89,19 @@ classdef CargaRegistroSismico < CargaDinamica
             nt = cargaRegistroObj.tAnalisis / cargaRegistroObj.dt;
             nd = length(cargaRegistroObj.direccion);
             p = zeros(ng, nt);
-
+            
             % Crea el vector de influencia equivalente
             rf = zeros(ng, 1);
-            for i=1:ng
-                for j=1:nd
+            for i = 1:ng
+                for j = 1:nd
                     rf(i) = rf(i) + r(i, j) * cargaRegistroObj.direccion(j);
                 end
             end
             
             % Para cada aceleracion calcula la carga como -m*a
-            for i=1:nt % Recorre tiempo
-                for j=1:ng % Recorre grado de libertad
-                    for k=1:nd % Recorre direccion
+            for i = 1:nt % Recorre tiempo
+                for j = 1:ng % Recorre grado de libertad
+                    for k = 1:nd % Recorre direccion
                         reg = cargaRegistroObj.registro{k}; % Registro direccion de estudio
                         p(j, i) = p(j, i) + m(j, j) * r(j, k) * cargaRegistroObj.direccion(k) * reg(i, 2);
                     end
@@ -114,7 +114,7 @@ classdef CargaRegistroSismico < CargaDinamica
         % Metodos para mostrar la informacion de la carga en pantalla
         
         function disp(cargaRegistroObj)
-            % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en
+            % disp: es un metodo de la clase CargaRegistroSismico que se usa para imprimir en
             % command Window la informacion de la carga del tipo registro
             % sismico.
             %
@@ -129,6 +129,6 @@ classdef CargaRegistroSismico < CargaDinamica
             
         end % disp function
         
-    end % methods CargaNodo
+    end % methods CargaRegistroSismico
     
-end % class CargaNodo
+end % class CargaRegistroSismico
