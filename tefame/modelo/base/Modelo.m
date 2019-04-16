@@ -350,8 +350,13 @@ classdef Modelo < handle
             % componentes en un archivo (nombreArchivo)
             
             % Abre el archivo donde se guardara la informacion
-            archivoSalida = fopen(nombreArchivo, 'w');
-            fprintf(archivoSalida, 'TEFAME - Toolbox para Elemento Finitos y Analisis\n');
+            try
+                archivoSalida = fopen(nombreArchivo, 'w');
+                fprintf(archivoSalida, 'TEFAME - Toolbox para Elemento Finitos y Analisis\n');
+            catch
+                error('No se puede abrir el archivo %s', nombreArchivo);
+                return;
+            end
             fprintf(archivoSalida, '         Matricial de Estructuras en MATLAB\n');
             fprintf(archivoSalida, '\n');
             fprintf(archivoSalida, '-------------------------------------------------------------------------------\n');
