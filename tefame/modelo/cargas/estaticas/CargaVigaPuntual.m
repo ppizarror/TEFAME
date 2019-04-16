@@ -58,7 +58,7 @@ classdef CargaVigaPuntual < Carga
             % Crea un objeto de la clase CargaVigaPuntual, en donde toma como atributo
             % el objeto a aplicar la carga, la distancia como porcentaje
             % del largo del elemento con respecto al primer nodo y el
-            % elemento tipo viga.
+            % elemento tipo viga
             
             if nargin == 0
                 etiquetaCarga = '';
@@ -82,7 +82,7 @@ classdef CargaVigaPuntual < Carga
         
         function aplicarCarga(cargaVigaPuntualObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaVigaPuntual que se usa para aplicar
-            % la carga sobre los dos nodos del elemento.
+            % la carga sobre los dos nodos del elemento
             %
             % aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
             
@@ -100,7 +100,7 @@ classdef CargaVigaPuntual < Carga
             % otro. Esto se hizo al no tener la funcion dirac(x) y
             % distintos errores fruto de la evaluacion de la integral. El
             % caso con las funciones de interpolacion N1..N4 se realizo
-            % correctamente para el caso de la carga distribuida.
+            % correctamente para el caso de la carga distribuida
             v1 = P * ((L - d)^2 / L^2) * (3 - 2 * (L - d) / L);
             v2 = P * (d^2 / L^2) * (3 - 2 * d / L);
             theta1 = P * d * (L - d)^2 / (L^2);
@@ -124,11 +124,11 @@ classdef CargaVigaPuntual < Carga
         function disp(cargaVigaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % elemento.
+            % elemento
             %
             % disp(cargaVigaPuntualObj)
             % Imprime la informacion guardada en la carga puntual de la
-            % Viga (cargaVigaPuntualObj) en pantalla.
+            % Viga (cargaVigaPuntualObj) en pantalla
             
             fprintf('Propiedades carga viga puntual:\n');
             disp@Carga(cargaVigaPuntualObj);

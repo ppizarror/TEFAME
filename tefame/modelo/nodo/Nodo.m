@@ -165,7 +165,7 @@ classdef Nodo < ComponenteModelo
         function gdlIDNodoCondensado = obtenerGDLIDCondensado(nodoObj)
             % obtenerGDLIDCondensado: es un metodo de la clase Nodo que se usa para
             % obtener los ID de los GDL que tiene el Nodo, una vez se
-            % llevó a cabo el proceso de condensacion
+            % llevï¿½ a cabo el proceso de condensacion
             %
             % gdlIDNodo = obtenerGDLID(nodoObj)
             % Entrega el vector con los ID de los GDL (gdlIDNodo) que tiene el
@@ -196,7 +196,7 @@ classdef Nodo < ComponenteModelo
             % desplazmientosNodo = obtenerDesplazamientos(nodoObj)
             % Entrega el vector con los desplazamientos o rotaciones (desplazmientosNodo)
             % que sufrio el Nodo (nodoObj) debido a la aplicacion de los patrones
-            % de carga.
+            % de carga
             
             desplazamientosNodo = nodoObj.despl;
             

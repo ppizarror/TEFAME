@@ -69,7 +69,7 @@ classdef CargaVigaColumnaDistribuida < Carga
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas, las distancias de
             % aplicacion y el angulo de la carga con respecto a la normal
-            % (0=Completamente normal, pi/2=Carga axial a la viga).
+            % (0=Completamente normal, pi/2=Carga axial a la viga)
             
             % Si no se pasan argumentos se crea una carga vacia
             if nargin == 0
@@ -110,7 +110,7 @@ classdef CargaVigaColumnaDistribuida < Carga
         
         function aplicarCarga(cargaVigaColumnaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaVigaColumnaDistribuidaObj
-            % que se usa para aplicar la carga sobre los dos nodos del elemento.
+            % que se usa para aplicar la carga sobre los dos nodos del elemento
             %
             % aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
             
@@ -169,11 +169,11 @@ classdef CargaVigaColumnaDistribuida < Carga
         function disp(cargaVigaColumnaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % elemento.
+            % elemento
             %
             % disp(cargaVigaColumnaDistribuidaObj)
             % Imprime la informacion guardada en la carga viga-columna distribuida
-            % (cargaVigaColumnaDistribuidaObj) en pantalla.
+            % (cargaVigaColumnaDistribuidaObj) en pantalla
             
             fprintf('Propiedades carga viga-columna distribuida:\n');
             disp@Carga(cargaVigaColumnaDistribuidaObj);

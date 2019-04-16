@@ -94,7 +94,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % aplicarCargas(patronDeCargasObj,cpenzien)
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
-            % y elementos.
+            % y elementos
             
             % Obtiene los parametros de la estructura
             k = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
@@ -104,7 +104,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
             % Chequea que las dimensiones sean apropiadas
             if ~equalMatrixSize(k, m) || ~equalMatrixSize(m, c) || length(r) ~= length(m)
-                error('Tamaño incorrecto de matrices K, M, C o r');
+                error('Tamaï¿½o incorrecto de matrices K, M, C o r');
             end
             tInicioProceso = cputime;
             

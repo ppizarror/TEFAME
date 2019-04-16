@@ -86,10 +86,10 @@ analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], 1);
 % pt = analisisObj.plot('modo', 8, 'factor', 10, 'numcuadros', 25, ...
 %     'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', true);
 
-%% OBTENCIÓN DE ENVOLVENTES
+%% OBTENCION DE ENVOLVENTES
 % Se genera vector en que las filas contienen nodos en un mismo piso,
 % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
-% Tambien se genera vector que contiene alturas de piso.
+% Tambien se genera vector que contiene alturas de piso
 nnodos = length(nodos);
 haux = 0;
 hrel = zeros (1,1);

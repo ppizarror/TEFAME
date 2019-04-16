@@ -2,7 +2,7 @@ fprintf('>\tTEST_VIGA2D\n');
 
 % Test viga con carga simple a distancia D (% del largo) del nodo 1,
 % reacciones verticales R1,R3 y horizontales R2,R4. Teoricamente:
-% R2=R4=0, R1+R3=P, R1=P*(L-D)/L, R2=P*D/L.
+% R2=R4=0, R1+R3=P, R1=P*(L-D)/L, R2=P*D/L
 %
 %   <-- D -->
 %

@@ -63,7 +63,7 @@ classdef CargaVigaColumnaPuntual < Carga
             % Crea un objeto de la clase CargaVigaColumnaPuntual, en donde toma como atributo
             % el objeto a aplicar la carga, la distancia como porcentaje
             % del largo del elemento con respecto al primer nodo, el
-            % elemento tipo viga y el angulo de aplicacion de la carga con respecto a la normal.
+            % elemento tipo viga y el angulo de aplicacion de la carga con respecto a la normal
             
             if nargin == 0
                 etiquetaCarga = '';
@@ -89,7 +89,7 @@ classdef CargaVigaColumnaPuntual < Carga
         
         function aplicarCarga(cargaVigaColumnaPuntualObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaVigaColumnaPuntual
-            % que se usa para aplicar la carga sobre los dos nodos del elemento.
+            % que se usa para aplicar la carga sobre los dos nodos del elemento
             %
             % aplicarCarga(cargaVigaColumnaPuntualObj,factorDeCarga)
             
@@ -108,7 +108,7 @@ classdef CargaVigaColumnaPuntual < Carga
             % Se calculan apoyos y reacciones en un caso de viga empotrada
             % sometida a una carga P aplicada a (L-d) de un apoyo y d del
             % otro. Esto se hizo al no tener la funcion dirac(x) y
-            % distintos errores fruto de la evaluacion de la integral.
+            % distintos errores fruto de la evaluacion de la integral
             v1 = P * ((L - d)^2 / L^2) * (3 - 2 * (L - d) / L);
             v2 = P * (d^2 / L^2) * (3 - 2 * d / L);
             theta1 = P * d * (L - d)^2 / (L^2);
@@ -138,11 +138,11 @@ classdef CargaVigaColumnaPuntual < Carga
         function disp(cargaVigaColumnaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % elemento.
+            % elemento
             %
             % disp(cargaVigaColumnaPuntualObj)
             % Imprime la informacion guardada en la carga puntual de la
-            % Viga-Columna (cargaVigaColumnaPuntualObj) en pantalla.
+            % Viga-Columna (cargaVigaColumnaPuntualObj) en pantalla
             
             fprintf('Propiedades carga viga-columna puntual:\n');
             disp@Carga(cargaVigaColumnaPuntualObj);

@@ -81,7 +81,7 @@ classdef CargaSinusoidal < CargaDinamica
         
         function p = calcularCarga(CargaSinusoidalObj, factor, m, r) %#ok<*INUSD,*INUSL>
             % calcularCarga: es un metodo de la clase Carga que se usa para
-            % calcular la carga a aplicar.
+            % calcular la carga a aplicar
             %
             % calcularCarga(cargaObj,factor,m,r)
             

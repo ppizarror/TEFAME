@@ -62,7 +62,7 @@ classdef CargaVigaDistribuida < Carga
             % cargaVigaDistribuidaObj=CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas y las distancias de
-            % aplicacion (en porcentaje con respecto al largo).
+            % aplicacion (en porcentaje con respecto al largo)
             
             if nargin == 0
                 etiquetaCarga = '';
@@ -100,7 +100,7 @@ classdef CargaVigaDistribuida < Carga
         
         function aplicarCarga(cargaVigaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaVigaDistribuidaObj que se usa para aplicar
-            % la carga sobre los dos nodos del elemento.
+            % la carga sobre los dos nodos del elemento
             %
             % aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
             
@@ -148,11 +148,11 @@ classdef CargaVigaDistribuida < Carga
         function disp(cargaVigaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % elemento.
+            % elemento
             %
             % disp(cargaVigaDistribuidaObj)
             % Imprime la informacion guardada en la carga distribuida de la
-            % Viga (cargaVigaDistribuidaObj) en pantalla.
+            % Viga (cargaVigaDistribuidaObj) en pantalla
             
             fprintf('Propiedades carga viga distribuida:\n');
             disp@Carga(cargaVigaDistribuidaObj);

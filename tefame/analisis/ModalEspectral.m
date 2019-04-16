@@ -214,11 +214,11 @@ classdef ModalEspectral < handle
         
         function resolverCargasDinamicas(analisisObj, cpenzien)
             % resolverCargasDinamicas: Resuelve las cargas dinamicas del
-            % sistema.
+            % sistema
             %
             % resolverCargasDinamicas(analisisObj,cpenzien)
             %
-            % Por defecto se usa el amortiguamiento de Rayleigh.
+            % Por defecto se usa el amortiguamiento de Rayleigh
             
             if ~analisisObj.analisisFinalizado
                 error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
@@ -908,7 +908,6 @@ classdef ModalEspectral < handle
                         else
                             imwrite(imind, cm, guardaGif, 'gif', 'WriteMode', 'append', 'DelayTime', 0.1);
                         end
-                        % pause(0.1);
                     catch %#ok<*CTCH>
                         fprintf('\n\tSe ha cancelado el proceso del grafico\n');
                         return;

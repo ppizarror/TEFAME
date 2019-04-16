@@ -52,7 +52,7 @@ modeloObj.agregarNodos(nodos);
 elementos = cell(N, 1);
 for i = 1:N
     % n4 ------------ n3     Esta es la notacion que se usa para crear los
-    %  |              |      elementos.
+    %  |              |      elementos
     %  |      (i)     |
     %  |              |
     % n1 ------------ n2

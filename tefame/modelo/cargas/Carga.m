@@ -71,7 +71,7 @@ classdef Carga < ComponenteModelo
             % la carga
             %
             % aplicarCarga(cargaObj)
-            % Aplica el carga que estan guardada en el componente que corresponda.
+            % Aplica el carga que estan guardada en el componente que corresponda
             
         end % aplicarCarga function
         

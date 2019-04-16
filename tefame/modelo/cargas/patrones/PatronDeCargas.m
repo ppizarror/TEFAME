@@ -81,7 +81,7 @@ classdef PatronDeCargas < ComponenteModelo
             %
             % aplicarCargas(patronDeCargasObj)
             % Aplica las cargas que estan guardadas en el PatronDeCargas (patronDeCargasObj),
-            % es decir, se aplican las cargas sobre los nodos y elementos.
+            % es decir, se aplican las cargas sobre los nodos y elementos
             
         end % aplicarCargas function
         

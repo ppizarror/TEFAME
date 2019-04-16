@@ -215,7 +215,7 @@ classdef Elemento < ComponenteModelo
         function agregarFuerzaResistenteAReacciones(elementoObj) %#ok<MANU>
             % agregarEsfuerzosElementoAReaccion: es un metodo de la clase Nodo
             % que se usa para agregar el vector de fuerzas resistentes de un
-            % elemento al nodo.
+            % elemento al nodo
             %
             % agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)
             % Agrega al vector de reacciones del Nodo (nodoObj), el vector de

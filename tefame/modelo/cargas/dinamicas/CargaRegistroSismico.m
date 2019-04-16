@@ -54,7 +54,7 @@ classdef CargaRegistroSismico < CargaDinamica
             %
             % Crea una carga del tipo registro de aceleracion, requiere un
             % vector registro [Nxr], una direccion [1xr] y un tiempo maximo
-            % de analisis.
+            % de analisis
             
             if nargin == 0
                 etiquetaCargaRegistroSismico = '';
@@ -80,7 +80,7 @@ classdef CargaRegistroSismico < CargaDinamica
         
         function p = calcularCarga(cargaRegistroObj, factor, m, r) %#ok<INUSL>
             % calcularCarga: es un metodo de la clase Carga que se usa para
-            % calcular la carga a aplicar.
+            % calcular la carga a aplicar
             %
             % calcularCarga(cargaObj,factor,m,r)
             

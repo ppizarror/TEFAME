@@ -130,7 +130,7 @@ classdef Modelo < handle
             % agregarRestricciones(modeloObj,arregloRestricciones)
             % Agrega el arreglo con los restricciones (arregloRestricciones)
             % al Modelo (modeloObj) para que esto lo guarde y tenga acceso a
-            % los restricciones.
+            % los restricciones
             
             modeloObj.restricciones = arregloRestricciones;
             
@@ -143,9 +143,9 @@ classdef Modelo < handle
             % agregarPatronesDeCargas(modeloObj,arregloPatronDeCargas)
             % Agrega el arreglo con los patrones de carga (arregloPatronDeCargas)
             % al Modelo (modeloObj) para que esto lo guarde y tenga acceso a los
-            % patrones de carga.
+            % patrones de carga
             % Los patrones de cargas contienen las cargas que se aplican en los
-            % nodos y elementos.
+            % nodos y elementos
             
             modeloObj.patronesDeCargas = arregloPatronDeCargas;
             
@@ -265,7 +265,7 @@ classdef Modelo < handle
             % aplicarPatronesDeCargasEstatico(modeloObj)
             % Aplica los patrones de cargas que estan guardados en el Modelo
             % (modeloObj), es decir, aplica las cargas sobre los nodos y
-            % elementos.
+            % elementos
             
             fprintf('\tAplica patron de cargas estatico\n');
             for i = 1:length(modeloObj.patronesDeCargas)
@@ -285,7 +285,7 @@ classdef Modelo < handle
             % (modeloObj), es decir, aplica las cargas sobre los nodos y
             % elementos. Requiere ademas si se usa la matriz de
             % amortiguamiento de penzien, por defecto es falso, o sea usa
-            % Rayleigh.
+            % Rayleigh
             
             fprintf('\tAplica patron de cargas dinamico\n');
             for i = 1:length(modeloObj.patronesDeCargas)

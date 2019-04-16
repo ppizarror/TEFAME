@@ -87,7 +87,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % aplicarCargas(patronDeCargasObj)
             % Aplica las cargas que estan guardadas en el PatronDeCargasConstante
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
-            % y elementos.
+            % y elementos
             
             % Se aplica la carga con un factor de carga = 1
             for i = 1:length(patronDeCargasObj.cargas)

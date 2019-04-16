@@ -73,7 +73,7 @@ classdef CargaMembranaDistribuida < Carga
             % cargaMembranaDistribuidaObj=CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas y las distancias de
-            % aplicacion.
+            % aplicacion
             % La enumeracion de los nodos de la membrana corresponde a:
             %
             %       4 ------------- 3
@@ -83,7 +83,7 @@ classdef CargaMembranaDistribuida < Carga
             %       1 ------------- 2
             %
             % No se pueden aplicar cargas cruzadas, ie solo se permiten las
-            % combinaciones 1-2, 2-3, 3-4 o 1-4.
+            % combinaciones 1-2, 2-3, 3-4 o 1-4
             
             if nargin == 0
                 etiquetaCarga = '';
@@ -121,8 +121,7 @@ classdef CargaMembranaDistribuida < Carga
             membranaNodo2 = nodoMembrana{nodo2}.obtenerCoordenadas();
             largo = sqrt((membranaNodo1(1) - membranaNodo2(1))^2+(membranaNodo1(2) - membranaNodo2(2))^2);
             
-            % Calcula el angulo de aplicacion, puede ser 0 (en eje y) o 90
-            % (eje x).
+            % Calcula el angulo de aplicacion, puede ser 0 (en eje y) o 90 (eje x)
             dx = (membranaNodo2(1) - membranaNodo1(1));
             dy = (membranaNodo2(2) - membranaNodo1(2));
             cargaMembranaDistribuidaObj.theta = atan(dy/dx);
@@ -146,7 +145,7 @@ classdef CargaMembranaDistribuida < Carga
         
         function aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaMembranaDistribuidaObj
-            % que se usa para aplicar la carga sobre los dos nodos correspondientes del elemento.
+            % que se usa para aplicar la carga sobre los dos nodos correspondientes del elemento
             %
             % aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
             
@@ -195,11 +194,11 @@ classdef CargaMembranaDistribuida < Carga
         function disp(cargaMembranaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % elemento membrana.
+            % elemento membrana
             %
             % disp(cargaMembranaDistribuidaObj)
             % Imprime la informacion guardada en la carga distribuida de la
-            % membrana (cargaMembranaDistribuidaObj) en pantalla.
+            % membrana (cargaMembranaDistribuidaObj) en pantalla
             
             fprintf('Propiedades carga membrana distribuida:\n');
             disp@Carga(cargaMembranaDistribuidaObj);

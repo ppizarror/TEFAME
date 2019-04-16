@@ -139,7 +139,7 @@ classdef AnalisisEstatico < handle
             %
             % analizar(analisisObj)
             % Analiza estaticamente el modelo lineal y elastico sometido a un
-            % set de cargas.
+            % set de cargas
             
             fprintf('Ejecuntando analisis estatico\n');
             

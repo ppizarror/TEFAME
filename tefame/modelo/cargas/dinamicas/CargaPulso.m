@@ -57,7 +57,7 @@ classdef CargaPulso < CargaDinamica
             %
             % CargaPulsoObj = CargaPulso(etiquetaCargaPulso, amplitud, tpulso, direccion, intervalos, Nodo)
             %
-            % Crea una carga tipo pulso.
+            % Crea una carga tipo pulso
             
             if nargin == 0
                 etiquetaCargaPulso = '';
@@ -82,7 +82,7 @@ classdef CargaPulso < CargaDinamica
         
         function p = calcularCarga(CargaPulsoObj, factor, m, r) %#ok<INUSD,INUSL>
             % calcularCarga: es un metodo de la clase Carga que se usa para
-            % calcular la carga a aplicar.
+            % calcular la carga a aplicar
             %
             % calcularCarga(cargaObj,factor,m,r)
             

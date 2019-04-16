@@ -56,7 +56,7 @@ modeloObj.agregarNodos(nodos);
 % Creamos los elementos
 %
 % 4 ------------- 3      Esta es la notacion que se usa para crear los
-% |       y       |      elementos.
+% |       y       |      elementos
 % |       #x      |
 % |               |
 % 1 ------------- 2

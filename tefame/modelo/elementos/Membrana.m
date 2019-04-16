@@ -305,7 +305,7 @@ classdef Membrana < Elemento
         
         function e = obtenerDeformaciones(membranaObj, x, y)
             % Obtiene el vector de deformaciones [3x1] una vez se tiene el
-            % vector de desplazamientos.
+            % vector de desplazamientos
             
             % Verifica que x e y sean validos
             membranaObj.validarXY(x, y);

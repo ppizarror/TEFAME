@@ -1,34 +1,27 @@
 function gifplayer(gif_image, delay_length)
 % The function displays any animated GIF's in a figure window
-%
+% Demo : gifplayer; %plays the animated crystal.gif file
 
-%% Demo : gifplayer; %plays the animated crystal.gif file
-%
-
-%% Usage:
+% Usage:
 % ex: gifplayer('animated.gif',0.1); %name of the gif file and the delay in
 % which to update the frames in the GIF file
-%
 
-%% Vihang Patil, Oct 2006
+% Vihang Patil, Oct 2006
 % Copyright 2006-2007 Vihang Patil
 % Email: vihang_patil@yahoo.com
 % Created: 17th Oct 2006
-%
 
 %% Revision:
-% Date: 19th Oct 2006..Removed the setappdata and getappdata and used
+% Date: 19th Oct 2006. Removed the setappdata and getappdata and used
 % functions handling property. Multiple Gif's can be called upon which can
 % be opened in new figure window.
 % ex: figure;gifplayer;
 % ex: figure;gifplayer('abcd.gif',0.1); and so on
-%
 
-%% P.N: PLease make sure to close the existing window in which the gif is
+% P.N: PLease make sure to close the existing window in which the gif is
 % currently being played and open a separate window for another GIF
 % image.If another GIF is opened in the same window then the first timer
-% continues to run even if you close the figure window.
-
+% continues to run even if you close the figure window
 
 if nargin < 1
     gif_image = 'crystal.gif';
@@ -58,7 +51,6 @@ else
 end
 set(gcf, 'CloseRequestFcn', {@CloseFigure, handles});
 
-
 function TmrFcn(src, event, handles)
 %Timer Function to animate the GIF
 
@@ -69,7 +61,6 @@ if handles.count > handles.len %if the last frame is achieved intialise to first
     handles.count = 1;
 end
 guidata(handles.guifig, handles);
-
 
 function CloseFigure(src, event, handles)
 % Function CloseFigure(varargin)

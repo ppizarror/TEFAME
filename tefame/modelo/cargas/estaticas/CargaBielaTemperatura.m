@@ -61,7 +61,7 @@ classdef CargaBielaTemperatura < Carga
             % cargaBielaTemperaturaObj=CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
             % Crea un objeto de la clase CargaBielaTemperatura, en donde toma como atributo
             % el objeto a aplicar la carga, la diferencia de temperatura y
-            % el coeficiente de dilatacion termica del material (alpha).
+            % el coeficiente de dilatacion termica del material (alpha)
             
             if nargin == 0
                 etiquetaCarga = '';
@@ -87,7 +87,7 @@ classdef CargaBielaTemperatura < Carga
         
         function aplicarCarga(cargaBielaTemperaturaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaBielaTemperatura
-            % que se usa para aplicar la carga en los nodos.
+            % que se usa para aplicar la carga en los nodos
             %
             % aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
             
@@ -117,12 +117,12 @@ classdef CargaBielaTemperatura < Carga
             % disp: es un metodo de la clase CargaBielaTemperatura que se usa para imprimir en
             % command Window la informacion de la carga generada en los
             % nodos fruto de la diferencia de temperatura y el coeficiente
-            % del material.
+            % del material
             %
             % disp(cargaBielaTemperaturaObj)
             % Imprime la informacion guardada en la carga fruto de la
             % diferencia de temperatura de la Biela (cargaBielaTemperaturaObj)
-            % en pantalla.
+            % en pantalla
             
             fprintf('Propiedades carga biela temperatura:\n');
             disp@Carga(cargaBielaTemperaturaObj);
