@@ -82,7 +82,7 @@ classdef CargaDinamica < ComponenteModelo
         
         function p = calcularCarga(cargaObj, varargin) %#ok<*STOUT,*VANUS,INUSD>
             % calcularCarga: es un metodo de la clase Carga que se usa para
-            % calcular la carga a aplicar.
+            % calcular la carga a aplicar
             %
             % calcularCarga(cargaObj)
             
@@ -153,10 +153,10 @@ classdef CargaDinamica < ComponenteModelo
         
         function disp(cargaObj)
             % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en
-            % command Window la informacion de la carga.
+            % command Window la informacion de la carga
             %
             % disp(cargaObj)
-            % Imprime la informacion guardada en la carga (cargaObj) en pantalla.
+            % Imprime la informacion guardada en la carga (cargaObj) en pantalla
             
             disp@ComponenteModelo(cargaObj);
             

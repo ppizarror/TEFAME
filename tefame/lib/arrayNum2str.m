@@ -7,8 +7,7 @@ function textCell = arrayNum2str(a, num)
 textCell = cell(1, 2*num+1);
 textCell(1) = {'['};
 
-for i = 1:num
-    
+for i = 1:num  
     if abs(a(i)) < 1e-10
         textCell(2*i) = {pad(num2str(0), 10)};
     else
@@ -18,8 +17,7 @@ for i = 1:num
             textCell(2*i) = {pad(num2str(a(i), '%.04f'), 10)};
         end
     end
-    textCell(1+2*i) = {' '};
-    
+    textCell(1+2*i) = {' '};    
 end % for
 
 textCell(2*num+1) = {']'};

@@ -112,32 +112,3 @@ else
     hNodos(j,k) = i;
 end
 end
-
-%Se genera cell gdlcond que contiene la ubicacion de los gdl luego de
-%condensar, cero significa que ese grado de libertad esta condensado 
-condensar = true;
-if condensar
-    NgdlCond = analisisObj.NgdlCond;
-    gdlaux = zeros(1,3);
-    gdlcond = cell(1,nnodos);
-    for i = 1:nnodos
-        gdl = nodos{i}.obtenerGDLID;
-        gdlaux = gdl;
-        for j = 1:length(gdl)
-            for k = 1:length(NgdlCond)
-                if NgdlCond(k) == gdl(j)
-                    gdlaux(j) = 0; %gdl condensado
-                elseif NgdlCond(k) < gdl(j)
-                    gdlaux(j) = gdlaux(j) - 1;
-                else
-                    gdlaux(j) = gdlaux(j);
-                end
-            end
-        end
-        gdlcond{i} = gdlaux;
-    end
-end
-
-% cargasDinamicas{1}.obtenerDesplazamiento
-% cargasDinamicas{1}.obtenerAceleracion
-% analisisObj.obtenerMatrizMasa

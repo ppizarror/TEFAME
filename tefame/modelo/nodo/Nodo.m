@@ -239,7 +239,7 @@ classdef Nodo < ComponenteModelo
             % los ID de los GDL que tiene el Nodo asignados una vez se
             % condensa el modelo
             %
-            % definirGDLID(nodoObj,gdlIDNodo)
+            % definirGDLID(nodoObj,gdlIDNodoCondensado)
             % Guarda el ID que se fueron asignados a los grados de libertad (gdlIDNodo)
             % que tiene el Nodo (nodoObj) una vez se aplica la condensacion
             
@@ -426,24 +426,23 @@ classdef Nodo < ComponenteModelo
             % Imprime la informacion guardada en el Nodo (nodoObj) en pantalla
             
             fprintf('Propiedades Nodo:\n');
-            
             disp@ComponenteModelo(nodoObj);
             
             numCrds = length(nodoObj.coords);
             Crds = arrayNum2str(nodoObj.coords, numCrds);
-            fprintf('Coordenadas: %s\n', [Crds{:}]);
+            fprintf('\tCoordenadas: %s\n', [Crds{:}]);
             
             nGDLNodo = nodoObj.nGDL;
-            fprintf('Numero de grados de libertad: %s\n', num2str(nGDLNodo));
+            fprintf('\tNumero de grados de libertad: %s\n', num2str(nGDLNodo));
             
-            GdlID = arrayNum2str(nodoObj.gdlID, nGDLNodo);
-            fprintf('ID Global de los grados de libertad: %s\n', [GdlID{:}]);
-            GdlID = arrayNum2str(nodoObj.gdlIDCondensado, nGDLNodo);
-            fprintf('ID condensados de los grados de libertad: %s\n', [GdlID{:}]);
+            GdlID = arrayIntNum2str(nodoObj.gdlID, nGDLNodo);
+            fprintf('\tID global de los grados de libertad: %s\n', [GdlID{:}]);
+            GdlID = arrayIntNum2str(nodoObj.gdlIDCondensado, nGDLNodo);
+            fprintf('\tID condensados de los grados de libertad: %s\n', [GdlID{:}]);
             desplazamientoNodo = arrayNum2str(nodoObj.despl, nGDLNodo);
-            fprintf('Desplazamientos: %s\n', [desplazamientoNodo{:}]);
+            fprintf('\tDesplazamientos: %s\n', [desplazamientoNodo{:}]);
             reaccionesNodo = arrayNum2str(nodoObj.reacciones, nGDLNodo);
-            fprintf('Reacciones: %s\n', [reaccionesNodo{:}]);
+            fprintf('\tReacciones: %s\n', [reaccionesNodo{:}]);
             
         end % disp function
         

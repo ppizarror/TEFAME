@@ -23,6 +23,7 @@ addpath('tefame/modelo/cargas/patrones');
 addpath('tefame/modelo/elementos');
 addpath('tefame/modelo/nodo');
 addpath('tefame/modelo/restricciones');
+addpath('tefame/utils');
 
 % Agrega los test al path
 addpath('test');

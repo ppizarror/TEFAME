@@ -40,7 +40,6 @@
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
-
 classdef Carga < ComponenteModelo
     
     properties(Access = private)
@@ -69,7 +68,7 @@ classdef Carga < ComponenteModelo
         
         function aplicarCarga(cargaObj, varargin) %#ok<*VANUS,INUSD>
             % aplicarCarga: es un metodo de la clase Carga que se usa para aplicar
-            % la carga.
+            % la carga
             %
             % aplicarCarga(cargaObj)
             % Aplica el carga que estan guardada en el componente que corresponda.
@@ -82,10 +81,10 @@ classdef Carga < ComponenteModelo
         function disp(cargaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
-            % componente que corresponda.
+            % componente que corresponda
             %
             % disp(cargaObj)
-            % Imprime la informacion guardada en la carga (cargaObj) en pantalla.
+            % Imprime la informacion guardada en la carga (cargaObj) en pantalla
             
             disp@ComponenteModelo(cargaObj);
             

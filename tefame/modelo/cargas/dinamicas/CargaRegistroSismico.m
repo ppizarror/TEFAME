@@ -113,16 +113,16 @@ classdef CargaRegistroSismico < CargaDinamica
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostrar la informacion de la carga en pantalla
         
-        function disp(cargaRegistroObj)
+        function disp(cargaRegistroSismicoObj)
             % disp: es un metodo de la clase CargaRegistroSismico que se usa para imprimir en
             % command Window la informacion de la carga del tipo registro
-            % sismico.
+            % sismico
             %
-            % disp(cargaRegistroObj)
-            % Imprime la informacion guardada en la carga (cargaRegistroObj) en pantalla.
+            % disp(cargaRegistroSismicoObj)
+            % Imprime la informacion guardada en la carga (cargaRegistroSismicoObj) en pantalla
             
             fprintf('Propiedades Carga Registro Sismico:\n');
-            disp@CargaDinamica(cargaRegistroObj);
+            disp@CargaDinamica(cargaRegistroSismicoObj);
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');

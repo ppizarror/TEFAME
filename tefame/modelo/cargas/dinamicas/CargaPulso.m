@@ -128,16 +128,15 @@ classdef CargaPulso < CargaDinamica
         function disp(CargaPulsoObj)
             % disp: es un metodo de la clase CargaPulso que se usa para imprimir en
             % command Window la informacion de la carga del tipo registro
-            % sismico.
+            % sismico
             %
             % disp(CargaPulsoObj)
-            % Imprime la informacion guardada en la carga (CargaPulsoObj) en pantalla.
+            % Imprime la informacion guardada en la carga (CargaPulsoObj) en pantalla
             
             fprintf('Propiedades Carga Pulso:\n');
             disp@CargaDinamica(CargaPulsoObj);
             
             fprintf('-------------------------------------------------\n');
-
             fprintf('\n');
             
         end % disp function

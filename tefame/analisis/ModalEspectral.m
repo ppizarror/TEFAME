@@ -62,7 +62,7 @@
 
 classdef ModalEspectral < handle
     
-    properties(Access = public)
+    properties(Access = private)
         modeloObj % Guarda el objeto que contiene el modelo
         numeroGDL % Guarda el numero de grados de libertad totales del modelo
         Kt % Matriz de Rigidez del modelo
@@ -93,7 +93,6 @@ classdef ModalEspectral < handle
         cPenzien % Matriz de amortiguamiento de Wilson-Penzien
         mostrarDeformada % Muestra la posicion no deformada en los graficos
         cargarAnimacion % Carga la animacion del grafico una vez renderizado
-        NgdlCond % Grados de libertad condensados
     end % properties ModalEspectral
     
     methods
@@ -118,7 +117,6 @@ classdef ModalEspectral < handle
             analisisObj.analisisFinalizado = false;
             analisisObj.mostrarDeformada = false;
             analisisObj.cargarAnimacion = true;
-            analisisObj.NgdlCond = [];
             
         end % ModalEspectral constructor
         
@@ -271,7 +269,6 @@ classdef ModalEspectral < handle
             if analisisObj.gdlCond > 0
                 
                 realizaCond = true;
-                analisisObj.NgdlCond = vz;
                 % Chequea cuantos grados quedan
                 nndg = ndg;
                 if ndg > 2
@@ -333,15 +330,17 @@ classdef ModalEspectral < handle
                 nodos = analisisObj.modeloObj.obtenerNodos();
                 nnodos = length(nodos);
                 for i = 1:nnodos
-                    gdl = nodos{i}.obtenerGDLID;
+                    gdl = nodos{i}.obtenerGDLID();
                     gdlaux = gdl;
                     for j = 1:length(gdl)
-                        if analisisObj.NgdlCond == gdl(j)
-                            gdlaux(j) = 0; % gdl condensado
-                        elseif analisisObj.NgdlCond < gdl(j)
-                            gdlaux(j) = gdlaux(j) - 1;
-                        else
-                            gdlaux(j) = gdlaux(j);
+                        for k=1:length(vz) % Recorre los grados condensados
+                            if vz(k) == gdl(j)
+                                gdlaux(j) = 0; % gdl condensado
+                            elseif vz(k) < gdl(j)
+                                gdlaux(j) = gdlaux(j) - 1;
+                            else
+                                gdlaux(j) = gdlaux(j);
+                            end
                         end
                     end
                     nodos{i}.definirGDLIDCondensado(gdlaux);
