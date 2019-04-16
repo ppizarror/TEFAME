@@ -212,15 +212,24 @@ classdef ModalEspectral < handle
               
         end % analizar function
         
-        function resolverCargasDinamicas(analisisObj)
+        function resolverCargasDinamicas(analisisObj, cpenzien)
             % resolverCargasDinamicas: Resuelve las cargas dinamicas del
             % sistema.
+            %
+            % resolverCargasDinamicas(analisisObj,cpenzien)
+            %
+            % Por defecto se usa el amortiguamiento de Rayleigh.
             
             if ~analisisObj.analisisFinalizado
                 error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
             end
+            
+            if ~exist('cpenzien', 'var')
+                cpenzien = false;
+            end
+            
             fprintf('Metodo modal espectral:\n');
-            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico();
+            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(cpenzien);
             
         end % resolverCargasDinamicas function
         
@@ -1170,10 +1179,10 @@ classdef ModalEspectral < handle
             
             fprintf('\tPeriodos y participacion modal:\n');
             if analisisObj.numDG == 2
-                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tw (rad/s)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
                 fprintf('\t\t-----------------------------------------------------------------------------\n');
             elseif analisisObj.numDG == 3
-                fprintf('\t\tN\t|\tT (s)\t|\tw (Hz)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t|\tw (rad/s)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
                 fprintf('\t\t----------------------------------------------------------------------------------------------------\n');
             end
             

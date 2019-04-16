@@ -25,11 +25,8 @@
 %| La clase  Carga se usa  como una superclase  para todos los tipos de |
 %| cargas dinamicas a aplicar                                           |
 %|                                                                      |
-%| Programado: FR                                                       |
-%| Fecha: 05/08/2015                                                    |
-%|                                                                      |
-%| Modificado por: FR - 24/10/2016                                      |
-%|                 Pablo Pizarro @ppizarror - 10/04/2019                |
+%| Programado: Pablo Pizarro @ppizarror                                 |
+%| Fecha: 10/04/2019                                                    |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
@@ -48,7 +45,6 @@
 %       a = obtenerAceleracion(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
-
 
 classdef CargaDinamica < ComponenteModelo
     
