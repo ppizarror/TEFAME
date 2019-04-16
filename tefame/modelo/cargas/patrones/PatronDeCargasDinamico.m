@@ -146,6 +146,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             beta = 1 / 6;
             alpha = 0;
             
+            % Obtiene parametros del modelo
+            KT = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
+            MT = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
+            CT = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(true); % false: cPenzien
+            
             n = length(p);
             % tmax = dt * (n - 1);
             % t = linspace(0, tmax, n)';
@@ -156,20 +161,25 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             x(:, 1) = xo;
             v(:, 1) = vo;
             z(:, 1) = m^(-1) * (p(:, 1) - c * v(:, 1) - k * x(:, 1));
-            c1 = 1 / (dt^2 * beta);
-            c2 = 1 / (dt * beta);
-            c3 = gamma / (dt * beta);
-            c4 = 1 - gamma / beta;
-            c5 = 1 - gamma / (2 * beta);
-            ks = c1 * m + (1 + alpha) * c3 * c + (1 + alpha) * k;
+            a1 = 1 / (beta * dt^2) * MT + gamma / (beta * dt) * CT;
+            a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
+            a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) * CT;
+            ks = KT + a1;
+%             c1 = 1 / (dt^2 * beta);
+%             c2 = 1 / (dt * beta);
+%             c3 = gamma / (dt * beta);
+%             c4 = 1 - gamma / beta;
+%             c5 = 1 - gamma / (2 * beta);        
+%             ks = c1 * m + (1 + alpha) * c3 * c + (1 + alpha) * k; %hht
             ps = zeros(ngl, length(p));
             reverse_porcent = '';
             
             for i = 1:1:(n - 1)
                 
                 % Calcula
-                ps(:, i+1) = p(:, i+1) + k * alpha * x(:,i) + m * (c1 * x(:,i) + c2 * v(:,i) - c5 * z(:,i)) ...
-                    + c * ((1 + alpha) * c3 * x(:,i) + (alpha - (1 + alpha) * c4) * v(:,i) - (1 + alpha) * c5 * dt * z(:,i));
+                ps(:, i+1) = p(:, i+1) + a1 * x(:, i) + a2 * v(:, i) + a3 * z(:, i);
+%                 ps(:, i+1) = p(:, i+1) + k * alpha * x(:,i) + m * (c1 * x(:,i) + c2 * v(:,i) - c5 * z(:,i)) ...
+%                     + c * ((1 + alpha) * c3 * x(:,i) + (alpha - (1 + alpha) * c4) * v(:,i) - (1 + alpha) * c5 * dt * z(:,i)); %hht
                 x(:, i+1) = ks^(-1) * ps(:, i+1);
                 v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
                 z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
