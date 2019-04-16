@@ -63,8 +63,8 @@ if ~exist('sis_reg', 'var') % Carga el registro
 end
 % cargasDinamicas{1} = CargaPulso('Pulso', 1000, 0.2, [1, 0], 100, 102, 5); % Horizontal
 % cargasDinamicas{1} = CargaSinusoidal('Sinusoidal', 300, 7, [1, 0], 0.05, 102, 30); % Horizontal
-cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', {sis_reg, sis_reg.*0}, ...
-    [1, 0], 0.005, 100); % Horizontal
+% cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', {sis_reg, sis_reg.*0}, ...
+%     [1, 0], 0.005, 100); % Horizontal
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
@@ -80,24 +80,66 @@ PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 %% Resuelve el sistema
-analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], -1);
-analisisObj.resolverCargasDinamicas();
-analisisObj.disp();
-pt = analisisObj.plot('modo', 8, 'factor', 10, 'numcuadros', 25, ...
-    'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', true);
+analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], 1);
+% analisisObj.resolverCargasDinamicas();
+% analisisObj.disp();
+% pt = analisisObj.plot('modo', 8, 'factor', 10, 'numcuadros', 25, ...
+%     'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', true);
 
-%% Prueba 
-qnodos = {};
+%% OBTENCIÓN DE ENVOLVENTES
+% Se genera vector en que las filas contienen nodos en un mismo piso,
+% rellenando con ceros la matriz en caso de diferencia de nodos por piso.
+% Tambien se genera vector que contiene alturas de piso.
+nnodos = length(nodos);
+haux = 0;
+hrel = zeros (1,1);
+habs = zeros (1,1);
+hNodos = zeros (1,1);
+j = 1;
 k = 1;
-mapa = [];
-for i = 1:length(nodos)
-coordNodo = nodos{i}.obtenerCoordenadas;
-if coordNodo(2) == 3 % Nodos con altura 3 (Primer Piso)
-    qnodos{k} = nodos{i};
-    mapa(k) = i;
+for i = 1:nnodos
+CoordNodo = nodos{i}.obtenerCoordenadas;
+yNodo = CoordNodo(2);
+if yNodo ~= habs(j)
+    k = 1;
+    j = j + 1;
+    habs(j,1) = yNodo;
+    hNodos(j,k) = i;
+elseif i == 1
+    hNodos(j,k) = i;
+else
     k = k + 1;
+    hNodos(j,k) = i;
 end
 end
+
+%Se genera cell gdlcond que contiene la ubicacion de los gdl luego de
+%condensar, cero significa que ese grado de libertad esta condensado 
+
+condensar = true;
+if condensar
+    NgdlCond = analisisObj.NgdlCond;
+    gdlaux = zeros(1,3);
+    gdlcond = cell(1,nnodos);
+    for i = 1:nnodos
+        gdl = nodos{i}.obtenerGDLID;
+        gdlaux = gdl;
+        for j = 1:length(gdl)
+            for k = 1:length(NgdlCond)
+                if NgdlCond(k) == gdl(j)
+                    gdlaux(j) = 0; %gdl condensado
+                elseif NgdlCond(k) < gdl(j)
+                    gdlaux(j) = gdlaux(j) - 1;
+                else
+                    gdlaux(j) = gdlaux(j);
+                end
+            end
+        end
+        gdlcond{i} = gdlaux;
+    end
+end
+
+
 
 % cargasDinamicas{1}.obtenerDesplazamiento
 % cargasDinamicas{1}.obtenerAceleracion

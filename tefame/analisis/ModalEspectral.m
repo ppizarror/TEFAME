@@ -62,7 +62,7 @@
 
 classdef ModalEspectral < handle
     
-    properties(Access = private)
+    properties(Access = public)
         modeloObj % Guarda el objeto que contiene el modelo
         numeroGDL % Guarda el numero de grados de libertad totales del modelo
         Kt % Matriz de Rigidez del modelo
@@ -93,6 +93,7 @@ classdef ModalEspectral < handle
         cPenzien % Matriz de amortiguamiento de Wilson-Penzien
         mostrarDeformada % Muestra la posicion no deformada en los graficos
         cargarAnimacion % Carga la animacion del grafico una vez renderizado
+        NgdlCond % Grados de libertad condensados
     end % properties ModalEspectral
     
     methods
@@ -117,6 +118,7 @@ classdef ModalEspectral < handle
             analisisObj.analisisFinalizado = false;
             analisisObj.mostrarDeformada = false;
             analisisObj.cargarAnimacion = true;
+            analisisObj.NgdlCond = [];
             
         end % ModalEspectral constructor
         
@@ -264,12 +266,13 @@ classdef ModalEspectral < handle
             end
             
             % Si condensa grados
+            
             analisisObj.gdlCond = length(vz);
             realizaCond = false;
             if analisisObj.gdlCond > 0
                 
                 realizaCond = true;
-                
+                analisisObj.NgdlCond = vz;
                 % Chequea cuantos grados quedan
                 nndg = ndg;
                 if ndg > 2
