@@ -5,7 +5,7 @@
 ## Métodos de análisis
 
 - Método de rigidez, análisis estático
-- Método modal espectral
+- Método modal espectral, análisis estático
 
 ## Tipo de elementos
 
@@ -15,7 +15,14 @@
 - Viga 2D (c/s masa)
 - Viga-columna 2D
 
+## Patrones de carga
+
+- Constante
+- Dinámico
+
 ## Tipo de cargas
+
+### Estáticas
 
 - Carga biela temperatura
 - Carga membrana distribuída
@@ -25,15 +32,16 @@
 - Carga distribuída en viga
 - Carga puntual en viga
 
-## Patrones de carga
+### Dinámicas
 
-- Constante
+- Carga de pulso
+- Registro sísmico
+- Carga sinusoidal
 
 ## Autor
 
 - Pablo Pizarro (pablo.pizarro@ing.uchile.cl)
-- Fabián Rojas (frojas@ing.uchile.cl)
-- Carlos López O.
+- Carlos López
 - Jaime Reveco
 
 ## Licencia
