@@ -99,7 +99,6 @@ if coordNodo(2) == 3 % Nodos con altura 3 (Primer Piso)
 end
 end
 
-
 % cargasDinamicas{1}.obtenerDesplazamiento
 % cargasDinamicas{1}.obtenerAceleracion
 % analisisObj.obtenerMatrizMasa

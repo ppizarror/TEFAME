@@ -48,19 +48,16 @@ classdef CargaPulso < CargaDinamica
         Nodo
         amplitud
         Carga
-        
     end % properties CargaPulso
     
     methods
         
         function CargaPulsoObj = CargaPulso(etiquetaCargaPulso, amplitud, tpulso, direccion, intervalos, Nodo, tAnalisis)
-            % CargaPulso: es el constructor de la clase CargaDinamica
+            % CargaPulso: es el constructor de la clase CargaPulso
             %
             % CargaPulsoObj = CargaPulso(etiquetaCargaPulso, amplitud, tpulso, direccion, intervalos, Nodo)
             %
-            % Crea una carga del tipo registro de aceleracion, requiere un
-            % vector registro [Nxr], una direccion [1xr] y un tiempo maximo
-            % de analisis.
+            % Crea una carga tipo pulso.
             
             if nargin == 0
                 etiquetaCargaPulso = '';
@@ -83,7 +80,7 @@ classdef CargaPulso < CargaDinamica
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para calcular la carga
         
-        function p = calcularCarga(CargaPulsoObj, factor, m, r)
+        function p = calcularCarga(CargaPulsoObj, factor, m, r) %#ok<INUSD,INUSL>
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar.
             %
@@ -109,14 +106,11 @@ classdef CargaPulso < CargaDinamica
             t = linspace(0,pi,CargaPulsoObj.intervalos);
             w = pi / CargaPulsoObj.tpulso;
             
-            for i = 1:length(t)
-                
+            for i = 1:length(t)         
                 CargaPulsoObj.Carga(i) = CargaPulsoObj.amplitud * sin(w * t(i));
-                
             end
             
-            % Carga
-            
+            % Carga       
             for i = 1:nt
                 if i < length(t)
 %                 k =jjj
@@ -132,14 +126,14 @@ classdef CargaPulso < CargaDinamica
         % Metodos para mostrar la informacion de la carga en pantalla
         
         function disp(CargaPulsoObj)
-            % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en
+            % disp: es un metodo de la clase CargaPulso que se usa para imprimir en
             % command Window la informacion de la carga del tipo registro
             % sismico.
             %
             % disp(CargaPulsoObj)
             % Imprime la informacion guardada en la carga (CargaPulsoObj) en pantalla.
             
-            fprintf('Propiedades Carga Registro Sismico:\n');
+            fprintf('Propiedades Carga Pulso:\n');
             disp@CargaDinamica(CargaPulsoObj);
             
             fprintf('-------------------------------------------------\n');
@@ -148,6 +142,6 @@ classdef CargaPulso < CargaDinamica
             
         end % disp function
         
-    end % methods CargaNodo
+    end % methods CargaPulso
     
-end % class CargaNodo
+end % class CargaPulso
