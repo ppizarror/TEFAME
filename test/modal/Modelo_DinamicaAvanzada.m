@@ -115,7 +115,6 @@ end
 
 %Se genera cell gdlcond que contiene la ubicacion de los gdl luego de
 %condensar, cero significa que ese grado de libertad esta condensado 
-
 condensar = true;
 if condensar
     NgdlCond = analisisObj.NgdlCond;
@@ -138,8 +137,6 @@ if condensar
         gdlcond{i} = gdlaux;
     end
 end
-
-
 
 % cargasDinamicas{1}.obtenerDesplazamiento
 % cargasDinamicas{1}.obtenerAceleracion

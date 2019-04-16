@@ -266,7 +266,6 @@ classdef ModalEspectral < handle
             end
             
             % Si condensa grados
-            
             analisisObj.gdlCond = length(vz);
             realizaCond = false;
             if analisisObj.gdlCond > 0
@@ -328,6 +327,24 @@ classdef ModalEspectral < handle
                 if cngdl < ngdl
                     fprintf('\t\tSe han condensado %d grados de libertad\n', ngdl-cngdl);
                     ngdl = cngdl;
+                end
+                
+                % Actualiza los nodos
+                nodos = analisisObj.modeloObj.obtenerNodos();
+                nnodos = length(nodos);
+                for i = 1:nnodos
+                    gdl = nodos{i}.obtenerGDLID;
+                    gdlaux = gdl;
+                    for j = 1:length(gdl)
+                        if analisisObj.NgdlCond == gdl(j)
+                            gdlaux(j) = 0; % gdl condensado
+                        elseif analisisObj.NgdlCond < gdl(j)
+                            gdlaux(j) = gdlaux(j) - 1;
+                        else
+                            gdlaux(j) = gdlaux(j);
+                        end
+                    end
+                    nodos{i}.definirGDLIDCondensado(gdlaux);
                 end
                 
             else % No condensa grados
