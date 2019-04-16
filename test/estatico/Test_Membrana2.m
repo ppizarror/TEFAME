@@ -1,4 +1,3 @@
-clear all; %#ok<CLALL>
 fprintf('>\tTEST_MEMBRANA2\n');
 
 % Test Membrana muro largo con carga distribuida encima, simplemente

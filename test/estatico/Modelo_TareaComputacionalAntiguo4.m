@@ -1,4 +1,3 @@
-clear all; %#ok<CLALL>
 fprintf('>\tMODELO_TAREACOMPUTACIONAL_ANTIGUO4\n');
 % Implementa la estructura anterior antes de cambiarla, se utilizan 12
 % barras para lograr el GIE=0. El caso original constaba de 9 barras por lo

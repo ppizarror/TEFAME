@@ -1,4 +1,3 @@
-clear all; %#ok<CLALL>
 fprintf('>\tEJEMPLOCLASE_ENREJADO3D\n');
 
 % Creamos el modelo

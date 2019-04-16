@@ -1,4 +1,3 @@
-clear all; %#ok<CLALL>
 fprintf('>\tEJEMPLOCLASE_VIGACOLUMNA_2D\n');
 
 % Creamos el modelo

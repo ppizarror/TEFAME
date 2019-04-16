@@ -1,4 +1,3 @@
-clear all; %#ok<CLALL>
 fprintf('>\tTEST_MEMBRANA3\n');
 
 % Testea cargas en un muro muy alto formado por varios elementos

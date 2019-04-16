@@ -1,10 +1,9 @@
-clear all; %#ok<CLALL>
 fprintf('>\tTEST_MEMBRANA1\n');
 
 % Test Membrana Sencillo
 % Corresponde al ejemplo 4.4 del libro
 %   INTRODUCCION AL ANALISIS ESTRUCTURAL POR ELEMENTOS FINITOS
-%   Autor: JORGE EDUARDO HURTADO GÓMEZ
+%   Autor: JORGE EDUARDO HURTADO GOMEZ
 %   http://bdigital.unal.edu.co/10002/6/958932276X.2002.pdf
 %   Pagina 92
 %

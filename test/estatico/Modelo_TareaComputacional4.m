@@ -1,4 +1,3 @@
-clear all; %#ok<CLALL>
 fprintf('>\tMODELO_TAREACOMPUTACIONAL4\n');
 
 % Creamos el modelo

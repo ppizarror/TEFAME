@@ -1,4 +1,3 @@
-clear all; %#ok<CLALL>
 fprintf('>\tMODELO_TAREA3\n');
 
 % Test tarea 3

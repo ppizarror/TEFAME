@@ -1,4 +1,3 @@
-clear all; %#ok<CLALL>
 fprintf('>\tTEST_VIGA2D\n');
 
 % Test viga con carga simple a distancia D (% del largo) del nodo 1,

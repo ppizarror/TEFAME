@@ -1,4 +1,3 @@
-clear all; %#ok<CLALL>
 fprintf('>\tTEST_TAREACOMPUTACIONAL5\n');
 
 % Modelo tarea computacional 5

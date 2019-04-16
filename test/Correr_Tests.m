@@ -52,6 +52,3 @@ Modelo_TareaComputacionalAntiguo4;
 Modelo_TareaComputacional4;
 Modelo_TareaComputacional5;
 Test_Viga2D;
-
-%% Elimina espacio en memoria
-clear all; %#ok<CLALL>
