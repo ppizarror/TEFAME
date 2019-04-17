@@ -142,7 +142,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Newmark(patronDeCargasObj, p, dt, xo, vo)
             
             % Define coeficientes
-            alpha = -0.05;
+            alpha = 0;
             gamma = 1 / 2 - alpha;
             beta = 1 / 4 * (1 - alpha) ^ 2;
             
