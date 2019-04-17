@@ -333,7 +333,7 @@ classdef ModalEspectral < handle
                     gdl = nodos{i}.obtenerGDLID();
                     gdlaux = gdl;
                     for j = 1:length(gdl)
-                        for k=1:length(vz) % Recorre los grados condensados
+                        for k = 1:length(vz) % Recorre los grados condensados
                             if vz(k) == gdl(j)
                                 gdlaux(j) = 0; % gdl condensado
                             elseif vz(k) < gdl(j)
@@ -956,7 +956,11 @@ classdef ModalEspectral < handle
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
                 if ~deformada
-                    nodoObjetos{i}.plot([], 'b', 10);
+                    if modo ~= 0
+                        nodoObjetos{i}.plot([], 'b', 10);
+                    else
+                        nodoObjetos{i}.plot([], 'k', 15);
+                    end
                     if j == 1
                         hold on;
                     end
@@ -975,7 +979,11 @@ classdef ModalEspectral < handle
                 numNodo = length(nodoElemento);
                 
                 if ~deformada || analisisObj.mostrarDeformada
-                    elementoObjetos{i}.plot({}, 'b-', 0.5, false);
+                    if modo ~= 0
+                        elementoObjetos{i}.plot({}, 'b-', 0.5, false);
+                    else
+                        elementoObjetos{i}.plot({}, 'k-', 1.25, false);
+                    end
                 end
                 
                 if deformada
@@ -999,7 +1007,7 @@ classdef ModalEspectral < handle
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
                     def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, gdl);
-                    nodoObjetos{i}.plot(def.*factor*phif, 'k', 20);
+                    nodoObjetos{i}.plot(def.*factor*phif, 'k', 15);
                 end
                 
             end

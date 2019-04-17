@@ -63,8 +63,8 @@ if ~exist('sis_reg', 'var') % Carga el registro
     plotRegistro(sis_reg, 'Registro Constitucion', 'm/s^2');
 end
 % cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', {sis_reg, sis_reg.*0}, [1, 0], 0.005, 100); % Horizontal
-cargasDinamicas{1} = CargaPulso('Pulso', nodos{102}, 1000, 0.2, [1, 0], 100, 5); % Horizontal
-% cargasDinamicas{1} = CargaSinusoidal('Sinusoidal', 300, 7, [1, 0], 0.05, 102, 30); % Horizontal
+% cargasDinamicas{1} = CargaPulso('Pulso', nodos{102}, 1000, 0.2, [1, 0], 100, 5); % Horizontal
+cargasDinamicas{1} = CargaSinusoidal('Sinusoidal', nodos{102}, 300, 7, [1, 0], 0.05, 30, 100); % Horizontal
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
