@@ -59,12 +59,12 @@ cargasDinamicas = cell(1, 1);
 
 % Registro sismico
 if ~exist('sis_reg', 'var') % Carga el registro
-    sis_reg = cargaRegistroArchivo('test/modal/registro.txt', '\n', ' ', 0, 0, 1, 0.005);
+    sis_reg = cargaRegistroArchivo('test/modal/registro.txt', '\n', ' ', 0, 0, 1, 0.005, 0.01);
+    plotRegistro(sis_reg, 'Registro Constitucion', 'm/s^2');
 end
-% cargasDinamicas{1} = CargaPulso('Pulso', 1000, 0.2, [1, 0], 100, 102, 5); % Horizontal
+% cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', {sis_reg, sis_reg.*0}, [1, 0], 0.005, 100); % Horizontal
+cargasDinamicas{1} = CargaPulso('Pulso', nodos{102}, 1000, 0.2, [1, 0], 100, 5); % Horizontal
 % cargasDinamicas{1} = CargaSinusoidal('Sinusoidal', 300, 7, [1, 0], 0.05, 102, 30); % Horizontal
-cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', {sis_reg, sis_reg.*0}, ...
-    [1, 0], 0.005, 100); % Horizontal
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
@@ -80,13 +80,15 @@ PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 %% Resuelve el sistema
-analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], -1);
-analisisObj.resolverCargasDinamicas();
+analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0]);
 analisisObj.disp();
-pt = analisisObj.plot('modo', 8, 'factor', 10, 'numcuadros', 25, ...
+pt = analisisObj.plot('modo', 0, 'factor', 10, 'numcuadros', 25, ...
     'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', true);
+return;
 
 %% OBTENCION DE ENVOLVENTES
+analisisObj.resolverCargasDinamicas();
+
 % Se genera vector en que las filas contienen nodos en un mismo piso,
 % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
 % Tambien se genera vector que contiene alturas de piso

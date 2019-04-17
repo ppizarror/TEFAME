@@ -16,14 +16,14 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase CargaNodo                                                      |
+%| Clase CargaPulso                                                     |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase CargaNodo            |
-%| CargaNodo  es  una subclase  de la  clase  Nodo  y corresponde  a la |
-%| representacion de una carga nodal en el metodo de elementos  finitos |
-%| o analisis matricial de estructuras.                                 |
-%| La clase CargaNodo es una clase que contiene el nodo al que se le va |
-%| aplicar la carga y el valor de esta carga.                           |
+%| Este archivo contiene la definicion de la Clase CargaPulso           |
+%| CargaPulso es una subclase de la clase CargaDinamica y corresponde a |
+%| la representacion de una carga nodal en el metodo de elementos       |
+%| finitos o analisis matricial de estructuras.                         |
+%| La clase CargaPulso es una clase que contiene el nodo al que se le   |
+%| va aplicar la carga y el valor de esta carga.                        |
 %|                                                                      |
 %| Programado: Pablo Pizarro @ppizarror                                 |
 %| Fecha: 10/04/2019                                                    |
@@ -43,19 +43,18 @@ classdef CargaPulso < CargaDinamica
     properties(Access = private)
         registro % Matriz del registro
         direccion % Vector de direcciones
-        tpulso
-        intervalos
-        Nodo
-        amplitud
-        Carga
+        tpulso % Tiempo de aplicacion del pulso
+        intervalos % Intervalos
+        nodo % Nodo al que se aplica la carga
+        amplitud % Ampitud de la carga
     end % properties CargaPulso
     
     methods
         
-        function CargaPulsoObj = CargaPulso(etiquetaCargaPulso, amplitud, tpulso, direccion, intervalos, Nodo, tAnalisis)
+        function CargaPulsoObj = CargaPulso(etiquetaCargaPulso, nodo, amplitud, tpulso, direccion, intervalos, tAnalisis)
             % CargaPulso: es el constructor de la clase CargaPulso
             %
-            % CargaPulsoObj = CargaPulso(etiquetaCargaPulso, amplitud, tpulso, direccion, intervalos, Nodo)
+            % CargaPulsoObj=CargaPulso(etiquetaCargaPulso,nodo,amplitud,tpulso,direccion,intervalos,tAnalisis)
             %
             % Crea una carga tipo pulso
             
@@ -66,6 +65,11 @@ classdef CargaPulso < CargaDinamica
             % Llamamos al constructor de la SuperClass que es la clase Carga
             CargaPulsoObj = CargaPulsoObj@CargaDinamica(etiquetaCargaPulso);
             
+            % Verifica que tenga sentido la direccion
+            if ~verificarVectorDireccion(direccion, nodo.obtenerNumeroGDL())
+                error('Vector direccion mal definido');
+            end
+            
             % Guarda el registro
             CargaPulsoObj.tpulso = tpulso;
             CargaPulsoObj.amplitud = amplitud;
@@ -73,7 +77,7 @@ classdef CargaPulso < CargaDinamica
             CargaPulsoObj.intervalos = intervalos;
             CargaPulsoObj.tAnalisis = tAnalisis;
             CargaPulsoObj.dt = tpulso / intervalos;
-            CargaPulsoObj.Nodo = Nodo; %Numero de nodo donde es aplicada la carga
+            CargaPulsoObj.nodo = nodo; % Objeto del nodo donde se aplica la carga
             
         end % CargaPulso constructor
         
@@ -90,33 +94,33 @@ classdef CargaPulso < CargaDinamica
             ng = length(m);
             nt = CargaPulsoObj.tAnalisis / CargaPulsoObj.dt;
             p = zeros(ng, nt);
-
+            
             % Crea el vector de influencia
-            
             rf = zeros(ng, 1);
-            
-            if CargaPulsoObj.direccion(1) == 1
-                rf(2 * CargaPulsoObj.Nodo - 1) = 1;
-            elseif CargaPulsoObj.direccion(2) == 1
-                rf(2 * CargaPulsoObj.Nodo) = 1;
+            nodoGDL = CargaPulsoObj.nodo.obtenerGDLIDCondensado();
+            for i = 1:length(CargaPulsoObj.direccion)
+                if CargaPulsoObj.direccion(i) > 0
+                    gdl = nodoGDL(CargaPulsoObj.direccion(i)); % Obtiene el GDL asociado
+                    if gdl > 0
+                        rf(nodoGDL(CargaPulsoObj.direccion(i))) = 1;
+                    end
+                end
             end
             
             % Carga Pulso
-            
-            t = linspace(0,pi,CargaPulsoObj.intervalos);
+            t = linspace(0, pi, CargaPulsoObj.intervalos);
             w = pi / CargaPulsoObj.tpulso;
-            
-            for i = 1:length(t)         
-                CargaPulsoObj.Carga(i) = CargaPulsoObj.amplitud * sin(w * t(i));
+            carga = zeros(1, length(t));
+            for i = 1:length(t)
+                carga(i) = CargaPulsoObj.amplitud * sin(w*t(i));
             end
             
-            % Carga       
+            % Carga
             for i = 1:nt
                 if i < length(t)
-%                 k =jjj
-                p(:, i) = rf .* CargaPulsoObj.Carga(i);
-                else 
-                    break
+                    p(:, i) = rf .* carga(i);
+                else
+                    break;
                 end
             end
             

@@ -104,7 +104,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
             % Chequea que las dimensiones sean apropiadas
             if ~equalMatrixSize(k, m) || ~equalMatrixSize(m, c) || length(r) ~= length(m)
-                error('Tama�o incorrecto de matrices K, M, C o r');
+                error('Tamano incorrecto de matrices K, M, C, r');
             end
             tInicioProceso = cputime;
             
@@ -113,12 +113,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Obtiene la carga
                 tInicio = cputime;
-                p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r);
                 fprintf('\t\tAplicando carga %s\n', patronDeCargasObj.cargas{i}.obtenerEtiqueta());
+                
+                % Genera el vector de fuerzas
+                fprintf('\t\t\tGenerando el vector de fuerza\n');
+                p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r);
                 
                 % Resuelve newmark
                 [u, du, ddu] = patronDeCargasObj.newmark(k, m, c, p, patronDeCargasObj.cargas{i}.dt, 0, 0);
-            
+                
                 % Guarda los resultados
                 patronDeCargasObj.cargas{i}.guardarDesplazamiento(u);
                 patronDeCargasObj.cargas{i}.guardarVelocidad(du);
@@ -133,19 +136,18 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Algoritmos de resolucion
-
+        
         function [x, v, z] = newmark(patronDeCargasObj, k, m, c, p, dt, xo, vo) %#ok<*INUSL>
             % Newmark: es un metodo de la clase ModalEspectral que se
             % usa para obtener los valores de aceleracion, velociadad y desplazamiento
             % de los grados de libertad a partir del metodo de Newmark
             %
-            % Newmark(patronDeCargasObj, p, dt, xo, vo)
+            % [x,v,z]=newmark(patronDeCargasObj,k,m,c,p,dt,xo,vo)
             
             % Define coeficientes
             alpha = 0;
             gamma = 1 / 2 - alpha;
-            beta = 1 / 4 * (1 - alpha) ^ 2;
-            
+            beta = 1 / 4 * (1 - alpha)^2;
             
             % Obtiene parametros del modelo
             KT = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
@@ -162,15 +164,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             x(:, 1) = xo;
             v(:, 1) = vo;
             z(:, 1) = m^(-1) * (p(:, 1) - c * v(:, 1) - k * x(:, 1));
-%             a1 = 1 / (beta * dt^2) * MT + gamma / (beta * dt) * CT;
-%             a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
-%             a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) * CT;
-%             ks = KT + a1;
+            % a1 = 1 / (beta * dt^2) * MT + gamma / (beta * dt) * CT;
+            % a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
+            % a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) * CT;
+            % ks = KT + a1;
             c1 = 1 / (dt^2 * beta);
             c2 = 1 / (dt * beta);
             c3 = gamma / (dt * beta);
             c4 = 1 - gamma / beta;
-            c5 = 1 - gamma / (2 * beta);        
+            c5 = 1 - gamma / (2 * beta);
             c6 = 1 / (2 * beta) - 1;
             ks = c1 * m + (1 + alpha) * c3 * c + (1 + alpha) * k; %hht
             ps = zeros(ngl, length(p));
@@ -179,30 +181,31 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             for i = 1:1:(n - 1)
                 
                 % Calcula
-%                 ps(:, i+1) = p(:, i+1) + a1 * x(:, i) + a2 * v(:, i) + a3 * z(:, i);
-                ps(:, i+1) = p(:, i+1) + KT * alpha * x(:,i) + MT * (c1 * x(:,i) + c2 * v(:,i) + c6 * z(:,i)) ...
-                    + CT * ((1 + alpha) * c3 * x(:,i) + (alpha - (1 + alpha) * c4) * v(:,i) - (1 + alpha) * c5 * dt * z(:,i)); %hht
+                % ps(:, i+1) = p(:, i+1) + a1 * x(:, i) + a2 * v(:, i) + a3 * z(:, i);
+                ps(:, i+1) = p(:, i+1) + KT * alpha * x(:, i) + MT * (c1 * x(:, i) + c2 * v(:, i) + c6 * z(:, i)) ...
+                    +CT * ((1 + alpha) * c3 * x(:, i) + (alpha - (1 + alpha) * c4) * v(:, i) - (1 + alpha) * c5 * dt * z(:, i));%hht
                 x(:, i+1) = ks^(-1) * ps(:, i+1);
                 v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
                 z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
-            
+                
                 % Imprime estado
-                msg = sprintf('\t\t\tCalculando... %.1f/100', i/(n-1)*100);
+                msg = sprintf('\t\t\tCalculando ... %.1f/100', i/(n - 1)*100);
                 fprintf([reverse_porcent, msg]);
                 reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
+                
             end
             
-        end % NewmarkLineal function
+        end % newmark function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del PatronDeCargas en pantalla
+        % Metodos para mostrar la informacion del PatronDeCargasDinamico en pantalla
         
         function disp(patronDeCargasObj)
             % disp: es un metodo de la clase PatronDeCargasDinamico que se usa para imprimir en
             % command Window la informacion del Patron de Cargas
             %
             % disp(patronDeCargasObj)
-            % Imprime la informacion guardada en el Patron de Cargas Constante (patronDeCargasObj)
+            % Imprime la informacion guardada en el Patron de Cargas Dinamico (patronDeCargasObj)
             % en pantalla
             
             fprintf('Propiedades Patron de Cargas Dinamico:\n');

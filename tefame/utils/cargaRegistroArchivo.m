@@ -2,13 +2,20 @@ function reg = cargaRegistroArchivo(archivo, linedelim, coldelim, header, footer
 %CARGAREGISTROSISMICO Carga un archivo sismico y retorna una matriz del
 %tipo [t1, a1; t2, a2; ...]
 %
-% reg = cargaRegistroSismico(archivo,linedelim, coldelim,header,ncol,dt,factor)
+% reg = cargaRegistroSismico(archivo,linedelim,coldelim,header,ncol,dt,factor)
+
 if ~exist('factor', 'var')
     factor = 1;
 end
 
 % Obtiene el archivo
-C = textread(archivo, '%s', 'delimiter', linedelim); %#ok<*DTXTRD>
+fprintf('Cargando registro sismico %s ... ', archivo);
+try
+    C = textread(archivo, '%s', 'delimiter', linedelim); %#ok<*DTXTRD>
+catch
+    error('Archivo no encontrado');
+    return;
+end
 lc = length(C);
 
 % Lineas utiles
@@ -39,5 +46,6 @@ for i = 1:lu
     reg(i, 1) = t;
     t = t + dt;
 end
+fprintf('OK\n');
 
 end

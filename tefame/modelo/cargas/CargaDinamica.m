@@ -72,7 +72,7 @@ classdef CargaDinamica < ComponenteModelo
                 etiquetaCarga = '';
             end % if
             
-            %Llamamos al cosntructor de la SuperClass que es la clase ComponenteModelo
+            % Llamamos al cosntructor de la SuperClass que es la clase ComponenteModelo
             cargaDinamicaObj = cargaDinamicaObj@ComponenteModelo(etiquetaCarga);
             
         end % CargaDinamica constructor

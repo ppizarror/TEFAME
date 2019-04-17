@@ -16,14 +16,14 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase CargaNodo                                                      |
+%| Clase CargaSinusoidal                                                |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase CargaNodo            |
-%| CargaNodo  es  una subclase  de la  clase  Nodo  y corresponde  a la |
-%| representacion de una carga nodal en el metodo de elementos  finitos |
-%| o analisis matricial de estructuras.                                 |
-%| La clase CargaNodo es una clase que contiene el nodo al que se le va |
-%| aplicar la carga y el valor de esta carga.                           |
+%| Este archivo contiene la definicion de la Clase CargaSinusoidal      |
+%| CargaSinusoidal es una subclase de la clase CargaDinamica y          |
+%| corresponde a la representacion de una carga sinusoidal en el metodo |
+%| de elementos finitos o analisis matricial de estructuras.            |
+%| La clase CargaSinusoidal es una clase que contiene el nodo al que se |
+%| le va aplicar la carga y el valor de esta carga.                     |
 %|                                                                      |
 %| Programado: Pablo Pizarro @ppizarror                                 |
 %| Fecha: 10/04/2019                                                    |
@@ -44,17 +44,17 @@ classdef CargaSinusoidal < CargaDinamica
         registro % Matriz del registro
         direccion % Vector de direcciones
         w % Frecuencia de la carga
-        Nodo % Nodo al que se aplica la carga
+        nodo % Nodo al que se aplica la carga
         amplitud % Amplitud de la carga
         tOscilacion % Tiempo de oscilacion
     end % properties CargaSinusoidal
     
     methods
         
-        function CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, amplitud, w, direccion, dt, Nodo, tOscilacion, tAnalisis)
+        function CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, amplitud, w, direccion, dt, tOscilacion, tAnalisis)
             % CargaSinusoidal: es el constructor de la clase CargaSinusoidal
             %
-            % CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,amplitud,w,direccion,dt,Nodo,tOscilacion,tAnalisis)
+            % CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,nodo,amplitud,w,direccion,dt,tOscilacion,tAnalisis)
             %
             % Crea una carga del tipo sinusoidal
             
@@ -65,6 +65,11 @@ classdef CargaSinusoidal < CargaDinamica
             % Llamamos al constructor de la SuperClass que es la clase Carga
             CargaSinusoidalObj = CargaSinusoidalObj@CargaDinamica(etiquetaCargaSinusoidal);
             
+            % Verifica que tenga sentido la direccion
+            if ~verificarVectorDireccion(direccion, nodo.obtenerNumeroGDL())
+                error('Vector direccion mal definido');
+            end
+            
             % Guarda los parametros de la carga
             CargaSinusoidalObj.w = w;
             CargaSinusoidalObj.amplitud = amplitud;
@@ -72,7 +77,7 @@ classdef CargaSinusoidal < CargaDinamica
             CargaSinusoidalObj.tOscilacion = tOscilacion;
             CargaSinusoidalObj.tAnalisis = tAnalisis;
             CargaSinusoidalObj.dt = dt;
-            CargaSinusoidalObj.Nodo = Nodo; % Numero de nodo donde es aplicada la carga
+            CargaSinusoidalObj.nodo = nodo; % Nodo al que se le aplica la carga
             
         end % CargaSinusoidal constructor
         
@@ -93,10 +98,14 @@ classdef CargaSinusoidal < CargaDinamica
             
             % Crea el vector de influencia
             rf = zeros(ng, 1);
-            if CargaSinusoidalObj.direccion(1) == 1
-                rf(2*CargaSinusoidalObj.Nodo-1) = 1;
-            elseif CargaSinusoidalObj.direccion(2) == 1
-                rf(2*CargaSinusoidalObj.Nodo) = 1;
+            nodoGDL = CargaPulsoObj.nodo.obtenerGDLIDCondensado();
+            for i = 1:length(CargaPulsoObj.direccion)
+                if CargaPulsoObj.direccion(i) > 0
+                    gdl = nodoGDL(CargaPulsoObj.direccion(i)); % Obtiene el GDL asociado
+                    if gdl > 0
+                        rf(nodoGDL(CargaPulsoObj.direccion(i))) = 1;
+                    end
+                end
             end
             
             % Carga Pulso
