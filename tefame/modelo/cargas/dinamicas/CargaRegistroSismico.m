@@ -47,14 +47,14 @@ classdef CargaRegistroSismico < CargaDinamica
     
     methods
         
-        function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, dt, tAnalisis)
+        function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tAnalisis)
             % CargaRegistroSismico: es el constructor de la clase CargaNodo
             %
-            % cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,dt,tAnalisis)
+            % cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,tAnalisis)
             %
             % Crea una carga del tipo registro de aceleracion, requiere un
             % vector registro [Nxr], una direccion [1xr] y un tiempo maximo
-            % de analisis
+            % de analisis, dt lo obtiene del registro
             
             if nargin == 0
                 etiquetaCargaRegistroSismico = '';
@@ -63,9 +63,21 @@ classdef CargaRegistroSismico < CargaDinamica
             if length(registro) ~= length(direccion)
                 error('Cell registro no tiene igual dimension a las direcciones de analisis');
             end
+            if ~verificarVectorDireccion(direccion, length(direccion))
+                error('Vector direccion mal definido');
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
             cargaRegistroObj = cargaRegistroObj@CargaDinamica(etiquetaCargaRegistroSismico);
+            
+            % Calcula el dt
+            for k=1:length(direccion)
+                if direccion(k) ~= 0
+                    reg = registro{k};
+                    dt = reg(2, 1) - reg(1, 1);
+                    break;
+                end
+            end
             
             % Guarda el registro
             cargaRegistroObj.registro = registro;
@@ -90,21 +102,14 @@ classdef CargaRegistroSismico < CargaDinamica
             nd = length(cargaRegistroObj.direccion);
             p = zeros(ng, nt);
             
-            % Crea el vector de influencia equivalente
-            rf = zeros(ng, 1);
-            for i = 1:ng
-                for j = 1:nd
-                    rf(i) = rf(i) + r(i, j) * cargaRegistroObj.direccion(j);
-                end
-            end
-            
             % Para cada aceleracion calcula la carga como -m*a
-            for i = 1:nt % Recorre tiempo
-                for j = 1:ng % Recorre grado de libertad
-                    for k = 1:nd % Recorre direccion
-                        reg = cargaRegistroObj.registro{k}; % Registro direccion de estudio
-                        p(j, i) = p(j, i) + m(j, j) * r(j, k) * cargaRegistroObj.direccion(k) * reg(i, 2);
-                    end
+            for k=1:nd % Recorre direccion
+                if cargaRegistroObj.direccion(k) == 0 % Salta direcciones nulas
+                    continue;
+                end
+                reg = cargaRegistroObj.registro{k}; % Registro direccion de estudio
+                for i=1:min(length(reg), nt)
+                    p(:, i) = p(:, i) + m * r(:, k) .* reg(i, 2);
                 end
             end
             

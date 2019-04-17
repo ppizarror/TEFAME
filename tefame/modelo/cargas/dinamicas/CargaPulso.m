@@ -51,10 +51,10 @@ classdef CargaPulso < CargaDinamica
     
     methods
         
-        function CargaPulsoObj = CargaPulso(etiquetaCargaPulso, nodo, amplitud, tpulso, direccion, intervalos, tAnalisis)
+        function CargaPulsoObj = CargaPulso(etiquetaCargaPulso, nodo, direccion, amplitud, tpulso, dt, tAnalisis)
             % CargaPulso: es el constructor de la clase CargaPulso
             %
-            % CargaPulsoObj=CargaPulso(etiquetaCargaPulso,nodo,amplitud,tpulso,direccion,intervalos,tAnalisis)
+            % CargaPulsoObj=CargaPulso(etiquetaCargaPulso,nodo,direccion,amplitud,tpulso,dt,tAnalisis)
             %
             % Crea una carga tipo pulso
             
@@ -74,9 +74,8 @@ classdef CargaPulso < CargaDinamica
             CargaPulsoObj.tpulso = tpulso;
             CargaPulsoObj.amplitud = amplitud;
             CargaPulsoObj.direccion = direccion;
-            CargaPulsoObj.intervalos = intervalos;
             CargaPulsoObj.tAnalisis = tAnalisis;
-            CargaPulsoObj.dt = tpulso / intervalos;
+            CargaPulsoObj.dt = dt;
             CargaPulsoObj.nodo = nodo; % Objeto del nodo donde se aplica la carga
             
         end % CargaPulso constructor
@@ -108,17 +107,12 @@ classdef CargaPulso < CargaDinamica
             end
             
             % Carga Pulso
-            t = linspace(0, pi, CargaPulsoObj.intervalos);
-            w = pi / CargaPulsoObj.tpulso;
-            carga = zeros(1, length(t));
-            for i = 1:length(t)
-                carga(i) = CargaPulsoObj.amplitud * sin(w*t(i));
-            end
+            t = linspace(0, CargaPulsoObj.tAnalisis, nt);
             
             % Carga
             for i = 1:nt
-                if i < length(t)
-                    p(:, i) = rf .* carga(i);
+                if t(i) <= CargaPulsoObj.tpulso
+                    p(:, i) = rf .* CargaPulsoObj.amplitud;
                 else
                     break;
                 end

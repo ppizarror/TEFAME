@@ -51,10 +51,10 @@ classdef CargaSinusoidal < CargaDinamica
     
     methods
         
-        function CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, amplitud, w, direccion, dt, tOscilacion, tAnalisis)
+        function CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tAnalisis)
             % CargaSinusoidal: es el constructor de la clase CargaSinusoidal
             %
-            % CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,nodo,amplitud,w,direccion,dt,tOscilacion,tAnalisis)
+            % CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,nodo,direccion,amplitud,w,tOscilacion,dt,tAnalisis)
             %
             % Crea una carga del tipo sinusoidal
             
@@ -98,12 +98,12 @@ classdef CargaSinusoidal < CargaDinamica
             
             % Crea el vector de influencia
             rf = zeros(ng, 1);
-            nodoGDL = CargaPulsoObj.nodo.obtenerGDLIDCondensado();
-            for i = 1:length(CargaPulsoObj.direccion)
-                if CargaPulsoObj.direccion(i) > 0
-                    gdl = nodoGDL(CargaPulsoObj.direccion(i)); % Obtiene el GDL asociado
+            nodoGDL = CargaSinusoidalObj.nodo.obtenerGDLIDCondensado();
+            for i = 1:length(CargaSinusoidalObj.direccion)
+                if CargaSinusoidalObj.direccion(i) > 0
+                    gdl = nodoGDL(CargaSinusoidalObj.direccion(i)); % Obtiene el GDL asociado
                     if gdl > 0
-                        rf(nodoGDL(CargaPulsoObj.direccion(i))) = 1;
+                        rf(nodoGDL(CargaSinusoidalObj.direccion(i))) = 1;
                     end
                 end
             end
@@ -118,7 +118,7 @@ classdef CargaSinusoidal < CargaDinamica
             % Carga
             for i = 1:nt
                 if i < length(t)
-                    p(:, i) = rf .* CargaSinusoidalObj.Carga(i);
+                    p(:, i) = rf .* carga(i);
                 else
                     break;
                 end

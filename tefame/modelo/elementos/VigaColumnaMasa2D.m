@@ -364,8 +364,7 @@ classdef VigaColumnaMasa2D < Elemento
             %
             % plotVigaDeformar(elementoObj, deformadas)
             
-            y = length(deformadas{1}) == 3 && (abs(deformadas{1}(3)) > 1e-2 && ...
-                abs(deformadas{2}(3)) > 1e-2);
+            y = length(deformadas{1}) == 3;
             
         end % plotVigaDeformar function
         

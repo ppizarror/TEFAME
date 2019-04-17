@@ -95,7 +95,7 @@ classdef ModalEspectral < handle
         cargarAnimacion % Carga la animacion del grafico una vez renderizado
     end % properties ModalEspectral
     
-    methods
+    methods(Access = public)
         
         function analisisObj = ModalEspectral(modeloObjeto)
             % ModalEspectral: es el constructor de la clase ModalEspectral
@@ -232,6 +232,466 @@ classdef ModalEspectral < handle
             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(cpenzien);
             
         end % resolverCargasDinamicas function
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Metodos para obtener la informacion del analisis
+        
+        function numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
+            % obtenerNumeroEcuaciones: es un metodo de la clase ModalEspectral
+            % que se usa para obtener el numero total de GDL, es decir, ecuaciones
+            % del modelo
+            %
+            % numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
+            % Obtiene el numero total de GDL (numeroEcuaciones) que esta guardado
+            % en el Analisis (analisisObj)
+            
+            numeroEquaciones = analisisObj.numeroGDL;
+            
+        end % obtenerNumeroEcuaciones function
+        
+        function M_Modelo = obtenerMatrizMasa(analisisObj)
+            % obtenerMatrizMasa: es un metodo de la clase ModalEspectral
+            % que se usa para obtener la matriz de masa del modelo
+            %
+            % M_Modelo = obtenerMatrizRigidez(analisisObj)
+            % Obtiene la matriz de masa (M_Modelo) del modelo que se genero
+            % en el Analisis (analisisObj)
+            
+            M_Modelo = analisisObj.Mteq;
+            
+        end % obtenerMatrizMasa function
+        
+        function C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, rayleigh)
+            % obtenerMatrizAmortiguamiento: es un metodo de la clase ModalEspectral
+            % que se usa para obtener la matriz de amortiguamiento del modelo
+            %
+            % C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, rayleigh)
+            % Obtiene la matriz de amortiguamiento (C_Modelo) del modelo que se genero
+            % en el Analisis (analisisObj)
+            
+            if rayleigh
+                C_Modelo = analisisObj.cRayleigh;
+            else
+                C_Modelo = analisisObj.cPenzien;
+            end
+            
+        end % obtenerMatrizAmortiguamiento function
+        
+        function K_Modelo = obtenerMatrizRigidez(analisisObj)
+            % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
+            % que se usa para obtener la matriz de rigidez del modelo
+            %
+            % K_Modelo = obtenerMatrizRigidez(analisisObj)
+            % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
+            % en el Analisis (analisisObj)
+            
+            K_Modelo = analisisObj.Kteq;
+            
+        end % obtenerMatrizRigidez function
+        
+        function r_Modelo = obtenerVectorInfluencia(analisisObj)
+            % obtenerVectorInfluencia: es un metodo de la clase ModalEspectral
+            % que se usa para obtener el vector de influencia del modelo
+            %
+            % r_Modelo = obtenerVectorInfluencia(analisisObj)
+            % Obtiene el vector de influencia (r) del modelo que se genero
+            % en el Analisis (analisisObj)
+            
+            r_Modelo = analisisObj.rm;
+            
+        end % obtenerMatrizMasa function
+        
+        function F_Modelo = obtenerVectorFuerzas(analisisObj)
+            % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
+            % que se usa para obtener el vector de fuerza del modelo
+            %
+            % F_Modelo = obtenerVectorFuerzas(analisisObj)
+            % Obtiene el vector de fuerza (F_Modelo) del modelo que se genero
+            % en el Analisis (analisisObj)
+            
+            F_Modelo = analisisObj.F;
+            
+        end % obtenerVectorFuerzas function
+        
+        function u_Modelo = obtenerDesplazamientos(analisisObj)
+            % obtenerDesplazamientos: es un metodo de la clase ModalEspectral
+            % que se usa para obtener el vector de desplazamiento del modelo
+            % obtenido del analisis
+            %
+            % u_Modelo = obtenerDesplazamientos(analisisObj)
+            % Obtiene el vector de desplazamiento (u_Modelo) del modelo que se
+            % genero como resultado del Analisis (analisisObj)
+            
+            u_Modelo = analisisObj.u;
+            
+        end % obtenerDesplazamientos function
+        
+        function wn_Modelo = obtenerValoresPropios(analisisObj)
+            % obtenerValoresPropios: es un metodo de la clase ModalEspectral
+            % que se usa para obtener los valores propios del modelo
+            % obtenido del analisis
+            %
+            % w_Modelo = obtenerValoresPropios(analisisObj)
+            % Obtiene los valores propios (wn_Modelo) del modelo que se
+            % genero como resultado del Analisis (analisisObj)
+            
+            wn_Modelo = analisisObj.wn;
+            
+        end % obtenerDesplazamientos function
+        
+        function plt = plot(analisisObj, varargin)
+            % plot: Grafica un modelo
+            %
+            % plt = plot(analisisObj,'var1',val1,'var2',val2)
+            %
+            % Parametros opcionales:
+            %   modo        Numero de modo a graficar
+            %   factor      Escala de la deformacion
+            %   numcuadros  Numero de cuadros de la animacion
+            %   gif         Archivo en el que se guarda la animacion
+            %   defelem     Dibuja la deformada de cada elemento
+            
+            % Establece variables iniciales
+            fprintf('Generando animacion analisis modal espectral:\n');
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'modo', 0);
+            addOptional(p, 'factor', 10);
+            addOptional(p, 'cuadros', 0);
+            addOptional(p, 'gif', '');
+            addOptional(p, 'defelem', true);
+            addOptional(p, 'carga', false);
+            addOptional(p, 'tmin', 0);
+            addOptional(p, 'tmax', -1);
+            parse(p, varargin{:})
+            r = p.Results;
+            modo = floor(r.modo);
+            factor = r.factor;
+            numCuadros = floor(r.cuadros);
+            guardaGif = r.gif;
+            defElem = r.defelem;
+            carga = r.carga;
+            defCarga = false; % Indica que la deformada se obtiene a partir de la carga
+            tmin = max(0, r.tmin);
+            tmax = r.tmax;
+            tinicial = cputime;
+            
+            % Verificaciones si se grafica una carga
+            if carga ~= false
+                
+                if ~isa(carga, 'CargaDinamica')
+                    error('Solo se pueden graficar cargas dinamicas');
+                end
+                if isempty(carga.obtenerDesplazamiento())
+                    error('No se ha resuelto la carga, no es posible graficar');
+                end
+                if modo ~= 0
+                    error('No se puede graficar un modo y una carga de manera simultanea');
+                end
+                if numCuadros <= 0
+                    error('Se debe especificar el numero de cuadros');
+                end
+                if tmax > carga.tAnalisis
+                    fprintf('\tSe ha limitado el tiempo maximo de la carga a %.2fs\n', carga.tAnalisis);
+                    tmax = carga.tAnalisis;
+                elseif tmax < carga.tAnalisis
+                    fprintf('\tLa carga se graficara a un tiempo menor que el computado originalmente\n');
+                end
+                if tmax <= 0
+                    tmax = carga.tAnalisis;
+                end
+                if tmin >= tmax
+                    error('El tiempo de analisis minimo no puede exceder al maximo');
+                end
+                
+                % Crea el vector de tiempos de analisis
+                tCargaEq = linspace(tmin, tmax, numCuadros);
+                
+                % Busca las posiciones asociadas a la carga
+                cargaTArr = linspace(0, carga.tAnalisis, carga.tAnalisis/carga.dt);
+                tCargaPos = zeros(1, numCuadros); % Guarda los tiempos de 'snapshot' de la carga
+                
+                i = 1;
+                for j = 1:length(cargaTArr)
+                    if cargaTArr(j) >= tCargaEq(i)
+                        tCargaPos(i) = j;
+                        i = i + 1;
+                    end
+                    if i > numCuadros
+                        break;
+                    end
+                end
+                
+                % Activa la deformada por carga
+                defCarga = true;
+                fprintf('\tSe graficara la carga %s desde ti=%.2f a tf=%.2f con dt=%.2f\n', ...
+                    carga.obtenerEtiqueta(), tmin, tmax, (tmax - tmin)/numCuadros);
+                
+            else % No se grafican cargas
+                tCargaPos = zeros(1, numCuadros);
+                tCargaEq = zeros(1, numCuadros);
+            end
+            
+            % Chequea deformada
+            deformada = false;
+            modo = ceil(modo);
+            if exist('modo', 'var') && modo > 0
+                deformada = true;
+            end
+            deformada = deformada || defCarga;
+            
+            % Grafica la estructura si no se ha ejecutado el analisis
+            if (~analisisObj.analisisFinalizado || modo <= 0) && ~defCarga
+                plt = figure();
+                movegui('center');
+                hold on;
+                grid on;
+                [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(0, factor, defCarga, carga);
+                plotAnimado(analisisObj, false, 0, factor, 0, limx, limy, limz, 0, 1, 1, defElem, defCarga);
+                figure(plt);
+                return;
+            end
+            
+            % Guarda gif
+            guardarGif = false;
+            if exist('guardaGif', 'var') && ~strcmp(guardaGif, '')
+                guardarGif = true;
+                guardaGif = sprintf(guardaGif, modo);
+            else
+                guardaGif = tempname;
+            end
+            
+            if (modo > analisisObj.numModos || modo <= 0) && ~defCarga
+                error('El modo a graficar %d excede la cantidad de modos del sistema (%d)', ...
+                    modo, analisisObj.numModos);
+            end
+            
+            % Obtiene el periodo
+            if ~defCarga
+                tn = analisisObj.Tn(modo);
+            else
+                tn = 0;
+            end
+            
+            % Calcula los limites
+            [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(modo, factor, defCarga, carga);
+            
+            % Grafica la estructura
+            plt = figure();
+            fig_num = get(gcf, 'Number');
+            movegui('center');
+            hold on;
+            grid on;
+            % axis tight manual;
+            % set(gca, 'nextplot', 'replacechildren');
+            
+            % Imprime mensajes en consola
+            if ~defElem
+                fprintf('\tSe ha desactivado la deformada de los elementos\n');
+            end
+            if guardarGif && numCuadros ~= 0
+                fprintf('\tEl proceso generara un archivo gif\n');
+            end
+            
+            % Grafica el sistema
+            if numCuadros <= 0
+                fprintf('\tSe grafica el caso con la deformacion maxima\n');
+                plotAnimado(analisisObj, deformada, modo, factor, 1, ...
+                    limx, limy, limz, tn, 1, 1, defElem, defCarga, carga, 1, tCargaEq);
+                fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            else
+                plotAnimado(analisisObj, deformada, modo, factor, 0, ...
+                    limx, limy, limz, tn, 1, 1, defElem, defCarga, carga, tCargaPos(1), tCargaEq);
+                hold off;
+                
+                % Obtiene el numero de cuadros
+                t = 0;
+                dt = 2 * pi / numCuadros;
+                reverse_porcent = '';
+                
+                % Crea la estructura de cuadros
+                Fr(numCuadros) = struct('cdata', [], 'colormap', []);
+                
+                for i = 1:numCuadros
+                    
+                    % Si el usuario cierra el plot termina de graficar
+                    if ~ishandle(plt) || ~ishghandle(plt)
+                        delete(plt);
+                        close(fig_num); % Cierra el grafico
+                        fprintf('\n\tSe ha cancelado el proceso del grafico\n');
+                        return;
+                    end
+                    
+                    t = t + dt;
+                    try
+                        % figure(fig_num); % Atrapa el foco
+                        plotAnimado(analisisObj, deformada, modo, factor, sin(t), ...
+                            limx, limy, limz, tn, i, numCuadros, defElem, defCarga, carga, tCargaPos(i), tCargaEq);
+                        drawnow;
+                        Fr(i) = getframe(plt);
+                        im = frame2im(Fr(i));
+                        [imind, cm] = rgb2ind(im, 256);
+                        if i == 1
+                            imwrite(imind, cm, guardaGif, 'gif', 'Loopcount', inf, 'DelayTime', 0.1);
+                        else
+                            imwrite(imind, cm, guardaGif, 'gif', 'WriteMode', 'append', 'DelayTime', 0.1);
+                        end
+                    catch %#ok<*CTCH>
+                        fprintf('\n\tSe ha cancelado el proceso del grafico\n');
+                        return;
+                    end
+                    hold off;
+                    
+                    msg = sprintf('\tGraficando ... %.1f/100', i/numCuadros*100);
+                    fprintf([reverse_porcent, msg]);
+                    reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
+                    
+                end % i = 1:numCuadros
+                
+                if guardarGif
+                    fprintf('\n\tGuardando animacion gif en: %s', guardaGif);
+                end
+                
+                % Imprime en consola el tiempo que se demoro el proceso
+                fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+                
+                % Reproduce la pelicula y cierra el grafico anterior
+                close(fig_num);
+                if analisisObj.cargarAnimacion
+                    fprintf('\n\tAbriendo animacion\n');
+                    try
+                        gifPlayerGUI(guardaGif, 1/min(numCuadros, 60));
+                    catch
+                        error('Ha ocurrido un error al abrir el gif generado');
+                    end
+                else
+                    fprintf('\n');
+                end
+                
+            end
+            
+        end % plot function
+        
+        function activarCargaAnimacion(analisisObj)
+            % activarCargaAnimacion: Carga la animacion  una vez calculada
+            %
+            % activarCargaAnimacion(analisisObj)
+            
+            analisisObj.cargarAnimacion = true;
+            
+        end % activarCargaAnimacion funcion
+        
+        function desactivarCargaAnimacion(analisisObj)
+            % desactivarCargaAnimacion: Desactiva la animacion una vez calculada
+            %
+            % desactivarCargaAnimacion(analisisObj)
+            
+            analisisObj.cargarAnimacion = false;
+            
+        end % desactivarCargaAnimacion funcion
+        
+        function activarPlotDeformadaInicial(analisisObj)
+            % activarPlotDeformadaInicial: Activa el grafico de la deformada inicial
+            %
+            % activarPlotDeformadaInicial(analisisObj)
+            
+            analisisObj.mostrarDeformada = true;
+            
+        end % activarPlotDeformadaInicial function
+        
+        function desactivarPlotDeformadaInicial(analisisObj)
+            % desactivarPlotDeformadaInicial: Desactiva el grafico de la deformada inicial
+            %
+            % desactivarPlotDeformadaInicial(analisisObj)
+            
+            analisisObj.mostrarDeformada = false;
+            
+        end % desactivarPlotDeformadaInicial function
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Metodos para mostrar la informacion del Analisis Modal Espectral en pantalla
+        
+        function disp(analisisObj)
+            % disp: es un metodo de la clase ModalEspectral que se usa para imprimir en
+            % command Window la informacion del analisis espectral realizado
+            %
+            % disp(analisisObj)
+            % Imprime la informacion guardada en el ModalEspectral (analisisObj) en
+            % pantalla
+            
+            if ~analisisObj.analisisFinalizado
+                fprintf('El analisis modal aun no ha sido calculado');
+            end
+            
+            fprintf('Propiedades analisis modal espectral:\n');
+            
+            % Muestra los grados de libertad
+            fprintf('\tNumero de grados de libertad: %d\n', ...
+                analisisObj.numeroGDL-analisisObj.gdlCond);
+            fprintf('\tNumero de grados condensados: %d\n', analisisObj.gdlCond);
+            fprintf('\tNumero de direcciones por grado: %d\n', analisisObj.numDG);
+            fprintf('\tNumero de modos en el analisis: %d\n', analisisObj.numModos);
+            
+            % Propiedades de las matrices
+            detKt = det(analisisObj.Kt);
+            detMt = det(analisisObj.Mt);
+            if detKt ~= Inf
+                fprintf('\tMatriz de rigidez:\n');
+                fprintf('\t\tDeterminante: %f\n', detKt);
+            end
+            if abs(detMt) >= 1e-20
+                fprintf('\tMatriz de Masa:\n');
+                fprintf('\t\tDeterminante: %f\n', detMt);
+            end
+            fprintf('\tMasa total de la estructura: %.3f\n', analisisObj.Mtotal);
+            
+            fprintf('\tPeriodos y participacion modal:\n');
+            if analisisObj.numDG == 2
+                fprintf('\t\tN\t|\tT (s)\t|\tw (rad/s)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
+                fprintf('\t\t-----------------------------------------------------------------------------\n');
+            elseif analisisObj.numDG == 3
+                fprintf('\t\tN\t|\tT (s)\t|\tw (rad/s)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
+                fprintf('\t\t----------------------------------------------------------------------------------------------------\n');
+            end
+            
+            for i = 1:analisisObj.numModos
+                if analisisObj.numDG == 2
+                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
+                        analisisObj.wn(i), analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), ...
+                        analisisObj.Mmeffacum(i, 1), analisisObj.Mmeffacum(i, 2));
+                elseif analisisObj.numDG == 3
+                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
+                        analisisObj.wn(i), analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), analisisObj.Mmeff(i, 3), ...
+                        analisisObj.Mmeffacum(i, 1), analisisObj.Mmeffacum(i, 2), analisisObj.Mmeffacum(i, 3));
+                end
+                fprintf('\n');
+            end
+            
+            % Busca los periodos para los cuales se logra el 90%
+            mt90p = zeros(analisisObj.numDG, 1);
+            for i = 1:analisisObj.numDG
+                fprintf('\t\tN periodo en U%d para el 90%% de la masa: ', i);
+                for j = 1:analisisObj.numModos
+                    if analisisObj.Mmeffacum(j, i) >= 0.90
+                        mt90p(i) = j;
+                        break;
+                    end
+                end
+                if mt90p(i) > 0
+                    fprintf('%d\n', mt90p(i));
+                else
+                    fprintf('INCREMENTAR NUMERO DE MODOS DE ANALISIS\n');
+                end
+            end
+            
+            fprintf('-------------------------------------------------\n');
+            fprintf('\n');
+            
+        end % disp function
+        
+    end % methods(public) ModalEspectral
+    
+    methods(Access = private)
         
         function calcularModalEspectral(analisisObj, nModos, betacR, betacP, maxcond)
             % calcularModalEspectral: Calcula el metodo modal espectral
@@ -675,273 +1135,14 @@ classdef ModalEspectral < handle
             
         end % ensamblarVectorFuerzas function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener la informacion del analisis
-        
-        function numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
-            % obtenerNumeroEcuaciones: es un metodo de la clase ModalEspectral
-            % que se usa para obtener el numero total de GDL, es decir, ecuaciones
-            % del modelo
-            %
-            % numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
-            % Obtiene el numero total de GDL (numeroEcuaciones) que esta guardado
-            % en el Analisis (analisisObj)
-            
-            numeroEquaciones = analisisObj.numeroGDL;
-            
-        end % obtenerNumeroEcuaciones function
-        
-        function M_Modelo = obtenerMatrizMasa(analisisObj)
-            % obtenerMatrizMasa: es un metodo de la clase ModalEspectral
-            % que se usa para obtener la matriz de masa del modelo
-            %
-            % M_Modelo = obtenerMatrizRigidez(analisisObj)
-            % Obtiene la matriz de masa (M_Modelo) del modelo que se genero
-            % en el Analisis (analisisObj)
-            
-            M_Modelo = analisisObj.Mteq;
-            
-        end % obtenerMatrizMasa function
-        
-        function C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, rayleigh)
-            % obtenerMatrizAmortiguamiento: es un metodo de la clase ModalEspectral
-            % que se usa para obtener la matriz de amortiguamiento del modelo
-            %
-            % C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, rayleigh)
-            % Obtiene la matriz de amortiguamiento (C_Modelo) del modelo que se genero
-            % en el Analisis (analisisObj)
-            
-            if rayleigh
-                C_Modelo = analisisObj.cRayleigh;
-            else
-                C_Modelo = analisisObj.cPenzien;
-            end
-            
-        end % obtenerMatrizAmortiguamiento function
-        
-        function K_Modelo = obtenerMatrizRigidez(analisisObj)
-            % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
-            % que se usa para obtener la matriz de rigidez del modelo
-            %
-            % K_Modelo = obtenerMatrizRigidez(analisisObj)
-            % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
-            % en el Analisis (analisisObj)
-            
-            K_Modelo = analisisObj.Kteq;
-            
-        end % obtenerMatrizRigidez function
-        
-        function r_Modelo = obtenerVectorInfluencia(analisisObj)
-            % obtenerVectorInfluencia: es un metodo de la clase ModalEspectral
-            % que se usa para obtener el vector de influencia del modelo
-            %
-            % r_Modelo = obtenerVectorInfluencia(analisisObj)
-            % Obtiene el vector de influencia (r) del modelo que se genero
-            % en el Analisis (analisisObj)
-            
-            r_Modelo = analisisObj.rm;
-            
-        end % obtenerMatrizMasa function
-        
-        function F_Modelo = obtenerVectorFuerzas(analisisObj)
-            % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
-            % que se usa para obtener el vector de fuerza del modelo
-            %
-            % F_Modelo = obtenerVectorFuerzas(analisisObj)
-            % Obtiene el vector de fuerza (F_Modelo) del modelo que se genero
-            % en el Analisis (analisisObj)
-            
-            F_Modelo = analisisObj.F;
-            
-        end % obtenerVectorFuerzas function
-        
-        function u_Modelo = obtenerDesplazamientos(analisisObj)
-            % obtenerDesplazamientos: es un metodo de la clase ModalEspectral
-            % que se usa para obtener el vector de desplazamiento del modelo
-            % obtenido del analisis
-            %
-            % u_Modelo = obtenerDesplazamientos(analisisObj)
-            % Obtiene el vector de desplazamiento (u_Modelo) del modelo que se
-            % genero como resultado del Analisis (analisisObj)
-            
-            u_Modelo = analisisObj.u;
-            
-        end % obtenerDesplazamientos function
-        
-        function wn_Modelo = obtenerValoresPropios(analisisObj)
-            % obtenerValoresPropios: es un metodo de la clase ModalEspectral
-            % que se usa para obtener los valores propios del modelo
-            % obtenido del analisis
-            %
-            % w_Modelo = obtenerValoresPropios(analisisObj)
-            % Obtiene los valores propios (wn_Modelo) del modelo que se
-            % genero como resultado del Analisis (analisisObj)
-            
-            wn_Modelo = analisisObj.wn;
-            
-        end % obtenerDesplazamientos function
-        
-        function plt = plot(analisisObj, varargin)
-            % plot: Grafica un modelo
-            %
-            % plt = plot(analisisObj,'var1',val1,'var2',val2)
-            %
-            % Parametros opcionales:
-            %   modo        Numero de modo a graficar
-            %   factor      Escala de la deformacion
-            %   numcuadros  Numero de cuadros de la animacion
-            %   gif         Archivo en el que se guarda la animacion
-            %   defelem     Dibuja la deformada de cada elemento
-            
-            % Establece variables iniciales
-            fprintf('Generando animacion analisis modal espectral:\n');
-            p = inputParser;
-            p.KeepUnmatched = true;
-            addOptional(p, 'modo', 0);
-            addOptional(p, 'factor', 2);
-            addOptional(p, 'numcuadros', 0);
-            addOptional(p, 'gif', '');
-            addOptional(p, 'defelem', true);
-            parse(p, varargin{:})
-            r = p.Results;
-            modo = r.modo;
-            factor = r.factor;
-            numCuadros = r.numcuadros;
-            guardaGif = r.gif;
-            defElem = r.defelem;
-            
-            % Chequea condiciones
-            deformada = false;
-            modo = ceil(modo);
-            if exist('modo', 'var') && modo > 0
-                deformada = true;
-            end
-            
-            % Grafica la estructura si no se ha ejecutado el analisis
-            if ~analisisObj.analisisFinalizado || modo <= 0
-                plt = figure();
-                movegui('center');
-                hold on;
-                grid on;
-                [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(0, factor);
-                plotAnimado(analisisObj, false, 0, factor, 0, limx, limy, limz);
-                figure(plt);
-                return;
-            end
-            
-            % Guarda gif
-            guardarGif = false;
-            if exist('guardaGif', 'var') && ~strcmp(guardaGif, '')
-                guardarGif = true;
-                guardaGif = sprintf(guardaGif, modo);
-            else
-                guardaGif = tempname;
-            end
-            
-            if modo > analisisObj.numModos || modo <= 0
-                error('El modo a graficar %d excede la cantidad de modos del sistema (%d)', ...
-                    modo, analisisObj.numModos);
-            end
-            
-            % Obtiene el periodo
-            tn = analisisObj.Tn(modo);
-            
-            % Calcula los limites
-            [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(modo, factor);
-            
-            % Grafica la estructura
-            plt = figure();
-            fig_num = get(gcf, 'Number');
-            movegui('center');
-            hold on;
-            grid on;
-            % axis tight manual;
-            % set(gca, 'nextplot', 'replacechildren');
-            
-            % Imprime mensajes en consola
-            if ~defElem
-                fprintf('\tSe ha desactivado la deformada de los elementos\n');
-            end
-            if guardarGif && numCuadros ~= 0
-                fprintf('\tEl proceso generara un archivo gif\n');
-            end
-            
-            % Grafica el sistema
-            if numCuadros == 0
-                fprintf('\tSe grafica el caso con la deformacion maxima\n');
-                plotAnimado(analisisObj, deformada, modo, factor, 1, ...
-                    limx, limy, limz, tn, 1, 1, defElem);
-            else
-                plotAnimado(analisisObj, deformada, modo, factor, 0, ...
-                    limx, limy, limz, tn, 1, 1, defElem);
-                hold off;
-                
-                % Obtiene el numero de cuadros
-                t = 0;
-                dt = 2 * pi / numCuadros;
-                reverse_porcent = '';
-                
-                % Crea la estructura de cuadros
-                Fr(numCuadros) = struct('cdata', [], 'colormap', []);
-                
-                for i = 1:numCuadros
-                    
-                    % Si el usuario cierra el plot termina de graficar
-                    if ~ishandle(plt) || ~ishghandle(plt)
-                        delete(plt);
-                        close(fig_num); % Cierra el grafico
-                        fprintf('\n\tSe ha cancelado el proceso del grafico\n');
-                        return;
-                    end
-                    
-                    t = t + dt;
-                    try
-                        % figure(fig_num); % Atrapa el foco
-                        plotAnimado(analisisObj, deformada, modo, factor, sin(t), ...
-                            limx, limy, limz, tn, i, numCuadros, defElem);
-                        drawnow;
-                        Fr(i) = getframe(plt);
-                        im = frame2im(Fr(i));
-                        [imind, cm] = rgb2ind(im, 256);
-                        if i == 1
-                            imwrite(imind, cm, guardaGif, 'gif', 'Loopcount', inf, 'DelayTime', 0.1);
-                        else
-                            imwrite(imind, cm, guardaGif, 'gif', 'WriteMode', 'append', 'DelayTime', 0.1);
-                        end
-                    catch %#ok<*CTCH>
-                        fprintf('\n\tSe ha cancelado el proceso del grafico\n');
-                        return;
-                    end
-                    hold off;
-                    
-                    msg = sprintf('\tCalculando... %.1f/100', i/numCuadros*100);
-                    fprintf([reverse_porcent, msg]);
-                    reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
-                    
-                end % i = 1:numCuadros
-                
-                if guardarGif
-                    fprintf('\n\tGuardando animacion gif en: %s', guardaGif);
-                end
-                
-                % Reproduce la pelicula y cierra el grafico anterior
-                close(fig_num);
-                if analisisObj.cargarAnimacion
-                    fprintf('\n\tAbriendo animacion\n');
-                    try
-                        gifPlayerGUI(guardaGif, 1/min(numCuadros, 60));
-                    catch
-                    end
-                end
-                
-            end
-            fprintf('\n');
-            
-        end % plot function
-        
         function plotAnimado(analisisObj, deformada, modo, factor, phif, limx, limy, limz, ...
-                per, cuadro, totCuadros, defElem)
+                per, cuadro, totCuadros, defElem, defCarga, carga, tcarga, tcargaEq)
             % Anima el grafico en funcion del numero del modo
+            
+            % Si se grafica la carga no se aplica el factor sin(wt)
+            if defCarga
+                phif = 1;
+            end
             
             % Carga objetos
             nodoObjetos = analisisObj.modeloObj.obtenerNodos();
@@ -956,7 +1157,7 @@ classdef ModalEspectral < handle
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
                 if ~deformada
-                    if modo ~= 0
+                    if modo ~= 0 || defCarga
                         nodoObjetos{i}.plot([], 'b', 10);
                     else
                         nodoObjetos{i}.plot([], 'k', 15);
@@ -979,7 +1180,7 @@ classdef ModalEspectral < handle
                 numNodo = length(nodoElemento);
                 
                 if ~deformada || analisisObj.mostrarDeformada
-                    if modo ~= 0
+                    if modo ~= 0 || defCarga
                         elementoObjetos{i}.plot({}, 'b-', 0.5, false);
                     else
                         elementoObjetos{i}.plot({}, 'k-', 1.25, false);
@@ -990,7 +1191,7 @@ classdef ModalEspectral < handle
                     def = cell(numNodo, 1);
                     for j = 1:numNodo
                         def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoElemento{j}, ...
-                            modo, analisisObj.numDGReal);
+                            modo, analisisObj.numDGReal, defCarga, carga, tcarga);
                     end
                     elementoObjetos{i}.plot(def, 'k-', 1.25, defElem);
                     if i == 1
@@ -1006,23 +1207,31 @@ classdef ModalEspectral < handle
                     coords = nodoObjetos{i}.obtenerCoordenadas();
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
-                    def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, gdl);
+                    def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, ...
+                        gdl, defCarga, carga, tcarga);
                     nodoObjetos{i}.plot(def.*factor*phif, 'k', 15);
                 end
                 
             end
             
             % Setea el titulo
-            if ~deformada
-                title('Analisis modal espectral');
-            else
-                a = sprintf('Analisis modal espectral - Modo %d (T: %.3fs)', modo, per);
-                if totCuadros > 1
-                    b = sprintf('Escala deformacion x%d - Cuadro %s/%d', ...
-                        factor, padFillNum(cuadro, totCuadros), totCuadros);
+            if ~defCarga % Se grafica los modos
+                if ~deformada
+                    title('Analisis modal espectral');
                 else
-                    b = sprintf('Escala deformacion x%d', factor);
+                    a = sprintf('Analisis modal espectral - Modo %d (T: %.3fs)', modo, per);
+                    if totCuadros > 1
+                        b = sprintf('Escala deformacion x%d - Cuadro %s/%d', ...
+                            factor, padFillNum(cuadro, totCuadros), totCuadros);
+                    else
+                        b = sprintf('Escala deformacion x%d', factor);
+                    end
+                    title({a; b});
                 end
+            else % Grafica una carga
+                a = sprintf('Analisis modal espectral - Carga %s', carga.obtenerEtiqueta());
+                b = sprintf('Escala deformacion x%d - Cuadro %s/%d - t:%.2fs', ...
+                    factor, padFillNum(cuadro, totCuadros), totCuadros, tcargaEq(cuadro));
                 title({a; b});
             end
             grid on;
@@ -1052,10 +1261,10 @@ classdef ModalEspectral < handle
             
         end % plotAnimado function
         
-        function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, modo, factor)
+        function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, modo, factor, defcarga, carga)
             % Obtiene los limites de deformacion
             %
-            % obtenerLimitesDeformada(analisisObj,modo,factor)
+            % obtenerLimitesDeformada(analisisObj,modo,factor,defcarga,carga)
             
             fprintf('\tCalculando los limites del grafico\n');
             factor = 2.5 * factor;
@@ -1080,8 +1289,8 @@ classdef ModalEspectral < handle
                 numNodo = length(nodoElemento);
                 for j = 1:numNodo
                     coord = nodoElemento{j}.obtenerCoordenadas();
-                    if analisisObj.analisisFinalizado && modo > 0
-                        def = analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl);
+                    if (analisisObj.analisisFinalizado && modo > 0) || defcarga
+                        def = analisisObj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl, defcarga, carga, -1);
                         coordi = coord + def .* factor;
                     else
                         coordi = coord;
@@ -1094,7 +1303,7 @@ classdef ModalEspectral < handle
                         limz(1) = min(limz(1), coordi(3));
                         limz(2) = max(limz(2), coordi(3));
                     end
-                    if analisisObj.analisisFinalizado && modo > 0
+                    if (analisisObj.analisisFinalizado && modo > 0) || defcarga
                         coordf = coord - def .* factor;
                     else
                         coordf = coord;
@@ -1112,17 +1321,28 @@ classdef ModalEspectral < handle
             
         end % obtenerLimitesDeformada function
         
-        function def = obtenerDeformadaNodo(analisisObj, nodo, modo, gdl)
+        function def = obtenerDeformadaNodo(analisisObj, nodo, modo, gdl, defcarga, carga, tcarga)
             % obtenerDeformadaNodo: Obtiene la deformada de un nodo
             %
-            % obtenerDeformadaNodo(analisisObj,nodo,modo,gdl)
+            % obtenerDeformadaNodo(analisisObj,nodo,modo,gdl,defcarga,carga,tcarga)
             
-            ngdl = nodo.obtenerGDLID();
+            if defcarga
+                despl = carga.obtenerDesplazamiento();
+            end
+            ngdl = nodo.obtenerGDLIDCondensado();
             def = zeros(gdl, 1);
             gdl = min(gdl, length(ngdl));
             for i = 1:gdl
                 if ngdl(i) > 0
-                    def(i) = analisisObj.phinExt(ngdl(i), modo);
+                    if ~defcarga % La deformada la saca a partir del modo
+                        def(i) = analisisObj.phin(ngdl(i), modo);
+                    else
+                        if tcarga < 0 % Se obtiene el maximo
+                            def(i) = max(despl(ngdl(i), :));
+                        else
+                            def(i) = despl(ngdl(i), tcarga);
+                        end
+                    end
                 else
                     def(i) = 0;
                 end
@@ -1130,123 +1350,6 @@ classdef ModalEspectral < handle
             
         end % obtenerDeformadaNodo function
         
-        function activarCargaAnimacion(analisisObj)
-            % activarCargaAnimacion: Carga la animacion  una vez calculada
-            %
-            % activarCargaAnimacion(analisisObj)
-            
-            analisisObj.cargarAnimacion = true;
-            
-        end % activarCargaAnimacion funcion
-        
-        function desactivarCargaAnimacion(analisisObj)
-            % desactivarCargaAnimacion: Desactiva la animacion una vez calculada
-            %
-            % desactivarCargaAnimacion(analisisObj)
-            
-            analisisObj.cargarAnimacion = false;
-            
-        end % desactivarCargaAnimacion funcion
-        
-        function activarPlotDeformadaInicial(analisisObj)
-            % activarPlotDeformadaInicial: Activa el grafico de la deformada inicial
-            %
-            % activarPlotDeformadaInicial(analisisObj)
-            
-            analisisObj.mostrarDeformada = true;
-            
-        end % activarPlotDeformadaInicial function
-        
-        function desactivarPlotDeformadaInicial(analisisObj)
-            % desactivarPlotDeformadaInicial: Desactiva el grafico de la deformada inicial
-            %
-            % desactivarPlotDeformadaInicial(analisisObj)
-            
-            analisisObj.mostrarDeformada = false;
-            
-        end % desactivarPlotDeformadaInicial function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del Analisis Modal Espectral en pantalla
-        
-        function disp(analisisObj)
-            % disp: es un metodo de la clase ModalEspectral que se usa para imprimir en
-            % command Window la informacion del analisis espectral realizado
-            %
-            % disp(analisisObj)
-            % Imprime la informacion guardada en el ModalEspectral (analisisObj) en
-            % pantalla
-            
-            if ~analisisObj.analisisFinalizado
-                fprintf('El analisis modal aun no ha sido calculado');
-            end
-            
-            fprintf('Propiedades analisis modal espectral:\n');
-            
-            % Muestra los grados de libertad
-            fprintf('\tNumero de grados de libertad: %d\n', ...
-                analisisObj.numeroGDL-analisisObj.gdlCond);
-            fprintf('\tNumero de grados condensados: %d\n', analisisObj.gdlCond);
-            fprintf('\tNumero de direcciones por grado: %d\n', analisisObj.numDG);
-            fprintf('\tNumero de modos en el analisis: %d\n', analisisObj.numModos);
-            
-            % Propiedades de las matrices
-            detKt = det(analisisObj.Kt);
-            detMt = det(analisisObj.Mt);
-            if detKt ~= Inf
-                fprintf('\tMatriz de rigidez:\n');
-                fprintf('\t\tDeterminante: %f\n', detKt);
-            end
-            if abs(detMt) >= 1e-20
-                fprintf('\tMatriz de Masa:\n');
-                fprintf('\t\tDeterminante: %f\n', detMt);
-            end
-            fprintf('\tMasa total de la estructura: %.3f\n', analisisObj.Mtotal);
-            
-            fprintf('\tPeriodos y participacion modal:\n');
-            if analisisObj.numDG == 2
-                fprintf('\t\tN\t|\tT (s)\t|\tw (rad/s)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
-                fprintf('\t\t-----------------------------------------------------------------------------\n');
-            elseif analisisObj.numDG == 3
-                fprintf('\t\tN\t|\tT (s)\t|\tw (rad/s)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
-                fprintf('\t\t----------------------------------------------------------------------------------------------------\n');
-            end
-            
-            for i = 1:analisisObj.numModos
-                if analisisObj.numDG == 2
-                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
-                        analisisObj.wn(i), analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), ...
-                        analisisObj.Mmeffacum(i, 1), analisisObj.Mmeffacum(i, 2));
-                elseif analisisObj.numDG == 3
-                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, analisisObj.Tn(i), ...
-                        analisisObj.wn(i), analisisObj.Mmeff(i, 1), analisisObj.Mmeff(i, 2), analisisObj.Mmeff(i, 3), ...
-                        analisisObj.Mmeffacum(i, 1), analisisObj.Mmeffacum(i, 2), analisisObj.Mmeffacum(i, 3));
-                end
-                fprintf('\n');
-            end
-            
-            % Busca los periodos para los cuales se logra el 90%
-            mt90p = zeros(analisisObj.numDG, 1);
-            for i = 1:analisisObj.numDG
-                fprintf('\t\tN periodo en U%d para el 90%% de la masa: ', i);
-                for j = 1:analisisObj.numModos
-                    if analisisObj.Mmeffacum(j, i) >= 0.90
-                        mt90p(i) = j;
-                        break;
-                    end
-                end
-                if mt90p(i) > 0
-                    fprintf('%d\n', mt90p(i));
-                else
-                    fprintf('INCREMENTAR NUMERO DE MODOS DE ANALISIS\n');
-                end
-            end
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
-            
-        end % disp function
-        
-    end % methods ModalEspectral
+    end % methods(private) ModalEspectral
     
 end % class ModalEspectral

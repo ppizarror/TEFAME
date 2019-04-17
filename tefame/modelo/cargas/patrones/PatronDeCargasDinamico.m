@@ -111,12 +111,17 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Se calcula carga una de las cargas dinamicas
             for i = 1:length(patronDeCargasObj.cargas)
                 
+                % Chequea que la carga sea dinamica
+                if ~isa(patronDeCargasObj.cargas{i}, 'CargaDinamica')
+                    error('PatronDeCargasDinamico solo puede resolver cargas dinamicas');
+                end
+                
                 % Obtiene la carga
                 tInicio = cputime;
                 fprintf('\t\tAplicando carga %s\n', patronDeCargasObj.cargas{i}.obtenerEtiqueta());
                 
-                % Genera el vector de fuerzas
-                fprintf('\t\t\tGenerando el vector de fuerza\n');
+                % Genera las cargas
+                fprintf('\t\t\tGenerando la matriz de cargas\n');
                 p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r);
                 
                 % Resuelve newmark

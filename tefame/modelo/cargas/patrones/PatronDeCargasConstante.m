@@ -91,6 +91,12 @@ classdef PatronDeCargasConstante < PatronDeCargas
             
             % Se aplica la carga con un factor de carga = 1
             for i = 1:length(patronDeCargasObj.cargas)
+                
+                % Chequea que la carga sea estatica
+                if ~isa(patronDeCargasObj.cargas{i}, 'Carga')
+                    error('PatronDeCargasConstante solo puede resolver cargas estaticas');
+                end
+                
                 patronDeCargasObj.cargas{i}.aplicarCarga(1);
             end
             

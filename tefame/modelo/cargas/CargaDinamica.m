@@ -84,7 +84,7 @@ classdef CargaDinamica < ComponenteModelo
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
             %
-            % calcularCarga(cargaObj)
+            % calcularCarga(cargaObj,'var1',var,'var2',var)
             
         end % calcularCarga function
         
