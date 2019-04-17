@@ -95,6 +95,7 @@ classdef CargaSinusoidal < CargaDinamica
             nint = CargaSinusoidalObj.tOscilacion / CargaSinusoidalObj.dt;
             nt = CargaSinusoidalObj.tAnalisis / CargaSinusoidalObj.dt; % Nro de intervalos
             p = zeros(ng, nt);
+            fprintf('\t\t\t\tAplicando carga a nodo %s\n', CargaSinusoidalObj.nodo.obtenerEtiqueta());
             
             % Crea el vector de influencia
             rf = zeros(ng, 1);
@@ -103,7 +104,8 @@ classdef CargaSinusoidal < CargaDinamica
                 if CargaSinusoidalObj.direccion(i) > 0
                     gdl = nodoGDL(CargaSinusoidalObj.direccion(i)); % Obtiene el GDL asociado
                     if gdl > 0
-                        rf(nodoGDL(CargaSinusoidalObj.direccion(i))) = 1;
+                        rf(gdl) = 1;
+                        fprintf('\t\t\t\tSe aplica la carga en el grado condensado %d\n', gdl);
                     end
                 end
             end
@@ -123,6 +125,7 @@ classdef CargaSinusoidal < CargaDinamica
                     break;
                 end
             end
+            fprintf('\t\t\t\tLa carga es aplicada en %d/%d de la matriz de cargas totales\n', i, nt);
             
         end % calcularCarga function
         

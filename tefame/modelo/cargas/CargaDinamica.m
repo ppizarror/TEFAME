@@ -40,7 +40,10 @@
 %       guardarDesplazamiento(cargaObj,u)
 %       guardarVelocidad(cargaObj,v)
 %       guardarAceleracion(cargaObj,a)
+%       guardarCarga(cargaObj,p)
+%       p = obtenerCarga(cargaObj)
 %       u = obtenerDesplazamiento(cargaObj)
+%       u = obtenerDesplazamientoTiempo(cargaObj,gdl,tiempo)
 %       v = obtenerVelocidad(cargaObj)
 %       a = obtenerAceleracion(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
@@ -52,6 +55,7 @@ classdef CargaDinamica < ComponenteModelo
         sol_u % Guarda la solucion de los desplazamientos
         sol_v % Guarda la solucion de las velocidades
         sol_a % Guarda la solucion de las aceleraciones
+        sol_p % Guarda la carga generada
     end % properties CargaDinamica
     
     properties(Access = public)
@@ -91,6 +95,15 @@ classdef CargaDinamica < ComponenteModelo
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para guardar los resultados
         
+        function guardarCarga(cargaObj, p)
+            % guardarCarga: Guarda la carga generada
+            %
+            % guardarCarga(cargaObj,u)
+            
+            cargaObj.sol_p = p;
+            
+        end % guardarCarga function
+        
         function guardarDesplazamiento(cargaObj, u)
             % guardarDesplazamiento: Guarda el desplazamiento de la carga
             %
@@ -121,6 +134,15 @@ classdef CargaDinamica < ComponenteModelo
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para obtener los resultados
         
+        function p = obtenerCarga(cargaObj)
+            % obtenerCarga: Obtiene la carga generada
+            %
+            % obtenerCarga(cargaObj)
+            
+            p = cargaObj.sol_p;
+            
+        end % obtenerCarga function
+        
         function u = obtenerDesplazamiento(cargaObj)
             % obtenerDesplazamiento: Obtiene el desplazamiento de la carga
             %
@@ -129,6 +151,18 @@ classdef CargaDinamica < ComponenteModelo
             u = cargaObj.sol_u;
             
         end % obtenerDesplazamiento function
+        
+        function u = obtenerDesplazamientoTiempo(cargaObj, gdl, tiempo)
+            % obtenerDesplazamientoTiempo obtiene el desplazamiento de un
+            % grado de libertad en un determinado tiempo
+            
+            if tiempo < 0 % Retorna el maximo
+                u = max(cargaObj.sol_u(gdl, :));
+            else
+                u = cargaObj.sol_u(gdl, tiempo);
+            end
+            
+        end % obtenerDesplazamientoTiempo function
         
         function v = obtenerVelocidad(cargaObj)
             % obtenerVelocidad: Obtiene la velocidad de la carga

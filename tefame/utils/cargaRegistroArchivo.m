@@ -12,9 +12,8 @@ end
 fprintf('Cargando registro sismico %s ... ', archivo);
 try
     C = textread(archivo, '%s', 'delimiter', linedelim); %#ok<*DTXTRD>
-catch
+catch %#ok<*CTCH>
     error('Archivo no encontrado');
-    return;
 end
 lc = length(C);
 

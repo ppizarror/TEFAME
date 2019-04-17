@@ -123,6 +123,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 % Genera las cargas
                 fprintf('\t\t\tGenerando la matriz de cargas\n');
                 p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r);
+                patronDeCargasObj.cargas{i}.guardarCarga(p);
                 
                 % Resuelve newmark
                 [u, du, ddu] = patronDeCargasObj.newmark(k, m, c, p, patronDeCargasObj.cargas{i}.dt, 0, 0);
@@ -135,7 +136,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
             end
             
-            fprintf('\tProceso finalizado en %.3f segundos\n', cputime-tInicioProceso);
+            fprintf('\tProceso finalizado en %.3f segundos\n\n', cputime-tInicioProceso);
             
         end % aplicarCargas function
         

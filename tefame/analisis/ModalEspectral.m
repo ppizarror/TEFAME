@@ -47,16 +47,19 @@
 %       analisisObj = ModalEspectral(modeloObjeto)
 %       definirNumeracionGDL(analisisObj)
 %       analizar(analisisObj)
-%       ensamblarMatrizRigidez(analisisObj)
-%       ensamblarMatrizMasa(analisisObj)
-%       ensamblarVectorFuerzas(analisisObj)
-%       numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
+%       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
 %       M_Modelo = obtenerMatrizMasa(analisisObj)
 %       C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)
 %       K_Modelo = obtenerMatrizRigidez(analisisObj)
 %       r_Modelo = obtenerVectorInfluencia(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
+%       activarPlotDeformadaInicial(analisisObj)
+%       desactivarPlotDeformadaInicial(analisisObj)
+%       activarCargaAnimacion(analisisObj)
+%       desactivarCargaAnimacion(analisisObj)
+%       calcularMomentoCorteBasal(analisisObj,carga)
+%       plotTrayectoriaNodo(analisisObj,carga,nodo,direccion)
 %       plot(analisisObj,varargin)
 %       disp(analisisObj)
 
@@ -236,16 +239,16 @@ classdef ModalEspectral < handle
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para obtener la informacion del analisis
         
-        function numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
+        function numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
             % obtenerNumeroEcuaciones: es un metodo de la clase ModalEspectral
             % que se usa para obtener el numero total de GDL, es decir, ecuaciones
             % del modelo
             %
-            % numeroEquaciones = obtenerNumeroEcuaciones(analisisObj)
+            % numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
             % Obtiene el numero total de GDL (numeroEcuaciones) que esta guardado
             % en el Analisis (analisisObj)
             
-            numeroEquaciones = analisisObj.numeroGDL;
+            numeroEcuaciones = analisisObj.numeroGDL;
             
         end % obtenerNumeroEcuaciones function
         
@@ -572,6 +575,245 @@ classdef ModalEspectral < handle
             
         end % plot function
         
+        function calcularMomentoCorteBasal(analisisObj, carga)
+            % calcularMomentoCorteBasal: Funcion que calcula el momento y
+            % corte basal a partir de una carga. TODO: Combinaciones de
+            % cargas
+            %
+            % calcularMomentoCorteBasal(analisisObj,carga)
+            
+            % Se genera vector en que las filas contienen nodos en un mismo piso,
+            % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
+            % Tambien se genera vector que contiene alturas de piso
+            nodos = analisisObj.modeloObj.obtenerNodos();
+            nnodos = length(nodos);
+            
+            habs = zeros(1, 1);
+            hNodos = zeros(1, 1);
+            j = 1;
+            k = 1;
+            ini = 1;
+            for i = 1:nnodos
+                CoordNodo = nodos{i}.obtenerCoordenadas;
+                yNodo = CoordNodo(2);
+                if yNodo ~= habs(j)
+                    k = 1;
+                    j = j + 1;
+                    habs(j, 1) = yNodo;
+                    hNodos(j, k) = i;
+                elseif i == 1
+                    hNodos(j, k) = i;
+                else
+                    k = k + 1;
+                    hNodos(j, k) = i;
+                end
+                if yNodo == 0
+                    ini = ini + 1;
+                end
+            end
+            
+            acel = carga.obtenerAceleracion();
+            [~, s] = size(acel);
+            M = analisisObj.obtenerMatrizMasa;
+            m = zeros(nnodos-ini+1, 1);
+            acelx = zeros(nnodos-ini+1, s);
+            Fnodos = zeros(nnodos-ini+1, s);
+            Fpisos = zeros(length(habs)-1, s);
+            
+            % Calculo de fuerzas inerciales nodales que generan corte, fuerzas nodales
+            % y fuerzas por piso
+            for i = ini:nnodos
+                gdls = nodos{i}.obtenerGDLIDCondensado();
+                gdlx = gdls(1);
+                acelx(i-ini+1, :) = acel(gdlx, :);
+                m(i-ini+1, 1) = M(gdlx, gdlx);
+                Fnodos(i-ini+1, :) = M(gdlx, gdlx) .* acel(gdlx, :);
+                [fil, ~] = find(hNodos == i);
+                Fpisos(fil-1, :) = Fpisos(fil-1, :) + Fnodos(i-ini+1, :);
+            end
+            
+            % Calculo de cortante y momento acumulado por piso
+            Fpisos_ud = flipud(Fpisos);
+            habs_ud = flipud(habs);
+            Cortante = zeros(length(habs)-1, s);
+            Momento = zeros(length(habs)-1, s);
+            for i = 1:length(habs) - 1
+                hcero = habs_ud(i+1);
+                for j = 1:i
+                    Cortante(i, :) = Cortante(i, :) + Fpisos_ud(j, :);
+                    Momento(i, :) = Momento(i, :) + Fpisos_ud(j, :) .* (habs_ud(j) - hcero);
+                end
+            end
+            
+            % Determinacion de envolvente maxima de cortante y momento basal
+            icor = 0;
+            imom = 0;
+            CorB_max = 0;
+            MomB_max = 0;
+            [nfil, ~] = size(Cortante);
+            for i = 1:s
+                if abs(Cortante(nfil, i)) > abs(CorB_max)
+                    icor = i;
+                    CorB_max = Cortante(nfil, i);
+                end
+                if abs(Momento(nfil, i)) > abs(MomB_max)
+                    imom = i;
+                    MomB_max = Momento(nfil, i);
+                end
+            end
+            
+            % Calcula las envolventes, aplica valor absoluto
+            VecCB = abs(Cortante(:, icor));
+            VecMB = abs(Momento(:, imom));
+            hgen = habs_ud;
+            hplot = zeros(2*length(hgen), 1);
+            CBplot = zeros(2*length(hgen)-1, 1);
+            MBplot = zeros(2*length(hgen)-1, 1);
+            aux1 = 1;
+            aux2 = 2;
+            for i = 1:length(hgen)
+                hplot(aux1, 1) = hgen(i);
+                hplot(aux1+1, 1) = hgen(i);
+                if aux2 <= 2 * length(hgen) - 1
+                    CBplot(aux2, 1) = VecCB(i);
+                    CBplot(aux2+1, 1) = VecCB(i);
+                    MBplot(aux2, 1) = VecMB(i);
+                    MBplot(aux2+1, 1) = VecMB(i);
+                end
+                aux1 = aux1 + 2;
+                aux2 = aux2 + 2;
+            end
+            hplot(length(hplot)) = [];
+            
+            %Graficos
+            t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
+            
+            plt = figure();
+            movegui(plt, 'center');
+            plot(t, Cortante(end, :), 'k-', 'LineWidth', 1);
+            grid on;
+            grid minor;
+            xlabel('Tiempo (s)');
+            ylabel('Corte (tonf)');
+            title('Historial de Cortante Basal');
+            
+            plt = figure();
+            movegui(plt, 'center');
+            plot(t, Momento(end, :), 'k-', 'LineWidth', 1);
+            grid on;
+            grid minor;
+            xlabel('Tiempo (s)');
+            ylabel('Momento (tonf-m)');
+            title('Historial de Momento Basal');
+            
+            plt = figure();
+            movegui(plt, 'center');
+            plot(CBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
+            grid on;
+            grid minor;
+            xlabel('Corte (tonf)');
+            ylabel('Altura (m)');
+            title('Envolvente de Cortante Basal');
+            
+            plt = figure();
+            movegui(plt, 'center');
+            plot(MBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
+            grid on;
+            grid minor;
+            xlabel('Momento (tonf-m)');
+            ylabel('Altura (m)');
+            title('Envolvente de Momento Basal');
+            
+        end % calcularMomentoCorteBasal function
+        
+        function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, tlim) %#ok<INUSL>
+            % plotTrayectoriaNodo: Grafica la trayectoria de un nodo
+            % (desplazamiento, velocidad y aceleracion) para todo el tiempo
+            %
+            % plotTrayectoriaNodo(analisisObj,carga,nodo,direccion, tlim)
+            
+            % Verifica que la direccion sea correcta
+            if sum(direccion) ~= 1
+                error('Direccion invalida');
+            end
+            if ~verificarVectorDireccion(direccion, nodo.obtenerNumeroGDL())
+                error('Vector direccion mal definido');
+            end
+            
+            % Obtiene resultados de la carga
+            p_c = carga.obtenerCarga();
+            u_c = carga.obtenerDesplazamiento();
+            v_c = carga.obtenerVelocidad();
+            a_c = carga.obtenerAceleracion();
+            if isempty(u_c)
+                error('La carga no se ha calculado');
+            end
+            
+            % Elige al nodo
+            [r, s] = size(a_c);
+            ngd = nodo.obtenerGDLIDCondensado();
+            ng = 0; % Numero grado analisis
+            nd = 0; % Numero direccion analisis
+            for i=1:length(direccion)
+                if direccion(i) == 1
+                    ng = ngd(i);
+                    nd = i;
+                end
+            end
+            if ng == 0
+                error('No se ha obtenido el GDLID del nodo');
+            end
+            if ng > r
+                error('El GDLID excede al soporte del sistema');
+            end
+            
+            % Genera el vector de tiempo
+            t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
+            if ~exist('tlim', 'var')
+                tlim = [min(t), max(t)];
+            else
+                tlim = [max(min(tlim), min(t)), min(max(tlim), max(t))];
+            end
+            
+            % Crea el grafico
+            plt = figure();
+            movegui(plt, 'center');
+            
+            subplot(4, 1, 1);
+            plot(t, p_c(ng, :), 'k-', 'LineWidth', 1);
+            ylabel('tonf (m)');
+            xlabel('t (s)');
+            xlim(tlim);
+            grid on;
+            title(sprintf('Carga %s - Nodo %s - GDLID condensado %d - Direccion %d', ...
+                carga.obtenerEtiqueta(), nodo.obtenerEtiqueta(), ng, nd));
+            
+            subplot(4, 1, 2);
+            plot(t, u_c(ng, :), 'k-', 'LineWidth', 1);
+            title('Desplazamiento');
+            ylabel('u (m)');
+            xlabel('t (s)');
+            xlim(tlim);
+            grid on;
+            
+            subplot(4, 1, 3);
+            plot(t, v_c(ng, :), 'k-', 'LineWidth', 1);
+            title('Velocidad');
+            ylabel('v (m/s)');
+            xlabel('t (s)');
+            xlim(tlim);
+            grid on;
+            
+            subplot(4, 1, 4);
+            plot(t, a_c(ng, :), 'k-', 'LineWidth', 1);
+            title('Aceleracion');
+            ylabel('a (m/s^s)');
+            xlabel('t (s)');
+            xlim(tlim);
+            grid on;
+            
+        end % plotTrayectoriaNodo
+        
         function activarCargaAnimacion(analisisObj)
             % activarCargaAnimacion: Carga la animacion  una vez calculada
             %
@@ -690,6 +932,9 @@ classdef ModalEspectral < handle
         end % disp function
         
     end % methods(public) ModalEspectral
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Metodos privados
     
     methods(Access = private)
         
@@ -1179,7 +1424,7 @@ classdef ModalEspectral < handle
                 nodoElemento = elementoObjetos{i}.obtenerNodos();
                 numNodo = length(nodoElemento);
                 
-                if ~deformada || analisisObj.mostrarDeformada
+                if (~deformada || analisisObj.mostrarDeformada)
                     if modo ~= 0 || defCarga
                         elementoObjetos{i}.plot({}, 'b-', 0.5, false);
                     else
@@ -1326,9 +1571,6 @@ classdef ModalEspectral < handle
             %
             % obtenerDeformadaNodo(analisisObj,nodo,modo,gdl,defcarga,carga,tcarga)
             
-            if defcarga
-                despl = carga.obtenerDesplazamiento();
-            end
             ngdl = nodo.obtenerGDLIDCondensado();
             def = zeros(gdl, 1);
             gdl = min(gdl, length(ngdl));
@@ -1337,11 +1579,7 @@ classdef ModalEspectral < handle
                     if ~defcarga % La deformada la saca a partir del modo
                         def(i) = analisisObj.phin(ngdl(i), modo);
                     else
-                        if tcarga < 0 % Se obtiene el maximo
-                            def(i) = max(despl(ngdl(i), :));
-                        else
-                            def(i) = despl(ngdl(i), tcarga);
-                        end
+                        def(i) = carga.obtenerDesplazamientoTiempo(ngdl(i), tcarga);
                     end
                 else
                     def(i) = 0;

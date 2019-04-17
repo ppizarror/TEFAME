@@ -93,6 +93,7 @@ classdef CargaPulso < CargaDinamica
             ng = length(m);
             nt = CargaPulsoObj.tAnalisis / CargaPulsoObj.dt;
             p = zeros(ng, nt);
+            fprintf('\t\t\t\tAplicando carga a nodo %s\n', CargaPulsoObj.nodo.obtenerEtiqueta());
             
             % Crea el vector de influencia
             rf = zeros(ng, 1);
@@ -101,7 +102,8 @@ classdef CargaPulso < CargaDinamica
                 if CargaPulsoObj.direccion(i) > 0
                     gdl = nodoGDL(CargaPulsoObj.direccion(i)); % Obtiene el GDL asociado
                     if gdl > 0
-                        rf(nodoGDL(CargaPulsoObj.direccion(i))) = 1;
+                        rf(gdl) = 1;
+                        fprintf('\t\t\t\tSe aplica la carga en el grado condensado %d\n', gdl);
                     end
                 end
             end
@@ -117,6 +119,7 @@ classdef CargaPulso < CargaDinamica
                     break;
                 end
             end
+            fprintf('\t\t\t\tLa carga es aplicada en %d/%d de la matriz de cargas totales\n', i, nt);
             
         end % calcularCarga function
         

@@ -1,7 +1,7 @@
-function plt = plotRegistro(registro, titulo, unidady, tmin, tmax)
+function plotRegistro(registro, titulo, unidady, tmin, tmax)
 %plotRegistro: Es una funcion que grafica un registro sismico
 %
-% plt = plotRegistro(registro,titulo,unidady,tmin,tmax)
+% plotRegistro(registro,titulo,unidady,tmin,tmax)
 
 % Obtiene el vector de tiempo y aceleracion
 t = registro(:, 1);
@@ -17,6 +17,7 @@ end
 
 % Genera el grafico
 plt = figure();
+movegui(plt, 'center');
 hold on;
 grid on;
 plot(t, a, 'k-', 'LineWidth', 1);
