@@ -340,7 +340,20 @@ classdef ModalEspectral < handle
             
             wn_Modelo = analisisObj.wn;
             
-        end % obtenerDesplazamientos function
+        end % obtenerValoresPropios function
+            
+        function phi_Modelo = obtenerMatrizPhi(analisisObj)
+            % obtenerVectorPropio: es un metodo de la clase ModalEspectral
+            % que se usa para obtener los valores propios del modelo
+            % obtenido del analisis
+            %
+            % phi_Modelo = obtenerVectorPropio(analisisObj)
+            % Obtiene los valores propios (phi_Modelo) del modelo que se
+            % genero como resultado del Analisis (analisisObj)
+            
+            phi_Modelo = analisisObj.phin;
+            
+        end % obtenerVectorPropio function
         
         function plt = plot(analisisObj, varargin)
             % plot: Grafica un modelo
