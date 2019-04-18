@@ -157,7 +157,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Chequea que la carga este activa
                 if ~patronDeCargasObj.cargas{i}.cargaActivada()
-                    fprintf('\t\ttLa carga %s esta desactivada\n', ...
+                    fprintf('\t\t\tLa carga %s esta desactivada\n', ...
                         patronDeCargasObj.cargas{i}.obtenerEtiqueta());
                     continue;
                 end
