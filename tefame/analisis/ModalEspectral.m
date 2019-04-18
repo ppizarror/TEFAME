@@ -335,11 +335,14 @@ classdef ModalEspectral < handle
             % plt = plot(analisisObj,'var1',val1,'var2',val2)
             %
             % Parametros opcionales:
-            %   modo        Numero de modo a graficar
-            %   factor      Escala de la deformacion
-            %   numcuadros  Numero de cuadros de la animacion
-            %   gif         Archivo en el que se guarda la animacion
-            %   defelem     Dibuja la deformada de cada elemento
+            %   'modo'              Numero de modo a graficar
+            %   'factor'            Escala de la deformacion
+            %   'cuadros'           Numero de cuadros de la animacion
+            %   'gif'               Archivo en el que se guarda la animacion
+            %   'defElem'           Dibuja la deformada de cada elemento
+            %   'mostrarEstatico'   Dibuja la estructura estatica al animar
+            %   'tmin'              Tiempo minimo al graficar cargas
+            %   'tmax'              Tiempo maximo al graficar cargas
             
             % Establece variables iniciales
             fprintf('Generando animacion analisis modal espectral:\n');
@@ -349,19 +352,23 @@ classdef ModalEspectral < handle
             addOptional(p, 'factor', 10);
             addOptional(p, 'cuadros', 0);
             addOptional(p, 'gif', '');
-            addOptional(p, 'defelem', false);
+            addOptional(p, 'defElem', false);
             addOptional(p, 'carga', false);
             addOptional(p, 'tmin', 0);
             addOptional(p, 'tmax', -1);
+            addOptional(p, 'mostrarEstatico', analisisObj.mostrarDeformada);
             parse(p, varargin{:});
             r = p.Results;
             modo = floor(r.modo);
             factor = r.factor;
             numCuadros = floor(r.cuadros);
             guardaGif = r.gif;
-            defElem = r.defelem;
+            defElem = r.defElem;
             carga = r.carga;
             defCarga = false; % Indica que la deformada se obtiene a partir de la carga
+            mostrarEstatico = r.mostrarEstatico;
+            
+            % Tiempos
             tmin = max(0, r.tmin);
             tmax = r.tmax;
             tinicial = cputime;
@@ -463,7 +470,8 @@ classdef ModalEspectral < handle
                 hold on;
                 grid on;
                 [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(0, factor, defCarga, carga);
-                plotAnimado(analisisObj, false, 0, factor, 0, limx, limy, limz, 0, 1, 1, defElem, defCarga);
+                plotAnimado(analisisObj, false, 0, factor, 0, limx, limy, limz, ...
+                    0, 1, 1, defElem, defCarga, carga, 1, tCargaEq, mostrarEstatico);
                 figure(plt);
                 return;
             end
@@ -513,11 +521,11 @@ classdef ModalEspectral < handle
             if numCuadros <= 0
                 fprintf('\tSe grafica el caso con la deformacion maxima\n');
                 plotAnimado(analisisObj, deformada, modo, factor, 1, ...
-                    limx, limy, limz, tn, 1, 1, defElem, defCarga, carga, 1, tCargaEq);
+                    limx, limy, limz, tn, 1, 1, defElem, defCarga, carga, 1, tCargaEq, mostrarEstatico);
                 fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
             else
                 plotAnimado(analisisObj, deformada, modo, factor, 0, ...
-                    limx, limy, limz, tn, 1, 1, defElem, defCarga, carga, tCargaPos(1), tCargaEq);
+                    limx, limy, limz, tn, 1, 1, defElem, defCarga, carga, tCargaPos(1), tCargaEq, mostrarEstatico);
                 hold off;
                 
                 % Obtiene el numero de cuadros
@@ -542,7 +550,7 @@ classdef ModalEspectral < handle
                     try
                         % figure(fig_num); % Atrapa el foco
                         plotAnimado(analisisObj, deformada, modo, factor, sin(t), ...
-                            limx, limy, limz, tn, i, numCuadros, defElem, defCarga, carga, tCargaPos(i), tCargaEq);
+                            limx, limy, limz, tn, i, numCuadros, defElem, defCarga, carga, tCargaPos(i), tCargaEq, mostrarEstatico);
                         drawnow;
                         Fr(i) = getframe(plt);
                         im = frame2im(Fr(i));
@@ -565,7 +573,7 @@ classdef ModalEspectral < handle
                 end % i = 1:numCuadros
                 
                 if guardarGif
-                    fprintf('\n\tGuardando animacion gif en: %s', guardaGif);
+                    fprintf('\n\tGuardando animacion gif en: %s\n', guardaGif);
                 end
                 
                 % Imprime en consola el tiempo que se demoro el proceso
@@ -1578,7 +1586,7 @@ classdef ModalEspectral < handle
         end % ensamblarVectorFuerzas function
         
         function plotAnimado(analisisObj, deformada, modo, factor, phif, limx, limy, limz, ...
-                per, cuadro, totCuadros, defElem, defCarga, carga, tcarga, tcargaEq)
+                per, cuadro, totCuadros, defElem, defCarga, carga, tcarga, tcargaEq, mostrarEstatico)
             % Anima el grafico en funcion del numero del modo
             
             % Si se grafica la carga no se aplica el factor sin(wt)
@@ -1598,7 +1606,7 @@ classdef ModalEspectral < handle
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
-                if ~deformada
+                if ~deformada && mostrarEstatico
                     if modo ~= 0 || defCarga
                         nodoObjetos{i}.plot([], 'b', 10);
                     else
@@ -1621,7 +1629,7 @@ classdef ModalEspectral < handle
                 nodoElemento = elementoObjetos{i}.obtenerNodos();
                 numNodo = length(nodoElemento);
                 
-                if (~deformada || analisisObj.mostrarDeformada)
+                if (~deformada || analisisObj.mostrarDeformada) && mostrarEstatico
                     if modo ~= 0 || defCarga
                         elementoObjetos{i}.plot({}, 'b-', 0.5, false);
                     else

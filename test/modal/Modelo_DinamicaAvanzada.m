@@ -88,15 +88,15 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 %% Resuelve el sistema
 analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], 'condensar', true);
 analisisObj.disp();
-% plt = analisisObj.plot('modo', 0, 'factor', 20, 'cuadros', 25, ...
-%        'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', false);
+% plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, ...
+%        'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
 
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', true);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
 analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
-% plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 25);
+% plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_constL.gif');
 analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 
 %% Finaliza el analisis
