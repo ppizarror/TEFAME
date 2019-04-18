@@ -83,8 +83,8 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 %% Resuelve el sistema
 analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], 'condensar', true);
 analisisObj.disp();
-% plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, ...
-%       'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', false);
+% plt = analisisObj.plot('modo', 0, 'factor', 20, 'cuadros', 25, ...
+%        'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', false);
 
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', true);
