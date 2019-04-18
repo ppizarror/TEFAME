@@ -40,6 +40,7 @@
 %  Properties (Access=private):
 %       cargas
 %       analisisObj
+%       desModal
 %  Methods:
 %       patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj)
 %       aplicarCargas(patronDeCargasObj)
@@ -53,15 +54,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
     properties(Access = private)
         cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
         analisisObj % Guarda el objeto de analisis con tal de obtener M, K, C y el vector de influencia
-        DesModal % true si se realiza descomposicion modal
+        desModal % Realiza descomposicion modal
     end % properties PatronDeCargasDinamico
     
     methods
         
-        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas, analisisObj ,DesModal)
+        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas, analisisObj, desModal)
             % PatronDeCargasDinamico: es el constructor de la clase PatronDeCargas
             %
-            % patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj)
+            % patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj, desModal)
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
             % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)
             % a aplicar en el modelo
@@ -70,8 +71,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             if nargin == 0
                 etiquetaPatronDeCargas = '';
             end % if
-            if ~exist('DesModal', 'var')
-                DesModal = true;
+            if ~exist('desModal', 'var')
+                desModal = true;
             end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
@@ -87,7 +88,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             patronDeCargasObj.analisisObj = analisisObj;
             
             %Descomposicion modal
-            patronDeCargasObj.DesModal = DesModal;
+            patronDeCargasObj.desModal = desModal;
             
         end % PatronDeCargasDinamico constructor
         
@@ -109,25 +110,24 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             c = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(~cpenzien); % false: cPenzien
             r = patronDeCargasObj.analisisObj.obtenerVectorInfluencia();
             phi = patronDeCargasObj.analisisObj.obtenerMatrizPhi();
-
+            
             % Chequea que las dimensiones sean apropiadas
             if ~equalMatrixSize(k, m) || ~equalMatrixSize(m, c) || length(r) ~= length(m)
                 error('Tamano incorrecto de matrices K, M, C, r');
             end
             
-            % Descomposicion modal  
-            if patronDeCargasObj.DesModal
+            % Descomposicion modal
+            if patronDeCargasObj.desModal
                 k = phi' * k * phi;
                 mmodal = phi' * m * phi;
                 c = phi' * c * phi;
-                fprintf('\tAplicando descomposicion modal\n');
+                fprintf('\tPatron de cargas usa descomposicion modal\n');
             else
                 mmodal = m;
             end
-
-            tInicioProceso = cputime;
             
             % Se calcula carga una de las cargas dinamicas
+            tInicioProceso = cputime;
             for i = 1:length(patronDeCargasObj.cargas)
                 
                 % Chequea que la carga sea dinamica
@@ -142,17 +142,18 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 % Genera las cargas
                 fprintf('\t\t\tGenerando la matriz de cargas\n');
                 p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r);
-                patronDeCargasObj.cargas{i}.guardarCarga(p);
+                patronDeCargasObj.cargas{i}.guardarCarga(p); % Ojo, se guarda sin descomponer
                 
                 % Descomposicion modal
-                if patronDeCargasObj.DesModal == true
+                if patronDeCargasObj.desModal
                     p = phi' * p;
                 end
-                                           
+                
                 % Resuelve newmark
                 [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, c, p, patronDeCargasObj.cargas{i}.dt, 0, 0);
-
-                if patronDeCargasObj.DesModal
+                
+                % Aplica descompisicion si aplica
+                if patronDeCargasObj.desModal
                     u = phi * u;
                     du = phi * du;
                     ddu = phi * ddu;
@@ -184,7 +185,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             alpha = 0;
             gamma = 1 / 2 - alpha;
             beta = 1 / 4 * (1 - alpha)^2;
-                       
+            
             n = length(p);
             % tmax = dt * (n - 1);
             % t = linspace(0, tmax, n)';

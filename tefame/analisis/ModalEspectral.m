@@ -54,6 +54,8 @@
 %       r_Modelo = obtenerVectorInfluencia(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
+%       wn_Modelo = obtenerValoresPropios(analisisObj)
+%       phi_Modelo = obtenerMatrizPhi(analisisObj)
 %       activarPlotDeformadaInicial(analisisObj)
 %       desactivarPlotDeformadaInicial(analisisObj)
 %       activarCargaAnimacion(analisisObj)
@@ -125,54 +127,6 @@ classdef ModalEspectral < handle
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para definir y analizar el modelo
-        
-        function definirNumeracionGDL(analisisObj)
-            % definirNumeracionGDL: es un metodo de la clase ModalEspectral que
-            % se usa para definir como se enumeran los GDL en el modelo
-            %
-            % definirNumeracionGDL(analisisObj)
-            % Define y asigna la enumeracion de los GDL en el modelo
-            
-            fprintf('\tDefiniendo numeracion GDL\n');
-            
-            % Primero se aplican las restricciones al modelo
-            analisisObj.modeloObj.aplicarRestricciones();
-            
-            % Extraemos los nodos para que sean enumerados
-            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
-            numeroNodos = length(nodoObjetos);
-            
-            % Inicializamos en cero el contador de GDL
-            contadorGDL = 0;
-            for i = 1:numeroNodos
-                
-                gdlidNodo = nodoObjetos{i}.obtenerGDLID;
-                
-                % Si no es reaccion entonces se agrega como GDL
-                for j = 1:length(gdlidNodo)
-                    if (gdlidNodo(j) == -1)
-                        contadorGDL = contadorGDL + 1;
-                        gdlidNodo(j) = contadorGDL;
-                    end % if
-                end % for j
-                nodoObjetos{i}.definirGDLID(gdlidNodo);
-                
-            end % for i
-            
-            % Guardamos el numero de GDL, es decir el numero de ecuaciones
-            % del sistema
-            analisisObj.numeroGDL = contadorGDL;
-            
-            % Extraemos los Elementos del modelo
-            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
-            numeroElementos = length(elementoObjetos);
-            
-            % Definimos los GDLID en los elementos para poder formar la matriz de rigidez
-            for i = 1:numeroElementos
-                elementoObjetos{i}.definirGDLID();
-            end % for i
-            
-        end % definirNumeracionGDL function
         
         function analizar(analisisObj, nModos, betacR, betacP, maxcond)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
@@ -341,7 +295,7 @@ classdef ModalEspectral < handle
             wn_Modelo = analisisObj.wn;
             
         end % obtenerValoresPropios function
-            
+        
         function phi_Modelo = obtenerMatrizPhi(analisisObj)
             % obtenerVectorPropio: es un metodo de la clase ModalEspectral
             % que se usa para obtener los valores propios del modelo
@@ -767,7 +721,7 @@ classdef ModalEspectral < handle
             ngd = nodo.obtenerGDLIDCondensado();
             ng = 0; % Numero grado analisis
             nd = 0; % Numero direccion analisis
-            for i=1:length(direccion)
+            for i = 1:length(direccion)
                 if direccion(i) == 1
                     ng = ngd(i);
                     nd = i;
@@ -950,6 +904,54 @@ classdef ModalEspectral < handle
     % Metodos privados
     
     methods(Access = private)
+        
+        function definirNumeracionGDL(analisisObj)
+            % definirNumeracionGDL: es un metodo de la clase ModalEspectral que
+            % se usa para definir como se enumeran los GDL en el modelo
+            %
+            % definirNumeracionGDL(analisisObj)
+            % Define y asigna la enumeracion de los GDL en el modelo
+            
+            fprintf('\tDefiniendo numeracion GDL\n');
+            
+            % Primero se aplican las restricciones al modelo
+            analisisObj.modeloObj.aplicarRestricciones();
+            
+            % Extraemos los nodos para que sean enumerados
+            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            numeroNodos = length(nodoObjetos);
+            
+            % Inicializamos en cero el contador de GDL
+            contadorGDL = 0;
+            for i = 1:numeroNodos
+                
+                gdlidNodo = nodoObjetos{i}.obtenerGDLID;
+                
+                % Si no es reaccion entonces se agrega como GDL
+                for j = 1:length(gdlidNodo)
+                    if (gdlidNodo(j) == -1)
+                        contadorGDL = contadorGDL + 1;
+                        gdlidNodo(j) = contadorGDL;
+                    end % if
+                end % for j
+                nodoObjetos{i}.definirGDLID(gdlidNodo);
+                
+            end % for i
+            
+            % Guardamos el numero de GDL, es decir el numero de ecuaciones
+            % del sistema
+            analisisObj.numeroGDL = contadorGDL;
+            
+            % Extraemos los Elementos del modelo
+            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(elementoObjetos);
+            
+            % Definimos los GDLID en los elementos para poder formar la matriz de rigidez
+            for i = 1:numeroElementos
+                elementoObjetos{i}.definirGDLID();
+            end % for i
+            
+        end % definirNumeracionGDL function
         
         function calcularModalEspectral(analisisObj, nModos, betacR, betacP, maxcond)
             % calcularModalEspectral: Calcula el metodo modal espectral

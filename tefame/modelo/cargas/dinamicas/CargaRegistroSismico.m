@@ -71,7 +71,7 @@ classdef CargaRegistroSismico < CargaDinamica
             cargaRegistroObj = cargaRegistroObj@CargaDinamica(etiquetaCargaRegistroSismico);
             
             % Calcula el dt
-            for k=1:length(direccion)
+            for k = 1:length(direccion)
                 if direccion(k) ~= 0
                     reg = registro{k};
                     dt = reg(2, 1) - reg(1, 1);
@@ -103,16 +103,17 @@ classdef CargaRegistroSismico < CargaDinamica
             p = zeros(ng, nt);
             
             % Para cada aceleracion calcula la carga como -m*a
-            for k=1:nd % Recorre direccion
+            for k = 1:nd % Recorre direccion
                 if cargaRegistroObj.direccion(k) == 0 % Salta direcciones nulas
                     continue;
                 end
                 reg = cargaRegistroObj.registro{k}; % Registro direccion de estudio
                 nct = min(length(reg), nt); % Numero de tiempos en los que se aplica la carga
-                for i=1:nct
+                for i = 1:nct
                     p(:, i) = p(:, i) + m * r(:, k) .* reg(i, 2);
                 end
-                fprintf('\t\t\t\tLa carga de la direccion %d es aplicada en %d/%d de la matriz de cargas totales\n', k, i, nct);
+                fprintf('\t\t\t\tLa carga de la direccion %d es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
+                    k, i, nct, (i / nct)*100);
             end
             
         end % calcularCarga function

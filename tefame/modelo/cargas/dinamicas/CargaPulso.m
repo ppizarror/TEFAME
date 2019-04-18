@@ -119,7 +119,8 @@ classdef CargaPulso < CargaDinamica
                     break;
                 end
             end
-            fprintf('\t\t\t\tLa carga es aplicada en %d/%d de la matriz de cargas totales\n', i, nt);
+            fprintf('\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
+                i, nt, (i / nt)*100);
             
         end % calcularCarga function
         
