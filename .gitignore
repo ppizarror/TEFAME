@@ -7,7 +7,7 @@
 # Otros
 *.pdf
 .vscode/
-*.bat
+dev/
 
 # SAP2000
 *.sdb
