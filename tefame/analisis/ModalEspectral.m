@@ -146,21 +146,19 @@ classdef ModalEspectral < handle
             if ~exist('nModos', 'var')
                 nModos = 20;
             end
+            
             p = inputParser;
             p.KeepUnmatched = true;
-            addOptional(p, 'modo', 0);
-            addOptional(p, 'factor', 10);
-            addOptional(p, 'cuadros', 0);
-            addOptional(p, 'gif', '');
-            addOptional(p, 'defelem', true);
-            addOptional(p, 'carga', false);
-            addOptional(p, 'tmin', 0);
-            addOptional(p, 'tmax', -1);
+            addOptional(p, 'toleranciamasa', 0.001);
+            addOptional(p, 'condensar', true);
             parse(p, varargin{:});
             r = p.Results;
-            if ~exist('maxcond', 'var')
-                maxcond = 0.001;
+            
+            maxcond = r.toleranciamasa;
+            if ~r.condensar
+                maxcond = -1;
             end
+            
             fprintf('Ejecuntando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
             
             % Se definen los grados de libertad por nodo -> elementos
