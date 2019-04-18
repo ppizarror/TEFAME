@@ -75,7 +75,7 @@ analisisObj.activarCargaAnimacion();
 %% Creamos el patron de cargas
 PatronesDeCargas = cell(2, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
-PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj);
+PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj); % false, sin descomposicion modal
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
@@ -88,8 +88,12 @@ analisisObj.disp();
 
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas();
+<<<<<<< HEAD
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1});
+=======
+analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
+>>>>>>> c7670f70ea4be265529c7d7f8d2d254808d423a4
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 25);
 analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 

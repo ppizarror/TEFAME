@@ -40,6 +40,7 @@
 %  Properties (Access=private):
 %       cargas
 %       analisisObj
+%       desModal
 %  Methods:
 %       patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj)
 %       aplicarCargas(patronDeCargasObj)
@@ -53,14 +54,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
     properties(Access = private)
         cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
         analisisObj % Guarda el objeto de analisis con tal de obtener M, K, C y el vector de influencia
+        desModal % Realiza descomposicion modal
     end % properties PatronDeCargasDinamico
     
     methods
         
-        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas, analisisObj)
+        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas, analisisObj, desModal)
             % PatronDeCargasDinamico: es el constructor de la clase PatronDeCargas
             %
-            % patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj)
+            % patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj, desModal)
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
             % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)
             % a aplicar en el modelo
@@ -69,6 +71,9 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             if nargin == 0
                 etiquetaPatronDeCargas = '';
             end % if
+            if ~exist('desModal', 'var')
+                desModal = true;
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             patronDeCargasObj = patronDeCargasObj@PatronDeCargas(etiquetaPatronDeCargas);
@@ -81,6 +86,9 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
             % Guarda el analisis
             patronDeCargasObj.analisisObj = analisisObj;
+            
+            %Descomposicion modal
+            patronDeCargasObj.desModal = desModal;
             
         end % PatronDeCargasDinamico constructor
         
@@ -101,14 +109,25 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             m = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
             c = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(~cpenzien); % false: cPenzien
             r = patronDeCargasObj.analisisObj.obtenerVectorInfluencia();
+            phi = patronDeCargasObj.analisisObj.obtenerMatrizPhi();
             
             % Chequea que las dimensiones sean apropiadas
             if ~equalMatrixSize(k, m) || ~equalMatrixSize(m, c) || length(r) ~= length(m)
                 error('Tamano incorrecto de matrices K, M, C, r');
             end
-            tInicioProceso = cputime;
+            
+            % Descomposicion modal
+            if patronDeCargasObj.desModal
+                k = phi' * k * phi;
+                mmodal = phi' * m * phi;
+                c = phi' * c * phi;
+                fprintf('\tPatron de cargas usa descomposicion modal\n');
+            else
+                mmodal = m;
+            end
             
             % Se calcula carga una de las cargas dinamicas
+            tInicioProceso = cputime;
             for i = 1:length(patronDeCargasObj.cargas)
                 
                 % Chequea que la carga sea dinamica
@@ -123,10 +142,22 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 % Genera las cargas
                 fprintf('\t\t\tGenerando la matriz de cargas\n');
                 p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r);
-                patronDeCargasObj.cargas{i}.guardarCarga(p);
+                patronDeCargasObj.cargas{i}.guardarCarga(p); % Ojo, se guarda sin descomponer
+                
+                % Descomposicion modal
+                if patronDeCargasObj.desModal
+                    p = phi' * p;
+                end
                 
                 % Resuelve newmark
-                [u, du, ddu] = patronDeCargasObj.newmark(k, m, c, p, patronDeCargasObj.cargas{i}.dt, 0, 0);
+                [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, c, p, patronDeCargasObj.cargas{i}.dt, 0, 0);
+                
+                % Aplica descompisicion si aplica
+                if patronDeCargasObj.desModal
+                    u = phi * u;
+                    du = phi * du;
+                    ddu = phi * ddu;
+                end
                 
                 % Guarda los resultados
                 patronDeCargasObj.cargas{i}.guardarDesplazamiento(u);
@@ -154,11 +185,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             alpha = 0;
             gamma = 1 / 2 - alpha;
             beta = 1 / 4 * (1 - alpha)^2;
-            
-            % Obtiene parametros del modelo
-            KT = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
-            MT = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
-            CT = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(true); % false: cPenzien
             
             n = length(p);
             % tmax = dt * (n - 1);
@@ -188,8 +214,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Calcula
                 % ps(:, i+1) = p(:, i+1) + a1 * x(:, i) + a2 * v(:, i) + a3 * z(:, i);
-                ps(:, i+1) = p(:, i+1) + KT * alpha * x(:, i) + MT * (c1 * x(:, i) + c2 * v(:, i) + c6 * z(:, i)) ...
-                    +CT * ((1 + alpha) * c3 * x(:, i) + (alpha - (1 + alpha) * c4) * v(:, i) - (1 + alpha) * c5 * dt * z(:, i));%hht
+                ps(:, i+1) = p(:, i+1) + k * alpha * x(:, i) + m * (c1 * x(:, i) + c2 * v(:, i) + c6 * z(:, i)) ...
+                    +c * ((1 + alpha) * c3 * x(:, i) + (alpha - (1 + alpha) * c4) * v(:, i) - (1 + alpha) * c5 * dt * z(:, i));%hht
                 x(:, i+1) = ks^(-1) * ps(:, i+1);
                 v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
                 z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
