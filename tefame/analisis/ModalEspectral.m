@@ -569,10 +569,18 @@ classdef ModalEspectral < handle
             %
             % calcularDesplazamientoDrift(analisisObj,carga,xanalisis)
             
+            % Verifica que la carga se haya calculado
+            if ~isa(carga, 'CargaDinamica')
+                error('Solo se pueden graficar cargas dinamicas');
+            end
+            desp = carga.obtenerDesplazamiento();
+            if isempty(desp)
+                error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
+            end
+            
             % Se genera vector en que las filas contienen nodos en un mismo piso,
             % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
             % Tambien se genera vector que contiene alturas de piso
-            
             nodos = analisisObj.modeloObj.obtenerNodos();
             nnodos = length(nodos);
             habs = zeros(1, 1);
@@ -607,7 +615,6 @@ classdef ModalEspectral < handle
                 end
             end
             
-            desp = carga.obtenerDesplazamiento();
             [~, s] = size(desp);
             nndrift = length(ndrift);
             despx = zeros(nndrift, s);
@@ -675,6 +682,15 @@ classdef ModalEspectral < handle
             %
             % calcularMomentoCorteBasal(analisisObj,carga)
             
+            % Verifica que la carga se haya calculado
+            if ~isa(carga, 'CargaDinamica')
+                error('Solo se pueden graficar cargas dinamicas');
+            end
+            acel = carga.obtenerAceleracion();
+            if isempty(acel)
+                error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
+            end
+            
             % Se genera vector en que las filas contienen nodos en un mismo piso,
             % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
             % Tambien se genera vector que contiene alturas de piso
@@ -705,7 +721,6 @@ classdef ModalEspectral < handle
                 end
             end
             
-            acel = carga.obtenerAceleracion();
             [~, s] = size(acel);
             M = analisisObj.obtenerMatrizMasa;
             m = zeros(nnodos-ini+1, 1);
@@ -818,8 +833,7 @@ classdef ModalEspectral < handle
             title(sprintf('Envolvente de Momento Basal - %s', carga.obtenerEtiqueta()));
             
         end % calcularMomentoCorteBasal function
-        
-        
+              
         function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, tlim) %#ok<INUSL>
             % plotTrayectoriaNodo: Grafica la trayectoria de un nodo
             % (desplazamiento, velocidad y aceleracion) para todo el tiempo
@@ -839,8 +853,12 @@ classdef ModalEspectral < handle
             u_c = carga.obtenerDesplazamiento();
             v_c = carga.obtenerVelocidad();
             a_c = carga.obtenerAceleracion();
-            if isempty(u_c)
-                error('La carga no se ha calculado');
+            % Verifica que la carga se haya calculado
+            if ~isa(carga, 'CargaDinamica')
+                error('Solo se pueden graficar cargas dinamicas');
+            end
+            if isempty(a_c)
+                error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
             
             % Elige al nodo

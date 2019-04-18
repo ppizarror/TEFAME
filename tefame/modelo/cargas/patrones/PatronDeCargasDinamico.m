@@ -142,7 +142,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
             % Se calcula carga una de las cargas dinamicas
             tInicioProceso = cputime;
-            for i = 1:length(patronDeCargasObj.cargas)
+            totalCargas = length(patronDeCargasObj.cargas);
+            for i = 1:totalCargas
                 
                 % Chequea que la carga sea dinamica
                 if ~isa(patronDeCargasObj.cargas{i}, 'CargaDinamica')
@@ -151,7 +152,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Obtiene la carga
                 tInicio = cputime;
-                fprintf('\t\tAplicando carga %s\n', patronDeCargasObj.cargas{i}.obtenerEtiqueta());
+                fprintf('\t\tAplicando carga %s (%d/%d)\n', ...
+                    patronDeCargasObj.cargas{i}.obtenerEtiqueta(), i, totalCargas);
+                
+                % Chequea que la carga este activa
+                if ~patronDeCargasObj.cargas{i}.cargaActivada()
+                    fprintf('\t\ttLa carga %s esta desactivada\n', ...
+                        patronDeCargasObj.cargas{i}.obtenerEtiqueta());
+                    continue;
+                end
                 
                 % Genera las cargas
                 fprintf('\t\t\tGenerando la matriz de cargas\n');

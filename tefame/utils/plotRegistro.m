@@ -25,11 +25,11 @@ xlim([tmin, tmax]);
 
 % Unidades
 if exist('unidady', 'var')
-    ylabel(sprintf('Aceleracion [%s]', unidady));
+    ylabel(sprintf('Aceleracion (%s)', unidady));
 end
 if exist('titulo', 'var')
     title(titulo);
 end
-xlabel('Tiempo [s]');
+xlabel('Tiempo (s)');
 
 end

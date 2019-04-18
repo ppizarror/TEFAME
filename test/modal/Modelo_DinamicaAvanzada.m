@@ -58,14 +58,19 @@ end
 %% Creamos las cargas dinamicas
 cargasDinamicas = {};
 
-% Registro sismico
-if ~exist('sis_reg', 'var') % Carga el registro
-    sis_reg = cargaRegistroArchivo('test/modal/registro.txt', '\n', ' ', 0, 0, 1, 0.005, 0.01);
-    plotRegistro(sis_reg, 'Registro Constitucion', 'm/s^2');
+% Carga los registros sismicos
+if ~exist('regConstitucionL', 'var') % Carga el registro
+    regConstitucionL = cargaRegistroSimple('test/modal/constitucion_ch1.txt', 0.005, 'factor', 0.01);
+    regConstitucionV = cargaRegistroSimple('test/modal/constitucion_ch2.txt', 0.005, 'factor', 0.01);
+    % plotRegistro(regConstitucionL, 'Registro Constitucion/Longitudinal', 'm/s^2');
 end
-cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', {sis_reg, sis_reg .* 0}, [1, 0], 40); % Horizontal
-cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 40); % Horizontal
-cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
+cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion/L', {regConstitucionL, []}, [1, 0], 200);
+cargasDinamicas{2} = CargaRegistroSismico('Registro Constitucion/V', {[], regConstitucionV}, [0, 1], 200);
+cargasDinamicas{3} = CargaRegistroSismico('Registro Constitucion/L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
+cargasDinamicas{4} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 40); % Horizontal
+cargasDinamicas{5} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
+
+cargasDinamicas{3}.desactivarCarga();
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
@@ -90,7 +95,7 @@ analisisObj.disp();
 analisisObj.resolverCargasDinamicas('cpenzien', true);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
-analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
+analisisObj.calcularMomentoCorteBasal(cargasDinamicas{3});
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 25);
 analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 

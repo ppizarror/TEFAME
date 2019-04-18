@@ -1,12 +1,8 @@
-function reg = cargaRegistroArchivo(archivo, linedelim, coldelim, header, footer, ncol, dt, factor)
-%CARGAREGISTROSISMICO Carga un archivo sismico y retorna una matriz del
+function reg = cargaRegistroArchivoGeneral(archivo, linedelim, coldelim, header, footer, ncol, dt, factor)
+%cargaRegistroArchivoGeneral: Carga un archivo sismico y retorna una matriz del
 %tipo [t1, a1; t2, a2; ...]
 %
 % reg = cargaRegistroSismico(archivo,linedelim,coldelim,header,ncol,dt,factor)
-
-if ~exist('factor', 'var')
-    factor = 1;
-end
 
 % Obtiene el archivo
 fprintf('Cargando registro sismico %s ... ', archivo);

@@ -70,6 +70,14 @@ classdef CargaRegistroSismico < CargaDinamica
             % Llamamos al constructor de la SuperClass que es la clase Carga
             cargaRegistroObj = cargaRegistroObj@CargaDinamica(etiquetaCargaRegistroSismico);
             
+            % Chequea que el registro en cada direccion no sea nulo
+            for k = 1:length(direccion)
+                reg = registro{k};
+                if direccion(k) ~= 0 && isempty(reg)
+                    error('Registro asociado a direccion %d no puede ser nulo', k);
+                end
+            end
+            
             % Calcula el dt
             for k = 1:length(direccion)
                 if direccion(k) ~= 0

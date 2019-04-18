@@ -29,10 +29,14 @@
 %| Fecha: 10/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
+%  Properties(Access=private):
 %       sol_u
 %       sol_v
 %       sol_a
+%       cargaActiva
+%  Properties(Access=public):
+%       tAnalisis
+%       dt
 %  Methods:
 %       cargaObj = Carga(etiquetaCarga)
 %       aplicarCarga(cargaObj)
@@ -56,6 +60,7 @@ classdef CargaDinamica < ComponenteModelo
         sol_v % Guarda la solucion de las velocidades
         sol_a % Guarda la solucion de las aceleraciones
         sol_p % Guarda la carga generada
+        cargaActiva % Indica si la carga esta activada o no
     end % properties CargaDinamica
     
     properties(Access = public)
@@ -78,121 +83,147 @@ classdef CargaDinamica < ComponenteModelo
             
             % Llamamos al cosntructor de la SuperClass que es la clase ComponenteModelo
             cargaDinamicaObj = cargaDinamicaObj@ComponenteModelo(etiquetaCarga);
+            cargaDinamicaObj.cargaActiva = true;
             
         end % CargaDinamica constructor
+        
+        function activarCarga(cargaDinamicaObj)
+            % activarCarga: Activa la carga para el analisis
+            
+            cargaDinamicaObj.cargaActiva = true;
+            
+        end % activarCarga function
+        
+        function desactivarCarga(cargaDinamicaObj)
+            % desactivarCarga: Desactiva la carga para el analisis
+            
+            cargaDinamicaObj.cargaActiva = false;
+            
+        end % desactivarCarga function
+        
+        function y = cargaActivada(cargaDinamicaObj)
+            % cargaActivada: Indica si la carga esta activada para el
+            % analisis
+            % y = cargaActivada(cargaDinamicaObj)
+            
+            y = cargaDinamicaObj.cargaActiva;
+            
+        end % cargaActivada function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para calcular la carga
         
-        function p = calcularCarga(cargaObj, varargin) %#ok<*STOUT,*VANUS,INUSD>
+        function p = calcularCarga(cargaDinamicaObj, varargin) %#ok<*STOUT,*VANUS,INUSD>
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
             %
-            % calcularCarga(cargaObj,'var1',var,'var2',var)
+            % calcularCarga(cargaDinamicaObj,'var1',var,'var2',var)
             
         end % calcularCarga function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para guardar los resultados
         
-        function guardarCarga(cargaObj, p)
+        function guardarCarga(cargaDinamicaObj, p)
             % guardarCarga: Guarda la carga generada
             %
-            % guardarCarga(cargaObj,u)
+            % guardarCarga(cargaDinamicaObj,u)
             
-            cargaObj.sol_p = p;
+            cargaDinamicaObj.sol_p = p;
             
         end % guardarCarga function
         
-        function guardarDesplazamiento(cargaObj, u)
+        function guardarDesplazamiento(cargaDinamicaObj, u)
             % guardarDesplazamiento: Guarda el desplazamiento de la carga
             %
-            % guardarDesplazamiento(cargaObj,u)
+            % guardarDesplazamiento(cargaDinamicaObj,u)
             
-            cargaObj.sol_u = u;
+            cargaDinamicaObj.sol_u = u;
             
         end % guardarDesplazamiento function
         
-        function guardarVelocidad(cargaObj, v)
+        function guardarVelocidad(cargaDinamicaObj, v)
             % guardarVelocidad: Guarda la velocidad de la carga
             %
-            % guardarVelocidad(cargaObj,v)
+            % guardarVelocidad(cargaDinamicaObj,v)
             
-            cargaObj.sol_v = v;
+            cargaDinamicaObj.sol_v = v;
             
         end % guardarVelocidad function
         
-        function guardarAceleracion(cargaObj, a)
-            % guardarAceleracion: Guarda el desplazamiento de la carga
+        function guardarAceleracion(cargaDinamicaObj, a)
+            % guardarAceleracion: Guarda la aceleracion de la carga
             %
-            % guardarAceleracion(cargaObj,a)
+            % guardarAceleracion(cargaDinamicaObj,a)
             
-            cargaObj.sol_a = a;
+            cargaDinamicaObj.sol_a = a;
             
         end % guardarAceleracion function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para obtener los resultados
         
-        function p = obtenerCarga(cargaObj)
+        function p = obtenerCarga(cargaDinamicaObj)
             % obtenerCarga: Obtiene la carga generada
             %
-            % obtenerCarga(cargaObj)
+            % obtenerCarga(cargaDinamicaObj)
             
-            p = cargaObj.sol_p;
+            p = cargaDinamicaObj.sol_p;
             
         end % obtenerCarga function
         
-        function u = obtenerDesplazamiento(cargaObj)
+        function u = obtenerDesplazamiento(cargaDinamicaObj)
             % obtenerDesplazamiento: Obtiene el desplazamiento de la carga
             %
-            % obtenerDesplazamiento(cargaObj)
+            % obtenerDesplazamiento(cargaDinamicaObj)
             
-            u = cargaObj.sol_u;
+            u = cargaDinamicaObj.sol_u;
             
         end % obtenerDesplazamiento function
         
-        function u = obtenerDesplazamientoTiempo(cargaObj, gdl, tiempo)
+        function u = obtenerDesplazamientoTiempo(cargaDinamicaObj, gdl, tiempo)
             % obtenerDesplazamientoTiempo obtiene el desplazamiento de un
             % grado de libertad en un determinado tiempo
+            %
+            % u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
             
             if tiempo < 0 % Retorna el maximo
-                u = max(cargaObj.sol_u(gdl, :));
+                u = max(cargaDinamicaObj.sol_u(gdl, :));
             else
-                u = cargaObj.sol_u(gdl, tiempo);
+                u = cargaDinamicaObj.sol_u(gdl, tiempo);
             end
             
         end % obtenerDesplazamientoTiempo function
         
-        function v = obtenerVelocidad(cargaObj)
+        function v = obtenerVelocidad(cargaDinamicaObj)
             % obtenerVelocidad: Obtiene la velocidad de la carga
             %
-            % obtenerVelocidad(cargaObj)
+            % obtenerVelocidad(cargaDinamicaObj)
             
-            v = cargaObj.sol_v;
+            v = cargaDinamicaObj.sol_v;
             
         end % obtenerVelocidad function
         
-        function a = obtenerAceleracion(cargaObj)
+        function a = obtenerAceleracion(cargaDinamicaObj)
             % obtenerAceleracion: Obtiene la aceleracion de la carga
             %
-            % obtenerAceleracion(cargaObj)
+            % obtenerAceleracion(cargaDinamicaObj)
             
-            a = cargaObj.sol_a;
+            a = cargaDinamicaObj.sol_a;
             
         end % obtenerAceleracion function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostrar la informacion de la carga en pantalla
         
-        function disp(cargaObj)
+        function disp(cargaDinamicaObj)
             % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en
             % command Window la informacion de la carga
             %
-            % disp(cargaObj)
-            % Imprime la informacion guardada en la carga (cargaObj) en pantalla
+            % disp(cargaDinamicaObj)
+            % Imprime la informacion guardada en la carga (cargaDinamicaObj) en pantalla
             
-            disp@ComponenteModelo(cargaObj);
+            disp@ComponenteModelo(cargaDinamicaObj);
             
         end % disp function
         
