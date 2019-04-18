@@ -95,7 +95,7 @@ analisisObj.disp();
 analisisObj.resolverCargasDinamicas('cpenzien', true);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
-analisisObj.calcularMomentoCorteBasal(cargasDinamicas{3});
+analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 25);
 analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 
