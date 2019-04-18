@@ -59,10 +59,14 @@ classdef PatronDeCargasDinamico < PatronDeCargas
     
     methods
         
-        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas, analisisObj, desModal)
+        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas, analisisObj, varargin)
             % PatronDeCargasDinamico: es el constructor de la clase PatronDeCargas
             %
-            % patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj, desModal)
+            % patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj,varargin)
+            %
+            % Parametros opcionales:
+            %   'desmodal': Ejecuta la condensacion modal
+            %
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
             % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)
             % a aplicar en el modelo
@@ -71,12 +75,16 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             if nargin == 0
                 etiquetaPatronDeCargas = '';
             end % if
-            if ~exist('desModal', 'var')
-                desModal = true;
-            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             patronDeCargasObj = patronDeCargasObj@PatronDeCargas(etiquetaPatronDeCargas);
+            
+            % Obtiene parametros opcionales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'desmodal', true);
+            parse(p, varargin{:});
+            r = p.Results;
             
             % Se guarda el arreglo con las cargas
             patronDeCargasObj.cargas = arregloCargas;
@@ -88,7 +96,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             patronDeCargasObj.analisisObj = analisisObj;
             
             %Descomposicion modal
-            patronDeCargasObj.desModal = desModal;
+            patronDeCargasObj.desModal = r.desmodal;
             
         end % PatronDeCargasDinamico constructor
         
