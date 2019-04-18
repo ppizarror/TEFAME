@@ -833,12 +833,12 @@ classdef ModalEspectral < handle
             title(sprintf('Envolvente de Momento Basal - %s', carga.obtenerEtiqueta()));
             
         end % calcularMomentoCorteBasal function
-              
-        function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, tlim) %#ok<INUSL>
+        
+        function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, varargin) %#ok<INUSL>
             % plotTrayectoriaNodo: Grafica la trayectoria de un nodo
             % (desplazamiento, velocidad y aceleracion) para todo el tiempo
             %
-            % plotTrayectoriaNodo(analisisObj,carga,nodo,direccion, tlim)
+            % plotTrayectoriaNodo(analisisObj,carga,nodo,direccion,tlim)
             
             % Verifica que la direccion sea correcta
             if sum(direccion) ~= 1
@@ -848,11 +848,22 @@ classdef ModalEspectral < handle
                 error('Vector direccion mal definido');
             end
             
+            % Recorre parametros opcionales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'tlim', 0);
+            parse(p, varargin{:});
+            r = p.Results;
+            
+            % Obtiene las variables
+            tlim = r.tlim;
+            
             % Obtiene resultados de la carga
             p_c = carga.obtenerCarga();
             u_c = carga.obtenerDesplazamiento();
             v_c = carga.obtenerVelocidad();
             a_c = carga.obtenerAceleracion();
+            
             % Verifica que la carga se haya calculado
             if ~isa(carga, 'CargaDinamica')
                 error('Solo se pueden graficar cargas dinamicas');
@@ -873,7 +884,7 @@ classdef ModalEspectral < handle
                 end
             end
             if ng == 0
-                error('No se ha obtenido el GDLID del nodo');
+                error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
             end
             if ng > r
                 error('El GDLID excede al soporte del sistema');
@@ -881,7 +892,7 @@ classdef ModalEspectral < handle
             
             % Genera el vector de tiempo
             t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
-            if ~exist('tlim', 'var')
+            if tlim == 0
                 tlim = [min(t), max(t)];
             else
                 tlim = [max(min(tlim), min(t)), min(max(tlim), max(t))];
