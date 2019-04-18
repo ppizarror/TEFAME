@@ -87,13 +87,10 @@ analisisObj.disp();
 %       'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', false);
 
 %% Calcula y grafica las cargas dinamicas
-analisisObj.resolverCargasDinamicas();
-<<<<<<< HEAD
+analisisObj.resolverCargasDinamicas(true);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1});
-=======
 analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
->>>>>>> c7670f70ea4be265529c7d7f8d2d254808d423a4
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 25);
 analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 

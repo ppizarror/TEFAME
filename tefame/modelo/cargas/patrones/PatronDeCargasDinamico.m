@@ -126,6 +126,12 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 mmodal = m;
             end
             
+            if cpenzien
+                fprintf('\tPatron de cargas dinamico usa amortiguamiento de Wilson-Penzien\n');
+            else
+                fprintf('\tPatron de cargas dinamico usa amortiguamiento de Rayleigh\n');
+            end
+                
             % Se calcula carga una de las cargas dinamicas
             tInicioProceso = cputime;
             for i = 1:length(patronDeCargasObj.cargas)
