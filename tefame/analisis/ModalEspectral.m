@@ -394,6 +394,32 @@ classdef ModalEspectral < handle
                     error('El tiempo de analisis minimo no puede exceder al maximo');
                 end
                 
+                % Compara los dt
+                dt_plot = (tmax - tmin)/numCuadros;
+                dt_real = carga.dt;
+                
+                % Si el dt del grafico es menor se reajustan los cuadros
+                if dt_plot < dt_real
+                    
+                    warning('El numero de cuadros genera un dt=%.3f inferior al dt=%.3f de la carga %s', ...
+                        dt_plot, dt_real, carga.obtenerEtiqueta());
+                    
+                    % Se limitan los cuadros
+                    numCuadros = floor((tmax-tmin)/dt_real);
+                    fprintf('\tSe ha limitado el numero de cuadros a %d\n', numCuadros);
+                    
+                elseif dt_plot == dt_real
+                    fprintf('\tEl numero de cuadros genera un dt igual al de la carga\n');
+                else
+                    fprintf('\tEl numero de cuadros genera un dt=%.3f superior al de la carga, superior en %.1f veces\n', ...
+                        dt_plot, dt_plot/dt_real);
+                    dt_plot_max_factor = 10; % Factor maximo de los cuadros
+                    if dt_plot/dt_real > dt_plot_max_factor
+                        fprintf('\t\tNo se recomienda que este factor exceda de %d, usar numero de cuadros igual a %d\n', ...
+                            dt_plot_max_factor, floor((tmax-tmin)/(dt_plot_max_factor*dt_real)));
+                    end
+                end
+                
                 % Crea el vector de tiempos de analisis
                 tCargaEq = linspace(tmin, tmax, numCuadros);
                 
@@ -414,8 +440,8 @@ classdef ModalEspectral < handle
                 
                 % Activa la deformada por carga
                 defCarga = true;
-                fprintf('\tSe graficara la carga %s desde ti=%.2f a tf=%.2f con dt=%.2f\n', ...
-                    carga.obtenerEtiqueta(), tmin, tmax, (tmax - tmin)/numCuadros);
+                fprintf('\tSe graficara la carga %s desde ti=%.3f a tf=%.3f con dt=%.3f\n', ...
+                    carga.obtenerEtiqueta(), tmin, tmax, dt_plot);
                 
             else % No se grafican cargas
                 tCargaPos = zeros(1, numCuadros);
@@ -1045,7 +1071,7 @@ classdef ModalEspectral < handle
                 if mt90p(i) > 0
                     fprintf('%d\n', mt90p(i));
                 else
-                    fprintf('INCREMENTAR NUMERO DE MODOS DE ANALISIS\n');
+                    fprintf('Incrementar modos de analisis\n');
                 end
             end
             
@@ -1646,7 +1672,7 @@ classdef ModalEspectral < handle
                 end
             else % Grafica una carga
                 a = sprintf('Analisis modal espectral - Carga %s', carga.obtenerEtiqueta());
-                b = sprintf('Escala deformacion x%d - Cuadro %s/%d - t:%.2fs', ...
+                b = sprintf('Escala deformacion x%d - Cuadro %s/%d - t:%.3fs', ...
                     factor, padFillNum(cuadro, totCuadros), totCuadros, tcargaEq(cuadro));
                 title({a; b});
             end
