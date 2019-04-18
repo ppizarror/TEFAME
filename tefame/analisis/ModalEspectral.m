@@ -349,7 +349,7 @@ classdef ModalEspectral < handle
             addOptional(p, 'factor', 10);
             addOptional(p, 'cuadros', 0);
             addOptional(p, 'gif', '');
-            addOptional(p, 'defelem', true);
+            addOptional(p, 'defelem', false);
             addOptional(p, 'carga', false);
             addOptional(p, 'tmin', 0);
             addOptional(p, 'tmax', -1);
@@ -502,8 +502,8 @@ classdef ModalEspectral < handle
             % set(gca, 'nextplot', 'replacechildren');
             
             % Imprime mensajes en consola
-            if ~defElem
-                fprintf('\tSe ha desactivado la deformada de los elementos\n');
+            if defElem
+                fprintf('\tSe ha activado la deformada de los elementos\n');
             end
             if guardarGif && numCuadros ~= 0
                 fprintf('\tEl proceso generara un archivo gif\n');
