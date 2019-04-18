@@ -575,6 +575,107 @@ classdef ModalEspectral < handle
             
         end % plot function
         
+        function calcularDesplazamientoDrift(analisisObj, carga)
+            % calcularDesplazamientoDrift: Funcion que calcula el desplazamiento y
+            % drift a partir de una carga. TODO: Combinaciones de
+            % cargas
+            %
+            % calcularDesplazamientoDrift(analisisObj,carga)
+            
+            % Se genera vector en que las filas contienen nodos en un mismo piso,
+            % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
+            % Tambien se genera vector que contiene alturas de piso
+            
+            xanalisis = 8 * 4;
+            nodos = analisisObj.modeloObj.obtenerNodos();
+            nnodos = length(nodos);
+            habs = zeros(1, 1);
+            hNodos = zeros(1, 1);
+            j = 1;
+            k = 1;
+            l = 1;
+            ini = 1;
+            ndrift = [];
+            for i = 1:nnodos
+                CoordNodo = nodos{i}.obtenerCoordenadas;
+                xNodo = CoordNodo(1);
+                yNodo = CoordNodo(2);
+                if yNodo ~= habs(j)
+                    k = 1;
+                    j = j + 1;
+                    habs(j, 1) = yNodo;
+                    hNodos(j, k) = i;
+                elseif i == 1
+                    hNodos(j, k) = i;
+                else
+                    k = k + 1;
+                    hNodos(j, k) = i;
+                end
+                if yNodo == 0
+                    ini = ini + 1;
+                end
+                if xNodo == xanalisis
+                    ndrift(l) = i;
+                    l = l + 1;
+                end
+            end
+            desp = carga.obtenerDesplazamiento();
+            [~, s] = size(desp);
+            nndrift = length(ndrift);
+            despx = zeros(nndrift, s);
+            driftx = zeros(nndrift-1, s);
+            % Calculo de drift y desplazamiento en linea de analisis
+            for i = 2:nndrift
+                nodosup = ndrift(i);
+                gdls = nodos{nodosup}.obtenerGDLIDCondensado();
+                gdlx = gdls(1);
+                despx(i, :) = desp(gdlx, :);
+                driftx(i-1, :) = abs(despx(i, :) - despx(i-1, :)) ./ (habs(i) - habs(i-1));
+            end          
+            % Determinacion de envolvente maxima de cortante y momento basal
+            despxmax = max(max(abs(despx)));
+            driftxmax = max(max(abs(driftx)));
+            [despfil,despcol] = find(abs(despx) == despxmax);
+            [driftfil,driftcol] = find(abs(driftx) == driftxmax);
+
+            VecDesp = despx(:,despcol);
+            VecDrift = flipud(driftx(:,driftcol));
+            hgen = flipud(habs);
+            hplot = zeros(2*length(hgen), 1);
+            Driftplot = zeros(2*length(hgen)-1, 1);
+            aux1 = 1;
+            aux2 = 2;
+            for i = 1:length(hgen)
+                hplot(aux1, 1) = hgen(i);
+                hplot(aux1+1, 1) = hgen(i);
+                if aux2 <= 2 * length(hgen) - 1
+                    Driftplot(aux2, 1) = VecDrift(i);
+                    Driftplot(aux2+1, 1) = VecDrift(i);
+                end
+                aux1 = aux1 + 2;
+                aux2 = aux2 + 2;
+            end
+            hplot(length(hplot)) = [];
+
+            plt = figure();
+            movegui(plt, 'center');
+            plot(Driftplot .* 100, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
+            grid on;
+            grid minor;
+            xlabel('Drift (%)');
+            ylabel('Altura (m)');
+            title(sprintf('Envolvente de Deriva Entre Piso - %s', carga.obtenerEtiqueta()));
+
+            plt = figure();
+            movegui(plt, 'center');
+            plot(VecDesp, habs, '*-', 'LineWidth', 1, 'Color', 'black');
+            grid on;
+            grid minor;
+            xlabel('Desplazamiento (m)');
+            ylabel('Altura (m)');
+            title(sprintf('Envolvente de Desplazamiento - %s', carga.obtenerEtiqueta()));
+        end % calcularDesplazamientoDrift function
+        
         function calcularMomentoCorteBasal(analisisObj, carga)
             % calcularMomentoCorteBasal: Funcion que calcula el momento y
             % corte basal a partir de una carga. TODO: Combinaciones de
@@ -695,7 +796,7 @@ classdef ModalEspectral < handle
             grid minor;
             xlabel('Tiempo (s)');
             ylabel('Corte (tonf)');
-            title('Historial de Cortante Basal');
+            title(sprintf('Historial de Cortante Basal - %s', carga.obtenerEtiqueta()));
             
             plt = figure();
             movegui(plt, 'center');
@@ -704,7 +805,7 @@ classdef ModalEspectral < handle
             grid minor;
             xlabel('Tiempo (s)');
             ylabel('Momento (tonf-m)');
-            title('Historial de Momento Basal');
+            title(sprintf('Historial de Momento Basal - %s', carga.obtenerEtiqueta()));
             
             plt = figure();
             movegui(plt, 'center');
@@ -713,7 +814,7 @@ classdef ModalEspectral < handle
             grid minor;
             xlabel('Corte (tonf)');
             ylabel('Altura (m)');
-            title('Envolvente de Cortante Basal');
+            title(sprintf('Envolvente de Cortante Basal - %s', carga.obtenerEtiqueta()));
             
             plt = figure();
             movegui(plt, 'center');
@@ -722,9 +823,19 @@ classdef ModalEspectral < handle
             grid minor;
             xlabel('Momento (tonf-m)');
             ylabel('Altura (m)');
-            title('Envolvente de Momento Basal');
+            title(sprintf('Envolvente de Momento Basal - %s', carga.obtenerEtiqueta()));
             
         end % calcularMomentoCorteBasal function
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, tlim) %#ok<INUSL>
             % plotTrayectoriaNodo: Grafica la trayectoria de un nodo

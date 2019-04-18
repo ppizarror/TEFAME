@@ -81,7 +81,7 @@ PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 %% Resuelve el sistema
-analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0]);
+analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], -1);
 analisisObj.disp();
 % plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, ...
 %       'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', false);
@@ -89,6 +89,7 @@ analisisObj.disp();
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas();
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
+% analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1});
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 25);
 analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 
