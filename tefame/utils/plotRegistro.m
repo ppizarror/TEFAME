@@ -6,6 +6,7 @@ function plotRegistro(registro, titulo, unidady, tmin, tmax)
 % Obtiene el vector de tiempo y aceleracion
 t = registro(:, 1);
 a = registro(:, 2);
+dt = t(2) - t(1);
 
 % Tiempos limite
 if ~exist('tmin', 'var')
@@ -20,7 +21,8 @@ plt = figure();
 movegui(plt, 'center');
 hold on;
 grid on;
-plot(t, a, 'k-', 'LineWidth', 1);
+grid minor;
+plot(t, a, 'k-', 'LineWidth', 0.8);
 xlim([tmin, tmax]);
 
 % Unidades
@@ -28,7 +30,7 @@ if exist('unidady', 'var')
     ylabel(sprintf('Aceleracion (%s)', unidady));
 end
 if exist('titulo', 'var')
-    title(titulo);
+    title(sprintf('%s - dt=%.2fs', titulo, dt));
 end
 xlabel('Tiempo (s)');
 

@@ -41,6 +41,12 @@ for i = 1:lu
     reg(i, 1) = t;
     t = t + dt;
 end
+
+% Aplica correccion por linea base
+for i = 1:lcol
+    reg(:, 1+i) = detrend(reg(:, i+1), 0);
+end
+
 fprintf('OK\n');
 
 end

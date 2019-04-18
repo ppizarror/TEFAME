@@ -64,6 +64,7 @@ if ~exist('regConstitucionL', 'var') % Carga el registro
     regConstitucionV = cargaRegistroSimple('test/modal/constitucion_ch2.txt', 0.005, 'factor', 0.01);
     % plotRegistro(regConstitucionL, 'Registro Constitucion/Longitudinal', 'm/s^2');
 end
+return;
 cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion/L', {regConstitucionL, []}, [1, 0], 200);
 cargasDinamicas{2} = CargaRegistroSismico('Registro Constitucion/V', {[], regConstitucionV}, [0, 1], 200);
 cargasDinamicas{3} = CargaRegistroSismico('Registro Constitucion/L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
