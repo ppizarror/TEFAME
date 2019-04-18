@@ -13,17 +13,17 @@ modeloObj.agregarNodos(nodos);
 
 %% Creamos los elementos
 % Propiedades de la viga
-Av = 0.65 * 0.4; % [m2]
-Ev = 2625051; % [Tonf/m2]
+Av = 0.65 * 0.4; % (m2)
+Ev = 2625051; % (tonf/m2)
 Iv = (0.4 * 0.65^3) / 12;
 
 % Propiedades de la columna
-Ac = 1; % [m2]
-Ec = 2625051; % [Tonf/m2]
+Ac = 1; % (m2)
+Ec = 2625051; % (tonf/m2)
 Ic = 1 / 12;
 
 % Densidad del material
-Rhoh = 2.5; % [Tonf/m3]
+Rhoh = 2.5; % (tonf/m3)
 
 %% Crea los elementos
 elementos = {};
@@ -87,7 +87,7 @@ analisisObj.disp();
 %       'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', false);
 
 %% Calcula y grafica las cargas dinamicas
-analisisObj.resolverCargasDinamicas(true);
+analisisObj.resolverCargasDinamicas('cpenzien', true);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
 analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});

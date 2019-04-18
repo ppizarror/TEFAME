@@ -184,11 +184,14 @@ classdef ModalEspectral < handle
             
         end % analizar function
         
-        function resolverCargasDinamicas(analisisObj, cpenzien)
+        function resolverCargasDinamicas(analisisObj, varargin)
             % resolverCargasDinamicas: Resuelve las cargas dinamicas del
             % sistema
             %
-            % resolverCargasDinamicas(analisisObj,cpenzien)
+            % resolverCargasDinamicas(analisisObj,varargin)
+            %
+            % Parametros opcionales:
+            %   'cpenzien': Usa el amortiguamiento de cpenzien (false por defecto)
             %
             % Por defecto se usa el amortiguamiento de Rayleigh
             
@@ -196,12 +199,14 @@ classdef ModalEspectral < handle
                 error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
             end
             
-            if ~exist('cpenzien', 'var')
-                cpenzien = false;
-            end
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'cpenzien', false);
+            parse(p, varargin{:});
+            r = p.Results;
             
             fprintf('Metodo modal espectral:\n');
-            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(cpenzien);
+            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien);
             
         end % resolverCargasDinamicas function
         
@@ -978,10 +983,10 @@ classdef ModalEspectral < handle
             
             fprintf('\tPeriodos y participacion modal:\n');
             if analisisObj.numDG == 2
-                fprintf('\t\tN\t|\tT (s)\t|\tw (rad/s)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t| w (rad/s)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
                 fprintf('\t\t-----------------------------------------------------------------------------\n');
             elseif analisisObj.numDG == 3
-                fprintf('\t\tN\t|\tT (s)\t|\tw (rad/s)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
+                fprintf('\t\tN\t|\tT (s)\t| w (rad/s)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
                 fprintf('\t\t----------------------------------------------------------------------------------------------------\n');
             end
             
