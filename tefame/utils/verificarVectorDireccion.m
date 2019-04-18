@@ -15,4 +15,7 @@ end
 % Chequea el largo
 y = y && nv <= ndg;
 
+% Chequea que la direccion no sea nula
+y = y && sum(vec) > 0;
+
 end

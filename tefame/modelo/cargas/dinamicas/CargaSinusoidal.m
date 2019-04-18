@@ -100,9 +100,17 @@ classdef CargaSinusoidal < CargaDinamica
             % Crea el vector de influencia
             rf = zeros(ng, 1);
             nodoGDL = CargaSinusoidalObj.nodo.obtenerGDLIDCondensado();
+            
+            % Verifica que la direccion no sea mayor que el numero de nodos
+            if length(nodoGDL) < length(CargaSinusoidalObj.direccion)
+                error('Las direcciones de analisis superan el numero de direcciones del nodo %s', ...
+                    CargaSinusoidalObj.nodo.obtenerEtiqueta());
+            end
+            
+            gdl = 0;
             for i = 1:length(CargaSinusoidalObj.direccion)
                 if CargaSinusoidalObj.direccion(i) > 0
-                    gdl = nodoGDL(CargaSinusoidalObj.direccion(i)); % Obtiene el GDL asociado
+                    gdl = nodoGDL(i); % Obtiene el GDL asociado
                     if gdl > 0
                         rf(gdl) = 1;
                         fprintf('\t\t\t\tSe aplica la carga en el grado condensado %d\n', gdl);
@@ -110,14 +118,18 @@ classdef CargaSinusoidal < CargaDinamica
                 end
             end
             
-            % Carga Pulso
+            % Verifica que el grado sea valido
+            if gdl == 0
+                error('No es posible aplicar la carga en un grado condensado del nodo %s', ...
+                    CargaPulsoObj.nodo.obtenerEtiqueta());
+            end
+            
+            % Carga sinusoidal
             t = linspace(0, CargaSinusoidalObj.tOscilacion, nint);
             carga = zeros(1, length(t));
             for i = 1:length(t)
                 carga(i) = CargaSinusoidalObj.amplitud * sin(CargaSinusoidalObj.w*t(i));
             end
-            
-            % Carga
             for i = 1:nt
                 if i < length(t)
                     p(:, i) = rf .* carga(i);
@@ -125,6 +137,7 @@ classdef CargaSinusoidal < CargaDinamica
                     break;
                 end
             end
+            
             fprintf('\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
                 i, nt, (i / nt)*100);
             
@@ -135,17 +148,15 @@ classdef CargaSinusoidal < CargaDinamica
         
         function disp(CargaSinusoidalObj)
             % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en
-            % command Window la informacion de la carga del tipo registro
-            % sismico
+            % command Window la informacion de la carga del tipo sinusoidal
             %
             % disp(CargaSinusoidalObj)
             % Imprime la informacion guardada en la carga (CargaSinusoidalObj) en pantalla
             
-            fprintf('Propiedades Carga Registro Sismico:\n');
+            fprintf('Propiedades Carga Sinusoidal:\n');
             disp@CargaDinamica(CargaSinusoidalObj);
             
             fprintf('-------------------------------------------------\n');
-            
             fprintf('\n');
             
         end % disp function

@@ -87,6 +87,10 @@ classdef CargaRegistroSismico < CargaDinamica
                 end
             end
             
+            if dt < 0
+                error('dt del registro invalido');
+            end
+            
             % Guarda el registro
             cargaRegistroObj.registro = registro;
             cargaRegistroObj.direccion = direccion;

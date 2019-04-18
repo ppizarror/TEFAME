@@ -98,9 +98,17 @@ classdef CargaPulso < CargaDinamica
             % Crea el vector de influencia
             rf = zeros(ng, 1);
             nodoGDL = CargaPulsoObj.nodo.obtenerGDLIDCondensado();
+            
+            % Verifica que la direccion no sea mayor que el numero de nodos
+            if length(nodoGDL) < length(CargaPulsoObj.direccion)
+                error('Las direcciones de analisis superan el numero de direcciones del nodo %s', ...
+                    CargaPulsoObj.nodo.obtenerEtiqueta());
+            end
+            
+            gdl = 0;
             for i = 1:length(CargaPulsoObj.direccion)
-                if CargaPulsoObj.direccion(i) > 0
-                    gdl = nodoGDL(CargaPulsoObj.direccion(i)); % Obtiene el GDL asociado
+                if CargaPulsoObj.direccion(i) ~= 0
+                    gdl = nodoGDL(i); % Obtiene el GDL asociado
                     if gdl > 0
                         rf(gdl) = 1;
                         fprintf('\t\t\t\tSe aplica la carga en el grado condensado %d\n', gdl);
@@ -108,10 +116,14 @@ classdef CargaPulso < CargaDinamica
                 end
             end
             
-            % Carga Pulso
-            t = linspace(0, CargaPulsoObj.tAnalisis, nt);
+            % Verifica que el grado sea valido
+            if gdl == 0
+                error('No es posible aplicar la carga en un grado condensado del nodo %s', ...
+                    CargaPulsoObj.nodo.obtenerEtiqueta());
+            end
             
-            % Carga
+            % Carga pulso
+            t = linspace(0, CargaPulsoObj.tAnalisis, nt);
             for i = 1:nt
                 if t(i) <= CargaPulsoObj.tpulso
                     p(:, i) = rf .* CargaPulsoObj.amplitud;
@@ -119,6 +131,7 @@ classdef CargaPulso < CargaDinamica
                     break;
                 end
             end
+            
             fprintf('\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
                 i, nt, (i / nt)*100);
             
