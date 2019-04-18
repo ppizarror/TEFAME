@@ -63,7 +63,7 @@ if ~exist('sis_reg', 'var') % Carga el registro
     sis_reg = cargaRegistroArchivo('test/modal/registro.txt', '\n', ' ', 0, 0, 1, 0.005, 0.01);
     plotRegistro(sis_reg, 'Registro Constitucion', 'm/s^2');
 end
-cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', {sis_reg, sis_reg.*0}, [1, 0], 40); % Horizontal
+cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion', {sis_reg, sis_reg .* 0}, [1, 0], 40); % Horizontal
 cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 40); % Horizontal
 cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
 
@@ -75,13 +75,13 @@ analisisObj.activarCargaAnimacion();
 %% Creamos el patron de cargas
 PatronesDeCargas = cell(2, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
-PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj); % false, sin descomposicion modal
+PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', true);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 %% Resuelve el sistema
-analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], -1);
+analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], 'condensar', true);
 analisisObj.disp();
 % plt = analisisObj.plot('modo', 0, 'factor', 20, 'cuadros', 25, ...
 %        'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defelem', false);
@@ -89,7 +89,7 @@ analisisObj.disp();
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas(true);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
-% analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1});
+% analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
 analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 25);
 analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);

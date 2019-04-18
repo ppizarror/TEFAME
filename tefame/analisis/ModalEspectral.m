@@ -128,11 +128,16 @@ classdef ModalEspectral < handle
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para definir y analizar el modelo
         
-        function analizar(analisisObj, nModos, betacR, betacP, maxcond)
+        function analizar(analisisObj, nModos, betacR, betacP, varargin)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
             % realizar el analisis estatico
             %
-            % analizar(analisisObj,nModos,betacR,betacP,maxcond)
+            % analizar(analisisObj,nModos,betacR,betacP,maxcond,varargin)
+            %
+            % Parametros opcionales:
+            %   'toleranciaMasa': Tolerancia de la masa para la condensacion
+            %   'condensar': Aplica condensacion (true por defecto)
+            %
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas, requiere el numero de modos para realizar el
             % analisis y de los modos conocidos con sus beta
@@ -141,9 +146,19 @@ classdef ModalEspectral < handle
             if ~exist('nModos', 'var')
                 nModos = 20;
             end
-            if ~exist('maxcond', 'var')
-                maxcond = 0.001;
+            
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'toleranciamasa', 0.001);
+            addOptional(p, 'condensar', true);
+            parse(p, varargin{:});
+            r = p.Results;
+            
+            maxcond = r.toleranciamasa;
+            if ~r.condensar
+                maxcond = -1;
             end
+            
             fprintf('Ejecuntando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
             
             % Se definen los grados de libertad por nodo -> elementos
@@ -333,7 +348,7 @@ classdef ModalEspectral < handle
             addOptional(p, 'carga', false);
             addOptional(p, 'tmin', 0);
             addOptional(p, 'tmax', -1);
-            parse(p, varargin{:})
+            parse(p, varargin{:});
             r = p.Results;
             modo = floor(r.modo);
             factor = r.factor;
@@ -542,22 +557,22 @@ classdef ModalEspectral < handle
             
         end % plot function
         
-        function calcularDesplazamientoDrift(analisisObj, carga)
+        function calcularDesplazamientoDrift(analisisObj, carga, xanalisis)
             % calcularDesplazamientoDrift: Funcion que calcula el desplazamiento y
             % drift a partir de una carga. TODO: Combinaciones de
             % cargas
             %
-            % calcularDesplazamientoDrift(analisisObj,carga)
+            % calcularDesplazamientoDrift(analisisObj,carga,xanalisis)
             
             % Se genera vector en que las filas contienen nodos en un mismo piso,
             % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
             % Tambien se genera vector que contiene alturas de piso
             
-            xanalisis = 8 * 4;
             nodos = analisisObj.modeloObj.obtenerNodos();
             nnodos = length(nodos);
             habs = zeros(1, 1);
             hNodos = zeros(1, 1);
+            
             j = 1;
             k = 1;
             l = 1;
@@ -582,31 +597,34 @@ classdef ModalEspectral < handle
                     ini = ini + 1;
                 end
                 if xNodo == xanalisis
-                    ndrift(l) = i;
+                    ndrift(l) = i; %#ok<AGROW>
                     l = l + 1;
                 end
             end
+            
             desp = carga.obtenerDesplazamiento();
             [~, s] = size(desp);
             nndrift = length(ndrift);
             despx = zeros(nndrift, s);
             driftx = zeros(nndrift-1, s);
+            
             % Calculo de drift y desplazamiento en linea de analisis
             for i = 2:nndrift
                 nodosup = ndrift(i);
                 gdls = nodos{nodosup}.obtenerGDLIDCondensado();
                 gdlx = gdls(1);
                 despx(i, :) = desp(gdlx, :);
-                driftx(i-1, :) = abs(despx(i, :) - despx(i-1, :)) ./ (habs(i) - habs(i-1));
-            end          
+                driftx(i-1, :) = abs(despx(i, :)-despx(i-1, :)) ./ (habs(i) - habs(i-1));
+            end
+            
             % Determinacion de envolvente maxima de cortante y momento basal
             despxmax = max(max(abs(despx)));
             driftxmax = max(max(abs(driftx)));
-            [despfil,despcol] = find(abs(despx) == despxmax);
-            [driftfil,driftcol] = find(abs(driftx) == driftxmax);
-
-            VecDesp = despx(:,despcol);
-            VecDrift = flipud(driftx(:,driftcol));
+            [~, despcol] = find(abs(despx) == despxmax);
+            [~, driftcol] = find(abs(driftx) == driftxmax);
+            
+            VecDesp = despx(:, despcol);
+            VecDrift = flipud(driftx(:, driftcol));
             hgen = flipud(habs);
             hplot = zeros(2*length(hgen), 1);
             Driftplot = zeros(2*length(hgen)-1, 1);
@@ -623,16 +641,17 @@ classdef ModalEspectral < handle
                 aux2 = aux2 + 2;
             end
             hplot(length(hplot)) = [];
-
+            
+            % Crea las figuras
             plt = figure();
             movegui(plt, 'center');
-            plot(Driftplot .* 100, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
+            plot(Driftplot.*100, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
             grid on;
             grid minor;
             xlabel('Drift (%)');
             ylabel('Altura (m)');
             title(sprintf('Envolvente de Deriva Entre Piso - %s', carga.obtenerEtiqueta()));
-
+            
             plt = figure();
             movegui(plt, 'center');
             plot(VecDesp, habs, '*-', 'LineWidth', 1, 'Color', 'black');
@@ -641,6 +660,7 @@ classdef ModalEspectral < handle
             xlabel('Desplazamiento (m)');
             ylabel('Altura (m)');
             title(sprintf('Envolvente de Desplazamiento - %s', carga.obtenerEtiqueta()));
+            
         end % calcularDesplazamientoDrift function
         
         function calcularMomentoCorteBasal(analisisObj, carga)
@@ -793,15 +813,6 @@ classdef ModalEspectral < handle
             title(sprintf('Envolvente de Momento Basal - %s', carga.obtenerEtiqueta()));
             
         end % calcularMomentoCorteBasal function
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, tlim) %#ok<INUSL>
