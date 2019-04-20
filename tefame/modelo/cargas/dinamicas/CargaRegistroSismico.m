@@ -122,7 +122,7 @@ classdef CargaRegistroSismico < CargaDinamica
                 reg = cargaRegistroObj.registro{k}; % Registro direccion de estudio
                 nct = min(length(reg), nt); % Numero de tiempos en los que se aplica la carga
                 for i = 1:nct
-                    p(:, i) = p(:, i) + m * r(:, k) .* reg(i, 2);
+                    p(:, i) = p(:, i) - m * r(:, k) .* reg(i, 2);
                 end
                 fprintf('\t\t\t\tLa carga de la direccion %d es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
                     k, i, nct, (i / nct)*100);
