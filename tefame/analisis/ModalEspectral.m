@@ -663,16 +663,14 @@ classdef ModalEspectral < handle
                 driftx(i-1, :) = abs(despx(i, :)-despx(i-1, :)) ./ (habs(i) - habs(i-1));
             end
             
-            % Determinacion de envolvente maxima de cortante y momento basal
-            despxmax = max(max(abs(despx)));
-            driftxmax = max(max(abs(driftx)));
-            [~, despcol] = find(abs(despx) == despxmax);
-            [~, driftcol] = find(abs(driftx) == driftxmax);
-            
-            VecDesp = despx(:, despcol);
-            VecDrift = flipud(driftx(:, driftcol));
+            % Determinacion de envolvente maxima de desplazamiento y drift
+            despxmax = max(abs(despx'))';
+            driftxmax = max(abs(driftx))';           
+            VecDesp = flipud(despxmax);
+            VecDrift = flipud(driftxmax);
             hgen = flipud(habs);
             hplot = zeros(2*length(hgen), 1);
+            Despplot = zeros(2*length(hgen)-1, 1);
             Driftplot = zeros(2*length(hgen)-1, 1);
             aux1 = 1;
             aux2 = 2;
@@ -682,6 +680,8 @@ classdef ModalEspectral < handle
                 if aux2 <= 2 * length(hgen) - 1
                     Driftplot(aux2, 1) = VecDrift(i);
                     Driftplot(aux2+1, 1) = VecDrift(i);
+                    Despplot(aux2, 1) = VecDesp(i);
+                    Despplot(aux2+1, 1) = VecDesp(i);
                 end
                 aux1 = aux1 + 2;
                 aux2 = aux2 + 2;
@@ -700,7 +700,7 @@ classdef ModalEspectral < handle
             
             plt = figure();
             movegui(plt, 'center');
-            plot(VecDesp, habs, '*-', 'LineWidth', 1, 'Color', 'black');
+            plot(Despplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
             grid on;
             grid minor;
             xlabel('Desplazamiento (m)');
