@@ -64,13 +64,13 @@ if ~exist('regConstitucionL', 'var') % Carga el registro
     regConstitucionV = cargaRegistroSimple('test/modal/constitucion_ch2.txt', 0.005, 'factor', 0.01);
     % plotRegistro(regConstitucionL, 'Registro Constitucion/Longitudinal', 'm/s^2');
 end
-cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion/L', {regConstitucionL, []}, [1, 0], 200);
-cargasDinamicas{2} = CargaRegistroSismico('Registro Constitucion/V', {[], regConstitucionV}, [0, 1], 200);
-cargasDinamicas{3} = CargaRegistroSismico('Registro Constitucion/L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
-cargasDinamicas{4} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 40); % Horizontal
-cargasDinamicas{5} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
-
-cargasDinamicas{3}.desactivarCarga();
+% cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion/L', {regConstitucionL, []}, [1, 0], 200);
+% cargasDinamicas{2} = CargaRegistroSismico('Registro Constitucion/V', {[], regConstitucionV}, [0, 1], 200);
+% cargasDinamicas{3} = CargaRegistroSismico('Registro Constitucion_LyV', {regConstitucionL, regConstitucionV}, [1, 1], 200);
+cargasDinamicas{1} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 40); % Horizontal
+% cargasDinamicas{5} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
+% 
+% cargasDinamicas{3}.desactivarCarga();
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
@@ -80,7 +80,7 @@ analisisObj.activarCargaAnimacion();
 %% Creamos el patron de cargas
 PatronesDeCargas = cell(2, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
-PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', true);
+PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', false);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
@@ -92,12 +92,30 @@ analisisObj.disp();
 %       'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
 
 %% Calcula y grafica las cargas dinamicas
-analisisObj.resolverCargasDinamicas('cpenzien', true);
-% analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
-% analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
+analisisObj.resolverCargasDinamicas('cpenzien', false);
 analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
+% analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
+% analisisObj.calcularMomentoCorteBasal(cargasDinamicas{4});
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_constL.gif');
-analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
+% analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 
 %% Finaliza el analisis
 clear h h1 i v;
+
+%% Guarda las figuras
+
+for i = 1:4
+     aux = get(gca,'title');
+     title = get(aux,'string');
+     carga = cargasDinamicas{1}.obtenerEtiqueta();
+     % Detalles del analisis
+     desmodal = {'/ConDesModal','/SinDesModal'};
+     MatrizC = {'/cPenzien','/cRayleigh'};
+     carpeta = 'test/modal/out/';
+     Ubicacion = strcat(carpeta,carga,desmodal{2},MatrizC{2});
+     Nombre = strcat(Ubicacion,'/',title);
+     format = 'epsc2';
+     saveas(gca,Nombre,format)
+     close
+     i = i + 1;
+end
