@@ -402,7 +402,7 @@ classdef ModalEspectral < handle
                 end
                 
                 % Compara los dt
-                dt_plot = (tmax - tmin)/numCuadros;
+                dt_plot = (tmax - tmin) / numCuadros;
                 dt_real = carga.dt;
                 
                 % Si el dt del grafico es menor se reajustan los cuadros
@@ -412,7 +412,7 @@ classdef ModalEspectral < handle
                         dt_plot, dt_real, carga.obtenerEtiqueta());
                     
                     % Se limitan los cuadros
-                    numCuadros = floor((tmax-tmin)/dt_real);
+                    numCuadros = floor((tmax - tmin)/dt_real);
                     fprintf('\tSe ha limitado el numero de cuadros a %d\n', numCuadros);
                     
                 elseif dt_plot == dt_real
@@ -421,9 +421,9 @@ classdef ModalEspectral < handle
                     fprintf('\tEl numero de cuadros genera un dt=%.3f superior al de la carga, superior en %.1f veces\n', ...
                         dt_plot, dt_plot/dt_real);
                     dt_plot_max_factor = 10; % Factor maximo de los cuadros
-                    if dt_plot/dt_real > dt_plot_max_factor
+                    if dt_plot / dt_real > dt_plot_max_factor
                         fprintf('\t\tNo se recomienda que este factor exceda de %d, usar numero de cuadros igual a %d\n', ...
-                            dt_plot_max_factor, floor((tmax-tmin)/(dt_plot_max_factor*dt_real)));
+                            dt_plot_max_factor, floor((tmax - tmin)/(dt_plot_max_factor * dt_real)));
                     end
                 end
                 
@@ -665,7 +665,7 @@ classdef ModalEspectral < handle
             
             % Determinacion de envolvente maxima de desplazamiento y drift
             despxmax = max(abs(despx'))';
-            driftxmax = max(abs(driftx))';           
+            driftxmax = max(abs(driftx))';
             VecDesp = flipud(despxmax);
             VecDrift = flipud(driftxmax);
             hgen = flipud(habs);
