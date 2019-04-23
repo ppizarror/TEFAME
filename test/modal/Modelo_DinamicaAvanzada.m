@@ -93,7 +93,7 @@ analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], 'condensar', true);
 analisisObj.resolverCargasDinamicas('cpenzien', false);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
-% analisisObj.calcularMomentoCorteBasal(cargasDinamicas{4});
+% analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_constL.gif');
 % analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 
