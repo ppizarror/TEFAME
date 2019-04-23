@@ -57,7 +57,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         desModal % Realiza descomposicion modal
     end % properties PatronDeCargasDinamico
     
-    methods
+    methods(Access = public)
         
         function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas, analisisObj, varargin)
             % PatronDeCargasDinamico: es el constructor de la clase PatronDeCargas
@@ -139,7 +139,10 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             else
                 fprintf('\tPatron de cargas dinamico usa amortiguamiento de Rayleigh\n');
             end
-                
+            
+            % Calcula las inversas
+            minv = mmodal^(-1);
+            
             % Se calcula carga una de las cargas dinamicas
             tInicioProceso = cputime;
             totalCargas = length(patronDeCargasObj.cargas);
@@ -173,9 +176,9 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 end
                 
                 % Resuelve newmark
-                [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, c, p, patronDeCargasObj.cargas{i}.dt, 0, 0);
+                [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, c, p, patronDeCargasObj.cargas{i}.dt, 0, 0);
                 
-                % Aplica descompisicion si aplica
+                % Aplica descomposicion si aplica
                 if patronDeCargasObj.desModal
                     u = phi * u;
                     du = phi * du;
@@ -195,65 +198,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         end % aplicarCargas function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Algoritmos de resolucion
-        
-        function [x, v, z] = newmark(patronDeCargasObj, k, m, c, p, dt, xo, vo) %#ok<*INUSL>
-            % Newmark: es un metodo de la clase ModalEspectral que se
-            % usa para obtener los valores de aceleracion, velociadad y desplazamiento
-            % de los grados de libertad a partir del metodo de Newmark
-            %
-            % [x,v,z]=newmark(patronDeCargasObj,k,m,c,p,dt,xo,vo)
-            
-            % Define coeficientes
-            alpha = 0;
-            gamma = 1 / 2 - alpha;
-            beta = 1 / 4 * (1 - alpha)^2;
-            
-            n = length(p);
-            % tmax = dt * (n - 1);
-            % t = linspace(0, tmax, n)';
-            ngl = length(k);
-            x = zeros(ngl, length(p));
-            v = zeros(ngl, length(p));
-            z = zeros(ngl, length(p));
-            x(:, 1) = xo;
-            v(:, 1) = vo;
-            z(:, 1) = m^(-1) * (p(:, 1) - c * v(:, 1) - k * x(:, 1));
-            % a1 = 1 / (beta * dt^2) * MT + gamma / (beta * dt) * CT;
-            % a2 = 1 / (beta * dt) * MT + (gamma / beta-1) * CT;
-            % a3 = (1 / (2 * beta) - 1) * MT + dt * (gamma / (2 * beta) - 1) * CT;
-            % ks = KT + a1;
-            c1 = 1 / (dt^2 * beta);
-            c2 = 1 / (dt * beta);
-            c3 = gamma / (dt * beta);
-            c4 = 1 - gamma / beta;
-            c5 = 1 - gamma / (2 * beta);
-            c6 = 1 / (2 * beta) - 1;
-            ks = c1 * m + (1 + alpha) * c3 * c + (1 + alpha) * k; %hht
-            ks_inv = ks^(-1);
-            ps = zeros(ngl, length(p));
-            reverse_porcent = '';
-            
-            for i = 1:1:(n - 1)
-                
-                % Calcula
-                % ps(:, i+1) = p(:, i+1) + a1 * x(:, i) + a2 * v(:, i) + a3 * z(:, i);
-                ps(:, i+1) = p(:, i+1) + k * alpha * x(:, i) + m * (c1 * x(:, i) + c2 * v(:, i) + c6 * z(:, i)) ...
-                    +c * ((1 + alpha) * c3 * x(:, i) + (alpha - (1 + alpha) * c4) * v(:, i) - (1 + alpha) * c5 * dt * z(:, i));%hht
-                x(:, i+1) = ks_inv * ps(:, i+1);
-                v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
-                z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
-                
-                % Imprime estado
-                msg = sprintf('\t\t\tCalculando ... %.1f/100', i/(n - 1)*100);
-                fprintf([reverse_porcent, msg]);
-                reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
-                
-            end
-            
-        end % newmark function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostrar la informacion del PatronDeCargasDinamico en pantalla
         
         function disp(patronDeCargasObj)
@@ -268,6 +212,59 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             disp@ComponenteModelo(patronDeCargasObj);
             
         end % disp function
+        
+    end % methods PatronDeCargasDinamico
+    
+    methods(Access = private)
+        
+        function [x, v, z] = newmark(patronDeCargasObj, k, m, minv, c, p, dt, xo, vo) %#ok<*INUSL>
+            % Newmark: es un metodo de la clase ModalEspectral que se
+            % usa para obtener los valores de aceleracion, velociadad y desplazamiento
+            % de los grados de libertad a partir del metodo de Newmark
+            %
+            % [x,v,z]=newmark(patronDeCargasObj,k,m,minv,c,p,dt,xo,vo)
+            
+            % Define coeficientes
+            alpha = 0;
+            gamma = 1 / 2 - alpha;
+            beta = 1 / 4 * (1 - alpha)^2;
+            
+            n = length(p);
+            ngl = length(k);
+            x = zeros(ngl, length(p));
+            v = zeros(ngl, length(p));
+            z = zeros(ngl, length(p));
+            x(:, 1) = xo;
+            v(:, 1) = vo;
+            z(:, 1) = minv * (p(:, 1) - c * v(:, 1) - k * x(:, 1));
+            c1 = 1 / (dt^2 * beta);
+            c2 = 1 / (dt * beta);
+            c3 = gamma / (dt * beta);
+            c4 = 1 - gamma / beta;
+            c5 = 1 - gamma / (2 * beta);
+            c6 = 1 / (2 * beta) - 1;
+            ks = c1 * m + (1 + alpha) * c3 * c + (1 + alpha) * k; %hht
+            ks_inv = ks^(-1);
+            ps = zeros(ngl, length(p));
+            reverse_porcent = '';
+            
+            for i = 1:1:(n - 1)
+                
+                % Calcula
+                ps(:, i+1) = p(:, i+1) + k * alpha * x(:, i) + m * (c1 * x(:, i) + c2 * v(:, i) + c6 * z(:, i)) ...
+                    +c * ((1 + alpha) * c3 * x(:, i) + (alpha - (1 + alpha) * c4) * v(:, i) - (1 + alpha) * c5 * dt * z(:, i));% HHT
+                x(:, i+1) = ks_inv * ps(:, i+1);
+                v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
+                z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
+                
+                % Imprime estado
+                msg = sprintf('\t\t\tCalculando ... %.1f/100', i/(n - 1)*100);
+                fprintf([reverse_porcent, msg]);
+                reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
+                
+            end
+            
+        end % newmark function
         
     end % methods PatronDeCargasDinamico
     

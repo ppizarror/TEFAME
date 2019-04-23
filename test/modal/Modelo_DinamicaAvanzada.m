@@ -64,7 +64,7 @@ if ~exist('regConstitucionL', 'var') % Carga el registro
     regConstitucionV = cargaRegistroSimple('test/modal/constitucion_ch2.txt', 0.005, 'factor', 0.01);
     % plotRegistro(regConstitucionL, 'Registro Constitucion/Longitudinal', 'm/s^2');
 end
-cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion_L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
+cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
 cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 40); % Horizontal
 cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
 
@@ -85,35 +85,17 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 %% Resuelve el sistema
 analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], 'condensar', true);
-analisisObj.disp();
+% analisisObj.disp();
 % plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, ...
 %       'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
 
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false);
-analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
+% analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{4});
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_constL.gif');
 % analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
-
-%% Guarda las figuras
-for i = 1:4
-    aux = get(gca, 'title');
-    title = get(aux, 'string');
-    carga = cargasDinamicas{1}.obtenerEtiqueta();
-    
-    % Detalles del analisis
-    desmodal = {'/ConDesModal', '/SinDesModal'};
-    MatrizC = {'/cPenzien', '/cRayleigh'};
-    
-    carpeta = 'test/modal/out/';
-    Ubicacion = strcat(carpeta, carga, desmodal{2}, MatrizC{2});
-    Nombre = strcat(Ubicacion, '/', title);
-    format = 'epsc2';
-    saveas(gca, Nombre, format)
-    close
-end
 
 %% Finaliza el analisis
 clear h h1 i v;

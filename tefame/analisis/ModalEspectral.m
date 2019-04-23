@@ -709,12 +709,26 @@ classdef ModalEspectral < handle
             
         end % calcularDesplazamientoDrift function
         
-        function calcularMomentoCorteBasal(analisisObj, carga)
+        function calcularMomentoCorteBasal(analisisObj, carga, varargin)
             % calcularMomentoCorteBasal: Funcion que calcula el momento y
             % corte basal a partir de una carga. TODO: Combinaciones de
             % cargas
             %
-            % calcularMomentoCorteBasal(analisisObj,carga)
+            % calcularMomentoCorteBasal(analisisObj,carga,varargin)
+            %
+            % Parametros opcionales:
+            %   'plot'  'all','momento','corte','envmomento','envcorte'
+            %   'modo'  Vector con graficos de modos
+            
+            % Rescata parametros
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'plot', 'all');
+            addOptional(p, 'modo', []);
+            parse(p, varargin{:});
+            r = p.Results;
+            tipoplot = r.plot;
+            envmodo = r.modo;
             
             % Verifica que la carga se haya calculado
             if ~isa(carga, 'CargaDinamica')
@@ -725,146 +739,86 @@ classdef ModalEspectral < handle
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
             
-            % Se genera vector en que las filas contienen nodos en un mismo piso,
-            % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
-            % Tambien se genera vector que contiene alturas de piso
-            nodos = analisisObj.modeloObj.obtenerNodos();
-            nnodos = length(nodos);
-            
-            habs = zeros(1, 1);
-            hNodos = zeros(1, 1);
-            j = 1;
-            k = 1;
-            ini = 1;
-            for i = 1:nnodos
-                CoordNodo = nodos{i}.obtenerCoordenadas;
-                yNodo = CoordNodo(2);
-                if yNodo ~= habs(j)
-                    k = 1;
-                    j = j + 1;
-                    habs(j, 1) = yNodo;
-                    hNodos(j, k) = i;
-                elseif i == 1
-                    hNodos(j, k) = i;
-                else
-                    k = k + 1;
-                    hNodos(j, k) = i;
-                end
-                if yNodo == 0
-                    ini = ini + 1;
+            % Verifica que envmodo sea correcto
+            [~, lphi] = size(analisisObj.phin);
+            lenvmodo = length(envmodo);
+            envmodo = sort(envmodo);
+            for i = 1:lenvmodo
+                envmodo(i) = floor(envmodo(i));
+                if envmodo(i) < 0 || envmodo(i) > lphi
+                    error('Analisis modo %d invalido', envmodo(i));
                 end
             end
             
-            [~, s] = size(acel);
-            M = analisisObj.obtenerMatrizMasa;
-            m = zeros(nnodos-ini+1, 1);
-            acelx = zeros(nnodos-ini+1, s);
-            Fnodos = zeros(nnodos-ini+1, s);
-            Fpisos = zeros(length(habs)-1, s);
-            
-            % Calculo de fuerzas inerciales nodales que generan corte, fuerzas nodales
-            % y fuerzas por piso
-            for i = ini:nnodos
-                gdls = nodos{i}.obtenerGDLIDCondensado();
-                gdlx = gdls(1);
-                acelx(i-ini+1, :) = acel(gdlx, :);
-                m(i-ini+1, 1) = M(gdlx, gdlx);
-                Fnodos(i-ini+1, :) = M(gdlx, gdlx) .* acel(gdlx, :);
-                [fil, ~] = find(hNodos == i);
-                Fpisos(fil-1, :) = Fpisos(fil-1, :) + Fnodos(i-ini+1, :);
-            end
-            
-            % Calculo de cortante y momento acumulado por piso
-            Fpisos_ud = flipud(Fpisos);
-            habs_ud = flipud(habs);
-            Cortante = zeros(length(habs)-1, s);
-            Momento = zeros(length(habs)-1, s);
-            for i = 1:length(habs) - 1
-                hcero = habs_ud(i+1);
-                for j = 1:i
-                    Cortante(i, :) = Cortante(i, :) + Fpisos_ud(j, :);
-                    Momento(i, :) = Momento(i, :) + Fpisos_ud(j, :) .* (habs_ud(j) - hcero);
-                end
-            end
-            
-            % Determinacion de envolvente maxima de cortante y momento basal
-            icor = 0;
-            imom = 0;
-            CorB_max = 0;
-            MomB_max = 0;
-            [nfil, ~] = size(Cortante);
-            for i = 1:s
-                if abs(Cortante(nfil, i)) > abs(CorB_max)
-                    icor = i;
-                    CorB_max = Cortante(nfil, i);
-                end
-                if abs(Momento(nfil, i)) > abs(MomB_max)
-                    imom = i;
-                    MomB_max = Momento(nfil, i);
-                end
-            end
-            
-            % Calcula las envolventes, aplica valor absoluto
-            VecCB = abs(Cortante(:, icor));
-            VecMB = abs(Momento(:, imom));
-            hgen = habs_ud;
-            hplot = zeros(2*length(hgen), 1);
-            CBplot = zeros(2*length(hgen)-1, 1);
-            MBplot = zeros(2*length(hgen)-1, 1);
-            aux1 = 1;
-            aux2 = 2;
-            for i = 1:length(hgen)
-                hplot(aux1, 1) = hgen(i);
-                hplot(aux1+1, 1) = hgen(i);
-                if aux2 <= 2 * length(hgen) - 1
-                    CBplot(aux2, 1) = VecCB(i);
-                    CBplot(aux2+1, 1) = VecCB(i);
-                    MBplot(aux2, 1) = VecMB(i);
-                    MBplot(aux2+1, 1) = VecMB(i);
-                end
-                aux1 = aux1 + 2;
-                aux2 = aux2 + 2;
-            end
-            hplot(length(hplot)) = [];
+            % Calcula el momento
+            [Cortante, Momento, CBplot, MBplot, hplot] = analisisObj.calcularMomentoCorteBasalAcel(acel);
             
             %Graficos
+            [~, s] = size(acel);
             t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
             
-            plt = figure();
-            movegui(plt, 'center');
-            plot(t, Cortante(end, :), 'k-', 'LineWidth', 1);
-            grid on;
-            grid minor;
-            xlabel('Tiempo (s)');
-            ylabel('Corte (tonf)');
-            title(sprintf('Historial de Cortante Basal - %s', carga.obtenerEtiqueta()));
+            if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'corte')
+                plt = figure();
+                movegui(plt, 'center');
+                plot(t, Cortante(end, :), 'k-', 'LineWidth', 1);
+                grid on;
+                grid minor;
+                xlabel('Tiempo (s)');
+                ylabel('Corte (tonf)');
+                title(sprintf('Historial de Cortante Basal - %s', carga.obtenerEtiqueta()));
+            end
             
-            plt = figure();
-            movegui(plt, 'center');
-            plot(t, Momento(end, :), 'k-', 'LineWidth', 1);
-            grid on;
-            grid minor;
-            xlabel('Tiempo (s)');
-            ylabel('Momento (tonf-m)');
-            title(sprintf('Historial de Momento Basal - %s', carga.obtenerEtiqueta()));
+            if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'momento')
+                plt = figure();
+                movegui(plt, 'center');
+                plot(t, Momento(end, :), 'k-', 'LineWidth', 1);
+                grid on;
+                grid minor;
+                xlabel('Tiempo (s)');
+                ylabel('Momento (tonf-m)');
+                title(sprintf('Historial de Momento Basal - %s', carga.obtenerEtiqueta()));
+            end
             
-            plt = figure();
-            movegui(plt, 'center');
-            plot(CBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
-            grid on;
-            grid minor;
-            xlabel('Corte (tonf)');
-            ylabel('Altura (m)');
-            title(sprintf('Envolvente de Cortante Basal - %s', carga.obtenerEtiqueta()));
+            if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envcorte')
+                plt = figure();
+                movegui(plt, 'center');
+                plot(CBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
+                hold on;
+                grid on;
+                grid minor;
+                xlabel('Corte (tonf)');
+                ylabel('Altura (m)');
+                title(sprintf('Envolvente de Cortante Basal - %s', carga.obtenerEtiqueta()));
+                
+                % Realiza los analisis por modo
+                CBLegend = cell(1, 1 + lenvmodo);
+                CBplotModoAnt = false;
+                CBLegend{1} = 'Envolvente';
+                phiac = analisisObj.phin' * acel;
+                for i=1:lenvmodo
+                    [~, ~, CBplotModo, ~, ~] = analisisObj.calcularMomentoCorteBasalAcel(analisisObj.phin(:, envmodo(i)) * phiac(envmodo(i), :));
+                    if i>1
+                        CBplotModo = CBplotModo + CBplotModoAnt;
+                    end
+                    CBplotModoAnt = CBplotModo;
+                    plot(CBplotModo, hplot, '-', 'LineWidth', 1);
+                    CBLegend{i+1} = sprintf('Modo %d', envmodo(i));
+                end
+                if lenvmodo>0
+                    legend(CBLegend);
+                end
+            end
             
-            plt = figure();
-            movegui(plt, 'center');
-            plot(MBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
-            grid on;
-            grid minor;
-            xlabel('Momento (tonf-m)');
-            ylabel('Altura (m)');
-            title(sprintf('Envolvente de Momento Basal - %s', carga.obtenerEtiqueta()));
+            if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envmomento')
+                plt = figure();
+                movegui(plt, 'center');
+                plot(MBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
+                grid on;
+                grid minor;
+                xlabel('Momento (tonf-m)');
+                ylabel('Altura (m)');
+                title(sprintf('Envolvente de Momento Basal - %s', carga.obtenerEtiqueta()));
+            end
             
         end % calcularMomentoCorteBasal function
         
@@ -1792,6 +1746,114 @@ classdef ModalEspectral < handle
             end
             
         end % obtenerDeformadaNodo function
+        
+        function [Cortante, Momento, CBplot, MBplot, hplot] = calcularMomentoCorteBasalAcel(analisisObj, acel)
+            % calcularMomentoCorteBasalAcel: Calcula el momento y corte
+            % basal en funcion de una aceleracion
+            
+            % Se genera vector en que las filas contienen nodos en un mismo piso,
+            % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
+            % Tambien se genera vector que contiene alturas de piso
+            nodos = analisisObj.modeloObj.obtenerNodos();
+            nnodos = length(nodos);
+            
+            habs = zeros(1, 1);
+            hNodos = zeros(1, 1);
+            j = 1;
+            k = 1;
+            ini = 1;
+            for i = 1:nnodos
+                CoordNodo = nodos{i}.obtenerCoordenadas;
+                yNodo = CoordNodo(2);
+                if yNodo ~= habs(j)
+                    k = 1;
+                    j = j + 1;
+                    habs(j, 1) = yNodo;
+                    hNodos(j, k) = i;
+                elseif i == 1
+                    hNodos(j, k) = i;
+                else
+                    k = k + 1;
+                    hNodos(j, k) = i;
+                end
+                if yNodo == 0
+                    ini = ini + 1;
+                end
+            end
+            
+            [~, s] = size(acel);
+            M = analisisObj.obtenerMatrizMasa();
+            m = zeros(nnodos-ini+1, 1);
+            acelx = zeros(nnodos-ini+1, s);
+            Fnodos = zeros(nnodos-ini+1, s);
+            Fpisos = zeros(length(habs)-1, s);
+            
+            % Calculo de fuerzas inerciales nodales que generan corte, fuerzas nodales
+            % y fuerzas por piso
+            for i = ini:nnodos
+                gdls = nodos{i}.obtenerGDLIDCondensado();
+                gdlx = gdls(1);
+                acelx(i-ini+1, :) = acel(gdlx, :);
+                m(i-ini+1, 1) = M(gdlx, gdlx);
+                Fnodos(i-ini+1, :) = M(gdlx, gdlx) .* acel(gdlx, :);
+                [fil, ~] = find(hNodos == i);
+                Fpisos(fil-1, :) = Fpisos(fil-1, :) + Fnodos(i-ini+1, :);
+            end
+            
+            % Calculo de cortante y momento acumulado por piso
+            Fpisos_ud = flipud(Fpisos);
+            habs_ud = flipud(habs);
+            Cortante = zeros(length(habs)-1, s);
+            Momento = zeros(length(habs)-1, s);
+            for i = 1:length(habs) - 1
+                hcero = habs_ud(i+1);
+                for j = 1:i
+                    Cortante(i, :) = Cortante(i, :) + Fpisos_ud(j, :);
+                    Momento(i, :) = Momento(i, :) + Fpisos_ud(j, :) .* (habs_ud(j) - hcero);
+                end
+            end
+            
+            % Determinacion de envolvente maxima de cortante y momento basal
+            icor = 0;
+            imom = 0;
+            CorB_max = 0;
+            MomB_max = 0;
+            [nfil, ~] = size(Cortante);
+            for i = 1:s
+                if abs(Cortante(nfil, i)) > abs(CorB_max)
+                    icor = i;
+                    CorB_max = Cortante(nfil, i);
+                end
+                if abs(Momento(nfil, i)) > abs(MomB_max)
+                    imom = i;
+                    MomB_max = Momento(nfil, i);
+                end
+            end
+            
+            % Calcula las envolventes, aplica valor absoluto
+            VecCB = abs(Cortante(:, icor));
+            VecMB = abs(Momento(:, imom));
+            hgen = habs_ud;
+            hplot = zeros(2*length(hgen), 1);
+            CBplot = zeros(2*length(hgen)-1, 1);
+            MBplot = zeros(2*length(hgen)-1, 1);
+            aux1 = 1;
+            aux2 = 2;
+            for i = 1:length(hgen)
+                hplot(aux1, 1) = hgen(i);
+                hplot(aux1+1, 1) = hgen(i);
+                if aux2 <= 2 * length(hgen) - 1
+                    CBplot(aux2, 1) = VecCB(i);
+                    CBplot(aux2+1, 1) = VecCB(i);
+                    MBplot(aux2, 1) = VecMB(i);
+                    MBplot(aux2+1, 1) = VecMB(i);
+                end
+                aux1 = aux1 + 2;
+                aux2 = aux2 + 2;
+            end
+            hplot(length(hplot)) = [];
+            
+        end
         
     end % methods(private) ModalEspectral
     
