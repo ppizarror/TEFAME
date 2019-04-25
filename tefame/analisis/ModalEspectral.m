@@ -791,20 +791,20 @@ classdef ModalEspectral < handle
                 title(sprintf('Envolvente de Cortante Basal - Carga %s', carga.obtenerEtiqueta()));
                 
                 % Realiza los analisis por modo
-                CBLegend = cell(1, 1 + lenvmodo);
+                CBLegend = cell(1, 1+lenvmodo);
                 CBplotModoAnt = false;
                 CBLegend{1} = 'Envolvente';
                 phiac = analisisObj.phin' * acel;
-                for i=1:lenvmodo
-                    [~, ~, CBplotModo, ~, ~] = analisisObj.calcularMomentoCorteBasalAcel(analisisObj.phin(:, envmodo(i)) * phiac(envmodo(i), :));
-                    if i>1
+                for i = 1:lenvmodo
+                    [~, ~, CBplotModo, ~, ~] = analisisObj.calcularMomentoCorteBasalAcel(analisisObj.phin(:, envmodo(i))*phiac(envmodo(i), :));
+                    if i > 1
                         CBplotModo = CBplotModo + CBplotModoAnt;
                     end
                     CBplotModoAnt = CBplotModo;
                     plot(CBplotModo, hplot, '-', 'LineWidth', 1);
                     CBLegend{i+1} = sprintf('Modo %d', envmodo(i));
                 end
-                if lenvmodo>0
+                if lenvmodo > 0
                     legend(CBLegend);
                 end
             end
@@ -871,29 +871,29 @@ classdef ModalEspectral < handle
             % Energia cinetica
             e_k = zeros(1, s);
             fprintf('\tCalculando energia cinetica\n');
-            for i=1:s
+            for i = 1:s
                 vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
-                e_k(i) = vv' * m * vv;
+                e_k(i) = 0.5 * vv' * m * vv;
             end
             
             % Energia elastica
             e_v = zeros(1, s);
             fprintf('\tCalculando energia elastica\n');
-            for i=1:s
+            for i = 1:s
                 vv = c_u(:, i); % Obtiene el vector de desplazamiento para el tiempo i
-                e_v(i) = vv' * k * vv;
+                e_v(i) = 0.5 * vv' * k * vv;
             end
             
             % Energia disipada
             e_di = zeros(1, s); % Parcial
             e_d = zeros(1, s); % Integral
             fprintf('\tCalculando energia disipada\n');
-            for i=1:s
+            for i = 1:s
                 vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
                 e_di(i) = vv' * c * vv;
-                if i>1
+                if i > 1
                     dt = (t(i) - t(i-1));
-                    e_d(i) = e_d(i-1) + 0.5*(e_di(i)-e_di(i-1))*dt + e_di(i)*dt;
+                    e_d(i) = e_d(i-1) + 0.5 * (e_di(i) - e_di(i-1)) * dt + e_di(i) * dt;
                 end
             end
             
@@ -901,26 +901,26 @@ classdef ModalEspectral < handle
             w_ei = zeros(1, s); % Parcial
             w_e = zeros(1, s); % Integral
             fprintf('\tCalculando trabajo externo\n');
-            for i=1:s
-                w_ei(i) = c_p(:, i)'*c_v(:, i);
-                if i>1
+            for i = 1:s
+                w_ei(i) = c_p(:, i)' * c_v(:, i);
+                if i > 1
                     dt = (t(i) - t(i-1));
-                    w_e(i) = w_e(i-1) + 0.5*(w_ei(i)-w_ei(i-1))*dt + w_ei(i)*dt;
+                    w_e(i) = w_e(i-1) + 0.5 * (w_ei(i) - w_ei(i-1)) * dt + w_ei(i) * dt;
                 end
             end
             
             % Energia total
             e_t = zeros(1, s);
             fprintf('\tCalculando energia total\n');
-            for i=1:s
+            for i = 1:s
                 e_t(i) = e_k(1) + e_v(1) + w_e(i) - e_d(i);
             end
             
             % Balance energetico normalizado
             ebe = zeros(1, s);
             fprintf('\tCalculando balance energetico\n');
-            for i=1:s
-                ebe(i) = abs(w_e(i) - e_k(i) - e_d(i)) / abs(w_e(i)) * 100;
+            for i = 1:s
+                ebe(i) = abs(w_e(i)-e_k(i)-e_d(i)) / abs(w_e(i)) * 100;
             end
             
             % Graficos
@@ -1398,7 +1398,7 @@ classdef ModalEspectral < handle
             nModos = min(nModos, ngdl);
             analisisObj.numModos = nModos;
             
-            %--------------------------------------------------------------         
+            %--------------------------------------------------------------
             % Resuelve la ecuacion del sistema, para ello crea la matriz
             % inversa de la masa y calcula los valores propios
             invMt = zeros(ngdl, ngdl);
@@ -1499,7 +1499,7 @@ classdef ModalEspectral < handle
                 end
             end
             
-            % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------            
+            % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
             % Se declaran dos amortiguamientos criticos asociados a dos modos
             % diferentes indicando si es horizontal o vertical (h o v)
             modocR = [1, 8];
@@ -1533,7 +1533,7 @@ classdef ModalEspectral < handle
                 -1 / w(n), 1 / w(m)] * betacR';
             analisisObj.cRayleigh = a(1) .* Meq + a(2) .* Keq;
             
-            % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------          
+            % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------
             % Se declaran todos los amortiguamientos criticos del sistema,
             % (horizontal, vertical y rotacional)
             d = zeros(length(analisisObj.Mmeff), length(analisisObj.Mmeff));
@@ -1553,7 +1553,7 @@ classdef ModalEspectral < handle
                     Meq * (d(i, i) * modalPhin(:, i) * modalPhin(:, i)') * Meq;
             end
             
-            %--------------------------------------------------------------            
+            %--------------------------------------------------------------
             % Termina el analisis
             analisisObj.analisisFinalizado = true;
             analisisObj.numDG = ndg;
