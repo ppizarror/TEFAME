@@ -62,6 +62,8 @@
 %       desactivarCargaAnimacion(analisisObj)
 %       calcularMomentoCorteBasal(analisisObj,carga)
 %       plotTrayectoriaNodo(analisisObj,carga,nodo,direccion)
+%       calcularDesplazamientoDrift(analisisObj,xanalisis)
+%       calcularCurvasEnergia(analisisObj,carga)
 %       plot(analisisObj,varargin)
 %       disp(analisisObj)
 

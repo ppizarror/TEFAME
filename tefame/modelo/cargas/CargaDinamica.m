@@ -106,6 +106,7 @@ classdef CargaDinamica < ComponenteModelo
         function y = cargaActivada(cargaDinamicaObj)
             % cargaActivada: Indica si la carga esta activada para el
             % analisis
+            %
             % y = cargaActivada(cargaDinamicaObj)
             
             y = cargaDinamicaObj.cargaActiva;
@@ -165,6 +166,8 @@ classdef CargaDinamica < ComponenteModelo
         function disipasionRayleigh(cargaDinamicaObj, rayleigh)
             % disipasionRayleigh: Indica el tipo de disipasion usado en el
             % calculo
+            %
+            % disipasionRayleigh(cargaDinamicaObj,rayleigh)
             
             cargaDinamicaObj.c_rayleigh = rayleigh;
             

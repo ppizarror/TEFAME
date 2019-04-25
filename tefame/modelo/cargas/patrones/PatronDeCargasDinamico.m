@@ -108,6 +108,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
             % aplicarCargas(patronDeCargasObj,cpenzien)
+            %
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
             % y elementos
@@ -206,6 +207,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % command Window la informacion del Patron de Cargas
             %
             % disp(patronDeCargasObj)
+            %
             % Imprime la informacion guardada en el Patron de Cargas Dinamico (patronDeCargasObj)
             % en pantalla
             
