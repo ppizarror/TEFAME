@@ -696,7 +696,7 @@ classdef ModalEspectral < handle
             grid minor;
             xlabel('Drift (%)');
             ylabel('Altura (m)');
-            title(sprintf('Envolvente de Deriva Entre Piso - %s', carga.obtenerEtiqueta()));
+            title(sprintf('Envolvente de Deriva Entre Piso - Carga %s', carga.obtenerEtiqueta()));
             
             plt = figure();
             movegui(plt, 'center');
@@ -705,7 +705,7 @@ classdef ModalEspectral < handle
             grid minor;
             xlabel('Desplazamiento (m)');
             ylabel('Altura (m)');
-            title(sprintf('Envolvente de Desplazamiento - %s', carga.obtenerEtiqueta()));
+            title(sprintf('Envolvente de Desplazamiento - Carga %s', carga.obtenerEtiqueta()));
             
         end % calcularDesplazamientoDrift function
         
@@ -765,7 +765,7 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Corte (tonf)');
-                title(sprintf('Historial de Cortante Basal - %s', carga.obtenerEtiqueta()));
+                title(sprintf('Historial de Cortante Basal - Carga %s', carga.obtenerEtiqueta()));
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'momento')
@@ -776,7 +776,7 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Momento (tonf-m)');
-                title(sprintf('Historial de Momento Basal - %s', carga.obtenerEtiqueta()));
+                title(sprintf('Historial de Momento Basal - Carga %s', carga.obtenerEtiqueta()));
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envcorte')
@@ -788,7 +788,7 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Corte (tonf)');
                 ylabel('Altura (m)');
-                title(sprintf('Envolvente de Cortante Basal - %s', carga.obtenerEtiqueta()));
+                title(sprintf('Envolvente de Cortante Basal - Carga %s', carga.obtenerEtiqueta()));
                 
                 % Realiza los analisis por modo
                 CBLegend = cell(1, 1 + lenvmodo);
@@ -817,7 +817,7 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Momento (tonf-m)');
                 ylabel('Altura (m)');
-                title(sprintf('Envolvente de Momento Basal - %s', carga.obtenerEtiqueta()));
+                title(sprintf('Envolvente de Momento Basal - Carga %s', carga.obtenerEtiqueta()));
             end
             
         end % calcularMomentoCorteBasal function
@@ -829,12 +829,12 @@ classdef ModalEspectral < handle
             % calcularCurvasEnergia(analisisObj,carga,varargin)
             %
             % Parametros opcionales:
-            %   'plot'  'all'
+            %   'plot'  'all','ek','ev','ekev','ebe','et'
             
             % Recorre parametros opcionales
             p = inputParser;
             p.KeepUnmatched = true;
-            addOptional(p, 'plot', 0);
+            addOptional(p, 'plot', 'all');
             parse(p, varargin{:});
             r = p.Results;
             
@@ -852,18 +852,141 @@ classdef ModalEspectral < handle
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
             fprintf('Calculando curvas de energia\n');
-            fprintf('\tCarga: %s\n', carga.obtenerEtiqueta());
+            fprintf('\tCarga %s\n', carga.obtenerEtiqueta());
             if carga.metodoDisipasionRayleigh()
-                fprintf('\tLa carga se calculo con disipasion Rayleigh\n');
+                fprintf('\t\tLa carga se calculo con disipasion Rayleigh\n');
             else
-                fprintf('\tLa carga se calculo con disipasion de Wilson-Penzien\n');
+                fprintf('\t\tLa carga se calculo con disipasion de Wilson-Penzien\n');
             end
+            
+            % Obtiene las matrices
+            k = analisisObj.obtenerMatrizRigidez();
+            m = analisisObj.obtenerMatrizMasa();
+            c = analisisObj.obtenerMatrizAmortiguamiento(carga.metodoDisipasionRayleigh());
             
             %Graficos
             [~, s] = size(c_u);
             t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
             
-            if strcmp(tipoplot, 'all')
+            % Energia cinetica
+            e_k = zeros(1, s);
+            fprintf('\tCalculando energia cinetica\n');
+            for i=1:s
+                vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
+                e_k(i) = vv' * m * vv;
+            end
+            
+            % Energia elastica
+            e_v = zeros(1, s);
+            fprintf('\tCalculando energia elastica\n');
+            for i=1:s
+                vv = c_u(:, i); % Obtiene el vector de desplazamiento para el tiempo i
+                e_v(i) = vv' * k * vv;
+            end
+            
+            % Energia disipada
+            e_di = zeros(1, s); % Parcial
+            e_d = zeros(1, s); % Integral
+            fprintf('\tCalculando energia disipada\n');
+            for i=1:s
+                vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
+                e_di(i) = vv' * c * vv;
+                if i>1
+                    dt = (t(i) - t(i-1));
+                    e_d(i) = e_d(i-1) + 0.5*(e_di(i)-e_di(i-1))*dt + e_di(i)*dt;
+                end
+            end
+            
+            % Trabajo externo
+            w_ei = zeros(1, s); % Parcial
+            w_e = zeros(1, s); % Integral
+            fprintf('\tCalculando trabajo externo\n');
+            for i=1:s
+                w_ei(i) = c_p(:, i)'*c_v(:, i);
+                if i>1
+                    dt = (t(i) - t(i-1));
+                    w_e(i) = w_e(i-1) + 0.5*(w_ei(i)-w_ei(i-1))*dt + w_ei(i)*dt;
+                end
+            end
+            
+            % Energia total
+            e_t = zeros(1, s);
+            fprintf('\tCalculando energia total\n');
+            for i=1:s
+                e_t(i) = e_k(1) + e_v(1) + w_e(i) - e_d(i);
+            end
+            
+            % Balance energetico normalizado
+            ebe = zeros(1, s);
+            fprintf('\tCalculando balance energetico\n');
+            for i=1:s
+                ebe(i) = abs(w_e(i) - e_k(i) - e_d(i)) / abs(w_e(i)) * 100;
+            end
+            
+            % Graficos
+            fprintf('\tGenerando graficos\n');
+            lw = 1.1; % Linewidth de los graficos
+            
+            if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ek')
+                plt = figure();
+                movegui(plt, 'center');
+                plot(t, e_k, 'k-', 'LineWidth', lw);
+                grid on;
+                grid minor;
+                xlabel('Tiempo (s)');
+                ylabel('Energia cinetica');
+                title(sprintf('E_K Energia Cinetica - Carga %s', carga.obtenerEtiqueta()));
+            end
+            
+            if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ev')
+                plt = figure();
+                movegui(plt, 'center');
+                plot(t, e_v, 'k-', 'LineWidth', lw);
+                grid on;
+                grid minor;
+                xlabel('Tiempo (s)');
+                ylabel('Energia elastica');
+                title(sprintf('E_V Energia Elastica - Carga %s', carga.obtenerEtiqueta()));
+            end
+            
+            if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ebe')
+                plt = figure();
+                movegui(plt, 'center');
+                plot(t, ebe, 'k-', 'LineWidth', lw);
+                grid on;
+                grid minor;
+                xlabel('Tiempo (s)');
+                ylabel('EBE (%)');
+                title(sprintf('Balance Energetico Normalizado - Carga %s', carga.obtenerEtiqueta()));
+            end
+            
+            if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'evek') || strcmp(tipoplot, 'ekev')
+                plt = figure();
+                movegui(plt, 'center');
+                plot(t, e_k, '-', 'LineWidth', lw);
+                hold on;
+                plot(t, e_v, '-', 'LineWidth', lw);
+                grid on;
+                grid minor;
+                xlabel('Tiempo (s)');
+                ylabel('Energia');
+                legend({'E_K Energia Cinetica', 'E_V Energia Elastica'}, 'location', 'Best');
+                title(sprintf('Energia Potencial - Cinetica - Carga %s', carga.obtenerEtiqueta()));
+            end
+            
+            if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'et')
+                plt = figure();
+                movegui(plt, 'center');
+                plot(t, e_t, '-', 'LineWidth', lw);
+                hold on;
+                plot(t, e_d, '-', 'LineWidth', lw);
+                plot(t, w_e, '-', 'LineWidth', lw);
+                grid on;
+                grid minor;
+                xlabel('Tiempo (s)');
+                ylabel('Energia');
+                legend({'E_t Energia Total', 'E_D Energia Disipada', 'W_E Trabajo Externo'}, 'location', 'Best');
+                title(sprintf('Energia Potencial - Cinetica - Carga %s', carga.obtenerEtiqueta()));
             end
             
         end % calcularCurvasEnergia function
