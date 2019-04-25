@@ -758,6 +758,7 @@ classdef ModalEspectral < handle
             %Graficos
             [~, s] = size(acel);
             t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
+            dplot = false; % Indica si se realizo algun grafico
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'corte')
                 plt = figure();
@@ -768,6 +769,7 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('Corte (tonf)');
                 title(sprintf('Historial de Cortante Basal - Carga %s', carga.obtenerEtiqueta()));
+                dplot = true;
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'momento')
@@ -779,6 +781,7 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('Momento (tonf-m)');
                 title(sprintf('Historial de Momento Basal - Carga %s', carga.obtenerEtiqueta()));
+                dplot = true;
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envcorte')
@@ -809,6 +812,7 @@ classdef ModalEspectral < handle
                 if lenvmodo > 0
                     legend(CBLegend);
                 end
+                dplot = true;
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envmomento')
@@ -820,6 +824,13 @@ classdef ModalEspectral < handle
                 xlabel('Momento (tonf-m)');
                 ylabel('Altura (m)');
                 title(sprintf('Envolvente de Momento Basal - Carga %s', carga.obtenerEtiqueta()));
+                dplot = true;
+            end
+            
+            % Si no se realizo ningun frafico
+            if ~dplot
+                error('Tipo de grafico %s incorrecto, valores aceptados: %s', tipoplot, ...
+                    'corte, momento, envcorte, envmomento');
             end
             
         end % calcularMomentoCorteBasal function
@@ -831,17 +842,20 @@ classdef ModalEspectral < handle
             % calcularCurvasEnergia(analisisObj,carga,varargin)
             %
             % Parametros opcionales:
-            %   'plot'  'all','ek','ev','ekev','ebe','et'
+            %   'plot'      'all','ek','ev','ekev','ebe','et'
+            %   'carga'     Booleano que indica si se grafica la carga o no
             
             % Recorre parametros opcionales
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'plot', 'all');
+            addOptional(p, 'plotcarga', false);
             parse(p, varargin{:});
             r = p.Results;
             
             % Obtiene variables
             tipoplot = r.plot;
+            plotcarga = r.plotcarga;
             
             % Verifica que la carga se haya calculado
             if ~isa(carga, 'CargaDinamica')
@@ -928,6 +942,7 @@ classdef ModalEspectral < handle
             % Graficos
             fprintf('\tGenerando graficos\n');
             lw = 1.1; % Linewidth de los graficos
+            dplot = false; % Indica que un grafico se realizo
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ek')
                 plt = figure();
@@ -938,6 +953,13 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('Energia cinetica');
                 title(sprintf('E_K Energia Cinetica - Carga %s', carga.obtenerEtiqueta()));
+                if plotcarga % Grafica la carga
+                    axes('Position', [.60 .70 .29 .20]);
+                    box on;
+                    plot(t, c_p, 'k-', 'Linewidth', 0.8);
+                    grid on;
+                end
+                dplot = true;
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ev')
@@ -949,6 +971,13 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('Energia elastica');
                 title(sprintf('E_V Energia Elastica - Carga %s', carga.obtenerEtiqueta()));
+                if plotcarga % Grafica la carga
+                    axes('Position', [.60 .70 .29 .20]);
+                    box on;
+                    plot(t, c_p, 'k-', 'Linewidth', 0.8);
+                    grid on;
+                end
+                dplot = true;
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ebe')
@@ -960,6 +989,13 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('EBE (%)');
                 title(sprintf('Balance Energetico Normalizado - Carga %s', carga.obtenerEtiqueta()));
+                if plotcarga % Grafica la carga
+                    axes('Position', [.60 .70 .29 .20]);
+                    box on;
+                    plot(t, c_p, 'k-', 'Linewidth', 0.8);
+                    grid on;
+                end
+                dplot = true;
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'evek') || strcmp(tipoplot, 'ekev')
@@ -972,8 +1008,15 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
-                legend({'E_K Energia Cinetica', 'E_V Energia Elastica'}, 'location', 'Best');
+                legend({'E_K Energia Cinetica', 'E_V Energia Elastica'}, 'location', 'northeast');
                 title(sprintf('Energia Potencial - Cinetica - Carga %s', carga.obtenerEtiqueta()));
+                if plotcarga % Grafica la carga
+                    axes('Position', [.60 .55 .29 .20]);
+                    box on;
+                    plot(t, c_p, 'k-', 'Linewidth', 0.8);
+                    grid on;
+                end
+                dplot = true;
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'et')
@@ -987,8 +1030,21 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
-                legend({'E_t Energia Total', 'E_D Energia Disipada', 'W_E Trabajo Externo'}, 'location', 'Best');
-                title(sprintf('Energia Potencial - Cinetica - Carga %s', carga.obtenerEtiqueta()));
+                legend({'E_t Energia Total', 'E_D Energia Disipada', 'W_E Trabajo Externo'}, 'location', 'southeast');
+                title(sprintf('Energia Total - Disipada - Ingresada - Carga %s', carga.obtenerEtiqueta()));
+                if plotcarga % Grafica la carga
+                    axes('Position', [.60 .36 .29 .20]);
+                    box on;
+                    plot(t, c_p, 'k-', 'Linewidth', 0.8);
+                    grid on;
+                end
+                dplot = true;
+            end
+            
+            % Si no se realizo ningun frafico
+            if ~dplot
+                error('Tipo de grafico %s incorrecto, valores aceptados: %s', tipoplot, ...
+                    'ek, ev, ekev, ebe, et');
             end
             
         end % calcularCurvasEnergia function
