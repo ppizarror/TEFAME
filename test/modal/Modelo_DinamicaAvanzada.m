@@ -91,6 +91,7 @@ analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], 'condensar', true);
 
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false);
+analisisObj.calcularCurvasEnergia(cargasDinamicas{1});
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});

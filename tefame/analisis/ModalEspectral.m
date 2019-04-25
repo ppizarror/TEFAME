@@ -822,6 +822,52 @@ classdef ModalEspectral < handle
             
         end % calcularMomentoCorteBasal function
         
+        function calcularCurvasEnergia(analisisObj, carga, varargin)
+            % calcularCurvasEnergia: Genera las curvas de energia a partir
+            % de una carga
+            %
+            % calcularCurvasEnergia(analisisObj,carga,varargin)
+            %
+            % Parametros opcionales:
+            %   'plot'  'all'
+            
+            % Recorre parametros opcionales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'plot', 0);
+            parse(p, varargin{:});
+            r = p.Results;
+            
+            % Obtiene variables
+            tipoplot = r.plot;
+            
+            % Verifica que la carga se haya calculado
+            if ~isa(carga, 'CargaDinamica')
+                error('Solo se pueden graficar cargas dinamicas');
+            end
+            c_u = carga.obtenerDesplazamiento();
+            c_v = carga.obtenerVelocidad();
+            c_p = carga.obtenerCarga();
+            if isempty(c_u)
+                error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
+            end
+            fprintf('Calculando curvas de energia\n');
+            fprintf('\tCarga: %s\n', carga.obtenerEtiqueta());
+            if carga.metodoDisipasionRayleigh()
+                fprintf('\tLa carga se calculo con disipasion Rayleigh\n');
+            else
+                fprintf('\tLa carga se calculo con disipasion de Wilson-Penzien\n');
+            end
+            
+            %Graficos
+            [~, s] = size(c_u);
+            t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
+            
+            if strcmp(tipoplot, 'all')
+            end
+            
+        end % calcularCurvasEnergia function
+        
         function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, varargin) %#ok<INUSL>
             % plotTrayectoriaNodo: Grafica la trayectoria de un nodo
             % (desplazamiento, velocidad y aceleracion) para todo el tiempo
@@ -1229,8 +1275,7 @@ classdef ModalEspectral < handle
             nModos = min(nModos, ngdl);
             analisisObj.numModos = nModos;
             
-            %--------------------------------------------------------------
-            
+            %--------------------------------------------------------------         
             % Resuelve la ecuacion del sistema, para ello crea la matriz
             % inversa de la masa y calcula los valores propios
             invMt = zeros(ngdl, ngdl);
@@ -1331,8 +1376,7 @@ classdef ModalEspectral < handle
                 end
             end
             
-            % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
-            
+            % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------            
             % Se declaran dos amortiguamientos criticos asociados a dos modos
             % diferentes indicando si es horizontal o vertical (h o v)
             modocR = [1, 8];
@@ -1366,8 +1410,7 @@ classdef ModalEspectral < handle
                 -1 / w(n), 1 / w(m)] * betacR';
             analisisObj.cRayleigh = a(1) .* Meq + a(2) .* Keq;
             
-            % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------
-            
+            % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------          
             % Se declaran todos los amortiguamientos criticos del sistema,
             % (horizontal, vertical y rotacional)
             d = zeros(length(analisisObj.Mmeff), length(analisisObj.Mmeff));
@@ -1387,8 +1430,7 @@ classdef ModalEspectral < handle
                     Meq * (d(i, i) * modalPhin(:, i) * modalPhin(:, i)') * Meq;
             end
             
-            %--------------------------------------------------------------
-            
+            %--------------------------------------------------------------            
             % Termina el analisis
             analisisObj.analisisFinalizado = true;
             analisisObj.numDG = ndg;

@@ -61,6 +61,7 @@ classdef CargaDinamica < ComponenteModelo
         sol_a % Guarda la solucion de las aceleraciones
         sol_p % Guarda la carga generada
         cargaActiva % Indica si la carga esta activada o no
+        c_rayleigh % Indica que la carga se calculo con C de Rayleigh
     end % properties CargaDinamica
     
     properties(Access = public)
@@ -84,6 +85,7 @@ classdef CargaDinamica < ComponenteModelo
             % Llamamos al cosntructor de la SuperClass que es la clase ComponenteModelo
             cargaDinamicaObj = cargaDinamicaObj@ComponenteModelo(etiquetaCarga);
             cargaDinamicaObj.cargaActiva = true;
+            cargaDinamicaObj.c_rayleigh = false;
             
         end % CargaDinamica constructor
         
@@ -160,6 +162,14 @@ classdef CargaDinamica < ComponenteModelo
             
         end % guardarAceleracion function
         
+        function disipasionRayleigh(cargaDinamicaObj, rayleigh)
+            % disipasionRayleigh: Indica el tipo de disipasion usado en el
+            % calculo
+            
+            cargaDinamicaObj.c_rayleigh = rayleigh;
+            
+        end % disipasionRayleigh
+        
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para obtener los resultados
         
@@ -212,6 +222,14 @@ classdef CargaDinamica < ComponenteModelo
             a = cargaDinamicaObj.sol_a;
             
         end % obtenerAceleracion function
+        
+        function r = metodoDisipasionRayleigh(cargaDinamicaObj)
+            % metodoDisipasionRayleigh: Indica que los resultados se
+            % guardaron o no con la disipasion de Rayleigh
+            
+            r = cargaDinamicaObj.c_rayleigh;
+            
+        end % metodoDisipasionRayleigh function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostrar la informacion de la carga en pantalla

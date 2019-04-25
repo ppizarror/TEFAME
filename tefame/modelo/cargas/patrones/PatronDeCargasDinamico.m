@@ -168,7 +168,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 % Genera las cargas
                 fprintf('\t\t\tGenerando la matriz de cargas\n');
                 p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r);
-                patronDeCargasObj.cargas{i}.guardarCarga(p); % Ojo, se guarda sin descomponer
                 
                 % Descomposicion modal
                 if patronDeCargasObj.desModal
@@ -186,9 +185,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 end
                 
                 % Guarda los resultados
+                patronDeCargasObj.cargas{i}.guardarCarga(p); % Ojo, se guarda sin descomponer
                 patronDeCargasObj.cargas{i}.guardarDesplazamiento(u);
                 patronDeCargasObj.cargas{i}.guardarVelocidad(du);
                 patronDeCargasObj.cargas{i}.guardarAceleracion(ddu);
+                patronDeCargasObj.cargas{i}.disipasionRayleigh(~cpenzien);
                 fprintf('\n\t\t\tSe completo calculo en %.3f segundos\n', cputime-tInicio);
                 
             end
