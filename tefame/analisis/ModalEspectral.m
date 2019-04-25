@@ -895,7 +895,7 @@ classdef ModalEspectral < handle
                 e_di(i) = vv' * c * vv;
                 if i > 1
                     dt = (t(i) - t(i-1));
-                    e_d(i) = e_d(i-1) + 0.5 * (e_di(i) - e_di(i-1)) * dt + e_di(i) * dt;
+                    e_d(i) = e_d(i-1) + 0.5 * (e_di(i) - e_di(i-1)) * dt + e_di(i-1) * dt;
                 end
             end
             
@@ -907,7 +907,7 @@ classdef ModalEspectral < handle
                 w_ei(i) = c_p(:, i)' * c_v(:, i);
                 if i > 1
                     dt = (t(i) - t(i-1));
-                    w_e(i) = w_e(i-1) + 0.5 * (w_ei(i) - w_ei(i-1)) * dt + w_ei(i) * dt;
+                    w_e(i) = w_e(i-1) + 0.5 * (w_ei(i) - w_ei(i-1)) * dt + w_ei(i-1) * dt;
                 end
             end
             
