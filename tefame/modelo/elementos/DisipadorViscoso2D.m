@@ -16,15 +16,15 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase DisipadorViscoso2D                                                  |
+%| Clase DisipadorViscoso2D                                             |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase VigaColumna 2D       |
-%| ColumnaViga2D es una  subclase de la clase Elemento y  corresponde a |
+%| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |
+%|  es una  subclase de la clase Elemento y  corresponde a              |
 %| la representacion del elemento viga-columna que transmite esfuerzos  |
 %| axiales y de corte.                                                  |
 %|                                                                      |
 %| Programado: Pablo Pizarro @ppizarror.com                             |
-%| Fecha: 10/06/2018                                                    |
+%| Fecha: 29/04/2019                                                    |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
@@ -78,7 +78,7 @@ classdef DisipadorViscoso2D < Elemento
     
     methods
         
-        function DisipadorViscoso2DObj = DisipadorViscoso2D(etiquetaViga, nodo1Obj, nodo2Obj, Ceq, Keq, Amaterial)
+        function DisipadorViscoso2DObj = DisipadorViscoso2D(etiquetaViga, nodo1Obj, nodo2Obj, Ceq, Keq)
             
             % Completa con ceros si no hay argumentos
             if nargin == 0
