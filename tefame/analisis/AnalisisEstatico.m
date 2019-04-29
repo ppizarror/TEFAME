@@ -171,7 +171,7 @@ classdef AnalisisEstatico < handle
             fprintf('\tEnsamblando matriz de rigidez\n');
             analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
-            % Extraemos los Elementos
+            % Extraemos los Elementos y Disipadores
             elementoObjetos = analisisObj.modeloObj.obtenerElementos();
             numeroElementos = length(elementoObjetos);
             
@@ -203,6 +203,53 @@ classdef AnalisisEstatico < handle
             end % for i
             
         end % ensamblarMatrizRigidez function
+        
+        function ensamblarMatrizDisipadores(analisisObj)
+            % ensamblarMatrizRigidez: es un metodo de la clase AnalisisEstatico que se usa para
+            % realizar el armado de la matriz de rigidez del modelo analizado
+            %
+            % ensamblarMatrizRigidez(analisisObj)
+            % Ensambla la matriz de Rigidez del modelo analizado usando el metodo
+            % indicial
+            
+            fprintf('\tEnsamblando matriz de rigidez\n');
+            analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
+            
+            % Extraemos los Elementos y Disipadores
+            DisipadoresObjetos = analisisObj.modeloObj.obtenerDisipadores();
+            numeroDisipadores = length(DisipadoresObjetos);
+            
+            % Definimos los GDLID en los elementos
+            for i = 1:numeroDisipadores
+                
+                % Se obienen los gdl del elemento metodo indicial
+                gdl = DisipadoresObjetos{i}.obtenerGDLID();
+                ngdl = DisipadoresObjetos{i}.obtenerNumeroGDL;
+                
+                % Se obtiene la matriz de rigidez global del elemento-i
+                c_globl_elem = DisipadoresObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal();
+                
+                % Se calcula el metodo indicial
+                for r = 1:ngdl
+                    for s = 1:ngdl
+                        i_ = gdl(r);
+                        j_ = gdl(s);
+                        
+                        % Si corresponden a grados de libertad -> puntos en (i,j)
+                        % se suma contribucion metodo indicial
+                        if (i_ ~= 0 && j_ ~= 0)
+                            analisisObj.Kt(i_, j_) = analisisObj.Kt(i_, j_) + k_globl_elem(r, s);
+                        end
+                        
+                    end % for s
+                end % for r
+                
+            end % for i
+            
+        end % ensamblarMatrizAmortiguamiento function
+        
+        
+        
         
         function ensamblarVectorFuerzas(analisisObj)
             % ensamblarVectorFuerzas: es un metodo de la clase AnalisisEstatico que se usa para
