@@ -24,7 +24,7 @@ Ic = 1 / 12;
 
 % Propiedades disipadores viscosos
 Ceq = 1; % Los verdadero input son Cd y alfa, Ceq y Keq se determinan (modificar elemento)
-Keq = 1;
+Keq = 0;
 
 % Densidad del material
 Rhoh = 2.5; % (tonf/m3)
@@ -36,7 +36,7 @@ Modelo_DinamicaAvanzadaElementos;
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
-
+%modeloObj.agregarElementos(DisipadoresViscosos);
 %% Creamos las restricciones
 restricciones = cell(10, 1);
 restricciones{1} = RestriccionNodo('R1', nodos{1}, [1, 2, 3]');
