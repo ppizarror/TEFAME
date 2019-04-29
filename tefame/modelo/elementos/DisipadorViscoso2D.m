@@ -90,7 +90,6 @@ classdef DisipadorViscoso2D < Elemento
             
             % Guarda material
             DisipadorViscoso2DObj.nodosObj = {nodo1Obj; nodo2Obj};
-            DisipadorViscoso2DObj.Ao = Amaterial;
             DisipadorViscoso2DObj.Keq = Keq;
             DisipadorViscoso2DObj.Ceq = Ceq;
             DisipadorViscoso2DObj.gdlID = [];
@@ -103,6 +102,9 @@ classdef DisipadorViscoso2D < Elemento
             DisipadorViscoso2DObj.L = sqrt(DisipadorViscoso2DObj.dx^2+DisipadorViscoso2DObj.dy^2);
             theta = atan(DisipadorViscoso2DObj.dy/DisipadorViscoso2DObj.dx);
             DisipadorViscoso2DObj.theta = theta;
+            cosx = cos(theta);
+            cosy = sin(theta);
+            
             
             % Calcula matriz de transformacion dado el angulo
             T =[cosx cosy 0 0 0 0; 0 0 0 cosx cosy 0];
