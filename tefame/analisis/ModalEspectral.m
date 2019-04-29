@@ -331,6 +331,21 @@ classdef ModalEspectral < handle
             
         end % obtenerVectorPropio function
         
+        function resolverDisipadoresViscososLineales(analisisObj,c_alfa)
+            % resolverDisipadoresViscososLineales: es un metodo de la clase 
+            % ModalEspectral que se usa para resolver cargas dinamicas
+            % utilizando disipadores viscosos lineales (alfa = 1)
+    
+            alfa = 1;
+            Vo = 0;
+            w = 0;
+            Ce = c_alfa .* (4 * gamma(alfa + 2)) / (2 ^ (alfa + 2) * (gamma(alfa / 2 + 3 / 2)) ^ 2) * w ^ (alfa - 1) * Vo ^ (alfa - 1); 
+            
+            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien); %Falta modificar esto
+            
+        end % resolverDisipadoresViscososLineales function
+        
+        
         function plt = plot(analisisObj, varargin)
             % plot: Grafica un modelo
             %
