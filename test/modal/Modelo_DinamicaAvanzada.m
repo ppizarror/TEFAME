@@ -37,11 +37,7 @@ Modelo_DinamicaAvanzadaDisipadores;
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
-<<<<<<< HEAD
-%modeloObj.agregarElementos(DisipadoresViscosos);
-=======
-%modeloObj.agregarDisipadores(disipadoresViscosos);
->>>>>>> 4366a1dd181cbc4a1da4ab266d744f35f1f7afb3
+modeloObj.agregarDisipadores(DisipadoresViscosos);
 
 %% Creamos las restricciones
 restricciones = cell(10, 1);

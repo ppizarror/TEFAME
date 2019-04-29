@@ -74,6 +74,7 @@ classdef ModalEspectral < handle
         numeroGDL % Guarda el numero de grados de libertad totales del modelo
         Kt % Matriz de Rigidez del modelo
         Mt % Matriz de Masa del modelo
+        Cdv %Matriz de amortiguamiento disipadores
         gdlCond % Grados de libertad condensados
         F % Vector de Fuerzas aplicadas sobre el modelo
         u % Vector con los desplazamientos de los grados de libertad del modelo
@@ -119,6 +120,7 @@ classdef ModalEspectral < handle
             analisisObj.numeroGDL = 0;
             analisisObj.Kt = [];
             analisisObj.Mt = [];
+            analisisObj.Cdv = [];
             analisisObj.u = [];
             analisisObj.F = [];
             analisisObj.analisisFinalizado = false;
@@ -174,6 +176,9 @@ classdef ModalEspectral < handle
             
             % Se calcula la matriz de masa
             analisisObj.ensamblarMatrizMasa();
+            
+            % Se calcula la matriz de amortiguamiento disipadores
+            analisisObj.ensamblarMatrizAmortiguamientoDisipadores();
             
             % Guarda el resultado para las cargas estaticas
             fprintf('\tCalculando resultado carga estatica\n');
@@ -1720,6 +1725,51 @@ classdef ModalEspectral < handle
                 end % for r
                 
             end % for i
+            
+        function ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
+            % ensamblarMatrizRigidez: es un metodo de la clase ModalEspectral que se usa para
+            % realizar el armado de la matriz de rigidez del modelo analizado
+            %
+            % ensamblarMatrizRigidez(analisisObj)
+            % Ensambla la matriz de rigidez del modelo analizado usando el metodo
+            % indicial
+            
+            fprintf('\tEnsamblando matriz de amortiguamiento disipadores\n');
+            analisisObj.Cdv = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
+            
+            % Extraemos los Elementos
+            elementoObjetos = analisisObj.modeloObj.obtenerDisipadores();
+            numeroElementos = length(elementoObjetos);
+            
+            % Definimos los GDLID en los elementos
+            for i = 1:numeroElementos
+                
+                % Se obienen los gdl del elemento metodo indicial
+                gdl = elementoObjetos{i}.obtenerGDLID();
+                ngdl = elementoObjetos{i}.obtenerNumeroGDL;
+                
+                % Se obtiene la matriz de amortiguamiento global del elemento-i
+                c_globl_elem = elementoObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal();
+                
+                % Se calcula el metodo indicial
+                for r = 1:ngdl
+                    for s = 1:ngdl
+                        i_ = gdl(r);
+                        j_ = gdl(s);
+                        
+                        % Si corresponden a grados de libertad -> puntos en (i,j)
+                        % se suma contribucion metodo indicial
+                        if (i_ ~= 0 && j_ ~= 0)
+                            analisisObj.Cdv(i_, j_) = analisisObj.Cdv(i_, j_) + c_globl_elem(r, s);
+                        end
+                        
+                    end % for s
+                end % for r
+                
+            end % for i
+            
+        end % ensamblarMatrizAmortiguamientoDisipadores function
+            
             
             % Agrega las cargas de los nodos
             nodoObjetos = analisisObj.modeloObj.obtenerNodos();
