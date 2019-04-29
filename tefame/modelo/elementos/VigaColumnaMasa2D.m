@@ -298,6 +298,12 @@ classdef VigaColumnaMasa2D < Elemento
             
         end % guardarFuerzaEquivalente function
         
+        function f = obtenerFuerzaEquivalente(vigaColumnaMasa2DObj)
+            
+            f = vigaColumnaMasa2DObj.Feq;
+            
+        end % obtenerFuerzaEquivalente function
+        
         function agregarFuerzaResistenteAReacciones(vigaColumnaMasa2DObj)
             
             % Se calcula la fuerza resistente global

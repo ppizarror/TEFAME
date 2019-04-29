@@ -33,10 +33,17 @@ Rhoh = 2.5; % (tonf/m3)
 elementos = {};
 DisipadoresViscosos = {};
 Modelo_DinamicaAvanzadaElementos;
+% Modelo_DinamicaAvanzadaDisipadores;
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
+<<<<<<< HEAD
 %modeloObj.agregarElementos(DisipadoresViscosos);
+=======
+% modeloObj.agregarElementos(disipadoresViscosos);
+
+
+>>>>>>> 1a5c6456a14f32e1bf75b61e122660fdf883f8d9
 %% Creamos las restricciones
 restricciones = cell(10, 1);
 restricciones{1} = RestriccionNodo('R1', nodos{1}, [1, 2, 3]');

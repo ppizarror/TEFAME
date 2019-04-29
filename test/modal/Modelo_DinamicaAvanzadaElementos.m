@@ -377,10 +377,6 @@ DisipadoresViscosos{23} = DisipadorViscoso2D('DV221-232', nodos{125}, nodos{130}
 DisipadoresViscosos{24} = DisipadorViscoso2D('DV231-242', nodos{129}, nodos{134}, Ceq, Keq);
 DisipadoresViscosos{25} = DisipadorViscoso2D('DV241-252', nodos{133}, nodos{138}, Ceq, Keq);
 
-%%
-
-
-
 
 
 
