@@ -1335,11 +1335,16 @@ classdef ModalEspectral < handle
             
             % Extraemos los Elementos del modelo
             elementoObjetos = analisisObj.modeloObj.obtenerElementos();
+            disipadorObjetos = analisisObj.modeloObj.obtenerDisipadores();
             numeroElementos = length(elementoObjetos);
-            
+            numeroDisipadores = length(disipadorObjetos);
             % Definimos los GDLID en los elementos para poder formar la matriz de rigidez
             for i = 1:numeroElementos
                 elementoObjetos{i}.definirGDLID();
+            end % for i
+            
+            for i = 1:numeroDisipadores
+                disipadorObjetos{i}.definirGDLID();
             end % for i
             
         end % definirNumeracionGDL function
