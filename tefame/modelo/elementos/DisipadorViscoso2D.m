@@ -105,6 +105,8 @@ classdef DisipadorViscoso2D < Elemento
             DisipadorViscoso2DObj.theta = theta;
             
             % Calcula matriz de transformacion dado el angulo
+            cosx = DisipadorViscoso2DObj.dx / DisipadorViscoso2DObj.L;
+            cosy = DisipadorViscoso2DObj.dy / DisipadorViscoso2DObj.L;
             T =[cosx cosy 0 0 0 0; 0 0 0 cosx cosy 0];
             DisipadorViscoso2DObj.T = T;
             
