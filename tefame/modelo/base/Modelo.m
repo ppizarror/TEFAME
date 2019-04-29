@@ -62,7 +62,8 @@ classdef Modelo < handle
         nDimensiones % Variable que guarda las dimensiones del sistema de coordenadas del modelo
         nGDL % Variable que guarda el numero de grados de libertad de cada nodo (GDL)
         nodos % Variable que guarda en un arreglo de celdas todos los nodos del modelo
-        elementos % Variable que guarda en un arreglo de celdas todos los elementos del modelo
+        elementos % Variable que guarda en un arreglo de celdas todos los elementos del modelo.
+        disipadores % Variable que guarda en un arreglo de celdas todos los disipadores del modelo.
         restricciones % Variable que guarda en un arreglo de celdas todos las restricciones del modelo
         patronesDeCargas % Variable que guarda en un arreglo de celdas todos los patrones de cargas aplicadas sobre el modelo
     end % properties Modelo
@@ -91,6 +92,7 @@ classdef Modelo < handle
             % componentes del modelo vacio
             modeloObj.nodos = [];
             modeloObj.elementos = [];
+            modeloObj.disipadores = [];
             modeloObj.restricciones = [];
             modeloObj.patronesDeCargas = [];
             
@@ -122,6 +124,18 @@ classdef Modelo < handle
             modeloObj.elementos = arregloElementos;
             
         end % agregarElementos function
+        
+        function agregarDisipadores(modeloObj, arregloDisipadores)
+            % agregarDisipadores: es un metodo de la clase Modelo que se usa para
+            % entregarle el arreglo con los disipadores al Modelo
+            %
+            % agregarElementos(modeloObj,arregloDisipadores)
+            % Agrega el arreglo con los elementos (arregloDisipadores) al Modelo
+            % (modeloObj) para que esto lo guarde y tenga acceso a los elementos
+            
+            modeloObj.disipadores = arregloDisipadores;
+            
+        end % agregarDisipadores function
         
         function agregarRestricciones(modeloObj, arregloRestricciones)
             % agregarRestricciones: es un metodo de la clase Modelo que se usa
@@ -175,6 +189,18 @@ classdef Modelo < handle
             % guardado en el Modelo (modeloObj)
             
             elementosModelo = modeloObj.elementos;
+            
+        end % obtenerElementos function
+        
+        function disipadoresModelo = obtenerDisipadores(modeloObj)
+            % obtenerDisipadores: es un metodo de la clase Modelo que se usa para
+            % obtener el arreglo con los elementos guardados en el Modelo
+            %
+            % DisipadoresModelo = obtenerDisipadores(modeloObj)
+            % Obtiene el arreglo con los elementos (DisipadoresModelo) que esta
+            % guardado en el Modelo (modeloObj)
+            
+            disipadoresModelo = modeloObj.disipadores;
             
         end % obtenerElementos function
         

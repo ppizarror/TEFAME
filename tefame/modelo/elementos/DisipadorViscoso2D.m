@@ -186,6 +186,16 @@ classdef DisipadorViscoso2D < Elemento
                         
         end % obtenerMatrizRigidezLocal function
         
+        function c_global = obtenerMatrizAmortiguamientoCoordGlobal(DisipadorViscoso2DObj)
+            
+            % Multiplica por la matriz de transformacion
+            ceq_local = DisipadorViscoso2DObj.obtenerMatrizAmortiguamientoCoordLocal();
+            t_theta = DisipadorViscoso2DObj.obtenerMatrizTransformacion();
+            c_global = t_theta' * ceq_local * t_theta;
+                                    
+        end % obtenerMatrizRigidezLocal function
+
+        
         function m_masa = obtenerMatrizMasa(DisipadorViscoso2DObj)
             
             % Retorna la matriz calculada en el constructor
