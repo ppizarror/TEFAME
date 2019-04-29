@@ -31,7 +31,7 @@ Rhoh = 2.5; % (tonf/m3)
 
 %% Crea los elementos
 elementos = {};
-disipadoresViscosos = {};
+DisipadoresViscosos = {};
 Modelo_DinamicaAvanzadaElementos;
 % Modelo_DinamicaAvanzadaDisipadores;
 
