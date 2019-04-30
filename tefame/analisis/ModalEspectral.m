@@ -1902,9 +1902,9 @@ classdef ModalEspectral < handle
                 gdl = max(gdl, ngdlid);
                 if ~deformada && mostrarEstatico
                     if modo ~= 0 || defCarga
-                        nodoObjetos{i}.plot([], 'b', 10);
+                        nodoObjetos{i}.plot([], 'b', 5);
                     else
-                        nodoObjetos{i}.plot([], 'k', 15);
+                        nodoObjetos{i}.plot([], 'k', 10);
                     end
                     if j == 1
                         hold on;
@@ -1953,7 +1953,7 @@ classdef ModalEspectral < handle
                     gdl = max(gdl, ngdlid);
                     def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, ...
                         gdl, defCarga, carga, tcarga);
-                    nodoObjetos{i}.plot(def.*factor*phif, 'k', 15);
+                    nodoObjetos{i}.plot(def.*factor*phif, 'k', 10);
                 end
             end
             
