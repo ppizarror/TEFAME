@@ -1091,7 +1091,7 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
-                legend({'E_K Energia Cinetica', 'E_V Energia Elastica'}, 'location', 'northeast');
+                legend({'E_K Energia cinetica', 'E_V Energia elastica'}, 'location', 'northeast');
                 title(fig_title);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .55, .29, .20]);
@@ -1114,7 +1114,7 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
-                legend({'E_t Energia Total', 'E_D Energia Disipada Total', 'W_E Trabajo Externo'}, 'location', 'southeast');
+                legend({'E_t Energia total', 'E_D Energia disipada total', 'W_E Trabajo externo'}, 'location', 'southeast');
                 title(fig_title);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .36, .29, .20]);
@@ -1129,21 +1129,21 @@ classdef ModalEspectral < handle
                 fig_title = sprintf('Energia Disipada - Carga %s', carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
-                plot(t, e_d, '-', 'LineWidth', lw);
                 if carga.usoDeDisipadores()
+                    plot(t, e_d+e_damor, '-', 'LineWidth', lw);
                     hold on;
+                    plot(t, e_d, '-', 'LineWidth', lw);
                     plot(t, e_damor, '-', 'LineWidth', lw);
+                    legend({'Energia disipada total', 'Energia disipada por la estructura', ...
+                        'Energia disipada por disipadores'}, 'location', 'Best');
+                else
+                    plot(t, e_d, '-', 'LineWidth', lw);
+                    legend({'Energia disipada por la estructura'}, 'location', 'Best');
                 end
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
-                if carga.usoDeDisipadores()
-                    legend({'Energia disipada por la estructura', ...
-                        'Energia disipada por disipadores'}, 'location', 'Best');
-                else
-                    legend({'Energia disipada por la estructura'}, 'location', 'Best');
-                end
                 title(fig_title);
                 % if plotcarga % Grafica la carga
                 %     axes('Position', [.60, .36, .29, .20]);
