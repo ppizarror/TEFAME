@@ -19,7 +19,7 @@
 %| Clase DisipadorViscoso2D                                             |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |
-%|  es una  subclase de la clase Elemento y  corresponde a              |
+%|  es una  subclase de la clase Disipador2D y  corresponde a              |
 %| la representacion de un disipador viscoso en 2D.                     |
 %|                                                                      |
 %| Programado: Pablo Pizarro @ppizarror.com                             |
@@ -36,27 +36,23 @@
 %       L
 %       Feq
 %  Methods:
-%       DisipadorViscoso2DObj = DisipadorViscoso2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial)
-%       numeroNodos = obtenerNumeroNodos(DisipadorViscoso2DObj)
-%       nodosBiela = obtenerNodos(DisipadorViscoso2DObj)
-%       numeroGDL = obtenerNumeroGDL(DisipadorViscoso2DObj)
-%       gdlIDBiela = obtenerGDLID(DisipadorViscoso2DObj)
-%       k_global = obtenerMatrizRigidezCoordGlobal(DisipadorViscoso2DObj)
-%       k_local = obtenerMatrizRigidezCoordLocal(DisipadorViscoso2DObj)
-%       fr_global = obtenerFuerzaResistenteCoordGlobal(DisipadorViscoso2DObj)
-%       fr_local = obtenerFuerzaResistenteCoordLocal(DisipadorViscoso2DObj)
-%       l = obtenerLargo(DisipadorViscoso2DObj)
-%       T = obtenerMatrizTransformacion(DisipadorViscoso2DObj)
-%       theta = obtenerAngulo(DisipadorViscoso2DObj)
-%       definirGDLID(DisipadorViscoso2DObj)
-%       agregarFuerzaResistenteAReacciones(DisipadorViscoso2DObj)
-%       guardarPropiedades(DisipadorViscoso2DObj,archivoSalidaHandle)
-%       guardarEsfuerzosInternos(DisipadorViscoso2DObj,archivoSalidaHandle)
-%       disp(DisipadorViscoso2DObj)
+%       disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial)
+%       numeroNodos = obtenerNumeroNodos(disipadorViscoso2DObj)
+%       nodosBiela = obtenerNodos(disipadorViscoso2DObj)
+%       numeroGDL = obtenerNumeroGDL(disipadorViscoso2DObj)
+%       gdlIDBiela = obtenerGDLID(disipadorViscoso2DObj)
+%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorViscoso2DObj)
+%       k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)
+%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorViscoso2DObj)
+%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorViscoso2DObj)
+%       l = obtenerLargo(disipadorViscoso2DObj)
+%       T = obtenerMatrizTransformacion(disipadorViscoso2DObj)
+%       definirGDLID(disipadorViscoso2DObj)
+%       disp(disipadorViscoso2DObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
-classdef DisipadorViscoso2D < Elemento
+classdef DisipadorViscoso2D < Disipador2D
     
     properties(Access = private)
         nodosObj % Cell con los nodos
@@ -66,149 +62,137 @@ classdef DisipadorViscoso2D < Elemento
         dx % Distancia en el eje x entre los nodos
         dy % Distancia en el eje y entre los nodos
         L % Largo del elemento
-        theta % Angulo de inclinacion de la viga
+        theta % Angulo de inclinacion del disipador
         Feq % Fuerza equivalente
         T % Matriz de transformacion
         Klp % Matriz de rigidez local del elemento
+        alpha % Paramatro del disipador
+        Cd % Parametro del disipador
     end % properties DisipadorViscoso2D
     
     methods
         
-        function DisipadorViscoso2DObj = DisipadorViscoso2D(etiquetaViga, nodo1Obj, nodo2Obj, Ceq, Keq)
+        function disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaDisipador, nodo1Obj, nodo2Obj, Cd, alpha)
             
             % Completa con ceros si no hay argumentos
             if nargin == 0
-                etiquetaViga = '';
+                etiquetaDisipador = '';
             end % if
             
-            % Llamamos al constructor de la SuperClass que es la clase Elemento
-            DisipadorViscoso2DObj = DisipadorViscoso2DObj@Elemento(etiquetaViga);
+            % Llamamos al constructor de la SuperClass que es la clase Disipador2D
+            disipadorViscoso2DObj = disipadorViscoso2DObj@Disipador2D(etiquetaDisipador);
             
             % Guarda material
-            DisipadorViscoso2DObj.nodosObj = {nodo1Obj; nodo2Obj};
-            DisipadorViscoso2DObj.Keq = Keq;
-            DisipadorViscoso2DObj.Ceq = Ceq;
-            DisipadorViscoso2DObj.gdlID = [];
+            disipadorViscoso2DObj.nodosObj = {nodo1Obj; nodo2Obj};
+            disipadorViscoso2DObj.alpha = alpha;
+            disipadorViscoso2DObj.Cd = Cd;
+            disipadorViscoso2DObj.gdlID = [];
             
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
-            DisipadorViscoso2DObj.dx = abs(coordNodo2(1)-coordNodo1(1));
-            DisipadorViscoso2DObj.dy = abs(coordNodo2(2)-coordNodo1(2));
-            DisipadorViscoso2DObj.L = sqrt(DisipadorViscoso2DObj.dx^2+DisipadorViscoso2DObj.dy^2);
-            theta = atan(DisipadorViscoso2DObj.dy/DisipadorViscoso2DObj.dx);
-            DisipadorViscoso2DObj.theta = theta;
+            disipadorViscoso2DObj.dx = abs(coordNodo2(1)-coordNodo1(1));
+            disipadorViscoso2DObj.dy = abs(coordNodo2(2)-coordNodo1(2));
+            disipadorViscoso2DObj.L = sqrt(disipadorViscoso2DObj.dx^2+disipadorViscoso2DObj.dy^2);
+            theta = atan(disipadorViscoso2DObj.dy/disipadorViscoso2DObj.dx);
+            disipadorViscoso2DObj.theta = theta;
             
             % Calcula matriz de transformacion dado el angulo
-            cosx = DisipadorViscoso2DObj.dx / DisipadorViscoso2DObj.L;
-            cosy = DisipadorViscoso2DObj.dy / DisipadorViscoso2DObj.L;
+            cosx = disipadorViscoso2DObj.dx / disipadorViscoso2DObj.L;
+            cosy = disipadorViscoso2DObj.dy / disipadorViscoso2DObj.L;
             T = [cosx, cosy, 0, 0, 0, 0; 0, 0, 0, cosx, cosy, 0];
-            DisipadorViscoso2DObj.T = T;
+            disipadorViscoso2DObj.T = T;
             
             % Calcula matriz de rigidez local
             Klp = 0.001 .* eye(2);
-            DisipadorViscoso2DObj.Klp = Klp;
-            
-            % Fuerza equivalente de la viga
-            DisipadorViscoso2DObj.Feq = [0, 0, 0, 0]';
+            disipadorViscoso2DObj.Klp = Klp;
             
         end % DisipadorViscoso2D constructor
         
-        function l = obtenerLargo(DisipadorViscoso2DObj)
-            
-            l = DisipadorViscoso2DObj.L;
-            
-        end % obtenerLargo function
-        
-        function numeroNodos = obtenerNumeroNodos(DisipadorViscoso2DObj) %#ok<MANU>
+        function numeroNodos = obtenerNumeroNodos(disipadorViscoso2DObj) %#ok<MANU>
             
             numeroNodos = 2;
             
         end % obtenerNumeroNodos function
         
-        function nodosViga = obtenerNodos(DisipadorViscoso2DObj)
+        function nodosDisipador = obtenerNodos(disipadorViscoso2DObj)
             
-            nodosViga = DisipadorViscoso2DObj.nodosObj;
+            nodosDisipador = disipadorViscoso2DObj.nodosObj;
             
         end % obtenerNodos function
         
-        function numeroGDL = obtenerNumeroGDL(DisipadorViscoso2DObj) %#ok<MANU>
+        function numeroGDL = obtenerNumeroGDL(disipadorViscoso2DObj) %#ok<MANU>
             
             numeroGDL = 4;
             
         end % obtenerNumeroGDL function
         
-        function gdlIDViga = obtenerGDLID(DisipadorViscoso2DObj)
+        function gdlIDDisipador = obtenerGDLID(disipadorViscoso2DObj)
             
-            gdlIDViga = DisipadorViscoso2DObj.gdlID;
-            
-        end % obtenerNumeroGDL function
-        
-        function T = obtenerMatrizTransformacion(DisipadorViscoso2DObj)
-            
-            T = DisipadorViscoso2DObj.T;
+            gdlIDDisipador = disipadorViscoso2DObj.gdlID;
             
         end % obtenerNumeroGDL function
         
-        function theta = obtenerAngulo(DisipadorViscoso2DObj)
+        function T = obtenerMatrizTransformacion(disipadorViscoso2DObj)
             
-            theta = DisipadorViscoso2DObj.theta;
+            T = disipadorViscoso2DObj.T;
             
-        end % obtenerAngulo function
+        end % obtenerNumeroGDL function
         
-        function k_global = obtenerMatrizRigidezCoordGlobal(DisipadorViscoso2DObj)
+        function k_global = obtenerMatrizRigidezCoordGlobal(disipadorViscoso2DObj)
             
             % Multiplica por la matriz de transformacion
-            k_local = DisipadorViscoso2DObj.obtenerMatrizRigidezCoordLocal();
-            t_theta = DisipadorViscoso2DObj.obtenerMatrizTransformacion();
+            k_local = disipadorViscoso2DObj.obtenerMatrizRigidezCoordLocal();
+            t_theta = disipadorViscoso2DObj.obtenerMatrizTransformacion();
             k_global = t_theta' * k_local * t_theta;
             
         end % obtenerMatrizRigidezGlobal function
         
-        function k_local = obtenerMatrizRigidezCoordLocal(DisipadorViscoso2DObj)
+        function k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)
             
             % Retorna la matriz calculada en el constructor
-            k_local = DisipadorViscoso2DObj.Klp;
+            k_local = disipadorViscoso2DObj.Klp;
             
         end % obtenerMatrizRigidezLocal function
         
-        function c_local = obtenerMatrizAmortiguamientoCoordLocal(DisipadorViscoso2DObj)
+        function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)
             
-            c_local = DisipadorViscoso2DObj.Ceq .* [1, -1; -1, 1];
+            disp(disipadorViscoso2DObj.Ceq)
+            c_local = disipadorViscoso2DObj.Ceq .* [1, -1; -1, 1];
             
         end % obtenerMatrizRigidezLocal function
         
-        function c_global = obtenerMatrizAmortiguamientoCoordGlobal(DisipadorViscoso2DObj)
+        function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorViscoso2DObj)
             
             % Multiplica por la matriz de transformacion
-            ceq_local = DisipadorViscoso2DObj.obtenerMatrizAmortiguamientoCoordLocal();
-            t_theta = DisipadorViscoso2DObj.obtenerMatrizTransformacion();
+            ceq_local = disipadorViscoso2DObj.obtenerMatrizAmortiguamientoCoordLocal();
+            t_theta = disipadorViscoso2DObj.obtenerMatrizTransformacion();
             c_global = t_theta' * ceq_local * t_theta;
             
         end % obtenerMatrizRigidezLocal function
         
-        function m_masa = obtenerMatrizMasa(DisipadorViscoso2DObj) %#ok<MANU>
+        function m_masa = obtenerMatrizMasa(disipadorViscoso2DObj) %#ok<MANU>
             
             % Retorna la matriz calculada en el constructor
             m_masa = zeros(6, 1);
             
         end % obtenerMatrizRigidezLocal function
         
-        function fr_global = obtenerFuerzaResistenteCoordGlobal(DisipadorViscoso2DObj)
+        function fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorViscoso2DObj)
             
             % Obtiene fr local
-            fr_local = DisipadorViscoso2DObj.obtenerFuerzaResistenteCoordLocal();
+            fr_local = disipadorViscoso2DObj.obtenerFuerzaResistenteCoordLocal();
             
             % Calcula fuerza resistente global
-            fr_global = DisipadorViscoso2DObj.obtenerMatrizTransformacion()' * fr_local;
+            fr_global = disipadorViscoso2DObj.obtenerMatrizTransformacion()' * fr_local;
             
         end % obtenerFuerzaResistenteCoordGlobal function
         
-        function fr_local = obtenerFuerzaResistenteCoordLocal(DisipadorViscoso2DObj)
+        function fr_local = obtenerFuerzaResistenteCoordLocal(disipadorViscoso2DObj)
             
             % Obtiene los nodos
-            nodo1 = DisipadorViscoso2DObj.nodosObj{1};
-            nodo2 = DisipadorViscoso2DObj.nodosObj{2};
+            nodo1 = disipadorViscoso2DObj.nodosObj{1};
+            nodo2 = disipadorViscoso2DObj.nodosObj{2};
             
             % Obtiene los desplazamientos
             u1 = nodo1.obtenerDesplazamientos();
@@ -218,24 +202,24 @@ classdef DisipadorViscoso2D < Elemento
             u = [u1(1); u1(2); u1(3); u2(1); u2(2); u2(3)];
             
             % Calcula matriz de transformacion
-            t_theta = DisipadorViscoso2DObj.obtenerMatrizTransformacion();
+            t_theta = disipadorViscoso2DObj.obtenerMatrizTransformacion();
             
             % Calcula u''
             f = t_theta * u;
             
             % Obtiene K local
-            k_local = DisipadorViscoso2DObj.obtenerMatrizRigidezCoordLocal();
+            k_local = disipadorViscoso2DObj.obtenerMatrizRigidezCoordLocal();
             
             % Calcula F
             fr_local = k_local * f;
             
         end % obtenerFuerzaResistenteCoordLocal function
         
-        function definirGDLID(DisipadorViscoso2DObj)
+        function definirGDLID(disipadorViscoso2DObj)
             
             % Se obtienen los nodos extremos
-            nodo1 = DisipadorViscoso2DObj.nodosObj{1};
-            nodo2 = DisipadorViscoso2DObj.nodosObj{2};
+            nodo1 = disipadorViscoso2DObj.nodosObj{1};
+            nodo2 = disipadorViscoso2DObj.nodosObj{2};
             
             % Se obtienen los gdl de los nodos
             gdlnodo1 = nodo1.obtenerGDLID();
@@ -247,60 +231,26 @@ classdef DisipadorViscoso2D < Elemento
             gdl(2) = gdlnodo1(2);
             gdl(3) = gdlnodo2(1);
             gdl(4) = gdlnodo2(2);
-            DisipadorViscoso2DObj.gdlID = gdl;
+            disipadorViscoso2DObj.gdlID = gdl;
             
         end % definirGDLID function
-        
-        function sumarFuerzaEquivalente(DisipadorViscoso2DObj, f)
-            
-            for i = 1:length(f)
-                DisipadorViscoso2DObj.Feq(i) = DisipadorViscoso2DObj.Feq(i) + f(i);
-            end
-            
-        end % guardarFuerzaEquivalente function
-        
-        function f = obtenerFuerzaEquivalente(DisipadorViscoso2DObj)
-            
-            f = DisipadorViscoso2DObj.Feq;
-            
-        end % guardarFuerzaEquivalente function
-        
-        function agregarFuerzaResistenteAReacciones(~)
-            
-        end % agregarFuerzaResistenteAReacciones function
-        
-        function guardarPropiedades(~, ~)
-        end % guardarPropiedades function
-        
-        function guardarEsfuerzosInternos(~, ~)
-        end % guardarEsfuerzosInternos function
         
         function plot(elementoObj, tipoLinea, grosorLinea)
             % plot: Grafica el disipador
             %
             % plot(elementoObj,deformadas,tipoLinea,grosorLinea)
             
-            disp('a');
             % Obtiene las coordenadas de los objetos
             coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
             coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
             
-            % Si hay deformacion
-            if ~isempty(deformadas)
-                coord1 = coord1 + deformadas{1}(1:2);
-                coord2 = coord2 + deformadas{2}(1:2);
-            end
-            
-            % Grafica en forma lineal
-            elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
-            
         end % plot function
         
-        function disp(DisipadorViscoso2DObj)
+        function disp(disipadorViscoso2DObj)
             
             % Imprime propiedades de la Viga-Columna 2D
             fprintf('Propiedades disipador viscoso 2D:\n\t');
-            disp@ComponenteModelo(DisipadorViscoso2DObj);
+            disp@ComponenteModelo(disipadorViscoso2DObj);
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');

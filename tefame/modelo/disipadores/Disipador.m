@@ -16,11 +16,9 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase Disipador2D                                             |
+%| Clase Disipador                                                      |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |
-%|  es una  subclase de la clase Elemento y  corresponde a              |
-%| la representacion de un disipador viscoso en 2D.                     |
+%| Este archivo contiene la definicion general de la clase disipador.   |
 %|                                                                      |
 %| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 29/04/2019                                                    |
@@ -28,33 +26,33 @@
 %
 %  Properties (Access=private):
 %  Methods:
-%       disipador2DObj = Disipador2D(etiquetaDisipador)
-%       numeroNodos = obtenerNumeroNodos(disipador2DObj)
-%       numeroGDL = obtenerNumeroGDL(disipador2DObj)
-%       gdlIDDisipador = obtenerGDLID(disipador2DObj)
-%       k_global = obtenerMatrizRigidezCoordGlobal(disipador2DObj)
-%       k_local = obtenerMatrizRigidezCoordLocal(disipador2DObj)
-%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipador2DObj)
-%       fr_local = obtenerFuerzaResistenteCoordLocal(disipador2DObj)
-%       T = obtenerMatrizTransformacion(disipador2DObj)
-%       definirGDLID(disipador2DObj)
-%       disp(disipador2DObj)
-%       plot(disipador2DObj,tipoLinea,grosorLinea)
+%       disipadorObj = Disipador(etiquetaDisipador)
+%       numeroNodos = obtenerNumeroNodos(disipadorObj)
+%       numeroGDL = obtenerNumeroGDL(disipadorObj)
+%       gdlIDDisipador = obtenerGDLID(disipadorObj)
+%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj)
+%       k_local = obtenerMatrizRigidezCoordLocal(disipadorObj)
+%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorObj)
+%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorObj)
+%       T = obtenerMatrizTransformacion(disipadorObj)
+%       definirGDLID(disipadorObj)
+%       disp(disipadorObj)
+%       plot(disipadorObj,tipoLinea,grosorLinea)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
-classdef Disipador2D < Disipador
+classdef Disipador < ComponenteModelo
     
     properties(Access = private)
-    end % properties Disipador2D
+    end % properties Disipador
     
     methods
         
-        function disipador2DObj = Disipador2D(etiquetaDisipador)
-            % Disipador2D: es el constructor de la clase Disipador2D
+        function disipadorObj = Disipador(etiquetaDisipador)
+            % Disipador: es el constructor de la clase Disipador
             %
-            % disipador2DObj = Disipador2D(etiquetaDisipador)
-            % Crea un objeto de la clase Disipador2D, con un identificador unico
+            % disipadorObj = Disipador(etiquetaDisipador)
+            % Crea un objeto de la clase Disipador, con un identificador unico
             % (etiquetaDisipador)
             
             % Si no se pasan argumentos se crean vacios
@@ -63,59 +61,59 @@ classdef Disipador2D < Disipador
             end % if
             
             %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
-            disipador2DObj = disipador2DObj@Disipador(etiquetaDisipador);
+            disipadorObj = disipadorObj@ComponenteModelo(etiquetaDisipador);
             
-        end % Disipador2D constructor
+        end % Disipador constructor
         
-        function numeroNodos = obtenerNumeroNodos(disipador2DObj) %#ok<MANU>
+        function numeroNodos = obtenerNumeroNodos(disipadorObj) %#ok<MANU>
             
-            numeroNodos = 2;
+            numeroNodos = 0;
             
         end % obtenerNumeroNodos function
         
-        function nodosDisipador = obtenerNodos(disipador2DObj) %#ok<MANU>
+        function nodosDisipador = obtenerNodos(disipadorObj) %#ok<MANU>
             
             nodosDisipador = [];
             
         end % obtenerNodos function
         
-        function numeroGDL = obtenerNumeroGDL(disipador2DObj) %#ok<MANU>
+        function numeroGDL = obtenerNumeroGDL(disipadorObj) %#ok<MANU>
             
-            numeroGDL = 6;
+            numeroGDL = 0;
             
         end % obtenerNumeroGDL function
         
-        function gdlIDDisipador = obtenerGDLID(disipador2DObj) %#ok<MANU>
+        function gdlIDDisipador = obtenerGDLID(disipadorObj) %#ok<MANU>
             
             gdlIDDisipador = [];
             
         end % obtenerNumeroGDL function
         
-        function T = obtenerMatrizTransformacion(disipador2DObj) %#ok<MANU>
+        function T = obtenerMatrizTransformacion(disipadorObj) %#ok<MANU>
             
             T = [];
             
         end % obtenerNumeroGDL function
         
-        function k_global = obtenerMatrizRigidezCoordGlobal(disipador2DObj) %#ok<MANU>
+        function k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj) %#ok<MANU>
             
             k_global = [];
             
         end % obtenerMatrizRigidezGlobal function
         
-        function k_local = obtenerMatrizRigidezCoordLocal(disipador2DObj) %#ok<MANU>
+        function k_local = obtenerMatrizRigidezCoordLocal(disipadorObj) %#ok<MANU>
             
             k_local = [];
             
         end % obtenerMatrizRigidezLocal function
         
-        function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipador2DObj) %#ok<MANU>
+        function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorObj) %#ok<MANU>
             
             c_local = [];
             
         end % obtenerMatrizRigidezLocal function
         
-        function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipador2DObj) %#ok<MANU>
+        function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorObj) %#ok<MANU>
             
             % Multiplica por la matriz de transformacion
             c_global = [];
@@ -126,20 +124,20 @@ classdef Disipador2D < Disipador
             
         end % definirGDLID function
         
-        function plot(disipador2DObj, tipoLinea, grosorLinea) %#ok<INUSD>
+        function plot(disipadorObj, tipoLinea, grosorLinea) %#ok<INUSD>
             % plot: Grafica el disipador
             %
-            % plot(disipador2DObj,tipoLinea,grosorLinea)
+            % plot(disipadorObj,tipoLinea,grosorLinea)
             
         end % plot function
         
-        function disp(disipador2DObj)
+        function disp(disipadorObj)
             % Imprime propiedades del disipador
             
-            disp@ComponenteModelo(disipador2DObj);
+            disp@ComponenteModelo(disipadorObj);
             
         end % disp function
         
-    end % methods Disipador2D
+    end % methods Disipador
     
-end % class Disipador2D
+end % class Disipador
