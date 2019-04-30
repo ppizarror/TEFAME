@@ -22,9 +22,9 @@ Ac = 1; % (m2)
 Ec = 2625051; % (tonf/m2)
 Ic = 1 / 12;
 
-% Propiedades disipadores viscosos 
+% Propiedades disipadores viscosos
 Cd = 1;
-alpha = 1; % Algoritmo realizado solo para alpha = 1; 
+alpha = 1; % Algoritmo realizado solo para alpha = 1;
 
 % Densidad del material
 Rhoh = 2.5; % (tonf/m3)
@@ -71,8 +71,8 @@ if ~exist('regConstitucionL', 'var') % Carga el registro
     regConstitucionV = cargaRegistroSimple('test/modal/constitucion_ch2.sis', 0.005, 'factor', 0.01);
     % plotRegistro(regConstitucionL, 'Registro Constitucion/Longitudinal', 'm/s^2');
 end
-cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
-% cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 40); % Horizontal
+% cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
+cargasDinamicas{1} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 40); % Horizontal
 % cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
 % cargasDinamicas{3}.desactivarCarga();
 

@@ -101,7 +101,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % PatronDeCargasDinamico constructor
         
-        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaDisipador)
+        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaDisipador, arregloDisipadores)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
@@ -110,6 +110,78 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
             % y elementos
+            
+            if disipadores
+                
+                % Se busca el indice de la carga objetivo
+                totalCargas = length(patronDeCargasObj.cargas);
+                indiceCarga = 0; % Indica si se usa una carga especifica para el calculo de v0 del disipador
+                for i = 1:totalCargas
+                    if cargaDisipador.equals(patronDeCargasObj.cargas{i})
+                        if ~patronDeCargasObj.cargas{i}.cargaActivada()
+                            error('La carga objetivo del disipador esta desactivada');
+                        end
+                        cargaDisipadorObj = patronDeCargasObj.cargas{i};
+                        fprintf('\tSe calculan los disipadores usando la carga %s\n', cargaDisipadorObj.obtenerEtiqueta);
+                        indiceCarga = i;
+                        break;
+                    end
+                end
+                if indiceCarga == 0
+                    error('La carga objetivo del disipador no existe en el patron de cargas');
+                end
+                
+                % Calcula una vez para obtener v0 sin disipador
+                fprintf('\tSe realiza la primera iteracion para el calculo de v0\n');
+                patronDeCargasObj.calcularCargaGenerica(cpenzien, false, indiceCarga, true);
+                patronDeCargasObj.actualizarv0Disipador(cargaDisipadorObj, arregloDisipadores);
+                
+            else
+                patronDeCargasObj.calcularCargaGenerica(cpenzien, false, 0, false);
+            end
+            
+        end % aplicarCargas function
+        
+        function disp(patronDeCargasObj)
+            % disp: es un metodo de la clase PatronDeCargasDinamico que se usa para imprimir en
+            % command Window la informacion del Patron de Cargas
+            %
+            % disp(patronDeCargasObj)
+            %
+            % Imprime la informacion guardada en el Patron de Cargas Dinamico (patronDeCargasObj)
+            % en pantalla
+            
+            fprintf('Propiedades Patron de Cargas Dinamico:\n');
+            disp@ComponenteModelo(patronDeCargasObj);
+            
+        end % disp function
+        
+    end % methods PatronDeCargasDinamico
+    
+    methods(Access = private)
+        
+        function actualizarv0Disipador(patronDeCargasObj, carga, disipadores)
+            % actualizarv0Disipador: Calcula los v0 y los actualiza para
+            % cada disipador a partir de los desplazamientos de la carga
+            % objetivo
+            %
+            % actualizarv0Disipador(patronDeCargasObj,carga)
+            
+            % Obtiene los disipadores, calcula v0
+            for i=1:length(disipadores)
+                
+                
+                
+            end
+            
+        end % actualizarv0Disipador function
+        
+        function calcularCargaGenerica(patronDeCargasObj, cpenzien, disipadores, cargaIndiceDisipador, calculav0)
+            % calcularCargaGenerica: Funcion que calcula el tema de las
+            % cargas, es generica en cuanto al calculo. Esta puede
+            % funcionar tanto si hay o no hay disipadores
+            %
+            % calcularCargaGenerica(patronDeCargasObj,cpenzien,disipadores,cargaIndiceDisipador,calculav0)
             
             % Obtiene los parametros de la estructura
             k = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
@@ -126,10 +198,14 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
             % Agrega o no disipadores
             if disipadores
-                fprintf('\tPatron de cargas dinamico considera el uso de disipadores\n');
+                if ~calculav0
+                    fprintf('\tPatron de cargas dinamico considera el uso de disipadores\n');
+                end
                 c = c + cd;
             else
-                fprintf('\tPatron de cargas dinamico no considera el uso de disipadores\n');
+                if ~calculav0
+                    fprintf('\tPatron de cargas dinamico no considera el uso de disipadores\n');
+                end
             end
             
             % Descomposicion modal
@@ -137,16 +213,24 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 k = phi' * k * phi;
                 mmodal = phi' * m * phi;
                 c = phi' * c * phi;
-                fprintf('\tPatron de cargas usa descomposicion modal\n');
+                if ~calculav0
+                    fprintf('\tPatron de cargas usa descomposicion modal\n');
+                end
             else
-                fprintf('\tPatron de cargas no usa descomposicion modal\n');
+                if ~calculav0
+                    fprintf('\tPatron de cargas no usa descomposicion modal\n');
+                end
                 mmodal = m;
             end
             
             if cpenzien
-                fprintf('\tPatron de cargas dinamico usa amortiguamiento de Wilson-Penzien\n');
+                if ~calculav0
+                    fprintf('\tPatron de cargas dinamico usa amortiguamiento de Wilson-Penzien\n');
+                end
             else
-                fprintf('\tPatron de cargas dinamico usa amortiguamiento de Rayleigh\n');
+                if ~calculav0
+                    fprintf('\tPatron de cargas dinamico usa amortiguamiento de Rayleigh\n');
+                end
             end
             
             % Calcula las inversas
@@ -155,7 +239,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Se calcula carga una de las cargas dinamicas
             tInicioProceso = cputime;
             totalCargas = length(patronDeCargasObj.cargas);
+            usaCargaIndice = false; % Indica si se usa una carga especifica para el calculo de v0 del disipador
             for i = 1:totalCargas
+                
+                % Si se quiere calcular un disipador se genera el codigo
+                % con una sola carga
+                if cargaIndiceDisipador ~= 0
+                    i = cargaIndiceDisipador; %#ok<FXSET>
+                    usaCargaIndice = true;
+                end
                 
                 % Chequea que la carga sea dinamica
                 if ~isa(patronDeCargasObj.cargas{i}, 'CargaDinamica')
@@ -164,8 +256,10 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Obtiene la carga
                 tInicio = cputime;
-                fprintf('\t\tAplicando carga %s (%d/%d)\n', ...
-                    patronDeCargasObj.cargas{i}.obtenerEtiqueta(), i, totalCargas);
+                if ~calculav0
+                    fprintf('\t\tAplicando carga %s (%d/%d)\n', ...
+                        patronDeCargasObj.cargas{i}.obtenerEtiqueta(), i, totalCargas);
+                end
                 
                 % Chequea que la carga este activa
                 if ~patronDeCargasObj.cargas{i}.cargaActivada()
@@ -175,8 +269,10 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 end
                 
                 % Genera las cargas
-                fprintf('\t\t\tGenerando la matriz de cargas\n');
-                p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r);
+                if ~calculav0
+                    fprintf('\t\t\tGenerando la matriz de cargas\n');
+                end
+                p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r, ~calculav0);
                 
                 % Descomposicion modal
                 if patronDeCargasObj.desModal
@@ -203,31 +299,23 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 patronDeCargasObj.cargas{i}.amortiguamientoRayleigh(~cpenzien);
                 patronDeCargasObj.cargas{i}.usoDisipadores(disipadores);
                 patronDeCargasObj.cargas{i}.descomposicionModal(patronDeCargasObj.desModal);
-                fprintf('\n\t\t\tSe completo calculo en %.3f segundos\n', cputime-tInicio);
+                if ~calculav0
+                    fprintf('\n\t\t\tSe completo calculo en %.3f segundos\n', cputime-tInicio);
+                end
+                
+                % Si ya se calculo la carga objetivo para el disipador
+                % retorna
+                if usaCargaIndice
+                    break;
+                end
                 
             end
             
-            fprintf('\tProceso finalizado en %.3f segundos\n\n', cputime-tInicioProceso);
+            if ~calculav0
+                fprintf('\tProceso finalizado en %.3f segundos\n\n', cputime-tInicioProceso);
+            end
             
-        end % aplicarCargas function
-        
-        function disp(patronDeCargasObj)
-            % disp: es un metodo de la clase PatronDeCargasDinamico que se usa para imprimir en
-            % command Window la informacion del Patron de Cargas
-            %
-            % disp(patronDeCargasObj)
-            %
-            % Imprime la informacion guardada en el Patron de Cargas Dinamico (patronDeCargasObj)
-            % en pantalla
-            
-            fprintf('Propiedades Patron de Cargas Dinamico:\n');
-            disp@ComponenteModelo(patronDeCargasObj);
-            
-        end % disp function
-        
-    end % methods PatronDeCargasDinamico
-    
-    methods(Access = private)
+        end % calcularCargaGenerica function
         
         function [x, v, z] = newmark(patronDeCargasObj, k, m, minv, c, p, dt, xo, vo) %#ok<*INUSL>
             % Newmark: es un metodo de la clase ModalEspectral que se
