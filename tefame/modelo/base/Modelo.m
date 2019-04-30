@@ -137,12 +137,12 @@ classdef Modelo < handle
         end % agregarElementos function
         
         function agregarDisipadores(modeloObj, arregloDisipadores)
-            % agregarDisipadores: es un metodo de la clase Modelo que se usa para
-            % entregarle el arreglo con los disipadores al Modelo
+            % agregarDisipadores: es un metodo de la clase Modelo que se usa
+            % para entregarle el arreglo con los disipadores al modelo
             %
-            % agregarElementos(modeloObj,arregloDisipadores)
-            % Agrega el arreglo con los elementos (arregloDisipadores) al Modelo
-            % (modeloObj) para que esto lo guarde y tenga acceso a los elementos
+            % agregarDisipadores(modeloObj,arregloDisipadores)
+            % Agrega el arreglo con los elementos (arregloDisipadores) al modelo
+            % (modeloObj) para que esto lo guarde y tenga acceso a los disipadores
             
             for i=1:length(arregloDisipadores)
                 if ~isa(arregloDisipadores{i}, 'Disipador')
@@ -220,15 +220,15 @@ classdef Modelo < handle
         
         function disipadoresModelo = obtenerDisipadores(modeloObj)
             % obtenerDisipadores: es un metodo de la clase Modelo que se usa para
-            % obtener el arreglo con los elementos guardados en el Modelo
+            % obtener el arreglo con los disipadores guardados del modelo
             %
             % DisipadoresModelo = obtenerDisipadores(modeloObj)
-            % Obtiene el arreglo con los elementos (DisipadoresModelo) que esta
+            % Obtiene el arreglo con los disipadores (DisipadoresModelo) que esta
             % guardado en el Modelo (modeloObj)
             
             disipadoresModelo = modeloObj.disipadores;
             
-        end % obtenerElementos function
+        end % obtenerDisipadores function
         
         function restriccionesModelo = obtenerRestricciones(modeloObj)
             % obtenerPatronDeCargas: es un metodo de la clase Modelo que se usa para

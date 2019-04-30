@@ -73,72 +73,11 @@ classdef Disipador2D < Disipador
             
         end % obtenerNumeroNodos function
         
-        function nodosDisipador = obtenerNodos(disipador2DObj) %#ok<MANU>
-            
-            nodosDisipador = [];
-            
-        end % obtenerNodos function
-        
         function numeroGDL = obtenerNumeroGDL(disipador2DObj) %#ok<MANU>
             
             numeroGDL = 6;
             
         end % obtenerNumeroGDL function
-        
-        function gdlIDDisipador = obtenerGDLID(disipador2DObj) %#ok<MANU>
-            
-            gdlIDDisipador = [];
-            
-        end % obtenerNumeroGDL function
-        
-        function T = obtenerMatrizTransformacion(disipador2DObj) %#ok<MANU>
-            
-            T = [];
-            
-        end % obtenerNumeroGDL function
-        
-        function k_global = obtenerMatrizRigidezCoordGlobal(disipador2DObj) %#ok<MANU>
-            
-            k_global = [];
-            
-        end % obtenerMatrizRigidezGlobal function
-        
-        function k_local = obtenerMatrizRigidezCoordLocal(disipador2DObj) %#ok<MANU>
-            
-            k_local = [];
-            
-        end % obtenerMatrizRigidezLocal function
-        
-        function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipador2DObj) %#ok<MANU>
-            
-            c_local = [];
-            
-        end % obtenerMatrizRigidezLocal function
-        
-        function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipador2DObj) %#ok<MANU>
-            
-            % Multiplica por la matriz de transformacion
-            c_global = [];
-            
-        end % obtenerMatrizRigidezLocal function
-        
-        function definirGDLID(disipador2D) %#ok<MANU>
-            
-        end % definirGDLID function
-        
-        function plot(disipador2DObj, tipoLinea, grosorLinea) %#ok<INUSD>
-            % plot: Grafica el disipador
-            %
-            % plot(disipador2DObj,tipoLinea,grosorLinea)
-            
-        end % plot function
-        
-        function disp(disipador2DObj)
-            % Imprime propiedades del disipador
-            
-            disp@ComponenteModelo(disipador2DObj);
-            
-        end % disp function
         
     end % methods Disipador2D
     

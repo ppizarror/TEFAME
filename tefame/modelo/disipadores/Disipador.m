@@ -124,12 +124,31 @@ classdef Disipador < ComponenteModelo
             
         end % definirGDLID function
         
-        function plot(disipadorObj, tipoLinea, grosorLinea) %#ok<INUSD>
+        function plot(disipadorObj, tipoLinea, grosorLinea, colorLinea) %#ok<INUSD>
             % plot: Grafica el disipador
             %
-            % plot(disipadorObj,tipoLinea,grosorLinea)
+            % plot(disipadorObj,tipoLinea,grosorLinea,colorLinea)
             
         end % plot function
+        
+        function graficarLinea(disipadorObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea) %#ok<INUSL>
+            % graficarLinea: Grafica una linea para un disipador
+            %
+            % graficarLinea(elementoObj,coord1,coord2,tipoLinea,grosorLinea)
+            
+            if length(coord1) == 2
+                plot(coord1(1), coord1(2), '.', 'Color', colorLinea);
+                plot(coord2(1), coord2(2), '.', 'Color', colorLinea);
+                plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], tipoLinea, ...
+                    'LineWidth', grosorLinea, 'Color', colorLinea);
+            else
+                plot3(coord1(1), coord1(2), coord1(3), '.', 'Color', colorLinea);
+                plot3(coord2(1), coord2(2), coord2(3), '.', 'Color', colorLinea);
+                plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], ...
+                    tipoLinea, 'LineWidth', grosorLinea, 'Color', colorLinea);
+            end
+            
+        end % graficarLinea function
         
         function disp(disipadorObj)
             % Imprime propiedades del disipador

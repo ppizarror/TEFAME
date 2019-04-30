@@ -100,8 +100,7 @@ classdef DisipadorViscoso2D < Disipador2D
             % Calcula matriz de transformacion dado el angulo
             cosx = disipadorViscoso2DObj.dx / disipadorViscoso2DObj.L;
             cosy = disipadorViscoso2DObj.dy / disipadorViscoso2DObj.L;
-            T = [cosx, cosy, 0, 0, 0, 0; 0, 0, 0, cosx, cosy, 0];
-            disipadorViscoso2DObj.T = T;
+            disipadorViscoso2DObj.T = [cosx, cosy, 0, 0, 0, 0; 0, 0, 0, cosx, cosy, 0];
             
             % Calcula matriz de rigidez local
             Klp = 0.001 .* eye(2);
@@ -157,8 +156,7 @@ classdef DisipadorViscoso2D < Disipador2D
         
         function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)
             
-            disp(disipadorViscoso2DObj.Ceq)
-            c_local = disipadorViscoso2DObj.Ceq .* [1, -1; -1, 1];
+            c_local = disipadorViscoso2DObj.Cd .* [1, -1; -1, 1];
             
         end % obtenerMatrizRigidezLocal function
         
@@ -170,50 +168,6 @@ classdef DisipadorViscoso2D < Disipador2D
             c_global = t_theta' * ceq_local * t_theta;
             
         end % obtenerMatrizRigidezLocal function
-        
-        function m_masa = obtenerMatrizMasa(disipadorViscoso2DObj) %#ok<MANU>
-            
-            % Retorna la matriz calculada en el constructor
-            m_masa = zeros(6, 1);
-            
-        end % obtenerMatrizRigidezLocal function
-        
-        function fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorViscoso2DObj)
-            
-            % Obtiene fr local
-            fr_local = disipadorViscoso2DObj.obtenerFuerzaResistenteCoordLocal();
-            
-            % Calcula fuerza resistente global
-            fr_global = disipadorViscoso2DObj.obtenerMatrizTransformacion()' * fr_local;
-            
-        end % obtenerFuerzaResistenteCoordGlobal function
-        
-        function fr_local = obtenerFuerzaResistenteCoordLocal(disipadorViscoso2DObj)
-            
-            % Obtiene los nodos
-            nodo1 = disipadorViscoso2DObj.nodosObj{1};
-            nodo2 = disipadorViscoso2DObj.nodosObj{2};
-            
-            % Obtiene los desplazamientos
-            u1 = nodo1.obtenerDesplazamientos();
-            u2 = nodo2.obtenerDesplazamientos();
-            
-            % Vector desplazamientos u'
-            u = [u1(1); u1(2); u1(3); u2(1); u2(2); u2(3)];
-            
-            % Calcula matriz de transformacion
-            t_theta = disipadorViscoso2DObj.obtenerMatrizTransformacion();
-            
-            % Calcula u''
-            f = t_theta * u;
-            
-            % Obtiene K local
-            k_local = disipadorViscoso2DObj.obtenerMatrizRigidezCoordLocal();
-            
-            % Calcula F
-            fr_local = k_local * f;
-            
-        end % obtenerFuerzaResistenteCoordLocal function
         
         function definirGDLID(disipadorViscoso2DObj)
             
@@ -235,14 +189,15 @@ classdef DisipadorViscoso2D < Disipador2D
             
         end % definirGDLID function
         
-        function plot(elementoObj, tipoLinea, grosorLinea)
+        function plot(disipadorViscoso2DObj, tipoLinea, grosorLinea, colorLinea)
             % plot: Grafica el disipador
             %
-            % plot(elementoObj,deformadas,tipoLinea,grosorLinea)
+            % plot(elementoObj,deformadas,tipoLinea,grosorLinea,colorLinea)
             
             % Obtiene las coordenadas de los objetos
-            coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
-            coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
+            coord1 = disipadorViscoso2DObj.nodosObj{1}.obtenerCoordenadas();
+            coord2 = disipadorViscoso2DObj.nodosObj{2}.obtenerCoordenadas();
+            graficarLinea(disipadorViscoso2DObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea)
             
         end % plot function
         
