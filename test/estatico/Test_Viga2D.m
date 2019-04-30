@@ -21,6 +21,7 @@ L = 10;
 
 % Creamos el modelo
 modeloObj = Modelo(2, 2);
+modeloObj.definirNombre('Viga 2D');
 
 % Creamos los nodos
 nodos = cell(2, 1);
@@ -63,5 +64,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-analisisObj.plot(true);
+analisisObj.plot('deformada', true);
 modeloObj.guardarResultados('test/estatico/out/Ejemplo_Viga2D.txt');

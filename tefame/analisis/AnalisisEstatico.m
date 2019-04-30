@@ -385,18 +385,28 @@ classdef AnalisisEstatico < handle
             
         end % obtenerLimitesDeformada function
         
-        function plt = plot(analisisObj, deformada, factor)
+        function plt = plot(analisisObj, varargin)
             %PLOTMODELO Grafica un modelo
             %
-            % plt = plot(factor, deformada)
+            % plt = plot(varargin)
+            %
+            % Parametros opcionales:
+            %   'deformada'     Dibuja la deformada del problema
+            %   'factor'        Factor de la deformada
+            %   'defElem'       Dibuja la deformada de cada elemento
             
-            if ~exist('deformada', 'var')
-                deformada = false;
-            end
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'deformada', false);
+            addOptional(p, 'factor', 10);
+            addOptional(p, 'defElem', true);
+            parse(p, varargin{:});
+            r = p.Results;
             
-            if ~exist('factor', 'var')
-                factor = 1.5;
-            end
+            % Obtiene valores
+            deformada = r.deformada;
+            factor = r.factor;
+            defElem = r.defElem;
             
             % Grafica la estructura
             nodoObjetos = analisisObj.modeloObj.obtenerNodos();
@@ -405,11 +415,12 @@ classdef AnalisisEstatico < handle
             % Calcula los limites
             [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(factor);
             
-            plt = figure();
+            plt = figure('Name', sprintf('Plot %s', analisisObj.modeloObj.obtenerNombre()), ...
+                'NumberTitle', 'off');
             if ~deformada
                 title('Analisis Estatico');
             else
-                title(sprintf('Analisis Estatico / Escala deformacion: %d%%', factor*100));
+                title(sprintf('Analisis Estatico / Escala deformacion: %.2f', factor));
             end
             
             hold on;
@@ -424,7 +435,7 @@ classdef AnalisisEstatico < handle
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
                 if ~deformada
-                    nodoObjetos{i}.plot([], 'b', 10);
+                    nodoObjetos{i}.plot([], 'b', 5);
                 end
             end
             
@@ -445,7 +456,7 @@ classdef AnalisisEstatico < handle
                     for j = 1:numNodo
                         def{j} = factor * nodoElemento{j}.obtenerDesplazamientos();
                     end
-                    elementoObjetos{i}.plot(def, 'k-', 1.25);
+                    elementoObjetos{i}.plot(def, 'k-', 1.25, defElem);
                 end
                 
             end
@@ -463,7 +474,7 @@ classdef AnalisisEstatico < handle
                     coords = coords + def .* factor;
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
-                    nodoObjetos{i}.plot(def.*factor, 'k', 20);
+                    nodoObjetos{i}.plot(def.*factor, 'k', 10);
                 end
             end
             

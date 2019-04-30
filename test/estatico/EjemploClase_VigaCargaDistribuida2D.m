@@ -2,6 +2,7 @@ fprintf('>\tEJEMPLOCLASE_VIGACARGADISTRIBUIDA2D\n');
 
 % Creamos el modelo
 modeloObj = Modelo(2, 2);
+modeloObj.definirNombre('Viga con carga distribuida');
 
 % Creamos los nodos
 nodos = cell(4, 1);
@@ -49,5 +50,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-analisisObj.plot(true);
+analisisObj.plot('deformada', true);
 modeloObj.guardarResultados('test/estatico/out/EjemploClase_VigaCargaDistribuida2D.txt');

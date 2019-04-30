@@ -363,7 +363,7 @@ classdef ModalEspectral < handle
         %
         %             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien); % Falta modificar esto
         %
-        %         end % resolverDisipadoresViscososLineales function       
+        %         end % resolverDisipadoresViscososLineales function
         
         function plt = plot(analisisObj, varargin)
             % plot: Grafica un modelo
@@ -504,7 +504,8 @@ classdef ModalEspectral < handle
             
             % Grafica la estructura si no se ha ejecutado el analisis
             if (~analisisObj.analisisFinalizado || modo <= 0) && ~defCarga
-                plt = figure(sprintf('Modelo: %s', modeloObj.obtenerNombre()));
+                plt = figure('Name', sprintf('Plot %s', analisisObj.modeloObj.obtenerNombre()), ...
+                    'NumberTitle', 'off');
                 movegui('center');
                 hold on;
                 grid on;
@@ -540,7 +541,14 @@ classdef ModalEspectral < handle
             [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(modo, factor, defCarga, carga);
             
             % Grafica la estructura
-            plt = figure();
+            if modo ~= 0
+                fig_nom = sprintf('Plot %s - Modo %d', analisisObj.modeloObj.obtenerNombre(), ...
+                    modo);
+            else
+                fig_nom = sprintf('Plot %s - Carga %s', analisisObj.modeloObj.obtenerNombre(), ...
+                    carga.obtenerEtiqueta());
+            end
+            plt = figure('Name', fig_nom, 'NumberTitle', 'off');
             fig_num = get(gcf, 'Number');
             movegui('center');
             hold on;
@@ -731,23 +739,25 @@ classdef ModalEspectral < handle
             hplot(length(hplot)) = [];
             
             % Crea las figuras
-            plt = figure();
+            fig_title = sprintf('Envolvente de Deriva Entre Piso - Carga %s', carga.obtenerEtiqueta());
+            plt = figure('Name', fig_title, 'NumberTitle', 'off');
             movegui(plt, 'center');
             plot(Driftplot.*100, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
             grid on;
             grid minor;
             xlabel('Drift (%)');
             ylabel('Altura (m)');
-            title(sprintf('Envolvente de Deriva Entre Piso - Carga %s', carga.obtenerEtiqueta()));
+            title(fig_title);
             
-            plt = figure();
+            fig_title = sprintf('Envolvente de Desplazamiento - Carga %s', carga.obtenerEtiqueta());
+            plt = figure('Name', fig_title, 'NumberTitle', 'off');
             movegui(plt, 'center');
             plot(Despplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
             grid on;
             grid minor;
             xlabel('Desplazamiento (m)');
             ylabel('Altura (m)');
-            title(sprintf('Envolvente de Desplazamiento - Carga %s', carga.obtenerEtiqueta()));
+            title(fig_title);
             
         end % calcularDesplazamientoDrift function
         
@@ -801,31 +811,34 @@ classdef ModalEspectral < handle
             dplot = false; % Indica si se realizo algun grafico
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'corte')
-                plt = figure();
+                fig_title = sprintf('Historial de Cortante Basal - Carga %s', carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, Cortante(end, :), 'k-', 'LineWidth', 1);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Corte (tonf)');
-                title(sprintf('Historial de Cortante Basal - Carga %s', carga.obtenerEtiqueta()));
+                title(fig_title);
                 dplot = true;
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'momento')
-                plt = figure();
+                fig_title = sprintf('Historial de Momento Basal - Carga %s', carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, Momento(end, :), 'k-', 'LineWidth', 1);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Momento (tonf-m)');
-                title(sprintf('Historial de Momento Basal - Carga %s', carga.obtenerEtiqueta()));
+                title(fig_title);
                 dplot = true;
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envcorte')
-                plt = figure();
+                fig_title = sprintf('Envolvente de Cortante Basal - Carga %s', carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(CBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
                 hold on;
@@ -833,7 +846,7 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Corte (tonf)');
                 ylabel('Altura (m)');
-                title(sprintf('Envolvente de Cortante Basal - Carga %s', carga.obtenerEtiqueta()));
+                title(fig_title);
                 
                 % Realiza los analisis por modo
                 CBLegend = cell(1, 1+lenvmodo);
@@ -856,14 +869,15 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envmomento')
-                plt = figure();
+                fig_title = sprintf('Envolvente de Momento Basal - Carga %s', carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(MBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
                 grid on;
                 grid minor;
                 xlabel('Momento (tonf-m)');
                 ylabel('Altura (m)');
-                title(sprintf('Envolvente de Momento Basal - Carga %s', carga.obtenerEtiqueta()));
+                title(fig_title);
                 dplot = true;
             end
             
@@ -985,14 +999,15 @@ classdef ModalEspectral < handle
             dplot = false; % Indica que un grafico se realizo
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ek')
-                plt = figure();
+                fig_title = sprintf('E_K Energia Cinetica - Carga %s', carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_k, 'k-', 'LineWidth', lw);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia cinetica');
-                title(sprintf('E_K Energia Cinetica - Carga %s', carga.obtenerEtiqueta()));
+                title(fig_title);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .70, .29, .20]);
                     box on;
@@ -1003,14 +1018,15 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ev')
-                plt = figure();
+                fig_title = sprintf('E_V Energia Elastica - Carga %s', carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_v, 'k-', 'LineWidth', lw);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia elastica');
-                title(sprintf('E_V Energia Elastica - Carga %s', carga.obtenerEtiqueta()));
+                title(fig_title);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .70, .29, .20]);
                     box on;
@@ -1021,14 +1037,15 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ebe')
-                plt = figure();
+                fig_title = sprintf('Balance Energetico Normalizado - Carga %s', carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, ebe, 'k-', 'LineWidth', lw);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('EBE (%)');
-                title(sprintf('Balance Energetico Normalizado - Carga %s', carga.obtenerEtiqueta()));
+                title(fig_title);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .70, .29, .20]);
                     box on;
@@ -1039,7 +1056,8 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'evek') || strcmp(tipoplot, 'ekev')
-                plt = figure();
+                fig_title = sprintf('Energia Potencial - Cinetica - Carga %s', carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_k, '-', 'LineWidth', lw);
                 hold on;
@@ -1049,7 +1067,7 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
                 legend({'E_K Energia Cinetica', 'E_V Energia Elastica'}, 'location', 'northeast');
-                title(sprintf('Energia Potencial - Cinetica - Carga %s', carga.obtenerEtiqueta()));
+                title(fig_title);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .55, .29, .20]);
                     box on;
@@ -1060,7 +1078,8 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'et')
-                plt = figure();
+                fig_title = sprintf('Energia Total - Disipada - Ingresada - Carga %s', carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_t, '-', 'LineWidth', lw);
                 hold on;
@@ -1071,7 +1090,7 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
                 legend({'E_t Energia Total', 'E_D Energia Disipada', 'W_E Trabajo Externo'}, 'location', 'southeast');
-                title(sprintf('Energia Total - Disipada - Ingresada - Carga %s', carga.obtenerEtiqueta()));
+                title(fig_title);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .36, .29, .20]);
                     box on;
@@ -1154,7 +1173,9 @@ classdef ModalEspectral < handle
             end
             
             % Crea el grafico
-            plt = figure();
+            fig_title = sprintf('Carga %s - Nodo %s - GDLID condensado %d - Direccion %d', ...
+                carga.obtenerEtiqueta(), nodo.obtenerEtiqueta(), ng, nd);
+            plt = figure('Name', fig_title, 'NumberTitle', 'off');
             movegui(plt, 'center');
             
             subplot(4, 1, 1);
@@ -1163,8 +1184,7 @@ classdef ModalEspectral < handle
             xlabel('t (s)');
             xlim(tlim);
             grid on;
-            title(sprintf('Carga %s - Nodo %s - GDLID condensado %d - Direccion %d', ...
-                carga.obtenerEtiqueta(), nodo.obtenerEtiqueta(), ng, nd));
+            title(fig_title);
             
             subplot(4, 1, 2);
             plot(t, u_c(ng, :), 'k-', 'LineWidth', 1);
@@ -1934,13 +1954,13 @@ classdef ModalEspectral < handle
                     def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, ...
                         gdl, defCarga, carga, tcarga);
                     nodoObjetos{i}.plot(def.*factor*phif, 'k', 15);
-                end              
+                end
             end
             
             % Grafica los disipadores
             if mostrarDisipadores
                 disipadores = analisisObj.modeloObj.obtenerDisipadores();
-                for i=1:length(disipadores)
+                for i = 1:length(disipadores)
                     nodoDisipador = disipadores{i}.obtenerNodos();
                     numnodoDisipador = disipadores{i}.obtenerNumeroNodos();
                     def = cell(numnodoDisipador, 1);

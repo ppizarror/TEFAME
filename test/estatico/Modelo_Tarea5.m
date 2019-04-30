@@ -2,6 +2,7 @@ fprintf('>\tMODELO_TAREA5\n');
 
 % Creamos el modelo
 modeloObj = Modelo(2, 3);
+modeloObj.definirNombre('Tarea 5');
 
 % Creamos los nodos
 nodos = cell(4, 1);
@@ -52,4 +53,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
+analisisObj.plot('deformada', true, 'factor', 50);
 modeloObj.guardarResultados('test/estatico/out/Modelo_Tarea5.txt');

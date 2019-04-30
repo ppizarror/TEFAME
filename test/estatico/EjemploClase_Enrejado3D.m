@@ -2,6 +2,7 @@ fprintf('>\tEJEMPLOCLASE_ENREJADO3D\n');
 
 % Creamos el modelo
 modeloObj = Modelo(3, 1);
+modeloObj.definirNombre('Enrejado 3D');
 
 % Creamos los nodos
 nodos = cell(4, 1);
@@ -47,5 +48,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-analisisObj.plot(true);
+analisisObj.plot('deformada', true);
 modeloObj.guardarResultados('test/estatico/out/EjemploClase_Enrejado3D.txt');

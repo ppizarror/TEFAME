@@ -6,6 +6,7 @@ fprintf('>\tMODELO_TAREACOMPUTACIONAL_ANTIGUO4\n');
 
 % Creamos el modelo
 modeloObj = Modelo(3, 12);
+modeloObj.definirNombre('Tarea computacional 4 antiguo');
 
 % Unidad
 un = 100.0;
@@ -66,4 +67,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
+analisisObj.plot('deformada', true);
 modeloObj.guardarResultados('test/estatico/out/Modelo_TareaComputacionalAntiguo4.txt');

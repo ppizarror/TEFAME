@@ -27,6 +27,7 @@ nu = 0.2; % Modulo de Poisson
 
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
+modeloObj.definirNombre('Membrana 1');
 
 % Creamos los nodos
 nodos = cell(6, 1);
@@ -70,7 +71,7 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-analisisObj.plot();
+analisisObj.plot('deformada', true);
 modeloObj.guardarResultados('test/estatico/out/Test_Membrana1.txt');
 
 % Resultados esperados:

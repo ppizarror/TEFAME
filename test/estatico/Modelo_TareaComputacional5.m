@@ -20,6 +20,7 @@ nu = 0.15; % Modulo de Poisson
 
 % Creamos el modelo
 modeloObj = Modelo(2, 25);
+modeloObj.definirNombre('Tarea computacional 5');
 
 % Creamos los nodos
 m_cm = 100;
@@ -119,6 +120,6 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-analisisObj.plot(true);
+analisisObj.plot('deformada', true, 'factor', 10);
 
 modeloObj.guardarResultados('test/estatico/out/Modelo_TareaComputacional5.txt');

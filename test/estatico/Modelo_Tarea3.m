@@ -1,9 +1,8 @@
 fprintf('>\tMODELO_TAREA3\n');
 
-% Test tarea 3
-
 % Creamos el modelo
 modeloObj = Modelo(2, 4);
+modeloObj.definirNombre('Tarea 3');
 
 % Creamos los nodos
 nodos = cell(4, 1);
@@ -53,6 +52,6 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
-analisisObj.analizar
-analisisObj.plot(true);
+analisisObj.analizar();
+analisisObj.plot('deformada', true);
 modeloObj.guardarResultados('test/estatico/out/Modelo_Tarea3.txt');

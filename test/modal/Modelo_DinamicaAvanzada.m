@@ -24,7 +24,7 @@ Ec = 2625051; % (tonf/m2)
 Ic = 1 / 12;
 
 % Propiedades disipadores viscosos
-Cd = 1; 
+Cd = 1;
 alpha = 1;
 
 % Densidad del material

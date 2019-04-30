@@ -33,6 +33,7 @@ gdl = N * 2 + 2;
 
 % Creamos el modelo
 modeloObj = Modelo(2, gdl);
+modeloObj.definirNombre('Membrana 2');
 
 % Creamos los nodos
 nodos = cell(gdl, 1);
@@ -87,5 +88,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-analisisObj.plot(true);
+analisisObj.plot('deformada', true);
 modeloObj.guardarResultados('test/estatico/out/Test_Membrana2.txt');

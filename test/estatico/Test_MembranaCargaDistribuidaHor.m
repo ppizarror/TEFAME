@@ -24,6 +24,7 @@ nu = 0.2; % Modulo de Poisson
 
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
+modeloObj.definirNombre('Membrana carga distribuida horizontal');
 
 % Creamos los nodos
 nodos = cell(6, 1);
@@ -67,4 +68,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
+analisisObj.plot('deformada', true);
 modeloObj.guardarResultados('test/estatico/out/Ejemplo_MembranaCargaDistribuidaVer.txt');

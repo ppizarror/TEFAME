@@ -2,6 +2,7 @@ fprintf('>\tEJEMPLOCLASE_ENREJADO2D\n');
 
 % Creamos el modelo
 modeloObj = Modelo(2, 2);
+modeloObj.definirNombre('Enrejado 2D');
 
 % Creamos los nodos
 nodos = cell(4, 1);
@@ -50,5 +51,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-analisisObj.plot(true, 50);
+analisisObj.plot('deformada', true, 'factor', 50);
 modeloObj.guardarResultados('test/estatico/out/EjemploClase_Enrejado2D.txt');
