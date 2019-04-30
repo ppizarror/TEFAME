@@ -86,6 +86,7 @@ classdef ModalEspectral < handle
         condMatRot % Matriz de condensacion rotacion
         Mteq % Matriz masa equivalente
         Kteq % Matriz rigidez equivalente
+        Cdveq % Matriz amortiguamiento disipadores equivalente
         Mm % Matriz masa modal
         Km % Matriz rigidez modal
         rm % Vector influencia
@@ -101,6 +102,7 @@ classdef ModalEspectral < handle
         cPenzien % Matriz de amortiguamiento de Wilson-Penzien
         mostrarDeformada % Muestra la posicion no deformada en los graficos
         cargarAnimacion % Carga la animacion del grafico una vez renderizado
+        rar
     end % properties ModalEspectral
     
     methods(Access = public)
@@ -126,7 +128,7 @@ classdef ModalEspectral < handle
             analisisObj.analisisFinalizado = false;
             analisisObj.mostrarDeformada = false;
             analisisObj.cargarAnimacion = true;
-            
+            analisisObj.rar = [];
         end % ModalEspectral constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -272,6 +274,19 @@ classdef ModalEspectral < handle
             K_Modelo = analisisObj.Kteq;
             
         end % obtenerMatrizRigidez function
+        
+        function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
+            % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
+            % que se usa para obtener la matriz de rigidez del modelo
+            %
+            % K_Modelo = obtenerMatrizRigidez(analisisObj)
+            % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
+            % en el Analisis (analisisObj)
+            
+            Cdv_Modelo = analisisObj.Cdveq;
+            
+        end % obtenerMatrizRigidez function
+        
         
         function r_Modelo = obtenerVectorInfluencia(analisisObj)
             % obtenerVectorInfluencia: es un metodo de la clase ModalEspectral
@@ -1435,6 +1450,10 @@ classdef ModalEspectral < handle
                 Mrot = rot' * analisisObj.Mt * rot;
                 Meq = T' * Mrot * T;
                 
+                % Se determina matriz de amortiguamiento disipadores condensada (Cdveq)
+                Cdvrot = rot' * analisisObj.Cdv * rot;
+                Cdveq = T' * Cdvrot * T;
+                
                 % Actualiza los grados
                 cngdl = length(Meq);
                 if cngdl < ngdl
@@ -1465,9 +1484,10 @@ classdef ModalEspectral < handle
             else % No condensa grados
                 Meq = analisisObj.Mt;
                 Keq = analisisObj.Kt;
+                Cdveq = analisisObj.Cdv;
                 fprintf('\t\tNo se han condensado grados de libertad\n');
             end
-            
+
             % Una vez pasado este punto no deberian haber masas nulas o
             % incorrectas
             for i = 1:ngdl
@@ -1545,6 +1565,7 @@ classdef ModalEspectral < handle
             analisisObj.Km = modalKm;
             analisisObj.Mteq = Meq;
             analisisObj.Kteq = Keq;
+            analisisObj.Cdveq = Cdveq;
             for i = 1:nModos
                 analisisObj.Tn(Torder(i)) = modalTn(i);
                 analisisObj.wn(Torder(i)) = modalWn(i);
@@ -1731,6 +1752,27 @@ classdef ModalEspectral < handle
                 
             end % for i
             
+            % Agrega las cargas de los nodos
+            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            numeroNodos = length(nodoObjetos);
+            
+            for i = 1:numeroNodos
+                gdlidNodo = nodoObjetos{i}.obtenerGDLID; % (x, y, giro)
+                gly = gdlidNodo(2);
+                carga = nodoObjetos{i}.obtenerReacciones(); % (x, y, giro)
+                if gly == 0
+                    continue;
+                end
+                analisisObj.Mt(gly, gly) = analisisObj.Mt(gly, gly) + carga(2);
+            end
+            
+            % Chequea que la matriz de masa sea consistente
+            for i = 1:analisisObj.numeroGDL
+                analisisObj.Mt(i, i) = analisisObj.Mt(i, i) / 9.80665; % [tonf->ton]
+            end
+            
+        end % ensamblarMatrizMasa function
+        
         function ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
             % ensamblarMatrizRigidez: es un metodo de la clase ModalEspectral que se usa para
             % realizar el armado de la matriz de rigidez del modelo analizado
@@ -1770,32 +1812,12 @@ classdef ModalEspectral < handle
                         
                     end % for s
                 end % for r
+                analisisObj.rar = analisisObj.Cdv;
                 
             end % for i
             
         end % ensamblarMatrizAmortiguamientoDisipadores function
             
-            
-            % Agrega las cargas de los nodos
-            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
-            numeroNodos = length(nodoObjetos);
-            
-            for i = 1:numeroNodos
-                gdlidNodo = nodoObjetos{i}.obtenerGDLID; % (x, y, giro)
-                gly = gdlidNodo(2);
-                carga = nodoObjetos{i}.obtenerReacciones(); % (x, y, giro)
-                if gly == 0
-                    continue;
-                end
-                analisisObj.Mt(gly, gly) = analisisObj.Mt(gly, gly) + carga(2);
-            end
-            
-            % Chequea que la matriz de masa sea consistente
-            for i = 1:analisisObj.numeroGDL
-                analisisObj.Mt(i, i) = analisisObj.Mt(i, i) / 9.80665; % [tonf->ton]
-            end
-            
-        end % ensamblarMatrizMasa function
         
         function ensamblarVectorFuerzas(analisisObj)
             % ensamblarVectorFuerzas: es un metodo de la clase ModalEspectral que se usa para
