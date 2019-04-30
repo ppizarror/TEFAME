@@ -16,14 +16,14 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase Disipador2D                                             |
+%| Clase Disipador2D                                                    |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |
-%|  es una  subclase de la clase Elemento y  corresponde a              |
-%| la representacion de un disipador viscoso en 2D.                     |
+%| es una  subclase de la clase Disipador y  corresponde a la           |
+%| representacion de un disipador viscoso en 2D.                        |
 %|                                                                      |
 %| Programado: Pablo Pizarro @ppizarror.com                             |
-%| Fecha: 29/04/2019                                                    |
+%| Fecha: 30/04/2019                                                    |
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
@@ -39,7 +39,7 @@
 %       T = obtenerMatrizTransformacion(disipador2DObj)
 %       definirGDLID(disipador2DObj)
 %       disp(disipador2DObj)
-%       plot(disipador2DObj,tipoLinea,grosorLinea)
+%       plot(disipador2DObj,tipoLinea,grosorLinea,colorLinea)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 

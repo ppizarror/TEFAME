@@ -37,7 +37,7 @@
 %       T = obtenerMatrizTransformacion(disipadorObj)
 %       definirGDLID(disipadorObj)
 %       disp(disipadorObj)
-%       plot(disipadorObj,tipoLinea,grosorLinea)
+%       plot(disipadorObj,tipoLinea,grosorLinea,colorLinea)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 

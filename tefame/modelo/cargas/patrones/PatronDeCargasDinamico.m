@@ -198,7 +198,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 end
                 
                 % Guarda los resultados
-                patronDeCargasObj.cargas{i}.guardarCarga(p); % Ojo, se guarda sin descomponer
+                patronDeCargasObj.cargas{i}.guardarCarga(p);
                 patronDeCargasObj.cargas{i}.guardarDesplazamiento(u);
                 patronDeCargasObj.cargas{i}.guardarVelocidad(du);
                 patronDeCargasObj.cargas{i}.guardarAceleracion(ddu);
