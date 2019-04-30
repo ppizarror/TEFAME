@@ -39,6 +39,7 @@
 %       disp(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef Carga < ComponenteModelo
     

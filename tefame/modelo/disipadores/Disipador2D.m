@@ -42,6 +42,7 @@
 %       plot(disipador2DObj,tipoLinea,grosorLinea,colorLinea)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef Disipador2D < Disipador
     

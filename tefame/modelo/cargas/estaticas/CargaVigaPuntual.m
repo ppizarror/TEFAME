@@ -25,7 +25,7 @@
 %| al que se le va a aplicar la carga, el valor de esta carga y la      |
 %| distancia a uno de los nodos como porcentaje del largo.              |
 %|                                                                      |
-%| Programado: PABLO PIZARRO @ppizarror.com                             |
+%| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 14/05/2018                                                    |
 %|______________________________________________________________________|
 %
@@ -40,6 +40,7 @@
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaVigaPuntual < Carga
     

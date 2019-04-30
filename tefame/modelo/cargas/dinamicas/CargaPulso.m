@@ -34,9 +34,10 @@
 %       CargaPulso(etiquetaCargaPulso,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(CargaPulsoObj,factorDeCarga)
 %       disp(CargaPulsoObj)
-%       Methods SuperClass (Carga):
-%       Methods SuperClass (ComponenteModelo):
+%  Methods SuperClass (Carga):
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaPulso < CargaDinamica
     

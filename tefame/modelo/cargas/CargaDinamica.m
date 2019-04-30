@@ -58,6 +58,7 @@
 %       disipador = usoDeDisipadores(cargaDinamicaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaDinamica < ComponenteModelo
     

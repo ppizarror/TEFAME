@@ -34,9 +34,10 @@
 %       CargaSinusoidal(etiquetaCargaSinusoidal,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(CargaSinusoidalObj,factorDeCarga)
 %       disp(CargaSinusoidalObj)
-%       Methods SuperClass (Carga):
-%       Methods SuperClass (ComponenteModelo):
+%  Methods SuperClass (Carga):
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaSinusoidal < CargaDinamica
     

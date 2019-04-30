@@ -35,11 +35,16 @@
 %       componenteModeloObj = ComponenteModelo(etiqueta)
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       disp(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef ComponenteModelo < handle
     
     properties(Access = private)
         etiquetaID % Variable que guarda el valor de la etiqueta usada para identificar el componente del modelo
+    end % properties ComponenteModelo
+    
+    properties(Access = protected)
+        objectID % ID del objeto
     end % properties ComponenteModelo
     
     methods
@@ -59,6 +64,9 @@ classdef ComponenteModelo < handle
             % Se guarda la etiqueta
             componenteModeloObj.etiquetaID = etiqueta;
             
+            % Crea el ID
+            componenteModeloObj.objectID = char(java.util.UUID.randomUUID);
+            
         end % ComponenteModelo constructor
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -77,9 +85,6 @@ classdef ComponenteModelo < handle
             
         end % obtenerEtiqueta function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del ComponenteModelo en pantalla
-        
         function disp(componenteModeloObj)
             % disp: es un metodo de la clase ComponenteModelo que se usa para
             % imprimir en command Window la informacion del ComponenteModelo
@@ -96,6 +101,15 @@ classdef ComponenteModelo < handle
             fprintf('\tEtiqueta: %s\n', etiquetaStr);
             
         end % disp function
+        
+        function e = equals(componenteModeloObj, obj)
+            % equals: Verifica si dos objetos son iguales
+            %
+            % equals(componenteModeloObj,obj)
+            
+            e = strcmp(componenteModeloObj.objectID, obj.objectID);
+            
+        end % equals
         
     end % methods ComponenteModelo
     

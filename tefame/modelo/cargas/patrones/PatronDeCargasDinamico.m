@@ -48,6 +48,7 @@
 %  Methods SuperClass (PatronDeCargas):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef PatronDeCargasDinamico < PatronDeCargas
     
