@@ -71,7 +71,8 @@ classdef DisipadorViscoso2D < Disipador2D
         T % Matriz de transformacion
         Klp % Matriz de rigidez local del elemento
         alpha % Paramatro del disipador
-        Cd % Parametro del disipador
+        Ce % Parametro del disipador
+        Cd 
     end % properties DisipadorViscoso2D
     
     methods
@@ -93,6 +94,7 @@ classdef DisipadorViscoso2D < Disipador2D
             % Guarda material
             disipadorViscoso2DObj.nodosObj = {nodo1Obj; nodo2Obj};
             disipadorViscoso2DObj.alpha = alpha;
+            disipadorViscoso2DObj.Ce = [];
             disipadorViscoso2DObj.Cd = Cd;
             disipadorViscoso2DObj.gdlID = [];
             
@@ -188,13 +190,19 @@ classdef DisipadorViscoso2D < Disipador2D
             
         end % obtenerMatrizRigidezCoordLocal function
         
-        function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)
+        function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj, gamma, w, Vo)
             % obtenerMatrizAmortiguamientoCoordLocal: Obtiene la matriz de
             % armortiguamiento en coordenadas locales
             %
             % c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)
             
-            c_local = disipadorViscoso2DObj.Cd .* [1, -1; -1, 1];
+            alfa =  disipadorViscoso2DObj.alpha;
+            
+            disipadorViscoso2DObj.Ce = disipadorViscoso2DObj.Cd .* (4 * gamma(alfa + 2)) /...
+                (2 ^ (alfa + 2) * (gamma(alfa / 2 + 3 / 2)) ^ 2) * w ^ (alfa - 1) * Vo ^ (alfa - 1);
+            
+            c_local = disipadorViscoso2DObj.Ce .* [1, -1; -1, 1];
+            
             
         end % obtenerMatrizAmortiguamientoCoordLocal function
         

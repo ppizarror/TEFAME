@@ -191,6 +191,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 % Resuelve newmark
                 [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, c, pmodal, patronDeCargasObj.cargas{i}.dt, 0, 0);
                 
+                if disipadores
+                
                 % Aplica descomposicion si aplica
                 if patronDeCargasObj.desModal
                     u = phi * u;
