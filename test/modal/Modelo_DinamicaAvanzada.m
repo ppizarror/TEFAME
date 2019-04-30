@@ -1,5 +1,4 @@
 fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
-close all;
 
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);
@@ -25,7 +24,7 @@ Ic = 1 / 12;
 
 % Propiedades disipadores viscosos 
 Cd = 1;
-alpha = 1; % Algoritmo realizado sólo para alpha = 1; 
+alpha = 1; % Algoritmo realizado solo para alpha = 1; 
 
 % Densidad del material
 Rhoh = 2.5; % (tonf/m3)
@@ -86,7 +85,7 @@ analisisObj.activarCargaAnimacion();
 %% Creamos el patron de cargas
 PatronesDeCargas = cell(2, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
-PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', true);
+PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', false);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);

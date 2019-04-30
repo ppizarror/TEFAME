@@ -918,21 +918,30 @@ classdef ModalEspectral < handle
             c_u = carga.obtenerDesplazamiento();
             c_v = carga.obtenerVelocidad();
             c_p = carga.obtenerCarga();
+            phi = analisisObj.obtenerMatrizPhi();
+            
             if isempty(c_u)
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
             fprintf('Calculando curvas de energia\n');
             fprintf('\tCarga %s\n', carga.obtenerEtiqueta());
-            if carga.metodoAmortiguamientoRayleigh()
+            
+            if carga.usoAmortiguamientoRayleigh()
                 fprintf('\t\tLa carga se calculo con amortiguamiento Rayleigh\n');
             else
                 fprintf('\t\tLa carga se calculo con amortiguamiento de Wilson-Penzien\n');
             end
             
+            if carga.usoDescomposicionModal()
+                fprintf('\t\tLa carga se calculo usando descomposicion modal\n');
+            else
+                fprintf('\t\tLa carga se calculo sin usar descomposicion modal\n');
+            end
+            
             % Obtiene las matrices
             k = analisisObj.obtenerMatrizRigidez();
             m = analisisObj.obtenerMatrizMasa();
-            c = analisisObj.obtenerMatrizAmortiguamiento(carga.metodoAmortiguamientoRayleigh());
+            c = analisisObj.obtenerMatrizAmortiguamiento(carga.usoAmortiguamientoRayleigh());
             
             % Si se usaron disipadores
             if carga.usoDeDisipadores()

@@ -47,12 +47,15 @@
 %       guardarAceleracion(cargaObj,a)
 %       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
 %       usoDisipadores(cargaDinamicaObj,disipador)
+%       descomposicionModal(cargaDinamicaObj,desmodal)
 %       p = obtenerCarga(cargaObj)
 %       u = obtenerDesplazamiento(cargaObj)
 %       u = obtenerDesplazamientoTiempo(cargaObj,gdl,tiempo)
 %       v = obtenerVelocidad(cargaObj)
 %       a = obtenerAceleracion(cargaObj)
-%       r = metodoAmortiguamientoRayleigh(cargaDinamicaObj)
+%       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
+%       dm = usoDescomposicionModal(cargaDinamicaObj)
+%       disipador = usoDeDisipadores(cargaDinamicaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
@@ -66,6 +69,7 @@ classdef CargaDinamica < ComponenteModelo
         cargaActiva % Indica si la carga esta activada o no
         cRayleigh % Indica que la carga se calculo con C de Rayleigh
         usoDisipador % Indica que se usaron disipadores
+        desModal % Indica que la carga se calculo usando descomposicion modal
     end % properties CargaDinamica
     
     properties(Access = public)
@@ -91,6 +95,7 @@ classdef CargaDinamica < ComponenteModelo
             cargaDinamicaObj.cargaActiva = true;
             cargaDinamicaObj.cRayleigh = false;
             cargaDinamicaObj.usoDisipador = false;
+            cargaDinamicaObj.desModal = false;
             
         end % CargaDinamica constructor
         
@@ -187,6 +192,16 @@ classdef CargaDinamica < ComponenteModelo
             
         end % usoDisipadores function
         
+        function descomposicionModal(cargaDinamicaObj, desmodal)
+            % descomposicionModal: La carga se calculo usando
+            % descomposicion modal
+            %
+            % descomposicionModal(cargaDinamicaObj,desmodal)
+            
+            cargaDinamicaObj.desModal = desmodal;
+            
+        end % descomposicionModal function
+        
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para obtener los resultados
         
@@ -240,13 +255,13 @@ classdef CargaDinamica < ComponenteModelo
             
         end % obtenerAceleracion function
         
-        function r = metodoAmortiguamientoRayleigh(cargaDinamicaObj)
-            % metodoAmortiguamientoRayleighh: Indica que los resultados se
+        function r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
+            % usoAmortiguamientoRayleighh: Indica que los resultados se
             % guardaron o no con la disipasion de Rayleigh
             
             r = cargaDinamicaObj.cRayleigh;
             
-        end % metodoAmortiguamientoRayleigh function
+        end % usoAmortiguamientoRayleigh function
         
         function disipador = usoDeDisipadores(cargaDinamicaObj)
             % usoDeDisipadores: Indica que la carga se calculo usando
@@ -255,6 +270,14 @@ classdef CargaDinamica < ComponenteModelo
             disipador = cargaDinamicaObj.usoDisipador;
             
         end % usoDeDisipadores function
+        
+        function dm = usoDescomposicionModal(cargaDinamicaObj)
+            % usoDescomposicionModal: Indica que la carga se calculo usando
+            % descomposicion modal
+            
+            dm = cargaDinamicaObj.desModal;
+            
+        end % usoDescomposicionModal function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostrar la informacion de la carga en pantalla

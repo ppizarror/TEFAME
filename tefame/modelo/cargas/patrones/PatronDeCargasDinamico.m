@@ -126,6 +126,14 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 error('Tamano incorrecto de matrices K, M, C, r');
             end
             
+            % Agrega o no disipadores
+            if disipadores
+                fprintf('\tPatron de cargas dinamico considera el uso de disipadores\n');
+                c = c + cdv;
+            else
+                fprintf('\tPatron de cargas dinamico no considera el uso de disipadores\n');
+            end
+            
             % Descomposicion modal
             if patronDeCargasObj.desModal
                 k = phi' * k * phi;
@@ -133,6 +141,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 c = phi' * c * phi;
                 fprintf('\tPatron de cargas usa descomposicion modal\n');
             else
+                fprintf('\tPatron de cargas no usa descomposicion modal\n');
                 mmodal = m;
             end
             
@@ -140,17 +149,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 fprintf('\tPatron de cargas dinamico usa amortiguamiento de Wilson-Penzien\n');
             else
                 fprintf('\tPatron de cargas dinamico usa amortiguamiento de Rayleigh\n');
-            end
-            
-            % Agrega o no disipadores
-            if disipadores
-                fprintf('\tPatron de cargas dinamico considera el uso de disipadores\n');
-                if patronDeCargasObj.desModal
-                    cdv = phi' * cdv * phi;
-                end
-                c = c + cdv;
-            else
-                fprintf('\tPatron de cargas dinamico no considera el uso de disipadores\n');
             end
             
             % Calcula las inversas
@@ -184,11 +182,13 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Descomposicion modal
                 if patronDeCargasObj.desModal
-                    p = phi' * p;
+                    pmodal = phi' * p;
+                else
+                    pmodal = p;
                 end
                 
                 % Resuelve newmark
-                [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, c, p, patronDeCargasObj.cargas{i}.dt, 0, 0);
+                [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, c, pmodal, patronDeCargasObj.cargas{i}.dt, 0, 0);
                 
                 % Aplica descomposicion si aplica
                 if patronDeCargasObj.desModal
@@ -204,6 +204,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 patronDeCargasObj.cargas{i}.guardarAceleracion(ddu);
                 patronDeCargasObj.cargas{i}.amortiguamientoRayleigh(~cpenzien);
                 patronDeCargasObj.cargas{i}.usoDisipadores(disipadores);
+                patronDeCargasObj.cargas{i}.descomposicionModal(patronDeCargasObj.desModal);
                 fprintf('\n\t\t\tSe completo calculo en %.3f segundos\n', cputime-tInicio);
                 
             end
