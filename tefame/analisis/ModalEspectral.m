@@ -918,13 +918,10 @@ classdef ModalEspectral < handle
             c_u = carga.obtenerDesplazamiento();
             c_v = carga.obtenerVelocidad();
             c_p = carga.obtenerCarga();
-            phi = analisisObj.obtenerMatrizPhi();
             
             if isempty(c_u)
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
-            fprintf('Calculando curvas de energia\n');
-            fprintf('\tCarga %s\n', carga.obtenerEtiqueta());
             
             if carga.usoAmortiguamientoRayleigh()
                 fprintf('\t\tLa carga se calculo con amortiguamiento Rayleigh\n');
@@ -954,6 +951,10 @@ classdef ModalEspectral < handle
             %Graficos
             [~, s] = size(c_u);
             t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
+            
+            % Realiza calculos de energia
+            fprintf('Calculando curvas de energia\n');
+            fprintf('\tCarga %s\n', carga.obtenerEtiqueta());
             
             % Energia cinetica
             e_k = zeros(1, s);
