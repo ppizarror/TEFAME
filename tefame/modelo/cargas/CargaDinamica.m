@@ -61,7 +61,7 @@
 
 classdef CargaDinamica < ComponenteModelo
     
-    properties(Access = private)
+    properties(Access = protected)
         sol_u % Guarda la solucion de los desplazamientos
         sol_v % Guarda la solucion de las velocidades
         sol_a % Guarda la solucion de las aceleraciones

@@ -157,7 +157,7 @@ classdef Biela2D < Elemento
             % Multiplica k*t_theta
             k_global = t_theta' * k_local * t_theta;
             
-        end % obtenerMatrizRigidezGlobal function
+        end % obtenerMatrizRigidezCoordGlobal function
         
         function k_local = obtenerMatrizRigidezCoordLocal(biela2DObj)
             
@@ -167,7 +167,7 @@ classdef Biela2D < Elemento
             % Multiplica por AoEo/L
             k_local = k_local .* (biela2DObj.Eo * biela2DObj.Ao / biela2DObj.L);
             
-        end % obtenerMatrizRigidezLocal function
+        end % obtenerMatrizRigidezCoordLocal function
         
         function fr_global = obtenerFuerzaResistenteCoordGlobal(biela2DObj)
             
@@ -245,7 +245,7 @@ classdef Biela2D < Elemento
                 end
             end
             
-        end % guardarFuerzaEquivalente function
+        end % sumarCargaTemperaturaReaccion function
         
         function agregarFuerzaResistenteAReacciones(biela2DObj)
             

@@ -150,7 +150,7 @@ classdef Biela3D < Elemento
             % Premultiplica y multiplica por [T]
             k_global = biela3DObj.T' * k_local * biela3DObj.T;
             
-        end % obtenerMatrizRigidezGlobal function
+        end % obtenerMatrizRigidezCoordGlobal function
         
         function k_local = obtenerMatrizRigidezCoordLocal(biela3DObj)
             
@@ -160,7 +160,7 @@ classdef Biela3D < Elemento
             % Multiplica por AoEo/L
             k_local = k_local .* (biela3DObj.Eo * biela3DObj.Ao / biela3DObj.L);
             
-        end % obtenerMatrizRigidezLocal function
+        end % obtenerMatrizRigidezCoordLocal function
         
         function fr_global = obtenerFuerzaResistenteCoordGlobal(biela3DObj)
             

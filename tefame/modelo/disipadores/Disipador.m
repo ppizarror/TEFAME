@@ -66,61 +66,97 @@ classdef Disipador < ComponenteModelo
         end % Disipador constructor
         
         function numeroNodos = obtenerNumeroNodos(disipadorObj) %#ok<MANU>
+            % obtenerNumeroNodos: Obtiene el numero de modos del disipador
+            %
+            % numeroNodos = obtenerNumeroNodos(disipadorObj)
             
             numeroNodos = 0;
             
         end % obtenerNumeroNodos function
         
         function nodosDisipador = obtenerNodos(disipadorObj) %#ok<MANU>
+            % nodosDisipador: Obtiene los nodos del disipador
+            %
+            % nodosDisipador = obtenerNodos(disipadorObj)
             
             nodosDisipador = [];
             
         end % obtenerNodos function
         
         function numeroGDL = obtenerNumeroGDL(disipadorObj) %#ok<MANU>
+            % obtenerNumeroGDL: Retorna el numero de grados de libertad del
+            % disipador
+            %
+            % numeroGDL = obtenerNumeroGDL(disipadorObj)
             
             numeroGDL = 0;
             
         end % obtenerNumeroGDL function
         
         function gdlIDDisipador = obtenerGDLID(disipadorObj) %#ok<MANU>
+            % obtenerGDLID: Obtiene los ID de los grados de libertad del
+            % disipador
+            %
+            % gdlIDDisipador = obtenerGDLID(disipadorObj)
             
             gdlIDDisipador = [];
             
         end % obtenerNumeroGDL function
         
         function T = obtenerMatrizTransformacion(disipadorObj) %#ok<MANU>
+            % obtenerMatrizTransformacion: Obtiene la matriz de
+            % transformacion del disipador
+            %
+            % T = obtenerMatrizTransformacion(disipadorObj)
             
             T = [];
             
-        end % obtenerNumeroGDL function
+        end % obtenerMatrizTransformacion function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj) %#ok<MANU>
+            % obtenerMatrizRigidezCoordGlobal: Obtiene la matriz de rigidez
+            % en coordenadas globales
+            %
+            % k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj)
             
             k_global = [];
             
-        end % obtenerMatrizRigidezGlobal function
+        end % obtenerMatrizRigidezCoordGlobal function
         
         function k_local = obtenerMatrizRigidezCoordLocal(disipadorObj) %#ok<MANU>
+            % obtenerMatrizRigidezCoordLocal: Obtiene la matriz de rigidez
+            % en coordenadas locales
+            %
+            % k_local = obtenerMatrizRigidezCoordLocal(disipadorObj)
             
             k_local = [];
             
-        end % obtenerMatrizRigidezLocal function
+        end % obtenerMatrizRigidezCoordLocal function
         
         function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorObj) %#ok<MANU>
+            % obtenerMatrizAmortiguamientoCoordLocal: Obtiene la matriz de
+            % armortiguamiento en coordenadas locales
+            %
+            % c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorObj)
             
             c_local = [];
             
-        end % obtenerMatrizRigidezLocal function
+        end % obtenerMatrizAmortiguamientoCoordLocal function
         
         function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorObj) %#ok<MANU>
+            % obtenerMatrizAmortiguamientoCoordGlobal: Obtiene la matriz de
+            % amortiguamiento en coordenadas globales
+            %
+            % c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorObj)
             
-            % Multiplica por la matriz de transformacion
             c_global = [];
             
-        end % obtenerMatrizRigidezLocal function
+        end % obtenerMatrizAmortiguamientoCoordGlobal function
         
-        function definirGDLID(disipador2D) %#ok<MANU>
+        function definirGDLID(disipadorObj) %#ok<MANU>
+            % definirGDLID: Define los GDLID del disipador
+            %
+            % definirGDLID(disipadorObj)
             
         end % definirGDLID function
         

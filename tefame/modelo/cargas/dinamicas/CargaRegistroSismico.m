@@ -43,6 +43,7 @@ classdef CargaRegistroSismico < CargaDinamica
     properties(Access = private)
         registro % Cell con matrices de registro
         direccion % Vector de direcciones
+        rf % Vector de influencia
     end % properties CargaNodo
     
     methods
@@ -102,24 +103,27 @@ classdef CargaRegistroSismico < CargaDinamica
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para calcular la carga
         
-        function p = calcularCarga(cargaRegistroObj, factor, m, r) %#ok<INUSL>
+        function p = calcularCarga(cargaRegistroSismicoObj, factor, m, r) %#ok<INUSL>
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
             %
-            % calcularCarga(cargaObj,factor,m,r)
+            % calcularCarga(cargaRegistroSismicoObj,factor,m,r)
+            
+            % Guarda datos
+            cargaRegistroSismicoObj.rf = r;
             
             % Crea la matriz de carga
             ng = length(m);
-            nt = cargaRegistroObj.tAnalisis / cargaRegistroObj.dt;
-            nd = length(cargaRegistroObj.direccion);
+            nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
+            nd = length(cargaRegistroSismicoObj.direccion);
             p = zeros(ng, nt);
             
             % Para cada aceleracion calcula la carga como -m*a
             for k = 1:nd % Recorre direccion
-                if cargaRegistroObj.direccion(k) == 0 % Salta direcciones nulas
+                if cargaRegistroSismicoObj.direccion(k) == 0 % Salta direcciones nulas
                     continue;
                 end
-                reg = cargaRegistroObj.registro{k}; % Registro direccion de estudio
+                reg = cargaRegistroSismicoObj.registro{k}; % Registro direccion de estudio
                 nct = min(length(reg), nt); % Numero de tiempos en los que se aplica la carga
                 for i = 1:nct
                     p(:, i) = p(:, i) - m * r(:, k) .* reg(i, 2);
@@ -129,6 +133,31 @@ classdef CargaRegistroSismico < CargaDinamica
             end
             
         end % calcularCarga function
+        
+        function guardarAceleracion(cargaRegistroSismicoObj, a)
+            % guardarAceleracion: Guarda la aceleracion de la carga
+            %
+            % guardarAceleracion(cargaRegistroSismicoObj,a)
+            
+            % Registro sismico suma la aceleracion del registro para cada
+            % tiempo en cada columna de <a>
+            fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por Newmark');
+            nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
+            nd = length(cargaRegistroSismicoObj.direccion);
+            
+            for k = 1:nd % Recorre direccion
+                if cargaRegistroSismicoObj.direccion(k) == 0 % Salta direcciones nulas
+                    continue;
+                end
+                reg = cargaRegistroSismicoObj.registro{k}; % Registro direccion de estudio
+                nct = min(length(reg), nt); % Numero de tiempos en los que se aplica la carga
+                for i = 1:nct
+                    a(:, i) = a(:, i) + cargaRegistroSismicoObj.rf(:, k) .* reg(i, 2);
+                end
+            end
+            cargaRegistroSismicoObj.sol_a = a;
+            
+        end % guardarAceleracion function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostrar la informacion de la carga en pantalla

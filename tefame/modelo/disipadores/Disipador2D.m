@@ -68,12 +68,19 @@ classdef Disipador2D < Disipador
         end % Disipador2D constructor
         
         function numeroNodos = obtenerNumeroNodos(disipador2DObj) %#ok<MANU>
+            % obtenerNumeroNodos: Obtiene el numero de modos del disipador
+            %
+            % numeroNodos = obtenerNumeroNodos(disipador2DObj)
             
             numeroNodos = 2;
             
         end % obtenerNumeroNodos function
         
         function numeroGDL = obtenerNumeroGDL(disipador2DObj) %#ok<MANU>
+            % obtenerNumeroGDL: Retorna el numero de grados de libertad del
+            % disipador
+            %
+            % numeroGDL = obtenerNumeroGDL(disipador2DObj)
             
             numeroGDL = 6;
             

@@ -81,6 +81,10 @@ classdef Membrana < Elemento
     methods
         
         function membranaObj = Membrana(etiquetaMembrana, nodo1Obj, nodo2Obj, nodo3Obj, nodo4Obj, E, nu, t)
+            % Membrana: Constructor de clase, crea una membrana de 4
+            % vertices planar
+            %
+            % membranaObj = Membrana(etiquetaMembrana,nodo1Obj,nodo2Obj,nodo3Obj,nodo4Obj,E,nu,t)
             
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
@@ -182,7 +186,7 @@ classdef Membrana < Elemento
             % Matriz global igual a la local, no hay rotacion
             k_global = membranaObj.obtenerMatrizRigidezCoordLocal();
             
-        end % obtenerMatrizRigidezGlobal function
+        end % obtenerMatrizRigidezCoordGlobal function
         
         function k_local = obtenerMatrizRigidezCoordLocal(membranaObj)
             
@@ -257,7 +261,7 @@ classdef Membrana < Elemento
                 end
             end
             
-        end % obtenerMatrizRigidezLocal function
+        end % obtenerMatrizRigidezCoordLocal function
         
         function validarXY(membranaObj, x, y)
             
@@ -510,7 +514,7 @@ classdef Membrana < Elemento
                 end
             end
             
-        end
+        end % crearListaTensiones function
         
         function guardarEsfuerzosInternos(membranaObj, archivoSalidaHandle)
             

@@ -1018,14 +1018,14 @@ classdef ModalEspectral < handle
             e_t = zeros(1, s);
             fprintf('\tCalculando energia total\n');
             for i = 1:s
-                e_t(i) = e_k(1) + e_v(1) + w_e(i) - e_d(i) - e_damor(i);
+                e_t(i) = e_k(1) + e_v(1) + w_e(i) - (e_d(i) + e_damor(i));
             end
             
             % Balance energetico normalizado
             ebe = zeros(1, s);
             fprintf('\tCalculando balance energetico\n');
             for i = 1:s
-                ebe(i) = abs(w_e(i)-e_k(i)-e_d(i)-e_damor(i)) / abs(w_e(i)) * 100;
+                ebe(i) = abs(w_e(i)-e_k(i)-(e_d(i)+e_damor(i))) / abs(w_e(i)) * 100;
             end
             
             % Graficos

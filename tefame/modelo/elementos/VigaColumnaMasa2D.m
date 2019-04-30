@@ -172,13 +172,13 @@ classdef VigaColumnaMasa2D < Elemento
             
             gdlIDViga = vigaColumnaMasa2DObj.gdlID;
             
-        end % obtenerNumeroGDL function
+        end % obtenerGDLID function
         
         function T = obtenerMatrizTransformacion(vigaColumnaMasa2DObj)
             
             T = vigaColumnaMasa2DObj.T;
             
-        end % obtenerNumeroGDL function
+        end % obtenerMatrizTransformacion function
         
         function theta = obtenerAngulo(vigaColumnaMasa2DObj)
             
@@ -193,14 +193,14 @@ classdef VigaColumnaMasa2D < Elemento
             t_theta = vigaColumnaMasa2DObj.T;
             k_global = t_theta' * k_local * t_theta;
             
-        end % obtenerMatrizRigidezGlobal function
+        end % obtenerMatrizRigidezCoordGlobal function
         
         function k_local = obtenerMatrizRigidezCoordLocal(vigaColumnaMasa2DObj)
             
             % Retorna la matriz calculada en el constructor
             k_local = vigaColumnaMasa2DObj.Klp;
             
-        end % obtenerMatrizRigidezLocal function
+        end % obtenerMatrizRigidezCoordLocal function
         
         function m_masa = obtenerMatrizMasa(vigaColumnaMasa2DObj)
             
@@ -226,7 +226,7 @@ classdef VigaColumnaMasa2D < Elemento
                 % m_masa(6) = 0;
             end
             
-        end % obtenerMatrizRigidezLocal function
+        end % obtenerMatrizMasa function
         
         function m = obtenerMasa(vigaColumnaMasa2DObj)
             
@@ -296,7 +296,7 @@ classdef VigaColumnaMasa2D < Elemento
                 vigaColumnaMasa2DObj.Feq(i) = vigaColumnaMasa2DObj.Feq(i) + f(i);
             end
             
-        end % guardarFuerzaEquivalente function
+        end % sumarFuerzaEquivalente function
         
         function f = obtenerFuerzaEquivalente(vigaColumnaMasa2DObj)
             
