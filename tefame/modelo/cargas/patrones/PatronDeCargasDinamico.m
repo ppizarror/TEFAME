@@ -115,7 +115,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             k = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
             m = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
             c = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(~cpenzien); % false: cPenzien
-            cdv = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamientoDisipadores();
+            cd = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamientoDisipadores();
             r = patronDeCargasObj.analisisObj.obtenerVectorInfluencia();
             phi = patronDeCargasObj.analisisObj.obtenerMatrizPhi();
             
@@ -127,7 +127,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Agrega o no disipadores
             if disipadores
                 fprintf('\tPatron de cargas dinamico considera el uso de disipadores\n');
-                c = c + cdv;
+                c = c + cd;
             else
                 fprintf('\tPatron de cargas dinamico no considera el uso de disipadores\n');
             end

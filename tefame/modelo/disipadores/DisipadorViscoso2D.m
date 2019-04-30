@@ -190,14 +190,15 @@ classdef DisipadorViscoso2D < Disipador2D
             
         end % obtenerMatrizRigidezCoordLocal function
         
-        function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj, gamma, w, Vo)
+        function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)
             % obtenerMatrizAmortiguamientoCoordLocal: Obtiene la matriz de
             % armortiguamiento en coordenadas locales
             %
             % c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)
             
             alfa =  disipadorViscoso2DObj.alpha;
-            
+            w = 0;
+            Vo = 0;
             disipadorViscoso2DObj.Ce = disipadorViscoso2DObj.Cd .* (4 * gamma(alfa + 2)) /...
                 (2 ^ (alfa + 2) * (gamma(alfa / 2 + 3 / 2)) ^ 2) * w ^ (alfa - 1) * Vo ^ (alfa - 1);
             
