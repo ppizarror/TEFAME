@@ -41,15 +41,18 @@
 %       cargaObj = Carga(etiquetaCarga)
 %       aplicarCarga(cargaObj)
 %       disp(cargaObj)
+%       guardarCarga(cargaObj,p)
 %       guardarDesplazamiento(cargaObj,u)
 %       guardarVelocidad(cargaObj,v)
 %       guardarAceleracion(cargaObj,a)
-%       guardarCarga(cargaObj,p)
+%       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
+%       usoDisipadores(cargaDinamicaObj,disipador)
 %       p = obtenerCarga(cargaObj)
 %       u = obtenerDesplazamiento(cargaObj)
 %       u = obtenerDesplazamientoTiempo(cargaObj,gdl,tiempo)
 %       v = obtenerVelocidad(cargaObj)
 %       a = obtenerAceleracion(cargaObj)
+%       r = metodoAmortiguamientoRayleigh(cargaDinamicaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
@@ -61,7 +64,8 @@ classdef CargaDinamica < ComponenteModelo
         sol_a % Guarda la solucion de las aceleraciones
         sol_p % Guarda la carga generada
         cargaActiva % Indica si la carga esta activada o no
-        c_rayleigh % Indica que la carga se calculo con C de Rayleigh
+        cRayleigh % Indica que la carga se calculo con C de Rayleigh
+        usoDisipador % Indica que se usaron disipadores
     end % properties CargaDinamica
     
     properties(Access = public)
@@ -85,7 +89,8 @@ classdef CargaDinamica < ComponenteModelo
             % Llamamos al cosntructor de la SuperClass que es la clase ComponenteModelo
             cargaDinamicaObj = cargaDinamicaObj@ComponenteModelo(etiquetaCarga);
             cargaDinamicaObj.cargaActiva = true;
-            cargaDinamicaObj.c_rayleigh = false;
+            cargaDinamicaObj.cRayleigh = false;
+            cargaDinamicaObj.usoDisipador = false;
             
         end % CargaDinamica constructor
         
@@ -163,15 +168,24 @@ classdef CargaDinamica < ComponenteModelo
             
         end % guardarAceleracion function
         
-        function disipasionRayleigh(cargaDinamicaObj, rayleigh)
-            % disipasionRayleigh: Indica el tipo de disipasion usado en el
+        function amortiguamientoRayleigh(cargaDinamicaObj, rayleigh)
+            % amortiguamientoRayleigh: Indica el tipo de amortiguamiento usado en el
             % calculo
             %
-            % disipasionRayleigh(cargaDinamicaObj,rayleigh)
+            % amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
             
-            cargaDinamicaObj.c_rayleigh = rayleigh;
+            cargaDinamicaObj.cRayleigh = rayleigh;
             
         end % disipasionRayleigh
+        
+        function usoDisipadores(cargaDinamicaObj, disipador)
+            % usoDisipadores: Indica que se usaron disipadores en el calculo
+            %
+            % usoDisipadores(cargaDinamicaObj,disipador)
+            
+            cargaDinamicaObj.usoDisipador = disipador;
+            
+        end % usoDisipadores function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para obtener los resultados
@@ -226,13 +240,21 @@ classdef CargaDinamica < ComponenteModelo
             
         end % obtenerAceleracion function
         
-        function r = metodoDisipasionRayleigh(cargaDinamicaObj)
-            % metodoDisipasionRayleigh: Indica que los resultados se
+        function r = metodoAmortiguamientoRayleigh(cargaDinamicaObj)
+            % metodoAmortiguamientoRayleighh: Indica que los resultados se
             % guardaron o no con la disipasion de Rayleigh
             
-            r = cargaDinamicaObj.c_rayleigh;
+            r = cargaDinamicaObj.cRayleigh;
             
-        end % metodoDisipasionRayleigh function
+        end % metodoAmortiguamientoRayleigh function
+        
+        function disipador = usoDeDisipadores(cargaDinamicaObj)
+            % usoDeDisipadores: Indica que la carga se calculo usando
+            % disipadores
+            
+            disipador = cargaDinamicaObj.usoDisipador;
+            
+        end % usoDeDisipadores function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostrar la informacion de la carga en pantalla

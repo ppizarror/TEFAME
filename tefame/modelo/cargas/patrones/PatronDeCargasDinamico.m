@@ -199,7 +199,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 patronDeCargasObj.cargas{i}.guardarDesplazamiento(u);
                 patronDeCargasObj.cargas{i}.guardarVelocidad(du);
                 patronDeCargasObj.cargas{i}.guardarAceleracion(ddu);
-                patronDeCargasObj.cargas{i}.disipasionRayleigh(~cpenzien);
+                patronDeCargasObj.cargas{i}.amortiguamientoRayleigh(~cpenzien);
+                patronDeCargasObj.cargas{i}.usoDisipadores(disipadores);
                 fprintf('\n\t\t\tSe completo calculo en %.3f segundos\n', cputime-tInicio);
                 
             end

@@ -896,7 +896,7 @@ classdef ModalEspectral < handle
             % calcularCurvasEnergia(analisisObj,carga,varargin)
             %
             % Parametros opcionales:
-            %   'plot'      'all','ek','ev','ekev','ebe','et'
+            %   'plot'      'all','ek','ev','ekev','ebe','et','ed'
             %   'carga'     Booleano que indica si se grafica la carga o no
             
             % Recorre parametros opcionales
@@ -923,16 +923,24 @@ classdef ModalEspectral < handle
             end
             fprintf('Calculando curvas de energia\n');
             fprintf('\tCarga %s\n', carga.obtenerEtiqueta());
-            if carga.metodoDisipasionRayleigh()
-                fprintf('\t\tLa carga se calculo con disipasion Rayleigh\n');
+            if carga.metodoAmortiguamientoRayleigh()
+                fprintf('\t\tLa carga se calculo con amortiguamiento Rayleigh\n');
             else
-                fprintf('\t\tLa carga se calculo con disipasion de Wilson-Penzien\n');
+                fprintf('\t\tLa carga se calculo con amortiguamiento de Wilson-Penzien\n');
             end
             
             % Obtiene las matrices
             k = analisisObj.obtenerMatrizRigidez();
             m = analisisObj.obtenerMatrizMasa();
-            c = analisisObj.obtenerMatrizAmortiguamiento(carga.metodoDisipasionRayleigh());
+            c = analisisObj.obtenerMatrizAmortiguamiento(carga.metodoAmortiguamientoRayleigh());
+            
+            % Si se usaron disipadores
+            if carga.usoDeDisipadores()
+                cdv = analisisObj.obtenerMatrizAmortiguamientoDisipadores();
+                fprintf('\t\tLa carga se calculo con disipadores\n');
+            else
+                fprintf('\t\tLa carga se calculo sin disipadores\n');
+            end
             
             %Graficos
             [~, s] = size(c_u);
@@ -957,13 +965,30 @@ classdef ModalEspectral < handle
             % Energia disipada
             e_di = zeros(1, s); % Parcial
             e_d = zeros(1, s); % Integral
-            fprintf('\tCalculando energia disipada\n');
+            fprintf('\tCalculando energia disipada por la estructura\n');
             for i = 1:s
                 vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
                 e_di(i) = vv' * c * vv;
                 if i > 1
                     dt = (t(i) - t(i-1));
                     e_d(i) = e_d(i-1) + 0.5 * (e_di(i) - e_di(i-1)) * dt + e_di(i-1) * dt;
+                end
+            end
+            
+            % Energia disipada por amortiguadores
+            e_damori = zeros(1, s); % Parcial
+            e_damor = zeros(1, s); % Integral
+            
+            if carga.usoDeDisipadores()
+                fprintf('\tCalculando energia disipada por los amortiguadores\n');
+                for i = 1:s
+                    vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
+                    e_damori(i) = vv' * cdv * vv;
+                    
+                    if i > 1
+                        dt = (t(i) - t(i - 1));
+                        e_damor(i) = e_damor(i - 1) + 0.5 * (e_damori(i) - e_damori(i - 1)) * dt + e_damori(i - 1) * dt;
+                    end
                 end
             end
             
@@ -983,14 +1008,14 @@ classdef ModalEspectral < handle
             e_t = zeros(1, s);
             fprintf('\tCalculando energia total\n');
             for i = 1:s
-                e_t(i) = e_k(1) + e_v(1) + w_e(i) - e_d(i);
+                e_t(i) = e_k(1) + e_v(1) + w_e(i) - e_d(i) - e_damor(i);
             end
             
             % Balance energetico normalizado
             ebe = zeros(1, s);
             fprintf('\tCalculando balance energetico\n');
             for i = 1:s
-                ebe(i) = abs(w_e(i)-e_k(i)-e_d(i)) / abs(w_e(i)) * 100;
+                ebe(i) = abs(w_e(i)-e_k(i)-e_d(i)-e_damor(i)) / abs(w_e(i)) * 100;
             end
             
             % Graficos
@@ -1083,13 +1108,13 @@ classdef ModalEspectral < handle
                 movegui(plt, 'center');
                 plot(t, e_t, '-', 'LineWidth', lw);
                 hold on;
-                plot(t, e_d, '-', 'LineWidth', lw);
+                plot(t, e_d+e_damor, '-', 'LineWidth', lw);
                 plot(t, w_e, '-', 'LineWidth', lw);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
-                legend({'E_t Energia Total', 'E_D Energia Disipada', 'W_E Trabajo Externo'}, 'location', 'southeast');
+                legend({'E_t Energia Total', 'E_D Energia Disipada Total', 'W_E Trabajo Externo'}, 'location', 'southeast');
                 title(fig_title);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .36, .29, .20]);
@@ -1100,10 +1125,39 @@ classdef ModalEspectral < handle
                 dplot = true;
             end
             
-            % Si no se realizo ningun frafico
+            if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ed')
+                fig_title = sprintf('Energia Disipada - Carga %s', carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                plot(t, e_d, '-', 'LineWidth', lw);
+                if carga.usoDeDisipadores()
+                    hold on;
+                    plot(t, e_damor, '-', 'LineWidth', lw);
+                end
+                grid on;
+                grid minor;
+                xlabel('Tiempo (s)');
+                ylabel('Energia');
+                if carga.usoDeDisipadores()
+                    legend({'Energia disipada por la estructura', ...
+                        'Energia disipada por disipadores'}, 'location', 'Best');
+                else
+                    legend({'Energia disipada por la estructura'}, 'location', 'Best');
+                end
+                title(fig_title);
+                % if plotcarga % Grafica la carga
+                %     axes('Position', [.60, .36, .29, .20]);
+                %     box on;
+                %     plot(t, c_p, 'k-', 'Linewidth', 0.8);
+                %     grid on;
+                % end
+                dplot = true;
+            end
+            
+            % Si no se realizo ningun grafico
             if ~dplot
                 error('Tipo de grafico %s incorrecto, valores aceptados: %s', tipoplot, ...
-                    'ek, ev, ekev, ebe, et');
+                    'ek, ev, ekev, ebe, et, ed');
             end
             
         end % calcularCurvasEnergia function
