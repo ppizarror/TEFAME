@@ -361,10 +361,9 @@ classdef ModalEspectral < handle
         %             w = 0;
         %             Ce = c_alfa .* (4 * gamma(alfa + 2)) / (2 ^ (alfa + 2) * (gamma(alfa / 2 + 3 / 2)) ^ 2) * w ^ (alfa - 1) * Vo ^ (alfa - 1);
         %
-        %             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien); %Falta modificar esto
+        %             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien); % Falta modificar esto
         %
-        %         end % resolverDisipadoresViscososLineales function
-        
+        %         end % resolverDisipadoresViscososLineales function       
         
         function plt = plot(analisisObj, varargin)
             % plot: Grafica un modelo
@@ -2192,7 +2191,7 @@ classdef ModalEspectral < handle
             end
             hplot(length(hplot)) = [];
             
-        end
+        end % calcularMomentoCorteBasalAcel function
         
     end % methods(private) ModalEspectral
     

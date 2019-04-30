@@ -227,7 +227,7 @@ classdef AnalisisEstatico < handle
                 ngdl = DisipadoresObjetos{i}.obtenerNumeroGDL;
                 
                 % Se obtiene la matriz de rigidez global del elemento-i
-                c_globl_elem = DisipadoresObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal();
+                c_globl_elem = DisipadoresObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal(); %#ok<NASGU>
                 
                 % Se calcula el metodo indicial
                 for r = 1:ngdl
@@ -246,10 +246,7 @@ classdef AnalisisEstatico < handle
                 
             end % for i
             
-        end % ensamblarMatrizAmortiguamiento function
-        
-        
-        
+        end % ensamblarMatrizDisipadores function
         
         function ensamblarVectorFuerzas(analisisObj)
             % ensamblarVectorFuerzas: es un metodo de la clase AnalisisEstatico que se usa para
@@ -259,9 +256,8 @@ classdef AnalisisEstatico < handle
             % Ensambla el vector de fuerzas del modelo analizado usando el metodo
             % indicial
             
-            analisisObj.F = zeros(analisisObj.numeroGDL, 1);
-            
             % En esta funcion se tiene que ensamblar el vector de fuerzas
+            analisisObj.F = zeros(analisisObj.numeroGDL, 1);
             
             % Extraemos los nodos
             nodoObjetos = analisisObj.modeloObj.obtenerNodos();
@@ -491,7 +487,7 @@ classdef AnalisisEstatico < handle
                 view(45, 45);
             end
             
-        end
+        end % plot function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para mostrar la informacion del Analisis Estatico en pantalla
