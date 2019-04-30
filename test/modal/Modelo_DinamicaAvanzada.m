@@ -72,8 +72,8 @@ if ~exist('regConstitucionL', 'var') % Carga el registro
     % plotRegistro(regConstitucionL, 'Registro Constitucion/Longitudinal', 'm/s^2');
 end
 cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
-cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 40); % Horizontal
-cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
+% cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 40); % Horizontal
+% cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
 
 % cargasDinamicas{3}.desactivarCarga();
 
@@ -97,7 +97,7 @@ analisisObj.disp();
 
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false);
-analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true);
+% analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});

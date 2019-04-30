@@ -117,9 +117,12 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             k = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
             m = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
             c = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(~cpenzien); % false: cPenzien
+            cdv = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamientoDisipadores();
             r = patronDeCargasObj.analisisObj.obtenerVectorInfluencia();
             phi = patronDeCargasObj.analisisObj.obtenerMatrizPhi();
             
+            c = c + cdv;  %agrega o no disipadores;
+                        
             % Chequea que las dimensiones sean apropiadas
             if ~equalMatrixSize(k, m) || ~equalMatrixSize(m, c) || length(r) ~= length(m)
                 error('Tamano incorrecto de matrices K, M, C, r');
