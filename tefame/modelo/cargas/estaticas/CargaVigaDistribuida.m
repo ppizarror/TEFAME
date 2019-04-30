@@ -42,6 +42,7 @@
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaVigaDistribuida < Carga
     
@@ -95,9 +96,6 @@ classdef CargaVigaDistribuida < Carga
             
         end % CargaVigaDistribuida constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la carga viga distribuida durante el analisis
-        
         function aplicarCarga(cargaVigaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaVigaDistribuidaObj que se usa para aplicar
             % la carga sobre los dos nodos del elemento
@@ -141,9 +139,6 @@ classdef CargaVigaDistribuida < Carga
             nodos{2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga viga distribuida en pantalla
         
         function disp(cargaVigaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en

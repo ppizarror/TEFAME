@@ -43,6 +43,7 @@
 %       disp(restriccionNodoObj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef RestriccionNodo < ComponenteModelo
     
@@ -88,9 +89,6 @@ classdef RestriccionNodo < ComponenteModelo
             
         end % RestriccionNodo constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para realizar la aplicacion de las restricciones
-        
         function aplicarRestriccion(restriccionNodoObj)
             % aplicarRestriccion: es un metodo de la clase RestriccionNodo que
             % se usa para aplicar la restriccion en los nodos
@@ -110,9 +108,6 @@ classdef RestriccionNodo < ComponenteModelo
             restriccionNodoObj.nodoObj.definirGDLID(gdlID);
             
         end % aplicarRestriccion function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del RestriccionNodo en pantalla
         
         function disp(restriccionNodoObj)
             % disp: es un metodo de la clase RestriccionNodo que se usa para

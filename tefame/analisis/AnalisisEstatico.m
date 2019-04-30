@@ -81,9 +81,6 @@ classdef AnalisisEstatico < handle
             
         end % AnalisisEstatico constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para definir y analizar el modelo
-        
         function definirNumeracionGDL(analisisObj)
             % definirNumeracionGDL: es un metodo de la clase AnalisisEstatico que
             % se usa para definir como se enumeran los GDL en el modelo
@@ -282,9 +279,6 @@ classdef AnalisisEstatico < handle
             end % for i
             
         end % ensamblarVectorFuerzas function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener la informacion del analisis
         
         function numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
             % obtenerNumeroEcuaciones: es un metodo de la clase AnalisisEstatico
@@ -499,9 +493,6 @@ classdef AnalisisEstatico < handle
             end
             
         end % plot function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del Analisis Estatico en pantalla
         
         function disp(analisisObj)
             % disp: es un metodo de la clase AnalisisEstatico que se usa para imprimir en

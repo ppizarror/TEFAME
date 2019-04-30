@@ -48,6 +48,7 @@
 %  Methods SuperClass (PatronDeCargas):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef PatronDeCargasDinamico < PatronDeCargas
     
@@ -99,9 +100,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             patronDeCargasObj.desModal = r.desmodal;
             
         end % PatronDeCargasDinamico constructor
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar las cargas guardadas en el patron de cargas durante el analisis
         
         function aplicarCargas(patronDeCargasObj, cpenzien, disipadores)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
@@ -212,9 +210,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             fprintf('\tProceso finalizado en %.3f segundos\n\n', cputime-tInicioProceso);
             
         end % aplicarCargas function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del PatronDeCargasDinamico en pantalla
         
         function disp(patronDeCargasObj)
             % disp: es un metodo de la clase PatronDeCargasDinamico que se usa para imprimir en

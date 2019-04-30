@@ -56,6 +56,7 @@
 %       disp(elementoObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef Elemento < ComponenteModelo
     
@@ -82,9 +83,6 @@ classdef Elemento < ComponenteModelo
             elementoObj.graficaDeformadaElem = true;
             
         end % Elemento constructor
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener informacion del Elemento
         
         function numeroNodos = obtenerNumeroNodos(elementoObj) %#ok<MANU>
             % obtenerNumeroNodos: es un metodo de la clase Elemento que se usa para
@@ -189,9 +187,6 @@ classdef Elemento < ComponenteModelo
             
         end % obtenerFuerzaResistenteCoordLocal function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para inicializar la informacion del Elemento usada en el analisis
-        
         function inicializar(elementoObj) %#ok<MANU>
             % inicializar: es un metodo de la clase Elemento que se usa para
             % inicializar las diferentes componentes que sean necesario en los
@@ -233,9 +228,6 @@ classdef Elemento < ComponenteModelo
             % despues de realizar el analisis
             
         end % actualizar function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para guardar la informacion del Elemento en un archivo de salida
         
         function guardarPropiedades(elementoObj, archivoSalidaHandle) %#ok<INUSD>
             % guardarPropiedades: es un metodo de la clase Elemento que se usa
@@ -303,9 +295,6 @@ classdef Elemento < ComponenteModelo
             end
             
         end % graficarLinea function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del Elemento en pantalla
         
         function disp(elementoObj)
             % disp: es un metodo de la clase Elemento que se usa para impimir en

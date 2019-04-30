@@ -53,6 +53,7 @@
 %       disp(biela3DObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef Biela3D < Elemento
     
