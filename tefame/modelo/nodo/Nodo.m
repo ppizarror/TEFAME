@@ -63,6 +63,7 @@
 %       tipoApoyoRestringido(nodoObj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef Nodo < ComponenteModelo
     

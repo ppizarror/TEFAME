@@ -58,9 +58,9 @@
 %       guardarPropiedades(vigaColumnaMasa2DObj,archivoSalidaHandle)
 %       guardarEsfuerzosInternos(vigaColumnaMasa2DObj,archivoSalidaHandle)
 %       disp(vigaColumnaMasa2DObj)
-%
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef VigaColumnaMasa2D < Elemento
     

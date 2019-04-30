@@ -43,6 +43,7 @@
 %       disp(restriccionNodoObj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef RestriccionNodo < ComponenteModelo
     
