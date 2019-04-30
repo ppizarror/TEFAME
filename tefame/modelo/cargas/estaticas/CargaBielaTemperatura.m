@@ -43,6 +43,7 @@
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaBielaTemperatura < Carga
     
@@ -82,9 +83,6 @@ classdef CargaBielaTemperatura < Carga
             
         end % CargaBielaTemperatura constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la carga durante el analisis
-        
         function aplicarCarga(cargaBielaTemperaturaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaBielaTemperatura
             % que se usa para aplicar la carga en los nodos
@@ -109,9 +107,6 @@ classdef CargaBielaTemperatura < Carga
             nodos{2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga Biela Temperatura en pantalla
         
         function disp(cargaBielaTemperaturaObj)
             % disp: es un metodo de la clase CargaBielaTemperatura que se usa para imprimir en

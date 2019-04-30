@@ -25,7 +25,7 @@
 %| al que se le va a aplicar la carga, el valor de esta carga y la      |
 %| distancia a uno de los nodos como porcentaje del largo.              |
 %|                                                                      |
-%| Programado: PABLO PIZARRO @ppizarror.com                             |
+%| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 14/05/2018                                                    |
 %|______________________________________________________________________|
 %
@@ -40,6 +40,7 @@
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaVigaPuntual < Carga
     
@@ -76,9 +77,6 @@ classdef CargaVigaPuntual < Carga
             cargaVigaPuntualObj.dist = distancia * elemObjeto.obtenerLargo();
             
         end % CargaVigaPuntual constructor
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la carga puntual durante el analisis
         
         function aplicarCarga(cargaVigaPuntualObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaVigaPuntual que se usa para aplicar
@@ -117,9 +115,6 @@ classdef CargaVigaPuntual < Carga
             nodos{2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga viga puntual en pantalla
         
         function disp(cargaVigaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en

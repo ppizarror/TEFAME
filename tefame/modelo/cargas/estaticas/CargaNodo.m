@@ -42,6 +42,7 @@
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaNodo < Carga
     
@@ -79,9 +80,6 @@ classdef CargaNodo < Carga
             
         end % CargaNodo constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la carga nodal durante el analisis
-        
         function aplicarCarga(cargaNodoObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaNodo que se usa para aplicar
             % la carga sobre un nodo
@@ -93,9 +91,6 @@ classdef CargaNodo < Carga
             cargaNodoObj.nodoObj.agregarCarga(factorDeCarga*cargaNodoObj.vectorCarga);
             
         end % aplicarCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga nodal en pantalla
         
         function disp(cargaNodoObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en

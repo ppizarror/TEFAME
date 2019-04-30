@@ -131,9 +131,6 @@ classdef ModalEspectral < handle
             analisisObj.rar = [];
         end % ModalEspectral constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para definir y analizar el modelo
-        
         function analizar(analisisObj, nModos, betacR, betacP, varargin)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
             % realizar el analisis estatico
@@ -200,8 +197,10 @@ classdef ModalEspectral < handle
             % resolverCargasDinamicas(analisisObj,varargin)
             %
             % Parametros opcionales:
-            %   'cpenzien'      Usa el amortiguamiento de cpenzien (false por defecto)
-            %   'disipadores'   Usa los disipadores en el calculo (false por defecto)
+            %   'cpenzien'          Usa el amortiguamiento de cpenzien (false por defecto)
+            %   'disipadores'       Usa los disipadores en el calculo (false por defecto)
+            %   'cargaDisipador'    Carga objetivo disipador para el calculo de v0
+            %   'betaDisipador'     Beta objetivo para el calculo de disipadores
             %
             % Por defecto se usa el amortiguamiento de Rayleigh
             
@@ -213,16 +212,26 @@ classdef ModalEspectral < handle
             p.KeepUnmatched = true;
             addOptional(p, 'cpenzien', false);
             addOptional(p, 'disipadores', true);
+            addOptional(p, 'cargaDisipador', false);
+            addOptional(p, 'betaDisipador', 0);
             parse(p, varargin{:});
             r = p.Results;
             
+            % Chequea inconsistencias
+            if r.disipadores
+                if ~r.cargaDisipador
+                    error('No se ha definido cargaDisipador');
+                end
+                if r.betaDisipador == 0
+                    error('No se ha definido betaObjetivo');
+                end
+            end
+            
             fprintf('Metodo modal espectral:\n');
-            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores);
+            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores, ...
+                r.cargaDisipador, r.betaDisipador);
             
         end % resolverCargasDinamicas function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener la informacion del analisis
         
         function numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
             % obtenerNumeroEcuaciones: es un metodo de la clase ModalEspectral
@@ -1298,9 +1307,6 @@ classdef ModalEspectral < handle
             
         end % desactivarPlotDeformadaInicial function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del Analisis Modal Espectral en pantalla
-        
         function disp(analisisObj)
             % disp: es un metodo de la clase ModalEspectral que se usa para imprimir en
             % command Window la informacion del analisis espectral realizado
@@ -1380,9 +1386,6 @@ classdef ModalEspectral < handle
         end % disp function
         
     end % methods(public) ModalEspectral
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Metodos privados
     
     methods(Access = private)
         

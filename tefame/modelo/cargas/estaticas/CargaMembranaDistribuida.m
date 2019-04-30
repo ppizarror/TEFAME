@@ -49,6 +49,7 @@
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaMembranaDistribuida < Carga
     
@@ -140,9 +141,6 @@ classdef CargaMembranaDistribuida < Carga
             
         end % CargaMembranaDistribuida constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la carga membrana distribuida durante el analisis
-        
         function aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaMembranaDistribuidaObj
             % que se usa para aplicar la carga sobre los dos nodos correspondientes del elemento
@@ -187,9 +185,6 @@ classdef CargaMembranaDistribuida < Carga
             nodos{cargaMembranaDistribuidaObj.nodo2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga membrana distribuida en pantalla
         
         function disp(cargaMembranaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en

@@ -57,6 +57,7 @@
 %       disp(vigaColumna2DObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef VigaColumna2D < Elemento
     

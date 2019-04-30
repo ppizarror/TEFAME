@@ -34,9 +34,10 @@
 %       CargaPulso(etiquetaCargaPulso,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(CargaPulsoObj,factorDeCarga)
 %       disp(CargaPulsoObj)
-%       Methods SuperClass (Carga):
-%       Methods SuperClass (ComponenteModelo):
+%  Methods SuperClass (Carga):
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaPulso < CargaDinamica
     
@@ -79,9 +80,6 @@ classdef CargaPulso < CargaDinamica
             CargaPulsoObj.nodo = nodo; % Objeto del nodo donde se aplica la carga
             
         end % CargaPulso constructor
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para calcular la carga
         
         function p = calcularCarga(CargaPulsoObj, factor, m, r) %#ok<INUSD,INUSL>
             % calcularCarga: es un metodo de la clase Carga que se usa para
@@ -136,9 +134,6 @@ classdef CargaPulso < CargaDinamica
                 i, nt, (i / nt)*100);
             
         end % calcularCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga en pantalla
         
         function disp(CargaPulsoObj)
             % disp: es un metodo de la clase CargaPulso que se usa para imprimir en

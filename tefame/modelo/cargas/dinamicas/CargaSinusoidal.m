@@ -34,9 +34,10 @@
 %       CargaSinusoidal(etiquetaCargaSinusoidal,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(CargaSinusoidalObj,factorDeCarga)
 %       disp(CargaSinusoidalObj)
-%       Methods SuperClass (Carga):
-%       Methods SuperClass (ComponenteModelo):
+%  Methods SuperClass (Carga):
+%  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef CargaSinusoidal < CargaDinamica
     
@@ -80,9 +81,6 @@ classdef CargaSinusoidal < CargaDinamica
             CargaSinusoidalObj.nodo = nodo; % Nodo al que se le aplica la carga
             
         end % CargaSinusoidal constructor
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para calcular la carga
         
         function p = calcularCarga(CargaSinusoidalObj, factor, m, r) %#ok<*INUSD,*INUSL>
             % calcularCarga: es un metodo de la clase Carga que se usa para
@@ -142,9 +140,6 @@ classdef CargaSinusoidal < CargaDinamica
                 i, nt, (i / nt)*100);
             
         end % calcularCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga en pantalla
         
         function disp(CargaSinusoidalObj)
             % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en

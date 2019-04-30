@@ -48,6 +48,7 @@
 %  Methods SuperClass (PatronDeCargas):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef PatronDeCargasDinamico < PatronDeCargas
     
@@ -100,14 +101,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % PatronDeCargasDinamico constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar las cargas guardadas en el patron de cargas durante el analisis
-        
-        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores)
+        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaDisipador)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores)
+            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador)
             %
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
@@ -117,7 +115,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             k = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
             m = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
             c = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(~cpenzien); % false: cPenzien
-            cdv = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamientoDisipadores();
+            cd = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamientoDisipadores();
             r = patronDeCargasObj.analisisObj.obtenerVectorInfluencia();
             phi = patronDeCargasObj.analisisObj.obtenerMatrizPhi();
             
@@ -129,7 +127,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Agrega o no disipadores
             if disipadores
                 fprintf('\tPatron de cargas dinamico considera el uso de disipadores\n');
-                c = c + cdv;
+                c = c + cd;
             else
                 fprintf('\tPatron de cargas dinamico no considera el uso de disipadores\n');
             end
@@ -190,8 +188,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 % Resuelve newmark
                 [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, c, pmodal, patronDeCargasObj.cargas{i}.dt, 0, 0);
                 
-                if disipadores
-                
                 % Aplica descomposicion si aplica
                 if patronDeCargasObj.desModal
                     u = phi * u;
@@ -214,9 +210,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             fprintf('\tProceso finalizado en %.3f segundos\n\n', cputime-tInicioProceso);
             
         end % aplicarCargas function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del PatronDeCargasDinamico en pantalla
         
         function disp(patronDeCargasObj)
             % disp: es un metodo de la clase PatronDeCargasDinamico que se usa para imprimir en

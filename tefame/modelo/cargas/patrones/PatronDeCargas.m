@@ -46,6 +46,7 @@
 %       disp(patronDeCargasObj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef PatronDeCargas < ComponenteModelo
     
@@ -91,9 +92,6 @@ classdef PatronDeCargas < ComponenteModelo
             y = patronDeCargasObj.patronEsDinamico;
             
         end % patronDinamico function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del PatronDeCargas en pantalla
         
         function disp(patronDeCargasObj)
             % disp: es un metodo de la clase PatronDeCargas que se usa para imprimir en

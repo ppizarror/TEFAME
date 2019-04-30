@@ -63,6 +63,7 @@
 %       tipoApoyoRestringido(nodoObj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
 
 classdef Nodo < ComponenteModelo
     
@@ -121,9 +122,6 @@ classdef Nodo < ComponenteModelo
             nodoObj.elementos = {};
             
         end % Nodo constructor
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener informacion del Nodo
         
         function nGDLNodo = obtenerNumeroGDL(nodoObj)
             % obtenerNumeroGDL: es un metodo de la clase Nodo que se usa para
@@ -215,9 +213,6 @@ classdef Nodo < ComponenteModelo
             reaccionesNodo = nodoObj.reacciones;
             
         end % obtenerReacciones function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para definir la informacion del Nodo usada en el analisis
         
         function definirGDLID(nodoObj, gdlIDNodo)
             % definirGDLID: es un metodo de la clase Nodo que se usa para definir
@@ -314,9 +309,6 @@ classdef Nodo < ComponenteModelo
             
         end % agregarEsfuerzoAReaccion function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para inicializar la informacion del Nodo usada en el analisis
-        
         function inicializar(nodoObj)
             % inicializar: es un metodo de la clase Nodo que se usa para inicializar
             % las diferentes vectores que contienne los desplazamientos, cargas
@@ -332,9 +324,6 @@ classdef Nodo < ComponenteModelo
             nodoObj.cargas = zeros(nodoObj.nGDL, 1);
             
         end % reiniciar function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para guardar la informacion del Nodo en un archivo de salida
         
         function guardarPropiedades(nodoObj, archivoSalidaHandle)
             % guardarPropiedades: es un metodo de la clase Nodo que se usa para
@@ -414,9 +403,6 @@ classdef Nodo < ComponenteModelo
             end
             
         end % plot function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del Nodo en pantalla
         
         function disp(nodoObj)
             % disp: es un metodo de la clase Nodo que se usa para imprimir en
