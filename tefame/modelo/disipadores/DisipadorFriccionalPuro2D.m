@@ -73,6 +73,7 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
         Fy % Paramatro de entrada del disipador
         Vo
         w
+        Carga
     end % properties DisipadorFriccionalPuro2D
     
     methods
@@ -163,10 +164,10 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
             
         end % obtenerMatrizTransformacion function
         
-        function actualizardisipador(DisipadorFriccionalPuro2DObj, w, Vo)
+        function actualizardDisipador(DisipadorFriccionalPuro2DObj, w, Carga)
             
             DisipadorFriccionalPuro2DObj.w = w;
-            DisipadorFriccionalPuro2DObj.Vo = Vo;
+            DisipadorFriccionalPuro2DObj.Carga = Carga;
 
             
         end
