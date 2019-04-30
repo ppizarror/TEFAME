@@ -85,7 +85,7 @@ analisisObj.activarCargaAnimacion();
 %% Creamos el patron de cargas
 PatronesDeCargas = cell(2, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
-PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', false);
+PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', true);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
