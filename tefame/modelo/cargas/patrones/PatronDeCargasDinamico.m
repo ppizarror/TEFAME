@@ -145,6 +145,9 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Agrega o no disipadores
             if disipadores
                 fprintf('\tPatron de cargas dinamico considera el uso de disipadores\n');
+                if patronDeCargasObj.desModal
+                    cdv = phi' * cdv * phi;
+                end
                 c = c + cdv;
             else
                 fprintf('\tPatron de cargas dinamico no considera el uso de disipadores\n');

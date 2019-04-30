@@ -23,9 +23,9 @@ Ac = 1; % (m2)
 Ec = 2625051; % (tonf/m2)
 Ic = 1 / 12;
 
-% Propiedades disipadores viscosos
+% Propiedades disipadores viscosos 
 Cd = 1;
-alpha = 1;
+alpha = 1; % Algoritmo realizado sólo para alpha = 1; 
 
 % Densidad del material
 Rhoh = 2.5; % (tonf/m3)
@@ -86,7 +86,7 @@ analisisObj.activarCargaAnimacion();
 %% Creamos el patron de cargas
 PatronesDeCargas = cell(2, 1);
 PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
-PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', false);
+PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', true);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
