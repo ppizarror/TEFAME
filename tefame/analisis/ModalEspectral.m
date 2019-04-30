@@ -131,9 +131,6 @@ classdef ModalEspectral < handle
             analisisObj.rar = [];
         end % ModalEspectral constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para definir y analizar el modelo
-        
         function analizar(analisisObj, nModos, betacR, betacP, varargin)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
             % realizar el analisis estatico
@@ -220,9 +217,6 @@ classdef ModalEspectral < handle
             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores);
             
         end % resolverCargasDinamicas function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener la informacion del analisis
         
         function numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
             % obtenerNumeroEcuaciones: es un metodo de la clase ModalEspectral
@@ -1298,9 +1292,6 @@ classdef ModalEspectral < handle
             
         end % desactivarPlotDeformadaInicial function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del Analisis Modal Espectral en pantalla
-        
         function disp(analisisObj)
             % disp: es un metodo de la clase ModalEspectral que se usa para imprimir en
             % command Window la informacion del analisis espectral realizado
@@ -1380,9 +1371,6 @@ classdef ModalEspectral < handle
         end % disp function
         
     end % methods(public) ModalEspectral
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Metodos privados
     
     methods(Access = private)
         

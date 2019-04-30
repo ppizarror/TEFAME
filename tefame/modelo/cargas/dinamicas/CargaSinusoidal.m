@@ -82,9 +82,6 @@ classdef CargaSinusoidal < CargaDinamica
             
         end % CargaSinusoidal constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para calcular la carga
-        
         function p = calcularCarga(CargaSinusoidalObj, factor, m, r) %#ok<*INUSD,*INUSL>
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
@@ -143,9 +140,6 @@ classdef CargaSinusoidal < CargaDinamica
                 i, nt, (i / nt)*100);
             
         end % calcularCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga en pantalla
         
         function disp(CargaSinusoidalObj)
             % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en

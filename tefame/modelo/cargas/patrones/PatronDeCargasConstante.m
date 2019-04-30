@@ -78,9 +78,6 @@ classdef PatronDeCargasConstante < PatronDeCargas
             
         end % PatronDeCargasConstante constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar las cargas guardadas en el patron de cargas durante el analisis
-        
         function aplicarCargas(patronDeCargasObj)
             % aplicarCargas: es un metodo de la clase PatronDeCargasConstante que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
@@ -102,9 +99,6 @@ classdef PatronDeCargasConstante < PatronDeCargas
             end
             
         end % aplicarCargas function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del PatronDeCargas en pantalla
         
         function disp(patronDeCargasObj)
             % disp: es un metodo de la clase PatronDeCargasConstante que se usa para imprimir en

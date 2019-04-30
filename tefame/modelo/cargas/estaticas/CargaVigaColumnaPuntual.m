@@ -85,9 +85,6 @@ classdef CargaVigaColumnaPuntual < Carga
             
         end % CargaVigaColumnaPuntual constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la carga puntual de la viga-columna durante el analisis
-        
         function aplicarCarga(cargaVigaColumnaPuntualObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaVigaColumnaPuntual
             % que se usa para aplicar la carga sobre los dos nodos del elemento
@@ -132,9 +129,6 @@ classdef CargaVigaColumnaPuntual < Carga
             nodos{2}.agregarCarga([vectorCarga(4), vectorCarga(5), vectorCarga(6)]');
             
         end % aplicarCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga Viga-columna puntual en pantalla
         
         function disp(cargaVigaColumnaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en

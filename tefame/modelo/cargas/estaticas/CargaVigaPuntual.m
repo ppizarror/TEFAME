@@ -78,9 +78,6 @@ classdef CargaVigaPuntual < Carga
             
         end % CargaVigaPuntual constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la carga puntual durante el analisis
-        
         function aplicarCarga(cargaVigaPuntualObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaVigaPuntual que se usa para aplicar
             % la carga sobre los dos nodos del elemento
@@ -118,9 +115,6 @@ classdef CargaVigaPuntual < Carga
             nodos{2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga viga puntual en pantalla
         
         function disp(cargaVigaPuntualObj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en

@@ -124,9 +124,6 @@ classdef CargaDinamica < ComponenteModelo
             
         end % cargaActivada function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para calcular la carga
-        
         function p = calcularCarga(cargaDinamicaObj, varargin) %#ok<*STOUT,*VANUS,INUSD>
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
@@ -134,9 +131,6 @@ classdef CargaDinamica < ComponenteModelo
             % calcularCarga(cargaDinamicaObj,'var1',var,'var2',var)
             
         end % calcularCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para guardar los resultados
         
         function guardarCarga(cargaDinamicaObj, p)
             % guardarCarga: Guarda la carga generada
@@ -202,9 +196,6 @@ classdef CargaDinamica < ComponenteModelo
             cargaDinamicaObj.desModal = desmodal;
             
         end % descomposicionModal function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener los resultados
         
         function p = obtenerCarga(cargaDinamicaObj)
             % obtenerCarga: Obtiene la carga generada
@@ -279,9 +270,6 @@ classdef CargaDinamica < ComponenteModelo
             dm = cargaDinamicaObj.desModal;
             
         end % usoDescomposicionModal function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga en pantalla
         
         function disp(cargaDinamicaObj)
             % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en

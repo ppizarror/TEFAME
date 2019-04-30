@@ -69,9 +69,6 @@ classdef ComponenteModelo < handle
             
         end % ComponenteModelo constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener informacion del ComponenteModelo
-        
         function etiqueta = obtenerEtiqueta(componenteModeloObj)
             % obtenerEtiqueta: es un metodo de la clase ComponenteModelo que se
             % usa para obtener la etiqueta que identifica el componente del

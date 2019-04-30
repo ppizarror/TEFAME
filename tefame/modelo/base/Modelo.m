@@ -123,9 +123,6 @@ classdef Modelo < handle
             
         end % obtenerNombre function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para agregar componentes del Modelo
-        
         function agregarNodos(modeloObj, arregloNodos)
             % agregarNodos: es un metodo de la clase Modelo que se usa para
             % entregarle el arreglo con los nodos al Modelo
@@ -215,9 +212,6 @@ classdef Modelo < handle
             
         end % agregarPatronesDeCargas function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener los componentes del Modelo
-        
         function nodosModelo = obtenerNodos(modeloObj)
             % obtenerNodos: es un metodo de la clase Modelo que se usa para
             % obtener el arreglo con los nodos guardados en el Modelo
@@ -298,9 +292,6 @@ classdef Modelo < handle
             numGDL = modeloObj.nGDL;
             
         end % obtenerNumerosGDL function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para inicializar y actualizar las componentes del Modelo
         
         function inicializar(modeloObj)
             % inicializar: es un metodo de la clase Modelo que se usa para
@@ -414,10 +405,6 @@ classdef Modelo < handle
             
         end % actualizar function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para guardar la informacion del Modelo y resultados del
-        % analisis en un archivo de salida
-        
         function guardarResultados(modeloObj, nombreArchivo)
             % guardarResultados: es un metodo de la clase Modelo que se usa para
             % guardar o imprimir en un archivo las propiedades de las componentes
@@ -488,9 +475,6 @@ classdef Modelo < handle
             fclose(archivoSalida);
             
         end % guardarResultados function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del Modelo en pantalla
         
         function disp(modeloObj)
             % disp: es un metodo de la clase Modelo que se usa para imprimir en

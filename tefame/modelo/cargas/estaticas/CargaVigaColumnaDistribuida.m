@@ -106,9 +106,6 @@ classdef CargaVigaColumnaDistribuida < Carga
             
         end % CargaVigaColumnaDistribuida constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la carga viga-columna distribuida durante el analisis
-        
         function aplicarCarga(cargaVigaColumnaDistribuidaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase cargaVigaColumnaDistribuidaObj
             % que se usa para aplicar la carga sobre los dos nodos del elemento
@@ -163,9 +160,6 @@ classdef CargaVigaColumnaDistribuida < Carga
             nodos{2}.agregarCarga([vectorCarga(4), vectorCarga(5), vectorCarga(6)]');
             
         end % aplicarCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga viga-columna distribuida en pantalla
         
         function disp(cargaVigaColumnaDistribuidaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en

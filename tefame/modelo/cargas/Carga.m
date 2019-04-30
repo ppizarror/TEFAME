@@ -59,13 +59,10 @@ classdef Carga < ComponenteModelo
                 etiquetaCarga = '';
             end % if
             
-            %Llamamos al cosntructor de la SuperClass que es la clase ComponenteModelo
+            % Llamamos al cosntructor de la SuperClass que es la clase ComponenteModelo
             cargaObj = cargaObj@ComponenteModelo(etiquetaCarga);
             
         end % Carga constructor
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar la carga sobre la componente que corresponda durante el analisis
         
         function aplicarCarga(cargaObj, varargin) %#ok<*VANUS,INUSD>
             % aplicarCarga: es un metodo de la clase Carga que se usa para aplicar
@@ -75,9 +72,6 @@ classdef Carga < ComponenteModelo
             % Aplica el carga que estan guardada en el componente que corresponda
             
         end % aplicarCarga function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga en pantalla
         
         function disp(cargaObj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en

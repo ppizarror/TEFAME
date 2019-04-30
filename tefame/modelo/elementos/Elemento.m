@@ -84,9 +84,6 @@ classdef Elemento < ComponenteModelo
             
         end % Elemento constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para obtener informacion del Elemento
-        
         function numeroNodos = obtenerNumeroNodos(elementoObj) %#ok<MANU>
             % obtenerNumeroNodos: es un metodo de la clase Elemento que se usa para
             % obtener el numero de nodos que tiene el Elemento
@@ -190,9 +187,6 @@ classdef Elemento < ComponenteModelo
             
         end % obtenerFuerzaResistenteCoordLocal function
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para inicializar la informacion del Elemento usada en el analisis
-        
         function inicializar(elementoObj) %#ok<MANU>
             % inicializar: es un metodo de la clase Elemento que se usa para
             % inicializar las diferentes componentes que sean necesario en los
@@ -234,9 +228,6 @@ classdef Elemento < ComponenteModelo
             % despues de realizar el analisis
             
         end % actualizar function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para guardar la informacion del Elemento en un archivo de salida
         
         function guardarPropiedades(elementoObj, archivoSalidaHandle) %#ok<INUSD>
             % guardarPropiedades: es un metodo de la clase Elemento que se usa
@@ -304,9 +295,6 @@ classdef Elemento < ComponenteModelo
             end
             
         end % graficarLinea function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del Elemento en pantalla
         
         function disp(elementoObj)
             % disp: es un metodo de la clase Elemento que se usa para impimir en

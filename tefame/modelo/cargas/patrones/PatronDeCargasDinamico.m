@@ -101,9 +101,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % PatronDeCargasDinamico constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para aplicar las cargas guardadas en el patron de cargas durante el analisis
-        
         function aplicarCargas(patronDeCargasObj, cpenzien, disipadores)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
@@ -215,9 +212,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             fprintf('\tProceso finalizado en %.3f segundos\n\n', cputime-tInicioProceso);
             
         end % aplicarCargas function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion del PatronDeCargasDinamico en pantalla
         
         function disp(patronDeCargasObj)
             % disp: es un metodo de la clase PatronDeCargasDinamico que se usa para imprimir en

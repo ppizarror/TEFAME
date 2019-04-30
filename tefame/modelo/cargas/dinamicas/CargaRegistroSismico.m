@@ -101,9 +101,6 @@ classdef CargaRegistroSismico < CargaDinamica
             
         end % CargaRegistroSismico constructor
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para calcular la carga
-        
         function p = calcularCarga(cargaRegistroSismicoObj, factor, m, r) %#ok<INUSL>
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
@@ -159,9 +156,6 @@ classdef CargaRegistroSismico < CargaDinamica
             cargaRegistroSismicoObj.sol_a = a;
             
         end % guardarAceleracion function
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Metodos para mostrar la informacion de la carga en pantalla
         
         function disp(cargaRegistroSismicoObj)
             % disp: es un metodo de la clase CargaRegistroSismico que se usa para imprimir en
