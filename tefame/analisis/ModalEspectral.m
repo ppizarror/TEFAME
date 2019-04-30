@@ -1850,7 +1850,7 @@ classdef ModalEspectral < handle
             
         end % ensamblarMatrizMasa function
         
-        function ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
+        function ensamblarMatrizAmortiguamientoDisipadores(analisisObj, w, Vo)
             % ensamblarMatrizRigidez: es un metodo de la clase ModalEspectral que se usa para
             % realizar el armado de la matriz de rigidez del modelo analizado
             %
@@ -1873,7 +1873,7 @@ classdef ModalEspectral < handle
                 ngdl = disipadorObjetos{i}.obtenerNumeroGDL();
                 
                 % Se obtiene la matriz de amortiguamiento global del elemento-i
-                c_globl_elem = disipadorObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal();
+                c_globl_elem = disipadorObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal(w,Vo);
                 
                 % Se calcula el metodo indicial
                 for r = 1:ngdl
