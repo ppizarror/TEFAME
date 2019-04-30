@@ -197,8 +197,10 @@ classdef ModalEspectral < handle
             % resolverCargasDinamicas(analisisObj,varargin)
             %
             % Parametros opcionales:
-            %   'cpenzien'      Usa el amortiguamiento de cpenzien (false por defecto)
-            %   'disipadores'   Usa los disipadores en el calculo (false por defecto)
+            %   'cpenzien'          Usa el amortiguamiento de cpenzien (false por defecto)
+            %   'disipadores'       Usa los disipadores en el calculo (false por defecto)
+            %   'cargaDisipador'    Carga objetivo disipador para el calculo de v0
+            %   'betaDisipador'     Beta objetivo para el calculo de disipadores
             %
             % Por defecto se usa el amortiguamiento de Rayleigh
             
@@ -210,11 +212,24 @@ classdef ModalEspectral < handle
             p.KeepUnmatched = true;
             addOptional(p, 'cpenzien', false);
             addOptional(p, 'disipadores', true);
+            addOptional(p, 'cargaDisipador', false);
+            addOptional(p, 'betaDisipador', 0);
             parse(p, varargin{:});
             r = p.Results;
             
+            % Chequea inconsistencias
+            if r.disipadores
+                if ~r.cargaDisipador
+                    error('No se ha definido cargaDisipador');
+                end
+                if r.betaDisipador == 0
+                    error('No se ha definido betaObjetivo');
+                end
+            end
+            
             fprintf('Metodo modal espectral:\n');
-            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores);
+            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores, ...
+                r.cargaDisipador, r.betaDisipador);
             
         end % resolverCargasDinamicas function
         

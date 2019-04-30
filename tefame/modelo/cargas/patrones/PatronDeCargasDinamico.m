@@ -101,11 +101,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % PatronDeCargasDinamico constructor
         
-        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores)
+        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaDisipador)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores)
+            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador)
             %
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
@@ -187,8 +187,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Resuelve newmark
                 [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, c, pmodal, patronDeCargasObj.cargas{i}.dt, 0, 0);
-                
-                if disipadores
                 
                 % Aplica descomposicion si aplica
                 if patronDeCargasObj.desModal
