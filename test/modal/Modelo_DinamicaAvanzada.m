@@ -23,8 +23,8 @@ Ec = 2625051; % (tonf/m2)
 Ic = 1 / 12;
 
 % Propiedades disipadores viscosos
-Ceq = 1; % Los verdadero input son Cd y alfa, Ceq y Keq se determinan (modificar elemento)
-Keq = 0;
+Cd = 1; 
+alpha = 1;
 
 % Densidad del material
 Rhoh = 2.5; % (tonf/m3)

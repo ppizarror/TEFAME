@@ -64,8 +64,8 @@ classdef DisipadorViscoso2D < Elemento
         nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
         Ao % Area de la seccion transversal
-        Keq % Modulo de elasticidad
-        Ceq % Inercia de la seccion
+        alpha %
+        Cd % 
         dx % Distancia en el eje x entre los nodos
         dy % Distancia en el eje y entre los nodos
         L % Largo del elemento
@@ -78,7 +78,7 @@ classdef DisipadorViscoso2D < Elemento
     
     methods
         
-        function DisipadorViscoso2DObj = DisipadorViscoso2D(etiquetaViga, nodo1Obj, nodo2Obj, Ceq, Keq)
+        function DisipadorViscoso2DObj = DisipadorViscoso2D(etiquetaViga, nodo1Obj, nodo2Obj, Cd, alpha)
             
             % Completa con ceros si no hay argumentos
             if nargin == 0
@@ -90,8 +90,8 @@ classdef DisipadorViscoso2D < Elemento
             
             % Guarda material
             DisipadorViscoso2DObj.nodosObj = {nodo1Obj; nodo2Obj};
-            DisipadorViscoso2DObj.Keq = Keq;
-            DisipadorViscoso2DObj.Ceq = Ceq;
+            DisipadorViscoso2DObj.alpha = alpha;
+            DisipadorViscoso2DObj.Cd = Cd;
             DisipadorViscoso2DObj.gdlID = [];
             
             % Calcula componentes geometricas
@@ -182,7 +182,7 @@ classdef DisipadorViscoso2D < Elemento
         
         function c_local = obtenerMatrizAmortiguamientoCoordLocal(DisipadorViscoso2DObj)
             
-            c_local = DisipadorViscoso2DObj.Ceq .*[ 1 -1; -1 1];
+            c_local = DisipadorViscoso2DObj.Cd .*[ 1 -1; -1 1];
                         
         end % obtenerMatrizRigidezLocal function
         
