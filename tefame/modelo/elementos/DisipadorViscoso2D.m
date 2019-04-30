@@ -74,7 +74,7 @@ classdef DisipadorViscoso2D < Elemento
     
     methods
         
-        function DisipadorViscoso2DObj = DisipadorViscoso2D(etiquetaViga, nodo1Obj, nodo2Obj, Ceq, Keq)
+        function DisipadorViscoso2DObj = DisipadorViscoso2D(etiquetaViga, nodo1Obj, nodo2Obj, Cd, alpha)
             
             % Completa con ceros si no hay argumentos
             if nargin == 0
@@ -86,8 +86,8 @@ classdef DisipadorViscoso2D < Elemento
             
             % Guarda material
             DisipadorViscoso2DObj.nodosObj = {nodo1Obj; nodo2Obj};
-            DisipadorViscoso2DObj.Keq = Keq;
-            DisipadorViscoso2DObj.Ceq = Ceq;
+            DisipadorViscoso2DObj.alpha = alpha;
+            DisipadorViscoso2DObj.Cd = Cd;
             DisipadorViscoso2DObj.gdlID = [];
             
             % Calcula componentes geometricas
@@ -280,7 +280,6 @@ classdef DisipadorViscoso2D < Elemento
             %
             % plot(elementoObj,deformadas,tipoLinea,grosorLinea)
             
-            disp('a');
             % Obtiene las coordenadas de los objetos
             coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
             coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
