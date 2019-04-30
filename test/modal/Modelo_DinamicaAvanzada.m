@@ -3,6 +3,7 @@ close all;
 
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);
+modeloObj.definirNombre('Modelo Dinamica Avanzada');
 
 %% Nodos modelo
 nodos = {};

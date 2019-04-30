@@ -212,7 +212,7 @@ classdef ModalEspectral < handle
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'cpenzien', false);
-            addOptional(p, 'disipadores', false);
+            addOptional(p, 'disipadores', true);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -504,7 +504,7 @@ classdef ModalEspectral < handle
             
             % Grafica la estructura si no se ha ejecutado el analisis
             if (~analisisObj.analisisFinalizado || modo <= 0) && ~defCarga
-                plt = figure();
+                plt = figure(sprintf('Modelo: %s', modeloObj.obtenerNombre()));
                 movegui('center');
                 hold on;
                 grid on;
