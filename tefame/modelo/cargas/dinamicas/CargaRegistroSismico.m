@@ -45,6 +45,7 @@ classdef CargaRegistroSismico < CargaDinamica
         registro % Cell con matrices de registro
         direccion % Vector de direcciones
         rf % Vector de influencia
+        dispinfo % Indica si se despliega la informacion
     end % properties CargaNodo
     
     methods
@@ -101,7 +102,7 @@ classdef CargaRegistroSismico < CargaDinamica
             
         end % CargaRegistroSismico constructor
         
-        function p = calcularCarga(cargaRegistroSismicoObj, factor, m, r) %#ok<INUSL>
+        function p = calcularCarga(cargaRegistroSismicoObj, ~, m, r, dispinfo)
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
             %
@@ -109,6 +110,7 @@ classdef CargaRegistroSismico < CargaDinamica
             
             % Guarda datos
             cargaRegistroSismicoObj.rf = r;
+            cargaRegistroSismicoObj.dispinfo = dispinfo;
             
             % Crea la matriz de carga
             ng = length(m);
@@ -126,8 +128,10 @@ classdef CargaRegistroSismico < CargaDinamica
                 for i = 1:nct
                     p(:, i) = p(:, i) - m * r(:, k) .* reg(i, 2);
                 end
-                fprintf('\t\t\t\tLa carga de la direccion %d es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
-                    k, i, nct, (i / nct)*100);
+                if dispinfo
+                    fprintf('\t\t\t\tLa carga de la direccion %d es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
+                        k, i, nct, (i / nct)*100);
+                end
             end
             
         end % calcularCarga function
@@ -139,7 +143,9 @@ classdef CargaRegistroSismico < CargaDinamica
             
             % Registro sismico suma la aceleracion del registro para cada
             % tiempo en cada columna de <a>
-            fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por Newmark');
+            if cargaRegistroSismicoObj.dispinfo
+                fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por Newmark');
+            end
             nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
             nd = length(cargaRegistroSismicoObj.direccion);
             

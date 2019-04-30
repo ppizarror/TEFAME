@@ -124,11 +124,11 @@ classdef CargaDinamica < ComponenteModelo
             
         end % cargaActivada function
         
-        function p = calcularCarga(cargaDinamicaObj, varargin) %#ok<*STOUT,*VANUS,INUSD>
+        function p = calcularCarga(cargaDinamicaObj, factor, m, r, dispinfo) %#ok<*STOUT,*VANUS,INUSD>
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
             %
-            % calcularCarga(cargaDinamicaObj,'var1',var,'var2',var)
+            % calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)
             
         end % calcularCarga function
         

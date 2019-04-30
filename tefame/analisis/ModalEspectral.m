@@ -219,7 +219,7 @@ classdef ModalEspectral < handle
             
             % Chequea inconsistencias
             if r.disipadores
-                if ~r.cargaDisipador
+                if ~isa(r.cargaDisipador, 'CargaDinamica')
                     error('No se ha definido cargaDisipador');
                 end
                 if r.betaDisipador == 0
@@ -229,7 +229,7 @@ classdef ModalEspectral < handle
             
             fprintf('Metodo modal espectral:\n');
             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores, ...
-                r.cargaDisipador, r.betaDisipador);
+                r.cargaDisipador, r.betaDisipador, analisisObj.modeloObj.obtenerDisipadores());
             
         end % resolverCargasDinamicas function
         

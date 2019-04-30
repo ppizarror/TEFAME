@@ -82,18 +82,20 @@ classdef CargaSinusoidal < CargaDinamica
             
         end % CargaSinusoidal constructor
         
-        function p = calcularCarga(CargaSinusoidalObj, factor, m, r) %#ok<*INUSD,*INUSL>
+        function p = calcularCarga(CargaSinusoidalObj, ~, m, ~, dispinfo)
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
             %
-            % calcularCarga(cargaObj,factor,m,r)
+            % calcularCarga(cargaSinusoidalObj,factor,m,r,dispinfo)
             
             % Crea la matriz de carga
             ng = length(m);
             nint = CargaSinusoidalObj.tOscilacion / CargaSinusoidalObj.dt;
             nt = CargaSinusoidalObj.tAnalisis / CargaSinusoidalObj.dt; % Nro de intervalos
             p = zeros(ng, nt);
-            fprintf('\t\t\t\tAplicando carga a nodo %s\n', CargaSinusoidalObj.nodo.obtenerEtiqueta());
+            if dispinfo
+                fprintf('\t\t\t\tAplicando carga a nodo %s\n', CargaSinusoidalObj.nodo.obtenerEtiqueta());
+            end
             
             % Crea el vector de influencia
             rf = zeros(ng, 1);
@@ -111,7 +113,9 @@ classdef CargaSinusoidal < CargaDinamica
                     gdl = nodoGDL(i); % Obtiene el GDL asociado
                     if gdl > 0
                         rf(gdl) = 1;
-                        fprintf('\t\t\t\tSe aplica la carga en el grado condensado %d\n', gdl);
+                        if dispinfo
+                            fprintf('\t\t\t\tSe aplica la carga en el grado condensado %d\n', gdl);
+                        end
                     end
                 end
             end
@@ -136,8 +140,10 @@ classdef CargaSinusoidal < CargaDinamica
                 end
             end
             
-            fprintf('\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
-                i, nt, (i / nt)*100);
+            if dispinfo
+                fprintf('\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
+                    i, nt, (i / nt)*100);
+            end
             
         end % calcularCarga function
         
