@@ -110,7 +110,7 @@ classdef Modelo < handle
             % Agrega el arreglo con los nodos (arregloNodos) al Modelo (modeloObj)
             % para que esto lo guarde y tenga acceso a los nodos
             
-            for i=1:length(arregloNodos)
+            for i = 1:length(arregloNodos)
                 if ~isa(arregloNodos{i}, 'Nodo')
                     error('Elemento %d del arreglo de nodos no es un nodo', i);
                 end
@@ -127,7 +127,7 @@ classdef Modelo < handle
             % Agrega el arreglo con los elementos (arregloElementos) al Modelo
             % (modeloObj) para que esto lo guarde y tenga acceso a los elementos
             
-            for i=1:length(arregloElementos)
+            for i = 1:length(arregloElementos)
                 if ~isa(arregloElementos{i}, 'Elemento')
                     error('Elemento %d del arreglo de elementos no es un elemento', i);
                 end
@@ -144,7 +144,7 @@ classdef Modelo < handle
             % Agrega el arreglo con los elementos (arregloDisipadores) al modelo
             % (modeloObj) para que esto lo guarde y tenga acceso a los disipadores
             
-            for i=1:length(arregloDisipadores)
+            for i = 1:length(arregloDisipadores)
                 if ~isa(arregloDisipadores{i}, 'Disipador')
                     error('Elemento %d del arreglo de disipadores no es un disipador', i);
                 end
@@ -162,7 +162,7 @@ classdef Modelo < handle
             % al Modelo (modeloObj) para que esto lo guarde y tenga acceso a
             % los restricciones
             
-            for i=1:length(arregloRestricciones)
+            for i = 1:length(arregloRestricciones)
                 if ~isa(arregloRestricciones{i}, 'RestriccionNodo')
                     error('Elemento %d del arreglo de restricciones no es una restriccion', i);
                 end
@@ -182,7 +182,7 @@ classdef Modelo < handle
             % Los patrones de cargas contienen las cargas que se aplican en los
             % nodos y elementos
             
-            for i=1:length(arregloPatronDeCargas)
+            for i = 1:length(arregloPatronDeCargas)
                 if ~isa(arregloPatronDeCargas{i}, 'PatronDeCargas')
                     error('Elemento %d del arreglo de patrones de cargas no es un patron de carga', i);
                 end

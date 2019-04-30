@@ -103,11 +103,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Metodos para aplicar las cargas guardadas en el patron de cargas durante el analisis
         
-        function aplicarCargas(patronDeCargasObj, cpenzien)
+        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj,cpenzien)
+            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores)
             %
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
@@ -121,8 +121,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             r = patronDeCargasObj.analisisObj.obtenerVectorInfluencia();
             phi = patronDeCargasObj.analisisObj.obtenerMatrizPhi();
             
-            c = c + cdv;  %agrega o no disipadores;
-                        
             % Chequea que las dimensiones sean apropiadas
             if ~equalMatrixSize(k, m) || ~equalMatrixSize(m, c) || length(r) ~= length(m)
                 error('Tamano incorrecto de matrices K, M, C, r');
@@ -142,6 +140,14 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 fprintf('\tPatron de cargas dinamico usa amortiguamiento de Wilson-Penzien\n');
             else
                 fprintf('\tPatron de cargas dinamico usa amortiguamiento de Rayleigh\n');
+            end
+            
+            % Agrega o no disipadores
+            if disipadores
+                fprintf('\tPatron de cargas dinamico considera el uso de disipadores\n');
+                c = c + cdv;
+            else
+                fprintf('\tPatron de cargas dinamico no considera el uso de disipadores\n');
             end
             
             % Calcula las inversas

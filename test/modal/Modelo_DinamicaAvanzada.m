@@ -96,7 +96,7 @@ analisisObj.disp();
 % plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
 
 %% Calcula y grafica las cargas dinamicas
-analisisObj.resolverCargasDinamicas('cpenzien', false);
+analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', false);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true);
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);

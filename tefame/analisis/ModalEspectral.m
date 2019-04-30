@@ -200,7 +200,8 @@ classdef ModalEspectral < handle
             % resolverCargasDinamicas(analisisObj,varargin)
             %
             % Parametros opcionales:
-            %   'cpenzien': Usa el amortiguamiento de cpenzien (false por defecto)
+            %   'cpenzien'      Usa el amortiguamiento de cpenzien (false por defecto)
+            %   'disipadores'   Usa los disipadores en el calculo (false por defecto)
             %
             % Por defecto se usa el amortiguamiento de Rayleigh
             
@@ -211,11 +212,12 @@ classdef ModalEspectral < handle
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'cpenzien', false);
+            addOptional(p, 'disipadores', false);
             parse(p, varargin{:});
             r = p.Results;
             
             fprintf('Metodo modal espectral:\n');
-            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien);
+            analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores);
             
         end % resolverCargasDinamicas function
         
@@ -1940,7 +1942,14 @@ classdef ModalEspectral < handle
             if mostrarDisipadores
                 disipadores = analisisObj.modeloObj.obtenerDisipadores();
                 for i=1:length(disipadores)
-                    disipadores{i}.plot('--', 1, 'r');
+                    nodoDisipador = disipadores{i}.obtenerNodos();
+                    numnodoDisipador = disipadores{i}.obtenerNumeroNodos();
+                    def = cell(numnodoDisipador, 1);
+                    for j = 1:numnodoDisipador
+                        def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoDisipador{j}, ...
+                            modo, analisisObj.numDGReal, defCarga, carga, tcarga);
+                    end
+                    disipadores{i}.plot(def, '--', 1.3, 'r');
                 end
             end
             
@@ -2062,7 +2071,11 @@ classdef ModalEspectral < handle
             for i = 1:gdl
                 if ngdl(i) > 0
                     if ~defcarga % La deformada la saca a partir del modo
-                        def(i) = analisisObj.phin(ngdl(i), modo);
+                        if modo > 0
+                            def(i) = analisisObj.phin(ngdl(i), modo);
+                        else
+                            def(i) = 0;
+                        end
                     else
                         def(i) = carga.obtenerDesplazamientoTiempo(ngdl(i), tcarga);
                     end

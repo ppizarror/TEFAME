@@ -34,9 +34,13 @@
 %       dx
 %       dy
 %       L
-%       Feq
+%       theta
+%       T
+%       Klp
+%       alpha
+%       Cd
 %  Methods:
-%       disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial)
+%       disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
 %       numeroNodos = obtenerNumeroNodos(disipadorViscoso2DObj)
 %       nodosBiela = obtenerNodos(disipadorViscoso2DObj)
 %       numeroGDL = obtenerNumeroGDL(disipadorViscoso2DObj)
@@ -63,7 +67,6 @@ classdef DisipadorViscoso2D < Disipador2D
         dy % Distancia en el eje y entre los nodos
         L % Largo del elemento
         theta % Angulo de inclinacion del disipador
-        Feq % Fuerza equivalente
         T % Matriz de transformacion
         Klp % Matriz de rigidez local del elemento
         alpha % Paramatro del disipador
@@ -189,21 +192,22 @@ classdef DisipadorViscoso2D < Disipador2D
             
         end % definirGDLID function
         
-        function plot(disipadorViscoso2DObj, tipoLinea, grosorLinea, colorLinea)
+        function plot(disipadorViscoso2DObj, deformadas, tipoLinea, grosorLinea, colorLinea)
             % plot: Grafica el disipador
             %
-            % plot(elementoObj,deformadas,tipoLinea,grosorLinea,colorLinea)
+            % plot(disipadorViscoso2DObj,deformadas,tipoLinea,grosorLinea,colorLinea)
             
-            % Obtiene las coordenadas de los objetos
             coord1 = disipadorViscoso2DObj.nodosObj{1}.obtenerCoordenadas();
             coord2 = disipadorViscoso2DObj.nodosObj{2}.obtenerCoordenadas();
-            graficarLinea(disipadorViscoso2DObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea)
+            coord1 = coord1 + deformadas{1}(1:2);
+            coord2 = coord2 + deformadas{2}(1:2);
+            dibujarDisipador(disipadorViscoso2DObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea)
             
         end % plot function
         
         function disp(disipadorViscoso2DObj)
             
-            % Imprime propiedades de la Viga-Columna 2D
+            % Imprime propiedades del disipador viscoso
             fprintf('Propiedades disipador viscoso 2D:\n\t');
             disp@ComponenteModelo(disipadorViscoso2DObj);
             
