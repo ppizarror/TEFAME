@@ -1,7 +1,8 @@
+
 %% Elementos Modelo
 %  DISIPADORES VISCOSOS
 
-disipadoresViscosos{1} = DisipadorViscoso2D('DV04-15', nodos{04}, nodos{15}, Ceq, Keq);
+disipadoresViscosos{1} = DisipadorViscoso2D('DV04-15', nodos{04}, nodos{15}, Ceq, Keq); %#ok<SUSENS>
 disipadoresViscosos{2} = DisipadorViscoso2D('DV14-25', nodos{14}, nodos{25}, Ceq, Keq);
 disipadoresViscosos{3} = DisipadorViscoso2D('DV24-35', nodos{24}, nodos{35}, Ceq, Keq);
 disipadoresViscosos{4} = DisipadorViscoso2D('DV34-44', nodos{34}, nodos{44}, Ceq, Keq);
@@ -26,22 +27,3 @@ disipadoresViscosos{22} = DisipadorViscoso2D('DV211-222', nodos{121}, nodos{126}
 disipadoresViscosos{23} = DisipadorViscoso2D('DV221-232', nodos{125}, nodos{130}, Ceq, Keq);
 disipadoresViscosos{24} = DisipadorViscoso2D('DV231-242', nodos{129}, nodos{134}, Ceq, Keq);
 disipadoresViscosos{25} = DisipadorViscoso2D('DV241-252', nodos{133}, nodos{138}, Ceq, Keq);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

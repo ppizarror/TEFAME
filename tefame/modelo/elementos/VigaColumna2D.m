@@ -187,7 +187,7 @@ classdef VigaColumna2D < Elemento
         
         function k_local = obtenerMatrizRigidezCoordLocal(vigaColumna2DObj)
             
-            % Retorna la matriz calculada en el consturctor
+            % Retorna la matriz calculada en el constructor
             k_local = vigaColumna2DObj.Klp;
             
         end % obtenerMatrizRigidezLocal function

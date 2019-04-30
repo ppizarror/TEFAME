@@ -43,6 +43,7 @@
 %       agregarElementos(modeloObj,arregloElementos)
 %       agregarRestricciones(modeloObj,arregloRestricciones)
 %       agregarPatronesDeCargas(modeloObj,arregloPatronesDeCargas)
+%       agregarDisipadores(modeloObj,arregloDisipadores)
 %       nodosModelo = obtenerNodos(modeloObj)
 %       elementosModelo = obtenerElementos(modeloObj)
 %       restriccionesModelo = obtenerRestricciones(modeloObj)
@@ -233,9 +234,9 @@ classdef Modelo < handle
             % se usa para obtener el numero de dimensiones del modelo
             %
             % numDimensiones = obtenerNumeroDimensiones(modeloObj)
-        
+            
             numDimensiones = modeloObj.nDimensiones;
-        
+            
         end % obtenerNumeroDimensiones function
         
         function numGDL = obtenerNumerosGDL(modeloObj)
@@ -244,9 +245,9 @@ classdef Modelo < handle
             % del modelo
             %
             % numGDL = obtenerNumerosGDL(modeloObj)
-        
+            
             numGDL = modeloObj.nGDL;
-        
+            
         end % obtenerNumerosGDL function
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -381,9 +382,8 @@ classdef Modelo < handle
             try
                 archivoSalida = fopen(nombreArchivo, 'w');
                 fprintf(archivoSalida, 'TEFAME - Toolbox para Elemento Finitos y Analisis\n');
-            catch
+            catch %#ok<CTCH>
                 error('No se puede abrir el archivo %s', nombreArchivo);
-                return;
             end
             fprintf(archivoSalida, '         Matricial de Estructuras en MATLAB\n');
             fprintf(archivoSalida, '\n');

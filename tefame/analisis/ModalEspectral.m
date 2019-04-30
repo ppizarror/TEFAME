@@ -280,13 +280,11 @@ classdef ModalEspectral < handle
             % que se usa para obtener la matriz de rigidez del modelo
             %
             % K_Modelo = obtenerMatrizRigidez(analisisObj)
-            % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
-            % en el Analisis (analisisObj)
+            % Obtiene la matriz de amortiguamiento del modelo
             
             Cdv_Modelo = analisisObj.Cdveq;
             
         end % obtenerMatrizRigidez function
-        
         
         function r_Modelo = obtenerVectorInfluencia(analisisObj)
             % obtenerVectorInfluencia: es un metodo de la clase ModalEspectral
@@ -351,19 +349,19 @@ classdef ModalEspectral < handle
             
         end % obtenerVectorPropio function
         
-%         function resolverDisipadoresViscososLineales(analisisObj,c_alfa)
-%             % resolverDisipadoresViscososLineales: es un metodo de la clase 
-%             % ModalEspectral que se usa para resolver cargas dinamicas
-%             % utilizando disipadores viscosos lineales (alfa = 1)
-%     
-%             alfa = 1;
-%             Vo = 0;
-%             w = 0;
-%             Ce = c_alfa .* (4 * gamma(alfa + 2)) / (2 ^ (alfa + 2) * (gamma(alfa / 2 + 3 / 2)) ^ 2) * w ^ (alfa - 1) * Vo ^ (alfa - 1); 
-%             
-%             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien); %Falta modificar esto
-%             
-%         end % resolverDisipadoresViscososLineales function
+        %         function resolverDisipadoresViscososLineales(analisisObj,c_alfa)
+        %             % resolverDisipadoresViscososLineales: es un metodo de la clase
+        %             % ModalEspectral que se usa para resolver cargas dinamicas
+        %             % utilizando disipadores viscosos lineales (alfa = 1)
+        %
+        %             alfa = 1;
+        %             Vo = 0;
+        %             w = 0;
+        %             Ce = c_alfa .* (4 * gamma(alfa + 2)) / (2 ^ (alfa + 2) * (gamma(alfa / 2 + 3 / 2)) ^ 2) * w ^ (alfa - 1) * Vo ^ (alfa - 1);
+        %
+        %             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien); %Falta modificar esto
+        %
+        %         end % resolverDisipadoresViscososLineales function
         
         
         function plt = plot(analisisObj, varargin)
@@ -989,7 +987,7 @@ classdef ModalEspectral < handle
                 ylabel('Energia cinetica');
                 title(sprintf('E_K Energia Cinetica - Carga %s', carga.obtenerEtiqueta()));
                 if plotcarga % Grafica la carga
-                    axes('Position', [.60 .70 .29 .20]);
+                    axes('Position', [.60, .70, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
@@ -1007,7 +1005,7 @@ classdef ModalEspectral < handle
                 ylabel('Energia elastica');
                 title(sprintf('E_V Energia Elastica - Carga %s', carga.obtenerEtiqueta()));
                 if plotcarga % Grafica la carga
-                    axes('Position', [.60 .70 .29 .20]);
+                    axes('Position', [.60, .70, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
@@ -1025,7 +1023,7 @@ classdef ModalEspectral < handle
                 ylabel('EBE (%)');
                 title(sprintf('Balance Energetico Normalizado - Carga %s', carga.obtenerEtiqueta()));
                 if plotcarga % Grafica la carga
-                    axes('Position', [.60 .70 .29 .20]);
+                    axes('Position', [.60, .70, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
@@ -1046,7 +1044,7 @@ classdef ModalEspectral < handle
                 legend({'E_K Energia Cinetica', 'E_V Energia Elastica'}, 'location', 'northeast');
                 title(sprintf('Energia Potencial - Cinetica - Carga %s', carga.obtenerEtiqueta()));
                 if plotcarga % Grafica la carga
-                    axes('Position', [.60 .55 .29 .20]);
+                    axes('Position', [.60, .55, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
@@ -1068,7 +1066,7 @@ classdef ModalEspectral < handle
                 legend({'E_t Energia Total', 'E_D Energia Disipada', 'W_E Trabajo Externo'}, 'location', 'southeast');
                 title(sprintf('Energia Total - Disipada - Ingresada - Carga %s', carga.obtenerEtiqueta()));
                 if plotcarga % Grafica la carga
-                    axes('Position', [.60 .36 .29 .20]);
+                    axes('Position', [.60, .36, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
@@ -1452,7 +1450,7 @@ classdef ModalEspectral < handle
                 
                 % Se determina matriz de amortiguamiento disipadores condensada (Cdveq)
                 Cdvrot = rot' * analisisObj.Cdv * rot;
-                Cdveq = T' * Cdvrot * T;
+                analisisObj.Cdveq = T' * Cdvrot * T;
                 
                 % Actualiza los grados
                 cngdl = length(Meq);
@@ -1484,10 +1482,10 @@ classdef ModalEspectral < handle
             else % No condensa grados
                 Meq = analisisObj.Mt;
                 Keq = analisisObj.Kt;
-                Cdveq = analisisObj.Cdv;
+                analisisObj.Cdveq = analisisObj.Cdv;
                 fprintf('\t\tNo se han condensado grados de libertad\n');
             end
-
+            
             % Una vez pasado este punto no deberian haber masas nulas o
             % incorrectas
             for i = 1:ngdl
@@ -1565,7 +1563,6 @@ classdef ModalEspectral < handle
             analisisObj.Km = modalKm;
             analisisObj.Mteq = Meq;
             analisisObj.Kteq = Keq;
-            analisisObj.Cdveq = Cdveq;
             for i = 1:nModos
                 analisisObj.Tn(Torder(i)) = modalTn(i);
                 analisisObj.wn(Torder(i)) = modalWn(i);
@@ -1785,18 +1782,18 @@ classdef ModalEspectral < handle
             analisisObj.Cdv = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
             % Extraemos los Elementos
-            elementoObjetos = analisisObj.modeloObj.obtenerDisipadores();
-            numeroElementos = length(elementoObjetos);
+            disipadorObjetos = analisisObj.modeloObj.obtenerDisipadores();
+            numeroDisipadores = length(disipadorObjetos);
             
             % Definimos los GDLID en los elementos
-            for i = 1:numeroElementos
+            for i = 1:numeroDisipadores
                 
                 % Se obienen los gdl del elemento metodo indicial
-                gdl = elementoObjetos{i}.obtenerGDLID();
-                ngdl = elementoObjetos{i}.obtenerNumeroGDL;
+                gdl = disipadorObjetos{i}.obtenerGDLID();
+                ngdl = disipadorObjetos{i}.obtenerNumeroGDL();
                 
                 % Se obtiene la matriz de amortiguamiento global del elemento-i
-                c_globl_elem = elementoObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal();
+                c_globl_elem = disipadorObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal();
                 
                 % Se calcula el metodo indicial
                 for r = 1:ngdl
@@ -1817,7 +1814,7 @@ classdef ModalEspectral < handle
             end % for i
             
         end % ensamblarMatrizAmortiguamientoDisipadores function
-            
+        
         
         function ensamblarVectorFuerzas(analisisObj)
             % ensamblarVectorFuerzas: es un metodo de la clase ModalEspectral que se usa para

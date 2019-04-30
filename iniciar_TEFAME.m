@@ -20,6 +20,7 @@ addpath('tefame/modelo/cargas');
 addpath('tefame/modelo/cargas/dinamicas');
 addpath('tefame/modelo/cargas/estaticas');
 addpath('tefame/modelo/cargas/patrones');
+addpath('tefame/modelo/disipadores');
 addpath('tefame/modelo/elementos');
 addpath('tefame/modelo/nodo');
 addpath('tefame/modelo/restricciones');
