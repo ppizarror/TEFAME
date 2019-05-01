@@ -61,8 +61,6 @@
 classdef DisipadorTriangular2D < Disipador2D
     
     properties(Access = private)
-        nodosObj % Cell con los nodos
-        gdlID % Lista con los ID de los grados de libertad
         Keq % Modulo de elasticidad
         Ceq % Inercia de la seccion
         Ce % Ponderacion matriz de amortiguamiento
@@ -81,7 +79,7 @@ classdef DisipadorTriangular2D < Disipador2D
         
         function disipadorTriangular2DObj = DisipadorTriangular2D(etiquetaDisipador, nodo1Obj, nodo2Obj, k1, k2)
             % DisipadorTriangular2D: Constructor de la clase, genera un
-            % disipador viscoso en 2D
+            % disipador triangular en 2D
             %
             % disipadorTriangular2DObj = DisipadorTriangular2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
             
@@ -97,7 +95,6 @@ classdef DisipadorTriangular2D < Disipador2D
             disipadorTriangular2DObj.nodosObj = {nodo1Obj; nodo2Obj};
             disipadorTriangular2DObj.k1 = k1;
             disipadorTriangular2DObj.k2 = k2;
-            disipadorTriangular2DObj.gdlID = [];
             
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
@@ -115,35 +112,6 @@ classdef DisipadorTriangular2D < Disipador2D
            
         end % DisipadorTriangular2D constructor
         
-        function nodosDisipador = obtenerNodos(disipadorTriangular2DObj)
-            % nodosDisipador: Obtiene los nodos del disipador
-            %
-            % nodosDisipador = obtenerNodos(disipadorTriangular2DObj)
-            
-            nodosDisipador = disipadorTriangular2DObj.nodosObj;
-            
-        end % obtenerNodos function
-        
-        function gdlIDDisipador = obtenerGDLID(disipadorTriangular2DObj)
-            % obtenerGDLID: Obtiene los ID de los grados de libertad del
-            % disipador
-            %
-            % gdlIDDisipador = obtenerGDLID(disipadorTriangular2DObj)
-            
-            gdlIDDisipador = disipadorTriangular2DObj.gdlID;
-            
-        end % obtenerNumeroGDL function
-        
-        function T = obtenerMatrizTransformacion(disipadorTriangular2DObj)
-            % obtenerMatrizTransformacion: Obtiene la matriz de
-            % transformacion del disipador
-            %
-            % T = obtenerMatrizTransformacion(disipadorTriangular2DObj)
-            
-            T = disipadorTriangular2DObj.T;
-            
-        end % obtenerMatrizTransformacion function
-        
         function actualizarDisipador(disipadorTriangular2DObj, w, carga) %#ok<INUSD>
             % actualizarDisipador: Actualiza el disipador con la carga y la
             % frecuencia
@@ -154,19 +122,6 @@ classdef DisipadorTriangular2D < Disipador2D
             
         end % actualizarDisipador function
         
-        function k_global = obtenerMatrizRigidezCoordGlobal(disipadorTriangular2DObj)
-            % obtenerMatrizRigidezCoordGlobal: Obtiene la matriz de rigidez
-            % en coordenadas globales
-            %
-            % k_global = obtenerMatrizRigidezCoordGlobal(disipadorTriangular2DObj)
-            
-            % Multiplica por la matriz de transformacion
-            k_local = disipadorTriangular2DObj.obtenerMatrizRigidezCoordLocal();
-            t_theta = disipadorTriangular2DObj.obtenerMatrizTransformacion();
-            k_global = t_theta' * k_local * t_theta;
-            
-        end % obtenerMatrizRigidezCoordGlobal function
-        
         function k_local = obtenerMatrizRigidezCoordLocal(disipadorTriangular2DObj)
             % obtenerMatrizRigidezCoordLocal: Obtiene la matriz de rigidez
             % en coordenadas locales
@@ -174,8 +129,6 @@ classdef DisipadorTriangular2D < Disipador2D
             % k_local = obtenerMatrizRigidezCoordLocal(disipadorTriangular2DObj)
             
             disipadorTriangular2DObj.ke = (disipadorTriangular2DObj.k1 + disipadorTriangular2DObj.k2)/2;
-            
-            % Retorna la matriz calculada en el constructor
             k_local = disipadorTriangular2DObj.ke .* [1 -1; -1 1];
             
         end % obtenerMatrizRigidezCoordLocal function
@@ -192,59 +145,10 @@ classdef DisipadorTriangular2D < Disipador2D
             
         end % obtenerMatrizAmortiguamientoCoordLocal function
         
-        function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorTriangular2DObj)
-            % obtenerMatrizAmortiguamientoCoordGlobal: Obtiene la matriz de
-            % amortiguamiento en coordenadas globales
-            %
-            % c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorTriangular2DObj)
-            
-            % Multiplica por la matriz de transformacion
-            ceq_local = disipadorTriangular2DObj.obtenerMatrizAmortiguamientoCoordLocal();
-            t_theta = disipadorTriangular2DObj.obtenerMatrizTransformacion();
-            c_global = t_theta' * ceq_local * t_theta;
-            
-        end % obtenerMatrizAmortiguamientoCoordGlobal function
-        
-        function definirGDLID(disipadorTriangular2DObj)
-            % definirGDLID: Define los GDLID del disipador
-            %
-            % definirGDLID(disipadorTriangular2DObj)
-            
-            % Se obtienen los nodos extremos
-            nodo1 = disipadorTriangular2DObj.nodosObj{1};
-            nodo2 = disipadorTriangular2DObj.nodosObj{2};
-            
-            % Se obtienen los gdl de los nodos
-            gdlnodo1 = nodo1.obtenerGDLID();
-            gdlnodo2 = nodo2.obtenerGDLID();
-            
-            % Se establecen gdl
-            gdl = [0, 0, 0, 0];
-            gdl(1) = gdlnodo1(1);
-            gdl(2) = gdlnodo1(2);
-            gdl(3) = gdlnodo2(1);
-            gdl(4) = gdlnodo2(2);
-            disipadorTriangular2DObj.gdlID = gdl;
-            
-        end % definirGDLID function
-        
-        function plot(disipadorTriangular2DObj, deformadas, tipoLinea, grosorLinea, colorLinea)
-            % plot: Grafica el disipador
-            %
-            % plot(disipadorTriangular2DObj,deformadas,tipoLinea,grosorLinea,colorLinea)
-            
-            coord1 = disipadorTriangular2DObj.nodosObj{1}.obtenerCoordenadas();
-            coord2 = disipadorTriangular2DObj.nodosObj{2}.obtenerCoordenadas();
-            coord1 = coord1 + deformadas{1}(1:2);
-            coord2 = coord2 + deformadas{2}(1:2);
-            dibujarDisipador(disipadorTriangular2DObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea)
-            
-        end % plot function
-        
         function disp(disipadorTriangular2DObj)
+            % disp: Imprime propiedades del disipador triangular
             
-            % Imprime propiedades del disipador viscoso
-            fprintf('Propiedades Disipador Viscoso 2D:\n\t');
+            fprintf('Propiedades Disipador Triangular 2D:\n\t');
             disp@ComponenteModelo(disipadorTriangular2DObj);
             
             fprintf('-------------------------------------------------\n');

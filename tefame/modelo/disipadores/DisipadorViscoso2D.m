@@ -27,15 +27,12 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       nodosObj
-%       gdlID
 %       Keq
 %       Ceq
 %       dx
 %       dy
 %       L
 %       theta
-%       T
 %       Klp
 %       alpha
 %       Cd
@@ -60,16 +57,13 @@
 classdef DisipadorViscoso2D < Disipador2D
     
     properties(Access = private)
-        nodosObj % Cell con los nodos
-        gdlID % Lista con los ID de los grados de libertad
         Keq % Modulo de elasticidad
-        Ce
+        Ce % Parametro
         Ceq % Inercia de la seccion
         dx % Distancia en el eje x entre los nodos
         dy % Distancia en el eje y entre los nodos
         L % Largo del elemento
         theta % Angulo de inclinacion del disipador
-        T % Matriz de transformacion
         Klp % Matriz de rigidez local del elemento
         alpha % Paramatro del disipador
         Cd % Parametro del disipador
@@ -98,7 +92,6 @@ classdef DisipadorViscoso2D < Disipador2D
             disipadorViscoso2DObj.alpha = alpha;
             disipadorViscoso2DObj.Ce = [];
             disipadorViscoso2DObj.Cd = Cd;
-            disipadorViscoso2DObj.gdlID = [];
             disipadorViscoso2DObj.w = 1;
             disipadorViscoso2DObj.v0 = 1;
             
@@ -122,48 +115,6 @@ classdef DisipadorViscoso2D < Disipador2D
             
         end % DisipadorViscoso2D constructor
         
-        function nodosDisipador = obtenerNodos(disipadorViscoso2DObj)
-            % nodosDisipador: Obtiene los nodos del disipador
-            %
-            % nodosDisipador = obtenerNodos(disipadorViscoso2DObj)
-            
-            nodosDisipador = disipadorViscoso2DObj.nodosObj;
-            
-        end % obtenerNodos function
-        
-        function gdlIDDisipador = obtenerGDLID(disipadorViscoso2DObj)
-            % obtenerGDLID: Obtiene los ID de los grados de libertad del
-            % disipador
-            %
-            % gdlIDDisipador = obtenerGDLID(disipadorViscoso2DObj)
-            
-            gdlIDDisipador = disipadorViscoso2DObj.gdlID;
-            
-        end % obtenerNumeroGDL function
-        
-        function T = obtenerMatrizTransformacion(disipadorViscoso2DObj)
-            % obtenerMatrizTransformacion: Obtiene la matriz de
-            % transformacion del disipador
-            %
-            % T = obtenerMatrizTransformacion(disipadorViscoso2DObj)
-            
-            T = disipadorViscoso2DObj.T;
-            
-        end % obtenerMatrizTransformacion function
-        
-        function k_global = obtenerMatrizRigidezCoordGlobal(disipadorViscoso2DObj)
-            % obtenerMatrizRigidezCoordGlobal: Obtiene la matriz de rigidez
-            % en coordenadas globales
-            %
-            % k_global = obtenerMatrizRigidezCoordGlobal(disipadorViscoso2DObj)
-            
-            % Multiplica por la matriz de transformacion
-            k_local = disipadorViscoso2DObj.obtenerMatrizRigidezCoordLocal();
-            t_theta = disipadorViscoso2DObj.obtenerMatrizTransformacion();
-            k_global = t_theta' * k_local * t_theta;
-            
-        end % obtenerMatrizRigidezCoordGlobal function
-        
         function k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)
             % obtenerMatrizRigidezCoordLocal: Obtiene la matriz de rigidez
             % en coordenadas locales
@@ -175,11 +126,6 @@ classdef DisipadorViscoso2D < Disipador2D
             
         end % obtenerMatrizRigidezCoordLocal function
         
-        function actualizardisipador(disipadorViscoso2DObj, w, v0)
-            disipadorViscoso2DObj.w = w;
-            disipadorViscoso2DObj.v0 = v0;
-        end
-        
         function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)
             % obtenerMatrizAmortiguamientoCoordLocal: Obtiene la matriz de
             % armortiguamiento en coordenadas locales
@@ -190,46 +136,9 @@ classdef DisipadorViscoso2D < Disipador2D
             disipadorViscoso2DObj.Ce = disipadorViscoso2DObj.Cd .* (4 * gamma(alfa+2)) / ...
                 (2^(alfa + 2) * (gamma(alfa/2+3/2))^2) * disipadorViscoso2DObj.w^(alfa - 1) * ...
                 disipadorViscoso2DObj.v0^(alfa - 1);
-            
             c_local = disipadorViscoso2DObj.Ce .* [1, -1; -1, 1];
             
         end % obtenerMatrizAmortiguamientoCoordLocal function
-        
-        function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorViscoso2DObj)
-            % obtenerMatrizAmortiguamientoCoordGlobal: Obtiene la matriz de
-            % amortiguamiento en coordenadas globales
-            %
-            % c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorViscoso2DObj)
-            
-            % Multiplica por la matriz de transformacion
-            ceq_local = disipadorViscoso2DObj.obtenerMatrizAmortiguamientoCoordLocal();
-            t_theta = disipadorViscoso2DObj.obtenerMatrizTransformacion();
-            c_global = t_theta' * ceq_local * t_theta;
-            
-        end % obtenerMatrizAmortiguamientoCoordGlobal function
-        
-        function definirGDLID(disipadorViscoso2DObj)
-            % definirGDLID: Define los GDLID del disipador
-            %
-            % definirGDLID(disipadorViscoso2DObj)
-            
-            % Se obtienen los nodos extremos
-            nodo1 = disipadorViscoso2DObj.nodosObj{1};
-            nodo2 = disipadorViscoso2DObj.nodosObj{2};
-            
-            % Se obtienen los gdl de los nodos
-            gdlnodo1 = nodo1.obtenerGDLID();
-            gdlnodo2 = nodo2.obtenerGDLID();
-            
-            % Se establecen gdl
-            gdl = [0, 0, 0, 0];
-            gdl(1) = gdlnodo1(1);
-            gdl(2) = gdlnodo1(2);
-            gdl(3) = gdlnodo2(1);
-            gdl(4) = gdlnodo2(2);
-            disipadorViscoso2DObj.gdlID = gdl;
-            
-        end % definirGDLID function
         
         function actualizarDisipador(disipadorViscoso2DObj, w, carga)
             % actualizarDisipador: Actualiza el disipador con la carga y la
@@ -237,28 +146,14 @@ classdef DisipadorViscoso2D < Disipador2D
             %
             % actualizarDisipador(disipadorViscoso2DObj,w,carga)
             
-            % Guarda parametros
             disipadorViscoso2DObj.w = w;
             disipadorViscoso2DObj.v0 = disipadorViscoso2DObj.calcularv0(disipadorViscoso2DObj.nodosObj, carga);
             
         end % actualizarDisipador function
         
-        function plot(disipadorViscoso2DObj, deformadas, tipoLinea, grosorLinea, colorLinea)
-            % plot: Grafica el disipador
-            %
-            % plot(disipadorViscoso2DObj,deformadas,tipoLinea,grosorLinea,colorLinea)
-            
-            coord1 = disipadorViscoso2DObj.nodosObj{1}.obtenerCoordenadas();
-            coord2 = disipadorViscoso2DObj.nodosObj{2}.obtenerCoordenadas();
-            coord1 = coord1 + deformadas{1}(1:2);
-            coord2 = coord2 + deformadas{2}(1:2);
-            dibujarDisipador(disipadorViscoso2DObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea)
-            
-        end % plot function
-        
         function disp(disipadorViscoso2DObj)
+            % disp: Imprime propiedades del disipador viscoso
             
-            % Imprime propiedades del disipador viscoso
             fprintf('Propiedades Disipador Viscoso 2D:\n\t');
             disp@ComponenteModelo(disipadorViscoso2DObj);
             

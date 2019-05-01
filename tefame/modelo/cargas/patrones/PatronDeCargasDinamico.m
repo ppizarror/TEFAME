@@ -143,7 +143,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 w1 = w(1, 2);
                 nmodo1 = w(1, 1);
                 beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
-                fprintf('\t\tbeta=%.2f\n', beta);
+                fprintf('\t\tbeta=%.4f\n', beta);
                 
                 % Actualiza el disipador
                 fprintf('\t\tActualizando disipadores\n');
@@ -153,6 +153,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Realiza las iteraciones
                 for j = 1:3
+                    arregloDisipadores{1}.obtenerMatrizAmortiguamientoCoordLocal()
                     
                     % Calcula la carga
                     fprintf('\tIteracion %d:\n', j);
@@ -160,7 +161,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     
                     % Calcula beta
                     beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
-                    fprintf('\t\tbeta=%.2f\n', beta);
+                    fprintf('\t\tbeta=%.4f\n', beta);
                     
                     % Actualiza los disipadores
                     for i = 1:length(arregloDisipadores)
