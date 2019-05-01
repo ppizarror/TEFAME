@@ -207,6 +207,7 @@ classdef DisipadorTriangular2D < Disipador2D
             c_local = disipadorTriangular2DObj.Ce .* [1, -1; -1, 1];
             
             
+            
         end % obtenerMatrizAmortiguamientoCoordLocal function
         
         function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorTriangular2DObj)
