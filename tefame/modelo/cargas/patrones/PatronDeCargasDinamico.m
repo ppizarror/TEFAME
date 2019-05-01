@@ -43,7 +43,7 @@
 %       desModal
 %  Methods:
 %       patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj)
-%       aplicarCargas(patronDeCargasObj)
+%       aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador,arregloDisipadores)
 %       disp(patronDeCargasObj)
 %  Methods SuperClass (PatronDeCargas):
 %  Methods SuperClass (ComponenteModelo):
@@ -105,7 +105,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador)
+            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador,arregloDisipadores)
             %
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
@@ -170,6 +170,12 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
                     end
                     
+                    % Verifica que se alcance el beta
+                    if beta >= betaDisipador
+                        fprintf('\t\tSe ha logrado el beta objetivo\n');
+                        break;
+                    end
+                    
                 end
                 
             else
@@ -210,7 +216,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
             beta = (phi1' * (c + cd) * phi1) / (2 * w1 * phi1' * m * phi1);
             
-        end
+        end % calcularBetaModelo function
         
         function calcularCargaGenerica(patronDeCargasObj, cpenzien, disipadores, cargaIndiceDisipador, calculaDisipadores)
             % calcularCargaGenerica: Funcion que calcula el tema de las

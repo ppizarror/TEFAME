@@ -1922,7 +1922,7 @@ classdef ModalEspectral < handle
             % Ensambla la matriz de rigidez del modelo analizado usando el metodo
             % indicial
             
-            fprintf('\tEnsamblando matriz de amortiguamiento disipadores\n');
+            % fprintf('\tEnsamblando matriz de amortiguamiento disipadores\n');
             ndglc = analisisObj.numeroGDL - analisisObj.gdlCond; % Numero de grados de libertad condensados
             Cdv = zeros(ndglc, ndglc);
             
