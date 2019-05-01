@@ -75,7 +75,6 @@ classdef ModalEspectral < handle
         numeroGDL % Guarda el numero de grados de libertad totales del modelo
         Kt % Matriz de Rigidez del modelo
         Mt % Matriz de Masa del modelo
-        Cdv %Matriz de amortiguamiento disipadores
         gdlCond % Grados de libertad condensados
         F % Vector de Fuerzas aplicadas sobre el modelo
         u % Vector con los desplazamientos de los grados de libertad del modelo
@@ -126,21 +125,22 @@ classdef ModalEspectral < handle
             analisisObj.analisisFinalizado = false;
             analisisObj.mostrarDeformada = false;
             analisisObj.cargarAnimacion = true;
+
         end % ModalEspectral constructor
         
         function analizar(analisisObj, nModos, betacR, betacP, varargin)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
             % realizar el analisis estatico
             %
+            % Analiza estaticamente el modelo lineal y elastico sometido a un
+            % set de cargas, requiere el numero de modos para realizar el
+            % analisis y de los modos conocidos con sus beta
+            %
             % analizar(analisisObj,nModos,betacR,betacP,maxcond,varargin)
             %
             % Parametros opcionales:
             %   'toleranciaMasa': Tolerancia de la masa para la condensacion
             %   'condensar': Aplica condensacion (true por defecto)
-            %
-            % Analiza estaticamente el modelo lineal y elastico sometido a un
-            % set de cargas, requiere el numero de modos para realizar el
-            % analisis y de los modos conocidos con sus beta
             
             % Ajusta variables de entrada
             if ~exist('nModos', 'var')
@@ -195,8 +195,6 @@ classdef ModalEspectral < handle
             %   'disipadores'       Usa los disipadores en el calculo (false por defecto)
             %   'cargaDisipador'    Carga objetivo disipador para el calculo de v0
             %   'betaDisipador'     Beta objetivo para el calculo de disipadores
-            %
-            % Por defecto se usa el amortiguamiento de Rayleigh
             
             if ~analisisObj.analisisFinalizado
                 error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
@@ -256,7 +254,7 @@ classdef ModalEspectral < handle
             % obtenerMatrizAmortiguamiento: es un metodo de la clase ModalEspectral
             % que se usa para obtener la matriz de amortiguamiento del modelo
             %
-            % C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, rayleigh)
+            % C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)
             % Obtiene la matriz de amortiguamiento (C_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
@@ -282,7 +280,8 @@ classdef ModalEspectral < handle
         
         function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
             % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
-            % que se usa para obtener la matriz de rigidez del modelo
+            % que se usa para obtener la matriz de amortiguamiento del modelo
+            % producto de los disipadores incorporados
             %
             % Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
             % Obtiene la matriz de amortiguamiento del modelo
@@ -301,7 +300,7 @@ classdef ModalEspectral < handle
             
             r_Modelo = analisisObj.rm;
             
-        end % obtenerMatrizMasa function
+        end % obtenerVectorInfluencia function
         
         function F_Modelo = obtenerVectorFuerzas(analisisObj)
             % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
@@ -352,10 +351,10 @@ classdef ModalEspectral < handle
             
             phi_Modelo = analisisObj.phin;
             
-        end
+        end % obtenerMatrizPhi function
         
         function plt = plot(analisisObj, varargin)
-            % plot: Grafica un modelo
+            % plot: Grafica el modelo
             %
             % plt = plot(analisisObj,'var1',val1,'var2',val2)
             %
@@ -434,15 +433,13 @@ classdef ModalEspectral < handle
                 dt_real = carga.dt;
                 
                 % Si el dt del grafico es menor se reajustan los cuadros
-                if dt_plot < dt_real
-                    
+                if dt_plot < dt_real               
                     warning('El numero de cuadros genera un dt=%.3f inferior al dt=%.3f de la carga %s', ...
                         dt_plot, dt_real, carga.obtenerEtiqueta());
                     
                     % Se limitan los cuadros
                     numCuadros = floor((tmax - tmin)/dt_real);
-                    fprintf('\tSe ha limitado el numero de cuadros a %d\n', numCuadros);
-                    
+                    fprintf('\tSe ha limitado el numero de cuadros a %d\n', numCuadros);      
                 elseif dt_plot == dt_real
                     fprintf('\tEl numero de cuadros genera un dt igual al de la carga\n');
                 else
@@ -471,7 +468,7 @@ classdef ModalEspectral < handle
                     if i > numCuadros
                         break;
                     end
-                end
+                end % for j
                 
                 % Activa la deformada por carga
                 defCarga = true;
@@ -609,7 +606,7 @@ classdef ModalEspectral < handle
                     fprintf([reverse_porcent, msg]);
                     reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
                     
-                end % i = 1:numCuadros
+                end % for i
                 
                 if guardarGif
                     fprintf('\n\tGuardando animacion gif en: %s\n', guardaGif);
@@ -686,7 +683,7 @@ classdef ModalEspectral < handle
                     ndrift(l) = i; %#ok<AGROW>
                     l = l + 1;
                 end
-            end
+            end % for i
             
             [~, s] = size(desp);
             nndrift = length(ndrift);
@@ -700,7 +697,7 @@ classdef ModalEspectral < handle
                 gdlx = gdls(1);
                 despx(i, :) = desp(gdlx, :);
                 driftx(i-1, :) = abs(despx(i, :)-despx(i-1, :)) ./ (habs(i) - habs(i-1));
-            end
+            end % for i
             
             % Determinacion de envolvente maxima de desplazamiento y drift
             despxmax = max(abs(despx'))';
@@ -724,7 +721,7 @@ classdef ModalEspectral < handle
                 end
                 aux1 = aux1 + 2;
                 aux2 = aux2 + 2;
-            end
+            end % for i
             hplot(length(hplot)) = [];
             
             % Crea las figuras
@@ -789,7 +786,7 @@ classdef ModalEspectral < handle
                 if envmodo(i) < 0 || envmodo(i) > lphi
                     error('Analisis modo %d invalido', envmodo(i));
                 end
-            end
+            end % for i
             
             % Calcula el momento
             [Cortante, Momento, CBplot, MBplot, hplot] = analisisObj.calcularMomentoCorteBasalAcel(acel);
@@ -850,7 +847,7 @@ classdef ModalEspectral < handle
                     CBplotModoAnt = CBplotModo;
                     plot(CBplotModo, hplot, '-', 'LineWidth', 1);
                     CBLegend{i+1} = sprintf('Modo %d', envmodo(i));
-                end
+                end % for i
                 if lenvmodo > 0
                     legend(CBLegend);
                 end
@@ -951,7 +948,7 @@ classdef ModalEspectral < handle
             for i = 1:s
                 vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
                 e_k(i) = 0.5 * vv' * m * vv;
-            end
+            end % for i
             
             % Energia elastica
             e_v = zeros(1, s);
@@ -959,7 +956,7 @@ classdef ModalEspectral < handle
             for i = 1:s
                 vv = c_u(:, i); % Obtiene el vector de desplazamiento para el tiempo i
                 e_v(i) = 0.5 * vv' * k * vv;
-            end
+            end % for i
             
             % Energia disipada
             e_di = zeros(1, s); % Parcial
@@ -972,7 +969,7 @@ classdef ModalEspectral < handle
                     dt = (t(i) - t(i-1));
                     e_d(i) = e_d(i-1) + 0.5 * (e_di(i) - e_di(i-1)) * dt + e_di(i-1) * dt;
                 end
-            end
+            end % for i
             
             % Energia disipada por amortiguadores
             e_damori = zeros(1, s); % Parcial
@@ -982,13 +979,12 @@ classdef ModalEspectral < handle
                 fprintf('\tCalculando energia disipada por los amortiguadores\n');
                 for i = 1:s
                     vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
-                    e_damori(i) = vv' * cdv * vv;
-                    
+                    e_damori(i) = vv' * cdv * vv;                
                     if i > 1
                         dt = (t(i) - t(i - 1));
                         e_damor(i) = e_damor(i - 1) + 0.5 * (e_damori(i) - e_damori(i - 1)) * dt + e_damori(i - 1) * dt;
                     end
-                end
+                end % for i
             end
             
             % Trabajo externo
@@ -1001,21 +997,21 @@ classdef ModalEspectral < handle
                     dt = (t(i) - t(i-1));
                     w_e(i) = w_e(i-1) + 0.5 * (w_ei(i) - w_ei(i-1)) * dt + w_ei(i-1) * dt;
                 end
-            end
+            end % for i
             
             % Energia total
             e_t = zeros(1, s);
             fprintf('\tCalculando energia total\n');
             for i = 1:s
                 e_t(i) = e_k(1) + e_v(1) + w_e(i) - (e_d(i) + e_damor(i));
-            end
+            end % for i
             
             % Balance energetico normalizado
             ebe = zeros(1, s);
             fprintf('\tCalculando balance energetico\n');
             for i = 1:s
                 ebe(i) = abs(w_e(i)-e_k(i)-(e_d(i) + e_damor(i))) / abs(w_e(i)) * 100;
-            end
+            end % for i
             
             % Graficos
             fprintf('\tGenerando graficos\n');
@@ -1217,19 +1213,19 @@ classdef ModalEspectral < handle
                 e_v(j, 2) = analisisObj.wn(j);
                 e_v(j, 3) = 2 * pi() / analisisObj.wn(j);
                 e_v(j, 4) = abs(e_vsum);
-            end
+            end % for j
             
             % Normaliza por el maximo
             e_vmax = max(e_v(:, 4));
             for j = 1:analisisObj.numModos
                 e_v(j, 4) = e_v(j, 4) / e_vmax;
-            end
+            end % for j
             
             % Suma
             e_vsum = sum(e_v(:, 4));
             for j = 1:analisisObj.numModos
                 e_v(j, 5) = e_v(j, 4) / e_vsum;
-            end
+            end % for j
             
             % Ordena la matriz
             e_v = sortrows(e_v, -4);
@@ -1338,7 +1334,7 @@ classdef ModalEspectral < handle
             xlim(tlim);
             grid on;
             
-        end % plotTrayectoriaNodo
+        end % plotTrayectoriaNodo function
         
         function activarCargaAnimacion(analisisObj)
             % activarCargaAnimacion: Carga la animacion  una vez calculada
@@ -1430,7 +1426,7 @@ classdef ModalEspectral < handle
                         analisisObj.Mmeffacum(i, 1), analisisObj.Mmeffacum(i, 2), analisisObj.Mmeffacum(i, 3));
                 end
                 fprintf('\n');
-            end
+            end % for i
             
             % Busca los periodos para los cuales se logra el 90%
             mt90p = zeros(analisisObj.numDG, 1);
@@ -1441,13 +1437,13 @@ classdef ModalEspectral < handle
                         mt90p(i) = j;
                         break;
                     end
-                end
+                end % for j
                 if mt90p(i) > 0
                     fprintf('%d\n', mt90p(i));
                 else
                     fprintf('Incrementar modos de analisis\n');
                 end
-            end
+            end % for i
             
             fprintf('-------------------------------------------------\n');
             fprintf('\n');
@@ -1538,7 +1534,7 @@ classdef ModalEspectral < handle
                         vz(j) = i; %#ok<AGROW>
                         j = j + 1;
                     end
-                end
+                end % for i
             end
             
             % Si condensa grados
@@ -1556,7 +1552,7 @@ classdef ModalEspectral < handle
                         if allDivMod(vz, i)
                             nndg = nndg - 1;
                         end
-                    end
+                    end % for i
                 end
                 ndg = nndg;
                 
@@ -1575,7 +1571,7 @@ classdef ModalEspectral < handle
                         rot(i, aux1) = 1;
                         aux1 = aux1 + 1;
                     end
-                end
+                end % for i
                 
                 % Se realiza rotacion de matriz de rigidez
                 Krot = rot' * analisisObj.Kt * rot;
@@ -1620,9 +1616,9 @@ classdef ModalEspectral < handle
                                 gdlaux(j) = gdlaux(j);
                             end
                         end
-                    end
+                    end % for j
                     nodos{i}.definirGDLIDCondensado(gdlaux);
-                end
+                end % for i
                 
             else % No condensa grados
                 Meq = analisisObj.Mt;
@@ -1649,7 +1645,7 @@ classdef ModalEspectral < handle
             invMt = zeros(ngdl, ngdl);
             for i = 1:ngdl
                 invMt(i, i) = 1 / Meq(i, i);
-            end
+            end % for i
             sysMat = invMt * Keq;
             
             [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
@@ -1692,10 +1688,10 @@ classdef ModalEspectral < handle
                             maxi = j;
                         end
                     end
-                end
+                end % for j
                 Torder(maxi) = Tpos;
                 Tpos = Tpos + 1;
-            end
+            end % for i
             % ngdl = length(Meq); % Numero de grados de libertad
             
             % Asigna valores
@@ -1720,8 +1716,8 @@ classdef ModalEspectral < handle
                     if mod(i, ndg) == j || (mod(i, ndg) == 0 && j == ndg)
                         analisisObj.rm(i, j) = 1;
                     end
-                end
-            end
+                end % for i
+            end % for j
             
             % Realiza el calculo de las participaciones modales
             analisisObj.Lm = zeros(nModos, ndg);
@@ -1735,14 +1731,14 @@ classdef ModalEspectral < handle
                 for k = 1:nModos
                     analisisObj.Lm(k, j) = analisisObj.phin(:, k)' * Meq * analisisObj.rm(:, j);
                     analisisObj.Mmeff(k, j) = analisisObj.Lm(k, j).^2 ./ modalMm(k, k);
-                end
+                end % for k
                 
                 analisisObj.Mmeff(:, j) = analisisObj.Mmeff(:, j) ./ Mtotr(j);
                 analisisObj.Mmeffacum(1, j) = analisisObj.Mmeff(1, j);
                 for i = 2:nModos
                     analisisObj.Mmeffacum(i, j) = analisisObj.Mmeffacum(i-1, j) + analisisObj.Mmeff(i, j);
                 end
-            end
+            end % for j
             
             % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
             % Se declaran dos amortiguamientos criticos asociados a dos modos
@@ -1769,7 +1765,8 @@ classdef ModalEspectral < handle
                         n = i;
                     end
                 end
-            end
+            end % for i
+
             if m == 0 || n == 0
                 error('\t\tSe requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh')
             end
@@ -1785,6 +1782,7 @@ classdef ModalEspectral < handle
             w = analisisObj.wn;
             Mn = modalMmt;
             analisisObj.cPenzien = 0;
+
             for i = 1:length(Mn)
                 if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     d(i, i) = 2 * betacP(1) * w(i) / Mn(i, i);
@@ -1796,7 +1794,7 @@ classdef ModalEspectral < handle
                 end
                 analisisObj.cPenzien = analisisObj.cPenzien + ...
                     Meq * (d(i, i) * modalPhin(:, i) * modalPhin(:, i)') * Meq;
-            end
+            end % for i
             
             %--------------------------------------------------------------
             % Termina el analisis
@@ -1919,7 +1917,6 @@ classdef ModalEspectral < handle
             % realizar el armado de la matriz de rigidez del modelo analizado
             %
             % ensamblarMatrizRigidez(analisisObj)
-            %
             % Ensambla la matriz de rigidez del modelo analizado usando el metodo
             % indicial
             
@@ -1964,7 +1961,7 @@ classdef ModalEspectral < handle
             % ensamblarVectorFuerzas: es un metodo de la clase ModalEspectral que se usa para
             % realizar el armado del vector de fuerzas del modelo analizado
             %
-            % ensamblarMatrizRigidez(analisisObj)
+            % ensamblarVectorFuerzas(analisisObj)
             % Ensambla el vector de fuerzas del modelo analizado usando el metodo
             % indicial
             
@@ -2028,12 +2025,11 @@ classdef ModalEspectral < handle
                     end
                     j = j + 1;
                 end
-            end
+            end % for i
             
             % Grafica los elementos
             elementoObjetos = analisisObj.modeloObj.obtenerElementos();
             numeroElementos = length(elementoObjetos);
-            
             for i = 1:numeroElementos
                 
                 % Se obienen los gdl del elemento metodo indicial
@@ -2254,7 +2250,7 @@ classdef ModalEspectral < handle
                 if yNodo == 0
                     ini = ini + 1;
                 end
-            end
+            end % for i
             
             [~, s] = size(acel);
             M = analisisObj.obtenerMatrizMasa();
@@ -2273,7 +2269,7 @@ classdef ModalEspectral < handle
                 Fnodos(i-ini+1, :) = M(gdlx, gdlx) .* acel(gdlx, :);
                 [fil, ~] = find(hNodos == i);
                 Fpisos(fil-1, :) = Fpisos(fil-1, :) + Fnodos(i-ini+1, :);
-            end
+            end % for i
             
             % Calculo de cortante y momento acumulado por piso
             Fpisos_ud = flipud(Fpisos);
@@ -2285,8 +2281,8 @@ classdef ModalEspectral < handle
                 for j = 1:i
                     Cortante(i, :) = Cortante(i, :) + Fpisos_ud(j, :);
                     Momento(i, :) = Momento(i, :) + Fpisos_ud(j, :) .* (habs_ud(j) - hcero);
-                end
-            end
+                end % for j
+            end % for i
             
             % Determinacion de envolvente maxima de cortante y momento basal
             icor = 0;
@@ -2303,7 +2299,7 @@ classdef ModalEspectral < handle
                     imom = i;
                     MomB_max = Momento(nfil, i);
                 end
-            end
+            end % for i
             
             % Calcula las envolventes, aplica valor absoluto
             VecCB = abs(Cortante(:, icor));
@@ -2325,7 +2321,7 @@ classdef ModalEspectral < handle
                 end
                 aux1 = aux1 + 2;
                 aux2 = aux2 + 2;
-            end
+            end % for i
             hplot(length(hplot)) = [];
             
         end % calcularMomentoCorteBasalAcel function

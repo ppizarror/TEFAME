@@ -483,7 +483,7 @@ classdef AnalisisEstatico < handle
             % Imprime la informacion guardada en el AnalisisEstatico (analisisObj) en
             % pantalla
             
-            fprintf('Propiedades Analisis Estatico:\n');        
+            fprintf('Propiedades analisis estatico:\n');        
             fprintf('\tMatriz de Rigidez:\n');
             disp(analisisObj.Kt);          
             fprintf('\tDeterminante: %f\n\n', det(analisisObj.Kt));
