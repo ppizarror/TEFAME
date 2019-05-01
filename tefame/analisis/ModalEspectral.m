@@ -567,7 +567,7 @@ classdef ModalEspectral < handle
                 
                 % Obtiene el numero de cuadros
                 t = 0;
-                dt = 2 * pi / numCuadros;
+                dt = 2 * pi() / numCuadros;
                 reverse_porcent = '';
                 
                 % Crea la estructura de cuadros
@@ -1214,7 +1214,7 @@ classdef ModalEspectral < handle
                 end
                 e_v(j, 1) = j;
                 e_v(j, 2) = analisisObj.wn(j);
-                e_v(j, 3) = 2 * pi / analisisObj.wn(j);
+                e_v(j, 3) = 2 * pi() / analisisObj.wn(j);
                 e_v(j, 4) = abs(e_vsum);
             end
             
@@ -1670,7 +1670,7 @@ classdef ModalEspectral < handle
             
             % Calcula las frecuencias del sistema
             modalWn = sqrt(syseig);
-            modalTn = (modalWn.^-1) .* 2 * pi; % Calcula los periodos
+            modalTn = (modalWn.^-1) .* 2 * pi(); % Calcula los periodos
             
             % Calcula las matrices
             modalMmt = modalPhin' * Meq * modalPhin;
