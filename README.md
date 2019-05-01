@@ -26,6 +26,11 @@
 - Viga 2D (c/s masa)
 - Viga-columna 2D
 
+## Tipo de disipadores
+- Viscoso 2D
+- Triangular 2D
+- Friccional puro 2D
+
 ## Patrones de carga
 
 - Constante
