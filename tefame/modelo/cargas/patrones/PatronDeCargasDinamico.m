@@ -134,6 +134,9 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 % Calcula una vez para sin disipador
                 fprintf('\tCalculando los parametros de los disipadores\n');
                 fprintf('\tIteracion 0:\n');
+                
+                % Al realizar esto el nuevo desplazamiento se guarda en la
+                % carga
                 patronDeCargasObj.calcularCargaGenerica(cpenzien, false, indiceCargaObjetivo, true); % No uso disipadores
                 
                 % Calcula w asociado al modo que mueve mas energia
@@ -153,7 +156,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Realiza las iteraciones
                 for j = 1:3
-                    arregloDisipadores{1}.obtenerMatrizAmortiguamientoCoordLocal()
                     
                     % Calcula la carga
                     fprintf('\tIteracion %d:\n', j);
@@ -206,7 +208,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             phi = patronDeCargasObj.analisisObj.obtenerMatrizPhi();
             phi1 = phi(:, phi1);
             
-            beta = (phi1' * (c + cd) * phi1) / (2 * w1 * phi1'*m * phi1);
+            beta = (phi1' * (c + cd) * phi1) / (2 * w1 * phi1' * m * phi1);
             
         end
         
