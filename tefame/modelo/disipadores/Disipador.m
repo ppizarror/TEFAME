@@ -73,9 +73,20 @@ classdef Disipador < ComponenteModelo
             disipadorObj.T = [];
             
         end % Disipador constructor
+
+        function inicializar(disipadorObj)%#ok<MANU>
+            % inicializar: es un metodo de la clase Disipador que se usa para
+            % inicializar las diferentes componentes que sean necesario en los
+            % disipadores para realizar posteriormente el analisis
+            %
+            % inicializar(elementoObj)
+            % Inicializa los diferentes componetes del Disipador (disipadorObj),
+            % para poder preparar estos para realizar el analisis
+
+        end % inicializar function 
         
         function numeroNodos = obtenerNumeroNodos(disipadorObj) %#ok<MANU>
-            % obtenerNumeroNodos: Obtiene el numero de modos del disipador
+            % obtenerNumeroNodos: Obtiene el numero de nodos del disipador
             %
             % numeroNodos = obtenerNumeroNodos(disipadorObj)
             

@@ -259,8 +259,8 @@ classdef Membrana < Elemento
                     if (j < i)
                         k_local(i, j) = k_local(j, i);
                     end
-                end
-            end
+                end % for j
+            end % for i
             
         end % obtenerMatrizRigidezCoordLocal function
         
@@ -430,7 +430,7 @@ classdef Membrana < Elemento
             pos = nodo * fnodo - 1; % Posicion de la fuerza
             for i = 1:fnodo
                 membranaObj.Feq(pos+i-1) = membranaObj.Feq(pos+i-1) + f(i);
-            end
+            end % for i
             
         end % sumarFuerzaEquivalente function
         
@@ -512,8 +512,8 @@ classdef Membrana < Elemento
                     % Aumenta el contador
                     k = k + 1;
                     
-                end
-            end
+                end % for j
+            end % for i
             
         end % crearListaTensiones function
         
@@ -557,7 +557,7 @@ classdef Membrana < Elemento
                     desply = pad(num2str(despl(2), '%.04f'), 10);
                     fprintf(archivoSalidaHandle, '\n\t\t\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s', ...
                         globalx, globaly, x, y, sigmax, sigmay, sigmaxy, desplx, desply);
-                end
+                end % for i
             end
             
         end % guardarEsfuerzosInternos function

@@ -40,12 +40,10 @@
 %       nodo2
 %       L
 %       theta
-%
 %  Methods:
 %       cargaMembranaDistribuidaObj = CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
 %       aplicarCarga(cargaMembranaDistribuidaObj,factorDeCarga)
 %       disp(cargaMembranaDistribuidaObj)
-%
 %  Methods SuperClass (Carga):
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)

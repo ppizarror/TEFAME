@@ -136,7 +136,7 @@ classdef Modelo < handle
                 if ~isa(arregloNodos{i}, 'Nodo')
                     error('Elemento %d del arreglo de nodos no es un nodo', i);
                 end
-            end
+            end % for i
             modeloObj.nodos = arregloNodos;
             
         end % agregarNodos function
@@ -153,7 +153,7 @@ classdef Modelo < handle
                 if ~isa(arregloElementos{i}, 'Elemento')
                     error('Elemento %d del arreglo de elementos no es un elemento', i);
                 end
-            end
+            end % for i
             modeloObj.elementos = arregloElementos;
             
         end % agregarElementos function
@@ -170,7 +170,7 @@ classdef Modelo < handle
                 if ~isa(arregloDisipadores{i}, 'Disipador')
                     error('Elemento %d del arreglo de disipadores no es un disipador', i);
                 end
-            end
+            end % for i
             modeloObj.disipadores = arregloDisipadores;
             
         end % agregarDisipadores function
@@ -188,7 +188,7 @@ classdef Modelo < handle
                 if ~isa(arregloRestricciones{i}, 'RestriccionNodo')
                     error('Elemento %d del arreglo de restricciones no es una restriccion', i);
                 end
-            end
+            end % for i
             modeloObj.restricciones = arregloRestricciones;
             
         end % agregarRestricciones function
@@ -208,7 +208,7 @@ classdef Modelo < handle
                 if ~isa(arregloPatronDeCargas{i}, 'PatronDeCargas')
                     error('Elemento %d del arreglo de patrones de cargas no es un patron de carga', i);
                 end
-            end
+            end % for i
             modeloObj.patronesDeCargas = arregloPatronDeCargas;
             
         end % agregarPatronesDeCargas function
@@ -305,11 +305,15 @@ classdef Modelo < handle
             
             for i = 1:length(modeloObj.nodos)
                 modeloObj.nodos{i}.inicializar()
-            end
-            
+            end % for i
+
             for i = 1:length(modeloObj.elementos)
                 modeloObj.elementos{i}.inicializar()
-            end
+            end % for i
+
+            for i = 1:length(modeloObj.disipadores)
+                modeloObj.disipadores{i}.inicializar()
+            end % for i
             
         end % inicializar function
         
@@ -322,7 +326,7 @@ classdef Modelo < handle
             
             for i = 1:length(modeloObj.restricciones)
                 modeloObj.restricciones{i}.aplicarRestriccion()
-            end
+            end % for i
             
         end % aplicarRestricciones function
         
@@ -340,7 +344,7 @@ classdef Modelo < handle
                 if ~modeloObj.patronesDeCargas{i}.patronDinamico()
                     modeloObj.patronesDeCargas{i}.aplicarCargas();
                 end
-            end
+            end % for i
             
         end % aplicarPatronesDeCargasEstatico function
         
@@ -362,7 +366,7 @@ classdef Modelo < handle
                     modeloObj.patronesDeCargas{i}.aplicarCargas(cpenzien, ...
                         disipadores, cargaDisipador, betaDisipador, arregloDisipadores);
                 end
-            end
+            end % for i
             
         end % aplicarPatronesDeCargasDinamico function
         
@@ -392,7 +396,7 @@ classdef Modelo < handle
                     if (gdlnodo(j) ~= 0)
                         d(j) = u(gdlnodo(j));
                     end
-                end
+                end % for j
                 
                 % Guarda los desplazamientos
                 modeloObj.nodos{i}.definirDesplazamientos(d');
@@ -438,7 +442,7 @@ classdef Modelo < handle
             fprintf(archivoSalida, '\tNumero de nodos: %d\n', nNodos);
             for iNodo = 1:nNodos
                 modeloObj.nodos{iNodo}.guardarPropiedades(archivoSalida);
-            end
+            end % for i
             fprintf(archivoSalida, '\n');
             
             % Se procede a guardar las propiedades de los elementos

@@ -69,7 +69,7 @@ classdef Disipador2D < Disipador
         end % Disipador2D constructor
         
         function numeroNodos = obtenerNumeroNodos(disipador2DObj) %#ok<MANU>
-            % obtenerNumeroNodos: Obtiene el numero de modos del disipador
+            % obtenerNumeroNodos: Obtiene el numero de nodos del disipador
             %
             % numeroNodos = obtenerNumeroNodos(disipador2DObj)
             
@@ -117,8 +117,7 @@ classdef Disipador2D < Disipador
             % Recorre cada tiempo y calcula v0
             v0 = 0;
             for i = 1:length(u) % Recorre los tiempos
-                % Obtiene los desplazamientos
-                d11 = 0;
+                d11 = 0; % Obtiene los desplazamientos
                 d12 = 0;
                 d21 = 0;
                 d22 = 0;
@@ -135,7 +134,7 @@ classdef Disipador2D < Disipador
                     d22 = u(gdl2(2), i);
                 end
                 v0 = max(v0, sqrt((d21 - d11)^2+(d22 - d12)^2));
-            end
+            end % for i
             
         end % calcularv0 function
         

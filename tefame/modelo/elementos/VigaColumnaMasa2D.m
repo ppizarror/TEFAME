@@ -218,13 +218,13 @@ classdef VigaColumnaMasa2D < Elemento
                 m_masa(2) = m_masa(2) + elem_nodo1{i}.obtenerMasa() * 0.5;
                 m_masa(3) = m_masa(3) + elem_nodo1{i}.obtenerMasa() * 0.5 * 0.0001;
                 % m_masa(3) = 0;
-            end
+            end % for i
             for i = 1:length(elem_nodo2)
                 m_masa(4) = m_masa(4) + elem_nodo2{i}.obtenerMasa() * 0.5;
                 m_masa(5) = m_masa(5) + elem_nodo2{i}.obtenerMasa() * 0.5;
                 m_masa(6) = m_masa(6) + elem_nodo2{i}.obtenerMasa() * 0.5 * 0.0001;
                 % m_masa(6) = 0;
-            end
+            end % for i
             
         end % obtenerMatrizMasa function
         
@@ -294,7 +294,7 @@ classdef VigaColumnaMasa2D < Elemento
             
             for i = 1:length(f)
                 vigaColumnaMasa2DObj.Feq(i) = vigaColumnaMasa2DObj.Feq(i) + f(i);
-            end
+            end % for i
             
         end % sumarFuerzaEquivalente function
         

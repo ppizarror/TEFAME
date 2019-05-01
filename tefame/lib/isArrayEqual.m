@@ -5,6 +5,6 @@ for i=1:length(x)
     if x(i) ~= a
         return;
     end
-end
+end % for i
 y = true;
 end

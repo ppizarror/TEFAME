@@ -327,7 +327,7 @@ classdef AnalisisEstatico < handle
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
-            end
+            end % for i
             
             elementoObjetos = analisisObj.modeloObj.obtenerElementos();
             numeroElementos = length(elementoObjetos);
@@ -355,8 +355,8 @@ classdef AnalisisEstatico < handle
                         limz(1) = min(limz(1), coordf(3));
                         limz(2) = max(limz(2), coordf(3));
                     end
-                end
-            end
+                end % for j
+            end % for i
             
         end % obtenerLimitesDeformada function
         
@@ -412,7 +412,7 @@ classdef AnalisisEstatico < handle
                 if ~deformada
                     nodoObjetos{i}.plot([], 'b', 5);
                 end
-            end
+            end % for i
             
             % Grafica los elementos
             elementoObjetos = analisisObj.modeloObj.obtenerElementos();
@@ -430,11 +430,11 @@ classdef AnalisisEstatico < handle
                     def = cell(numNodo, 1);
                     for j = 1:numNodo
                         def{j} = factor * nodoElemento{j}.obtenerDesplazamientos();
-                    end
+                    end % for j
                     elementoObjetos{i}.plot(def, 'k-', 1.25, defElem);
                 end
                 
-            end
+            end % for i
             
             % Grafica los nodos deformados
             if deformada
@@ -445,12 +445,12 @@ classdef AnalisisEstatico < handle
                         if isnan(def(j))
                             def(j) = 0;
                         end
-                    end
+                    end % for j
                     coords = coords + def .* factor;
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
                     nodoObjetos{i}.plot(def.*factor, 'k', 10);
-                end
+                end % for i
             end
             
             % Actualiza los ejes

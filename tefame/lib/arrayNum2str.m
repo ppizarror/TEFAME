@@ -18,7 +18,7 @@ for i = 1:num
         end
     end
     textCell(1+2*i) = {' '};    
-end % for
+end % for i
 
 textCell(2*num+1) = {']'};
 end

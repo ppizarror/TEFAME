@@ -60,7 +60,7 @@ cargasEstaticas = cell(103, 1);
 for i = 1:103
     cargasEstaticas{i} = CargaVigaColumnaDistribuida('Carga distribuida piso', ...
         elementos{i}, -1, 0, -1, 1, 0);
-end
+end % for i
 
 %% Creamos las cargas dinamicas
 cargasDinamicas = {};

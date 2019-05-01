@@ -126,7 +126,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         indiceCargaObjetivo = i;
                         break;
                     end
-                end
+                end % for i
                 if indiceCargaObjetivo == 0
                     error('La carga objetivo del disipador no existe en el patron de cargas');
                 end
@@ -152,7 +152,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 fprintf('\t\tActualizando disipadores\n');
                 for i = 1:length(arregloDisipadores)
                     arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
-                end
+                end % for i
                 
                 % Realiza las iteraciones
                 for j = 1:3
@@ -168,7 +168,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     % Actualiza los disipadores
                     for i = 1:length(arregloDisipadores)
                         arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
-                    end
+                    end % for i
                     
                     % Verifica que se alcance el beta
                     if beta >= betaDisipador
@@ -176,7 +176,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         break;
                     end
                     
-                end
+                end % for j
                 
             else
                 patronDeCargasObj.calcularCargaGenerica(cpenzien, false, 0, false);
@@ -352,7 +352,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     break;
                 end
                 
-            end
+            end % for i
             
             if ~calculaDisipadores
                 fprintf('\tProceso finalizado en %.3f segundos\n\n', cputime-tInicioProceso);
@@ -409,7 +409,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 fprintf([reverse_porcent, msg]);
                 reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
                 
-            end
+            end % for i
             
         end % newmark function
         

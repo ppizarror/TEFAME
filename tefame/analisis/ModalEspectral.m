@@ -1208,7 +1208,7 @@ classdef ModalEspectral < handle
                 for i = 1:s % Recorre el tiempo
                     vv = c_u(:, i); % Obtiene el vector de desplazamiento para el tiempo i
                     e_vsum = e_vsum + 0.5 * vv' * phi(:, j) * kj * vv;
-                end
+                end % for i
                 e_v(j, 1) = j;
                 e_v(j, 2) = analisisObj.wn(j);
                 e_v(j, 3) = 2 * pi() / analisisObj.wn(j);
@@ -1280,7 +1280,7 @@ classdef ModalEspectral < handle
                     ng = ngd(i);
                     nd = i;
                 end
-            end
+            end % for i
             if ng == 0
                 error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
             end
@@ -1615,7 +1615,7 @@ classdef ModalEspectral < handle
                             else
                                 gdlaux(j) = gdlaux(j);
                             end
-                        end
+                        end % for k
                     end % for j
                     nodos{i}.definirGDLIDCondensado(gdlaux);
                 end % for i
@@ -1632,7 +1632,7 @@ classdef ModalEspectral < handle
                 if Meq(i, i) <= 0
                     error('La matriz de masa esta mal definida, M(%d,%d)<=0', i, i);
                 end
-            end
+            end % for i
             
             fprintf('\t\tGrados de libertad totales: %d\n', ngdl);
             fprintf('\t\tNumero de direcciones de analisis: %d\n', ndg);
@@ -1707,7 +1707,7 @@ classdef ModalEspectral < handle
                 analisisObj.Tn(Torder(i)) = modalTn(i);
                 analisisObj.wn(Torder(i)) = modalWn(i);
                 analisisObj.phin(:, Torder(i)) = modalPhin(:, i);
-            end
+            end % for i
             
             % Crea vector influencia
             analisisObj.rm = zeros(ngdl, ndg);
@@ -1737,7 +1737,7 @@ classdef ModalEspectral < handle
                 analisisObj.Mmeffacum(1, j) = analisisObj.Mmeff(1, j);
                 for i = 2:nModos
                     analisisObj.Mmeffacum(i, j) = analisisObj.Mmeffacum(i-1, j) + analisisObj.Mmeff(i, j);
-                end
+                end % for i
             end % for j
             
             % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
@@ -1903,12 +1903,12 @@ classdef ModalEspectral < handle
                     continue;
                 end
                 analisisObj.Mt(gly, gly) = analisisObj.Mt(gly, gly) + carga(2);
-            end
+            end % for i
             
             % Chequea que la matriz de masa sea consistente
             for i = 1:analisisObj.numeroGDL
                 analisisObj.Mt(i, i) = analisisObj.Mt(i, i) / 9.80665; % [tonf->ton]
-            end
+            end % for i
             
         end % ensamblarMatrizMasa function
         
@@ -2049,14 +2049,14 @@ classdef ModalEspectral < handle
                     for j = 1:numNodo
                         def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoElemento{j}, ...
                             modo, analisisObj.numDGReal, defCarga, carga, tcarga);
-                    end
+                    end % for j
                     elementoObjetos{i}.plot(def, 'k-', 1.25, defElem);
                     if i == 1
                         hold on;
                     end
                 end
                 
-            end
+            end % for i
             
             % Grafica los nodos deformados
             if deformada
@@ -2067,7 +2067,7 @@ classdef ModalEspectral < handle
                     def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, ...
                         gdl, defCarga, carga, tcarga);
                     nodoObjetos{i}.plot(def.*factor*phif, 'k', 10);
-                end
+                end % for i
             end
             
             % Grafica los disipadores
@@ -2080,9 +2080,9 @@ classdef ModalEspectral < handle
                     for j = 1:numnodoDisipador
                         def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoDisipador{j}, ...
                             modo, analisisObj.numDGReal, defCarga, carga, tcarga);
-                    end
+                    end % for j
                     disipadores{i}.plot(def, '--', 1.3, 'r');
-                end
+                end % for i
             end
             
             % Setea el titulo
@@ -2151,7 +2151,7 @@ classdef ModalEspectral < handle
                 coords = nodoObjetos{i}.obtenerCoordenadas();
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
-            end
+            end % for i
             
             elementoObjetos = analisisObj.modeloObj.obtenerElementos();
             numeroElementos = length(elementoObjetos);
@@ -2187,8 +2187,8 @@ classdef ModalEspectral < handle
                         limz(1) = min(limz(1), coordf(3));
                         limz(2) = max(limz(2), coordf(3));
                     end
-                end
-            end
+                end % for j
+            end % for i
             
         end % obtenerLimitesDeformada function
         
@@ -2214,7 +2214,7 @@ classdef ModalEspectral < handle
                 else
                     def(i) = 0;
                 end
-            end
+            end % for i
             
         end % obtenerDeformadaNodo function
         

@@ -106,7 +106,7 @@ classdef ComponenteModelo < handle
             
             e = strcmp(componenteModeloObj.objectID, obj.objectID);
             
-        end % equals
+        end % equals function
         
     end % methods ComponenteModelo
     
