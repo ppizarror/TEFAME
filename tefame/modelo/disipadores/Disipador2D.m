@@ -83,9 +83,52 @@ classdef Disipador2D < Disipador
             %
             % numeroGDL = obtenerNumeroGDL(disipador2DObj)
             
-            numeroGDL = 6;
+            numeroGDL = 4;
             
         end % obtenerNumeroGDL function
+        
+        function actualizarDisipador(disipador2DObj, w, carga) %#ok<INUSD>
+            % actualizarDisipador: Actualiza el disipador con la carga y la
+            % frecuencia
+            %
+            % actualizarDisipador(disipador2DObj,w,carga)
+            
+        end % actualizarDisipador function
+        
+        function v0 = calcularv0(disipador2DObj, nodos, carga) %#ok<INUSL>
+            % calcularv0: Calcula v0 a partir de una carga
+            %
+            % v0 = calcularv0(disipador2DObj, nodos, carga)
+            
+            % Calcula v0
+            u = carga.obtenerDesplazamiento();
+            gdl1 = nodos{1}.obtenerGDLIDCondensado();
+            gdl2 = nodos{2}.obtenerGDLIDCondensado();
+            
+            % Recorre cada tiempo y calcula v0
+            v0 = 0;
+            for i=1:length(u) % Recorre los tiempos
+                % Obtiene los desplazamientos
+                d11 = 0;
+                d12 = 0;
+                d21 = 0;
+                d22 = 0;
+                if gdl1(1) ~= 0
+                    d11 = u(gdl1(1), i);
+                end
+                if gdl1(2) ~= 0
+                    d12 = u(gdl1(2), i);
+                end
+                if gdl2(1) ~= 0
+                    d21 = u(gdl2(1), i);
+                end
+                if gdl2(2) ~= 0
+                    d22 = u(gdl2(2), i);
+                end
+                v0 = max(v0, sqrt((d21-d11)^2 + (d22-d12)^2));
+            end
+            
+        end
         
     end % methods Disipador2D
     

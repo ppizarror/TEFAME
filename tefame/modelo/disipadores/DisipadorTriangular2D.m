@@ -16,11 +16,11 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase DisipadorTriangular2D                                             |
+%| Clase DisipadorTriangular2D                                          |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |
-%|  es una  subclase de la clase Disipador2D y  corresponde a           |
-%| la representacion de un disipador viscoso en 2D.                     |
+%| Este archivo contiene la definicion de la Clase DisipadorTriangular2D|
+%| es una  subclase de la clase Disipador2D y corresponde a la represe- |
+%| ntacion de un disipador triangular planar                            |
 %|                                                                      |
 %| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 29/04/2019                                                    |
@@ -54,6 +54,7 @@
 %       definirGDLID(disipadorTriangular2DObj)
 %       disp(disipadorTriangular2DObj)
 %       plot(disipadorTriangular2DObj,tipoLinea,grosorLinea,colorLinea)
+%       actualizarDisipador(disipadorTriangular2DObj,w,carga)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 
@@ -72,8 +73,8 @@ classdef DisipadorTriangular2D < Disipador2D
         T % Matriz de transformacion
         k1 % Paramatro de rigidez del disipador
         k2 % Paramatro de rigidez del disipador
-        ke
-        w
+        ke % Parametro del disipador
+        w % Frecuencia que mas mueve energia en la estructura
     end % properties DisipadorTriangular2D
     
     methods
@@ -110,19 +111,9 @@ classdef DisipadorTriangular2D < Disipador2D
             % Calcula matriz de transformacion dado el angulo
             cosx = disipadorTriangular2DObj.dx / disipadorTriangular2DObj.L;
             cosy = disipadorTriangular2DObj.dy / disipadorTriangular2DObj.L;
-            disipadorTriangular2DObj.T = [cosx, cosy, 0, 0, 0, 0; 0, 0, 0, cosx, cosy, 0];
-            
+            disipadorTriangular2DObj.T = [cosx, cosy, 0, 0, 0, 0; 0, 0, 0, cosx, cosy, 0];  
            
         end % DisipadorTriangular2D constructor
-        
-        function numeroNodos = obtenerNumeroNodos(disipadorTriangular2DObj) %#ok<MANU>
-            % obtenerNumeroNodos: Obtiene el numero de modos del disipador
-            %
-            % numeroNodos = obtenerNumeroNodos(disipadorTriangular2DObj)
-            
-            numeroNodos = 2;
-            
-        end % obtenerNumeroNodos function
         
         function nodosDisipador = obtenerNodos(disipadorTriangular2DObj)
             % nodosDisipador: Obtiene los nodos del disipador
@@ -132,16 +123,6 @@ classdef DisipadorTriangular2D < Disipador2D
             nodosDisipador = disipadorTriangular2DObj.nodosObj;
             
         end % obtenerNodos function
-        
-        function numeroGDL = obtenerNumeroGDL(disipadorTriangular2DObj) %#ok<MANU>
-            % obtenerNumeroGDL: Retorna el numero de grados de libertad del
-            % disipador
-            %
-            % numeroGDL = obtenerNumeroGDL(disipadorTriangular2DObj)
-            
-            numeroGDL = 4;
-            
-        end % obtenerNumeroGDL function
         
         function gdlIDDisipador = obtenerGDLID(disipadorTriangular2DObj)
             % obtenerGDLID: Obtiene los ID de los grados de libertad del
@@ -163,11 +144,15 @@ classdef DisipadorTriangular2D < Disipador2D
             
         end % obtenerMatrizTransformacion function
         
-        function actualizardisipador(disipadorTriangular2DObj, w, ~)
+        function actualizarDisipador(disipadorTriangular2DObj, w, carga) %#ok<INUSD>
+            % actualizarDisipador: Actualiza el disipador con la carga y la
+            % frecuencia
+            %
+            % actualizarDisipador(disipadorTriangular2DObj,w,carga)
             
             disipadorTriangular2DObj.w = w;
             
-        end
+        end % actualizarDisipador function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(disipadorTriangular2DObj)
             % obtenerMatrizRigidezCoordGlobal: Obtiene la matriz de rigidez
@@ -202,10 +187,8 @@ classdef DisipadorTriangular2D < Disipador2D
             % c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorTriangular2DObj)
             
             disipadorTriangular2DObj.Ce = (disipadorTriangular2DObj.k1 - disipadorTriangular2DObj.k2)/...
-                (pi()*disipadorTriangular2DObj.w);
-            
+                (pi()*disipadorTriangular2DObj.w);      
             c_local = disipadorTriangular2DObj.Ce .* [1, -1; -1, 1];
-            
             
         end % obtenerMatrizAmortiguamientoCoordLocal function
         
