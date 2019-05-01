@@ -51,6 +51,7 @@
 %       M_Modelo = obtenerMatrizMasa(analisisObj)
 %       C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)
 %       K_Modelo = obtenerMatrizRigidez(analisisObj)
+%       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
 %       r_Modelo = obtenerVectorInfluencia(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
@@ -283,12 +284,12 @@ classdef ModalEspectral < handle
             % obtenerMatrizRigidez: es un metodo de la clase ModalEspectral
             % que se usa para obtener la matriz de rigidez del modelo
             %
-            % K_Modelo = obtenerMatrizRigidez(analisisObj)
+            % Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
             % Obtiene la matriz de amortiguamiento del modelo
             
             Cdv_Modelo = analisisObj.ensamblarMatrizAmortiguamientoDisipadores();
             
-        end % obtenerMatrizRigidez function
+        end % obtenerMatrizAmortiguamientoDisipadores function
         
         function r_Modelo = obtenerVectorInfluencia(analisisObj)
             % obtenerVectorInfluencia: es un metodo de la clase ModalEspectral

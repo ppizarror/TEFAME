@@ -42,9 +42,11 @@
 %       definirNumeracionGDL(analisisObj)
 %       analizar(analisisObj)
 %       ensamblarMatrizRigidez(analisisObj)
+%       Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
 %       ensamblarVectorFuerzas(analisisObj)
 %       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
 %       K_Modelo = obtenerMatrizRigidez(analisisObj)
+%       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
 %       plot(analisisObj)
@@ -192,8 +194,7 @@ classdef AnalisisEstatico < handle
                         % se suma contribucion metodo indicial
                         if (i_ ~= 0 && j_ ~= 0)
                             analisisObj.Kt(i_, j_) = analisisObj.Kt(i_, j_) + k_globl_elem(r, s);
-                        end
-                        
+                        end                     
                     end % for s
                 end % for r
                 
@@ -201,49 +202,16 @@ classdef AnalisisEstatico < handle
             
         end % ensamblarMatrizRigidez function
         
-        function ensamblarMatrizDisipadores(analisisObj)
-            % ensamblarMatrizRigidez: es un metodo de la clase AnalisisEstatico que se usa para
-            % realizar el armado de la matriz de rigidez del modelo analizado
+        function Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
+            % ensamblarMatrizAmortiguamientoDisipadores: Analisis Estatico no soporta disipadores
+            % ya que estos responden a un caracter dinamico, por tal se retorna
+            % una matriz de ceros
             %
-            % ensamblarMatrizRigidez(analisisObj)
-            % Ensambla la matriz de Rigidez del modelo analizado usando el metodo
-            % indicial
+            % Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
             
-            fprintf('\tEnsamblando matriz de rigidez\n');
-            analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
+            Cd = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
-            % Extraemos los Elementos y Disipadores
-            DisipadoresObjetos = analisisObj.modeloObj.obtenerDisipadores();
-            numeroDisipadores = length(DisipadoresObjetos);
-            
-            % Definimos los GDLID en los elementos
-            for i = 1:numeroDisipadores
-                
-                % Se obienen los gdl del elemento metodo indicial
-                gdl = DisipadoresObjetos{i}.obtenerGDLID();
-                ngdl = DisipadoresObjetos{i}.obtenerNumeroGDL;
-                
-                % Se obtiene la matriz de rigidez global del elemento-i
-                c_globl_elem = DisipadoresObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal(); %#ok<NASGU>
-                
-                % Se calcula el metodo indicial
-                for r = 1:ngdl
-                    for s = 1:ngdl
-                        i_ = gdl(r);
-                        j_ = gdl(s);
-                        
-                        % Si corresponden a grados de libertad -> puntos en (i,j)
-                        % se suma contribucion metodo indicial
-                        if (i_ ~= 0 && j_ ~= 0)
-                            analisisObj.Kt(i_, j_) = analisisObj.Kt(i_, j_) + k_globl_elem(r, s);
-                        end
-                        
-                    end % for s
-                end % for r
-                
-            end % for i
-            
-        end % ensamblarMatrizDisipadores function
+        end % ensamblarMatrizAmortiguamientoDisipadores function
         
         function ensamblarVectorFuerzas(analisisObj)
             % ensamblarVectorFuerzas: es un metodo de la clase AnalisisEstatico que se usa para
@@ -304,6 +272,17 @@ classdef AnalisisEstatico < handle
             K_Modelo = analisisObj.Kt;
             
         end % obtenerMatrizRigidez function
+
+        function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
+            % obtenerMatrizRigidez: es un metodo de la clase que retorna la matriz
+            % de amortiguamiento de los disipadores
+            %
+            % Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
+            % Obtiene la matriz de amortiguamiento de los disipadores del modelo
+
+            Cdv_Modelo = analisisObj.ensamblarMatrizAmortiguamientoDisipadores();
+
+        end % obtenerMatrizAmortiguamientoDisipadores function
         
         function F_Modelo = obtenerVectorFuerzas(analisisObj)
             % obtenerMatrizRigidez: es un metodo de la clase AnalisisEstatico
@@ -331,7 +310,9 @@ classdef AnalisisEstatico < handle
         end % obtenerDesplazamientos function
         
         function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, factor)
-            % Obtiene los limites de deformacion
+            % obtenerLimitesDeformada: Obtiene los limites de deformacion
+            %
+            % [limx,limy,limz] = obtenerLimitesDeformada(analisisObj, factor)
             
             factor = 1.25 * factor;
             limx = [inf, -inf];
@@ -502,19 +483,14 @@ classdef AnalisisEstatico < handle
             % Imprime la informacion guardada en el AnalisisEstatico (analisisObj) en
             % pantalla
             
-            fprintf('Propiedades Analisis:\n');
-            
+            fprintf('Propiedades Analisis Estatico:\n');        
             fprintf('\tMatriz de Rigidez:\n');
-            disp(analisisObj.Kt);
-            
+            disp(analisisObj.Kt);          
             fprintf('\tDeterminante: %f\n\n', det(analisisObj.Kt));
-            
             fprintf('\tVector de Fuerzas:\n');
             disp(analisisObj.F);
-            
             fprintf('\tVector de Desplazamientos:\n');
             disp(analisisObj.u);
-            
             fprintf('-------------------------------------------------\n');
             
         end % disp function
