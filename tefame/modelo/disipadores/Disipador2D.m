@@ -83,9 +83,118 @@ classdef Disipador2D < Disipador
             %
             % numeroGDL = obtenerNumeroGDL(disipador2DObj)
             
-            numeroGDL = 6;
+            numeroGDL = 4;
             
         end % obtenerNumeroGDL function
+        
+        function nodosDisipador = obtenerNodos(disipadorViscoso2DObj)
+            % nodosDisipador: Obtiene los nodos del disipador
+            %
+            % nodosDisipador = obtenerNodos(disipadorViscoso2DObj)
+            
+            nodosDisipador = disipadorViscoso2DObj.nodosObj;
+            
+        end % obtenerNodos function
+        
+        function actualizarDisipador(disipador2DObj, w, carga) %#ok<INUSD>
+            % actualizarDisipador: Actualiza el disipador con la carga y la
+            % frecuencia
+            %
+            % actualizarDisipador(disipador2DObj,w,carga)
+            
+        end % actualizarDisipador function
+        
+        function v0 = calcularv0(disipador2DObj, nodos, carga) %#ok<INUSL>
+            % calcularv0: Calcula v0 a partir de una carga
+            %
+            % v0 = calcularv0(disipador2DObj, nodos, carga)
+            
+            % Calcula v0
+            u = carga.obtenerDesplazamiento();
+            gdl1 = nodos{1}.obtenerGDLIDCondensado();
+            gdl2 = nodos{2}.obtenerGDLIDCondensado();
+            
+            % Recorre cada tiempo y calcula v0
+            v0 = 0;
+            for i = 1:length(u) % Recorre los tiempos
+                % Obtiene los desplazamientos
+                d11 = 0;
+                d12 = 0;
+                d21 = 0;
+                d22 = 0;
+                if gdl1(1) ~= 0
+                    d11 = u(gdl1(1), i);
+                end
+                if gdl1(2) ~= 0
+                    d12 = u(gdl1(2), i);
+                end
+                if gdl2(1) ~= 0
+                    d21 = u(gdl2(1), i);
+                end
+                if gdl2(2) ~= 0
+                    d22 = u(gdl2(2), i);
+                end
+                v0 = max(v0, sqrt((d21 - d11)^2+(d22 - d12)^2));
+            end
+            
+        end % calcularv0 function
+        
+        function definirGDLID(disipadorViscoso2DObj)
+            % definirGDLID: Define los GDLID del disipador
+            %
+            % definirGDLID(disipadorViscoso2DObj)
+            
+            % Se obtienen los nodos extremos
+            nodo1 = disipadorViscoso2DObj.nodosObj{1};
+            nodo2 = disipadorViscoso2DObj.nodosObj{2};
+            
+            % Se obtienen los gdl de los nodos
+            gdlnodo1 = nodo1.obtenerGDLID();
+            gdlnodo2 = nodo2.obtenerGDLID();
+            
+            % Se establecen gdl
+            gdl = [0, 0, 0, 0];
+            gdl(1) = gdlnodo1(1);
+            gdl(2) = gdlnodo1(2);
+            gdl(3) = gdlnodo2(1);
+            gdl(4) = gdlnodo2(2);
+            disipadorViscoso2DObj.gdlID = gdl;
+            
+        end % definirGDLID function
+        
+        function gdl = obtenerGDLIDCondensado(disipadorViscoso2DObj)
+            % obtenerGDLIDCondensado: Obtiene los GDLID condensados del
+            % disipador
+            
+            % Se obtienen los nodos extremos
+            nodo1 = disipadorViscoso2DObj.nodosObj{1};
+            nodo2 = disipadorViscoso2DObj.nodosObj{2};
+            
+            % Se obtienen los gdl de los nodos
+            gdlnodo1 = nodo1.obtenerGDLIDCondensado();
+            gdlnodo2 = nodo2.obtenerGDLIDCondensado();
+            
+            % Se establecen gdl
+            gdl = [0, 0, 0, 0];
+            gdl(1) = gdlnodo1(1);
+            gdl(2) = gdlnodo1(2);
+            gdl(3) = gdlnodo2(1);
+            gdl(4) = gdlnodo2(2);
+            
+        end % obtenerGDLIDCondensado function
+        
+        function plot(disipador2DObj, deformadas, tipoLinea, grosorLinea, colorLinea)
+            % plot: Grafica el disipador
+            %
+            % plot(disipador2DObj,deformadas,tipoLinea,grosorLinea,colorLinea)
+            
+            coord1 = disipador2DObj.nodosObj{1}.obtenerCoordenadas();
+            coord2 = disipador2DObj.nodosObj{2}.obtenerCoordenadas();
+            coord1 = coord1 + deformadas{1}(1:2);
+            coord2 = coord2 + deformadas{2}(1:2);
+            dibujarDisipador(disipador2DObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea)
+            
+        end % plot function
         
     end % methods Disipador2D
     

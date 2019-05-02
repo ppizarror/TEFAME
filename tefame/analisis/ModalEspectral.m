@@ -86,7 +86,6 @@ classdef ModalEspectral < handle
         condMatRot % Matriz de condensacion rotacion
         Mteq % Matriz masa equivalente
         Kteq % Matriz rigidez equivalente
-        Cdveq % Matriz amortiguamiento disipadores equivalente
         Mm % Matriz masa modal
         Km % Matriz rigidez modal
         rm % Vector influencia
@@ -102,7 +101,6 @@ classdef ModalEspectral < handle
         cPenzien % Matriz de amortiguamiento de Wilson-Penzien
         mostrarDeformada % Muestra la posicion no deformada en los graficos
         cargarAnimacion % Carga la animacion del grafico una vez renderizado
-        rar
     end % properties ModalEspectral
     
     methods(Access = public)
@@ -122,13 +120,11 @@ classdef ModalEspectral < handle
             analisisObj.numeroGDL = 0;
             analisisObj.Kt = [];
             analisisObj.Mt = [];
-            analisisObj.Cdv = [];
             analisisObj.u = [];
             analisisObj.F = [];
             analisisObj.analisisFinalizado = false;
             analisisObj.mostrarDeformada = false;
             analisisObj.cargarAnimacion = true;
-            analisisObj.rar = [];
         end % ModalEspectral constructor
         
         function analizar(analisisObj, nModos, betacR, betacP, varargin)
@@ -175,9 +171,6 @@ classdef ModalEspectral < handle
             
             % Se calcula la matriz de masa
             analisisObj.ensamblarMatrizMasa();
-            
-            % Se calcula la matriz de amortiguamiento disipadores
-            analisisObj.ensamblarMatrizAmortiguamientoDisipadores();
             
             % Guarda el resultado para las cargas estaticas
             fprintf('\tCalculando resultado carga estatica\n');
@@ -293,7 +286,7 @@ classdef ModalEspectral < handle
             % K_Modelo = obtenerMatrizRigidez(analisisObj)
             % Obtiene la matriz de amortiguamiento del modelo
             
-            Cdv_Modelo = analisisObj.Cdveq;
+            Cdv_Modelo = analisisObj.ensamblarMatrizAmortiguamientoDisipadores();
             
         end % obtenerMatrizRigidez function
         
@@ -358,7 +351,7 @@ classdef ModalEspectral < handle
             
             phi_Modelo = analisisObj.phin;
             
-        end       
+        end
         
         function plt = plot(analisisObj, varargin)
             % plot: Grafica un modelo
@@ -574,7 +567,7 @@ classdef ModalEspectral < handle
                 
                 % Obtiene el numero de cuadros
                 t = 0;
-                dt = 2 * pi / numCuadros;
+                dt = 2 * pi() / numCuadros;
                 reverse_porcent = '';
                 
                 % Crea la estructura de cuadros
@@ -1020,7 +1013,7 @@ classdef ModalEspectral < handle
             ebe = zeros(1, s);
             fprintf('\tCalculando balance energetico\n');
             for i = 1:s
-                ebe(i) = abs(w_e(i)-e_k(i)-(e_d(i)+e_damor(i))) / abs(w_e(i)) * 100;
+                ebe(i) = abs(w_e(i)-e_k(i)-(e_d(i) + e_damor(i))) / abs(w_e(i)) * 100;
             end
             
             % Graficos
@@ -1166,6 +1159,81 @@ classdef ModalEspectral < handle
             end
             
         end % calcularCurvasEnergia function
+        
+        function e_v = calcularModosEnergia(analisisObj, carga, dispinfo)
+            % calcularModosEnergia: Metodo que calcula las energias
+            % elasticas asociadas a una carga por cada modo y retorna una
+            % matriz ordenada por energia y numero de modos
+            %
+            % w = calcularModosEnergia(analisisObj,carga,dispinfo)
+            
+            if ~exist('dispinfo', 'var')
+                dispinfo = true;
+            end
+            
+            % Verifica que la carga se haya calculado
+            if ~isa(carga, 'CargaDinamica')
+                error('Solo se pueden graficar cargas dinamicas');
+            end
+            c_u = carga.obtenerDesplazamiento();
+            
+            if isempty(c_u)
+                error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
+            end
+            
+            if dispinfo
+                fprintf('Calculando energia elastica por cada modo, Carga %s\n', carga.obtenerEtiqueta());
+                if carga.usoAmortiguamientoRayleigh()
+                    fprintf('\tLa carga se calculo con amortiguamiento Rayleigh\n');
+                else
+                    fprintf('\tLa carga se calculo con amortiguamiento de Wilson-Penzien\n');
+                end
+                
+                if carga.usoDescomposicionModal()
+                    fprintf('\tLa carga se calculo usando descomposicion modal\n');
+                else
+                    fprintf('\tLa carga se calculo sin usar descomposicion modal\n');
+                end
+            end
+            
+            % Obtiene las matrices
+            k = analisisObj.obtenerMatrizRigidez();
+            phi = analisisObj.obtenerMatrizPhi();
+            
+            % Realiza calculos de energia elastica
+            [~, s] = size(c_u);
+            
+            % Energia elastica total
+            e_v = zeros(analisisObj.numModos, 5);
+            for j = 1:analisisObj.numModos % Recorre cada modo
+                e_vsum = 0; % Suma la energia asociada a un modo para todo el tiempo
+                kj = phi(:, j)' * k;
+                for i = 1:s % Recorre el tiempo
+                    vv = c_u(:, i); % Obtiene el vector de desplazamiento para el tiempo i
+                    e_vsum = e_vsum + 0.5 * vv' * phi(:, j) * kj * vv;
+                end
+                e_v(j, 1) = j;
+                e_v(j, 2) = analisisObj.wn(j);
+                e_v(j, 3) = 2 * pi() / analisisObj.wn(j);
+                e_v(j, 4) = abs(e_vsum);
+            end
+            
+            % Normaliza por el maximo
+            e_vmax = max(e_v(:, 4));
+            for j = 1:analisisObj.numModos
+                e_v(j, 4) = e_v(j, 4) / e_vmax;
+            end
+            
+            % Suma
+            e_vsum = sum(e_v(:, 4));
+            for j = 1:analisisObj.numModos
+                e_v(j, 5) = e_v(j, 4) / e_vsum;
+            end
+            
+            % Ordena la matriz
+            e_v = sortrows(e_v, -4);
+            
+        end % calcularModosEnergia function
         
         function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, varargin) %#ok<INUSL>
             % plotTrayectoriaNodo: Grafica la trayectoria de un nodo
@@ -1528,10 +1596,6 @@ classdef ModalEspectral < handle
                 Mrot = rot' * analisisObj.Mt * rot;
                 Meq = T' * Mrot * T;
                 
-                % Se determina matriz de amortiguamiento disipadores condensada (Cdveq)
-                Cdvrot = rot' * analisisObj.Cdv * rot;
-                analisisObj.Cdveq = T' * Cdvrot * T;
-                
                 % Actualiza los grados
                 cngdl = length(Meq);
                 if cngdl < ngdl
@@ -1562,7 +1626,6 @@ classdef ModalEspectral < handle
             else % No condensa grados
                 Meq = analisisObj.Mt;
                 Keq = analisisObj.Kt;
-                analisisObj.Cdveq = analisisObj.Cdv;
                 fprintf('\t\tNo se han condensado grados de libertad\n');
             end
             
@@ -1607,7 +1670,7 @@ classdef ModalEspectral < handle
             
             % Calcula las frecuencias del sistema
             modalWn = sqrt(syseig);
-            modalTn = (modalWn.^-1) .* 2 * pi; % Calcula los periodos
+            modalTn = (modalWn.^-1) .* 2 * pi(); % Calcula los periodos
             
             % Calcula las matrices
             modalMmt = modalPhin' * Meq * modalPhin;
@@ -1850,16 +1913,18 @@ classdef ModalEspectral < handle
             
         end % ensamblarMatrizMasa function
         
-        function ensamblarMatrizAmortiguamientoDisipadores(analisisObj, w, Vo)
+        function Cdv = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
             % ensamblarMatrizRigidez: es un metodo de la clase ModalEspectral que se usa para
             % realizar el armado de la matriz de rigidez del modelo analizado
             %
             % ensamblarMatrizRigidez(analisisObj)
+            %
             % Ensambla la matriz de rigidez del modelo analizado usando el metodo
             % indicial
             
-            fprintf('\tEnsamblando matriz de amortiguamiento disipadores\n');
-            analisisObj.Cdv = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
+            % fprintf('\tEnsamblando matriz de amortiguamiento disipadores\n');
+            ndglc = analisisObj.numeroGDL - analisisObj.gdlCond; % Numero de grados de libertad condensados
+            Cdv = zeros(ndglc, ndglc);
             
             % Extraemos los Elementos
             disipadorObjetos = analisisObj.modeloObj.obtenerDisipadores();
@@ -1869,11 +1934,11 @@ classdef ModalEspectral < handle
             for i = 1:numeroDisipadores
                 
                 % Se obienen los gdl del elemento metodo indicial
-                gdl = disipadorObjetos{i}.obtenerGDLID();
+                gdl = disipadorObjetos{i}.obtenerGDLIDCondensado();
                 ngdl = disipadorObjetos{i}.obtenerNumeroGDL();
                 
                 % Se obtiene la matriz de amortiguamiento global del elemento-i
-                c_globl_elem = disipadorObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal(w,Vo);
+                c_globl_elem = disipadorObjetos{i}.obtenerMatrizAmortiguamientoCoordGlobal();
                 
                 % Se calcula el metodo indicial
                 for r = 1:ngdl
@@ -1884,17 +1949,15 @@ classdef ModalEspectral < handle
                         % Si corresponden a grados de libertad -> puntos en (i,j)
                         % se suma contribucion metodo indicial
                         if (i_ ~= 0 && j_ ~= 0)
-                            analisisObj.Cdv(i_, j_) = analisisObj.Cdv(i_, j_) + c_globl_elem(r, s);
+                            Cdv(i_, j_) = Cdv(i_, j_) + c_globl_elem(r, s);
                         end
                         
                     end % for s
                 end % for r
-                analisisObj.rar = analisisObj.Cdv;
                 
             end % for i
             
         end % ensamblarMatrizAmortiguamientoDisipadores function
-        
         
         function ensamblarVectorFuerzas(analisisObj)
             % ensamblarVectorFuerzas: es un metodo de la clase ModalEspectral que se usa para

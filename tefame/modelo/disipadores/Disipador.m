@@ -47,6 +47,12 @@ classdef Disipador < ComponenteModelo
     properties(Access = private)
     end % properties Disipador
     
+    properties(Access = protected)
+        nodosObj % Cell con los nodos
+        gdlID % Lista con los ID de los grados de libertad
+        T % Matriz de transformacion
+    end % properties Disipador2D
+    
     methods
         
         function disipadorObj = Disipador(etiquetaDisipador)
@@ -63,6 +69,8 @@ classdef Disipador < ComponenteModelo
             
             %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             disipadorObj = disipadorObj@ComponenteModelo(etiquetaDisipador);
+            disipadorObj.gdlID = [];
+            disipadorObj.T = [];
             
         end % Disipador constructor
         
@@ -75,12 +83,12 @@ classdef Disipador < ComponenteModelo
             
         end % obtenerNumeroNodos function
         
-        function nodosDisipador = obtenerNodos(disipadorObj) %#ok<MANU>
+        function nodosDisipador = obtenerNodos(disipadorObj)
             % nodosDisipador: Obtiene los nodos del disipador
             %
             % nodosDisipador = obtenerNodos(disipadorObj)
             
-            nodosDisipador = [];
+            nodosDisipador = disipadorObj.nodosObj;
             
         end % obtenerNodos function
         
@@ -94,33 +102,36 @@ classdef Disipador < ComponenteModelo
             
         end % obtenerNumeroGDL function
         
-        function gdlIDDisipador = obtenerGDLID(disipadorObj) %#ok<MANU>
+        function gdlIDDisipador = obtenerGDLID(disipadorObj)
             % obtenerGDLID: Obtiene los ID de los grados de libertad del
             % disipador
             %
             % gdlIDDisipador = obtenerGDLID(disipadorObj)
             
-            gdlIDDisipador = [];
+            gdlIDDisipador = disipadorObj.gdlID;
             
-        end % obtenerNumeroGDL function
+        end % obtenerGDLID function
         
-        function T = obtenerMatrizTransformacion(disipadorObj) %#ok<MANU>
+        function T = obtenerMatrizTransformacion(disipadorObj)
             % obtenerMatrizTransformacion: Obtiene la matriz de
             % transformacion del disipador
             %
             % T = obtenerMatrizTransformacion(disipadorObj)
             
-            T = [];
+            T = disipadorObj.T;
             
         end % obtenerMatrizTransformacion function
         
-        function k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj) %#ok<MANU>
+        function k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj)
             % obtenerMatrizRigidezCoordGlobal: Obtiene la matriz de rigidez
             % en coordenadas globales
             %
             % k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj)
             
-            k_global = [];
+            % Multiplica por la matriz de transformacion
+            k_local = disipadorObj.obtenerMatrizRigidezCoordLocal();
+            t_theta = disipadorObj.obtenerMatrizTransformacion();
+            k_global = t_theta' * k_local * t_theta;
             
         end % obtenerMatrizRigidezCoordGlobal function
         
@@ -144,13 +155,16 @@ classdef Disipador < ComponenteModelo
             
         end % obtenerMatrizAmortiguamientoCoordLocal function
         
-        function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorObj) %#ok<MANU>
+        function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorObj)
             % obtenerMatrizAmortiguamientoCoordGlobal: Obtiene la matriz de
             % amortiguamiento en coordenadas globales
             %
             % c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorObj)
             
-            c_global = [];
+            % Multiplica por la matriz de transformacion
+            ceq_local = disipadorObj.obtenerMatrizAmortiguamientoCoordLocal();
+            t_theta = disipadorObj.obtenerMatrizTransformacion();
+            c_global = t_theta' * ceq_local * t_theta;
             
         end % obtenerMatrizAmortiguamientoCoordGlobal function
         
