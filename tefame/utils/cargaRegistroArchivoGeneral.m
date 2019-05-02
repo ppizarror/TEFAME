@@ -37,15 +37,15 @@ for i = 1:lu
     d = strsplit(C{i+header}, coldelim);
     for j = 1:lcol
         reg(i, 1+j) = str2double(d{ncol(j)}) * factor;
-    end
+    end % for j
     reg(i, 1) = t;
     t = t + dt;
-end
+end % for i
 
 % Aplica correccion por linea base
 for i = 1:lcol
     reg(:, 1+i) = detrend(reg(:, i+1), 0);
-end
+end % for i
 
 fprintf('OK\n');
 

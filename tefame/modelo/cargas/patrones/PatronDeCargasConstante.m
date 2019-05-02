@@ -96,7 +96,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
                 end
                 
                 patronDeCargasObj.cargas{i}.aplicarCarga(1);
-            end
+            end % for i
             
         end % aplicarCargas function
         

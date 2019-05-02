@@ -212,7 +212,7 @@ classdef Viga2D < Elemento
             
             for i = 1:length(f)
                 viga2DObj.Feq(i) = viga2DObj.Feq(i) + f(i);
-            end
+            end % for i
             
         end % sumarFuerzaEquivalente function
         
@@ -297,7 +297,7 @@ classdef Viga2D < Elemento
                             (coordy * n) * cos(tht) + (coord1(2) + ndy * p) * sin(elementoObj.theta)];
                         elementoObj.graficarLinea(coordi, coordf, tipoLinea, grosorLinea);
                         coordi = coordf;
-                    end
+                    end % for i
                     return;
                 end
             end

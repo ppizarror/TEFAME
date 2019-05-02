@@ -118,7 +118,7 @@ classdef CargaSinusoidal < CargaDinamica
                         end
                     end
                 end
-            end
+            end % for i
             
             % Verifica que el grado sea valido
             if gdl == 0
@@ -131,14 +131,14 @@ classdef CargaSinusoidal < CargaDinamica
             carga = zeros(1, length(t));
             for i = 1:length(t)
                 carga(i) = CargaSinusoidalObj.amplitud * sin(CargaSinusoidalObj.w*t(i));
-            end
+            end % for i
             for i = 1:nt
                 if i < length(t)
                     p(:, i) = rf .* carga(i);
                 else
                     break;
                 end
-            end
+            end % for i
             
             if dispinfo
                 fprintf('\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...

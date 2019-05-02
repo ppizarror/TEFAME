@@ -106,42 +106,64 @@ classdef Biela2D < Elemento
         end % Biela2D constructor
         
         function numeroNodos = obtenerNumeroNodos(biela2DObj) %#ok<MANU>
-            
+            % obtenerNumeroNodos: Obtiene el numero de nodos
+            %
+            % numeroNodos = obtenerNumeroNodos(biela2DObj)
+
             numeroNodos = 2;
             
         end % obtenerNumeroNodos function
         
         function nodosBiela = obtenerNodos(biela2DObj)
-            
+            % obtenerNodos: Obtiene los nodos de la biela
+            %
+            % nodosBiela = obtenerNodos(biela2DObj)
+
             nodosBiela = biela2DObj.nodosObj;
             
         end % obtenerNodos function
         
         function numeroGDL = obtenerNumeroGDL(biela2DObj) %#ok<MANU>
-            
+            % obtenerNumeroGDL: Obtiene el numero de GDL de la biela
+            %
+            % numeroGDL = obtenerNumeroGDL(biela2DObj)
+
             numeroGDL = 4;
             
         end % obtenerNumeroGDL function
         
         function gdlIDBiela = obtenerGDLID(biela2DObj)
-            
+            % obtenerGDLID: Obtiene los GDLID de la biela
+            %
+            % gdlIDBiela = obtenerGDLID(biela2DObj)
+
             gdlIDBiela = biela2DObj.gdlID;
             
         end % gdlIDBiela function
         
         function ae = obtenerAE(biela2DObj)
+            % obtenerAE: Obtiene el A*E de la biela
+            %
+            % ae = obtenerAE(biela2DObj)
             
             ae = biela2DObj.Ao * biela2DObj.Eo;
             
         end % obtenerAE function
         
         function theta = obtenerAngulo(biela2DObj)
-            
+            % obtenerAngulo: Obtiene el angulo de inclinacion de la biela
+            %
+            % theta = obtenerAngulo(biela2DObj)
+
             theta = biela2DObj.theta;
             
         end % obtenerAngulo function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(biela2DObj)
+            % obtenerMatrizRigidezCoordGlobal: Obtiene la matriz de rigidez
+            % en coordenadas globales de la biela
+            %
+            % k_global = obtenerMatrizRigidezCoordGlobal(biela2DObj)
             
             % Obtiene la matriz de coordenadas locales
             k_local = biela2DObj.obtenerMatrizRigidezCoordLocal();
@@ -244,7 +266,7 @@ classdef Biela2D < Elemento
                 if (biela2DObj.gdlID(i) == 0)
                     biela2DObj.TcargaReacc(i) = biela2DObj.TcargaReacc(i) + f(i);
                 end
-            end
+            end % for i
             
         end % sumarCargaTemperaturaReaccion function
         
@@ -318,7 +340,7 @@ classdef Biela2D < Elemento
         function disp(biela2DObj)
             
             % Imprime propiedades
-            fprintf('Propiedades Biela 2D:\n\t');
+            fprintf('Propiedades biela 2D:\n\t');
             disp@ComponenteModelo(biela2DObj);
             fprintf('\t\tLargo: %s\tArea: %s\tE: %s\n', pad(num2str(biela2DObj.L), 12), ...
                 pad(num2str(biela2DObj.Ao), 10), pad(num2str(biela2DObj.Eo), 10));

@@ -79,7 +79,7 @@ classdef CargaRegistroSismico < CargaDinamica
                 if direccion(k) ~= 0 && isempty(reg)
                     error('Registro asociado a direccion %d no puede ser nulo', k);
                 end
-            end
+            end % for k
             
             % Calcula el dt
             for k = 1:length(direccion)
@@ -88,7 +88,7 @@ classdef CargaRegistroSismico < CargaDinamica
                     dt = reg(2, 1) - reg(1, 1);
                     break;
                 end
-            end
+            end % for k
             
             if dt < 0
                 error('dt del registro invalido');
@@ -127,12 +127,12 @@ classdef CargaRegistroSismico < CargaDinamica
                 nct = min(length(reg), nt); % Numero de tiempos en los que se aplica la carga
                 for i = 1:nct
                     p(:, i) = p(:, i) - m * r(:, k) .* reg(i, 2);
-                end
+                end % for i
                 if dispinfo
                     fprintf('\t\t\t\tLa carga de la direccion %d es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
                         k, i, nct, (i / nct)*100);
                 end
-            end
+            end % for k
             
         end % calcularCarga function
         
@@ -157,8 +157,8 @@ classdef CargaRegistroSismico < CargaDinamica
                 nct = min(length(reg), nt); % Numero de tiempos en los que se aplica la carga
                 for i = 1:nct
                     a(:, i) = a(:, i) + cargaRegistroSismicoObj.rf(:, k) .* reg(i, 2);
-                end
-            end
+                end % for i
+            end % for k
             cargaRegistroSismicoObj.sol_a = a;
             
         end % guardarAceleracion function

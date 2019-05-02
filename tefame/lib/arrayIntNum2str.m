@@ -10,7 +10,7 @@ textCell(1) = {'['};
 for i = 1:num
     textCell(2*i) = {pad(num2str(a(i), '%d'), 10*(i < num))};
     textCell(1+2*i) = {' '};
-end % for
+end % for i
 
 textCell(2*num+1) = {']'};
 end

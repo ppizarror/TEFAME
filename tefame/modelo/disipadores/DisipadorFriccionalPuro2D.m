@@ -16,7 +16,7 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase DisipadorFriccionalPuro2D                                             |
+%| Clase DisipadorFriccionalPuro2D                                      |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |
 %|  es una  subclase de la clase Disipador2D y  corresponde a           |

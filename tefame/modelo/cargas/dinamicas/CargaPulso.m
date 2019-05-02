@@ -116,7 +116,7 @@ classdef CargaPulso < CargaDinamica
                         end
                     end
                 end
-            end
+            end % for i
             
             % Verifica que el grado sea valido
             if gdl == 0
@@ -132,7 +132,7 @@ classdef CargaPulso < CargaDinamica
                 else
                     break;
                 end
-            end
+            end % for i
             
             if dispinfo
                 fprintf('\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...

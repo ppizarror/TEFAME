@@ -44,7 +44,7 @@ for i = 1:(N + 1)
     j = N + 1 + i;
     nodos{i} = Nodo(sprintf('N%d', i), 2, [0, h * (i - 1)]');
     nodos{j} = Nodo(sprintf('N%d', j), 2, [b, h * (i - 1)]');
-end
+end % for i
 
 % Agregamos los nodos al modelo
 modeloObj.agregarNodos(nodos);
@@ -62,7 +62,7 @@ for i = 1:N
     n3 = N + i + 2;
     n4 = i + 1;
     elementos{i} = Membrana(sprintf('MEM%d', i), nodos{n1}, nodos{n2}, nodos{n3}, nodos{n4}, E, nu, t);
-end
+end % for i
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);

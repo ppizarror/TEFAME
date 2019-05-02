@@ -257,7 +257,7 @@ classdef VigaColumna2D < Elemento
             
             for i = 1:length(f)
                 vigaColumna2DObj.Feq(i) = vigaColumna2DObj.Feq(i) + f(i);
-            end
+            end % for i
             
         end % sumarFuerzaEquivalente function
         

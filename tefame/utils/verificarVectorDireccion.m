@@ -10,7 +10,7 @@ for i=1:nv
         y = false;
         return;
     end
-end
+end % for i
 
 % Chequea el largo
 y = y && nv <= ndg;

@@ -41,7 +41,7 @@ for i = 1:(N + 1)
     j = N + 1 + i; % Nodo superior a <i>
     nodos{i} = Nodo(sprintf('N%d', i), 2, [b * (i - 1), 0]');
     nodos{j} = Nodo(sprintf('N%d', j), 2, [b * (i - 1), h]');
-end
+end % for i
 
 % Agregamos los nodos al modelo
 modeloObj.agregarNodos(nodos);
@@ -59,7 +59,7 @@ for i = 1:N
     n3 = N + i + 2;
     n4 = N + i + 1;
     elementos{i} = Membrana(sprintf('MEM%d', i), nodos{n1}, nodos{n2}, nodos{n3}, nodos{n4}, E, nu, t);
-end
+end % for i
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
@@ -76,7 +76,7 @@ modeloObj.agregarRestricciones(restricciones);
 cargas = cell(N, 1);
 for i = 1:N
     cargas{i} = CargaMembranaDistribuida(sprintf('DV100KN V @%d', i), elementos{i}, 4, 3, -100, 0, -100, 1);
-end
+end % for i
 
 % Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
