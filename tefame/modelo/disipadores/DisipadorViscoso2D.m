@@ -68,12 +68,9 @@ classdef DisipadorViscoso2D < Disipador2D
         alpha % Paramatro del disipador
         Cd % Parametro del disipador
         w % Frecuencia del modo que controla la estructura
-<<<<<<< HEAD
         Vo % Desp
         Carga
-=======
         v0 % Desp
->>>>>>> 1d41014f31c307e346b20fe19f609d7f3c8636f9
     end % properties DisipadorViscoso2D
     
     methods
@@ -131,15 +128,12 @@ classdef DisipadorViscoso2D < Disipador2D
             
         end % obtenerMatrizRigidezCoordLocal function
         
-<<<<<<< HEAD
         function actualizarDisipador(disipadorViscoso2DObj, w, Carga)
             disipadorViscoso2DObj.w = w;
             disipadorViscoso2DObj.Carga = Carga;
         end
         
         
-=======
->>>>>>> 1d41014f31c307e346b20fe19f609d7f3c8636f9
         function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)
             % obtenerMatrizAmortiguamientoCoordLocal: Obtiene la matriz de
             % armortiguamiento en coordenadas locales
