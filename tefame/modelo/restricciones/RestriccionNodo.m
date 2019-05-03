@@ -57,25 +57,23 @@ classdef RestriccionNodo < ComponenteModelo
         
         function restriccionNodoObj = RestriccionNodo(etiquetaRestriccion, nodoObjeto, gdlRestringidosNodo, varargin)
             % RestriccionNodo: es el constructor de la clase RestriccionNodo
-            %
-            % restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo)
             % Crea un objeto de la clase RestriccionNodo, con un identificador
             % unico (etiquetaRestriccion), indicando a que nodo restringe (nodoObjeto)
             % y cuales son los grados de libertad que se restringen (gdlRestringidosNodo)
             %
-            % restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo, valoresRestrinccionNodo)
+            % restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo,varargin)
+            %
             % Crea un objeto de la clase RestriccionNodo, con un identificador
             % unico (etiquetaRestriccion), indicando a que nodo restringe (nodoObjeto)
             % , cuales son los grados de libertad que se restringen (gdlRestringidosNodo)
             
             if nargin == 0
-                % If no argument input we create empty arguments
                 etiquetaRestriccion = '';
                 nodoObjeto = [];
                 gdlRestringidosNodo = [];
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
+            % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             restriccionNodoObj = restriccionNodoObj@ComponenteModelo(etiquetaRestriccion);
             
             % Se guarda el nodo a restringir, y se  coloca como vector
@@ -94,6 +92,7 @@ classdef RestriccionNodo < ComponenteModelo
             % se usa para aplicar la restriccion en los nodos
             %
             % aplicarRestriccion(restriccionNodoObj)
+            %
             % Aplica la restriccion especificada en RestriccionNodo (restriccionNodoObj)
             % sobre el Nodo en los GDL indicados
             
@@ -114,6 +113,7 @@ classdef RestriccionNodo < ComponenteModelo
             % imprimir en command Window la informacion del RestriccionNodo
             %
             % disp(restriccionNodoObj)
+            %
             % Imprime la informacion guardada en la restriccion (restriccionNodoObj)
             % en pantalla
             

@@ -1,6 +1,6 @@
 function y = verificarVectorDireccion(vec, ndg)
-%verificarVectorDireccion: Verifica que un vector direccion tenga sentido y
-%este bien definido
+% verificarVectorDireccion: Verifica que un vector direccion tenga sentido y
+% este bien definido
 
 % Chequea que solo existan 0 o 1
 y = true;

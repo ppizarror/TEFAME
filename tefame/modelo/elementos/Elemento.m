@@ -70,6 +70,7 @@ classdef Elemento < ComponenteModelo
             % Elemento: es el constructor de la clase Elemento
             %
             % elementoObj = Elemento(etiquetaElemento)
+            %
             % Crea un objeto de la clase Elemento, con un identificador unico
             % (etiquetaElemento)
             
@@ -78,7 +79,7 @@ classdef Elemento < ComponenteModelo
                 etiquetaElemento = '';
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
+            % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             elementoObj = elementoObj@ComponenteModelo(etiquetaElemento);
             elementoObj.graficaDeformadaElem = true;
             
@@ -89,6 +90,7 @@ classdef Elemento < ComponenteModelo
             % obtener el numero de nodos que tiene el Elemento
             %
             % numeroNodos = obtenerNumeroNodos(elementoObj)
+            %
             % Entrega el numero de nodos (numeroNodos) que tiene el Elemento
             % (elementoObj)
             
@@ -101,6 +103,7 @@ classdef Elemento < ComponenteModelo
             % obtener un arreglo con los nodos que tiene el Elemento
             %
             % nodosElemento = obtenerNumeroNodos(elementoObj)
+            %
             % Entrega un arreglo con los Nodos (nodosElemento) que tiene el Elemento
             % (elementoObj)
             
@@ -113,6 +116,7 @@ classdef Elemento < ComponenteModelo
             % obtener el numero total de grados de libertad que tiene el Elemento
             %
             % numeroGDL = obtenerNumeroGDL(elementoObj)
+            %
             % Entrega el numero de GDL (numeroGDL) que tiene el Elemento (elementoObj)
             
             numeroGDL = [];
@@ -125,6 +129,7 @@ classdef Elemento < ComponenteModelo
             % asociados al Elemento
             %
             % gdlID = obtenerGDL(elementoObj)
+            %
             % Entrega un arreglo con los ID de los GDL (gdlID) que tiene el Elemento
             % (elementoObj)
             
@@ -138,6 +143,7 @@ classdef Elemento < ComponenteModelo
             % sistema de coordenadas globales del sistema estructural o Modelo
             %
             % k_global = obtenerMatrizRigidezCoordGlobal(elementoObj)
+            %
             % Entrega la matriz de rigidez (k_global) que tiene el Elemento (elementoObj)
             %  en el sistema de coordenadas globales
             
@@ -151,6 +157,7 @@ classdef Elemento < ComponenteModelo
             % sistema de coordenadas locales del elemento
             %
             % k_local = obtenerMatrizRigidezCoordLocal(elementoObj)
+            %
             % Entrega la matriz de rigidez (k_local)  en el sistema de coordenadas
             % local que tiene el Elemento (elementoObj)
             
@@ -165,6 +172,7 @@ classdef Elemento < ComponenteModelo
             % estructural
             %
             % fr_global = obtenerFuerzaResistenteCoordGlobal(elementoObj)
+            %
             % Entrega el vector con las fuerzas resistentes (fr_global) que tiene
             % elemento (elementoObj) en el sistema de coordenadas globales la
             % estructura
@@ -179,6 +187,7 @@ classdef Elemento < ComponenteModelo
             % en el sistema de coordenadas locales del elemento
             %
             % fr_local = obtenerFuerzaResistenteCoordLocal(elementoObj)
+            %
             % Entrega el vector con las fuerzas resistentes (fr_local) que tiene
             % elemento (elementoObj) en el sistema de coordenadas locales del
             % elemento
@@ -193,6 +202,7 @@ classdef Elemento < ComponenteModelo
             % elementos para realizar posteriormente el analisis
             %
             % inicializar(elementoObj)
+            %
             % Inicializa los diferentes componetes del Elemento (elementoObj),
             % para poder preparar estos para realizar el analisis
             
@@ -203,6 +213,7 @@ classdef Elemento < ComponenteModelo
             % definir el vector con los ID de los GDL del elemento
             %
             % definirGDLID(elementoObj)
+            %
             % Define los ID de los grados de libertad del Elemento (elementoObj)
             
         end % definirGDLID function
@@ -213,6 +224,7 @@ classdef Elemento < ComponenteModelo
             % elemento al nodo
             %
             % agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)
+            %
             % Agrega al vector de reacciones del Nodo (nodoObj), el vector de
             % fuerzas resistente de un elemento entregados (cargaNodo)
             
@@ -234,6 +246,7 @@ classdef Elemento < ComponenteModelo
             % para guardar en un archivo de salida las propiedades del Elemento
             %
             % guardarPropiedades(elementoObj,archivoSalidaHandle)
+            %
             % Guarda las propiedades de los Elemento (elementoObj), en un archivo
             % de salida (archivoSalidaHandle)
             
@@ -245,6 +258,7 @@ classdef Elemento < ComponenteModelo
             % Elemento
             %
             % guardarEsfuerzosInternos(elementoObj,archivoSalidaHandle)
+            %
             % Guarda los esfuerzos internos de los Elemento (elementoObj), en un
             % archivo de salida (archivoSalidaHandle)
             
@@ -260,6 +274,8 @@ classdef Elemento < ComponenteModelo
         function activarGraficoDeformada(elementoObj)
             % activarGraficoDeformada: Activa el grafico de la
             % deformada del elemento
+            %
+            % activarGraficoDeformada(elementoObj)
             
             elementoObj.graficaDeformadaElem = true;
             
@@ -268,6 +284,8 @@ classdef Elemento < ComponenteModelo
         function desactivarGraficoDeformada(elementoObj)
             % desactivarGraficoDeformada: Desactiva el grafico de la
             % deformada del elemento
+            %
+            % desactivarGraficoDeformada(elementoObj)
             
             elementoObj.graficaDeformadaElem = false;
             
@@ -276,6 +294,8 @@ classdef Elemento < ComponenteModelo
         function def = graficaDeformada(elementoObj)
             % graficaDeformada: Indica si el objeto grafica su deformada o
             % no
+            %
+            % def = graficaDeformada(elementoObj)
             
             def = elementoObj.graficaDeformadaElem;
             
@@ -301,6 +321,7 @@ classdef Elemento < ComponenteModelo
             % command Window la informacion del Elemento
             %
             % disp(elementoObj)
+            %
             % Imprime la informacion guardada en el Elemento (elementoObj) en
             % pantalla
             

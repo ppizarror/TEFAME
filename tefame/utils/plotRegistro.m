@@ -1,5 +1,5 @@
 function plotRegistro(registro, titulo, unidady, tmin, tmax)
-%plotRegistro: Es una funcion que grafica un registro sismico
+% plotRegistro: Es una funcion que grafica un registro sismico
 %
 % plotRegistro(registro,titulo,unidady,tmin,tmax)
 

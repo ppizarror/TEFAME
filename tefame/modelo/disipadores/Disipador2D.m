@@ -55,6 +55,7 @@ classdef Disipador2D < Disipador
             % Disipador2D: es el constructor de la clase Disipador2D
             %
             % disipador2DObj = Disipador2D(etiquetaDisipador)
+            %
             % Crea un objeto de la clase Disipador2D, con un identificador unico
             % (etiquetaDisipador)
             
@@ -63,7 +64,7 @@ classdef Disipador2D < Disipador
                 etiquetaDisipador = '';
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
+            % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             disipador2DObj = disipador2DObj@Disipador(etiquetaDisipador);
             
         end % Disipador2D constructor

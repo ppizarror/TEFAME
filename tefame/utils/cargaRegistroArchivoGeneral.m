@@ -1,6 +1,6 @@
 function reg = cargaRegistroArchivoGeneral(archivo, linedelim, coldelim, header, footer, ncol, dt, factor)
-%cargaRegistroArchivoGeneral: Carga un archivo sismico y retorna una matriz del
-%tipo [t1, a1; t2, a2; ...]
+% cargaRegistroArchivoGeneral: Carga un archivo sismico y retorna una matriz del
+% tipo [t1, a1; t2, a2; ...]
 %
 % reg = cargaRegistroSismico(archivo,linedelim,coldelim,header,ncol,dt,factor)
 

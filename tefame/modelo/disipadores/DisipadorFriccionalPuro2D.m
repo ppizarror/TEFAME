@@ -145,6 +145,8 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
         
         function disp(disipadorFriccionalPuro2DObj)
             % disp: Imprime propiedades del disipador friccional puro
+            %
+            % disp(disipadorFriccionalPuro2DObj)
             
             fprintf('Propiedades Disipador Friccional Puro 2D:\n\t');
             disp@ComponenteModelo(disipadorFriccionalPuro2DObj);

@@ -73,13 +73,16 @@ classdef Biela3D < Elemento
     methods
         
         function biela3DObj = Biela3D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial)
+            % Biela3D: Constructor de clase, genera una biela en tres dimensiones
+            %
+            % biela3DObj = Biela3D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial)
             
             % Si no hay argumentos completa con ceros
             if nargin == 0
                 etiquetaBiela = '';
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase Elemento
+            % Llamamos al constructor de la SuperClass que es la clase Elemento
             biela3DObj = biela3DObj@Elemento(etiquetaBiela);
             
             biela3DObj.nodosObj = {nodo1Obj; nodo2Obj};

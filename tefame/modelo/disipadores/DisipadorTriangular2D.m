@@ -142,11 +142,13 @@ classdef DisipadorTriangular2D < Disipador2D
             disipadorTriangular2DObj.Ce = (disipadorTriangular2DObj.k1 - disipadorTriangular2DObj.k2)/...
                 (pi()*disipadorTriangular2DObj.w);      
             c_local = disipadorTriangular2DObj.Ce .* [1, -1; -1, 1];
-            
+
         end % obtenerMatrizAmortiguamientoCoordLocal function
         
         function disp(disipadorTriangular2DObj)
             % disp: Imprime propiedades del disipador triangular
+            %
+            % disp(disipadorTriangular2DObj)
             
             fprintf('Propiedades Disipador Triangular 2D:\n\t');
             disp@ComponenteModelo(disipadorTriangular2DObj);

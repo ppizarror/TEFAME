@@ -51,11 +51,11 @@
 classdef PatronDeCargas < ComponenteModelo
     
     properties(Access = private)
-    end % properties PatronDeCargas
+    end % properties private PatronDeCargas
     
     properties(Access = public)
         patronEsDinamico
-    end
+    end % properties public PatronDeCargas
     
     methods
         
@@ -63,15 +63,15 @@ classdef PatronDeCargas < ComponenteModelo
             % PatronDeCargas: es el constructor de la clase PatronDeCargas
             %
             % patronDeCargasObj = PatronDeCargas(etiquetaPatronDeCargas)
+            %
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
             % (etiquetaPatronDeCargas)
             
             if nargin == 0
-                % If no argument input we create empty arguments
                 etiquetaPatronDeCargas = '';
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
+            % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             patronDeCargasObj = patronDeCargasObj@ComponenteModelo(etiquetaPatronDeCargas);
             
         end % PatronDeCargas constructor
@@ -98,6 +98,7 @@ classdef PatronDeCargas < ComponenteModelo
             % command Window la informacion del Patron de Cargas
             %
             % disp(patronDeCargasObj)
+            %
             % Imprime la informacion guardada en el Patron de Cargas (patronDeCargasObj)
             % en pantalla
             

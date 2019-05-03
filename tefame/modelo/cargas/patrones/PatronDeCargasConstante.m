@@ -58,6 +58,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % PatronDeCargasConstante: es el constructor de la clase PatronDeCargas
             %
             % patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arregloCargas)
+            %
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
             % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)
             % a aplicar en el modelo
@@ -83,6 +84,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
             % aplicarCargas(patronDeCargasObj)
+            %
             % Aplica las cargas que estan guardadas en el PatronDeCargasConstante
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
             % y elementos
@@ -96,6 +98,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
                 end
                 
                 patronDeCargasObj.cargas{i}.aplicarCarga(1);
+
             end % for i
             
         end % aplicarCargas function
@@ -105,6 +108,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % command Window la informacion del Patron de Cargas
             %
             % disp(patronDeCargasObj)
+            %
             % Imprime la informacion guardada en el Patron de Cargas Constante (patronDeCargasObj)
             % en pantalla
             

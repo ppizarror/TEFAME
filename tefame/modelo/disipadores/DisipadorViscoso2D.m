@@ -154,6 +154,8 @@ classdef DisipadorViscoso2D < Disipador2D
         
         function disp(disipadorViscoso2DObj)
             % disp: Imprime propiedades del disipador viscoso
+            %
+            % disp(disipadorViscoso2DObj)
             
             fprintf('Propiedades Disipador Viscoso 2D:\n\t');
             disp@ComponenteModelo(disipadorViscoso2DObj);

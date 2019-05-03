@@ -96,7 +96,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Guarda el analisis
             patronDeCargasObj.analisisObj = analisisObj;
             
-            %Descomposicion modal
+            % Descomposicion modal
             patronDeCargasObj.desModal = r.desmodal;
             
         end % PatronDeCargasDinamico constructor

@@ -59,6 +59,7 @@ classdef Disipador < ComponenteModelo
             % Disipador: es el constructor de la clase Disipador
             %
             % disipadorObj = Disipador(etiquetaDisipador)
+            %
             % Crea un objeto de la clase Disipador, con un identificador unico
             % (etiquetaDisipador)
             
@@ -67,7 +68,7 @@ classdef Disipador < ComponenteModelo
                 etiquetaDisipador = '';
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
+            % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             disipadorObj = disipadorObj@ComponenteModelo(etiquetaDisipador);
             disipadorObj.gdlID = [];
             disipadorObj.T = [];
@@ -213,7 +214,7 @@ classdef Disipador < ComponenteModelo
         end % dibujarDisipador function
         
         function disp(disipadorObj)
-            % dps: Imprime propiedades del disipador
+            % disp: Imprime propiedades del disipador
             
             disp@ComponenteModelo(disipadorObj);
             

@@ -1,6 +1,6 @@
 function s = processTimeStr(tini)
-%processTimeStr: Retorna un string con el tiempo parseado en segundos o
-%minutos segun corresponda
+% processTimeStr: Retorna un string con el tiempo parseado en segundos o
+% minutos segun corresponda
 
 tot = cputime - tini;
 min = floor(tot/60);

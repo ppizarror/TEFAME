@@ -52,6 +52,7 @@ classdef Carga < ComponenteModelo
             % Carga: es el constructor de la clase Carga
             %
             % cargaObj = Carga(etiquetaCarga)
+            %
             % Crea un objeto de la clase Carga, con un identificador unico
             % (etiquetaCarga)
             
@@ -69,6 +70,7 @@ classdef Carga < ComponenteModelo
             % la carga
             %
             % aplicarCarga(cargaObj)
+            %
             % Aplica el carga que estan guardada en el componente que corresponda
             
         end % aplicarCarga function
@@ -79,6 +81,7 @@ classdef Carga < ComponenteModelo
             % componente que corresponda
             %
             % disp(cargaObj)
+            %
             % Imprime la informacion guardada en la carga (cargaObj) en pantalla
             
             disp@ComponenteModelo(cargaObj);

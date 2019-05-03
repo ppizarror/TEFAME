@@ -56,6 +56,7 @@ classdef CargaVigaPuntual < Carga
             % CargaVigaPuntual: es el constructor de la clase CargaVigaPuntual
             %
             % cargaVigaPuntualObj=CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
+            %
             % Crea un objeto de la clase CargaVigaPuntual, en donde toma como atributo
             % el objeto a aplicar la carga, la distancia como porcentaje
             % del largo del elemento con respecto al primer nodo y el
@@ -122,6 +123,7 @@ classdef CargaVigaPuntual < Carga
             % elemento
             %
             % disp(cargaVigaPuntualObj)
+            %
             % Imprime la informacion guardada en la carga puntual de la
             % Viga (cargaVigaPuntualObj) en pantalla
             

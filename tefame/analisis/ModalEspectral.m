@@ -814,7 +814,7 @@ classdef ModalEspectral < handle
             % Calcula el momento
             [Cortante, Momento, CBplot, MBplot, hplot] = analisisObj.calcularMomentoCorteBasalAcel(acel);
             
-            %Graficos
+            % Graficos
             [~, s] = size(acel);
             t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
             dplot = false; % Indica si se realizo algun grafico
@@ -957,7 +957,7 @@ classdef ModalEspectral < handle
                 fprintf('\t\tLa carga se calculo sin disipadores\n');
             end
             
-            %Graficos
+            % Graficos
             [~, s] = size(c_u);
             t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
             

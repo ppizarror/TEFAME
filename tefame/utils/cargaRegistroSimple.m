@@ -1,6 +1,6 @@
 function reg = cargaRegistroSimple(archivo, dt, varargin)
-%cargaRegistroSimple: Carga un registro simple de un archivo sin encabezado
-%que tiene una sola columna con datos
+% cargaRegistroSimple: Carga un registro simple de un archivo sin encabezado
+% que tiene una sola columna con datos
 %
 % reg = cargaRegistroSimple(archivo,dt,varargin)
 %

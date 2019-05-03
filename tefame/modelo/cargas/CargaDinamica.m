@@ -83,7 +83,8 @@ classdef CargaDinamica < ComponenteModelo
         function cargaDinamicaObj = CargaDinamica(etiquetaCarga)
             % CargaDinamica: es el constructor de la clase CargaDinamica
             %
-            % cargaObj = Carga(etiquetaCarga)
+            % cargaDinamicaObj = CargaDinamica(etiquetaCarga)
+            %
             % Crea un objeto de la clase CargaDinamica, con un identificador unico
             % (etiquetaCarga)
             
@@ -250,6 +251,8 @@ classdef CargaDinamica < ComponenteModelo
         function r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
             % usoAmortiguamientoRayleighh: Indica que los resultados se
             % guardaron o no con la disipasion de Rayleigh
+            %
+            % r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
             
             r = cargaDinamicaObj.cRayleigh;
             
@@ -258,6 +261,8 @@ classdef CargaDinamica < ComponenteModelo
         function disipador = usoDeDisipadores(cargaDinamicaObj)
             % usoDeDisipadores: Indica que la carga se calculo usando
             % disipadores
+            %
+            % disipador = usoDeDisipadores(cargaDinamicaObj)
             
             disipador = cargaDinamicaObj.usoDisipador;
             
@@ -266,6 +271,8 @@ classdef CargaDinamica < ComponenteModelo
         function dm = usoDescomposicionModal(cargaDinamicaObj)
             % usoDescomposicionModal: Indica que la carga se calculo usando
             % descomposicion modal
+            %
+            % dm = usoDescomposicionModal(cargaDinamicaObj)
             
             dm = cargaDinamicaObj.desModal;
             
@@ -276,6 +283,7 @@ classdef CargaDinamica < ComponenteModelo
             % command Window la informacion de la carga
             %
             % disp(cargaDinamicaObj)
+            %
             % Imprime la informacion guardada en la carga (cargaDinamicaObj) en pantalla
             
             disp@ComponenteModelo(cargaDinamicaObj);

@@ -371,7 +371,7 @@ classdef AnalisisEstatico < handle
         end % obtenerLimitesDeformada function
         
         function plt = plot(analisisObj, varargin)
-            %PLOTMODELO Grafica un modelo
+            % plt: Grafica el modelo
             %
             % plt = plot(varargin)
             %

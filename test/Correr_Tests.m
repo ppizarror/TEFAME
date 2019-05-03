@@ -30,7 +30,7 @@ clc;
 fprintf('CORRIENDO TESTS\n');
 
 %% Test modal espectral
-%Modelo_DinamicaAvanzada;
+Modelo_DinamicaAvanzada;
 
 %% Test analisis estatico
 Test_Membrana1;

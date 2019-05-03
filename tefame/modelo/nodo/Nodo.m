@@ -84,6 +84,7 @@ classdef Nodo < ComponenteModelo
             % Nodo: es el constructor de la clase Nodo
             %
             % nodoObj = Nodo(etiquetaNodo,nGDLNodo,coordenadasNodo)
+            %
             % Crea un objeto de la clase Nodo, con un identificador unico (etiquetaNodo),
             % con el el numero de GDL (nGDLNodo) y un vector que contine las
             % coordenadas globales del nodo (coordenadasNodo)
@@ -95,7 +96,7 @@ classdef Nodo < ComponenteModelo
                 coordenadasNodo = [];
             end % if
             
-            %Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
+            % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             nodoObj = nodoObj@ComponenteModelo(etiquetaNodo);
             
             % Guardamos el numero de grados de libertad (GDL) que tiene el nodo
@@ -128,6 +129,7 @@ classdef Nodo < ComponenteModelo
             % obtener el numero de GDL que tiene el nodo
             %
             % nGDLNodo = obtenerNumeroGDL(nodoObj)
+            %
             % Entrega el numero de grados de libertad (nGDLNodo) que tiene el
             % nodo (nodoObj)
             
@@ -141,6 +143,7 @@ classdef Nodo < ComponenteModelo
             % coordenadas global
             %
             % coordenadasNodo = obtenerCoordenadas(nodoObj)
+            %
             % Entrega el vector con las coordenadas (coordenadasNodo) que tiene
             % el Nodo (nodoObj) en el sistema de coordenadas global
             
@@ -153,6 +156,7 @@ classdef Nodo < ComponenteModelo
             % obtener los ID de los GDL que tiene el Nodo
             %
             % gdlIDNodo = obtenerGDLID(nodoObj)
+            %
             % Entrega el vector con los ID de los GDL (gdlIDNodo) que tiene el
             % Nodo (nodoObj)
             
@@ -163,9 +167,10 @@ classdef Nodo < ComponenteModelo
         function gdlIDNodoCondensado = obtenerGDLIDCondensado(nodoObj)
             % obtenerGDLIDCondensado: es un metodo de la clase Nodo que se usa para
             % obtener los ID de los GDL que tiene el Nodo, una vez se
-            % llev� a cabo el proceso de condensacion
+            % llevo a cabo el proceso de condensacion
             %
             % gdlIDNodo = obtenerGDLID(nodoObj)
+            %
             % Entrega el vector con los ID de los GDL (gdlIDNodo) que tiene el
             % Nodo (nodoObj)
             
@@ -179,6 +184,7 @@ classdef Nodo < ComponenteModelo
             % el Nodo despues de aplicar todos los patrones de carga
             %
             % cargasResultantesNodo = obtenerCargasResultantes(nodoObj)
+            %
             % Entrega el vector con las cargas resultantes (cargasResultantesNodo)
             % que son finalmente aplicads sobre cada Nodo (nodoObj)
             
@@ -192,6 +198,7 @@ classdef Nodo < ComponenteModelo
             % de realizar el analisis
             %
             % desplazmientosNodo = obtenerDesplazamientos(nodoObj)
+            %
             % Entrega el vector con los desplazamientos o rotaciones (desplazmientosNodo)
             % que sufrio el Nodo (nodoObj) debido a la aplicacion de los patrones
             % de carga
@@ -206,6 +213,7 @@ classdef Nodo < ComponenteModelo
             % realizar el analisis
             %
             % reaccionesNodo = obtenerReacciones(nodoObj)
+            %
             % Entrega el vector con las reacciones (reaccionesNodo), fuerzas o
             % momentos, que se obtinen el Nodo (nodoObj) debido a las
             % restricciones del Modelo
@@ -221,6 +229,7 @@ classdef Nodo < ComponenteModelo
             % corresponden a los mismos que se enumeraron en un principio
             %
             % definirGDLID(nodoObj,gdlIDNodo)
+            %
             % Guarda el ID que se fueron asignados a los grados de libertad (gdlIDNodo)
             % que tiene el Nodo (nodoObj)
             
@@ -235,6 +244,7 @@ classdef Nodo < ComponenteModelo
             % condensa el modelo
             %
             % definirGDLID(nodoObj,gdlIDNodoCondensado)
+            %
             % Guarda el ID que se fueron asignados a los grados de libertad (gdlIDNodo)
             % que tiene el Nodo (nodoObj) una vez se aplica la condensacion
             
@@ -245,6 +255,8 @@ classdef Nodo < ComponenteModelo
         function y = tipoApoyoRestringido(nodoObj)
             % tipoApoyoRestringido: el nodo esta completamente restringido
             % al movimiento
+            %
+            % y = tipoApoyoRestringido(nodoObj)
             
             y = isArrayEqual(nodoObj.gdlID, 0) || isArrayEqual(nodoObj.gdlID, -1);
             
@@ -256,6 +268,7 @@ classdef Nodo < ComponenteModelo
             % el Nodo durante el analisis de sistema
             %
             % definirDesplazamientos(nodoObj,desplazamientosNodo)
+            %
             % Guarda el vector con los desplazamientos (desplazamientosNodo) que
             % fueron obtenidos para el Nodo (nodoObj)
             
@@ -273,7 +286,6 @@ classdef Nodo < ComponenteModelo
             
             % Se procede a sumar la carga entregada al vector de cargas del nodo
             %             nodoObj.cargas = nodoObj.cargas + cargaNodo;
-            
             % Se resta la carga entregada al vector de reacciones para
             % obtener las reacciones posterior al analisis
             
@@ -282,6 +294,9 @@ classdef Nodo < ComponenteModelo
         end % agregarCarga function
         
         function agregarElementos(nodoObj, elemObj)
+            % agregarElementos: Agrega elementos al nodo
+            %
+            % agregarElementos(nodoObj, elemObj)
             
             n = length(nodoObj.elementos);
             nodoObj.elementos{n+1} = elemObj;
@@ -289,6 +304,9 @@ classdef Nodo < ComponenteModelo
         end % agregarElementos function
         
         function elem_nodos = obtenerElementos(nodoObj)
+            % obtenerElementos: Obtiene los elementos que convergen en el nodo
+            %
+            % elem_nodos = obtenerElementos(nodoObj)
             
             elem_nodos = nodoObj.elementos;
             
@@ -300,11 +318,12 @@ classdef Nodo < ComponenteModelo
             % elemento al nodo
             %
             % agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)
+            %
             % Agrega al vector de reacciones del Nodo (nodoObj), el vector de
             % fuerzas resistente de un elemento entregados (cargaNodo)
-            
             % Se procede a sumar el vector con las fuerzas resistente entregada
             % de un elemento al vector de reacciones del nodo
+
             nodoObj.reacciones = nodoObj.reacciones + esfuerzosElemento;
             
         end % agregarEsfuerzoAReaccion function
@@ -315,6 +334,7 @@ classdef Nodo < ComponenteModelo
             % y reacciones en el nodo
             %
             % inicializar(nodoObj)
+            %
             % Inicializa los diferentes vectores del Nodo que estan guardados en
             % este (nodoObj), para poder preparar estos para realizar el analisis
             
@@ -331,6 +351,7 @@ classdef Nodo < ComponenteModelo
             % (Coordenadas)
             %
             % guardarPropiedades(nodoObj,archivoSalidaHandle)
+            %
             % Guarda las propiedades de los Nodos (nodoObj), en un archivo de
             % salida (archivoSalidaHandle)
             
@@ -347,6 +368,7 @@ classdef Nodo < ComponenteModelo
             % del Nodo obtenido en el analisis
             %
             % guardarDesplazamientos(nodoObj,archivoSalidaHandle)
+            %
             % Guarda el vector de desplazamientos del Nodo (nodoObj), en un archivo
             % de salida (archivoSalidaHandle)
             
@@ -363,6 +385,7 @@ classdef Nodo < ComponenteModelo
             % obtenido en el analisis
             %
             % guardarReacciones(nodoObj,archivoSalidaHandle)
+            %
             % Guarda el vector de reacciones del Nodo (nodoObj), en un archivo
             % de salida (archivoSalidaHandle)
             
@@ -374,7 +397,7 @@ classdef Nodo < ComponenteModelo
         end % guardarReacciones function
         
         function plot(nodoObj, deformada, color, escala)
-            %plot: Grafica el nodo
+            % plot: Grafica el nodo
             %
             % plot(nodoObj,deformada,estilo)
             
@@ -409,6 +432,7 @@ classdef Nodo < ComponenteModelo
             % command Window la informacion del Nodo
             %
             % disp(nodoObj)
+            %
             % Imprime la informacion guardada en el Nodo (nodoObj) en pantalla
             
             fprintf('Propiedades Nodo:\n');
