@@ -31,18 +31,31 @@
 %       modeloObj
 %       numeroGDL
 %       Kt
+%       Mt
+%       gdlCond
 %       F
 %       u
 %       wn
 %       Tn
 %       phin
+%       phiExt
+%       condMatT
+%       condMatRot
 %       Mm
 %       Km
-%       r
+%       rm
 %       Lm
 %       Mmeff
 %       Mmeffacum
-%       Mmeffacump
+%       Mtotal
+%       analisisFinalizado
+%       numModos
+%       numDG
+%       numDGReal
+%       cRayleigh
+%       cPenzien
+%       mostrarDeformada
+%       cargarAnimacion
 %  Methods:
 %       analisisObj = ModalEspectral(modeloObjeto)
 %       definirNumeracionGDL(analisisObj)
@@ -109,6 +122,7 @@ classdef ModalEspectral < handle
             % ModalEspectral: es el constructor de la clase ModalEspectral
             %
             % analisisObj = ModalEspectral(modeloObjeto)
+            %
             % Crea un objeto de la clase ModalEspectral, y guarda el modelo,
             % que necesita ser analizado
             
@@ -131,7 +145,6 @@ classdef ModalEspectral < handle
         function analizar(analisisObj, nModos, betacR, betacP, varargin)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
             % realizar el analisis estatico
-            %
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas, requiere el numero de modos para realizar el
             % analisis y de los modos conocidos con sus beta
@@ -231,6 +244,7 @@ classdef ModalEspectral < handle
             % del modelo
             %
             % numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
+            %
             % Obtiene el numero total de GDL (numeroEcuaciones) que esta guardado
             % en el Analisis (analisisObj)
             
@@ -243,6 +257,7 @@ classdef ModalEspectral < handle
             % que se usa para obtener la matriz de masa del modelo
             %
             % M_Modelo = obtenerMatrizRigidez(analisisObj)
+            %
             % Obtiene la matriz de masa (M_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
@@ -255,6 +270,7 @@ classdef ModalEspectral < handle
             % que se usa para obtener la matriz de amortiguamiento del modelo
             %
             % C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)
+            %
             % Obtiene la matriz de amortiguamiento (C_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
@@ -271,6 +287,7 @@ classdef ModalEspectral < handle
             % que se usa para obtener la matriz de rigidez del modelo
             %
             % K_Modelo = obtenerMatrizRigidez(analisisObj)
+            %
             % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
@@ -284,6 +301,7 @@ classdef ModalEspectral < handle
             % producto de los disipadores incorporados
             %
             % Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
+            %
             % Obtiene la matriz de amortiguamiento del modelo
             
             Cdv_Modelo = analisisObj.ensamblarMatrizAmortiguamientoDisipadores();
@@ -295,6 +313,7 @@ classdef ModalEspectral < handle
             % que se usa para obtener el vector de influencia del modelo
             %
             % r_Modelo = obtenerVectorInfluencia(analisisObj)
+            %
             % Obtiene el vector de influencia (r) del modelo que se genero
             % en el Analisis (analisisObj)
             
@@ -307,6 +326,7 @@ classdef ModalEspectral < handle
             % que se usa para obtener el vector de fuerza del modelo
             %
             % F_Modelo = obtenerVectorFuerzas(analisisObj)
+            %
             % Obtiene el vector de fuerza (F_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
@@ -320,6 +340,7 @@ classdef ModalEspectral < handle
             % obtenido del analisis
             %
             % u_Modelo = obtenerDesplazamientos(analisisObj)
+            %
             % Obtiene el vector de desplazamiento (u_Modelo) del modelo que se
             % genero como resultado del Analisis (analisisObj)
             
@@ -333,6 +354,7 @@ classdef ModalEspectral < handle
             % obtenido del analisis
             %
             % w_Modelo = obtenerValoresPropios(analisisObj)
+            %
             % Obtiene los valores propios (wn_Modelo) del modelo que se
             % genero como resultado del Analisis (analisisObj)
             
@@ -346,6 +368,7 @@ classdef ModalEspectral < handle
             % obtenido del analisis
             %
             % phi_Modelo = obtenerVectorPropio(analisisObj)
+            %
             % Obtiene los valores propios (phi_Modelo) del modelo que se
             % genero como resultado del Analisis (analisisObj)
             
@@ -1377,6 +1400,7 @@ classdef ModalEspectral < handle
             % command Window la informacion del analisis espectral realizado
             %
             % disp(analisisObj)
+            %
             % Imprime la informacion guardada en el ModalEspectral (analisisObj) en
             % pantalla
             
@@ -1459,6 +1483,7 @@ classdef ModalEspectral < handle
             % se usa para definir como se enumeran los GDL en el modelo
             %
             % definirNumeracionGDL(analisisObj)
+            %
             % Define y asigna la enumeracion de los GDL en el modelo
             
             fprintf('\tDefiniendo numeracion GDL\n');
@@ -1810,6 +1835,7 @@ classdef ModalEspectral < handle
             % realizar el armado de la matriz de rigidez del modelo analizado
             %
             % ensamblarMatrizRigidez(analisisObj)
+            %
             % Ensambla la matriz de rigidez del modelo analizado usando el metodo
             % indicial
             
@@ -1854,6 +1880,7 @@ classdef ModalEspectral < handle
             % realizar el armado de la matriz de masa del modelo
             %
             % ensamblarMatrizMasa(analisisObj)
+            %
             % Ensambla la matriz de masa del modelo analizado usando el metodo
             % indicial
             
@@ -1917,6 +1944,7 @@ classdef ModalEspectral < handle
             % realizar el armado de la matriz de rigidez del modelo analizado
             %
             % ensamblarMatrizRigidez(analisisObj)
+            %
             % Ensambla la matriz de rigidez del modelo analizado usando el metodo
             % indicial
             
@@ -1962,6 +1990,7 @@ classdef ModalEspectral < handle
             % realizar el armado del vector de fuerzas del modelo analizado
             %
             % ensamblarVectorFuerzas(analisisObj)
+            %
             % Ensambla el vector de fuerzas del modelo analizado usando el metodo
             % indicial
             
@@ -1995,7 +2024,7 @@ classdef ModalEspectral < handle
         function plotAnimado(analisisObj, deformada, modo, factor, phif, limx, limy, limz, ...
                 per, cuadro, totCuadros, defElem, defCarga, carga, tcarga, tcargaEq, ...
                 mostrarEstatico, mostrarDisipadores)
-            % Anima el grafico en funcion del numero del modo
+            % plotAnimado: Anima el grafico en funcion del numero del modo
             
             % Si se grafica la carga no se aplica el factor sin(wt)
             if defCarga
@@ -2133,7 +2162,7 @@ classdef ModalEspectral < handle
         end % plotAnimado function
         
         function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, modo, factor, defcarga, carga)
-            % Obtiene los limites de deformacion
+            % obtenerLimitesDeformada: Obtiene los limites de deformacion
             %
             % obtenerLimitesDeformada(analisisObj,modo,factor,defcarga,carga)
             
@@ -2221,10 +2250,13 @@ classdef ModalEspectral < handle
         function [Cortante, Momento, CBplot, MBplot, hplot] = calcularMomentoCorteBasalAcel(analisisObj, acel)
             % calcularMomentoCorteBasalAcel: Calcula el momento y corte
             % basal en funcion de una aceleracion
-            
+            %
+            % [Cortante,Momento,CBplot,MBplot,hplot] = calcularMomentoCorteBasalAcel(analisisObj,acel)
+            %
             % Se genera vector en que las filas contienen nodos en un mismo piso,
             % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
             % Tambien se genera vector que contiene alturas de piso
+            
             nodos = analisisObj.modeloObj.obtenerNodos();
             nnodos = length(nodos);
             

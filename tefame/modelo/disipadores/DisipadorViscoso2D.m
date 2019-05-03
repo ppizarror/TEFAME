@@ -69,7 +69,6 @@ classdef DisipadorViscoso2D < Disipador2D
         Cd % Parametro del disipador
         w % Frecuencia del modo que controla la estructura
         Vo % Desp
-        Carga
         v0 % Desp
     end % properties DisipadorViscoso2D
     
@@ -127,12 +126,6 @@ classdef DisipadorViscoso2D < Disipador2D
             k_local = disipadorViscoso2DObj.Klp;
             
         end % obtenerMatrizRigidezCoordLocal function
-        
-        function actualizarDisipador(disipadorViscoso2DObj, w, Carga)
-            disipadorViscoso2DObj.w = w;
-            disipadorViscoso2DObj.Carga = Carga;
-        end
-        
         
         function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)
             % obtenerMatrizAmortiguamientoCoordLocal: Obtiene la matriz de

@@ -60,6 +60,7 @@ classdef CargaBielaTemperatura < Carga
             % CargaBielaTemperatura: es el constructor de la clase CargaBielaTemperatura
             %
             % cargaBielaTemperaturaObj=CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
+            %
             % Crea un objeto de la clase CargaBielaTemperatura, en donde toma como atributo
             % el objeto a aplicar la carga, la diferencia de temperatura y
             % el coeficiente de dilatacion termica del material (alpha)
@@ -115,6 +116,7 @@ classdef CargaBielaTemperatura < Carga
             % del material
             %
             % disp(cargaBielaTemperaturaObj)
+            %
             % Imprime la informacion guardada en la carga fruto de la
             % diferencia de temperatura de la Biela (cargaBielaTemperaturaObj)
             % en pantalla

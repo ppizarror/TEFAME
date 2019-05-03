@@ -213,7 +213,7 @@ classdef Disipador < ComponenteModelo
         end % dibujarDisipador function
         
         function disp(disipadorObj)
-            % Imprime propiedades del disipador
+            % dps: Imprime propiedades del disipador
             
             disp@ComponenteModelo(disipadorObj);
             

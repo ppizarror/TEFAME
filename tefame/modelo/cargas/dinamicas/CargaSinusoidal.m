@@ -152,6 +152,7 @@ classdef CargaSinusoidal < CargaDinamica
             % command Window la informacion de la carga del tipo sinusoidal
             %
             % disp(CargaSinusoidalObj)
+            %
             % Imprime la informacion guardada en la carga (CargaSinusoidalObj) en pantalla
             
             fprintf('Propiedades Carga Sinusoidal:\n');

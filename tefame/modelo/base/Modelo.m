@@ -79,6 +79,7 @@ classdef Modelo < handle
             % Modelo: es el constructor de la clase Modelo
             %
             % modeloObj = Modelo(numeroDimensiones,numerosGDL)
+            %
             % Crea un objeto de la clase Modelo, con el numero de dimensiones
             % que tiene el sistema de coordenadas del modelo (nDimensiones) y
             % el numero de grados de libertad por nodo
@@ -129,6 +130,7 @@ classdef Modelo < handle
             % entregarle el arreglo con los nodos al Modelo
             %
             % agregarNodos(modeloObj,arregloNodos)
+            %
             % Agrega el arreglo con los nodos (arregloNodos) al Modelo (modeloObj)
             % para que esto lo guarde y tenga acceso a los nodos
             
@@ -146,6 +148,7 @@ classdef Modelo < handle
             % entregarle el arreglo con los elementos al Modelo
             %
             % agregarElementos(modeloObj,arregloElementos)
+            %
             % Agrega el arreglo con los elementos (arregloElementos) al Modelo
             % (modeloObj) para que esto lo guarde y tenga acceso a los elementos
             
@@ -163,6 +166,7 @@ classdef Modelo < handle
             % para entregarle el arreglo con los disipadores al modelo
             %
             % agregarDisipadores(modeloObj,arregloDisipadores)
+            %
             % Agrega el arreglo con los elementos (arregloDisipadores) al modelo
             % (modeloObj) para que esto lo guarde y tenga acceso a los disipadores
             
@@ -180,6 +184,7 @@ classdef Modelo < handle
             % para entregarle el arreglo con los restricciones al Modelo
             %
             % agregarRestricciones(modeloObj,arregloRestricciones)
+            %
             % Agrega el arreglo con los restricciones (arregloRestricciones)
             % al Modelo (modeloObj) para que esto lo guarde y tenga acceso a
             % los restricciones
@@ -198,6 +203,7 @@ classdef Modelo < handle
             % para entregarle el arreglo con los patrones de carga al Modelo
             %
             % agregarPatronesDeCargas(modeloObj,arregloPatronDeCargas)
+            %
             % Agrega el arreglo con los patrones de carga (arregloPatronDeCargas)
             % al Modelo (modeloObj) para que esto lo guarde y tenga acceso a los
             % patrones de carga
@@ -218,6 +224,7 @@ classdef Modelo < handle
             % obtener el arreglo con los nodos guardados en el Modelo
             %
             % nodosModelo = obtenerNodos(modeloObj)
+            %
             % Obtiene el arreglo con los nodos (nodosModelo) que esta guardado
             % en el Modelo (modeloObj)
             
@@ -230,6 +237,7 @@ classdef Modelo < handle
             % obtener el arreglo con los elementos guardados en el Modelo
             %
             % elementosModelo = obtenerElementos(modeloObj)
+            %
             % Obtiene el arreglo con los elementos (elementosModelo) que esta
             % guardado en el Modelo (modeloObj)
             
@@ -242,6 +250,7 @@ classdef Modelo < handle
             % obtener el arreglo con los disipadores guardados del modelo
             %
             % DisipadoresModelo = obtenerDisipadores(modeloObj)
+            %
             % Obtiene el arreglo con los disipadores (DisipadoresModelo) que esta
             % guardado en el Modelo (modeloObj)
             
@@ -254,6 +263,7 @@ classdef Modelo < handle
             % obtener el arreglo con los patrones de carga guardados en el Modelo
             %
             % patronDeCargasModelo = obtenerPatronDeCargas(modeloObj)
+            %
             % Obtiene el arreglo con los patrones de carga (patronDeCargasModelo)
             % que esta guardado en el Modelo (modeloObj)
             
@@ -266,6 +276,7 @@ classdef Modelo < handle
             % obtener el arreglo con los patrones de carga guardados en el Modelo
             %
             % patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
+            %
             % Obtiene el arreglo con los patrones de carga (patronesDeCargasModelo)
             % que esta guardado en el Modelo (modeloObj)
             
@@ -299,6 +310,7 @@ classdef Modelo < handle
             % inicializar las diferentes componentes en el Modelo
             %
             % inicializar(modeloObj)
+            %
             % Inicializa los diferentes componentes del modelo que estan guardados
             % en el Modelo (modeloObj), para poder preparar estos para realizar
             % el analisis
@@ -322,6 +334,7 @@ classdef Modelo < handle
             % aplicar las restricciones en el Modelo
             %
             % aplicarRestricciones(modeloObj)
+            %
             % Aplica las restricciones que estan guardadas en el Modelo (modeloObj)
             
             for i = 1:length(modeloObj.restricciones)
@@ -335,6 +348,7 @@ classdef Modelo < handle
             % para aplicar las patrones de cargas en el Modelo
             %
             % aplicarPatronesDeCargasEstatico(modeloObj)
+            %
             % Aplica los patrones de cargas que estan guardados en el Modelo
             % (modeloObj), es decir, aplica las cargas sobre los nodos y
             % elementos
@@ -375,6 +389,7 @@ classdef Modelo < handle
             % las componentes en el Modelo
             %
             % actualizar(modeloObj,u)
+            %
             % Actualiza o informa de los desplazamientos (u), entregados por el
             % analisis al resolver el sistema de ecuaciones, a las componentes
             % guardadas en el Modelo (modeloObj)
@@ -417,6 +432,7 @@ classdef Modelo < handle
             % del Modelo y los resultados del analisis
             %
             % guardarResultados(modeloObj,nombreArchivo)
+            %
             % Guarda las propiedades de las componentes del Modelo (modeloObj) y
             % los resultados del analisis que tienen guardados los diferentes
             % componentes en un archivo (nombreArchivo)
@@ -487,6 +503,7 @@ classdef Modelo < handle
             % command Window la informacion del Modelo
             %
             % disp(modeloObj)
+            %
             % Imprime la informacion guardada en el Modelo (modeloObj) en
             % pantalla
             

@@ -146,6 +146,7 @@ classdef CargaVigaDistribuida < Carga
             % elemento
             %
             % disp(cargaVigaDistribuidaObj)
+            %
             % Imprime la informacion guardada en la carga distribuida de la
             % Viga (cargaVigaDistribuidaObj) en pantalla
             

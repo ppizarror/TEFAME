@@ -169,6 +169,7 @@ classdef CargaRegistroSismico < CargaDinamica
             % sismico
             %
             % disp(cargaRegistroSismicoObj)
+            %
             % Imprime la informacion guardada en la carga (cargaRegistroSismicoObj) en pantalla
             
             fprintf('Propiedades Carga Registro Sismico:\n');

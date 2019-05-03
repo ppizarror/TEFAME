@@ -68,6 +68,7 @@ classdef AnalisisEstatico < handle
             % AnalisisEstatico: es el constructor de la clase AnalisisEstatico
             %
             % analisisObj = AnalisisEstatico(modeloObjeto)
+            %
             % Crea un objeto de la clase AnalisisEstatico, y guarda el modelo,
             % que necesita ser analizado
             
@@ -88,6 +89,7 @@ classdef AnalisisEstatico < handle
             % se usa para definir como se enumeran los GDL en el modelo
             %
             % definirNumeracionGDL(analisisObj)
+            %
             % Define y asigna la enumeracion de los GDL en el modelo
             
             fprintf('\tDefiniendo numeracion GDL\n');
@@ -137,6 +139,7 @@ classdef AnalisisEstatico < handle
             % realizar el analisis estatico
             %
             % analizar(analisisObj)
+            %
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas
             
@@ -164,6 +167,7 @@ classdef AnalisisEstatico < handle
             % realizar el armado de la matriz de rigidez del modelo analizado
             %
             % ensamblarMatrizRigidez(analisisObj)
+            %
             % Ensambla la matriz de Rigidez del modelo analizado usando el metodo
             % indicial
             
@@ -218,6 +222,7 @@ classdef AnalisisEstatico < handle
             % realizar el armado del vector de fuerzas del modelo analizado
             %
             % ensamblarMatrizRigidez(analisisObj)
+            %
             % Ensambla el vector de fuerzas del modelo analizado usando el metodo
             % indicial
             
@@ -254,6 +259,7 @@ classdef AnalisisEstatico < handle
             % del modelo
             %
             % numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
+            %
             % Obtiene el numero total de GDL (numeroEcuaciones) que esta guardado
             % en el Analisis (analisisObj)
             
@@ -266,6 +272,7 @@ classdef AnalisisEstatico < handle
             % que se usa para obtener la matriz de rigidez del modelo
             %
             % K_Modelo = obtenerMatrizRigidez(analisisObj)
+            %
             % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
@@ -278,6 +285,7 @@ classdef AnalisisEstatico < handle
             % de amortiguamiento de los disipadores
             %
             % Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
+            %
             % Obtiene la matriz de amortiguamiento de los disipadores del modelo
 
             Cdv_Modelo = analisisObj.ensamblarMatrizAmortiguamientoDisipadores();
@@ -289,6 +297,7 @@ classdef AnalisisEstatico < handle
             % que se usa para obtener el vector de fuerza del modelo
             %
             % F_Modelo = obtenerVectorFuerzas(analisisObj)
+            %
             % Obtiene el vector de fuerza (F_Modelo) del modelo que se genero
             % en el Analisis (analisisObj)
             
@@ -302,6 +311,7 @@ classdef AnalisisEstatico < handle
             % obtenido del analisis
             %
             % u_Modelo = obtenerDesplazamientos(analisisObj)
+            %
             % Obtiene el vector de desplazamiento (u_Modelo) del modelo que se
             % genero como resultado del Analisis (analisisObj)
             
@@ -480,6 +490,7 @@ classdef AnalisisEstatico < handle
             % command Window la informacion del Analisis Estatico realizado
             %
             % disp(analisisObj)
+            %
             % Imprime la informacion guardada en el AnalisisEstatico (analisisObj) en
             % pantalla
             

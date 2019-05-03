@@ -57,6 +57,7 @@ classdef CargaNodo < Carga
             % CargaNodo: es el constructor de la clase CargaNodo
             %
             % cargaNodoObj = CargaNodo(etiquetaCargaNodo,nodoObjeto,cargaNodo)
+            %
             % Crea un objeto de la clase CargaNodo, con un identificador unico
             % (etiquetaCargaNodo), guarda el nodo que sera cargado y el vector
             % con los valores de la carga a aplicar
@@ -85,6 +86,7 @@ classdef CargaNodo < Carga
             % la carga sobre un nodo
             %
             % aplicarCarga(cargaNodoObj,factorDeCarga)
+            %
             % Aplica el vector de carga que esta guardada en el nodo que corresponde
             % amplificada por el factor (factorDeCarga)
             
@@ -97,6 +99,7 @@ classdef CargaNodo < Carga
             % command Window la informacion de la carga aplicada sobre el nodo
             %
             % disp(cargaNodoObj)
+            %
             % Imprime la informacion guardada en la carga nodal (cargaObj) en pantalla
             
             fprintf('Propiedades carga nodo:\n');

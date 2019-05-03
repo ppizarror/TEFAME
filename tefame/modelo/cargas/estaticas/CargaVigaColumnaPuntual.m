@@ -61,6 +61,7 @@ classdef CargaVigaColumnaPuntual < Carga
             % CargaVigaColumnaPuntual: es el constructor de la clase CargaVigaColumnaPuntual
             %
             % cargaVigaColumnaPuntualObj=CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
+            %
             % Crea un objeto de la clase CargaVigaColumnaPuntual, en donde toma como atributo
             % el objeto a aplicar la carga, la distancia como porcentaje
             % del largo del elemento con respecto al primer nodo, el
@@ -136,6 +137,7 @@ classdef CargaVigaColumnaPuntual < Carga
             % elemento
             %
             % disp(cargaVigaColumnaPuntualObj)
+            %
             % Imprime la informacion guardada en la carga puntual de la
             % Viga-Columna (cargaVigaColumnaPuntualObj) en pantalla
             

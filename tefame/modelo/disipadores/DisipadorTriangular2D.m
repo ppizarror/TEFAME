@@ -143,11 +143,6 @@ classdef DisipadorTriangular2D < Disipador2D
                 (pi()*disipadorTriangular2DObj.w);      
             c_local = disipadorTriangular2DObj.Ce .* [1, -1; -1, 1];
             
-<<<<<<< HEAD
-            
-            
-=======
->>>>>>> 1d41014f31c307e346b20fe19f609d7f3c8636f9
         end % obtenerMatrizAmortiguamientoCoordLocal function
         
         function disp(disipadorTriangular2DObj)

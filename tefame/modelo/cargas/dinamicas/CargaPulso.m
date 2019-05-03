@@ -147,6 +147,7 @@ classdef CargaPulso < CargaDinamica
             % sismico
             %
             % disp(CargaPulsoObj)
+            %
             % Imprime la informacion guardada en la carga (CargaPulsoObj) en pantalla
             
             fprintf('Propiedades Carga Pulso:\n');

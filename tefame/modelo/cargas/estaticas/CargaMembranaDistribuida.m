@@ -190,6 +190,7 @@ classdef CargaMembranaDistribuida < Carga
             % elemento membrana
             %
             % disp(cargaMembranaDistribuidaObj)
+            %
             % Imprime la informacion guardada en la carga distribuida de la
             % membrana (cargaMembranaDistribuidaObj) en pantalla
             

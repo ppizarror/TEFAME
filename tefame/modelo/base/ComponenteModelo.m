@@ -53,6 +53,7 @@ classdef ComponenteModelo < handle
             % ComponenteModelo: es el constructor de la clase ComponenteModelo
             %
             % componenteModeloObj = ComponenteModelo(etiqueta)
+            %
             % Crea un objeto de la clase ComponenteModelo, con un identificador
             % unico (etiqueta)
             
@@ -75,6 +76,7 @@ classdef ComponenteModelo < handle
             % modelo
             %
             % etiqueta = obtenerEtiqueta(componenteModeloObj)
+            %
             % Entrega la etiqueta o identificar (etiqueta) que tiene el
             % ComponenteModelo (componenteModeloObj)
             
@@ -87,6 +89,7 @@ classdef ComponenteModelo < handle
             % imprimir en command Window la informacion del ComponenteModelo
             %
             % disp(nodoObj)
+            %
             % Imprime la informacion de la etiqueta de identificacion del componente
             % del modelo
             
