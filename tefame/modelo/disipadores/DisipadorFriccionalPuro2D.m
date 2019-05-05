@@ -66,9 +66,9 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
         dy % Distancia en el eje y entre los nodos
         L % Largo del elemento
         theta % Angulo de inclinacion del disipador
-        T % Matriz de transformacion
         Fy % Paramatro de entrada del disipador
         v0 % Parametro del disipador
+        Vo % Parametro del disipador
         w % Parametro del disipador
     end % properties DisipadorFriccionalPuro2D
     
@@ -87,6 +87,14 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
             
             % Llamamos al constructor de la SuperClass que es la clase Disipador2D
             disipadorFriccionalPuro2DObj = disipadorFriccionalPuro2DObj@Disipador2D(etiquetaDisipador);
+            
+            % Guarda material
+            disipadorFriccionalPuro2DObj.nodosObj = {nodo1Obj; nodo2Obj};
+            disipadorFriccionalPuro2DObj.Ce = [];
+            disipadorFriccionalPuro2DObj.Fy = Fy;
+            disipadorFriccionalPuro2DObj.w = 1;
+            disipadorFriccionalPuro2DObj.v0 = 1;
+            
             
             % Guarda material
             disipadorFriccionalPuro2DObj.nodosObj = {nodo1Obj; nodo2Obj};
@@ -137,7 +145,7 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
             % armortiguamiento en coordenadas locales
             %
             % c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorFriccionalPuro2DObj)
-            
+                     
             disipadorFriccionalPuro2DObj.Ce = 4 * disipadorFriccionalPuro2DObj.Fy / (pi() * disipadorFriccionalPuro2DObj.w * disipadorFriccionalPuro2DObj.v0);
             c_local = disipadorFriccionalPuro2DObj.Ce .* [1, -1; -1, 1];
             

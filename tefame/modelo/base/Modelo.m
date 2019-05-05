@@ -168,8 +168,9 @@ classdef Modelo < handle
             % agregarDisipadores(modeloObj,arregloDisipadores)
             %
             % Agrega el arreglo con los elementos (arregloDisipadores) al modelo
-            % (modeloObj) para que esto lo guarde y tenga acceso a los disipadores
-            
+            % (modeloObj) para que esto lo guarde y tenga acceso a los
+            % disipadores
+                                 
             for i = 1:length(arregloDisipadores)
                 if ~isa(arregloDisipadores{i}, 'Disipador')
                     error('Elemento %d del arreglo de disipadores no es un disipador', i);
