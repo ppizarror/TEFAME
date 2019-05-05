@@ -147,15 +147,18 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 nmodo1 = w(1, 1);
                 beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
                 fprintf('\t\tbeta=%.4f\n', beta);
-                
+                vo_i = zeros(1,length(arregloDisipadores));
+                vo_ii = zeros(1,length(arregloDisipadores));
                 % Actualiza el disipador
                 fprintf('\t\tActualizando disipadores\n');
                 for i = 1:length(arregloDisipadores)
                     arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
+                    nodos = arregloDisipadores{i}.obtenerNodos();
+                    vo_i(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
                 end % for i
-                
                 % Realiza las iteraciones
-                for j = 1:3
+                Niter = 10;
+                for j = 1:Niter
                     
                     % Calcula la carga
                     fprintf('\tIteracion %d:\n', j);
@@ -168,14 +171,27 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     % Actualiza los disipadores
                     for i = 1:length(arregloDisipadores)
                         arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
+                        nodos = arregloDisipadores{i}.obtenerNodos();
+                        vo_ii(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
                     end % for i
-                    
-                    % Verifica que se alcance el beta
-                    if beta >= betaDisipador
-                        fprintf('\t\tSe ha logrado el beta objetivo\n');
-                        break;
+                    % Verifica que se alcance la tolerancia
+                    tol = 0.001;
+                    delta_vo = abs(vo_i - vo_ii);
+                    tol_i = max(delta_vo);
+                    fprintf('\t\tdelta=%.4f\n', tol_i);
+                    if tol_i <= tol
+                        fprintf('\t\tSe ha logrado la convergencia del modelo con disipadores\n');
+                        if beta >= betaDisipador
+                            fprintf('\t\tSe ha logrado el beta objetivo\n');
+                        else
+                            fprintf('\t\tNo se ha logrado el beta objetivo\n');
+                        end
+                        break
+                    elseif j == Niter && tol_i > tol
+                        fprintf('\t\tNo se ha logrado la convergencia del modelo con disipadores\n');
+                        fprintf('\t\tSe debe aumentar número de iteraciones\n');
                     end
-                    
+                    vo_i = vo_ii;
                 end % for j
                 
             else

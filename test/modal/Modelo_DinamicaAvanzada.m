@@ -24,7 +24,7 @@ Ic = 1 / 12;
 
 % Propiedades disipadores viscosos
 Cd = 1;
-alpha = 1; % Algoritmo realizado solo para alpha = 1;
+alpha = 0.3; 
 
 % Densidad del material
 Rhoh = 2.5; % (tonf/m3)
@@ -71,8 +71,8 @@ if ~exist('regConstitucionL', 'var') % Carga el registro
     regConstitucionV = cargaRegistroSimple('test/modal/constitucion_ch2.sis', 0.005, 'factor', 0.01);
     % plotRegistro(regConstitucionL, 'Registro Constitucion/Longitudinal', 'm/s^2');
 end
-% cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
-cargasDinamicas{1} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 20); % Horizontal
+cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
+% cargasDinamicas{1} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 20); % Horizontal
 % cargasDinamicas{1} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
 % cargasDinamicas{1}.desactivarCarga();
 
@@ -90,7 +90,7 @@ PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 %% Resuelve el sistema
-analisisObj.analizar(50, [0.02, 0.05], [0.05, 0.02, 0], 'condensar', true);
+analisisObj.analizar(50, [0.02, 0.02], [0.02, 0.02, 0], 'condensar', true);
 analisisObj.disp();
 % plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
 
