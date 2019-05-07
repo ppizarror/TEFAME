@@ -113,95 +113,110 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
             if disipadores
                 
-                % Se busca el indice de la carga objetivo
-                tInicio = cputime;
-                totalCargas = length(patronDeCargasObj.cargas);
-                indiceCargaObjetivo = 0; % Indica si se usa una carga especifica para el calculo de v0 del disipador
-                for i = 1:totalCargas
-                    if cargaDisipador.equals(patronDeCargasObj.cargas{i})
-                        if ~patronDeCargasObj.cargas{i}.cargaActivada()
-                            error('La carga objetivo del disipador esta desactivada');
-                        end
-                        cargaDisipadorObj = patronDeCargasObj.cargas{i};
-                        fprintf('\tSe calculan los disipadores usando la carga %s\n', cargaDisipadorObj.obtenerEtiqueta);
-                        indiceCargaObjetivo = i;
-                        break;
-                    end
-                end % for i
-                if indiceCargaObjetivo == 0
-                    error('La carga objetivo del disipador no existe en el patron de cargas');
-                end
-                
                 % Calcula una vez para sin disipador
-                fprintf('\tCalculando los parametros de los disipadores, iterDisipador: %d, tolIterDisipador: %.3f\n', ...
-                    iterDisipador, tolIterDisipador);
-                fprintf('\t\tIteracion 0:\n');
-                
-                % Al realizar esto el nuevo desplazamiento se guarda en la
-                % carga
-                patronDeCargasObj.calcularCargaGenerica(cpenzien, false, indiceCargaObjetivo, true); % No uso disipadores
-                
-                % Calcula w asociado al modo que mueve mas energia
-                w = patronDeCargasObj.analisisObj.calcularModosEnergia(cargaDisipadorObj, false);
-                fprintf('\t\t\tPara la carga objetivo el modo que mueve mas energia (%.1f%%) es el %d, w=%.2frad/s\n', ...
-                    w(1, 5)*100, w(1, 1), w(1, 2));
-                w1 = w(1, 2);
-                nmodo1 = w(1, 1);
-                beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
-                fprintf('\t\t\tbeta=%.4f\n', beta);
-                vo_i = zeros(1, length(arregloDisipadores));
-                vo_ii = zeros(1, length(arregloDisipadores));
-                
-                % Actualiza el disipador
-                fprintf('\t\t\tActualizando disipadores\n');
-                for i = 1:length(arregloDisipadores)
-                    arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
-                    nodos = arregloDisipadores{i}.obtenerNodos();
-                    vo_i(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
-                end % for i
-                
-                % Realiza las iteraciones
-                for j = 1:iterDisipador
+                if iterDisipador > 0
                     
-                    % Calcula la carga
-                    fprintf('\t\tIteracion %d:\n', j);
-                    patronDeCargasObj.calcularCargaGenerica(cpenzien, true, indiceCargaObjetivo, true);
+                    % Inicio del proceso de iteracion
+                    tInicio = cputime;
                     
-                    % Calcula beta
+                    % Se busca el indice de la carga objetivo
+                    totalCargas = length(patronDeCargasObj.cargas);
+                    indiceCargaObjetivo = 0; % Indica si se usa una carga especifica para el calculo de v0 del disipador
+                    for i = 1:totalCargas
+                        if cargaDisipador.equals(patronDeCargasObj.cargas{i})
+                            if ~patronDeCargasObj.cargas{i}.cargaActivada()
+                                error('La carga objetivo del disipador esta desactivada');
+                            end
+                            cargaDisipadorObj = patronDeCargasObj.cargas{i};
+                            fprintf('\tSe calculan los disipadores usando la carga %s\n', cargaDisipadorObj.obtenerEtiqueta);
+                            indiceCargaObjetivo = i;
+                            break;
+                        end
+                    end % for i
+                    if indiceCargaObjetivo == 0
+                        error('La carga objetivo del disipador no existe en el patron de cargas');
+                    end
+                    
+                    % Verifica valores
+                    iterDisipador = floor(iterDisipador);
+                    if tolIterDisipador <= 0
+                        error('Tolerancia iteracion disipador invalida');
+                    end
+                    
+                    fprintf('\tParametros iteracion:\n\t\titerDisipador: %d\n\t\ttolIterDisipador: %.3f\n\t\tbetaDisipador: %.3f\n', ...
+                        iterDisipador, tolIterDisipador, betaDisipador);
+                    fprintf('\tIniciando iteraciones\n');
+                    fprintf('\t\tIteracion 0:\n');
+                    
+                    % Al realizar esto el nuevo desplazamiento se guarda en la
+                    % carga
+                    patronDeCargasObj.calcularCargaGenerica(cpenzien, false, indiceCargaObjetivo, true); % No uso disipadores
+                    
+                    % Calcula w asociado al modo que mueve mas energia
+                    w = patronDeCargasObj.analisisObj.calcularModosEnergia(cargaDisipadorObj, false);
+                    fprintf('\t\t\tPara la carga objetivo el modo que mueve mas energia (%.1f%%) es el %d, w=%.2frad/s\n', ...
+                        w(1, 5)*100, w(1, 1), w(1, 2));
+                    w1 = w(1, 2);
+                    nmodo1 = w(1, 1);
                     beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
                     fprintf('\t\t\tbeta=%.4f\n', beta);
+                    vo_i = zeros(1, length(arregloDisipadores));
+                    vo_ii = zeros(1, length(arregloDisipadores));
                     
-                    % Verifica que se alcance la tolerancia
-                    delta_vo = abs(vo_i-vo_ii);
-                    tol_i = max(delta_vo);
-                    fprintf('\t\t\tdelta=%.4f\n', tol_i);
-                    if tol_i <= tolIterDisipador
-                        fprintf('\t\t\tSe ha logrado la convergencia del modelo con disipadores\n');
-                        if beta >= betaDisipador
-                            fprintf('\t\t\tSe ha logrado el beta objetivo\n');
-                        else
-                            fprintf('\t\t\tNo se ha logrado el beta objetivo\n');
-                        end
-                        break;
-                    elseif j == iterDisipador && tol_i > tolIterDisipador
-                        fprintf('\t\t\tNo se ha logrado la convergencia del modelo con disipadores\n');
-                        fprintf('\t\t\tSe debe aumentar número de iteraciones\n');
-                    end
-                    vo_i = vo_ii;
-                    
-                    % Actualiza los disipadores
+                    % Actualiza el disipador
                     fprintf('\t\t\tActualizando disipadores\n');
                     for i = 1:length(arregloDisipadores)
                         arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
                         nodos = arregloDisipadores{i}.obtenerNodos();
-                        vo_ii(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
+                        vo_i(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
                     end % for i
                     
-                end % for j
-                fprintf('\t\tProceso calculo disipador finalizado en %.3f segundos\n', cputime-tInicio);
-                
-                % Con los disipadores calcula todas las cargas
-                fprintf('\tInicio calculo de cargas con los disipadores actualizados\n');
+                    % Realiza las iteraciones
+                    for j = 1:iterDisipador
+                        
+                        % Calcula la carga
+                        fprintf('\t\tIteracion %d:\n', j);
+                        patronDeCargasObj.calcularCargaGenerica(cpenzien, true, indiceCargaObjetivo, true);
+                        
+                        % Calcula beta
+                        beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
+                        fprintf('\t\t\tbeta=%.4f\n', beta);
+                        
+                        % Verifica que se alcance la tolerancia
+                        delta_vo = abs(vo_i-vo_ii);
+                        tol_i = max(delta_vo);
+                        fprintf('\t\t\tdelta=%.4f\n', tol_i);
+                        if tol_i <= tolIterDisipador
+                            fprintf('\t\t\tSe ha logrado la convergencia del modelo con disipadores\n');
+                            if beta >= betaDisipador
+                                fprintf('\t\t\tSe ha logrado el beta objetivo\n');
+                            else
+                                fprintf('\t\t\tNo se ha logrado el beta objetivo\n');
+                            end
+                            break;
+                        elseif j == iterDisipador && tol_i > tolIterDisipador
+                            fprintf('\t\t\tNo se ha logrado la convergencia del modelo con disipadores\n');
+                            fprintf('\t\t\tSe debe aumentar número de iteraciones\n');
+                        end
+                        vo_i = vo_ii;
+                        
+                        % Actualiza los disipadores
+                        fprintf('\t\t\tActualizando disipadores\n');
+                        for i = 1:length(arregloDisipadores)
+                            arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
+                            nodos = arregloDisipadores{i}.obtenerNodos();
+                            vo_ii(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
+                        end % for i
+                        
+                    end % for j
+                    fprintf('\t\tProceso calculo disipador finalizado en %.3f segundos\n', cputime-tInicio);
+                    
+                    % Con los disipadores calcula todas las cargas
+                    fprintf('\tInicio calculo de cargas con los disipadores actualizados\n');
+                else
+                    fprintf('\tNo se realizo el proceso de iteracion de los disipadores\n');
+                    fprintf('\tInicio calculo de cargas con los disipadores sin actualizar\n');
+                end
                 patronDeCargasObj.calcularCargaGenerica(cpenzien, true, 0, false);
                 
             else

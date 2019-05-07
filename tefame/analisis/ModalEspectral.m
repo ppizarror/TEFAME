@@ -1056,6 +1056,8 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('Energia cinetica');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .70, .29, .20]);
                     box on;
@@ -1075,6 +1077,8 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('Energia elastica');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .70, .29, .20]);
                     box on;
@@ -1094,6 +1098,8 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('EBE (%)');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .70, .29, .20]);
                     box on;
@@ -1116,6 +1122,8 @@ classdef ModalEspectral < handle
                 ylabel('Energia');
                 legend({'E_K Energia cinetica', 'E_V Energia elastica'}, 'location', 'northeast');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .55, .29, .20]);
                     box on;
@@ -1139,6 +1147,8 @@ classdef ModalEspectral < handle
                 ylabel('Energia');
                 legend({'E_t Energia total', 'E_D Energia disipada total', 'W_E Trabajo externo'}, 'location', 'southeast');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
                     axes('Position', [.60, .36, .29, .20]);
                     box on;
@@ -1168,6 +1178,8 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 % if plotcarga % Grafica la carga
                 %     axes('Position', [.60, .36, .29, .20]);
                 %     box on;
