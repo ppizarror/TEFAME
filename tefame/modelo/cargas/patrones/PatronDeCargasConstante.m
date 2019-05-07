@@ -115,6 +115,9 @@ classdef PatronDeCargasConstante < PatronDeCargas
             fprintf('Propiedades Patron de Cargas Constante :\n');
             disp@ComponenteModelo(patronDeCargasObj);
             
+            fprintf('-------------------------------------------------\n');
+            fprintf('\n');
+            
         end % disp function
         
     end % methods PatronDeCargasConstante

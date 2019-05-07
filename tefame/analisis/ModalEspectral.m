@@ -172,7 +172,7 @@ classdef ModalEspectral < handle
                 maxcond = -1;
             end
             
-            fprintf('Ejecuntando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
+            fprintf('Ejecutando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
             
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
@@ -232,7 +232,13 @@ classdef ModalEspectral < handle
                     error('No se ha definido cargaDisipador');
                 end
                 if r.betaDisipador == 0
-                    error('No se ha definido betaObjetivo');
+                    error('No se ha definido betaDisipador');
+                end
+                if r.iterDisipador < 0
+                    error('El numero de iteraciones no puede ser menor a cero');
+                end
+                if r.tolIterDisipador <= 0
+                    error('Tolerancia iteracion disipador invalida');
                 end
             end
             

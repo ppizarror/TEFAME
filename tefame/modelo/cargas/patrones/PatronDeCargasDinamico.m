@@ -139,9 +139,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     
                     % Verifica valores
                     iterDisipador = floor(iterDisipador);
-                    if tolIterDisipador <= 0
-                        error('Tolerancia iteracion disipador invalida');
-                    end
                     
                     fprintf('\tParametros iteracion:\n\t\titerDisipador: %d\n\t\ttolIterDisipador: %.3f\n\t\tbetaDisipador: %.3f\n', ...
                         iterDisipador, tolIterDisipador, betaDisipador);
@@ -158,8 +155,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         w(1, 5)*100, w(1, 1), w(1, 2));
                     w1 = w(1, 2);
                     nmodo1 = w(1, 1);
-                    beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
-                    fprintf('\t\t\tbeta=%.4f\n', beta);
                     vo_i = zeros(1, length(arregloDisipadores));
                     vo_ii = zeros(1, length(arregloDisipadores));
                     
@@ -170,6 +165,14 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         nodos = arregloDisipadores{i}.obtenerNodos();
                         vo_i(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
                     end % for i
+                    beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
+                    fprintf('\t\t\tbeta=%.4f\n', beta);
+                    betaInc = false; % Indica que el beta debe crecer
+                    if beta < betaDisipador
+                        betaInc = true;
+                    end
+                    % betaAnt = beta; % Guarda el beta anterior
+                    pause(0.1);
                     
                     % Realiza las iteraciones
                     for j = 1:iterDisipador
@@ -178,11 +181,25 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         fprintf('\t\tIteracion %d:\n', j);
                         patronDeCargasObj.calcularCargaGenerica(cpenzien, true, indiceCargaObjetivo, true);
                         
+                        % Actualiza los disipadores
+                        fprintf('\t\t\tActualizando disipadores\n');
+                        for i = 1:length(arregloDisipadores)
+                            arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
+                            nodos = arregloDisipadores{i}.obtenerNodos();
+                            vo_ii(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
+                        end % for i
+                        
                         % Calcula beta
                         beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
                         fprintf('\t\t\tbeta=%.4f\n', beta);
                         
-                        % Verifica que se alcance la tolerancia
+                        % Verifica que se alcance la tolerancia o bien que
+                        % se haya logrado el beta deseado
+                        if betaInc && beta > betaDisipador
+                            fprintf('\t\t\tSe excede el beta objetivo por %.3f (%.3f%%), se ha detenido el proceso de iteraciones\n', ...
+                                beta-betaDisipador, (beta - betaDisipador)/betaDisipador*100);
+                            break;
+                        end
                         delta_vo = abs(vo_i-vo_ii);
                         tol_i = max(delta_vo);
                         fprintf('\t\t\tdelta=%.4f\n', tol_i);
@@ -200,13 +217,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         end
                         vo_i = vo_ii;
                         
-                        % Actualiza los disipadores
-                        fprintf('\t\t\tActualizando disipadores\n');
-                        for i = 1:length(arregloDisipadores)
-                            arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
-                            nodos = arregloDisipadores{i}.obtenerNodos();
-                            vo_ii(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
-                        end % for i
+                        % Guarda el beta anterior
+                        % betaAnt = beta;
                         
                     end % for j
                     fprintf('\t\tProceso calculo disipador finalizado en %.3f segundos\n', cputime-tInicio);
@@ -217,10 +229,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     fprintf('\tNo se realizo el proceso de iteracion de los disipadores\n');
                     fprintf('\tInicio calculo de cargas con los disipadores sin actualizar\n');
                 end
+                
+                % Calcula todas las cargas con los disipadores actualizados
                 patronDeCargasObj.calcularCargaGenerica(cpenzien, true, 0, false);
                 
             else
+                
+                % Calcula todas las cargas sin usar disipadores
                 patronDeCargasObj.calcularCargaGenerica(cpenzien, false, 0, false);
+                
             end
             
         end % aplicarCargas function
@@ -236,6 +253,9 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
             fprintf('Propiedades Patron de Cargas Dinamico:\n');
             disp@ComponenteModelo(patronDeCargasObj);
+            
+            fprintf('-------------------------------------------------\n');
+            fprintf('\n');
             
         end % disp function
         
