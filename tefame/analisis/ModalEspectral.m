@@ -308,6 +308,19 @@ classdef ModalEspectral < handle
             
         end % obtenerMatrizAmortiguamientoDisipadores function
         
+        function Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
+            % obtenerMatrizRigidezDisipadores: es un metodo de la clase ModalEspectral
+            % que se usa para obtener la matriz de rigidez del modelo
+            % producto de los disipadores incorporados
+            %
+            % Cdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
+            %
+            % Obtiene la matriz de Rigidez del modelo
+            
+            Kdv_Modelo = analisisObj.ensamblarMatrizRigidezDisipadores();
+            
+        end % obtenerMatrizAmortiguamientoDisipadores function
+        
         function r_Modelo = obtenerVectorInfluencia(analisisObj)
             % obtenerVectorInfluencia: es un metodo de la clase ModalEspectral
             % que se usa para obtener el vector de influencia del modelo
@@ -952,6 +965,7 @@ classdef ModalEspectral < handle
             % Si se usaron disipadores
             if carga.usoDeDisipadores()
                 cdv = analisisObj.obtenerMatrizAmortiguamientoDisipadores();
+                kdv = analisisObj.obtenerMatrizRigidezDisipadores(); % Disipador Triangular
                 fprintf('\t\tLa carga se calculo con disipadores\n');
             else
                 fprintf('\t\tLa carga se calculo sin disipadores\n');
@@ -998,6 +1012,9 @@ classdef ModalEspectral < handle
             e_damori = zeros(1, s); % Parcial
             e_damor = zeros(1, s); % Integral
             
+            e_vamori = zeros(1, s); % Parcial
+            e_vamor = zeros(1, s); % Integral
+            
             if carga.usoDeDisipadores()
                 fprintf('\tCalculando energia disipada por los amortiguadores\n');
                 for i = 1:s
@@ -1008,6 +1025,17 @@ classdef ModalEspectral < handle
                         e_damor(i) = e_damor(i - 1) + 0.5 * (e_damori(i) - e_damori(i - 1)) * dt + e_damori(i - 1) * dt;
                     end
                 end % for i
+                
+                % Trabajo energia elastica
+                for i = 1:s
+                    uu = c_u(:, i);  % Obtiene el vector de desplazamiento para el tiempo i
+                    e_vamori(i) = uu' * kdv * uu;
+                    if i > 1
+                        dt = (t(i) - t(i - 1));
+                        e_vamor(i) = e_vamor(i - 1) + 0.5 * (e_vamori(i) - e_vamori(i - 1)) * dt + e_vamori(i - 1) * dt;
+                    end
+                end % for i
+                
             end
             
             % Trabajo externo
@@ -1026,14 +1054,14 @@ classdef ModalEspectral < handle
             e_t = zeros(1, s);
             fprintf('\tCalculando energia total\n');
             for i = 1:s
-                e_t(i) = e_k(1) + e_v(1) + w_e(i) - (e_d(i) + e_damor(i));
+                e_t(i) = e_k(1) + e_v(1) + w_e(i) - (e_d(i) + e_damor(i)); % Trabajo de disipadores e_v(1) = e_v(i) + e_damor(i)??
             end % for i
             
             % Balance energetico normalizado
             ebe = zeros(1, s);
             fprintf('\tCalculando balance energetico\n');
             for i = 1:s
-                ebe(i) = abs(w_e(i)-e_k(i)-(e_d(i) + e_damor(i))) / abs(w_e(i)) * 100;
+                ebe(i) = abs(w_e(i) - e_k(i) - (e_d(i) + e_damor(i))) / abs(w_e(i)) * 100;
             end % for i
             
             % Graficos
@@ -1976,6 +2004,52 @@ classdef ModalEspectral < handle
                         % se suma contribucion metodo indicial
                         if (i_ ~= 0 && j_ ~= 0)
                             Cdv(i_, j_) = Cdv(i_, j_) + c_globl_elem(r, s);
+                        end
+                        
+                    end % for s
+                end % for r
+                
+            end % for i
+            
+        end % ensamblarMatrizAmortiguamientoDisipadores function
+        
+        function Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)
+            % ensamblarMatrizRigidezDisipadores: es un metodo de la clase ModalEspectral 
+            % que se usa para realizar el armado de la matriz de rigidez del modelo analizado
+            %
+            % ensamblarMatrizRigidezDisipadores(analisisObj)
+            %
+            % Ensambla la matriz de rigidez de los disipadores del modelo analizado usando el metodo
+            % indicial
+            
+            % fprintf('\tEnsamblando matriz de rigidez disipadores\n');
+            ndglc = analisisObj.numeroGDL - analisisObj.gdlCond; % Numero de grados de libertad condensados
+            Kdv = zeros(ndglc, ndglc);
+            
+            % Extraemos los Elementos
+            disipadorObj = analisisObj.modeloObj.obtenerDisipadores();
+            numeroDisipadores = length(disipadorObj);
+            
+            % Definimos los GDLID en los elementos
+            for i = 1:numeroDisipadores
+                
+                % Se obienen los gdl del elemento metodo indicial
+                gdl = disipadorObj{i}.obtenerGDLIDCondensado();
+                ngdl = disipadorObj{i}.obtenerNumeroGDL();
+                
+                % Se obtiene la matriz de amortiguamiento global del elemento-i
+                k_globl_elem = disipadorObj{i}.obtenerMatrizRigidezCoordGlobal();
+                
+                % Se calcula el metodo indicial
+                for r = 1:ngdl
+                    for s = 1:ngdl
+                        i_ = gdl(r);
+                        j_ = gdl(s);
+                        
+                        % Si corresponden a grados de libertad -> puntos en (i,j)
+                        % se suma contribucion metodo indicial
+                        if (i_ ~= 0 && j_ ~= 0)
+                            Kdv(i_, j_) = Kdv(i_, j_) + k_globl_elem(r, s);
                         end
                         
                     end % for s

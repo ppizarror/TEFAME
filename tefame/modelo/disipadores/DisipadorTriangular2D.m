@@ -73,6 +73,7 @@ classdef DisipadorTriangular2D < Disipador2D
         k2 % Paramatro de rigidez del disipador
         ke % Parametro del disipador
         w % Frecuencia que mas mueve energia en la estructura
+        v0 % Desplazamiento relativo del disipador
     end % properties DisipadorTriangular2D
     
     methods
@@ -95,6 +96,8 @@ classdef DisipadorTriangular2D < Disipador2D
             disipadorTriangular2DObj.nodosObj = {nodo1Obj; nodo2Obj};
             disipadorTriangular2DObj.k1 = k1;
             disipadorTriangular2DObj.k2 = k2;
+            disipadorTriangular2DObj.v0 = 1;
+            
             
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
@@ -112,13 +115,15 @@ classdef DisipadorTriangular2D < Disipador2D
            
         end % DisipadorTriangular2D constructor
         
-        function actualizarDisipador(disipadorTriangular2DObj, w, carga) %#ok<INUSD>
+        function actualizarDisipador(disipadorTriangular2DObj, w, carga)
             % actualizarDisipador: Actualiza el disipador con la carga y la
             % frecuencia
             %
             % actualizarDisipador(disipadorTriangular2DObj,w,carga)
             
             disipadorTriangular2DObj.w = w;
+            disipadorTriangular2DObj.v0 = disipadorTriangular2DObj.calcularv0(disipadorTriangular2DObj.nodosObj, carga);
+
             
         end % actualizarDisipador function
         
