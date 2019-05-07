@@ -139,7 +139,7 @@ classdef ModalEspectral < handle
             analisisObj.analisisFinalizado = false;
             analisisObj.mostrarDeformada = false;
             analisisObj.cargarAnimacion = true;
-
+            
         end % ModalEspectral constructor
         
         function analizar(analisisObj, nModos, betacR, betacP, varargin)
@@ -456,13 +456,13 @@ classdef ModalEspectral < handle
                 dt_real = carga.dt;
                 
                 % Si el dt del grafico es menor se reajustan los cuadros
-                if dt_plot < dt_real               
+                if dt_plot < dt_real
                     warning('El numero de cuadros genera un dt=%.3f inferior al dt=%.3f de la carga %s', ...
                         dt_plot, dt_real, carga.obtenerEtiqueta());
                     
                     % Se limitan los cuadros
                     numCuadros = floor((tmax - tmin)/dt_real);
-                    fprintf('\tSe ha limitado el numero de cuadros a %d\n', numCuadros);      
+                    fprintf('\tSe ha limitado el numero de cuadros a %d\n', numCuadros);
                 elseif dt_plot == dt_real
                     fprintf('\tEl numero de cuadros genera un dt igual al de la carga\n');
                 else
@@ -1002,7 +1002,7 @@ classdef ModalEspectral < handle
                 fprintf('\tCalculando energia disipada por los amortiguadores\n');
                 for i = 1:s
                     vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
-                    e_damori(i) = vv' * cdv * vv;                
+                    e_damori(i) = vv' * cdv * vv;
                     if i > 1
                         dt = (t(i) - t(i - 1));
                         e_damor(i) = e_damor(i - 1) + 0.5 * (e_damori(i) - e_damori(i - 1)) * dt + e_damori(i - 1) * dt;
@@ -1791,7 +1791,7 @@ classdef ModalEspectral < handle
                     end
                 end
             end % for i
-
+            
             if m == 0 || n == 0
                 error('\t\tSe requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh')
             end
@@ -1807,7 +1807,7 @@ classdef ModalEspectral < handle
             w = analisisObj.wn;
             Mn = modalMmt;
             analisisObj.cPenzien = 0;
-
+            
             for i = 1:length(Mn)
                 if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     d(i, i) = 2 * betacP(1) * w(i) / Mn(i, i);

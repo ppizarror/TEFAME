@@ -198,7 +198,7 @@ classdef AnalisisEstatico < handle
                         % se suma contribucion metodo indicial
                         if (i_ ~= 0 && j_ ~= 0)
                             analisisObj.Kt(i_, j_) = analisisObj.Kt(i_, j_) + k_globl_elem(r, s);
-                        end                     
+                        end
                     end % for s
                 end % for r
                 
@@ -279,7 +279,7 @@ classdef AnalisisEstatico < handle
             K_Modelo = analisisObj.Kt;
             
         end % obtenerMatrizRigidez function
-
+        
         function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
             % obtenerMatrizRigidez: es un metodo de la clase que retorna la matriz
             % de amortiguamiento de los disipadores
@@ -287,9 +287,9 @@ classdef AnalisisEstatico < handle
             % Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
             %
             % Obtiene la matriz de amortiguamiento de los disipadores del modelo
-
+            
             Cdv_Modelo = analisisObj.ensamblarMatrizAmortiguamientoDisipadores();
-
+            
         end % obtenerMatrizAmortiguamientoDisipadores function
         
         function F_Modelo = obtenerVectorFuerzas(analisisObj)
@@ -494,9 +494,9 @@ classdef AnalisisEstatico < handle
             % Imprime la informacion guardada en el AnalisisEstatico (analisisObj) en
             % pantalla
             
-            fprintf('Propiedades analisis estatico:\n');        
+            fprintf('Propiedades analisis estatico:\n');
             fprintf('\tMatriz de Rigidez:\n');
-            disp(analisisObj.Kt);          
+            disp(analisisObj.Kt);
             fprintf('\tDeterminante: %f\n\n', det(analisisObj.Kt));
             fprintf('\tVector de Fuerzas:\n');
             disp(analisisObj.F);
