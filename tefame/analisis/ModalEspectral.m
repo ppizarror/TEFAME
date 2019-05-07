@@ -208,6 +208,7 @@ classdef ModalEspectral < handle
             %   'disipadores'       Usa los disipadores en el calculo (false por defecto)
             %   'cargaDisipador'    Carga objetivo disipador para el calculo de v0
             %   'betaDisipador'     Beta objetivo para el calculo de disipadores
+            %   'iterDisipador'     Numero de iteraciones para el calculo de disipadores
             
             if ~analisisObj.analisisFinalizado
                 error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
@@ -219,6 +220,7 @@ classdef ModalEspectral < handle
             addOptional(p, 'disipadores', true);
             addOptional(p, 'cargaDisipador', false);
             addOptional(p, 'betaDisipador', 0);
+            addOptional(p, 'iterDisipador', 10);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -234,7 +236,8 @@ classdef ModalEspectral < handle
             
             fprintf('Metodo modal espectral:\n');
             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores, ...
-                r.cargaDisipador, r.betaDisipador, analisisObj.modeloObj.obtenerDisipadores());
+                r.cargaDisipador, r.betaDisipador, analisisObj.modeloObj.obtenerDisipadores(), ...
+                r.iterDisipador);
             
         end % resolverCargasDinamicas function
         

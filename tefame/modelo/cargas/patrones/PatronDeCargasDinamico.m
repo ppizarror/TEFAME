@@ -101,11 +101,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % PatronDeCargasDinamico constructor
         
-        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaDisipador, arregloDisipadores)
+        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaDisipador, arregloDisipadores, iterDisipador)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador,arregloDisipadores)
+            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador,arregloDisipadores,iterDisipador)
             %
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
@@ -114,6 +114,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             if disipadores
                 
                 % Se busca el indice de la carga objetivo
+                tInicio = cputime;
                 totalCargas = length(patronDeCargasObj.cargas);
                 indiceCargaObjetivo = 0; % Indica si se usa una carga especifica para el calculo de v0 del disipador
                 for i = 1:totalCargas
@@ -132,8 +133,9 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 end
                 
                 % Calcula una vez para sin disipador
-                fprintf('\tCalculando los parametros de los disipadores\n');
-                fprintf('\tIteracion 0:\n');
+                fprintf('\tCalculando los parametros de los disipadores, iterDisipador: %d\n', ...
+                    iterDisipador);
+                fprintf('\t\tIteracion 0:\n');
                 
                 % Al realizar esto el nuevo desplazamiento se guarda en la
                 % carga
@@ -141,58 +143,67 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Calcula w asociado al modo que mueve mas energia
                 w = patronDeCargasObj.analisisObj.calcularModosEnergia(cargaDisipadorObj, false);
-                fprintf('\t\tPara la carga objetivo el modo que mueve mas energia (%.1f%%) es el %d, w=%.2frad/s\n', ...
+                fprintf('\t\t\tPara la carga objetivo el modo que mueve mas energia (%.1f%%) es el %d, w=%.2frad/s\n', ...
                     w(1, 5)*100, w(1, 1), w(1, 2));
                 w1 = w(1, 2);
                 nmodo1 = w(1, 1);
                 beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
-                fprintf('\t\tbeta=%.4f\n', beta);
-                vo_i = zeros(1,length(arregloDisipadores));
-                vo_ii = zeros(1,length(arregloDisipadores));
+                fprintf('\t\t\tbeta=%.4f\n', beta);
+                vo_i = zeros(1, length(arregloDisipadores));
+                vo_ii = zeros(1, length(arregloDisipadores));
+                
                 % Actualiza el disipador
-                fprintf('\t\tActualizando disipadores\n');
+                fprintf('\t\t\tActualizando disipadores\n');
                 for i = 1:length(arregloDisipadores)
                     arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
                     nodos = arregloDisipadores{i}.obtenerNodos();
                     vo_i(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
                 end % for i
+                
                 % Realiza las iteraciones
-                Niter = 10;
-                for j = 1:Niter
+                for j = 1:iterDisipador
                     
                     % Calcula la carga
-                    fprintf('\tIteracion %d:\n', j);
+                    fprintf('\t\tIteracion %d:\n', j);
                     patronDeCargasObj.calcularCargaGenerica(cpenzien, true, indiceCargaObjetivo, true);
                     
                     % Calcula beta
                     beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
-                    fprintf('\t\tbeta=%.4f\n', beta);
+                    fprintf('\t\t\tbeta=%.4f\n', beta);
+                    
+                    % Verifica que se alcance la tolerancia
+                    tol = 0.001;
+                    delta_vo = abs(vo_i-vo_ii);
+                    tol_i = max(delta_vo);
+                    fprintf('\t\t\tdelta=%.4f\n', tol_i);
+                    if tol_i <= tol
+                        fprintf('\t\tSe ha logrado la convergencia del modelo con disipadores\n');
+                        if beta >= betaDisipador
+                            fprintf('\t\t\tSe ha logrado el beta objetivo\n');
+                        else
+                            fprintf('\t\t\tNo se ha logrado el beta objetivo\n');
+                        end
+                        break;
+                    elseif j == iterDisipador && tol_i > tol
+                        fprintf('\t\t\tNo se ha logrado la convergencia del modelo con disipadores\n');
+                        fprintf('\t\t\tSe debe aumentar número de iteraciones\n');
+                    end
+                    vo_i = vo_ii;
                     
                     % Actualiza los disipadores
+                    fprintf('\t\t\tActualizando disipadores\n');
                     for i = 1:length(arregloDisipadores)
                         arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
                         nodos = arregloDisipadores{i}.obtenerNodos();
                         vo_ii(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
                     end % for i
-                    % Verifica que se alcance la tolerancia
-                    tol = 0.001;
-                    delta_vo = abs(vo_i - vo_ii);
-                    tol_i = max(delta_vo);
-                    fprintf('\t\tdelta=%.4f\n', tol_i);
-                    if tol_i <= tol
-                        fprintf('\t\tSe ha logrado la convergencia del modelo con disipadores\n');
-                        if beta >= betaDisipador
-                            fprintf('\t\tSe ha logrado el beta objetivo\n');
-                        else
-                            fprintf('\t\tNo se ha logrado el beta objetivo\n');
-                        end
-                        break
-                    elseif j == Niter && tol_i > tol
-                        fprintf('\t\tNo se ha logrado la convergencia del modelo con disipadores\n');
-                        fprintf('\t\tSe debe aumentar número de iteraciones\n');
-                    end
-                    vo_i = vo_ii;
+                    
                 end % for j
+                fprintf('\tProceso calculo disipador finalizado en %.3f segundos\n', cputime-tInicio);
+                
+                % Con los disipadores calcula todas las cargas
+                fprintf('\tInicio calculo de cargas con los disipadores actualizados\n');
+                patronDeCargasObj.calcularCargaGenerica(cpenzien, true, 0, false);
                 
             else
                 patronDeCargasObj.calcularCargaGenerica(cpenzien, false, 0, false);
@@ -340,7 +351,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 end
                 
                 % Resuelve newmark
-                [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, c, pmodal, patronDeCargasObj.cargas{i}.dt, 0, 0, calculaDisipadores);
+                [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, c, pmodal, patronDeCargasObj.cargas{i}.dt, 0, 0);
                 
                 % Aplica descomposicion si aplica
                 if patronDeCargasObj.desModal
@@ -376,12 +387,12 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % calcularCargaGenerica function
         
-        function [x, v, z] = newmark(patronDeCargasObj, k, m, minv, c, p, dt, xo, vo, calculaDisipadores) %#ok<*INUSL>
+        function [x, v, z] = newmark(patronDeCargasObj, k, m, minv, c, p, dt, xo, vo) %#ok<*INUSL>
             % Newmark: es un metodo de la clase ModalEspectral que se
             % usa para obtener los valores de aceleracion, velociadad y desplazamiento
             % de los grados de libertad a partir del metodo de Newmark
             %
-            % [x,v,z]=newmark(patronDeCargasObj,k,m,minv,c,p,dt,xo,vo,calculaDisipadores)
+            % [x,v,z]=newmark(patronDeCargasObj,k,m,minv,c,p,dt,xo,vo)
             
             % Define coeficientes
             alpha = 0;
@@ -417,11 +428,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
                 
                 % Imprime estado
-                if ~calculaDisipadores
-                    msg = sprintf('\t\t\tCalculando ... %.1f/100', i/(n - 1)*100);
-                else
-                    msg = sprintf('\t\tCalculando ... %.1f/100', i/(n - 1)*100);
-                end
+                msg = sprintf('\t\t\tCalculando ... %.1f/100', i/(n - 1)*100);
                 fprintf([reverse_porcent, msg]);
                 reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
                 
