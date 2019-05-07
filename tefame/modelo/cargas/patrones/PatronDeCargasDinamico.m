@@ -171,10 +171,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     end % for i
                     beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
                     fprintf('\t\t\tbeta=%.4f\n', beta);
-                    betaInc = false; % Indica que el beta debe crecer
-                    if beta < betaDisipador
-                        betaInc = true;
-                    end
                     % betaAnt = beta; % Guarda el beta anterior
                     pause(0.1);
                     
@@ -197,13 +193,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
                         fprintf('\t\t\tbeta=%.4f\n', beta);
                         
-                        % Verifica que se alcance la tolerancia o bien que
-                        % se haya logrado el beta deseado
-                        if betaInc && beta > betaDisipador
-                            fprintf('\t\t\tSe excede el beta objetivo por %.3f (%.3f%%), se ha detenido el proceso de iteraciones\n', ...
-                                beta-betaDisipador, (beta - betaDisipador)/betaDisipador*100);
-                            break;
-                        end
                         delta_vo = abs(vo_i-vo_ii);
                         tol_i = max(delta_vo);
                         fprintf('\t\t\tdelta=%.4f\n', tol_i);
