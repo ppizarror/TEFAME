@@ -101,11 +101,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % PatronDeCargasDinamico constructor
         
-        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaDisipador, arregloDisipadores, iterDisipador)
+        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaDisipador, arregloDisipadores, iterDisipador, tolIterDisipador)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador,arregloDisipadores,iterDisipador)
+            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador,arregloDisipadores,iterDisipador,tolIterDisipador)
             %
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
@@ -133,8 +133,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 end
                 
                 % Calcula una vez para sin disipador
-                fprintf('\tCalculando los parametros de los disipadores, iterDisipador: %d\n', ...
-                    iterDisipador);
+                fprintf('\tCalculando los parametros de los disipadores, iterDisipador: %d, tolIterDisipador: %.3f\n', ...
+                    iterDisipador, tolIterDisipador);
                 fprintf('\t\tIteracion 0:\n');
                 
                 % Al realizar esto el nuevo desplazamiento se guarda en la
@@ -172,19 +172,18 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     fprintf('\t\t\tbeta=%.4f\n', beta);
                     
                     % Verifica que se alcance la tolerancia
-                    tol = 0.001;
                     delta_vo = abs(vo_i-vo_ii);
                     tol_i = max(delta_vo);
                     fprintf('\t\t\tdelta=%.4f\n', tol_i);
-                    if tol_i <= tol
-                        fprintf('\t\tSe ha logrado la convergencia del modelo con disipadores\n');
+                    if tol_i <= tolIterDisipador
+                        fprintf('\t\t\tSe ha logrado la convergencia del modelo con disipadores\n');
                         if beta >= betaDisipador
                             fprintf('\t\t\tSe ha logrado el beta objetivo\n');
                         else
                             fprintf('\t\t\tNo se ha logrado el beta objetivo\n');
                         end
                         break;
-                    elseif j == iterDisipador && tol_i > tol
+                    elseif j == iterDisipador && tol_i > tolIterDisipador
                         fprintf('\t\t\tNo se ha logrado la convergencia del modelo con disipadores\n');
                         fprintf('\t\t\tSe debe aumentar número de iteraciones\n');
                     end
@@ -199,7 +198,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     end % for i
                     
                 end % for j
-                fprintf('\tProceso calculo disipador finalizado en %.3f segundos\n', cputime-tInicio);
+                fprintf('\t\tProceso calculo disipador finalizado en %.3f segundos\n', cputime-tInicio);
                 
                 % Con los disipadores calcula todas las cargas
                 fprintf('\tInicio calculo de cargas con los disipadores actualizados\n');

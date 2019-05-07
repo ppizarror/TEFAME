@@ -363,11 +363,11 @@ classdef Modelo < handle
             
         end % aplicarPatronesDeCargasEstatico function
         
-        function aplicarPatronesDeCargasDinamico(modeloObj, cpenzien, disipadores, cargaDisipador, betaDisipador, arregloDisipadores, iterDisipador)
+        function aplicarPatronesDeCargasDinamico(modeloObj, cpenzien, disipadores, cargaDisipador, betaDisipador, arregloDisipadores, iterDisipador, tolIterDisipador)
             % aplicarPatronesDeCargasDinamico: es un metodo de la clase Modelo que se usa
             % para aplicar las patrones de cargas en el Modelo
             %
-            % aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,betaDisipador,arregloDisipadores,iterDisipador)
+            % aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,betaDisipador,arregloDisipadores,iterDisipador,tolIterDisipador)
             %
             % Aplica los patrones de cargas que estan guardados en el Modelo
             % (modeloObj), es decir, aplica las cargas sobre los nodos y
@@ -380,7 +380,7 @@ classdef Modelo < handle
                 if modeloObj.patronesDeCargas{i}.patronDinamico()
                     modeloObj.patronesDeCargas{i}.aplicarCargas(cpenzien, ...
                         disipadores, cargaDisipador, betaDisipador, ...
-                        arregloDisipadores, iterDisipador);
+                        arregloDisipadores, iterDisipador, tolIterDisipador);
                 end
             end % for i
             
