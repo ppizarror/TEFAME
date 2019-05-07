@@ -95,13 +95,6 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
             disipadorFriccionalPuro2DObj.w = 1;
             disipadorFriccionalPuro2DObj.v0 = 1;
             
-            
-            % Guarda material
-            disipadorFriccionalPuro2DObj.nodosObj = {nodo1Obj; nodo2Obj};
-            disipadorFriccionalPuro2DObj.Fy = Fy;
-            disipadorFriccionalPuro2DObj.w = 1;
-            disipadorFriccionalPuro2DObj.Vo = 1;
-            
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
@@ -145,7 +138,7 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
             % armortiguamiento en coordenadas locales
             %
             % c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorFriccionalPuro2DObj)
-                     
+            
             disipadorFriccionalPuro2DObj.Ce = 4 * disipadorFriccionalPuro2DObj.Fy / (pi() * disipadorFriccionalPuro2DObj.w * disipadorFriccionalPuro2DObj.v0);
             c_local = disipadorFriccionalPuro2DObj.Ce .* [1, -1; -1, 1];
             

@@ -139,7 +139,7 @@ classdef ModalEspectral < handle
             analisisObj.analisisFinalizado = false;
             analisisObj.mostrarDeformada = false;
             analisisObj.cargarAnimacion = true;
-
+            
         end % ModalEspectral constructor
         
         function analizar(analisisObj, nModos, betacR, betacP, varargin)
@@ -172,7 +172,7 @@ classdef ModalEspectral < handle
                 maxcond = -1;
             end
             
-            fprintf('Ejecuntando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
+            fprintf('Ejecutando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
             
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
@@ -208,6 +208,8 @@ classdef ModalEspectral < handle
             %   'disipadores'       Usa los disipadores en el calculo (false por defecto)
             %   'cargaDisipador'    Carga objetivo disipador para el calculo de v0
             %   'betaDisipador'     Beta objetivo para el calculo de disipadores
+            %   'iterDisipador'     Numero de iteraciones para el calculo de disipadores
+            %   'tolIterDisipador'  Tolerancia usada para las iteraciones del calculo de disipadores
             
             if ~analisisObj.analisisFinalizado
                 error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
@@ -219,6 +221,8 @@ classdef ModalEspectral < handle
             addOptional(p, 'disipadores', true);
             addOptional(p, 'cargaDisipador', false);
             addOptional(p, 'betaDisipador', 0);
+            addOptional(p, 'iterDisipador', 10);
+            addOptional(p, 'tolIterDisipador', 0.001);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -228,13 +232,20 @@ classdef ModalEspectral < handle
                     error('No se ha definido cargaDisipador');
                 end
                 if r.betaDisipador == 0
-                    error('No se ha definido betaObjetivo');
+                    error('No se ha definido betaDisipador');
+                end
+                if r.iterDisipador < 0
+                    error('El numero de iteraciones no puede ser menor a cero');
+                end
+                if r.tolIterDisipador <= 0
+                    error('Tolerancia iteracion disipador invalida');
                 end
             end
             
             fprintf('Metodo modal espectral:\n');
             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores, ...
-                r.cargaDisipador, r.betaDisipador, analisisObj.modeloObj.obtenerDisipadores());
+                r.cargaDisipador, r.betaDisipador, analisisObj.modeloObj.obtenerDisipadores(), ...
+                r.iterDisipador, r.tolIterDisipador);
             
         end % resolverCargasDinamicas function
         
@@ -469,13 +480,13 @@ classdef ModalEspectral < handle
                 dt_real = carga.dt;
                 
                 % Si el dt del grafico es menor se reajustan los cuadros
-                if dt_plot < dt_real               
+                if dt_plot < dt_real
                     warning('El numero de cuadros genera un dt=%.3f inferior al dt=%.3f de la carga %s', ...
                         dt_plot, dt_real, carga.obtenerEtiqueta());
                     
                     % Se limitan los cuadros
                     numCuadros = floor((tmax - tmin)/dt_real);
-                    fprintf('\tSe ha limitado el numero de cuadros a %d\n', numCuadros);      
+                    fprintf('\tSe ha limitado el numero de cuadros a %d\n', numCuadros);
                 elseif dt_plot == dt_real
                     fprintf('\tEl numero de cuadros genera un dt igual al de la carga\n');
                 else
@@ -920,12 +931,16 @@ classdef ModalEspectral < handle
             % Parametros opcionales:
             %   'plot'      'all','ek','ev','ekev','ebe','et','ed'
             %   'carga'     Booleano que indica si se grafica la carga o no
+            %   'mfilt'     Porcentaje de filtrado por numero de datos
+            %   'linewidth' Ancho de linea de los graficos
             
             % Recorre parametros opcionales
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'plot', 'all');
             addOptional(p, 'plotcarga', false);
+            addOptional(p, 'mfilt', 0.005);
+            addOptional(p, 'linewidth', 1.2);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -944,6 +959,10 @@ classdef ModalEspectral < handle
             if isempty(c_u)
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
+            
+            % Realiza calculos de energia
+            fprintf('Calculando curvas de energia\n');
+            fprintf('\tCarga %s\n', carga.obtenerEtiqueta());
             
             if carga.usoAmortiguamientoRayleigh()
                 fprintf('\t\tLa carga se calculo con amortiguamiento Rayleigh\n');
@@ -974,10 +993,6 @@ classdef ModalEspectral < handle
             % Graficos
             [~, s] = size(c_u);
             t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
-            
-            % Realiza calculos de energia
-            fprintf('Calculando curvas de energia\n');
-            fprintf('\tCarga %s\n', carga.obtenerEtiqueta());
             
             % Energia cinetica
             e_k = zeros(1, s);
@@ -1019,7 +1034,7 @@ classdef ModalEspectral < handle
                 fprintf('\tCalculando energia disipada por los amortiguadores\n');
                 for i = 1:s
                     vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
-                    e_damori(i) = vv' * cdv * vv;                
+                    e_damori(i) = vv' * cdv * vv;
                     if i > 1
                         dt = (t(i) - t(i - 1));
                         e_damor(i) = e_damor(i - 1) + 0.5 * (e_damori(i) - e_damori(i - 1)) * dt + e_damori(i - 1) * dt;
@@ -1066,21 +1081,23 @@ classdef ModalEspectral < handle
             
             % Graficos
             fprintf('\tGenerando graficos\n');
-            lw = 1.1; % Linewidth de los graficos
+            lw = r.linewidth; % Linewidth de los graficos
             dplot = false; % Indica que un grafico se realizo
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ek')
                 fig_title = sprintf('E_K Energia Cinetica - Carga %s', carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
-                plot(t, e_k, 'k-', 'LineWidth', lw);
+                plot(t, e_k, '-', 'LineWidth', lw);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia cinetica');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
-                    axes('Position', [.60, .70, .29, .20]);
+                    axes('Position', [.59, .70, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
@@ -1092,14 +1109,16 @@ classdef ModalEspectral < handle
                 fig_title = sprintf('E_V Energia Elastica - Carga %s', carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
-                plot(t, e_v, 'k-', 'LineWidth', lw);
+                plot(t, e_v, '-', 'LineWidth', lw);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia elastica');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
-                    axes('Position', [.60, .70, .29, .20]);
+                    axes('Position', [.59, .70, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
@@ -1111,14 +1130,16 @@ classdef ModalEspectral < handle
                 fig_title = sprintf('Balance Energetico Normalizado - Carga %s', carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
-                plot(t, ebe, 'k-', 'LineWidth', lw);
+                plot(t, ebe, '-', 'LineWidth', lw);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('EBE (%)');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
-                    axes('Position', [.60, .70, .29, .20]);
+                    axes('Position', [.59, .70, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
@@ -1139,8 +1160,10 @@ classdef ModalEspectral < handle
                 ylabel('Energia');
                 legend({'E_K Energia cinetica', 'E_V Energia elastica'}, 'location', 'northeast');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
-                    axes('Position', [.60, .55, .29, .20]);
+                    axes('Position', [.59, .55, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
@@ -1162,8 +1185,10 @@ classdef ModalEspectral < handle
                 ylabel('Energia');
                 legend({'E_t Energia total', 'E_D Energia disipada total', 'W_E Trabajo externo'}, 'location', 'southeast');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
-                    axes('Position', [.60, .36, .29, .20]);
+                    axes('Position', [.59, .36, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
@@ -1172,6 +1197,8 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ed')
+                
+                % Graficos energia disipada
                 fig_title = sprintf('Energia Disipada - Carga %s', carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
@@ -1191,13 +1218,39 @@ classdef ModalEspectral < handle
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
                 title(fig_title);
+                ylims = get(gca, 'YLim');
+                ylim([0, max(ylims)]);
                 % if plotcarga % Grafica la carga
-                %     axes('Position', [.60, .36, .29, .20]);
+                %     axes('Position', [.59, .36, .29, .20]);
                 %     box on;
                 %     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                 %     grid on;
                 % end
                 dplot = true;
+                
+                % Comparacion energia estructura y disipador
+                if carga.usoDeDisipadores()
+                    fig_title = {'Razon energia estructura - disipador', ...
+                        sprintf('Carga %s', carga.obtenerEtiqueta())};
+                    plt = figure('Name', fig_title{1}, 'NumberTitle', 'off');
+                    movegui(plt, 'center');
+                    plot(t, medfilt1(e_d./e_damor, floor(r.mfilt*length(e_d))), ...
+                        '-', 'LineWidth', lw);
+                    grid on;
+                    grid minor;
+                    xlabel('Tiempo (s)');
+                    ylabel('Razon estructura/disipador');
+                    title(fig_title);
+                    ylims = get(gca, 'YLim');
+                    ylim([0, max(ylims)]);
+                    if plotcarga % Grafica la carga
+                        axes('Position', [.59, .68, .29, .20]);
+                        box on;
+                        plot(t, c_p, 'k-', 'Linewidth', 0.8);
+                        grid on;
+                    end
+                end
+                
             end
             
             % Si no se realizo ningun grafico
@@ -1819,7 +1872,7 @@ classdef ModalEspectral < handle
                     end
                 end
             end % for i
-
+            
             if m == 0 || n == 0
                 error('\t\tSe requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh')
             end
@@ -1835,7 +1888,7 @@ classdef ModalEspectral < handle
             w = analisisObj.wn;
             Mn = modalMmt;
             analisisObj.cPenzien = 0;
-
+            
             for i = 1:length(Mn)
                 if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     d(i, i) = 2 * betacP(1) * w(i) / Mn(i, i);

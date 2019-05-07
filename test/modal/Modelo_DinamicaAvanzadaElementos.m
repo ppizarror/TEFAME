@@ -1,5 +1,20 @@
 % Elementos Modelo
 
+%% DEFINICION DE PROPIEDADES
+
+% Propiedades de la viga
+Av = 0.65 * 0.4; % (m2)
+Ev = 2625051; % (tonf/m2)
+Iv = (0.4 * 0.65^3) / 12;
+
+% Propiedades de la columna
+Ac = 1; % (m2)
+Ec = 2625051; % (tonf/m2)
+Ic = 1 / 12;
+
+% Densidad del material hormigon
+Rhoh = 2.5; % (tonf/m3)
+
 %% VIGAS
 % Piso 1
 elementos{1} = VigaColumnaMasa2D('V11-12', nodos{11}, nodos{12}, Iv, Ev, Av, Rhoh); %#ok<*SUSENS>
@@ -158,7 +173,6 @@ elementos{102} = VigaColumnaMasa2D('V261-262', nodos{141}, nodos{142}, Iv, Ev, A
 
 % Piso 27
 elementos{103} = VigaColumnaMasa2D('V271-272', nodos{143}, nodos{144}, Iv, Ev, Av, Rhoh);
-
 
 %% COLUMNAS
 % Piso 0-1

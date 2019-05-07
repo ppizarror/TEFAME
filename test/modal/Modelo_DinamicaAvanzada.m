@@ -12,27 +12,6 @@ Modelo_DinamicaAvanzadaNodo;
 modeloObj.agregarNodos(nodos);
 
 %% Creamos los elementos
-% Propiedades de la viga
-Av = 0.65 * 0.4; % (m2)
-Ev = 2625051; % (tonf/m2)
-Iv = (0.4 * 0.65^3) / 12;
-
-% Propiedades de la columna
-Ac = 1; % (m2)
-Ec = 2625051; % (tonf/m2)
-Ic = 1 / 12;
-
-% Propiedades disipadores viscosos
-Cd = 1.1;
-alpha = 0.3; 
-
-% Propiedades disipadores friccionales
-Fy = 0.55; 
-
-% Densidad del material
-Rhoh = 2.5; % (tonf/m3)
-
-%% Crea los elementos
 elementos = {};
 disipadores = {};
 Modelo_DinamicaAvanzadaElementos;
@@ -41,6 +20,7 @@ Modelo_DinamicaAvanzadaDisipadores;
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
 modeloObj.agregarDisipadores(disipadores);
+
 %% Creamos las restricciones
 restricciones = cell(10, 1);
 restricciones{1} = RestriccionNodo('R1', nodos{1}, [1, 2, 3]');
@@ -98,7 +78,7 @@ analisisObj.disp();
 
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...
-    'cargaDisipador', cargasDinamicas{1}, 'betaDisipador', 0.08);
+    'cargaDisipador', cargasDinamicas{1}, 'betaDisipador', 0.08, 'iterDisipador', 10);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
