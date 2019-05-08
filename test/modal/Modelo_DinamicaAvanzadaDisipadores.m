@@ -4,7 +4,7 @@
 
 % Propiedades disipadores viscosos
 Cd = 1.1;
-alpha = 0.3;
+alpha = 0.29;
 
 % Propiedades disipadores friccionales
 Fy = 0.55;
@@ -45,7 +45,7 @@ elseif strcmp(tipoDisipador, 'friccional') % DISIPADOR FRICCIONAL PURO 2D
     disipadores{13} = DisipadorFriccionalPuro2D('DV121-132', nodos{120}, nodos{123}, Fy);
     disipadores{14} = DisipadorFriccionalPuro2D('DV131-142', nodos{124}, nodos{127}, Fy);
     
-elseif strcmp(tipoDisipador, 'triangular') % DISIPADOR FRICCIONAL PURO 2D
+elseif strcmp(tipoDisipador, 'triangular') % DISIPADOR TRIANGULAR 2D
     fprintf('Usa disipador triangular\n');
     
 else

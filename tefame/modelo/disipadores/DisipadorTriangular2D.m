@@ -98,7 +98,6 @@ classdef DisipadorTriangular2D < Disipador2D
             disipadorTriangular2DObj.k2 = k2;
             disipadorTriangular2DObj.v0 = 1;
             
-            
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
@@ -123,7 +122,6 @@ classdef DisipadorTriangular2D < Disipador2D
             
             disipadorTriangular2DObj.w = w;
             disipadorTriangular2DObj.v0 = disipadorTriangular2DObj.calcularv0(disipadorTriangular2DObj.nodosObj, carga);
-
             
         end % actualizarDisipador function
         

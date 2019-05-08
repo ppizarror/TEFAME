@@ -101,11 +101,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % PatronDeCargasDinamico constructor
         
-        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaDisipador, arregloDisipadores, iterDisipador, tolIterDisipador)
+        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaObjetivo, arregloDisipadores, iterDisipador, tolIterDisipador)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador,arregloDisipadores,iterDisipador,tolIterDisipador)
+            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaObjetivo,arregloDisipadores,iterDisipador,tolIterDisipador)
             %
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
@@ -136,11 +136,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Calcula beta inicial del modelo
                 fprintf('\t\tCalculando amortiguamiento inicial del modelo sin los disipadores actualizados\n');
-
+                
                 % Al realizar esto el nuevo desplazamiento se guarda en la
                 % carga
                 patronDeCargasObj.calcularCargaGenerica(cpenzien, false, indiceCargaObjetivo, true); % No uso disipadores
-                    
+                
                 % Calcula w asociado al modo que mueve mas energia
                 w = patronDeCargasObj.analisisObj.calcularModosEnergia(cargaDisipadorObj, false);
                 w1 = w(1, 2);
@@ -153,8 +153,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 if iterDisipador > 0
                     
                     % Output
-                    fprintf('\tParametros iteracion:\n\t\titerDisipador: %d\n\t\ttolIterDisipador: %.3f\n\t\tbetaDisipador: %.3f\n', ...
-                        iterDisipador, tolIterDisipador, betaDisipador);
+                    fprintf('\tParametros iteracion:\n\t\titerDisipador: %d\n\t\ttolIterDisipador: %.3f\n\t\tbetaObjetivo: %.3f\n', ...
+                        iterDisipador, tolIterDisipador, betaObjetivo);
                     fprintf('\tIniciando iteraciones\n');
                     fprintf('\t\tIteracion 0:\n');
                     
@@ -198,10 +198,16 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         fprintf('\t\t\tdelta=%.4f\n', tol_i);
                         if tol_i <= tolIterDisipador
                             fprintf('\t\t\tSe ha logrado la convergencia del modelo con disipadores\n');
-                            if beta >= betaDisipador
-                                fprintf('\t\t\tSe ha logrado el beta objetivo\n');
-                            else
-                                fprintf('\t\t\tNo se ha logrado el beta objetivo\n');
+                            if betaObjetivo > 0
+                                betaSign = '+';
+                                if beta >= betaObjetivo
+                                    fprintf('\t\t\tSe ha logrado el amortiguamiento objetivo\n');
+                                else
+                                    fprintf('\t\t\tNo se ha logrado el amortiguamiento objetivo\n');
+                                    betaSign = '-';
+                                end
+                                fprintf('\t\t\t\tDiferencia: %s%.1f%%\n', ...
+                                    betaSign, (beta - betaObjetivo)/betaObjetivo*100);
                             end
                             break;
                         elseif j == iterDisipador && tol_i > tolIterDisipador
@@ -219,11 +225,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     % Con los disipadores calcula todas las cargas
                     fprintf('\tAmortiguamiento del modelo: %.3f\n', beta);
                     fprintf('\tInicio calculo de cargas con los disipadores actualizados\n');
+                    
                 else
+                    
+                    % No se iteran los disipadores
                     beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
                     fprintf('\tNo se realizo el proceso de iteracion de los disipadores\n');
                     fprintf('\tAmortiguamiento del modelo: %.3f\n', beta);
                     fprintf('\tInicio calculo de cargas con los disipadores sin actualizar\n');
+                    
                 end
                 
                 % Calcula todas las cargas con los disipadores actualizados

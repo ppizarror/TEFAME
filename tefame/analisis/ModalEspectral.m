@@ -207,7 +207,7 @@ classdef ModalEspectral < handle
             %   'cpenzien'          Usa el amortiguamiento de cpenzien (false por defecto)
             %   'disipadores'       Usa los disipadores en el calculo (false por defecto)
             %   'cargaDisipador'    Carga objetivo disipador para el calculo de v0
-            %   'betaDisipador'     Beta objetivo para el calculo de disipadores
+            %   'betaObjetivo'      Beta objetivo para el calculo de disipadores
             %   'iterDisipador'     Numero de iteraciones para el calculo de disipadores
             %   'tolIterDisipador'  Tolerancia usada para las iteraciones del calculo de disipadores
             
@@ -220,7 +220,7 @@ classdef ModalEspectral < handle
             addOptional(p, 'cpenzien', false);
             addOptional(p, 'disipadores', true);
             addOptional(p, 'cargaDisipador', false);
-            addOptional(p, 'betaDisipador', 0);
+            addOptional(p, 'betaObjetivo', 0);
             addOptional(p, 'iterDisipador', 10);
             addOptional(p, 'tolIterDisipador', 0.001);
             parse(p, varargin{:});
@@ -230,9 +230,6 @@ classdef ModalEspectral < handle
             if r.disipadores
                 if ~isa(r.cargaDisipador, 'CargaDinamica')
                     error('No se ha definido cargaDisipador');
-                end
-                if r.betaDisipador == 0
-                    error('No se ha definido betaDisipador');
                 end
                 if r.iterDisipador < 0
                     error('El numero de iteraciones no puede ser menor a cero');
@@ -244,7 +241,7 @@ classdef ModalEspectral < handle
             
             fprintf('Metodo modal espectral:\n');
             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores, ...
-                r.cargaDisipador, r.betaDisipador, analisisObj.modeloObj.obtenerDisipadores(), ...
+                r.cargaDisipador, r.betaObjetivo, analisisObj.modeloObj.obtenerDisipadores(), ...
                 r.iterDisipador, r.tolIterDisipador);
             
         end % resolverCargasDinamicas function
@@ -1010,6 +1007,22 @@ classdef ModalEspectral < handle
                 e_v(i) = 0.5 * vv' * k * vv;
             end % for i
             
+            % Energia elastica disipadores
+            e_vamori = zeros(1, s); % Parcial
+            e_vamor = zeros(1, s); % Integral
+            
+            if carga.usoDeDisipadores()
+                fprintf('\tCalculando energia elastica de los amortiguadores\n');
+                for i = 1:s
+                    uu = c_u(:, i); % Obtiene el vector de desplazamiento para el tiempo i
+                    e_vamori(i) = uu' * kdv * uu;
+                    if i > 1
+                        dt = t(i) - t(i - 1);
+                        e_vamor(i) = e_vamor(i - 1) + 0.5 * (e_vamori(i) + e_vamori(i - 1)) * dt;
+                    end
+                end % for i
+            end
+            
             % Energia disipada
             e_di = zeros(1, s); % Parcial
             e_d = zeros(1, s); % Integral
@@ -1018,17 +1031,14 @@ classdef ModalEspectral < handle
                 vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
                 e_di(i) = vv' * c * vv;
                 if i > 1
-                    dt = (t(i) - t(i-1));
-                    e_d(i) = e_d(i-1) + 0.5 * (e_di(i) - e_di(i-1)) * dt + e_di(i-1) * dt;
+                    dt = t(i) - t(i-1);
+                    e_d(i) = e_d(i-1) + 0.5 * (e_di(i) + e_di(i-1)) * dt;
                 end
             end % for i
             
-            % Energia disipada por amortiguadores
+            % Energia disipada amortiguadores
             e_damori = zeros(1, s); % Parcial
             e_damor = zeros(1, s); % Integral
-            
-            e_vamori = zeros(1, s); % Parcial
-            e_vamor = zeros(1, s); % Integral
             
             if carga.usoDeDisipadores()
                 fprintf('\tCalculando energia disipada por los amortiguadores\n');
@@ -1036,21 +1046,10 @@ classdef ModalEspectral < handle
                     vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
                     e_damori(i) = vv' * cdv * vv;
                     if i > 1
-                        dt = (t(i) - t(i - 1));
-                        e_damor(i) = e_damor(i - 1) + 0.5 * (e_damori(i) - e_damori(i - 1)) * dt + e_damori(i - 1) * dt;
+                        dt = t(i) - t(i - 1);
+                        e_damor(i) = e_damor(i - 1) + 0.5 * (e_damori(i) + e_damori(i - 1)) * dt;
                     end
                 end % for i
-                
-                % Trabajo energia elastica
-                for i = 1:s
-                    uu = c_u(:, i);  % Obtiene el vector de desplazamiento para el tiempo i
-                    e_vamori(i) = uu' * kdv * uu;
-                    if i > 1
-                        dt = (t(i) - t(i - 1));
-                        e_vamor(i) = e_vamor(i - 1) + 0.5 * (e_vamori(i) - e_vamori(i - 1)) * dt + e_vamori(i - 1) * dt;
-                    end
-                end % for i
-                
             end
             
             % Trabajo externo
@@ -1060,8 +1059,8 @@ classdef ModalEspectral < handle
             for i = 1:s
                 w_ei(i) = c_p(:, i)' * c_v(:, i);
                 if i > 1
-                    dt = (t(i) - t(i-1));
-                    w_e(i) = w_e(i-1) + 0.5 * (w_ei(i) - w_ei(i-1)) * dt + w_ei(i-1) * dt;
+                    dt = t(i) - t(i-1);
+                    w_e(i) = w_e(i-1) + 0.5 * (w_ei(i) + w_ei(i-1)) * dt;
                 end
             end % for i
             
@@ -1069,14 +1068,14 @@ classdef ModalEspectral < handle
             e_t = zeros(1, s);
             fprintf('\tCalculando energia total\n');
             for i = 1:s
-                e_t(i) = e_k(1) + e_v(1) + w_e(i) - (e_d(i) + e_damor(i)); % Trabajo de disipadores e_v(1) = e_v(i) + e_damor(i)??
+                e_t(i) = e_k(1) + (e_v(1) + e_vamor(1)) + w_e(i) - (e_d(i) + e_damor(i)); % Trabajo de disipadores e_v(1) = e_v(i) + e_damor(i)??
             end % for i
             
             % Balance energetico normalizado
             ebe = zeros(1, s);
             fprintf('\tCalculando balance energetico\n');
             for i = 1:s
-                ebe(i) = abs(w_e(i) - e_k(i) - (e_d(i) + e_damor(i))) / abs(w_e(i)) * 100;
+                ebe(i) = abs(w_e(i)-e_k(i)-(e_d(i) + e_damor(i))) / abs(w_e(i)) * 100;
             end % for i
             
             % Graficos
@@ -1109,7 +1108,7 @@ classdef ModalEspectral < handle
                 fig_title = sprintf('E_V Energia Elastica - Carga %s', carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
-                plot(t, e_v, '-', 'LineWidth', lw);
+                plot(t, e_v+e_vamor, '-', 'LineWidth', lw);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
@@ -1153,7 +1152,7 @@ classdef ModalEspectral < handle
                 movegui(plt, 'center');
                 plot(t, e_k, '-', 'LineWidth', lw);
                 hold on;
-                plot(t, e_v, '-', 'LineWidth', lw);
+                plot(t, e_v+e_vamor, '-', 'LineWidth', lw);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
@@ -1211,7 +1210,7 @@ classdef ModalEspectral < handle
                         'Energia disipada por disipadores'}, 'location', 'Best');
                 else
                     plot(t, e_d, '-', 'LineWidth', lw);
-                    legend({'Energia disipada por la estructura'}, 'location', 'Best');
+                    % legend({'Energia disipada por la estructura'}, 'location', 'Best');
                 end
                 grid on;
                 grid minor;
@@ -2067,7 +2066,7 @@ classdef ModalEspectral < handle
         end % ensamblarMatrizAmortiguamientoDisipadores function
         
         function Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)
-            % ensamblarMatrizRigidezDisipadores: es un metodo de la clase ModalEspectral 
+            % ensamblarMatrizRigidezDisipadores: es un metodo de la clase ModalEspectral
             % que se usa para realizar el armado de la matriz de rigidez del modelo analizado
             %
             % ensamblarMatrizRigidezDisipadores(analisisObj)
