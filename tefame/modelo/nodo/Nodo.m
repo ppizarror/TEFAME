@@ -435,7 +435,7 @@ classdef Nodo < ComponenteModelo
             %
             % Imprime la informacion guardada en el Nodo (nodoObj) en pantalla
             
-            fprintf('Propiedades Nodo:\n');
+            fprintf('Propiedades nodo:\n');
             disp@ComponenteModelo(nodoObj);
             
             numCrds = length(nodoObj.coords);

@@ -68,7 +68,7 @@ classdef CargaNodo < Carga
                 cargaNodo = [];
             end % if
             
-            % Llamamos al cosntructor de la SuperClass que es la clase Carga
+            % Llamamos al constructor de la SuperClass que es la clase Carga
             cargaNodoObj = cargaNodoObj@Carga(etiquetaCargaNodo);
             
             cargaNodoObj.nodoObj = nodoObjeto;

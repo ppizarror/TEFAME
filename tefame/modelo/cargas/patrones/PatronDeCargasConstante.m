@@ -112,7 +112,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % Imprime la informacion guardada en el Patron de Cargas Constante (patronDeCargasObj)
             % en pantalla
             
-            fprintf('Propiedades Patron de Cargas Constante :\n');
+            fprintf('Propiedades patron de cargas constante :\n');
             disp@ComponenteModelo(patronDeCargasObj);
             
             fprintf('-------------------------------------------------\n');

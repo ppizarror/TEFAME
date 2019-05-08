@@ -509,9 +509,9 @@ classdef Modelo < handle
             % Imprime la informacion guardada en el Modelo (modeloObj) en
             % pantalla
             
-            fprintf('Propiedades Modelo:\n');
-            fprintf('\tDimensiones Modelo: %iD\n', modeloObj.nDimensiones);
-            fprintf('\tNumero de GDL del Modelo: %i\n', modeloObj.nGDL);
+            fprintf('Propiedades modelo:\n');
+            fprintf('\tDimensiones modelo: %iD\n', modeloObj.nDimensiones);
+            fprintf('\tNumero de GDL del modelo: %i\n', modeloObj.nGDL);
             
         end % disp function
         

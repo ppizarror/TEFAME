@@ -592,7 +592,7 @@ classdef Membrana < Elemento
         function disp(membranaObj)
             
             % Imprime propiedades de la membrana
-            fprintf('Propiedades Membrana:\n\t');
+            fprintf('Propiedades membrana:\n\t');
             disp@ComponenteModelo(membranaObj);
             
             fprintf('\t\tAncho (2b): %s\tAlto (2h): %s\tE: %s\tv: %s\n', pad(num2str(2*membranaObj.b), 10), ...

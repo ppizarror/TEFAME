@@ -157,7 +157,7 @@ classdef DisipadorViscoso2D < Disipador2D
             %
             % disp(disipadorViscoso2DObj)
             
-            fprintf('Propiedades Disipador Viscoso 2D:\n\t');
+            fprintf('Propiedades disipador viscoso 2D:\n\t');
             disp@ComponenteModelo(disipadorViscoso2DObj);
             
             fprintf('-------------------------------------------------\n');

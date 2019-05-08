@@ -288,7 +288,7 @@ classdef Biela3D < Elemento
         function disp(biela3DObj)
             
             % Imprime propiedades
-            fprintf('Propiedades Biela 3D:\n');
+            fprintf('Propiedades biela 3D:\n');
             disp@ComponenteModelo(biela3DObj);
             fprintf('\tLargo: %s\tArea: %s\tE: %s\n', pad(num2str(biela3DObj.L), 12), ...
                 pad(num2str(biela3DObj.Ao), 10), pad(num2str(biela3DObj.Eo), 10));

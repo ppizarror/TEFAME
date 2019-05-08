@@ -310,7 +310,7 @@ classdef Viga2D < Elemento
         function disp(viga2DObj)
             
             % Imprime propiedades de la viga 2D
-            fprintf('Propiedades Viga2D:\n\t');
+            fprintf('Propiedades viga 2D:\n\t');
             disp@ComponenteModelo(viga2DObj);
             
             fprintf('\t\tLargo: %s\tI: %s\tE: %s\n', pad(num2str(viga2DObj.L), 12), ...

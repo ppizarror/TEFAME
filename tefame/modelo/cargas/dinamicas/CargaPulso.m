@@ -150,7 +150,7 @@ classdef CargaPulso < CargaDinamica
             %
             % Imprime la informacion guardada en la carga (CargaPulsoObj) en pantalla
             
-            fprintf('Propiedades Carga Pulso:\n');
+            fprintf('Propiedades carga pulso:\n');
             disp@CargaDinamica(CargaPulsoObj);
             
             fprintf('-------------------------------------------------\n');

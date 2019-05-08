@@ -60,7 +60,7 @@ classdef Carga < ComponenteModelo
                 etiquetaCarga = '';
             end % if
             
-            % Llamamos al cosntructor de la SuperClass que es la clase ComponenteModelo
+            % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             cargaObj = cargaObj@ComponenteModelo(etiquetaCarga);
             
         end % Carga constructor

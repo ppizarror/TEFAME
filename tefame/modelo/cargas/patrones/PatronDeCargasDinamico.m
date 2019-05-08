@@ -222,7 +222,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                             break;
                         elseif j == iterDisipador && tol_i > tolIterDisipador
                             fprintf('\t\t\tNo se ha logrado la convergencia del modelo con disipadores\n');
-                            fprintf('\t\t\tSe debe aumentar número de iteraciones\n');
+                            fprintf('\t\t\tSe debe aumentar nï¿½mero de iteraciones\n');
                         end
                         vo_i = vo_ii;
                         
@@ -267,7 +267,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Imprime la informacion guardada en el Patron de Cargas Dinamico (patronDeCargasObj)
             % en pantalla
             
-            fprintf('Propiedades Patron de Cargas Dinamico:\n');
+            fprintf('Propiedades patron de cargas dinamico:\n');
             disp@ComponenteModelo(patronDeCargasObj);
             
             fprintf('-------------------------------------------------\n');

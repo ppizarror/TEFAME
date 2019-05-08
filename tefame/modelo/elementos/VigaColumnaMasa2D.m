@@ -415,7 +415,7 @@ classdef VigaColumnaMasa2D < Elemento
         function disp(vigaColumnaMasa2DObj)
             
             % Imprime propiedades de la Viga-Columna-Masa2D
-            fprintf('Propiedades Viga-Columna-Masa 2D:\n\t');
+            fprintf('Propiedades viga columna masa 2D:\n\t');
             disp@ComponenteModelo(vigaColumnaMasa2DObj);
             fprintf('\t\tLargo: %s\tArea: %s\tI: %s\tE: %s\tMasa: %s\n', pad(num2str(vigaColumnaMasa2DObj.L), 12), ...
                 pad(num2str(vigaColumnaMasa2DObj.Ao), 10), pad(num2str(vigaColumnaMasa2DObj.Io), 10), ...

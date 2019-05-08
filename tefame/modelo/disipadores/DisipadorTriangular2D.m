@@ -153,7 +153,7 @@ classdef DisipadorTriangular2D < Disipador2D
             %
             % disp(disipadorTriangular2DObj)
             
-            fprintf('Propiedades Disipador Triangular 2D:\n\t');
+            fprintf('Propiedades disipador triangular 2D:\n\t');
             disp@ComponenteModelo(disipadorTriangular2DObj);
             
             fprintf('-------------------------------------------------\n');

@@ -947,8 +947,8 @@ classdef ModalEspectral < handle
             plotcarga = r.plotcarga;
             
             % Verifica que la carga se haya calculado
-            if ~isa(carga, 'CargaDinamica')
-                error('Solo se pueden graficar cargas dinamicas');
+            if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
+                error('Solo se pueden graficar cargas dinamicas o una combinacion de cargas');
             end
             c_u = carga.obtenerDesplazamiento();
             c_v = carga.obtenerVelocidad();
