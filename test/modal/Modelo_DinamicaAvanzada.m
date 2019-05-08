@@ -72,7 +72,7 @@ PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 
 %% Resuelve el sistema
-analisisObj.analizar(50, [0.02, 0.02], [0.02, 0.02, 0], 'condensar', true);
+analisisObj.analizar(41, [0.02, 0.02], [0.02, 0.02, 0], 'condensar', true);
 analisisObj.disp();
 % plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
 
