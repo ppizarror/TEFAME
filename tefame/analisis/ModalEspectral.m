@@ -741,11 +741,12 @@ classdef ModalEspectral < handle
                 gdlx = gdls(1);
                 despx(i, :) = desp(gdlx, :);
                 driftx(i-1, :) = abs(despx(i, :)-despx(i-1, :)) ./ (habs(i) - habs(i-1));
+             
             end % for i
             
             % Determinacion de envolvente maxima de desplazamiento y drift
             despxmax = max(abs(despx'))';
-            driftxmax = max(abs(driftx))';
+            driftxmax = max(abs(driftx'))';
             VecDesp = flipud(despxmax);
             VecDrift = flipud(driftxmax);
             hgen = flipud(habs);
