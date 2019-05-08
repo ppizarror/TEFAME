@@ -23,3 +23,8 @@ dev/
 # Salidas
 test/**/out/*
 test/**/*.gif
+
+# Codigo opensees
+test/modal/opensees/Data/*.fig
+test/modal/opensees/Data/*/*.fig
+*.exe
