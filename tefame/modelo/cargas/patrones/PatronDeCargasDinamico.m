@@ -116,6 +116,16 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 % Inicio del proceso de iteracion
                 tInicio = cputime;
                 
+                % Genera lista de disipadores del modelo
+                disipadorNombres = getClassnameCell(arregloDisipadores);
+                disipadorNombresK = disipadorNombres.keys();
+                disipadorNombresC = disipadorNombres.values();
+                totalDisipador = length(arregloDisipadores);
+                fprintf('\tDisipadores del modelo: %d\n', totalDisipador);
+                for i = 1:length(disipadorNombresK)
+                    fprintf('\t\t%s: %d\n', disipadorNombresK{i}, disipadorNombresC{i});
+                end % for i
+                
                 % Se busca el indice de la carga objetivo
                 totalCargas = length(patronDeCargasObj.cargas);
                 indiceCargaObjetivo = 0; % Indica si se usa una carga especifica para el calculo de v0 del disipador
@@ -164,7 +174,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     
                     % Actualiza el disipador
                     fprintf('\t\t\tActualizando disipadores\n');
-                    for i = 1:length(arregloDisipadores)
+                    for i = 1:totalDisipador
                         arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
                         nodos = arregloDisipadores{i}.obtenerNodos();
                         vo_i(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
@@ -183,7 +193,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         
                         % Actualiza los disipadores
                         fprintf('\t\t\tActualizando disipadores\n');
-                        for i = 1:length(arregloDisipadores)
+                        for i = 1:totalDisipador
                             arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
                             nodos = arregloDisipadores{i}.obtenerNodos();
                             vo_ii(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
@@ -199,12 +209,12 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         if tol_i <= tolIterDisipador
                             fprintf('\t\t\tSe ha logrado la convergencia del modelo con disipadores\n');
                             if betaObjetivo > 0
-                                betaSign = '+';
+                                betaSign = '';
                                 if beta >= betaObjetivo
                                     fprintf('\t\t\tSe ha logrado el amortiguamiento objetivo\n');
+                                    betaSign = '+';
                                 else
                                     fprintf('\t\t\tNo se ha logrado el amortiguamiento objetivo\n');
-                                    betaSign = '-';
                                 end
                                 fprintf('\t\t\t\tDiferencia: %s%.1f%%\n', ...
                                     betaSign, (beta - betaObjetivo)/betaObjetivo*100);

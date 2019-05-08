@@ -4,7 +4,7 @@
 
 % Propiedades disipadores viscosos
 Cd = 1.1;
-alpha = 0.29;
+alpha = 0.35;
 
 % Propiedades disipadores friccionales
 Fy = 0.55;
