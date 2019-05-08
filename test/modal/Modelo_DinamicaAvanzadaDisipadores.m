@@ -4,14 +4,14 @@
 
 % Propiedades disipadores viscosos
 Cd = 1.1;
-alpha = 0.325;
+alpha = 0.3;
 
 % Propiedades disipadores friccionales
 Fy = 0.51;
 
 % Propiedades disipadores triangulares
-k1 = 0.80;
-k2 = 0.60;
+k1 = 82.7;
+k2 = k1/2;
 
 % Tipo disipador
 tipoDisipador = 'viscoso'; % viscoso, friccional, triangular
