@@ -1,4 +1,4 @@
-function obj = draw_vy_line(y, style)
+function obj = draw_vy_line(y, style, lw)
 % DRAW VX LINE
 % This function draw a horizontal line on y value.
 %
@@ -18,6 +18,9 @@ function obj = draw_vy_line(y, style)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-obj = plot(get(gca, 'xlim'), [y, y], style);
+if ~exist('lw', 'var')
+    lw = 1;
+end
+obj = plot(get(gca, 'xlim'), [y, y], style, 'Linewidth', lw);
 
 end

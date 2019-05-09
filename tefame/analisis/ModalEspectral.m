@@ -980,15 +980,15 @@ classdef ModalEspectral < handle
             fprintf('\t%s %s\n', ctitle, carga.obtenerEtiqueta());
             
             if carga.usoAmortiguamientoRayleigh()
-                fprintf('\t\tLa %s se calculo con amortiguamiento Rayleigh\n', ctitle);
+                fprintf('\t\tLa %s se calculo con amortiguamiento Rayleigh\n', lower(ctitle));
             else
-                fprintf('\t\tLa %s se calculo con amortiguamiento de Wilson-Penzien\n', ctitle);
+                fprintf('\t\tLa %s se calculo con amortiguamiento de Wilson-Penzien\n', lower(ctitle));
             end
             
             if carga.usoDescomposicionModal()
-                fprintf('\t\tLa %s se calculo usando descomposicion modal\n', ctitle);
+                fprintf('\t\tLa %s se calculo usando descomposicion modal\n', lower(ctitle));
             else
-                fprintf('\t\tLa %s se calculo sin usar descomposicion modal\n', ctitle);
+                fprintf('\t\tLa %s se calculo sin usar descomposicion modal\n', lower(ctitle));
             end
             
             % Obtiene las matrices
@@ -1000,9 +1000,9 @@ classdef ModalEspectral < handle
             if carga.usoDeDisipadores()
                 cdv = analisisObj.obtenerMatrizAmortiguamientoDisipadores();
                 kdv = analisisObj.obtenerMatrizRigidezDisipadores();
-                fprintf('\t\tLa %s se calculo con disipadores\n', ctitle);
+                fprintf('\t\tLa %s se calculo con disipadores\n', lower(ctitle));
             else
-                fprintf('\t\tLa %s se calculo sin disipadores\n', ctitle);
+                fprintf('\t\tLa %s se calculo sin disipadores\n', lower(ctitle));
             end
             
             % Graficos
@@ -1102,7 +1102,7 @@ classdef ModalEspectral < handle
             dplot = false; % Indica que un grafico se realizo
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ek')
-                fig_title = sprintf('E_K Energia Cinetica - Carga %s', carga.obtenerEtiqueta());
+                fig_title = sprintf('E_K Energia Cinetica - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_k, '-', 'LineWidth', lw);
@@ -1356,7 +1356,10 @@ classdef ModalEspectral < handle
         function plotEsfuerzosElemento(analisisObj, carga, elemento, direccion, varargin) %#ok<INUSL>
             % plotEsfuerzosElemento: Grafica los esfuerzos de un elemento
             %
-            % plotEsfuerzosElemento(analisisObj, carga)
+            % plotEsfuerzosElemento(analisisObj,carga,elemento,direccion,varargin)
+            %
+            % Parametros opcionales:
+            %   'tlim'      Tiempo de analisis limite
             
             % Recorre parametros opcionales
             p = inputParser;
@@ -1480,7 +1483,7 @@ classdef ModalEspectral < handle
             hold on;
             
             % Grafica el maximo
-            draw_vy_line(esf(maxp), 'k--');
+            draw_vy_line(esf(maxp), 'k--', 1.25);
             xlim(tlim);
             grid on;
             title(fig_title);

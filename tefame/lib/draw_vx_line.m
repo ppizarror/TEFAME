@@ -1,4 +1,4 @@
-function obj = draw_vx_line(x, style)
+function obj = draw_vx_line(x, style, lw)
 % DRAW VX LINE
 % This function draw a vertical line on x value.
 %
@@ -18,6 +18,9 @@ function obj = draw_vx_line(x, style)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-obj = plot([x, x], get(gca, 'ylim'), style);
+if ~exist('lw', 'var')
+    lw = 1;
+end
+obj = plot([x, x], get(gca, 'ylim'), style, 'Linewidth', lw);
 
 end

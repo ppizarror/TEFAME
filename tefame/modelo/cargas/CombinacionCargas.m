@@ -32,6 +32,8 @@
 %  Methods:
 %       combinacionCargaObj = CombinacionCargas(etiquetaCombinacion,cargas)
 %       t = obtenerVectorTiempo(combinacionCargaObj)
+%       t = tAnalisis(combinacionCargaObj)
+%       t = dt(combinacionCargaObj)
 %       p = obtenerCarga(combinacionCargaObj)
 %       u = obtenerDesplazamiento(combinacionCargaObj)
 %       u = obtenerDesplazamientoTiempo(combinacionCargaObj,gdl,tiempo)
@@ -46,6 +48,7 @@ classdef CombinacionCargas < ComponenteModelo
     
     properties(Access = private)
         cargas % Arreglo de cargas
+        uGuardado % Guarda el arreglo
     end % properties CombinacionCargas
     
     methods(Access = public)
@@ -75,6 +78,7 @@ classdef CombinacionCargas < ComponenteModelo
             
             % Guarda datos
             combinacionCargaObj.cargas = cargas;
+            combinacionCargaObj.uGuardado = [];
             
         end % CombinacionCargas constructor
         
@@ -176,12 +180,14 @@ classdef CombinacionCargas < ComponenteModelo
             %
             % u = obtenerDesplazamientoTiempo(combinacionCargaObj,gdl,tiempo)
             
-            uf = combinacionCargaObj.obtenerDesplazamiento();
+            if isempty(combinacionCargaObj.uGuardado)
+                combinacionCargaObj.uGuardado = combinacionCargaObj.obtenerDesplazamiento();
+            end
             
             if tiempo < 0 % Retorna el maximo
-                u = max(uf(gdl, :));
+                u = max(combinacionCargaObj.uGuardado(gdl, :));
             else
-                u = uf(gdl, tiempo);
+                u = combinacionCargaObj.uGuardado(gdl, tiempo);
             end
             
         end % obtenerDesplazamientoTiempo function
@@ -308,6 +314,26 @@ classdef CombinacionCargas < ComponenteModelo
             end % for i
             
         end % usoDeDisipadores function
+        
+        function t = tAnalisis(combinacionCargaObj)
+            % tAnalisis: Retorna el tiempo de analisis de la combinacion de
+            % cargas
+            %
+            % t = tAnalisis(combinacionCargaObj)
+            
+            [~, t] = obtenerDtMinimo(combinacionCargaObj);
+            t = max(t) - min(t);
+            
+        end % tAnalisis function
+        
+        function t = dt(combinacionCargaObj)
+            % dt: Obtiene el dt de la combinacion de cargas
+            %
+            % t = dt(combinacionCargaObj)
+            
+            [t, ~] = obtenerDtMinimo(combinacionCargaObj);
+            
+        end % dt function
         
         function disp(combinacionCargaObj)
             % disp: es un metodo de la clase CombinacionCarga que se usa
