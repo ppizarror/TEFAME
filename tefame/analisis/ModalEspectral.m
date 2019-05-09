@@ -156,6 +156,7 @@ classdef ModalEspectral < handle
             % Parametros opcionales:
             %   'toleranciaMasa'    Tolerancia de la masa para la condensacion
             %   'condensar'         Aplica condensacion (true por defecto)
+            %   'valVec'            'eigvc','iterDirec','matBarr','itInvDesp','itSubesp'
             
             % Ajusta variables de entrada
             if ~exist('nModos', 'var')
@@ -166,6 +167,7 @@ classdef ModalEspectral < handle
             p.KeepUnmatched = true;
             addOptional(p, 'toleranciamasa', 0.001);
             addOptional(p, 'condensar', true);
+            addOptional(p, 'valvec', 'eigs');
             parse(p, varargin{:});
             r = p.Results;
             
@@ -195,7 +197,7 @@ classdef ModalEspectral < handle
             analisisObj.modeloObj.actualizar(analisisObj.u);
             
             % Calcula el metodo modal espectral
-            analisisObj.calcularModalEspectral(nModos, betacR, betacP, maxcond); % M,C,K
+            analisisObj.calcularModalEspectral(nModos, betacR, betacP, maxcond, r.valvec); % M,C,K
             
         end % analizar function
         
@@ -1398,7 +1400,7 @@ classdef ModalEspectral < handle
                     fprintf('\tLa carga se calculo con amortiguamiento Rayleigh\n');
                 else
                     fprintf('\tLa carga se calculo con amortiguamiento de Wilson-Penzien\n');
-                end               
+                end
                 if carga.usoDescomposicionModal()
                     fprintf('\tLa carga se calculo usando descomposicion modal\n');
                 else
@@ -1575,7 +1577,7 @@ classdef ModalEspectral < handle
             hold on;
             
             % Grafica el maximo
-            draw_vy_line(esf(maxp), 'k--', 1.25);
+            drawVyline(esf(maxp), 'k--', 1.25);
             xlim(tlim);
             grid on;
             title(fig_title);
@@ -1902,10 +1904,10 @@ classdef ModalEspectral < handle
             
         end % definirNumeracionGDL function
         
-        function calcularModalEspectral(analisisObj, nModos, betacR, betacP, maxcond)
+        function calcularModalEspectral(analisisObj, nModos, betacR, betacP, maxcond, valvecA)
             % calcularModalEspectral: Calcula el metodo modal espectral
             %
-            % calcularModalEspectral(analisisObj,nModos,betacR,betacP,maxcond)
+            % calcularModalEspectral(analisisObj,nModos,betacR,betacP,maxcond,valvecA)
             
             % Calcula tiempo inicio
             fprintf('\tCalculando metodo modal espectral\n');
@@ -2042,17 +2044,34 @@ classdef ModalEspectral < handle
             nModos = min(nModos, ngdl);
             analisisObj.numModos = nModos;
             
-            %--------------------------------------------------------------
-            % Resuelve la ecuacion del sistema, para ello crea la matriz
-            % inversa de la masa y calcula los valores propios
-            invMt = zeros(ngdl, ngdl);
-            for i = 1:ngdl
-                invMt(i, i) = 1 / Meq(i, i);
-            end % for i
-            sysMat = invMt * Keq;
-            
-            [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
-            syseig = diag(syseig);
+            %------------- CALCULO VALORES Y VECTORES PROPIOS ---------------
+            eigCalcT = cputime;
+            if strcmp(valvecA, 'eigs')
+                fprintf('\t\tCalculo valores y vectores propios con metodo eigs\n');
+                
+                % Resuelve la ecuacion del sistema, para ello crea la matriz
+                % inversa de la masa y calcula los valores propios
+                invMt = zeros(ngdl, ngdl);
+                for i = 1:ngdl
+                    invMt(i, i) = 1 / Meq(i, i);
+                end % for i
+                sysMat = invMt * Keq;
+                [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
+                syseig = diag(syseig);
+                
+            elseif strcmp(valvecA, 'iterDirec')
+                fprintf('\tCalculo valores y vectores con algoritmo iteracion directa\n');
+            elseif strcmp(valvecA, 'matBarr')
+                fprintf('\tCalculo valores y vectores propios con algoritmo matriz de barrido\n');
+            elseif strcmp(valvecA, 'itInvDesp')
+                fprintf('\tCalculo valores y vectores propios con metodo iteracion inversa con desplazamientos\n');
+            elseif strcmp(valvecA, 'itSubesp')
+                fprintf('\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
+            else
+                error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,iterDirec,matBarr,itInvDesp,itSubesp', ...
+                    valvecA);
+            end
+            fprintf('\t\t\tFinalizado en %.3f segundos\n', cputime-eigCalcT);
             
             % Se recuperan los grados de libertad condensados y se
             % ordenan de acuerdo a la configuracion original
