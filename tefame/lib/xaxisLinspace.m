@@ -1,6 +1,6 @@
-function yaxis_linspace(nticks)
-% YAXIS LINSPACE
-% This function sets yticks as linspace of nticks total points.
+function xaxisLinspace(nticks)
+% XAXIS LINSPACE
+% This function sets xticks as linspace of nticks total points.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -18,7 +18,7 @@ function yaxis_linspace(nticks)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-lims = get(gca, 'ylim');
-yticks(round(linspace(lims(1), lims(2), nticks), 2));
+lims = get(gca, 'xlim');
+xticks(round(linspace(lims(1), lims(2), nticks), 1));
 
 end

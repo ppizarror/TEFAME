@@ -72,7 +72,9 @@ patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
 %% Analiza el sistema
-analisisObj.analizar(41, [0.02, 0.02], [0.02, 0.02, 0], 'condensar', true);
+analisisObj.analizar('numModo', 41, 'rayleighBeta', [0.02, 0.02], 'rayleighModo', [1, 8], ...
+    'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
+    'valvecAlgoritmo', 'iterDir');
 analisisObj.disp();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
 % plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, 'gif', ...

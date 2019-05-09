@@ -2,7 +2,7 @@ function [w, v] = calculoEigEigs(M, K, nModos)
 % calculoEigEigs: Calcula los valores y vectores propios del sistema usando
 % la funcion eigs
 %
-% [w, v] = calculoEigEigs(M, K, nModos)
+% [w,v] = calculoEigEigs(M,K,nModos)
 %
 % Parametros:
 %   M, K        Matriz masa y rigidez
@@ -20,6 +20,6 @@ for i = 1:ngdl
 end % for i
 sysMat = invM * K;
 [w, v] = eigs(sysMat, nModos, 'smallestabs');
-v = diag(v);
+v = sqrt(diag(v));
 
 end

@@ -144,36 +144,78 @@ classdef ModalEspectral < handle
             
         end % ModalEspectral constructor
         
-        function analizar(analisisObj, nModos, betacR, betacP, varargin)
+        function analizar(analisisObj, varargin)
             % analizar: es un metodo de la clase ModalEspectral que se usa para
             % realizar el analisis estatico
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas, requiere el numero de modos para realizar el
             % analisis y de los modos conocidos con sus beta
             %
-            % analizar(analisisObj,nModos,betacR,betacP,maxcond,varargin)
+            % analizar(analisisObj,betacR,betacP,maxcond,varargin)
             %
-            % Parametros opcionales:
+            % Parametros:
+            %   'nModos'            Numero de modos de analisis (obligatorio)
+            %   'rayleighBeta'      Vector amortiguamientos de Rayleigh
+            %   'rayleighModo'      Vector modos de Rayleigh
+            %   'rayleighDir'       Direccion amortiguamiento Rayleigh
+            %   'cpenzienBeta'      Vector amortiguamiento Cpenzien
             %   'toleranciaMasa'    Tolerancia de la masa para la condensacion
             %   'condensar'         Aplica condensacion (true por defecto)
-            %   'valVec'            'eigvc','iterDirec','matBarr','itInvDesp','itSubesp'
+            %   'valvecAlgoritmo'   'eigvc','iterDir','matBarr','itInvDesp','itSubesp'
+            %   'valvecTolerancia'  Tolerancia calculo valores y vectores propios
             
-            % Ajusta variables de entrada
-            if ~exist('nModos', 'var')
-                nModos = 20;
-            end
-            
+            % Define parametros
             p = inputParser;
             p.KeepUnmatched = true;
+            addOptional(p, 'nModos', 0);
+            addOptional(p, 'rayleighBeta', []);
+            addOptional(p, 'rayleighModo', []);
+            addOptional(p, 'rayleighDir', []);
+            addOptional(p, 'cpenzienBeta', []);
             addOptional(p, 'toleranciamasa', 0.001);
             addOptional(p, 'condensar', true);
-            addOptional(p, 'valvec', 'eigs');
+            addOptional(p, 'valvecAlgoritmo', 'eigs');
+            addOptional(p, 'valvecTolerancia', 0.001);
             parse(p, varargin{:});
             r = p.Results;
             
             maxcond = r.toleranciamasa;
             if ~r.condensar
                 maxcond = -1;
+            end
+            
+            % Verifica que parametros obligatorios sean proporcionados
+            if r.nModos <= 0
+                error('Numero de modos invalido');
+            end
+            
+            if isempty(r.rayleighBeta)
+                error('Vector amortiguamiento de Rayleigh no puede ser nulo');
+            end
+            if isempty(r.rayleighModo)
+                error('Vector modo Rayleigh no puede ser nulo');
+            end
+            for i=1:length(r.rayleighModo)
+                if r.rayleighModo(i) <= 0
+                    error('Vector Rayleigh modo mal definido');
+                end
+            end % for i
+            if length(r.rayleighBeta) ~= length(r.rayleighModo) || ...
+                    length(r.rayleighBeta) ~= length(r.rayleighDir)
+                error('Vectores parametros Rayleigh deben tener igual dimension');
+            end
+            for i=1:length(r.rayleighDir)
+                if ~ (r.rayleighDir(i) == 'h' || r.rayleighDir(i) == 'v')
+                    error('Direccion amortiguamiento Rayleigh solo puede ser (h) horizonal o (v) vertical');
+                end
+            end % for i
+            
+            if isempty(r.cpenzienBeta)
+                error('Vector amortiguamiento cpenzien no puede ser nulo');
+            end
+            
+            if r.valvecTolerancia <= 0
+                error('Tolerancia calculo valores y vectores propios no puede ser inferior o igual a cero');
             end
             
             fprintf('Ejecutando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
@@ -197,7 +239,9 @@ classdef ModalEspectral < handle
             analisisObj.modeloObj.actualizar(analisisObj.u);
             
             % Calcula el metodo modal espectral
-            analisisObj.calcularModalEspectral(nModos, betacR, betacP, maxcond, r.valvec); % M,C,K
+            analisisObj.calcularModalEspectral(nModos, r.rayleighBeta, ...
+                r.rayleighModo, r.rayleighDir, r.cpenzienBeta, ...
+                maxcond, r.valvecAlgoritmo, r.valvecTolerancia);
             
         end % analizar function
         
@@ -1904,10 +1948,12 @@ classdef ModalEspectral < handle
             
         end % definirNumeracionGDL function
         
-        function calcularModalEspectral(analisisObj, nModos, betacR, betacP, maxcond, valvecA)
+        function calcularModalEspectral(analisisObj, nModos, betacR, modocR, ...
+                direcR, betacP, maxcond, valvecAlgoritmo, valvecTolerancia)
             % calcularModalEspectral: Calcula el metodo modal espectral
             %
-            % calcularModalEspectral(analisisObj,nModos,betacR,betacP,maxcond,valvecA)
+            % calcularModalEspectral(analisisObj,nModos,betacR,modocR,direcR,
+            %   betacP,maxcond,valvecAlgoritmo,valvecTolerancia)
             
             % Calcula tiempo inicio
             fprintf('\tCalculando metodo modal espectral\n');
@@ -2042,26 +2088,43 @@ classdef ModalEspectral < handle
             fprintf('\t\tGrados de libertad totales: %d\n', ngdl);
             fprintf('\t\tNumero de direcciones de analisis: %d\n', ndg);
             nModos = min(nModos, ngdl);
-            analisisObj.numModos = nModos;
             
             %------------- CALCULO VALORES Y VECTORES PROPIOS ---------------
             eigCalcT = cputime;
-            if strcmp(valvecA, 'eigs')
+            modalPhin = [];
+            modalWn = [];
+            
+            if strcmp(valvecAlgoritmo, 'eigs')
+                
                 fprintf('\t\tCalculo valores y vectores propios con metodo eigs\n');
-                [modalPhin, syseig] = calculoEigEigs(Meq, Keq, nModos);
-            elseif strcmp(valvecA, 'iterDirec')
+                [modalPhin, modalWn] = calculoEigEigs(Meq, Keq, nModos);
+                
+            elseif strcmp(valvecAlgoritmo, 'iterDir')
+                
                 fprintf('\tCalculo valores y vectores con algoritmo iteracion directa\n');
-            elseif strcmp(valvecA, 'matBarr')
+                [modalPhin, modalWn] = calculoEigIterDirecta(Meq, Keq, nModos, valvecTolerancia);
+                nModos = length(modalWn);
+                
+            elseif strcmp(valvecAlgoritmo, 'matBarr')
+                
                 fprintf('\tCalculo valores y vectores propios con algoritmo matriz de barrido\n');
-            elseif strcmp(valvecA, 'itInvDesp')
+                
+            elseif strcmp(valvecAlgoritmo, 'itInvDesp')
+                
                 fprintf('\tCalculo valores y vectores propios con metodo iteracion inversa con desplazamientos\n');
-            elseif strcmp(valvecA, 'itSubesp')
+                
+            elseif strcmp(valvecAlgoritmo, 'itSubesp')
+                
                 fprintf('\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
+                
             else
-                error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,iterDirec,matBarr,itInvDesp,itSubesp', ...
-                    valvecA);
+                
+                error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,iterDir,matBarr,itInvDesp,itSubesp', ...
+                    valvecAlgoritmo);
+                
             end
             fprintf('\t\t\tFinalizado en %.3f segundos\n', cputime-eigCalcT);
+            analisisObj.numModos = nModos;
             
             % Se recuperan los grados de libertad condensados y se
             % ordenan de acuerdo a la configuracion original
@@ -2078,7 +2141,6 @@ classdef ModalEspectral < handle
             end
             
             % Calcula las frecuencias del sistema
-            modalWn = sqrt(syseig);
             modalTn = (modalWn.^-1) .* 2 * pi(); % Calcula los periodos
             
             % Calcula las matrices
@@ -2155,8 +2217,6 @@ classdef ModalEspectral < handle
             % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
             % Se declaran dos amortiguamientos criticos asociados a dos modos
             % diferentes indicando si es horizontal o vertical (h o v)
-            modocR = [1, 8];
-            direcR = ['h', 'h'];
             countcR = [0, 0];
             m = 0;
             n = 0;
