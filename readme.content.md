@@ -16,6 +16,7 @@
 - Viga-columna 2D
 
 ## Tipo de disipadores
+
 - Viscoso 2D
 - Triangular 2D
 - Friccional puro 2D
@@ -24,6 +25,10 @@
 
 - Constante
 - Dinámico
+
+## Combinaciones de cargas
+
+  Se da soporte a combinación elástica de cargas
 
 ## Tipo de cargas
 
