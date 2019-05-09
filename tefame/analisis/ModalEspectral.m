@@ -154,8 +154,8 @@ classdef ModalEspectral < handle
             % analizar(analisisObj,nModos,betacR,betacP,maxcond,varargin)
             %
             % Parametros opcionales:
-            %   'toleranciaMasa': Tolerancia de la masa para la condensacion
-            %   'condensar': Aplica condensacion (true por defecto)
+            %   'toleranciaMasa'    Tolerancia de la masa para la condensacion
+            %   'condensar'         Aplica condensacion (true por defecto)
             
             % Ajusta variables de entrada
             if ~exist('nModos', 'var')
@@ -210,6 +210,7 @@ classdef ModalEspectral < handle
             %   'disipadores'       Usa los disipadores en el calculo (false por defecto)
             %   'cargaDisipador'    Carga objetivo disipador para el calculo de v0
             %   'betaObjetivo'      Beta objetivo para el calculo de disipadores
+            %   'betaGrafico'       Indica si se grafica la variacion del amortiguamiento en cada iteracion
             %   'iterDisipador'     Numero de iteraciones para el calculo de disipadores
             %   'tolIterDisipador'  Tolerancia usada para las iteraciones del calculo de disipadores
             
@@ -223,6 +224,7 @@ classdef ModalEspectral < handle
             addOptional(p, 'disipadores', true);
             addOptional(p, 'cargaDisipador', false);
             addOptional(p, 'betaObjetivo', 0);
+            addOptional(p, 'betaGrafico', false);
             addOptional(p, 'iterDisipador', 10);
             addOptional(p, 'tolIterDisipador', 0.001);
             parse(p, varargin{:});
@@ -244,7 +246,7 @@ classdef ModalEspectral < handle
             fprintf('Metodo modal espectral:\n');
             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores, ...
                 r.cargaDisipador, r.betaObjetivo, analisisObj.modeloObj.obtenerDisipadores(), ...
-                r.iterDisipador, r.tolIterDisipador);
+                r.iterDisipador, r.tolIterDisipador, r.betaGrafico);
             
         end % resolverCargasDinamicas function
         
@@ -521,9 +523,12 @@ classdef ModalEspectral < handle
                 fprintf('\tSe graficara la carga %s desde ti=%.3f a tf=%.3f con dt=%.3f\n', ...
                     carga.obtenerEtiqueta(), tmin, tmax, dt_plot);
                 
-            else % No se grafican cargas
+            else
+                
+                % No se grafican cargas
                 tCargaPos = zeros(1, numCuadros);
                 tCargaEq = zeros(1, numCuadros);
+                
             end
             
             % Chequea deformada
@@ -680,8 +685,7 @@ classdef ModalEspectral < handle
         
         function calcularDesplazamientoDrift(analisisObj, carga, xanalisis)
             % calcularDesplazamientoDrift: Funcion que calcula el desplazamiento y
-            % drift a partir de una carga. TODO: Combinaciones de
-            % cargas
+            % drift a partir de una carga
             %
             % calcularDesplazamientoDrift(analisisObj,carga,xanalisis)
             
@@ -801,14 +805,13 @@ classdef ModalEspectral < handle
         
         function calcularMomentoCorteBasal(analisisObj, carga, varargin)
             % calcularMomentoCorteBasal: Funcion que calcula el momento y
-            % corte basal a partir de una carga. TODO: Combinaciones de
-            % cargas
+            % corte basal a partir de una carga
             %
             % calcularMomentoCorteBasal(analisisObj,carga,varargin)
             %
             % Parametros opcionales:
-            %   'plot'  'all','momento','corte','envmomento','envcorte'
-            %   'modo'  Vector con graficos de modos
+            %   'plot'      'all','momento','corte','envmomento','envcorte'
+            %   'modo'      Vector con graficos de modos
             
             % Rescata parametros
             p = inputParser;
@@ -939,10 +942,12 @@ classdef ModalEspectral < handle
             % calcularCurvasEnergia(analisisObj,carga,varargin)
             %
             % Parametros opcionales:
-            %   'plot'      'all','ek','ev','ekev','ebe','et','ed'
-            %   'carga'     Booleano que indica si se grafica la carga o no
-            %   'mfilt'     Porcentaje de filtrado por numero de datos
-            %   'linewidth' Ancho de linea de los graficos
+            %   'plot'          'all','ek','ev','ekev','ebe','et','ed'
+            %   'carga'         Booleano que indica si se grafica la carga o no
+            %   'mfilt'         Porcentaje de filtrado por numero de datos
+            %   'linewidth'     Ancho de linea de los graficos
+            %   'norm1'         Normaliza con respecto al primer valor
+            %   'closeall'      Cierra todos los graficos
             
             % Recorre parametros opcionales
             p = inputParser;
@@ -951,8 +956,14 @@ classdef ModalEspectral < handle
             addOptional(p, 'plotcarga', false);
             addOptional(p, 'mfilt', 0.005);
             addOptional(p, 'linewidth', 1.2);
+            addOptional(p, 'norm1', false);
+            addOptional(p, 'closeall', false);
             parse(p, varargin{:});
             r = p.Results;
+            
+            if r.closeall
+                close all;
+            end
             
             % Obtiene variables
             tipoplot = r.plot;
@@ -1011,29 +1022,50 @@ classdef ModalEspectral < handle
             
             % Energia cinetica
             e_k = zeros(1, s);
+            ek1 = 0;
             fprintf('\tCalculando energia cinetica\n');
             for i = 1:s
                 vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
                 e_k(i) = 0.5 * vv' * m * vv;
+                if i == 1
+                    ek1 = e_k(i);
+                end
+                if r.norm1
+                    e_k(i) = e_k(i) - ek1;
+                end
             end % for i
             
             % Energia elastica
             e_v = zeros(1, s);
             fprintf('\tCalculando energia elastica\n');
+            ev1 = 0;
             for i = 1:s
                 vv = c_u(:, i); % Obtiene el vector de desplazamiento para el tiempo i
                 e_v(i) = 0.5 * vv' * k * vv;
+                if i == 1
+                    ev1 = e_v(1);
+                end
+                if r.norm1
+                    e_v(i) = e_v(i) - ev1; % Normaliza restando el valor inicial
+                end
             end % for i
             
             % Energia elastica disipadores
             e_vamori = zeros(1, s); % Parcial
             e_vamor = zeros(1, s); % Integral
+            ev1a = 0;
             
             if carga.usoDeDisipadores()
                 fprintf('\tCalculando energia elastica de los amortiguadores\n');
                 for i = 1:s
                     uu = c_u(:, i); % Obtiene el vector de desplazamiento para el tiempo i
                     e_vamori(i) = uu' * kdv * uu;
+                    if i == 1
+                        ev1a = e_vamori(1);
+                    end
+                    if r.norm1 % Normaliza con el primer valor
+                        e_vamori(i) = e_vamori(i) - ev1a;
+                    end
                     if i > 1
                         dt = t(i) - t(i - 1);
                         e_vamor(i) = e_vamor(i - 1) + 0.5 * (e_vamori(i) + e_vamori(i - 1)) * dt;
@@ -1044,10 +1076,18 @@ classdef ModalEspectral < handle
             % Energia disipada
             e_di = zeros(1, s); % Parcial
             e_d = zeros(1, s); % Integral
+            ed1 = 0;
+            
             fprintf('\tCalculando energia disipada por la estructura\n');
             for i = 1:s
                 vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
                 e_di(i) = vv' * c * vv;
+                if i == 1
+                    ed1 = e_di(1);
+                end
+                if r.norm1 % Normaliza con el primer valor
+                    e_di(i) = e_di(i) - ed1;
+                end
                 if i > 1
                     dt = t(i) - t(i-1);
                     e_d(i) = e_d(i-1) + 0.5 * (e_di(i) + e_di(i-1)) * dt;
@@ -1057,12 +1097,19 @@ classdef ModalEspectral < handle
             % Energia disipada amortiguadores
             e_damori = zeros(1, s); % Parcial
             e_damor = zeros(1, s); % Integral
+            eda1 = 0;
             
             if carga.usoDeDisipadores()
                 fprintf('\tCalculando energia disipada por los amortiguadores\n');
                 for i = 1:s
                     vv = c_v(:, i); % Obtiene el vector de velocidad para el tiempo i
                     e_damori(i) = vv' * cdv * vv;
+                    if i == 1
+                        eda1 = e_damori(1);
+                    end
+                    if r.norm1 % Normaliza con el primer valor
+                        e_damori(i) = e_damori(i) - eda1;
+                    end
                     if i > 1
                         dt = t(i) - t(i - 1);
                         e_damor(i) = e_damor(i - 1) + 0.5 * (e_damori(i) + e_damori(i - 1)) * dt;

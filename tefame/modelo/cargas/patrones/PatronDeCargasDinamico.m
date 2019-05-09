@@ -43,7 +43,8 @@
 %       desModal
 %  Methods:
 %       patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj)
-%       aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaDisipador,arregloDisipadores)
+%       aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaObjetivo,
+%           arregloDisipadores,iterDisipador,tolIterDisipador,betaGrafico)
 %       disp(patronDeCargasObj)
 %  Methods SuperClass (PatronDeCargas):
 %  Methods SuperClass (ComponenteModelo):
@@ -60,13 +61,14 @@ classdef PatronDeCargasDinamico < PatronDeCargas
     
     methods(Access = public)
         
-        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, arregloCargas, analisisObj, varargin)
+        function patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas, ...
+                arregloCargas, analisisObj, varargin)
             % PatronDeCargasDinamico: es el constructor de la clase PatronDeCargas
             %
             % patronDeCargasObj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj,varargin)
             %
             % Parametros opcionales:
-            %   'desmodal': Ejecuta la condensacion modal
+            %   'desmodal'  Ejecuta la condensacion modal
             %
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
             % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)
@@ -101,11 +103,14 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % PatronDeCargasDinamico constructor
         
-        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, betaObjetivo, arregloDisipadores, iterDisipador, tolIterDisipador)
+        function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, ...
+                betaObjetivo, arregloDisipadores, iterDisipador, tolIterDisipador, ...
+                betaGrafico)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaObjetivo,arregloDisipadores,iterDisipador,tolIterDisipador)
+            % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaObjetivo,
+            %   arregloDisipadores,iterDisipador,tolIterDisipador,betaGrafico)
             %
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
@@ -166,13 +171,23 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     fprintf('\tParametros iteracion:\n\t\titerDisipador: %d\n\t\ttolIterDisipador: %.3f\n\t\tbetaObjetivo: %.3f\n', ...
                         iterDisipador, tolIterDisipador, betaObjetivo);
                     fprintf('\tIniciando iteraciones\n');
-                    fprintf('\t\tIteracion 0:\n');
                     
                     % Variables que guardan los estados de beta
                     vo_i = zeros(1, length(arregloDisipadores));
                     vo_ii = zeros(1, length(arregloDisipadores));
                     
+                    % Beta del grafico
+                    betagr_b = [];
+                    betagr_i = 0;
+                    
+                    % Calcula beta sin actualizar disipadores
+                    beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
+                    betagr_i = betagr_i + 1; % Guarda en el arreglo
+                    betagr_b(betagr_i) = beta;
+                    fprintf('\t\tAmortiguamiento inicial: %.4f\n', beta);
+                    
                     % Actualiza el disipador
+                    fprintf('\t\tIteracion 1:\n');
                     fprintf('\t\t\tActualizando disipadores\n');
                     for i = 1:totalDisipador
                         arregloDisipadores{i}.actualizarDisipador(w1, cargaDisipadorObj);
@@ -180,12 +195,14 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         vo_i(i) = arregloDisipadores{i}.calcularv0(nodos, cargaDisipadorObj);
                     end % for i
                     beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
-                    fprintf('\t\t\tbeta=%.4f\n', beta);
+                    fprintf('\t\t\tbeta: %.4f\n', beta);
+                    betagr_i = betagr_i + 1; % Guarda en el arreglo
+                    betagr_b(betagr_i) = beta;
                     % betaAnt = beta; % Guarda el beta anterior
                     pause(0.1);
                     
                     % Realiza las iteraciones
-                    for j = 1:iterDisipador
+                    for j = 2:(iterDisipador - 1)
                         
                         % Calcula la carga
                         fprintf('\t\tIteracion %d:\n', j);
@@ -201,11 +218,13 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         
                         % Calcula beta
                         beta = patronDeCargasObj.calcularBetaModelo(cpenzien, nmodo1, w1);
-                        fprintf('\t\t\tbeta=%.4f\n', beta);
+                        fprintf('\t\t\tbeta: %.4f\n', beta);
+                        betagr_i = betagr_i + 1; % Guarda en el arreglo
+                        betagr_b(betagr_i) = beta;
                         
                         delta_vo = abs(vo_i-vo_ii);
                         tol_i = max(delta_vo);
-                        fprintf('\t\t\tdelta=%.4f\n', tol_i);
+                        fprintf('\t\t\tdelta: %.4f\n', tol_i);
                         if tol_i <= tolIterDisipador
                             fprintf('\t\t\tSe ha logrado la convergencia del modelo con disipadores\n');
                             if betaObjetivo > 0
@@ -236,6 +255,28 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     fprintf('\tAmortiguamiento del modelo: %.3f\n', beta);
                     fprintf('\tInicio calculo de cargas con los disipadores actualizados\n');
                     
+                    % Grafica si aplica
+                    if betaGrafico
+                        fig_title = 'Variacion amortiguamiento iteraciones';
+                        plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                        movegui(plt, 'center');
+                        betaxticks = 0:1:(betagr_i - 1);
+                        plot(betaxticks, betagr_b, '-', 'LineWidth', 1.4, 'Color', 'black');
+                        % grid on;
+                        xlabel('Numero iteracion');
+                        ylabel('Amortiguamiento');
+                        title(fig_title);
+                        set(gca, 'XTick', betaxticks);
+                        if betaObjetivo > 0
+                            hold on;
+                            draw_vy_line(betaObjetivo, 'b--', 1.2);
+                            legend({'Variacion amortiguamiento', sprintf('Amortiguamiento objetivo: %.3f', ...
+                                betaObjetivo)}, 'location', 'southeast');
+                        end
+                        drawnow();
+                        pause(0.1);
+                    end
+                    
                 else
                     
                     % No se iteran los disipadores
@@ -259,13 +300,13 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         end % aplicarCargas function
         
         function disp(patronDeCargasObj)
-            % disp: es un metodo de la clase PatronDeCargasDinamico que se usa para imprimir en
-            % command Window la informacion del Patron de Cargas
+            % disp: es un metodo de la clase PatronDeCargasDinamico que se usa
+            % para imprimir en el command Window la informacion del Patron de Cargas
             %
             % disp(patronDeCargasObj)
             %
-            % Imprime la informacion guardada en el Patron de Cargas Dinamico (patronDeCargasObj)
-            % en pantalla
+            % Imprime la informacion guardada en el Patron de Cargas Dinamico
+            % (patronDeCargasObj) en pantalla
             
             fprintf('Propiedades patron de cargas dinamico:\n');
             disp@ComponenteModelo(patronDeCargasObj);
@@ -295,17 +336,19 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % calcularBetaModelo function
         
-        function calcularCargaGenerica(patronDeCargasObj, cpenzien, disipadores, cargaIndiceDisipador, calculaDisipadores)
+        function calcularCargaGenerica(patronDeCargasObj, cpenzien, disipadores, ...
+                cargaIndiceDisipador, calculaDisipadores)
             % calcularCargaGenerica: Funcion que calcula el tema de las
             % cargas, es generica en cuanto al calculo. Esta puede
             % funcionar tanto si hay o no hay disipadores
             %
-            % calcularCargaGenerica(patronDeCargasObj,cpenzien,disipadores,cargaIndiceDisipador,calculaDisipadores)
+            % calcularCargaGenerica(patronDeCargasObj,cpenzien,disipadores,
+            %   cargaIndiceDisipador,calculaDisipadores)
             
             % Obtiene los parametros de la estructura
             k = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
             m = patronDeCargasObj.analisisObj.obtenerMatrizMasa();
-            c = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(~cpenzien); % false: cPenzien
+            c = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamiento(~cpenzien);
             cd = patronDeCargasObj.analisisObj.obtenerMatrizAmortiguamientoDisipadores();
             r = patronDeCargasObj.analisisObj.obtenerVectorInfluencia();
             phi = patronDeCargasObj.analisisObj.obtenerMatrizPhi();
@@ -401,7 +444,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 end
                 
                 % Resuelve newmark
-                [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, c, pmodal, patronDeCargasObj.cargas{i}.dt, 0, 0);
+                [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, ...
+                    c, pmodal, patronDeCargasObj.cargas{i}.dt, 0, 0);
                 
                 % Aplica descomposicion si aplica
                 if patronDeCargasObj.desModal
