@@ -2048,17 +2048,7 @@ classdef ModalEspectral < handle
             eigCalcT = cputime;
             if strcmp(valvecA, 'eigs')
                 fprintf('\t\tCalculo valores y vectores propios con metodo eigs\n');
-                
-                % Resuelve la ecuacion del sistema, para ello crea la matriz
-                % inversa de la masa y calcula los valores propios
-                invMt = zeros(ngdl, ngdl);
-                for i = 1:ngdl
-                    invMt(i, i) = 1 / Meq(i, i);
-                end % for i
-                sysMat = invMt * Keq;
-                [modalPhin, syseig] = eigs(sysMat, nModos, 'smallestabs');
-                syseig = diag(syseig);
-                
+                [modalPhin, syseig] = calculoEigEigs(Meq, Keq, nModos);
             elseif strcmp(valvecA, 'iterDirec')
                 fprintf('\tCalculo valores y vectores con algoritmo iteracion directa\n');
             elseif strcmp(valvecA, 'matBarr')

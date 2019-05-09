@@ -1,7 +1,25 @@
-function [outputArg1,outputArg2] = eig_eigs(inputArg1,inputArg2)
-%EIG_EIGS Summary of this function goes here
-%   Detailed explanation goes here
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
-end
+function [w, v] = calculoEigEigs(M, K, nModos)
+% calculoEigEigs: Calcula los valores y vectores propios del sistema usando
+% la funcion eigs
+%
+% [w, v] = calculoEigEigs(M, K, nModos)
+%
+% Parametros:
+%   M, K        Matriz masa y rigidez
+%   nmodos      Numero de modos del analisis
+%
+% Salida:
+%   w           Matriz vectores propios
+%   v           Valores propios
 
+ngdl = length(M);
+nModos = min(nModos, ngdl);
+invM = zeros(ngdl, ngdl);
+for i = 1:ngdl
+    invM(i, i) = 1 / M(i, i);
+end % for i
+sysMat = invM * K;
+[w, v] = eigs(sysMat, nModos, 'smallestabs');
+v = diag(v);
+
+end
