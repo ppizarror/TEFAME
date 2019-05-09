@@ -1432,6 +1432,10 @@ classdef ModalEspectral < handle
                 diru = 'tonf*m';
             end
             
+            % Posicion del maximo
+            maxp = 1;
+            maxv = 0;
+            
             % Por cada tiempo obtiene la fuerza resistente local
             for i = 1:length(t)
                 
@@ -1451,6 +1455,12 @@ classdef ModalEspectral < handle
                 fr = elemento.obtenerFuerzaResistenteCoordLocal();
                 esf(i) = fr(dirk);
                 
+                % Actualiza el maximo
+                if abs(esf(i)) > maxv
+                    maxv = abs(esf(i));
+                    maxp = i;
+                end
+                
             end % for i
             
             % Resetea los desplazamientos originales
@@ -1467,9 +1477,17 @@ classdef ModalEspectral < handle
             plot(t, esf, '-', 'LineWidth', 1);
             ylabel(sprintf('Esfuerzo (%s)', diru));
             xlabel('t (s)');
+            hold on;
+            
+            % Grafica el maximo
+            draw_vy_line(esf(maxp), 'k--');
             xlim(tlim);
             grid on;
             title(fig_title);
+            
+            legend({sprintf('Esfuerzo elemento: %s', carga.obtenerEtiqueta()), ...
+                sprintf('Esfuerzo maximo: %.2f (%s)', esf(maxp), diru)}, ...
+                'location', 'southeast');
             
         end % plotEsfuerzosElemento function
         
