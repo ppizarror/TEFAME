@@ -60,6 +60,7 @@ classdef AnalisisEstatico < handle
         Kt % Matriz de Rigidez del modelo
         F % Vector de Fuerzas aplicadas sobre el modelo
         u % Vector con los desplazamientos de los grados de libertad del modelo
+        analisisFinalizado % Analisis termino
     end % properties AnalisisEstatico
     
     methods
@@ -81,6 +82,7 @@ classdef AnalisisEstatico < handle
             analisisObj.Kt = [];
             analisisObj.u = [];
             analisisObj.F = [];
+            analisisObj.analisisFinalizado = false;
             
         end % AnalisisEstatico constructor
         
@@ -159,6 +161,7 @@ classdef AnalisisEstatico < handle
             analisisObj.ensamblarVectorFuerzas();
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
             analisisObj.modeloObj.actualizar(analisisObj.u);
+            analisisObj.analisisFinalizado = true;
             
         end % analizar function
         
@@ -347,7 +350,11 @@ classdef AnalisisEstatico < handle
                 for j = 1:numNodo
                     coord = nodoElemento{j}.obtenerCoordenadas();
                     def = nodoElemento{j}.obtenerDesplazamientos();
-                    coordi = coord + def .* factor;
+                    if analisisObj.analisisFinalizado
+                        coordi = coord + def .* factor;
+                    else
+                        coordi = coord;
+                    end
                     limx(1) = min(limx(1), coordi(1));
                     limy(1) = min(limy(1), coordi(2));
                     limx(2) = max(limx(2), coordi(1));
@@ -356,7 +363,11 @@ classdef AnalisisEstatico < handle
                         limz(1) = min(limz(1), coordi(3));
                         limz(2) = max(limz(2), coordi(3));
                     end
-                    coordf = coord - def .* factor;
+                    if analisisObj.analisisFinalizado
+                        coordf = coord - def .* factor;
+                    else
+                        coordf = coord;
+                    end
                     limx(1) = min(limx(1), coordf(1));
                     limy(1) = min(limy(1), coordf(2));
                     limx(2) = max(limx(2), coordf(1));
@@ -379,12 +390,28 @@ classdef AnalisisEstatico < handle
             %   'deformada'     Dibuja la deformada del problema
             %   'factor'        Factor de la deformada
             %   'defElem'       Dibuja la deformada de cada elemento
+            %   'styleNodoE'    Estilo nodos estaticos
+            %   'sizeNodoE'     Porte nodo estatico
+            %   'styleNodoD'    Estilo nodo deformado
+            %   'sizeNodoD'     Porte nodo deformado
+            %   'styleElemE'    Estilo elemento estatico
+            %   'lwElemE'       Ancho linea elemento estatico
+            %   'styleElemD'    Estilo elemento deformado
+            %   'lwElemD'       Ancho linea elemento deformado
             
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'deformada', false);
-            addOptional(p, 'factor', 10);
+            addOptional(p, 'factor', 1);
             addOptional(p, 'defElem', true);
+            addOptional(p, 'styleNodoE', 'b');
+            addOptional(p, 'sizeNodoE', 5);
+            addOptional(p, 'styleNodoD', 'k');
+            addOptional(p, 'sizeNodoD', 10);
+            addOptional(p, 'styleElemE', 'b-');
+            addOptional(p, 'lwElemE', 0.5);
+            addOptional(p, 'styleElemD', 'k-');
+            addOptional(p, 'lwElemD', 1.25);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -420,7 +447,7 @@ classdef AnalisisEstatico < handle
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
                 if ~deformada
-                    nodoObjetos{i}.plot([], 'b', 5);
+                    nodoObjetos{i}.plot([], r.styleNodoE, r.sizeNodoE);
                 end
             end % for i
             
@@ -434,20 +461,20 @@ classdef AnalisisEstatico < handle
                 % Se obienen los gdl del elemento metodo indicial
                 nodoElemento = elementoObjetos{i}.obtenerNodos();
                 numNodo = length(nodoElemento);
-                elementoObjetos{i}.plot({}, 'b-', 0.5);
+                elementoObjetos{i}.plot({}, r.styleElemE, r.lwElemE);
                 
-                if deformada
+                if deformada && analisisObj.analisisFinalizado
                     def = cell(numNodo, 1);
                     for j = 1:numNodo
                         def{j} = factor * nodoElemento{j}.obtenerDesplazamientos();
                     end % for j
-                    elementoObjetos{i}.plot(def, 'k-', 1.25, defElem);
+                    elementoObjetos{i}.plot(def, r.styleElemD, r.lwElemD, defElem);
                 end
                 
             end % for i
             
             % Grafica los nodos deformados
-            if deformada
+            if deformada && analisisObj.analisisFinalizado
                 for i = 1:numeroNodos
                     coords = nodoObjetos{i}.obtenerCoordenadas();
                     def = nodoObjetos{i}.obtenerDesplazamientos();
@@ -459,7 +486,7 @@ classdef AnalisisEstatico < handle
                     coords = coords + def .* factor;
                     ngdlid = length(coords);
                     gdl = max(gdl, ngdlid);
-                    nodoObjetos{i}.plot(def.*factor, 'k', 10);
+                    nodoObjetos{i}.plot(def.*factor, r.styleNodoD, r.sizeNodoD);
                 end % for i
             end
             

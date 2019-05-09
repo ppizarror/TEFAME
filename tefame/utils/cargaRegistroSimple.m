@@ -5,7 +5,7 @@ function reg = cargaRegistroSimple(archivo, dt, varargin)
 % reg = cargaRegistroSimple(archivo,dt,varargin)
 %
 % Parametros opcionales:
-%   'factor': Factor que multiplica al registro (1 por defecto)
+%   'factor'    Factor que multiplica al registro (1 por defecto)
 
 p = inputParser;
 p.KeepUnmatched = true;

@@ -50,5 +50,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-analisisObj.plot('deformada', true);
+analisisObj.plot('deformada', true, 'factor', 50);
 modeloObj.guardarResultados('test/estatico/out/EjemploClase_VigaColumna2D.txt');

@@ -306,6 +306,67 @@ classdef VigaColumna2D < Elemento
             
         end % guardarEsfuerzosInternos function
         
+%         function y = plotVigaDeformar(elementoObj, deformadas) %#ok<INUSL>
+%             % plotVigaDeformar: Evalua si se grafica una viga con
+%             % deformacion
+%             %
+%             % plotVigaDeformar(elementoObj, deformadas)
+%             
+%             y = length(deformadas{1}) == 3;
+%             
+%         end % plotVigaDeformar function
+%         
+%         function N = obtenerVectorN(elementoObj, x, l) %#ok<INUSL>
+%             % obtenerVectorN: Obtiene el vector de transformada N a partir
+%             % de x como porcentaje del largo
+%             
+%             x = x * l;
+%             N = zeros(4, 1);
+%             N(1) = 1 - 3 * (x / l)^2 + 2 * (x / l)^3;
+%             N(2) = x * (1 - x / l)^2;
+%             N(3) = 3 * (x / l)^2 - 2 * (x / l)^3;
+%             N(4) = (x^2 / l) * (x / l - 1);
+%             
+%         end % obtenerVectorN function
+%         
+%        function plot(elementoObj, deformadas, tipoLinea, grosorLinea, defElem)
+%             % plot: Grafica un elemento
+%             %
+%             % plot(elementoObj,deformadas,tipoLinea,grosorLinea,defElem)
+%             
+%             % Obtiene las coordenadas de los objetos
+%             coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
+%             coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
+%             
+%             % Si hay deformacion
+%             if ~isempty(deformadas)
+%                 coord1 = coord1 + deformadas{1}(1:2);
+%                 coord2 = coord2 + deformadas{2}(1:2);
+%                 if defElem && elementoObj.plotVigaDeformar(deformadas) && elementoObj.graficaDeformada
+%                     ndx = abs(coord2(1)-coord1(1));
+%                     ndy = abs(coord2(2)-coord1(2));
+%                     nl = sqrt(ndx^2+ndy^2);
+%                     tht = elementoObj.theta;
+%                     coordx = [coord1(1), deformadas{1}(3), coord2(1), deformadas{2}(3)];
+%                     coordy = [coord1(2), deformadas{1}(3), coord2(2), deformadas{2}(3)];
+%                     coordi = coord1;
+%                     for i = 1:elementoObj.PLOTNELEM
+%                         p = i / elementoObj.PLOTNELEM;
+%                         n = elementoObj.obtenerVectorN(p, nl);
+%                         coordf = [(coord1(1) + ndx * p) * cos(tht) + (coordx * n) * sin(tht), ...
+%                             (coordy * n) * cos(tht) + (coord1(2) + ndy * p) * sin(tht)];
+%                         elementoObj.graficarLinea(coordi, coordf, tipoLinea, grosorLinea);
+%                         coordi = coordf;
+%                     end
+%                     return;
+%                 end
+%             end
+%             
+%             % Grafica en forma lineal
+%             elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
+%             
+%         end % plot function
+        
         function plot(elementoObj, deformadas, tipoLinea, grosorLinea, ~)
             % plot: Grafica un elemento
             %

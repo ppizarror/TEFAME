@@ -416,13 +416,24 @@ classdef ModalEspectral < handle
             %   'tmin'              Tiempo minimo al graficar cargas
             %   'tmax'              Tiempo maximo al graficar cargas
             %   'disipador'         Dibuja los disipadores
+            %   'styleNodoE'        Estilo nodo estatico
+            %   'sizeNodoE'         Porte nodo estatico
+            %   'styleNodoD'        Estilo nodo dinamico
+            %   'sizeNodoE'         Porte nodo dinamico
+            %   'styleElemE'        Estilo elemento estatico
+            %   'lwElemE'           Ancho linea elemento estatico
+            %   'styleElemD'        Estilo elemento dinamico
+            %   'lwElemD'           Ancho linea elemento dinamico
+            %   'styleDisipador'    Estilo linea disipador
+            %   'lwDisipador'       Ancho linea disipador
+            %   'colorDisipador'    Color del disipador
             
             % Establece variables iniciales
             fprintf('Generando animacion analisis modal espectral:\n');
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'modo', 0);
-            addOptional(p, 'factor', 10);
+            addOptional(p, 'factor', 1);
             addOptional(p, 'cuadros', 0);
             addOptional(p, 'gif', '');
             addOptional(p, 'defElem', false);
@@ -431,6 +442,17 @@ classdef ModalEspectral < handle
             addOptional(p, 'tmax', -1);
             addOptional(p, 'mostrarEstatico', analisisObj.mostrarDeformada);
             addOptional(p, 'disipadores', true);
+            addOptional(p, 'styleNodoE', 'b');
+            addOptional(p, 'sizeNodoE', 5);
+            addOptional(p, 'styleNodoD', 'k');
+            addOptional(p, 'sizeNodoD', 10);
+            addOptional(p, 'styleElemE', 'b-');
+            addOptional(p, 'lwElemE', 0.5);
+            addOptional(p, 'styleElemD', 'k-');
+            addOptional(p, 'lwElemD', 1.2);
+            addOptional(p, 'styleDisipador', '--');
+            addOptional(p, 'colorDisipador', 'r');
+            addOptional(p, 'lwDisipador', 1.3);
             parse(p, varargin{:});
             r = p.Results;
             modo = floor(r.modo);
@@ -548,7 +570,9 @@ classdef ModalEspectral < handle
                 grid on;
                 [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(0, factor, defCarga, carga);
                 plotAnimado(analisisObj, false, 0, factor, 0, limx, limy, limz, ...
-                    0, 1, 1, defElem, defCarga, carga, 1, tCargaEq, mostrarEstatico, disipadores);
+                    0, 1, 1, defElem, defCarga, carga, 1, tCargaEq, mostrarEstatico, disipadores, ...
+                    r.styleNodoE, r.sizeNodoE, r.styleNodoD, r.sizeNodoD, r.styleElemE, r.lwElemE, ...
+                    r.styleElemD, r.lwElemD, r.styleDisipador, r.colorDisipador, r.lwDisipador);
                 figure(plt);
                 return;
             end
@@ -606,12 +630,18 @@ classdef ModalEspectral < handle
                 fprintf('\tSe grafica el caso con la deformacion maxima\n');
                 plotAnimado(analisisObj, deformada, modo, factor, 1, ...
                     limx, limy, limz, tn, 1, 1, defElem, defCarga, carga, ...
-                    1, tCargaEq, mostrarEstatico, disipadores);
+                    1, tCargaEq, mostrarEstatico, disipadores, r.styleNodoE, ...
+                    r.sizeNodoE, r.styleNodoD, r.sizeNodoD, r.styleElemE, ...
+                    r.lwElemE, r.styleElemD, r.lwElemD, r.styleDisipador, ...
+                    r.colorDisipador, r.lwDisipador);
                 fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
             else
                 plotAnimado(analisisObj, deformada, modo, factor, 0, ...
                     limx, limy, limz, tn, 1, 1, defElem, defCarga, ...
-                    carga, tCargaPos(1), tCargaEq, mostrarEstatico, disipadores);
+                    carga, tCargaPos(1), tCargaEq, mostrarEstatico, disipadores, ...
+                    r.styleNodoE, r.sizeNodoE, r.styleNodoD, r.sizeNodoD, ...
+                    r.styleElemE, r.lwElemE, r.styleElemD, r.lwElemD, ...
+                    r.styleDisipador, r.colorDisipador, r.lwDisipador);
                 hold off;
                 
                 % Obtiene el numero de cuadros
@@ -637,7 +667,10 @@ classdef ModalEspectral < handle
                         % figure(fig_num); % Atrapa el foco
                         plotAnimado(analisisObj, deformada, modo, factor, sin(t), ...
                             limx, limy, limz, tn, i, numCuadros, defElem, defCarga, ...
-                            carga, tCargaPos(i), tCargaEq, mostrarEstatico, disipadores);
+                            carga, tCargaPos(i), tCargaEq, mostrarEstatico, disipadores, ...
+                            r.styleNodoE, r.sizeNodoE, r.styleNodoD, r.sizeNodoD, ...
+                            r.styleElemE, r.lwElemE, r.styleElemD, r.lwElemD, ...
+                            r.styleDisipador, r.colorDisipador, r.lwDisipador);
                         drawnow;
                         Fr(i) = getframe(plt);
                         im = frame2im(Fr(i));
@@ -2414,7 +2447,9 @@ classdef ModalEspectral < handle
         
         function plotAnimado(analisisObj, deformada, modo, factor, phif, limx, limy, limz, ...
                 per, cuadro, totCuadros, defElem, defCarga, carga, tcarga, tcargaEq, ...
-                mostrarEstatico, mostrarDisipadores)
+                mostrarEstatico, mostrarDisipadores, styleNodoE, sizeNodoE, ...
+                styleNodoD, sizeNodoD, styleElemE, lwElemE, styleElemD, lwElemD, ...
+                styleDisipador, colorDisipador, lwDisipador)
             % plotAnimado: Anima el grafico en funcion del numero del modo
             
             % Si se grafica la carga no se aplica el factor sin(wt)
@@ -2436,9 +2471,9 @@ classdef ModalEspectral < handle
                 gdl = max(gdl, ngdlid);
                 if ~deformada && mostrarEstatico
                     if modo ~= 0 || defCarga
-                        nodoObjetos{i}.plot([], 'b', 5);
+                        nodoObjetos{i}.plot([], styleNodoE, sizeNodoE);
                     else
-                        nodoObjetos{i}.plot([], 'k', 10);
+                        nodoObjetos{i}.plot([], styleNodoD, sizeNodoD);
                     end
                     if j == 1
                         hold on;
@@ -2458,9 +2493,9 @@ classdef ModalEspectral < handle
                 
                 if (~deformada || analisisObj.mostrarDeformada) && mostrarEstatico
                     if modo ~= 0 || defCarga
-                        elementoObjetos{i}.plot({}, 'b-', 0.5, false);
+                        elementoObjetos{i}.plot({}, styleElemE, lwElemE, false);
                     else
-                        elementoObjetos{i}.plot({}, 'k-', 1.25, false);
+                        elementoObjetos{i}.plot({}, styleElemD, lwElemD, false);
                     end
                 end
                 
@@ -2470,7 +2505,7 @@ classdef ModalEspectral < handle
                         def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoElemento{j}, ...
                             modo, analisisObj.numDGReal, defCarga, carga, tcarga);
                     end % for j
-                    elementoObjetos{i}.plot(def, 'k-', 1.25, defElem);
+                    elementoObjetos{i}.plot(def, styleElemD, lwElemD, defElem);
                     if i == 1
                         hold on;
                     end
@@ -2486,7 +2521,7 @@ classdef ModalEspectral < handle
                     gdl = max(gdl, ngdlid);
                     def = analisisObj.obtenerDeformadaNodo(nodoObjetos{i}, modo, ...
                         gdl, defCarga, carga, tcarga);
-                    nodoObjetos{i}.plot(def.*factor*phif, 'k', 10);
+                    nodoObjetos{i}.plot(def.*factor*phif, styleNodoD, sizeNodoD);
                 end % for i
             end
             
@@ -2501,7 +2536,7 @@ classdef ModalEspectral < handle
                         def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoDisipador{j}, ...
                             modo, analisisObj.numDGReal, defCarga, carga, tcarga);
                     end % for j
-                    disipadores{i}.plot(def, '--', 1.3, 'r');
+                    disipadores{i}.plot(def, styleDisipador, lwDisipador, colorDisipador);
                 end % for i
             end
             
