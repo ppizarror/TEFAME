@@ -78,9 +78,9 @@ cargaEstatica = analisisObj.obtenerCargaEstatica();
 % plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
 
 %% Genera combinaciones de cargas
-combinacionesCargas = {};
-combinacionesCargas{1} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEstatica});
-combinacionesCargas{2} = CombinacionCargas('E', {cargaEstatica});
+combinacionCargas = {};
+combinacionCargas{1} = CombinacionCargas('E', {cargaEstatica});
+combinacionCargas{2} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEstatica});
 
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...
@@ -88,7 +88,7 @@ analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
-% analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
+% analisisObj.plotEsfuerzosElemento(cargasDinamicas{1}, elementos{104}, [1, 0, 0]);
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_constL.gif');
 % analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 

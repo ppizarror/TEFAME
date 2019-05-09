@@ -77,6 +77,7 @@
 %       desactivarCargaAnimacion(analisisObj)
 %       calcularMomentoCorteBasal(analisisObj,carga)
 %       plotTrayectoriaNodo(analisisObj,carga,nodo,direccion)
+%       plotEsfuerzosElemento(analisisObj,carga)
 %       calcularDesplazamientoDrift(analisisObj,xanalisis)
 %       calcularCurvasEnergia(analisisObj,carga)
 %       plot(analisisObj,varargin)
@@ -971,12 +972,12 @@ classdef ModalEspectral < handle
             
             % Realiza calculos de energia
             fprintf('Calculando curvas de energia\n');
-            fprintf('\tCarga %s\n', carga.obtenerEtiqueta());
             
             ctitle = 'Carga';
             if isa(carga, 'CombinacionCargas')
                 ctitle = 'Combinacion';
             end
+            fprintf('\t%s %s\n', ctitle, carga.obtenerEtiqueta());
             
             if carga.usoAmortiguamientoRayleigh()
                 fprintf('\t\tLa %s se calculo con amortiguamiento Rayleigh\n', ctitle);
@@ -999,9 +1000,9 @@ classdef ModalEspectral < handle
             if carga.usoDeDisipadores()
                 cdv = analisisObj.obtenerMatrizAmortiguamientoDisipadores();
                 kdv = analisisObj.obtenerMatrizRigidezDisipadores();
-                fprintf('\t\tLa carga se calculo con disipadores\n');
+                fprintf('\t\tLa %s se calculo con disipadores\n', ctitle);
             else
-                fprintf('\t\tLa carga se calculo sin disipadores\n');
+                fprintf('\t\tLa %s se calculo sin disipadores\n', ctitle);
             end
             
             % Graficos
@@ -1085,7 +1086,7 @@ classdef ModalEspectral < handle
             e_t = zeros(1, s);
             fprintf('\tCalculando energia total\n');
             for i = 1:s
-                e_t(i) = e_k(1) + (e_v(1) + e_vamor(1)) + w_e(i) - (e_d(i) + e_damor(i)); % Trabajo de disipadores e_v(1) = e_v(i) + e_damor(i)??
+                e_t(i) = e_k(1) + (e_v(1) + e_vamor(1)) + w_e(i) - (e_d(i) + e_damor(i));
             end % for i
             
             % Balance energetico normalizado
@@ -1122,7 +1123,7 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ev')
-                fig_title = sprintf('E_V Energia Elastica - Carga %s', carga.obtenerEtiqueta());
+                fig_title = sprintf('E_V Energia Elastica - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_v+e_vamor, '-', 'LineWidth', lw);
@@ -1143,7 +1144,7 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ebe')
-                fig_title = sprintf('Balance Energetico Normalizado - Carga %s', carga.obtenerEtiqueta());
+                fig_title = sprintf('Balance Energetico Normalizado - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, ebe, '-', 'LineWidth', lw);
@@ -1164,7 +1165,7 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'evek') || strcmp(tipoplot, 'ekev')
-                fig_title = sprintf('Energia Potencial - Cinetica - Carga %s', carga.obtenerEtiqueta());
+                fig_title = sprintf('Energia Potencial - Cinetica - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_k, '-', 'LineWidth', lw);
@@ -1188,7 +1189,7 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'et')
-                fig_title = sprintf('Energia Total - Disipada - Ingresada - Carga %s', carga.obtenerEtiqueta());
+                fig_title = sprintf('Energia Total - Disipada - Ingresada - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_t, '-', 'LineWidth', lw);
@@ -1215,7 +1216,7 @@ classdef ModalEspectral < handle
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ed')
                 
                 % Graficos energia disipada
-                fig_title = sprintf('Energia Disipada - Carga %s', carga.obtenerEtiqueta());
+                fig_title = sprintf('Energia Disipada - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 if carga.usoDeDisipadores()
@@ -1247,7 +1248,7 @@ classdef ModalEspectral < handle
                 % Comparacion energia estructura y disipador
                 if carga.usoDeDisipadores()
                     fig_title = {'Razon energia estructura - disipador', ...
-                        sprintf('Carga %s', carga.obtenerEtiqueta())};
+                        sprintf('%s %s', ctitle, carga.obtenerEtiqueta())};
                     plt = figure('Name', fig_title{1}, 'NumberTitle', 'off');
                     movegui(plt, 'center');
                     plot(t, medfilt1(e_d./e_damor, floor(r.mfilt*length(e_d))), ...
@@ -1352,11 +1353,134 @@ classdef ModalEspectral < handle
             
         end % calcularModosEnergia function
         
+        function plotEsfuerzosElemento(analisisObj, carga, elemento, direccion, varargin) %#ok<INUSL>
+            % plotEsfuerzosElemento: Grafica los esfuerzos de un elemento
+            %
+            % plotEsfuerzosElemento(analisisObj, carga)
+            
+            % Recorre parametros opcionales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'tlim', 0);
+            parse(p, varargin{:});
+            r = p.Results;
+            
+            % Obtiene las variables
+            tlim = r.tlim;
+            
+            % Obtiene resultados de la carga
+            u_c = carga.obtenerDesplazamiento();
+            
+            % Verifica que la carga se haya calculado
+            if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
+                error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
+            end
+            ctitle = 'Carga';
+            if isa(carga, 'CombinacionCargas')
+                ctitle = 'Combinacion';
+            end
+            if isempty(u_c)
+                error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
+            end
+            
+            % Verifica que el elemento este bien definido
+            if ~isa(elemento, 'Elemento')
+                error('El elemento no pertenece a la clase Elemento');
+            end
+            
+            % Genera el vector de tiempo
+            t = carga.obtenerVectorTiempo(); % Vector de tiempo
+            if tlim == 0
+                tlim = [min(t), max(t)];
+            else
+                tlim = [max(min(tlim), min(t)), min(max(tlim), max(t))];
+            end
+            
+            % Genera el esfuerzo por el tiempo
+            esf = zeros(1, length(t));
+            
+            % Obtiene desplazamientos originales de los nodos del elemento
+            nodos = elemento.obtenerNodos();
+            despl = {};
+            for i = 1:length(nodos)
+                despl{i} = nodos{i}.obtenerDesplazamientos(); %#ok<AGROW>
+            end
+            ngdl = nodos{1}.obtenerNumeroGDL();
+            
+            % Verifica la direccion
+            if ~(verificarVectorDireccion(direccion, nodos{1}.obtenerNumeroGDL())) || sum(direccion) ~= 1
+                error('Direccion de analisis del elemento mal definido');
+            end
+            dirk = 1; % Direccion de analisis de cada elemento
+            for i = 1:length(direccion)
+                if direccion(i) == 1
+                    dirk = i;
+                    break;
+                end
+            end % for i
+            
+            dirn = '';
+            diru = '';
+            if dirk == 1
+                dirn = 'Axial';
+                diru = 'tonf';
+            elseif dirk == 2
+                dirn = 'Corte';
+                diru = 'tonf';
+            elseif dirk == 3
+                dirn = 'Giro';
+                diru = 'tonf*m';
+            end
+            
+            % Por cada tiempo obtiene la fuerza resistente local
+            for i = 1:length(t)
+                
+                % Define los desplazamientos del nodo
+                for j = 1:length(nodos)
+                    k = nodos{j}.obtenerGDLIDCondensado();
+                    unodo = zeros(1, ngdl);
+                    for n = 1:ngdl % Recorre cada desplazamiento de ese grado para el tiempo i
+                        if k(n) > 0
+                            unodo(n) = u_c(k(n), i);
+                        end
+                    end % for n
+                    nodos{j}.definirDesplazamientos(unodo);
+                end % for j
+                
+                % Obtiene la fuerza resistente
+                fr = elemento.obtenerFuerzaResistenteCoordLocal();
+                esf(i) = fr(dirk);
+                
+            end % for i
+            
+            % Resetea los desplazamientos originales
+            for i = 1:length(nodos)
+                nodos{i}.definirDesplazamientos(despl{i});
+            end
+            
+            % Crea el grafico
+            fig_title = sprintf('%s %s - Elemento %s - Direccion %s', ...
+                ctitle, carga.obtenerEtiqueta(), elemento.obtenerEtiqueta(), dirn);
+            plt = figure('Name', fig_title, 'NumberTitle', 'off');
+            movegui(plt, 'center');
+            
+            plot(t, esf, '-', 'LineWidth', 1);
+            ylabel(sprintf('Esfuerzo (%s)', diru));
+            xlabel('t (s)');
+            xlim(tlim);
+            grid on;
+            title(fig_title);
+            
+        end % plotEsfuerzosElemento function
+        
         function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, varargin) %#ok<INUSL>
             % plotTrayectoriaNodo: Grafica la trayectoria de un nodo
             % (desplazamiento, velocidad y aceleracion) para todo el tiempo
             %
             % plotTrayectoriaNodo(analisisObj,carga,nodo,direccion,tlim)
+            %
+            % Parametros opcionales:
+            %   'tlim'      Tiempo de analisis limite
             
             % Verifica que la direccion sea correcta
             if sum(direccion) ~= 1
@@ -1383,15 +1507,19 @@ classdef ModalEspectral < handle
             a_c = carga.obtenerAceleracion();
             
             % Verifica que la carga se haya calculado
-            if ~isa(carga, 'CargaDinamica')
-                error('Solo se pueden graficar cargas dinamicas');
+            if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
+                error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
+            end
+            ctitle = 'Carga';
+            if isa(carga, 'CombinacionCargas')
+                ctitle = 'Combinacion';
             end
             if isempty(a_c)
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
             
             % Elige al nodo
-            [r, s] = size(a_c);
+            [r, ~] = size(a_c);
             ngd = nodo.obtenerGDLIDCondensado();
             ng = 0; % Numero grado analisis
             nd = 0; % Numero direccion analisis
@@ -1409,7 +1537,7 @@ classdef ModalEspectral < handle
             end
             
             % Genera el vector de tiempo
-            t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
+            t = carga.obtenerVectorTiempo(); % Vector de tiempo
             if tlim == 0
                 tlim = [min(t), max(t)];
             else
@@ -1417,14 +1545,14 @@ classdef ModalEspectral < handle
             end
             
             % Crea el grafico
-            fig_title = sprintf('Carga %s - Nodo %s - GDLID condensado %d - Direccion %d', ...
-                carga.obtenerEtiqueta(), nodo.obtenerEtiqueta(), ng, nd);
+            fig_title = sprintf('%s %s - Nodo %s - GDLID condensado %d - Direccion %d', ...
+                ctitle, carga.obtenerEtiqueta(), nodo.obtenerEtiqueta(), ng, nd);
             plt = figure('Name', fig_title, 'NumberTitle', 'off');
             movegui(plt, 'center');
             
             subplot(4, 1, 1);
             plot(t, p_c(ng, :), 'k-', 'LineWidth', 1);
-            ylabel('tonf (m)');
+            ylabel('carga (tonf)');
             xlabel('t (s)');
             xlim(tlim);
             grid on;

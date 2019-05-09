@@ -110,8 +110,6 @@ classdef CombinacionCargas < ComponenteModelo
                 x = combinacionCargaObj.reshapeMatrix(combinacionCargaObj.cargas{i}.obtenerCarga(), ...
                     combinacionCargaObj.cargas{i}.tInicio, combinacionCargaObj.cargas{i}.dt, ...
                     combinacionCargaObj.cargas{i}.tAnalisis, dt, t);
-                size(x)
-                size(t)
                 [~, lx] = size(x);
                 
                 % Suma el vector
@@ -279,7 +277,7 @@ classdef CombinacionCargas < ComponenteModelo
             % t = usoAmortiguamientoRayleigh(combinacionCargaObj)
             
             r = false;
-            for i=1:length(combinacionCargaObj.cargas)
+            for i = 1:length(combinacionCargaObj.cargas)
                 r = r || combinacionCargaObj.cargas{i}.usoAmortiguamientoRayleigh();
             end % for i
             
@@ -292,7 +290,7 @@ classdef CombinacionCargas < ComponenteModelo
             % m = usoDescomposicionModal(combinacionCargaObj)
             
             m = false;
-            for i=1:length(combinacionCargaObj.cargas)
+            for i = 1:length(combinacionCargaObj.cargas)
                 m = m || combinacionCargaObj.cargas{i}.usoDescomposicionModal();
             end % for i
             
@@ -305,7 +303,7 @@ classdef CombinacionCargas < ComponenteModelo
             % m = usoDeDisipadores(combinacionCargaObj)
             
             d = false;
-            for i=1:length(combinacionCargaObj.cargas)
+            for i = 1:length(combinacionCargaObj.cargas)
                 d = d || combinacionCargaObj.cargas{i}.usoDeDisipadores();
             end % for i
             

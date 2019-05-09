@@ -323,7 +323,7 @@ classdef Nodo < ComponenteModelo
             % fuerzas resistente de un elemento entregados (cargaNodo)
             % Se procede a sumar el vector con las fuerzas resistente entregada
             % de un elemento al vector de reacciones del nodo
-
+            
             nodoObj.reacciones = nodoObj.reacciones + esfuerzosElemento;
             
         end % agregarEsfuerzoAReaccion function
