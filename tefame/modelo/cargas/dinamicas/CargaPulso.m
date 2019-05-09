@@ -52,10 +52,10 @@ classdef CargaPulso < CargaDinamica
     
     methods
         
-        function CargaPulsoObj = CargaPulso(etiquetaCargaPulso, nodo, direccion, amplitud, tpulso, dt, tAnalisis)
+        function CargaPulsoObj = CargaPulso(etiquetaCargaPulso, nodo, direccion, amplitud, tpulso, dt, tInicio, tAnalisis)
             % CargaPulso: es el constructor de la clase CargaPulso
             %
-            % CargaPulsoObj=CargaPulso(etiquetaCargaPulso,nodo,direccion,amplitud,tpulso,dt,tAnalisis)
+            % CargaPulsoObj=CargaPulso(etiquetaCargaPulso,nodo,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)
             %
             % Crea una carga tipo pulso
             
@@ -69,6 +69,11 @@ classdef CargaPulso < CargaDinamica
             % Verifica que tenga sentido la direccion
             if ~verificarVectorDireccion(direccion, nodo.obtenerNumeroGDL())
                 error('Vector direccion mal definido');
+            end
+            
+            % Chequea que los tiempos esten bien definidos
+            if tAnalisis < 0 || tInicio < 0 || dt <= 0
+                error('Tiempo de carga mal definido');
             end
             
             % Guarda el registro

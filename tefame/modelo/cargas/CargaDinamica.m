@@ -48,6 +48,7 @@
 %       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
 %       usoDisipadores(cargaDinamicaObj,disipador)
 %       descomposicionModal(cargaDinamicaObj,desmodal)
+%       t = obtenerVectorTiempo(cargaDinamicaObj)
 %       p = obtenerCarga(cargaObj)
 %       u = obtenerDesplazamiento(cargaObj)
 %       u = obtenerDesplazamientoTiempo(cargaObj,gdl,tiempo)
@@ -75,6 +76,7 @@ classdef CargaDinamica < ComponenteModelo
     
     properties(Access = public)
         tAnalisis % Tiempo de analisis
+        tInicio % Tiempo de inicio
         dt % Delta de tiempo
     end % properties CargaDinamica
     
@@ -99,10 +101,28 @@ classdef CargaDinamica < ComponenteModelo
             cargaDinamicaObj.usoDisipador = false;
             cargaDinamicaObj.desModal = false;
             
+            % Define algunos parametros iniciales
+            cargaDinamicaObj.tInicio = 0;
+            cargaDinamicaObj.dt = 1;
+            cargaDinamicaObj.tAnalisis = 0;
+            
         end % CargaDinamica constructor
+        
+        function t = obtenerVectorTiempo(cargaDinamicaObj)
+            % obtenerVectorTiempo: Obtiene el vector de tiempo que define
+            % la carga
+            %
+            % t = obtenerVectorTiempo(cargaDinamicaObj)
+            
+            nt = cargaDinamicaObj.tAnalisis / cargaDinamicaObj.dt;
+            t = linspace(cargaDinamicaObj.tInicio, cargaDinamicaObj.tInicio+cargaDinamicaObj.tAnalisis, nt);
+            
+        end % obtenerVectorTiempo function
         
         function activarCarga(cargaDinamicaObj)
             % activarCarga: Activa la carga para el analisis
+            %
+            % activarCarga(cargaDinamicaObj)
             
             cargaDinamicaObj.cargaActiva = true;
             
@@ -110,6 +130,8 @@ classdef CargaDinamica < ComponenteModelo
         
         function desactivarCarga(cargaDinamicaObj)
             % desactivarCarga: Desactiva la carga para el analisis
+            %
+            % desactivarCarga(cargaDinamicaObj)
             
             cargaDinamicaObj.cargaActiva = false;
             

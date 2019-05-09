@@ -70,6 +70,7 @@
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
 %       wn_Modelo = obtenerValoresPropios(analisisObj)
 %       phi_Modelo = obtenerMatrizPhi(analisisObj)
+%       c = obtenerCargaEstatica(analisisObj,varargin)
 %       activarPlotDeformadaInicial(analisisObj)
 %       desactivarPlotDeformadaInicial(analisisObj)
 %       activarCargaAnimacion(analisisObj)
@@ -384,13 +385,13 @@ classdef ModalEspectral < handle
         end % obtenerValoresPropios function
         
         function phi_Modelo = obtenerMatrizPhi(analisisObj)
-            % obtenerVectorPropio: es un metodo de la clase ModalEspectral
-            % que se usa para obtener los valores propios del modelo
+            % obtenerMatrizPhi: es un metodo de la clase ModalEspectral
+            % que se usa para obtener los vectores propios del modelo
             % obtenido del analisis
             %
-            % phi_Modelo = obtenerVectorPropio(analisisObj)
+            % phi_Modelo = obtenerMatrizPhi(analisisObj)
             %
-            % Obtiene los valores propios (phi_Modelo) del modelo que se
+            % Obtiene los vectores propios (phi_Modelo) del modelo que se
             % genero como resultado del Analisis (analisisObj)
             
             phi_Modelo = analisisObj.phin;
@@ -447,8 +448,8 @@ classdef ModalEspectral < handle
             % Verificaciones si se grafica una carga
             if carga ~= false
                 
-                if ~isa(carga, 'CargaDinamica')
-                    error('Solo se pueden graficar cargas dinamicas');
+                if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
+                    error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
                 end
                 if isempty(carga.obtenerDesplazamiento())
                     error('No se ha resuelto la carga, no es posible graficar');
@@ -684,12 +685,17 @@ classdef ModalEspectral < handle
             % calcularDesplazamientoDrift(analisisObj,carga,xanalisis)
             
             % Verifica que la carga se haya calculado
-            if ~isa(carga, 'CargaDinamica')
-                error('Solo se pueden graficar cargas dinamicas');
+            if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
+                error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
             end
             desp = carga.obtenerDesplazamiento();
             if isempty(desp)
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
+            end
+            
+            ctitle = 'Carga';
+            if ~isa(carga, 'CargaDinamica')
+                ctitle = 'Combinacion';
             end
             
             % Se genera vector en que las filas contienen nodos en un mismo piso,
@@ -741,7 +747,7 @@ classdef ModalEspectral < handle
                 gdlx = gdls(1);
                 despx(i, :) = desp(gdlx, :);
                 driftx(i-1, :) = abs(despx(i, :)-despx(i-1, :)) ./ (habs(i) - habs(i-1));
-             
+                
             end % for i
             
             % Determinacion de envolvente maxima de desplazamiento y drift
@@ -770,7 +776,7 @@ classdef ModalEspectral < handle
             hplot(length(hplot)) = [];
             
             % Crea las figuras
-            fig_title = sprintf('Envolvente de Deriva Entre Piso - Carga %s', carga.obtenerEtiqueta());
+            fig_title = sprintf('Envolvente de Deriva Entre Piso - %s %s', ctitle, carga.obtenerEtiqueta());
             plt = figure('Name', fig_title, 'NumberTitle', 'off');
             movegui(plt, 'center');
             plot(Driftplot.*100, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
@@ -780,7 +786,7 @@ classdef ModalEspectral < handle
             ylabel('Altura (m)');
             title(fig_title);
             
-            fig_title = sprintf('Envolvente de Desplazamiento - Carga %s', carga.obtenerEtiqueta());
+            fig_title = sprintf('Envolvente de Desplazamiento - %s %s', ctitle, carga.obtenerEtiqueta());
             plt = figure('Name', fig_title, 'NumberTitle', 'off');
             movegui(plt, 'center');
             plot(Despplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
@@ -814,12 +820,18 @@ classdef ModalEspectral < handle
             envmodo = r.modo;
             
             % Verifica que la carga se haya calculado
-            if ~isa(carga, 'CargaDinamica')
-                error('Solo se pueden graficar cargas dinamicas');
+            if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
+                error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
             end
             acel = carga.obtenerAceleracion();
-            if isempty(acel)
-                error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
+            
+            titlec = 'Carga';
+            if isa(carga, 'CargaDinamica')
+                if isempty(acel)
+                    error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
+                end
+            else
+                titlec = 'Combinacion';
             end
             
             % Verifica que envmodo sea correcto
@@ -837,12 +849,11 @@ classdef ModalEspectral < handle
             [Cortante, Momento, CBplot, MBplot, hplot] = analisisObj.calcularMomentoCorteBasalAcel(acel);
             
             % Graficos
-            [~, s] = size(acel);
-            t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
+            t = carga.obtenerVectorTiempo(); % Vector de tiempo
             dplot = false; % Indica si se realizo algun grafico
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'corte')
-                fig_title = sprintf('Historial de Cortante Basal - Carga %s', carga.obtenerEtiqueta());
+                fig_title = sprintf('Historial de Cortante Basal - %s %s', titlec, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, Cortante(end, :), 'k-', 'LineWidth', 1);
@@ -855,7 +866,7 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'momento')
-                fig_title = sprintf('Historial de Momento Basal - Carga %s', carga.obtenerEtiqueta());
+                fig_title = sprintf('Historial de Momento Basal - %s %s', titlec, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, Momento(end, :), 'k-', 'LineWidth', 1);
@@ -868,7 +879,7 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envcorte')
-                fig_title = sprintf('Envolvente de Cortante Basal - Carga %s', carga.obtenerEtiqueta());
+                fig_title = sprintf('Envolvente de Cortante Basal - %s %s', titlec, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(CBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
@@ -900,7 +911,7 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envmomento')
-                fig_title = sprintf('Envolvente de Momento Basal - Carga %s', carga.obtenerEtiqueta());
+                fig_title = sprintf('Envolvente de Momento Basal - %s %s', titlec, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(MBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
@@ -912,7 +923,7 @@ classdef ModalEspectral < handle
                 dplot = true;
             end
             
-            % Si no se realizo ningun frafico
+            % Si no se realizo ningun grafico
             if ~dplot
                 error('Tipo de grafico %s incorrecto, valores aceptados: %s', tipoplot, ...
                     'corte, momento, envcorte, envmomento');
@@ -962,16 +973,21 @@ classdef ModalEspectral < handle
             fprintf('Calculando curvas de energia\n');
             fprintf('\tCarga %s\n', carga.obtenerEtiqueta());
             
+            ctitle = 'Carga';
+            if isa(carga, 'CombinacionCargas')
+                ctitle = 'Combinacion';
+            end
+            
             if carga.usoAmortiguamientoRayleigh()
-                fprintf('\t\tLa carga se calculo con amortiguamiento Rayleigh\n');
+                fprintf('\t\tLa %s se calculo con amortiguamiento Rayleigh\n', ctitle);
             else
-                fprintf('\t\tLa carga se calculo con amortiguamiento de Wilson-Penzien\n');
+                fprintf('\t\tLa %s se calculo con amortiguamiento de Wilson-Penzien\n', ctitle);
             end
             
             if carga.usoDescomposicionModal()
-                fprintf('\t\tLa carga se calculo usando descomposicion modal\n');
+                fprintf('\t\tLa %s se calculo usando descomposicion modal\n', ctitle);
             else
-                fprintf('\t\tLa carga se calculo sin usar descomposicion modal\n');
+                fprintf('\t\tLa %s se calculo sin usar descomposicion modal\n', ctitle);
             end
             
             % Obtiene las matrices
@@ -982,7 +998,7 @@ classdef ModalEspectral < handle
             % Si se usaron disipadores
             if carga.usoDeDisipadores()
                 cdv = analisisObj.obtenerMatrizAmortiguamientoDisipadores();
-                kdv = analisisObj.obtenerMatrizRigidezDisipadores(); % Disipador Triangular
+                kdv = analisisObj.obtenerMatrizRigidezDisipadores();
                 fprintf('\t\tLa carga se calculo con disipadores\n');
             else
                 fprintf('\t\tLa carga se calculo sin disipadores\n');
@@ -990,7 +1006,7 @@ classdef ModalEspectral < handle
             
             % Graficos
             [~, s] = size(c_u);
-            t = linspace(0, carga.tAnalisis, s); % Vector de tiempo
+            t = carga.obtenerVectorTiempo(); % Vector de tiempo
             
             % Energia cinetica
             e_k = zeros(1, s);
@@ -1099,7 +1115,7 @@ classdef ModalEspectral < handle
                 if plotcarga % Grafica la carga
                     axes('Position', [.59, .70, .29, .20]);
                     box on;
-                    plot(t, c_p, 'k-', 'Linewidth', 0.8);
+                    plot(t, c_1p, 'k-', 'Linewidth', 0.8);
                     grid on;
                 end
                 dplot = true;
@@ -1555,6 +1571,38 @@ classdef ModalEspectral < handle
             
         end % disp function
         
+        function c = obtenerCargaEstatica(analisisObj, varargin)
+            % obtenerCargaEstatica: Obtiene la carga estatica del modelo
+            % como una carga dinamica para ser incluida en las
+            % combinaciones de cargas
+            %
+            % c = obtenerCargaEstatica(analisisObj,varargin)
+            %
+            % Parametros opcionales:
+            %   'etiqueta'      Nombre de la carga
+            
+            % Recorre parametros opcionales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'etiqueta', 'Carga Estatica');
+            parse(p, varargin{:});
+            r = p.Results;
+            
+            c = CargaDinamica(r.etiqueta);
+            c.dt = 1;
+            c.tAnalisis = 1;
+            
+            % Crea vector de velocidad y aceleracion ceros
+            v = zeros(length(analisisObj.u), 1);
+            a = zeros(length(analisisObj.u), 1);
+            
+            c.guardarCarga(analisisObj.F);
+            c.guardarDesplazamiento(analisisObj.u);
+            c.guardarVelocidad(v);
+            c.guardarAceleracion(a);
+            
+        end % obtenerCargaEstatica function
+        
     end % methods(public) ModalEspectral
     
     methods(Access = private)
@@ -1698,6 +1746,14 @@ classdef ModalEspectral < handle
                 % Se determina matriz de masa condensada (Meq)
                 Mrot = rot' * analisisObj.Mt * rot;
                 Meq = T' * Mrot * T;
+                
+                % Condensa la fuerza estatica
+                analisisObj.F = rot' * analisisObj.F;
+                analisisObj.F = T' * analisisObj.F;
+                
+                % Condensa los desplazamientos estaticos
+                analisisObj.u = rot' * analisisObj.u;
+                analisisObj.u = T' * analisisObj.u;
                 
                 % Actualiza los grados
                 cngdl = length(Meq);
@@ -2444,10 +2500,10 @@ classdef ModalEspectral < handle
             end % for i
             
             % Determinacion de envolvente maxima de cortante y momento basal
-            icor = 0;
-            imom = 0;
-            CorB_max = 0;
-            MomB_max = 0;
+            icor = 1;
+            imom = 1;
+            CorB_max = 1;
+            MomB_max = 1;
             [nfil, ~] = size(Cortante);
             for i = 1:s
                 if abs(Cortante(nfil, i)) > abs(CorB_max)

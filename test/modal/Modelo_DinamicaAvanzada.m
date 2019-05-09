@@ -53,9 +53,9 @@ if ~exist('regConstitucionL', 'var') % Carga el registro
     regConstitucionV = cargaRegistroSimple('test/modal/constitucion_ch2.sis', 0.005, 'factor', 0.01);
     % plotRegistro(regConstitucionL, 'Registro Constitucion/Longitudinal', 'm/s^2');
 end
-cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 200);
-% cargasDinamicas{1} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 20); % Horizontal
-% cargasDinamicas{1} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 100); % Horizontal
+cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 0, 200);
+% cargasDinamicas{1} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 0, 20); % Horizontal
+% cargasDinamicas{1} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 0, 100); % Horizontal
 % cargasDinamicas{1}.desactivarCarga();
 
 %% Creamos el analisis
@@ -64,17 +64,23 @@ analisisObj.activarPlotDeformadaInicial();
 analisisObj.activarCargaAnimacion();
 
 %% Creamos el patron de cargas
-PatronesDeCargas = cell(2, 1);
-PatronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
-PatronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', true);
+patronesDeCargas = cell(2, 1);
+patronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
+patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', true);
 
 % Agregamos las cargas al modelo
-modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
+modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
-%% Resuelve el sistema
+%% Analiza el sistema
 analisisObj.analizar(41, [0.02, 0.02], [0.02, 0.02, 0], 'condensar', true);
 analisisObj.disp();
+cargaEstatica = analisisObj.obtenerCargaEstatica();
 % plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
+
+%% Genera combinaciones de cargas
+combinacionesCargas = {};
+combinacionesCargas{1} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEstatica});
+combinacionesCargas{2} = CombinacionCargas('E', {cargaEstatica});
 
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...

@@ -52,10 +52,10 @@ classdef CargaSinusoidal < CargaDinamica
     
     methods
         
-        function CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tAnalisis)
+        function CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tInicio,tAnalisis)
             % CargaSinusoidal: es el constructor de la clase CargaSinusoidal
             %
-            % CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,nodo,direccion,amplitud,w,tOscilacion,dt,tAnalisis)
+            % CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,nodo,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)
             %
             % Crea una carga del tipo sinusoidal
             
@@ -71,12 +71,18 @@ classdef CargaSinusoidal < CargaDinamica
                 error('Vector direccion mal definido');
             end
             
+            % Chequea que los tiempos esten bien definidos
+            if tAnalisis < 0 || tInicio < 0 || dt <= 0
+                error('Tiempo de carga mal definido');
+            end
+            
             % Guarda los parametros de la carga
             CargaSinusoidalObj.w = w;
             CargaSinusoidalObj.amplitud = amplitud;
             CargaSinusoidalObj.direccion = direccion;
             CargaSinusoidalObj.tOscilacion = tOscilacion;
             CargaSinusoidalObj.tAnalisis = tAnalisis;
+            CargaSinusoidalObj.tInicio = tInicio;
             CargaSinusoidalObj.dt = dt;
             CargaSinusoidalObj.nodo = nodo; % Nodo al que se le aplica la carga
             

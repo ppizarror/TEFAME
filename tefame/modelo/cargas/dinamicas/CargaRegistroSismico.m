@@ -50,10 +50,10 @@ classdef CargaRegistroSismico < CargaDinamica
     
     methods
         
-        function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tAnalisis)
+        function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tInicio, tAnalisis)
             % CargaRegistroSismico: es el constructor de la clase CargaNodo
             %
-            % cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,tAnalisis)
+            % cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,tInicio,tAnalisis)
             %
             % Crea una carga del tipo registro de aceleracion, requiere un
             % vector registro [Nxr], una direccion [1xr] y un tiempo maximo
@@ -90,14 +90,16 @@ classdef CargaRegistroSismico < CargaDinamica
                 end
             end % for k
             
-            if dt < 0
-                error('dt del registro invalido');
+            % Chequea que los tiempos esten bien definidos
+            if tAnalisis < 0 || tInicio < 0 || dt <= 0
+                error('Tiempo de carga mal definido');
             end
             
             % Guarda el registro
             cargaRegistroObj.registro = registro;
             cargaRegistroObj.direccion = direccion;
             cargaRegistroObj.tAnalisis = tAnalisis;
+            cargaRegistroObj.tInicio = tInicio;
             cargaRegistroObj.dt = dt;
             
         end % CargaRegistroSismico constructor
