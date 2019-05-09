@@ -812,16 +812,22 @@ classdef ModalEspectral < handle
             % Parametros opcionales:
             %   'plot'      'all','momento','corte','envmomento','envcorte'
             %   'modo'      Vector con graficos de modos
+            %   'closeall'  Cierra todos los graficos
             
             % Rescata parametros
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'plot', 'all');
             addOptional(p, 'modo', []);
+            addOptional(p, 'closeall', false);
             parse(p, varargin{:});
             r = p.Results;
             tipoplot = r.plot;
             envmodo = r.modo;
+            
+            if r.closeall
+                close all;
+            end
             
             % Verifica que la carga se haya calculado
             if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
@@ -1163,14 +1169,15 @@ classdef ModalEspectral < handle
                 if plotcarga % Grafica la carga
                     axes('Position', [.59, .70, .29, .20]);
                     box on;
-                    plot(t, c_1p, 'k-', 'Linewidth', 0.8);
+                    plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
                 end
                 dplot = true;
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ev')
-                fig_title = sprintf('E_V Energia Elastica - %s %s', ctitle, carga.obtenerEtiqueta());
+                fig_title = sprintf('E_V Energia Elastica - %s %s', ...
+                    ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_v+e_vamor, '-', 'LineWidth', lw);
@@ -1191,7 +1198,8 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ebe')
-                fig_title = sprintf('Balance Energetico Normalizado - %s %s', ctitle, carga.obtenerEtiqueta());
+                fig_title = sprintf('Balance Energetico Normalizado - %s %s', ...
+                    ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, ebe, '-', 'LineWidth', lw);
@@ -1212,7 +1220,8 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'evek') || strcmp(tipoplot, 'ekev')
-                fig_title = sprintf('Energia Potencial - Cinetica - %s %s', ctitle, carga.obtenerEtiqueta());
+                fig_title = sprintf('Energia Potencial - Cinetica - %s %s', ...
+                    ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_k, '-', 'LineWidth', lw);
@@ -1222,7 +1231,8 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
-                legend({'E_K Energia cinetica', 'E_V Energia elastica'}, 'location', 'northeast');
+                legend({'E_K Energia cinetica', 'E_V Energia elastica'}, ...
+                    'location', 'northeast');
                 title(fig_title);
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
@@ -1236,7 +1246,8 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'et')
-                fig_title = sprintf('Energia Total - Disipada - Ingresada - %s %s', ctitle, carga.obtenerEtiqueta());
+                fig_title = sprintf('Energia Total - Disipada - Ingresada - %s %s', ...
+                    ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, e_t, '-', 'LineWidth', lw);
@@ -1247,7 +1258,8 @@ classdef ModalEspectral < handle
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
-                legend({'E_t Energia total', 'E_D Energia disipada total', 'W_E Trabajo externo'}, 'location', 'southeast');
+                legend({'E_t Energia total', 'E_D Energia disipada total', ...
+                    'W_E Trabajo externo'}, 'location', 'southeast');
                 title(fig_title);
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
@@ -1263,7 +1275,8 @@ classdef ModalEspectral < handle
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ed')
                 
                 % Graficos energia disipada
-                fig_title = sprintf('Energia Disipada - %s %s', ctitle, carga.obtenerEtiqueta());
+                fig_title = sprintf('Energia Disipada - %s %s', ...
+                    ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 if carga.usoDeDisipadores()
@@ -1352,8 +1365,7 @@ classdef ModalEspectral < handle
                     fprintf('\tLa carga se calculo con amortiguamiento Rayleigh\n');
                 else
                     fprintf('\tLa carga se calculo con amortiguamiento de Wilson-Penzien\n');
-                end
-                
+                end               
                 if carga.usoDescomposicionModal()
                     fprintf('\tLa carga se calculo usando descomposicion modal\n');
                 else

@@ -6,7 +6,7 @@ modeloObj.definirNombre('Modelo Dinamica Avanzada');
 
 %% Nodos modelo
 nodos = {};
-Modelo_DinamicaAvanzadaNodo;
+Modelo_DinamicaAvanzadaNodo();
 
 % Agregamos los nodos al modelo
 modeloObj.agregarNodos(nodos);
@@ -14,8 +14,8 @@ modeloObj.agregarNodos(nodos);
 %% Creamos los elementos
 elementos = {};
 disipadores = {};
-Modelo_DinamicaAvanzadaElementos;
-Modelo_DinamicaAvanzadaDisipadores;
+Modelo_DinamicaAvanzadaElementos();
+Modelo_DinamicaAvanzadaDisipadores();
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
@@ -75,7 +75,8 @@ modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 analisisObj.analizar(41, [0.02, 0.02], [0.02, 0.02, 0], 'condensar', true);
 analisisObj.disp();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
-% plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
+% plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, 'gif', ...
+%   'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
 
 %% Genera combinaciones de cargas
 combinacionCargas = {};
@@ -85,12 +86,13 @@ combinacionCargas{2} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEsta
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...
     'cargaDisipador', cargasDinamicas{1}, 'betaObjetivo', 0.08, 'iterDisipador', 10, ...
-    'betaGrafico', true);
+    'betaGrafico', false);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
 % analisisObj.plotEsfuerzosElemento(cargasDinamicas{1}, elementos{104}, [1, 0, 0]);
-% plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, 'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_constL.gif');
+% plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, ...
+%   'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_sis.gif');
 % analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 
 %% Finaliza el analisis
