@@ -188,6 +188,7 @@ classdef ModalEspectral < handle
             if r.nModos <= 0
                 error('Numero de modos invalido');
             end
+            r.nModos = floor(r.nModos);
             
             if isempty(r.rayleighBeta)
                 error('Vector amortiguamiento de Rayleigh no puede ser nulo');
@@ -195,7 +196,7 @@ classdef ModalEspectral < handle
             if isempty(r.rayleighModo)
                 error('Vector modo Rayleigh no puede ser nulo');
             end
-            for i=1:length(r.rayleighModo)
+            for i = 1:length(r.rayleighModo)
                 if r.rayleighModo(i) <= 0
                     error('Vector Rayleigh modo mal definido');
                 end
@@ -204,8 +205,8 @@ classdef ModalEspectral < handle
                     length(r.rayleighBeta) ~= length(r.rayleighDir)
                 error('Vectores parametros Rayleigh deben tener igual dimension');
             end
-            for i=1:length(r.rayleighDir)
-                if ~ (r.rayleighDir(i) == 'h' || r.rayleighDir(i) == 'v')
+            for i = 1:length(r.rayleighDir)
+                if ~(r.rayleighDir(i) == 'h' || r.rayleighDir(i) == 'v')
                     error('Direccion amortiguamiento Rayleigh solo puede ser (h) horizonal o (v) vertical');
                 end
             end % for i
@@ -218,7 +219,21 @@ classdef ModalEspectral < handle
                 error('Tolerancia calculo valores y vectores propios no puede ser inferior o igual a cero');
             end
             
-            fprintf('Ejecutando analisis modal espectral:\n\tNumero de modos: %d\n', nModos);
+            fprintf('Ejecutando analisis modal espectral:\n');
+            fprintf('\tParametros analisis:\n');
+            fprintf('\t\tNumero de modos: %d\n', r.nModos);
+            
+            fprintf('\t\tAmortiguamiento Rayleigh:\n');
+            s = arrayIntNum2str(r.rayleighModo);
+            fprintf('\t\t\tModos:\t\t%s\n', [s{:}]);
+            s = arrayNum2str(r.rayleighBeta);
+            fprintf('\t\t\tBeta:\t\t%s\n', [s{:}]);
+            s = arrayStr2str(r.rayleighDir);
+            fprintf('\t\t\tDireccion:\t%s\n', [s{:}]);
+            
+            fprintf('\t\tAmortiguamiento cpenzien:\n');
+            s = arrayNum2str(r.cpenzienBeta);
+            fprintf('\t\t\tBeta:\t\t%s\n', [s{:}]);
             
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
@@ -239,7 +254,7 @@ classdef ModalEspectral < handle
             analisisObj.modeloObj.actualizar(analisisObj.u);
             
             % Calcula el metodo modal espectral
-            analisisObj.calcularModalEspectral(nModos, r.rayleighBeta, ...
+            analisisObj.calcularModalEspectral(r.nModos, r.rayleighBeta, ...
                 r.rayleighModo, r.rayleighDir, r.cpenzienBeta, ...
                 maxcond, r.valvecAlgoritmo, r.valvecTolerancia);
             
@@ -1789,7 +1804,7 @@ classdef ModalEspectral < handle
             % pantalla
             
             if ~analisisObj.analisisFinalizado
-                fprintf('El analisis modal aun no ha sido calculado');
+                error('El analisis modal aun no ha sido calculado');
             end
             
             fprintf('Propiedades analisis modal espectral:\n');
@@ -2102,12 +2117,13 @@ classdef ModalEspectral < handle
             elseif strcmp(valvecAlgoritmo, 'iterDir')
                 
                 fprintf('\tCalculo valores y vectores con algoritmo iteracion directa\n');
-                [modalPhin, modalWn] = calculoEigIterDirecta(Meq, Keq, nModos, valvecTolerancia);
+                [modalPhin, modalWn] = calculoEigIterDirecta(Meq, Keq, valvecTolerancia);
                 nModos = length(modalWn);
                 
             elseif strcmp(valvecAlgoritmo, 'matBarr')
                 
                 fprintf('\tCalculo valores y vectores propios con algoritmo matriz de barrido\n');
+                [modalPhin, modalWn] = calculoEigDirectaBarrido(Meq, Keq, nModos, valvecTolerancia);
                 
             elseif strcmp(valvecAlgoritmo, 'itInvDesp')
                 
@@ -2123,7 +2139,7 @@ classdef ModalEspectral < handle
                     valvecAlgoritmo);
                 
             end
-            fprintf('\t\t\tFinalizado en %.3f segundos\n', cputime-eigCalcT);
+            fprintf('\t\tFinalizado en %.3f segundos\n', cputime-eigCalcT);
             analisisObj.numModos = nModos;
             
             % Se recuperan los grados de libertad condensados y se
@@ -2215,12 +2231,21 @@ classdef ModalEspectral < handle
             end % for j
             
             % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
-            % Se declaran dos amortiguamientos criticos asociados a dos modos
-            % diferentes indicando si es horizontal o vertical (h o v)
+            
+            % Se recorren los numero de modos, si alguno es mayor a los
+            % modos de analisis se reajusta y lanza warning
+            for i = 1:length(modocR)
+                if modocR(i) > nModos
+                    warning('Modo de Rayleigh %d excede al numero de modos de analisis %d, se ha reajustado este ultimo', ...
+                        modocR(i), nModos);
+                    modocR(i) = nModos;
+                end
+            end % for i
+            
             countcR = [0, 0];
             m = 0;
             n = 0;
-            for i = 1:length(analisisObj.Mmeff)
+            for i = 1:min(length(analisisObj.Mmeff), nModos)
                 if analisisObj.Mmeff(i, 1) > max(analisisObj.Mmeff(i, 2:ndg))
                     countcR(1) = countcR(1) + 1;
                     if direcR(1) == 'h' && modocR(1) == countcR(1)
@@ -2240,7 +2265,9 @@ classdef ModalEspectral < handle
             end % for i
             
             if m == 0 || n == 0
-                error('\t\tSe requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh')
+                warning('Se requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh');
+                m = 1;
+                n = 1;
             end
             w = analisisObj.wn;
             a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
@@ -2268,7 +2295,6 @@ classdef ModalEspectral < handle
                     Meq * (d(i, i) * modalPhin(:, i) * modalPhin(:, i)') * Meq;
             end % for i
             
-            %--------------------------------------------------------------
             % Termina el analisis
             analisisObj.analisisFinalizado = true;
             analisisObj.numDG = ndg;

@@ -3,6 +3,10 @@ function textCell = arrayNum2str(a, num)
 % array of cell elements that is used to print the array in string format
 % = [ a1 a2 a3 ... ]
 
+if ~exist('num', 'var')
+    num = length(a);
+end
+
 % We create the array of cell that will keep the numbers in str format
 textCell = cell(1, 2*num+1);
 textCell(1) = {'['};

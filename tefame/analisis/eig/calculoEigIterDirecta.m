@@ -1,12 +1,12 @@
-function [v, w, error] = calculoEigIterDirecta(M, K, nModos, tol)
+function [v, w, error] = calculoEigIterDirecta(M, K, tol)
 % calculoEigIterDirecta: Calcula los valores y vectores propios del sistema
 % usando el algoritmo de iteracion directo
 %
-% [w,v,error] = calculoEigIterDirecta(M,K,nModos)
+% [w,v,error] = calculoEigIterDirecta(M,K,tol)
 %
 % Parametros:
 %   M, K        Matriz masa y rigidez
-%   nmodos      Numero de modos del analisis
+%   tol         Tolerancia calculo
 %
 % Salida:
 %   w           Matriz vectores propios
