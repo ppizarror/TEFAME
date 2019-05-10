@@ -59,7 +59,7 @@
 %  Methods:
 %       analisisObj = ModalEspectral(modeloObjeto)
 %       definirNumeracionGDL(analisisObj)
-%       analizar(analisisObj)
+%       analizar(analisisObj,varargin)
 %       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
 %       M_Modelo = obtenerMatrizMasa(analisisObj)
 %       C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)
@@ -151,7 +151,7 @@ classdef ModalEspectral < handle
             % set de cargas, requiere el numero de modos para realizar el
             % analisis y de los modos conocidos con sus beta
             %
-            % analizar(analisisObj,betacR,betacP,maxcond,varargin)
+            % analizar(analisisObj,varargin)
             %
             % Parametros:
             %   'nModos'            Numero de modos de analisis (obligatorio)
@@ -161,7 +161,7 @@ classdef ModalEspectral < handle
             %   'cpenzienBeta'      Vector amortiguamiento Cpenzien
             %   'toleranciaMasa'    Tolerancia de la masa para la condensacion
             %   'condensar'         Aplica condensacion (true por defecto)
-            %   'valvecAlgoritmo'   'eigvc','iterDir','matBarr','itInvDesp','itSubesp'
+            %   'valvecAlgoritmo'   'eigvc','itDir','matBarr','itInv','itInvDesp','itSubesp'
             %   'valvecTolerancia'  Tolerancia calculo valores y vectores propios
             
             % Define parametros
@@ -193,18 +193,22 @@ classdef ModalEspectral < handle
             if isempty(r.rayleighBeta)
                 error('Vector amortiguamiento de Rayleigh no puede ser nulo');
             end
+            
             if isempty(r.rayleighModo)
                 error('Vector modo Rayleigh no puede ser nulo');
             end
+            
             for i = 1:length(r.rayleighModo)
                 if r.rayleighModo(i) <= 0
                     error('Vector Rayleigh modo mal definido');
                 end
             end % for i
+            
             if length(r.rayleighBeta) ~= length(r.rayleighModo) || ...
                     length(r.rayleighBeta) ~= length(r.rayleighDir)
                 error('Vectores parametros Rayleigh deben tener igual dimension');
             end
+            
             for i = 1:length(r.rayleighDir)
                 if ~(r.rayleighDir(i) == 'h' || r.rayleighDir(i) == 'v')
                     error('Direccion amortiguamiento Rayleigh solo puede ser (h) horizonal o (v) vertical');
@@ -1868,7 +1872,6 @@ classdef ModalEspectral < handle
                 end
             end % for i
             
-            fprintf('-------------------------------------------------\n');
             fprintf('\n');
             
         end % disp function
@@ -1971,7 +1974,7 @@ classdef ModalEspectral < handle
             %   betacP,maxcond,valvecAlgoritmo,valvecTolerancia)
             
             % Calcula tiempo inicio
-            fprintf('\tCalculando metodo modal espectral\n');
+            fprintf('\tCalculando metodo modal espectral:\n');
             tInicio = cputime;
             
             % Obtiene matriz de masa
@@ -2114,32 +2117,40 @@ classdef ModalEspectral < handle
                 fprintf('\t\tCalculo valores y vectores propios con metodo eigs\n');
                 [modalPhin, modalWn] = calculoEigEigs(Meq, Keq, nModos);
                 
-            elseif strcmp(valvecAlgoritmo, 'iterDir')
+            elseif strcmp(valvecAlgoritmo, 'itDir')
                 
-                fprintf('\tCalculo valores y vectores con algoritmo iteracion directa\n');
+                fprintf('\t\tCalculo valores y vectores con algoritmo iteracion directa\n');
+                fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
                 [modalPhin, modalWn] = calculoEigIterDirecta(Meq, Keq, valvecTolerancia);
                 nModos = length(modalWn);
                 
             elseif strcmp(valvecAlgoritmo, 'matBarr')
                 
-                fprintf('\tCalculo valores y vectores propios con algoritmo matriz de barrido\n');
+                fprintf('\t\tCalculo valores y vectores propios con algoritmo matriz de barrido\n');
+                fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
                 [modalPhin, modalWn] = calculoEigDirectaBarrido(Meq, Keq, nModos, valvecTolerancia);
+                
+            elseif strcmp(valvecAlgoritmo, 'itInv')
+                
+                fprintf('\t\tCalculo valores y vectores propios con metodo iteracion inversa\n');
                 
             elseif strcmp(valvecAlgoritmo, 'itInvDesp')
                 
-                fprintf('\tCalculo valores y vectores propios con metodo iteracion inversa con desplazamientos\n');
+                fprintf('\t\tCalculo valores y vectores propios con metodo iteracion inversa con desplazamientos\n');
                 
             elseif strcmp(valvecAlgoritmo, 'itSubesp')
                 
-                fprintf('\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
+                fprintf('\t\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
+                fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
+                [modalPhin, modalWn] = calculoEigItSubespacio(Meq, Keq, nModos, valvecTolerancia);
                 
             else
                 
-                error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,iterDir,matBarr,itInvDesp,itSubesp', ...
+                error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,itDir,matBarr,itInv,itInvDesp,itSubesp', ...
                     valvecAlgoritmo);
                 
             end
-            fprintf('\t\tFinalizado en %.3f segundos\n', cputime-eigCalcT);
+            fprintf('\t\t\tFinalizado en %.3f segundos\n', cputime-eigCalcT);
             analisisObj.numModos = nModos;
             
             % Se recuperan los grados de libertad condensados y se
@@ -2299,7 +2310,7 @@ classdef ModalEspectral < handle
             analisisObj.analisisFinalizado = true;
             analisisObj.numDG = ndg;
             analisisObj.numDGReal = analisisObj.modeloObj.obtenerNumerosGDL();
-            fprintf('\tSe completo el analisis en %.3f segundos\n', cputime-tInicio);
+            fprintf('\tSe completo el analisis en %.3f segundos\n\n', cputime-tInicio);
             
         end % calcularModalEspectral function
         

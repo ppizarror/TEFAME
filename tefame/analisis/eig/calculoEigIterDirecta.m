@@ -13,7 +13,7 @@ function [v, w, error] = calculoEigIterDirecta(M, K, tol)
 %   v           Valores propios
 %   error       Vector error de iteraciones
 
-if nargin < 4 || isempty(tol)
+if nargin < 3 || isempty(tol)
     tol = 0.001;
 end
 
@@ -35,7 +35,7 @@ k = 2;
 while err >= tol
     
     % Vector de iteracion
-    vTemp = modonorm(D*v0Temp);
+    vTemp = modonorm(D*v0Temp, M, 4);
     
     % Aproximacion al valor propio
     wTemp = sqrt((vTemp' * K * vTemp)/(vTemp' * M * vTemp));

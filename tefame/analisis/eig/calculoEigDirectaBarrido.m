@@ -1,8 +1,8 @@
 function [v, w, error] = calculoEigDirectaBarrido(M, K, nModos, tol)
 % calculoEigIterDirecta: Calcula los valores y vectores propios del sistema
-% usando el algoritmo de iteracion directo
+% usando el algoritmo de matriz de barrido
 %
-% [w,v,error] = calculoEigIterDirecta(M,K,tol)
+% [w,v,error] = calculoEigDirectaBarrido(M,K,nModos,tol)
 %
 % Parametros:
 %   M, K        Matriz masa y rigidez
@@ -42,7 +42,7 @@ for i = 1:nModos
     while err >= tol
         
         % Vector de iteracion
-        vTemp = modonorm(D*v0Temp);
+        vTemp = modonorm(D*v0Temp, M, 4);
         
         % Aproximacion al valor propio
         wTemp = sqrt((vTemp' * K * vTemp)/(vTemp' * M * vTemp));
