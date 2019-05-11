@@ -35,9 +35,12 @@
 %       dx
 %       dy
 %       L
+%       theta
 %       Feq
+%       PLOTNELEM
+%       rho
 %  Methods:
-%       viga2DObj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial)
+%       viga2DObj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(viga2DObj)
 %       nodosBiela = obtenerNodos(viga2DObj)
 %       numeroGDL = obtenerNumeroGDL(viga2DObj)
@@ -47,11 +50,11 @@
 %       fr_global = obtenerFuerzaResistenteCoordGlobal(viga2DObj)
 %       fr_local = obtenerFuerzaResistenteCoordLocal(viga2DObj)
 %       l = obtenerLargo(viga2DObj)
-%       definirGDLID(biela2DObj)
-%       agregarFuerzaResistenteAReacciones(biela2DObj)
-%       guardarPropiedades(biela2DObj,archivoSalidaHandle)
-%       guardarEsfuerzosInternos(biela2DObj,archivoSalidaHandle)
-%       disp(biela2DObj)
+%       definirGDLID(viga2DObj)
+%       agregarFuerzaResistenteAReacciones(viga2DObj)
+%       guardarPropiedades(viga2DObj,archivoSalidaHandle)
+%       guardarEsfuerzosInternos(viga2DObj,archivoSalidaHandle)
+%       disp(viga2DObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -69,16 +72,20 @@ classdef Viga2D < Elemento
         theta % Angulo de inclinacion de la viga
         Feq % Fuerza equivalente
         PLOTNELEM % Numero de elementos en los que se discretiza para el grafico
+        rho % Densidad de la viga
     end % properties Viga2D
     
     methods
         
-        function viga2DObj = Viga2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial)
+        function viga2DObj = Viga2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, densidad)
             
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaViga = '';
             end % if
+            if ~exist('densidad', 'var')
+                densidad = 0;
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Elemento
             viga2DObj = viga2DObj@Elemento(etiquetaViga);
@@ -88,6 +95,7 @@ classdef Viga2D < Elemento
             viga2DObj.Eo = Ematerial;
             viga2DObj.Io = Imaterial;
             viga2DObj.gdlID = [];
+            viga2DObj.rho = densidad;
             
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
@@ -134,6 +142,29 @@ classdef Viga2D < Elemento
             gdlIDViga = viga2DObj.gdlID;
             
         end % obtenerGDLID function
+        
+        function m = obtenerMasa(viga2DObj)
+            % obtenerMasa: Retorna la masa total del elemento
+            %
+            % m = obtenerMasa(viga2DObj)
+            
+            m = viga2DObj.rho * viga2DObj.L;
+            
+        end % obtenerMasa function
+        
+        function m_masa = obtenerVectorMasa(viga2DObj)
+            % obtenerVectorMasa: Obtiene el vector de masa del elemento
+            %
+            % m_masa = obtenerVectorMasa(viga2DObj)
+            
+            m_masa = zeros(4, 1);
+            m = viga2DObj.obtenerMasa();
+            m_masa(1) = m * 0.5;
+            m_masa(2) = m * 0.5;
+            m_masa(3) = m * 0.5;
+            m_masa(4) = m * 0.5;
+            
+        end % obtenerMatrizMasa function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(viga2DObj)
             
@@ -237,9 +268,10 @@ classdef Viga2D < Elemento
         
         function guardarPropiedades(viga2DObj, archivoSalidaHandle)
             
-            fprintf(archivoSalidaHandle, '\tViga2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n', ...
+            fprintf(archivoSalidaHandle, '\tViga2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n\t\tMasa:\t\t%s\n', ...
                 viga2DObj.obtenerEtiqueta(), num2str(viga2DObj.L), ...
-                num2str(viga2DObj.Io), num2str(viga2DObj.Eo), num2str(viga2DObj.Eo*viga2DObj.Io));
+                num2str(viga2DObj.Io), num2str(viga2DObj.Eo), ...
+                num2str(viga2DObj.Eo*viga2DObj.Io), num2str(viga2DObj.obtenerMasa()));
             
         end % guardarPropiedades function
         

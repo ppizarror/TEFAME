@@ -46,6 +46,7 @@
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
+%       objID = obtenerIDObjeto(componenteModeloObj)
 
 classdef CargaVigaPuntual < CargaEstatica
     

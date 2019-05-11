@@ -152,7 +152,7 @@ classdef AnalisisEstatico < handle
             % Define parametros
             p = inputParser;
             p.KeepUnmatched = true;
-            addOptional(p, 'factor', 1);
+            addOptional(p, 'factorCargaE', 1);
             parse(p, varargin{:});
             r = p.Results;
             

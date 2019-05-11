@@ -38,6 +38,10 @@
 %       dx
 %       dy
 %       L
+%       theta
+%       T
+%       TcargaReacc
+%       rho
 %  Methods:
 %       biela2DObj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(biela2DObj)
@@ -88,6 +92,9 @@ classdef Biela2D < Elemento
             if nargin == 0
                 etiquetaBiela = '';
             end % if
+            if ~exist('densidad', 'var')
+                densidad = 0;
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Elemento
             biela2DObj = biela2DObj@Elemento(etiquetaBiela);
@@ -110,7 +117,7 @@ classdef Biela2D < Elemento
             
             % Agrega el elemento a los nodos
             for i = 1:2
-                bielas2DObj.nodosObj{i}.agregarElementos(biela2DObj);
+                biela2DObj.nodosObj{i}.agregarElementos(biela2DObj);
             end
             
         end % Biela2D constructor
@@ -184,7 +191,7 @@ classdef Biela2D < Elemento
             % m_masa = obtenerVectorMasa(biela2DObj)
             
             m_masa = zeros(4, 1);
-            m = biela2DObj.obtenerMasa();         
+            m = biela2DObj.obtenerMasa();
             m_masa(1) = m * 0.5;
             m_masa(2) = m * 0.5;
             m_masa(3) = m * 0.5;
@@ -348,9 +355,10 @@ classdef Biela2D < Elemento
             %
             % guardarPropiedades(biela2DObj, archivoSalidaHandle)
             
-            fprintf(archivoSalidaHandle, '\tBiela2D %s:\n\t\tLargo:\t%s\n\t\tArea:\t%s\n\t\tEo:\t\t%s\n\t\tMasa:\t\t\n', ...
+            fprintf(archivoSalidaHandle, '\tBiela2D %s:\n\t\tLargo:\t%s\n\t\tArea:\t%s\n\t\tEo:\t\t%s\n\t\tMasa:\t%s\n', ...
                 biela2DObj.obtenerEtiqueta(), num2str(biela2DObj.L), ...
-                num2str(biela2DObj.Ao), num2str(biela2DObj.Eo));
+                num2str(biela2DObj.Ao), num2str(biela2DObj.Eo), ...
+                num2str(biela2DObj.obtenerMasa()));
             
         end % guardarPropiedades function
         

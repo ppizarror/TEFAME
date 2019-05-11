@@ -34,8 +34,9 @@
 %       dx
 %       dy
 %       L
+%       rho
 %  Methods:
-%       biela3DObj = Biela3D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial)
+%       biela3DObj = Biela3D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(biela3DObj)
 %       nodosBiela = obtenerNodos(biela3DObj)
 %       numeroGDL = obtenerNumeroGDL(biela3DObj)
@@ -68,19 +69,23 @@ classdef Biela3D < Elemento
         L % Largo del elemento
         theta % Angulo de inclinacion de la viga
         T % Matriz de transformacion
+        rho % Densidad de la biela
     end % properties Biela3D
     
     methods
         
-        function biela3DObj = Biela3D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial)
+        function biela3DObj = Biela3D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial, densidad)
             % Biela3D: Constructor de clase, genera una biela en tres dimensiones
             %
-            % biela3DObj = Biela3D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial)
+            % biela3DObj = Biela3D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
             
             % Si no hay argumentos completa con ceros
             if nargin == 0
                 etiquetaBiela = '';
             end % if
+            if ~exist('densidad', 'var')
+                densidad = 0;
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Elemento
             biela3DObj = biela3DObj@Elemento(etiquetaBiela);
@@ -98,6 +103,7 @@ classdef Biela3D < Elemento
             biela3DObj.dy = abs(coordNodo2(2)-coordNodo1(2));
             biela3DObj.dz = abs(coordNodo2(3)-coordNodo1(3));
             biela3DObj.theta = atan(biela3DObj.dy/biela3DObj.dx);
+            biela3DObj.rho = densidad;
             
             % Largo de la biela
             biela3DObj.L = sqrt(biela3DObj.dx^2+biela3DObj.dy^2+biela3DObj.dz^2);
@@ -139,6 +145,31 @@ classdef Biela3D < Elemento
             ae = biela3DObj.Ao * biela3DObj.Eo;
             
         end % obtenerAE function
+        
+        function m = obtenerMasa(biela3DObj)
+            % obtenerMasa: Retorna la masa total del elemento
+            %
+            % m = obtenerMasa(biela3DObj)
+            
+            m = biela3DObj.rho * biela3DObj.L * biela3DObj.Ao;
+            
+        end % obtenerMasa function
+        
+        function m_masa = obtenerVectorMasa(biela3DObj)
+            % obtenerVectorMasa: Obtiene el vector de masa del elemento
+            %
+            % m_masa = obtenerVectorMasa(biela3DObj)
+            
+            m_masa = zeros(6, 1);
+            m = biela3DObj.obtenerMasa();
+            m_masa(1) = m * 0.5;
+            m_masa(2) = m * 0.5;
+            m_masa(3) = 0;
+            m_masa(4) = m * 0.5;
+            m_masa(5) = m * 0.5;
+            m_masa(6) = 0;
+            
+        end % obtenerMatrizMasa function
         
         function theta = obtenerAngulo(biela3DObj)
             
@@ -239,9 +270,10 @@ classdef Biela3D < Elemento
         
         function guardarPropiedades(biela3DObj, archivoSalidaHandle)
             
-            fprintf(archivoSalidaHandle, '\tBiela3D %s:\n\t\tLargo:\t%s\n\t\tArea:\t%s\n\t\tEo:\t\t%s\n', ...
+            fprintf(archivoSalidaHandle, '\tBiela3D %s:\n\t\tLargo:\t%s\n\t\tArea:\t%s\n\t\tEo:\t\t%s\n\t\tMasa:\t%s\n', ...
                 biela3DObj.obtenerEtiqueta(), num2str(biela3DObj.L), ...
-                num2str(biela3DObj.Ao), num2str(biela3DObj.Eo));
+                num2str(biela3DObj.Ao), num2str(biela3DObj.Eo), ...
+                num2str(biela3DObj.obtenerMasa()));
             
         end % guardarPropiedades function
         

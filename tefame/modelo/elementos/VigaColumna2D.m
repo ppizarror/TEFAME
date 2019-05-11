@@ -37,9 +37,11 @@
 %       dy
 %       L
 %       Feq
-%
+%       T
+%       Klp
+%       PLOTNELEM
 %  Methods:
-%       vigaColumna2DObj = VigaColumna2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial)
+%       vigaColumna2DObj = VigaColumna2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(vigaColumna2DObj)
 %       nodosBiela = obtenerNodos(vigaColumna2DObj)
 %       numeroGDL = obtenerNumeroGDL(vigaColumna2DObj)
@@ -89,6 +91,9 @@ classdef VigaColumna2D < Elemento
             if nargin == 0
                 etiquetaViga = '';
             end % if
+            if ~exist('densidad', 'var')
+                densidad = 0;
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Elemento
             vigaColumna2DObj = vigaColumna2DObj@Elemento(etiquetaViga);
@@ -136,7 +141,7 @@ classdef VigaColumna2D < Elemento
             vigaColumna2DObj.Feq = [0, 0, 0, 0, 0, 0]';
             
             % Agrega el elemento a los nodos
-            for i=1:2
+            for i = 1:2
                 vigaColumna2DObj.nodosObj{i}.agregarElementos(vigaColumna2DObj);
             end % for i
             
@@ -229,7 +234,7 @@ classdef VigaColumna2D < Elemento
             % en coordenadas locales
             %
             % k_local = obtenerMatrizRigidezCoordLocal(vigaColumna2DObj)
-
+            
             k_local = vigaColumna2DObj.Klp;
             
         end % obtenerMatrizRigidezCoordLocal function
@@ -249,7 +254,7 @@ classdef VigaColumna2D < Elemento
             % m_masa = obtenerVectorMasa(vigaColumna2DObj)
             
             m_masa = zeros(6, 1);
-            m = vigaColumna2DObj.obtenerMasa();         
+            m = vigaColumna2DObj.obtenerMasa();
             m_masa(1) = m * 0.5;
             m_masa(2) = m * 0.5;
             m_masa(3) = 0;
@@ -380,7 +385,7 @@ classdef VigaColumna2D < Elemento
             %
             % guardarPropiedades(vigaColumna2DObj,archivoSalidaHandle)
             
-            fprintf(archivoSalidaHandle, '\tViga-Columna 2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n\t\tMasa:\t\t\t%s\n', ...
+            fprintf(archivoSalidaHandle, '\tViga-Columna 2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n\t\tMasa:\t\t%s\n', ...
                 vigaColumna2DObj.obtenerEtiqueta(), num2str(vigaColumna2DObj.L), ...
                 num2str(vigaColumna2DObj.Io), num2str(vigaColumna2DObj.Eo), ...
                 num2str(vigaColumna2DObj.Eo*vigaColumna2DObj.Io), ...

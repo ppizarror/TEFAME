@@ -34,6 +34,7 @@
 %  Methods:
 %       componenteModeloObj = ComponenteModelo(etiqueta)
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       objID = obtenerIDObjeto(componenteModeloObj)
 %       disp(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
 
@@ -111,6 +112,15 @@ classdef ComponenteModelo < handle
             e = strcmp(componenteModeloObj.objectID, obj.objectID);
             
         end % equals function
+        
+        function objID = obtenerIDObjeto(componenteModeloObj)
+            % obtenerIDObjeto: Retorna el ID del objeto
+            %
+            % objID = obtenerIDObjeto(componenteModeloObj)
+            
+            objID = componenteModeloObj.objectID;
+            
+        end % obtenerIDObjeto function
         
     end % methods ComponenteModelo
     

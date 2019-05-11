@@ -38,8 +38,9 @@
 %       b
 %       Feq
 %       NPOINTS
+%       rho
 %  Methods:
-%       membranaObj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,E,nu)
+%       membranaObj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,E,nu,t,densidad)
 %       numeroNodos = obtenerNumeroNodos(membranaObj)
 %       nodosMembrana = obtenerNodos(membranaObj)
 %       numeroGDL = obtenerNumeroGDL(membranaObj)
@@ -77,20 +78,25 @@ classdef Membrana < Elemento
         b % Largo de la membrana desde el eje (r,s)
         Feq % Vector de fuerzas equivalentes en nodos
         NPOINTS % Numero de interpolaciones
+        rho % Densidad de la membrana
     end % properties Membrana
     
     methods
         
-        function membranaObj = Membrana(etiquetaMembrana, nodo1Obj, nodo2Obj, nodo3Obj, nodo4Obj, E, nu, t)
+        function membranaObj = Membrana(etiquetaMembrana, nodo1Obj, nodo2Obj, nodo3Obj, nodo4Obj, E, nu, t, densidad)
             % Membrana: Constructor de clase, crea una membrana de 4
             % vertices planar
             %
-            % membranaObj = Membrana(etiquetaMembrana,nodo1Obj,nodo2Obj,nodo3Obj,nodo4Obj,E,nu,t)
+            % membranaObj = Membrana(etiquetaMembrana,nodo1Obj,nodo2Obj,
+            %   nodo3Obj,nodo4Obj,E,nu,t,densidad)
             
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaMembrana = '';
             end % if
+            if ~exist('densidad', 'var')
+                densidad = 0;
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Elemento
             membranaObj = membranaObj@Elemento(etiquetaMembrana);
@@ -99,6 +105,7 @@ classdef Membrana < Elemento
             membranaObj.nodosObj = {nodo1Obj; nodo2Obj; nodo3Obj; nodo4Obj};
             membranaObj.E = E;
             membranaObj.nu = nu;
+            membranaObj.rho = densidad;
             
             % ID de los grados de libertad (4 aristas)
             membranaObj.gdlID = [];
@@ -181,6 +188,33 @@ classdef Membrana < Elemento
             gdlIDMembrana = membranaObj.gdlID;
             
         end % obtenerGDLID function
+        
+        function m = obtenerMasa(membranaObj)
+            % obtenerMasa: Retorna la masa total del elemento
+            %
+            % m = obtenerMasa(membranaObj)
+            
+            m = membranaObj.rho * membranaObj.b * membranaObj.h * membranaObj.t;
+            
+        end % obtenerMasa function
+        
+        function m_masa = obtenerVectorMasa(membranaObj)
+            % obtenerVectorMasa: Obtiene el vector de masa del elemento
+            %
+            % m_masa = obtenerVectorMasa(membranaObj)
+            
+            m_masa = zeros(8, 1);
+            m = membranaObj.obtenerMasa();
+            m_masa(1) = m * 0.25;
+            m_masa(2) = m * 0.25;
+            m_masa(3) = m * 0.25;
+            m_masa(4) = m * 0.25;
+            m_masa(5) = m * 0.25;
+            m_masa(6) = m * 0.25;
+            m_masa(7) = m * 0.25;
+            m_masa(8) = m * 0.25;
+            
+        end % obtenerMatrizMasa function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(membranaObj)
             
@@ -468,10 +502,11 @@ classdef Membrana < Elemento
             nodo4 = membranaObj.nodosObj{4};
             
             % Escribe la membrana en el archivo
-            fprintf(archivoSalidaHandle, '\tMembrana %s:\n\t\tAncho (2b):\t\t%s\n\t\tAlto (2h):\t\t%s\n\t\tEspesor (t):\t%s\n\t\tE:\t\t\t\t%s\n\t\tv:\t\t\t\t%s\n\t\tNodos:\t\t\t%s %s %s %s\n', ...
+            fprintf(archivoSalidaHandle, '\tMembrana %s:\n\t\tAncho (2b):\t\t%s\n\t\tAlto (2h):\t\t%s\n\t\tEspesor (t):\t%s\n\t\tE:\t\t\t\t%s\n\t\tv:\t\t\t\t%s\n\t\tMasa:\t\t\t%s\n\t\tNodos:\t\t\t%s %s %s %s\n', ...
                 membranaObj.obtenerEtiqueta(), num2str(2*membranaObj.b), num2str(2*membranaObj.h), ...
                 num2str(membranaObj.t), num2str(membranaObj.E), num2str(membranaObj.nu), ...
-                nodo1.obtenerEtiqueta(), nodo2.obtenerEtiqueta(), nodo3.obtenerEtiqueta(), nodo4.obtenerEtiqueta());
+                num2str(membranaObj.obtenerMasa()), nodo1.obtenerEtiqueta(), ...
+                nodo2.obtenerEtiqueta(), nodo3.obtenerEtiqueta(), nodo4.obtenerEtiqueta());
             
         end % guardarPropiedades function
         
