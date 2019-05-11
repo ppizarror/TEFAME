@@ -134,6 +134,7 @@ classdef RestriccionNodo < ComponenteModelo
             numCrdRest = length(restriccionNodoObj.gdlRestringidos);
             gdlID = arrayNum2str(restriccionNodoObj.gdlRestringidos, numCrdRest);
             fprintf('GDL Restringidos: %s\n', [gdlID{:}]);
+            dispMetodoTEFAME();
             
         end % disp function
         

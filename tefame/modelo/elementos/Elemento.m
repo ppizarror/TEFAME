@@ -326,6 +326,7 @@ classdef Elemento < ComponenteModelo
             % pantalla
             
             disp@ComponenteModelo(elementoObj);
+            % No usar dispMetodoTEFAME()
             
         end % disp function
         

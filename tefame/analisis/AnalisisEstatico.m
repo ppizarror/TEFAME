@@ -161,7 +161,10 @@ classdef AnalisisEstatico < handle
             analisisObj.ensamblarVectorFuerzas();
             analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
             analisisObj.modeloObj.actualizar(analisisObj.u);
+            
+            % Termina el analisis
             analisisObj.analisisFinalizado = true;
+            dispMetodoTEFAME();
             
         end % analizar function
         
@@ -529,7 +532,7 @@ classdef AnalisisEstatico < handle
             disp(analisisObj.F);
             fprintf('\tVector de Desplazamientos:\n');
             disp(analisisObj.u);
-            fprintf('-------------------------------------------------\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

@@ -176,9 +176,7 @@ classdef CargaRegistroSismico < CargaDinamica
             
             fprintf('Propiedades carga registro sismico:\n');
             disp@CargaDinamica(cargaRegistroSismicoObj);
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

@@ -217,6 +217,7 @@ classdef Disipador < ComponenteModelo
             % disp: Imprime propiedades del disipador
             
             disp@ComponenteModelo(disipadorObj);
+            % No usar dispMetodoTEFAME()
             
         end % disp function
         

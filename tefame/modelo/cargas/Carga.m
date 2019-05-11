@@ -85,6 +85,7 @@ classdef Carga < ComponenteModelo
             % Imprime la informacion guardada en la carga (cargaObj) en pantalla
             
             disp@ComponenteModelo(cargaObj);
+            % No usar dispMetodoTEFAME()
             
         end % disp function
         

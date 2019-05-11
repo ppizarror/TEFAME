@@ -157,9 +157,7 @@ classdef CargaPulso < CargaDinamica
             
             fprintf('Propiedades carga pulso:\n');
             disp@CargaDinamica(CargaPulsoObj);
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

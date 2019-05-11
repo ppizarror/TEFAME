@@ -103,6 +103,7 @@ classdef PatronDeCargas < ComponenteModelo
             % en pantalla
             
             disp@ComponenteModelo(patronDeCargasObj);
+            % No usar dispMetodoTEFAME()
             
         end % disp function
         

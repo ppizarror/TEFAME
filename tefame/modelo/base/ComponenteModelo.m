@@ -99,6 +99,7 @@ classdef ComponenteModelo < handle
                 etiquetaStr = num2str(etiquetaStr);
             end
             fprintf('\tEtiqueta: %s\n', etiquetaStr);
+            % No usar dispMetodoTEFAME()
             
         end % disp function
         

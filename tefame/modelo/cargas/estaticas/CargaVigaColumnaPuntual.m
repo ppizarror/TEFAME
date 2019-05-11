@@ -158,10 +158,8 @@ classdef CargaVigaColumnaPuntual < Carga
             fprintf('\tCarga aplicada en Elemento: %s a %.3f del Nodo: %s\n', ...
                 etiqueta, cargaVigaColumnaPuntualObj.dist, nodo1etiqueta);
             fprintf('\t\tComponente NORMAL:\t%.3f\n', P);
-            fprintf('\t\tComponente AXIAL:\t%.3f\n', H);
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            fprintf('\t\tComponente AXIAL:\t%.3f\n', H);       
+            dispMetodoTEFAME();
             
         end % disp function
         

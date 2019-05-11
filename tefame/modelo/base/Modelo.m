@@ -517,6 +517,7 @@ classdef Modelo < handle
             fprintf('Propiedades modelo:\n');
             fprintf('\tDimensiones modelo: %iD\n', modeloObj.nDimensiones);
             fprintf('\tNumero de GDL del modelo: %i\n', modeloObj.nGDL);
+            dispMetodoTEFAME();
             
         end % disp function
         

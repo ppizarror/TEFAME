@@ -262,6 +262,9 @@ classdef ModalEspectral < handle
                 r.rayleighModo, r.rayleighDir, r.cpenzienBeta, ...
                 maxcond, r.valvecAlgoritmo, r.valvecTolerancia);
             
+            % Termina el analisis
+            dispMetodoTEFAME();
+            
         end % analizar function
         
         function resolverCargasDinamicas(analisisObj, varargin)
@@ -777,6 +780,9 @@ classdef ModalEspectral < handle
                     fprintf('\n');
                 end
                 
+                % Cierra la linea
+                dispMetodoTEFAME();
+                
             end
             
         end % plot function
@@ -912,6 +918,10 @@ classdef ModalEspectral < handle
             %   'modo'      Vector con graficos de modos
             %   'closeall'  Cierra todos los graficos
             
+            % Inicia proceso
+            tinicial = cputime;
+            fprintf('Calculando grafico momento corte basal');
+            
             % Rescata parametros
             p = inputParser;
             p.KeepUnmatched = true;
@@ -932,15 +942,10 @@ classdef ModalEspectral < handle
                 error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
             end
             acel = carga.obtenerAceleracion();
-            
-            titlec = 'Carga';
-            if isa(carga, 'CargaDinamica')
-                if isempty(acel)
-                    error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
-                end
-            else
-                titlec = 'Combinacion';
+            if isempty(acel)
+                error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
+            ctitle = imprimirPropiedadesAnalisisCarga(carga);
             
             % Verifica que envmodo sea correcto
             [~, lphi] = size(analisisObj.phin);
@@ -961,7 +966,7 @@ classdef ModalEspectral < handle
             dplot = false; % Indica si se realizo algun grafico
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'corte')
-                fig_title = sprintf('Historial de Cortante Basal - %s %s', titlec, carga.obtenerEtiqueta());
+                fig_title = sprintf('Historial de Cortante Basal - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, Cortante(end, :), 'k-', 'LineWidth', 1);
@@ -974,7 +979,7 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'momento')
-                fig_title = sprintf('Historial de Momento Basal - %s %s', titlec, carga.obtenerEtiqueta());
+                fig_title = sprintf('Historial de Momento Basal - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(t, Momento(end, :), 'k-', 'LineWidth', 1);
@@ -987,7 +992,7 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envcorte')
-                fig_title = sprintf('Envolvente de Cortante Basal - %s %s', titlec, carga.obtenerEtiqueta());
+                fig_title = sprintf('Envolvente de Cortante Basal - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(CBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
@@ -1019,7 +1024,7 @@ classdef ModalEspectral < handle
             end
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envmomento')
-                fig_title = sprintf('Envolvente de Momento Basal - %s %s', titlec, carga.obtenerEtiqueta());
+                fig_title = sprintf('Envolvente de Momento Basal - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 plot(MBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
@@ -1052,6 +1057,9 @@ classdef ModalEspectral < handle
             %   'linewidth'     Ancho de linea de los graficos
             %   'norm1'         Normaliza con respecto al primer valor
             %   'closeall'      Cierra todos los graficos
+            
+            % Inicia el proceso
+            tinicial = cputime;
             
             % Recorre parametros opcionales
             p = inputParser;
@@ -1087,24 +1095,7 @@ classdef ModalEspectral < handle
             
             % Realiza calculos de energia
             fprintf('Calculando curvas de energia\n');
-            
-            ctitle = 'Carga';
-            if isa(carga, 'CombinacionCargas')
-                ctitle = 'Combinacion';
-            end
-            fprintf('\t%s %s\n', ctitle, carga.obtenerEtiqueta());
-            
-            if carga.usoAmortiguamientoRayleigh()
-                fprintf('\t\tLa %s se calculo con amortiguamiento Rayleigh\n', lower(ctitle));
-            else
-                fprintf('\t\tLa %s se calculo con amortiguamiento de Wilson-Penzien\n', lower(ctitle));
-            end
-            
-            if carga.usoDescomposicionModal()
-                fprintf('\t\tLa %s se calculo usando descomposicion modal\n', lower(ctitle));
-            else
-                fprintf('\t\tLa %s se calculo sin usar descomposicion modal\n', lower(ctitle));
-            end
+            ctitle = imprimirPropiedadesAnalisisCarga(carga);
             
             % Obtiene las matrices
             k = analisisObj.obtenerMatrizRigidez();
@@ -1433,6 +1424,11 @@ classdef ModalEspectral < handle
                 error('Tipo de grafico %s incorrecto, valores aceptados: %s', tipoplot, ...
                     'ek, ev, ekev, ebe, et, ed');
             end
+            
+            % Finaliza proceso
+            drawnow();
+            fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            dispMetodoTEFAME();
             
         end % calcularCurvasEnergia function
         
@@ -1872,7 +1868,7 @@ classdef ModalEspectral < handle
                 end
             end % for i
             
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         
@@ -2310,7 +2306,7 @@ classdef ModalEspectral < handle
             analisisObj.analisisFinalizado = true;
             analisisObj.numDG = ndg;
             analisisObj.numDGReal = analisisObj.modeloObj.obtenerNumerosGDL();
-            fprintf('\tSe completo el analisis en %.3f segundos\n\n', cputime-tInicio);
+            fprintf('\tSe completo el analisis en %.3f segundos\n', cputime-tInicio);
             
         end % calcularModalEspectral function
         
@@ -2789,6 +2785,9 @@ classdef ModalEspectral < handle
             % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
             % Tambien se genera vector que contiene alturas de piso
             
+            % Iniciando el proceso
+            
+            
             nodos = analisisObj.modeloObj.obtenerNodos();
             nnodos = length(nodos);
             
@@ -2889,6 +2888,32 @@ classdef ModalEspectral < handle
             hplot(length(hplot)) = [];
             
         end % calcularMomentoCorteBasalAcel function
+        
+        function ctitle = imprimirPropiedadesAnalisisCarga(analisisObj, carga) %#ok<INUSL>
+            % imprimirPropiedadesAnalisisCarga: Imprime propiedades de
+            % analisis de la carga o combinacion de cargas
+            %
+            % ctitle = imprimirPropiedadesAnalisisCarga(analisisObj, carga)
+            
+            ctitle = 'Carga';
+            if isa(carga, 'CombinacionCargas')
+                ctitle = 'Combinacion';
+            end
+            fprintf('\t%s %s\n', ctitle, carga.obtenerEtiqueta());
+            
+            if carga.usoAmortiguamientoRayleigh()
+                fprintf('\t\tLa %s se calculo con amortiguamiento Rayleigh\n', lower(ctitle));
+            else
+                fprintf('\t\tLa %s se calculo con amortiguamiento de Wilson-Penzien\n', lower(ctitle));
+            end
+            
+            if carga.usoDescomposicionModal()
+                fprintf('\t\tLa %s se calculo usando descomposicion modal\n', lower(ctitle));
+            else
+                fprintf('\t\tLa %s se calculo sin usar descomposicion modal\n', lower(ctitle));
+            end
+            
+        end % imprimirPropiedadesAnalisisCarga function
         
     end % methods(private) ModalEspectral
     

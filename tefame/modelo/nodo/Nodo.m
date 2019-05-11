@@ -453,6 +453,8 @@ classdef Nodo < ComponenteModelo
             fprintf('\tDesplazamientos: %s\n', [desplazamientoNodo{:}]);
             reaccionesNodo = arrayNum2str(nodoObj.reacciones, nGDLNodo);
             fprintf('\tReacciones: %s\n', [reaccionesNodo{:}]);
+
+            dispMetodoTEFAME();
             
         end % disp function
         

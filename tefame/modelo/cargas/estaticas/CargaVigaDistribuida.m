@@ -165,9 +165,7 @@ classdef CargaVigaDistribuida < Carga
             fprintf('\tCarga distribuida: %.3f en %.3f hasta %.3f en %.3f entre los Nodos: %s y %s del Elemento: %s\n', ...
                 cargaVigaDistribuidaObj.carga1, cargaVigaDistribuidaObj.dist1, cargaVigaDistribuidaObj.carga2, ...
                 cargaVigaDistribuidaObj.dist2, nodo1etiqueta, nodo2etiqueta, etiqueta);
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

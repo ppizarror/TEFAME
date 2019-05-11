@@ -305,8 +305,7 @@ classdef Biela3D < Elemento
             fprintf('\tMatriz de rigidez coordenadas globales:\n');
             disp(biela3DObj.obtenerMatrizRigidezCoordGlobal());
             
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

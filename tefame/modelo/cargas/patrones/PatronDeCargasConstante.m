@@ -113,10 +113,8 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % en pantalla
             
             fprintf('Propiedades patron de cargas constante :\n');
-            disp@ComponenteModelo(patronDeCargasObj);
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            disp@ComponenteModelo(patronDeCargasObj);     
+            dispMetodoTEFAME();
             
         end % disp function
         

@@ -128,10 +128,8 @@ classdef CargaBielaTemperatura < Carga
             etiqueta = cargaBielaTemperaturaObj.elemObj.obtenerEtiqueta();
             
             fprintf('\tCarga: %.3f aplicada en Elemento: %s producto de una diferencia de temperatura: %.3f\n', ...
-                cargaBielaTemperaturaObj.carga, etiqueta, cargaBielaTemperaturaObj.deltaTemperatura);
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+                cargaBielaTemperaturaObj.carga, etiqueta, cargaBielaTemperaturaObj.deltaTemperatura);           
+            dispMetodoTEFAME();
             
         end % disp function
         

@@ -163,9 +163,7 @@ classdef CargaSinusoidal < CargaDinamica
             
             fprintf('Propiedades carga sinusoidal:\n');
             disp@CargaDinamica(CargaSinusoidalObj);
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

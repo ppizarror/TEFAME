@@ -160,8 +160,7 @@ classdef DisipadorViscoso2D < Disipador2D
             fprintf('Propiedades disipador viscoso 2D:\n\t');
             disp@ComponenteModelo(disipadorViscoso2DObj);
             
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

@@ -219,9 +219,7 @@ classdef CargaMembranaDistribuida < Carga
                 cargaMembranaDistribuidaObj.dist2, dirc);
             fprintf('\t                   entre los Nodos: %s (%d) y %s (%d) del Elemento: %s\n', ...
                 nodo1etiqueta, cargaMembranaDistribuidaObj.nodo1, nodo2etiqueta, cargaMembranaDistribuidaObj.nodo2, etiqueta);
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

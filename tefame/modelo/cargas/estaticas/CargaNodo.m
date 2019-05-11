@@ -107,10 +107,8 @@ classdef CargaNodo < Carga
             
             numGDL = length(cargaNodoObj.cargas);
             cargaNodo = arrayNum2str(cargaNodoObj.cargas, numGDL);
-            fprintf('Cargas: %s\n', [cargaNodo{:}]);
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            fprintf('Cargas: %s\n', [cargaNodo{:}]);    
+            dispMetodoTEFAME();
             
         end % disp function
         

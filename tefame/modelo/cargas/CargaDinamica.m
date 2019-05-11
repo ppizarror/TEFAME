@@ -309,6 +309,7 @@ classdef CargaDinamica < ComponenteModelo
             % Imprime la informacion guardada en la carga (cargaDinamicaObj) en pantalla
             
             disp@ComponenteModelo(cargaDinamicaObj);
+            % No usar dispMetodoTEFAME()
             
         end % disp function
         

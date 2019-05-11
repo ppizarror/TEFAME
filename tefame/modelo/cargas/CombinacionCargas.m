@@ -113,7 +113,8 @@ classdef CombinacionCargas < ComponenteModelo
                 
                 x = combinacionCargaObj.reshapeMatrix(combinacionCargaObj.cargas{i}.obtenerCarga(), ...
                     combinacionCargaObj.cargas{i}.tInicio, combinacionCargaObj.cargas{i}.dt, ...
-                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t);
+                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t, ...
+                    combinacionCargaObj.cargas{i}.obtenerEtiqueta());
                 [~, lx] = size(x);
                 
                 % Suma el vector
@@ -155,7 +156,8 @@ classdef CombinacionCargas < ComponenteModelo
                 
                 x = combinacionCargaObj.reshapeMatrix(combinacionCargaObj.cargas{i}.obtenerDesplazamiento(), ...
                     combinacionCargaObj.cargas{i}.tInicio, combinacionCargaObj.cargas{i}.dt, ...
-                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t);
+                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t, ...
+                    combinacionCargaObj.cargas{i}.obtenerEtiqueta());
                 [~, lx] = size(x);
                 
                 % Suma el vector
@@ -215,7 +217,8 @@ classdef CombinacionCargas < ComponenteModelo
                 
                 x = combinacionCargaObj.reshapeMatrix(combinacionCargaObj.cargas{i}.obtenerVelocidad(), ...
                     combinacionCargaObj.cargas{i}.tInicio, combinacionCargaObj.cargas{i}.dt, ...
-                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t);
+                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t, ...
+                    combinacionCargaObj.cargas{i}.obtenerEtiqueta());
                 [~, lx] = size(x);
                 
                 % Suma el vector
@@ -257,7 +260,8 @@ classdef CombinacionCargas < ComponenteModelo
                 
                 x = combinacionCargaObj.reshapeMatrix(combinacionCargaObj.cargas{i}.obtenerAceleracion(), ...
                     combinacionCargaObj.cargas{i}.tInicio, combinacionCargaObj.cargas{i}.dt, ...
-                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t);
+                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t, ...
+                    combinacionCargaObj.cargas{i}.obtenerEtiqueta());
                 [~, lx] = size(x);
                 
                 % Suma el vector
@@ -350,8 +354,7 @@ classdef CombinacionCargas < ComponenteModelo
                 fprintf('\t%s', combinacionCargaObj.cargas.obtenerEtiqueta());
             end % for i
             
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         
@@ -381,14 +384,14 @@ classdef CombinacionCargas < ComponenteModelo
             
         end % obtenerDtMinimo function
         
-        function a = reshapeMatrix(combinacionCargaObj, m, tini, dtm, tanalisis, dt, t) %#ok<INUSL>
+        function a = reshapeMatrix(combinacionCargaObj, m, tini, dtm, tanalisis, dt, t, cargaEtiqueta) %#ok<INUSL>
             % reshapeMatrix: reshapeMatrix reajusta una matriz dado un tiempo
             %
-            % a = reshapeMatrix(combinacionCargaObj, m, tini, dtm, tanalisis, dt, t)
+            % a = reshapeMatrix(combinacionCargaObj,m,tini,dtm,tanalisis,dt,t,cargaEtiqueta)
             
             % Si la carga no es calculada retorna error
             if isempty(m)
-                error('Carga no ha sido calculada');
+                error('Carga %s no ha sido calculada', cargaEtiqueta);
             end
             
             % Si m es una columna la extiende

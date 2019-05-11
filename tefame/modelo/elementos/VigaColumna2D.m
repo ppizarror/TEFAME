@@ -404,8 +404,7 @@ classdef VigaColumna2D < Elemento
             fprintf('\tMatriz de rigidez coordenadas globales:\n');
             disp(vigaColumna2DObj.obtenerMatrizRigidezCoordGlobal());
             
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

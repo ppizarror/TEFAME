@@ -139,9 +139,7 @@ classdef CargaVigaPuntual < Carga
             
             fprintf('\tCarga: %.3f aplicada en Elemento: %s a %.3f del Nodo: %s\n', ...
                 cargaVigaPuntualObj.carga, etiqueta, cargaVigaPuntualObj.dist, nodo1etiqueta);
-            
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

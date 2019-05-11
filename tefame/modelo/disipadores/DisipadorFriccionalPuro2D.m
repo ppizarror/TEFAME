@@ -152,8 +152,7 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
             fprintf('Propiedades disipador friccional puro 2D:\n\t');
             disp@ComponenteModelo(disipadorFriccionalPuro2DObj);
             
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

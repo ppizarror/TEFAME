@@ -433,8 +433,7 @@ classdef VigaColumnaMasa2D < Elemento
             fprintf('\tVector de masa:\n');
             disp(vigaColumnaMasa2DObj.obtenerMatrizMasa());
             
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         

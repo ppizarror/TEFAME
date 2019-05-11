@@ -606,8 +606,7 @@ classdef Membrana < Elemento
             fprintf('\tMatriz de rigidez coordenadas globales:\n');
             disp(membranaObj.obtenerMatrizRigidezCoordGlobal());
             
-            fprintf('-------------------------------------------------\n');
-            fprintf('\n');
+            dispMetodoTEFAME();
             
         end % disp function
         
