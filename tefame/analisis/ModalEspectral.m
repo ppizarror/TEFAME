@@ -281,6 +281,7 @@ classdef ModalEspectral < handle
             %   'betaGrafico'       Indica si se grafica la variacion del amortiguamiento en cada iteracion
             %   'iterDisipador'     Numero de iteraciones para el calculo de disipadores
             %   'tolIterDisipador'  Tolerancia usada para las iteraciones del calculo de disipadores
+            %   'activado'          Indica que se realiza el analisi
             
             if ~analisisObj.analisisFinalizado
                 error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
@@ -295,10 +296,14 @@ classdef ModalEspectral < handle
             addOptional(p, 'betaGrafico', false);
             addOptional(p, 'iterDisipador', 10);
             addOptional(p, 'tolIterDisipador', 0.001);
+            addOptional(p, 'activado', true);
             parse(p, varargin{:});
             r = p.Results;
             
             % Chequea inconsistencias
+            if ~r.activado
+                return;
+            end
             if r.disipadores
                 if ~isa(r.cargaDisipador, 'CargaDinamica')
                     error('No se ha definido cargaDisipador');
@@ -2102,10 +2107,16 @@ classdef ModalEspectral < handle
                     nodos{i}.definirGDLIDCondensado(gdlaux);
                 end % for i
                 
+                MtotalRed = sum(diag(Meq));
+                fprintf('\t\tTras la condensacion la masa se redujo en %.2f (%.2f%%)\n', ...
+                    analisisObj.Mtotal-MtotalRed, 100*(analisisObj.Mtotal-MtotalRed)/analisisObj.Mtotal);
+                
             else % No condensa grados
+                
                 Meq = analisisObj.Mt;
                 Keq = analisisObj.Kt;
                 fprintf('\t\tNo se han condensado grados de libertad\n');
+                
             end
             
             % Una vez pasado este punto no deberian haber masas nulas o
@@ -2348,7 +2359,7 @@ classdef ModalEspectral < handle
                 
                 % Se obienen los gdl del elemento metodo indicial
                 gdl = elementoObjetos{i}.obtenerGDLID();
-                ngdl = elementoObjetos{i}.obtenerNumeroGDL;
+                ngdl = elementoObjetos{i}.obtenerNumeroGDL();
                 
                 % Se obtiene la matriz de rigidez global del elemento-i
                 k_globl_elem = elementoObjetos{i}.obtenerMatrizRigidezCoordGlobal();
@@ -2393,7 +2404,7 @@ classdef ModalEspectral < handle
                 
                 % Se obienen los gdl del elemento metodo indicial
                 gdl = elementoObjetos{i}.obtenerGDLID();
-                ngdl = elementoObjetos{i}.obtenerNumeroGDL;
+                ngdl = elementoObjetos{i}.obtenerNumeroGDL();
                 
                 % Se obtiene la matriz de masa
                 m_elem = elementoObjetos{i}.obtenerVectorMasa();
@@ -2427,11 +2438,6 @@ classdef ModalEspectral < handle
                     continue;
                 end
                 analisisObj.Mt(gly, gly) = analisisObj.Mt(gly, gly) + carga(2);
-            end % for i
-            
-            % Chequea que la matriz de masa sea consistente
-            for i = 1:analisisObj.numeroGDL
-                analisisObj.Mt(i, i) = analisisObj.Mt(i, i) / 9.80665; % [tonf->ton]
             end % for i
             
         end % ensamblarMatrizMasa function

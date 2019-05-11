@@ -40,12 +40,13 @@
 %       cargaBielaTemperaturaObj = CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
 %       aplicarCarga(cargaBielaTemperaturaObj,factorDeCarga)
 %       disp(cargaBielaTemperaturaObj)
-%  Methods SuperClass (Carga):
+%  Methods SuperClass (CargaEstatica):
+%       masa = obtenerMasa(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
 
-classdef CargaBielaTemperatura < Carga
+classdef CargaBielaTemperatura < CargaEstatica
     
     properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
@@ -71,8 +72,9 @@ classdef CargaBielaTemperatura < Carga
                 alpha = 0;
             end % if
             
-            % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaBielaTemperaturaObj = cargaBielaTemperaturaObj@Carga(etiquetaCarga);
+            % Llamamos al constructor de la SuperClass que es la clase
+            % CargaEstatica
+            cargaBielaTemperaturaObj = cargaBielaTemperaturaObj@CargaEstatica(etiquetaCarga);
             
             % Guarda los valores
             cargaBielaTemperaturaObj.deltaTemperatura = deltaTemperatura;

@@ -39,7 +39,7 @@
 %       dy
 %       L
 %  Methods:
-%       biela2DObj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial)
+%       biela2DObj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(biela2DObj)
 %       nodosBiela = obtenerNodos(biela2DObj)
 %       numeroGDL = obtenerNumeroGDL(biela2DObj)
@@ -74,14 +74,15 @@ classdef Biela2D < Elemento
         theta % Angulo de inclinacion de la viga
         T % Matriz de transformacion
         TcargaReacc % Reaccion de la biela guardada como un vector
+        rho % Densidad de la biela
     end % properties Biela2D
     
     methods
         
-        function biela2DObj = Biela2D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial)
+        function biela2DObj = Biela2D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial, densidad)
             % Biela2D: Constructor de clase, genera una biela en dos dimensiones
             %
-            % biela2DObj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial)
+            % biela2DObj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
             
             % Si no hay argumentos completa con ceros
             if nargin == 0
@@ -95,6 +96,7 @@ classdef Biela2D < Elemento
             biela2DObj.Eo = Ematerial;
             biela2DObj.Ao = AreaSeccion;
             biela2DObj.gdlID = [];
+            biela2DObj.rho = densidad;
             
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
@@ -105,6 +107,11 @@ classdef Biela2D < Elemento
             
             biela2DObj.L = sqrt(biela2DObj.dx^2+biela2DObj.dy^2);
             biela2DObj.TcargaReacc = [0, 0, 0, 0]';
+            
+            % Agrega el elemento a los nodos
+            for i=1:2
+                bielas2DObj.nodosObj{i}.agregarElementos(biela2DObj);
+            end
             
         end % Biela2D constructor
         
@@ -318,7 +325,7 @@ classdef Biela2D < Elemento
             %
             % guardarPropiedades(biela2DObj, archivoSalidaHandle)
             
-            fprintf(archivoSalidaHandle, '\tBiela2D %s:\n\t\tLargo:\t%s\n\t\tArea:\t%s\n\t\tEo:\t\t%s\n', ...
+            fprintf(archivoSalidaHandle, '\tBiela2D %s:\n\t\tLargo:\t%s\n\t\tArea:\t%s\n\t\tEo:\t\t%s\n\t\tMasa:\t\t\n', ...
                 biela2DObj.obtenerEtiqueta(), num2str(biela2DObj.L), ...
                 num2str(biela2DObj.Ao), num2str(biela2DObj.Eo));
             

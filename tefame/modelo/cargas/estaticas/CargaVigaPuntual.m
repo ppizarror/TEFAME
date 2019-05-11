@@ -19,8 +19,9 @@
 %| Clase CargaVigaPuntual                                               |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase CargaVigaPuntual     |
-%| CargaVigaPuntual es una subclase de la clase Carga y corresponde a la|
-%| representacion de una carga puntual en un elemento tipo Viga.        |
+%| CargaVigaPuntual es una subclase de la clase CargaEstatica y         |
+%| corresponde a la representacion de una carga puntual en un elemento  |
+%| tipo Viga.                                                           |
 %| La clase CargaVigaPuntual es una clase que contiene el elemento al   |
 %| al que se le va a aplicar la carga, el valor de esta carga y la      |
 %| distancia a uno de los nodos como porcentaje del largo.              |
@@ -37,12 +38,13 @@
 %       cargaNodoObj = CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
 %       aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
 %       disp(cargaVigaPuntualObj)
-%  Methods SuperClass (Carga):
+%  Methods SuperClass (CargaEsatica):
+%       masa = obtenerMasa(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
 
-classdef CargaVigaPuntual < Carga
+classdef CargaVigaPuntual < CargaEstatica
     
     properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
@@ -70,7 +72,7 @@ classdef CargaVigaPuntual < Carga
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaVigaPuntualObj = cargaVigaPuntualObj@Carga(etiquetaCarga);
+            cargaVigaPuntualObj = cargaVigaPuntualObj@CargaEstatica(etiquetaCarga);
             
             % Guarda los valores
             cargaVigaPuntualObj.elemObj = elemObjeto;

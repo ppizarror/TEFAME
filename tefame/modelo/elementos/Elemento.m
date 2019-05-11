@@ -64,6 +64,10 @@ classdef Elemento < ComponenteModelo
         graficaDeformadaElem % Grafica la deformada del elemento
     end % properties Elemento
     
+    properties(Access = protected)
+        factorMasa % Indica el factor en que convierte densidad en masa
+    end % properties Elemento
+    
     methods
         
         function elementoObj = Elemento(etiquetaElemento)
@@ -329,6 +333,16 @@ classdef Elemento < ComponenteModelo
             % No usar dispMetodoTEFAME()
             
         end % disp function
+        
+        function definirFactorUnidadMasa(elementoObj, factor)
+            % definirFactorUnidadMasa: Funcion que define el cambio de
+            % unidad para pasar masa carga a masa real
+            %
+            % definirFactorUnidadMasa(elementoObj,factor)
+            
+            elementoObj.factorMasa = factor;
+            
+        end % definirFactorUnidadMasa function
         
     end % methods Elemento
     

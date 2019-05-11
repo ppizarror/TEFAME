@@ -45,11 +45,12 @@
 %       aplicarCarga(cargaMembranaDistribuidaObj,factorDeCarga)
 %       disp(cargaMembranaDistribuidaObj)
 %  Methods SuperClass (Carga):
+%       masa = obtenerMasa(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
 
-classdef CargaMembranaDistribuida < Carga
+classdef CargaMembranaDistribuida < CargaEstatica
     
     properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
@@ -93,8 +94,9 @@ classdef CargaMembranaDistribuida < Carga
                 distancia2 = 0;
             end % if
             
-            % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaMembranaDistribuidaObj = cargaMembranaDistribuidaObj@Carga(etiquetaCarga);
+            % Llamamos al constructor de la SuperClass que es la clase
+            % CargaEstatica
+            cargaMembranaDistribuidaObj = cargaMembranaDistribuidaObj@CargaEstatica(etiquetaCarga);
             
             % Verifica que se cumplan los nodos
             if abs(nodo1-nodo2) == 2

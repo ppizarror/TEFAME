@@ -40,11 +40,12 @@
 %       aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
 %       disp(cargaVigaDistribuidaObj)
 %  Methods SuperClass (Carga):
+%       masa = obtenerMasa(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
 
-classdef CargaVigaDistribuida < Carga
+classdef CargaVigaDistribuida < CargaEstatica
     
     properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
@@ -76,7 +77,7 @@ classdef CargaVigaDistribuida < Carga
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaVigaDistribuidaObj = cargaVigaDistribuidaObj@Carga(etiquetaCarga);
+            cargaVigaDistribuidaObj = cargaVigaDistribuidaObj@CargaEstatica(etiquetaCarga);
             
             % Aplica limites al minimo y maximo
             if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
@@ -142,9 +143,9 @@ classdef CargaVigaDistribuida < Carga
         end % aplicarCarga function
         
         function disp(cargaVigaDistribuidaObj)
-            % disp: es un metodo de la clase Carga que se usa para imprimir en
-            % command Window la informacion de la carga aplicada sobre el
-            % elemento
+            % disp: es un metodo de la clase CargaVigaDistribuida que se usa para
+            % imprimir en el command Window la informacion de la carga aplicada
+            % sobre el elemento
             %
             % disp(cargaVigaDistribuidaObj)
             %

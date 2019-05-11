@@ -40,12 +40,13 @@
 %       cargaNodoObj = CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
 %       aplicarCarga(cargaVigaColumnaPuntualObj,factorDeCarga)
 %       disp(cargaVigaColumnaPuntualObj)
-%  Methods SuperClass (Carga):
+%  Methods SuperClass (CargaEstatica):
+%       masa = obtenerMasa(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
 
-classdef CargaVigaColumnaPuntual < Carga
+classdef CargaVigaColumnaPuntual < CargaEstatica
     
     properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
@@ -76,7 +77,7 @@ classdef CargaVigaColumnaPuntual < Carga
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaVigaColumnaPuntualObj = cargaVigaColumnaPuntualObj@Carga(etiquetaCarga);
+            cargaVigaColumnaPuntualObj = cargaVigaColumnaPuntualObj@CargaEstatica(etiquetaCarga);
             
             % Guarda los valores
             cargaVigaColumnaPuntualObj.elemObj = elemObjeto;

@@ -189,7 +189,7 @@ classdef AnalisisEstatico < handle
                 
                 % Se obienen los gdl del elemento metodo indicial
                 gdl = elementoObjetos{i}.obtenerGDLID();
-                ngdl = elementoObjetos{i}.obtenerNumeroGDL;
+                ngdl = elementoObjetos{i}.obtenerNumeroGDL();
                 
                 % Se obtiene la matriz de rigidez global del elemento-i
                 k_globl_elem = elementoObjetos{i}.obtenerMatrizRigidezCoordGlobal();

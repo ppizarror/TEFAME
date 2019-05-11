@@ -42,12 +42,13 @@
 %                                        distancia1,carga2,distancia2,theta)
 %       aplicarCarga(cargaVigaColumnaDistribuidaObj,factorDeCarga)
 %       disp(cargaVigaColumnaDistribuidaObj)
-%  Methods SuperClass (Carga):
+%  Methods SuperClass (CargaEstatica):
+%       masa = obtenerMasa(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
 
-classdef CargaVigaColumnaDistribuida < Carga
+classdef CargaVigaColumnaDistribuida < CargaEstatica
     
     properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
@@ -83,8 +84,9 @@ classdef CargaVigaColumnaDistribuida < Carga
                 theta = 0;
             end % if
             
-            % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaVigaColumnaDistribuidaObj = cargaVigaColumnaDistribuidaObj@Carga(etiquetaCarga);
+            % Llamamos al constructor de la SuperClass que es la clase
+            % CargaEstatica
+            cargaVigaColumnaDistribuidaObj = cargaVigaColumnaDistribuidaObj@CargaEstatica(etiquetaCarga);
             
             % Aplica limites al minimo y maximo
             if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)

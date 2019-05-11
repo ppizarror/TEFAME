@@ -93,7 +93,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             for i = 1:length(patronDeCargasObj.cargas)
                 
                 % Chequea que la carga sea estatica
-                if ~isa(patronDeCargasObj.cargas{i}, 'Carga')
+                if ~isa(patronDeCargasObj.cargas{i}, 'CargaEstatica')
                     error('PatronDeCargasConstante solo puede resolver cargas estaticas');
                 end
                 

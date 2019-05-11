@@ -13,7 +13,7 @@ Ec = 2625051; % (tonf/m2)
 Ic = 1 / 12;
 
 % Densidad del material hormigon
-Rhoh = 2.5; % (tonf/m3)
+Rhoh = 2.5 / 9.80665; % (ton/m3), se aplica factor carga masa
 
 %% VIGAS
 % Piso 1

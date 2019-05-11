@@ -16,14 +16,14 @@
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
-%| Clase Carga                                                          |
+%| Clase CargaEstatica                                                  |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase Carga                |
+%| Este archivo contiene la definicion de la Clase Carga Estatica       |
 %| Carga  es una  subclase  de la  clase ComponenteModelo y corresponde |
 %| a la representacion  de una carga en el metodo de elementos  finitos |
 %| o analisis matricial de estructuras.                                 |
 %| La clase  Carga se usa  como una superclase  para todos los tipos de |
-%| cargas a aplicar.                                                    |
+%| cargas estaticas a aplicar.                                          |
 %|                                                                      |
 %| Programado: FR                                                       |
 %| Fecha: 05/08/2015                                                    |
@@ -37,23 +37,29 @@
 %       cargaObj = Carga(etiquetaCarga)
 %       aplicarCarga(cargaObj)
 %       disp(cargaObj)
+%       masa = obtenerMasa(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
 
-classdef Carga < ComponenteModelo
+classdef CargaEstatica < ComponenteModelo
     
     properties(Access = private)
-    end % properties Carga
+    end % properties CargaEstatica
+    
+    properties(Access = protected)
+        factorCargaMasa % Factor de masa de la carga
+        factorUnidadMasa % Factor unidad de la masa
+    end
     
     methods
         
-        function cargaObj = Carga(etiquetaCarga)
-            % Carga: es el constructor de la clase Carga
+        function cargaObj = CargaEstatica(etiquetaCarga)
+            % CargaEstatica: es el constructor de la clase CargaEstatica
             %
-            % cargaObj = Carga(etiquetaCarga)
+            % cargaObj = CargaEstatica(etiquetaCarga)
             %
-            % Crea un objeto de la clase Carga, con un identificador unico
+            % Crea un objeto de la clase CargaEstatica, con un identificador unico
             % (etiquetaCarga)
             
             if nargin == 0
@@ -66,8 +72,8 @@ classdef Carga < ComponenteModelo
         end % Carga constructor
         
         function aplicarCarga(cargaObj, varargin) %#ok<*VANUS,INUSD>
-            % aplicarCarga: es un metodo de la clase Carga que se usa para aplicar
-            % la carga
+            % aplicarCarga: es un metodo de la clase CargaEstatica que se usa
+            % para aplicar la carga
             %
             % aplicarCarga(cargaObj)
             %
@@ -76,7 +82,7 @@ classdef Carga < ComponenteModelo
         end % aplicarCarga function
         
         function disp(cargaObj)
-            % disp: es un metodo de la clase Carga que se usa para imprimir en
+            % disp: es un metodo de la clase CargaEstatica que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
             % componente que corresponda
             %
@@ -89,6 +95,23 @@ classdef Carga < ComponenteModelo
             
         end % disp function
         
-    end % methods Carga
+        function masa = obtenerMasa(cargaObj)
+            % obtenerMasa: Obtiene la masa de la carga
+            %
+            % masa = obtenerMasa(cargaObj)
+            
+            masa = [] .* cargaObj.factorCargaMasa;
+            
+        end % obtenerMasa function
+        
+        function definirFactorUnidadMasa(cargaObj, factor)
+            % definirFactorUnidadMasa: Define el factor de conversion de
+            % unidades de la carga a unidades de masa
+            
+            cargaObj.factorUnidadMasa = factor;
+            
+        end % definirFactorUnidadMasa function
+        
+    end % methods CargaEstatica
     
-end % class Carga
+end % class CargaEstatica

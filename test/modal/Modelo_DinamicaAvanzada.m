@@ -17,6 +17,11 @@ disipadores = {};
 Modelo_DinamicaAvanzadaElementos();
 Modelo_DinamicaAvanzadaDisipadores();
 
+m = 0;
+for i=1:length(elementos)
+    m = m + elementos{i}.obtenerMasa();
+end
+
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
 modeloObj.agregarDisipadores(disipadores);
@@ -74,7 +79,7 @@ modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 %% Analiza el sistema
 analisisObj.analizar('nModos', 41, 'rayleighBeta', [0.02, 0.02], 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
-    'valvecAlgoritmo', 'itSubesp', 'valvecTolerancia', 0.0001);
+    'valvecAlgoritmo', 'eigs', 'valvecTolerancia', 0.0001);
 analisisObj.disp();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
 % plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, 'gif', ...
@@ -88,7 +93,7 @@ combinacionCargas{2} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEsta
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...
     'cargaDisipador', cargasDinamicas{1}, 'betaObjetivo', 0.08, 'iterDisipador', 10, ...
-    'betaGrafico', false);
+    'betaGrafico', false, 'activado', false);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);

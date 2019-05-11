@@ -39,12 +39,13 @@
 %       cargaNodoObj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)
 %       aplicarCarga(cargaNodoObj,factorDeCarga)
 %       disp(cargaNodoObj)
-%  Methods SuperClass (Carga):
+%  Methods SuperClass (CargaEstatica):
+%       masa = obtenerMasa(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
 
-classdef CargaNodo < Carga
+classdef CargaNodo < CargaEstatica
     
     properties(Access = private)
         nodoObj     % Variable que guarda el Nodo que se le va a aplicar la carga
@@ -68,8 +69,9 @@ classdef CargaNodo < Carga
                 cargaNodo = [];
             end % if
             
-            % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaNodoObj = cargaNodoObj@Carga(etiquetaCargaNodo);
+            % Llamamos al constructor de la SuperClass que es la clase
+            % CargaEstatica
+            cargaNodoObj = cargaNodoObj@CargaEstatica(etiquetaCargaNodo);
             
             cargaNodoObj.nodoObj = nodoObjeto;
             
