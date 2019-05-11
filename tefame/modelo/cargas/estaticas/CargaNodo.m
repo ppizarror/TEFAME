@@ -40,10 +40,10 @@
 %       aplicarCarga(cargaNodoObj,factorDeCarga)
 %       disp(cargaNodoObj)
 %  Methods SuperClass (CargaEstatica):
-%       masa = obtenerMasa(cargaObj)
-%       definirFactorUnidadMasa(cargaObj,factor)
-%       definirFactorCargaMasa(cargaObj,factor)
-%       nodos = obtenerNodos(cargaObj)
+%       masa = obtenerMasa(cargaNodoObj)
+%       definirFactorUnidadMasa(cargaNodoObj,factor)
+%       definirFactorCargaMasa(cargaNodoObj,factor)
+%       nodos = obtenerNodos(cargaNodoObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -116,7 +116,7 @@ classdef CargaNodo < CargaEstatica
             %
             % disp(cargaNodoObj)
             %
-            % Imprime la informacion guardada en la carga nodal (cargaObj) en pantalla
+            % Imprime la informacion guardada en la carga nodal (cargaNodoObj) en pantalla
             
             fprintf('Propiedades carga nodo:\n');
             disp@Carga(cargaNodoObj);

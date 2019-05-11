@@ -35,14 +35,14 @@
 %       carga
 %       dist
 %  Methods:
-%       cargaNodoObj = CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
+%       cargaVigaPuntualObj = CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
 %       aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
 %       disp(cargaVigaPuntualObj)
 %  Methods SuperClass (CargaEsatica):
-%       masa = obtenerMasa(cargaObj)
-%       definirFactorUnidadMasa(cargaObj,factor)
-%       definirFactorCargaMasa(cargaObj,factor)
-%       nodos = obtenerNodos(cargaObj)
+%       masa = obtenerMasa(cargaVigaPuntualObj)
+%       definirFactorUnidadMasa(cargaVigaPuntualObj,factor)
+%       definirFactorCargaMasa(cargaVigaPuntualObj,factor)
+%       nodos = obtenerNodos(cargaVigaPuntualObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)

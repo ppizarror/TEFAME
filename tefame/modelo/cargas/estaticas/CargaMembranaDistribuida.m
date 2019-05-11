@@ -45,10 +45,10 @@
 %       aplicarCarga(cargaMembranaDistribuidaObj,factorDeCarga)
 %       disp(cargaMembranaDistribuidaObj)
 %  Methods SuperClass (CargaEstatica):
-%       masa = obtenerMasa(cargaObj)
-%       definirFactorUnidadMasa(cargaObj,factor)
-%       definirFactorCargaMasa(cargaObj,factor)
-%       nodos = obtenerNodos(cargaObj)
+%       masa = obtenerMasa(cargaMembranaDistribuidaObj)
+%       definirFactorUnidadMasa(cargaMembranaDistribuidaObj,factor)
+%       definirFactorCargaMasa(cargaMembranaDistribuidaObj,factor)
+%       nodos = obtenerNodos(cargaMembranaDistribuidaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)

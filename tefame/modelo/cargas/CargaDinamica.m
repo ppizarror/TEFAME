@@ -113,6 +113,8 @@ classdef CargaDinamica < ComponenteModelo
             cargaDinamicaObj.cRayleigh = false;
             cargaDinamicaObj.usoDisipador = false;
             cargaDinamicaObj.desModal = false;
+            cargaDinamicaObj.factorUnidadMasa = 1;
+            cargaDinamicaObj.factorCargaMasa = 0;
             
             % Define algunos parametros iniciales
             cargaDinamicaObj.tInicio = 0;

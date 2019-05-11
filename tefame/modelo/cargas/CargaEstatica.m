@@ -34,13 +34,13 @@
 %
 %  Properties (Access=private):
 %  Methods:
-%       cargaObj = Carga(etiquetaCarga)
-%       aplicarCarga(cargaObj)
-%       disp(cargaObj)
-%       masa = obtenerMasa(cargaObj)
-%       definirFactorUnidadMasa(cargaObj,factor)
-%       definirFactorCargaMasa(cargaObj,factor)
-%       nodos = obtenerNodos(cargaObj)
+%       cargaEstaticaObj = Carga(etiquetaCarga)
+%       aplicarCarga(cargaEstaticaObj)
+%       disp(cargaEstaticaObj)
+%       masa = obtenerMasa(cargaEstaticaObj)
+%       definirFactorUnidadMasa(cargaEstaticaObj,factor)
+%       definirFactorCargaMasa(cargaEstaticaObj,factor)
+%       nodos = obtenerNodos(cargaEstaticaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -58,10 +58,10 @@ classdef CargaEstatica < ComponenteModelo
     
     methods
         
-        function cargaObj = CargaEstatica(etiquetaCarga)
+        function cargaEstaticaObj = CargaEstatica(etiquetaCarga)
             % CargaEstatica: es el constructor de la clase CargaEstatica
             %
-            % cargaObj = CargaEstatica(etiquetaCarga)
+            % cargaEstaticaObj = CargaEstatica(etiquetaCarga)
             %
             % Crea un objeto de la clase CargaEstatica, con un identificador unico
             % (etiquetaCarga)
@@ -71,65 +71,67 @@ classdef CargaEstatica < ComponenteModelo
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
-            cargaObj = cargaObj@ComponenteModelo(etiquetaCarga);
+            cargaEstaticaObj = cargaEstaticaObj@ComponenteModelo(etiquetaCarga);
+            cargaEstaticaObj.factorCargaMasa = 0;
+            cargaEstaticaObj.factorUnidadMasa = 1;
             
         end % Carga constructor
         
-        function aplicarCarga(cargaObj, varargin) %#ok<*VANUS,INUSD>
+        function aplicarCarga(cargaEstaticaObj, varargin) %#ok<*VANUS,INUSD>
             % aplicarCarga: es un metodo de la clase CargaEstatica que se usa
             % para aplicar la carga
             %
-            % aplicarCarga(cargaObj)
+            % aplicarCarga(cargaEstaticaObj)
             %
             % Aplica el carga que estan guardada en el componente que corresponda
             
         end % aplicarCarga function
         
-        function disp(cargaObj)
+        function disp(cargaEstaticaObj)
             % disp: es un metodo de la clase CargaEstatica que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
             % componente que corresponda
             %
-            % disp(cargaObj)
+            % disp(cargaEstaticaObj)
             %
-            % Imprime la informacion guardada en la carga (cargaObj) en pantalla
+            % Imprime la informacion guardada en la carga (cargaEstaticaObj) en pantalla
             
-            disp@ComponenteModelo(cargaObj);
+            disp@ComponenteModelo(cargaEstaticaObj);
             % No usar dispMetodoTEFAME()
             
         end % disp function
         
-        function masa = obtenerMasa(cargaObj)
+        function masa = obtenerMasa(cargaEstaticaObj)
             % obtenerMasa: Obtiene la masa de la carga
             %
-            % masa = obtenerMasa(cargaObj)
+            % masa = obtenerMasa(cargaEstaticaObj)
             
-            masa = [] .* (cargaObj.factorCargaMasa * cargaObj.factorUnidadMasa);
+            masa = [] .* (cargaEstaticaObj.factorCargaMasa * cargaEstaticaObj.factorUnidadMasa);
             
         end % obtenerMasa function
         
-        function definirFactorUnidadMasa(cargaObj, factor)
+        function definirFactorUnidadMasa(cargaEstaticaObj, factor)
             % definirFactorUnidadMasa: Define el factor de conversion de
             % unidades de la carga a unidades de masa
             
-            cargaObj.factorUnidadMasa = factor;
+            cargaEstaticaObj.factorUnidadMasa = factor;
             
         end % definirFactorUnidadMasa function
         
-        function definirFactorCargaMasa(cargaObj, factor)
+        function definirFactorCargaMasa(cargaEstaticaObj, factor)
             % definirFactorCargaMasa: Define cuanto porcentaje de la carga
             % se convierte en masa
             
-            cargaObj.factorCargaMasa = factor;
+            cargaEstaticaObj.factorCargaMasa = factor;
             
         end % definirFactorCargaMasa function
         
-        function nodos = obtenerNodos(cargaObj)
+        function nodos = obtenerNodos(cargaEstaticaObj)
             % obtenerNodos: Retorna los nodos de la carga
             %
-            % nodos = obtenerNodos(cargaObj)
+            % nodos = obtenerNodos(cargaEstaticaObj)
             
-            nodos = cargaObj.nodosCarga;
+            nodos = cargaEstaticaObj.nodosCarga;
             
         end % obtenerNodos function
         

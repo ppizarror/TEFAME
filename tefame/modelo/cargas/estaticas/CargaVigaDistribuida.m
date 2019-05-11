@@ -40,10 +40,10 @@
 %       aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
 %       disp(cargaVigaDistribuidaObj)
 %  Methods SuperClass (Carga):
-%       masa = obtenerMasa(cargaObj)
-%       definirFactorUnidadMasa(cargaObj,factor)
-%       definirFactorCargaMasa(cargaObj,factor)
-%       nodos = obtenerNodos(cargaObj)
+%       masa = obtenerMasa(cargaVigaDistribuidaObj)
+%       definirFactorUnidadMasa(cargaVigaDistribuidaObj,factor)
+%       definirFactorCargaMasa(cargaVigaDistribuidaObj,factor)
+%       nodos = obtenerNodos(cargaVigaDistribuidaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
