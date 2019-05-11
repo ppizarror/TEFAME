@@ -105,12 +105,12 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         
         function aplicarCargas(patronDeCargasObj, cpenzien, disipadores, cargaDisipador, ...
                 betaObjetivo, arregloDisipadores, iterDisipador, tolIterDisipador, ...
-                betaGrafico)
+                betaGrafico, factor)
             % aplicarCargas: es un metodo de la clase PatronDeCargasDinamico que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
             % aplicarCargas(patronDeCargasObj,cpenzien,disipadores,cargaDisipador,betaObjetivo,
-            %   arregloDisipadores,iterDisipador,tolIterDisipador,betaGrafico)
+            %   arregloDisipadores,iterDisipador,tolIterDisipador,betaGrafico,factor)
             %
             % Aplica las cargas que estan guardadas en el PatronDeCargasDinamico
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
@@ -129,7 +129,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 totalDisipador = length(arregloDisipadores);
                 fprintf('\tDisipadores del modelo: %d\n', totalDisipador);
                 for i = 1:length(disipadorNombresK)
-                    fprintf('\t\t%s: %d\n', disipadorNombresK{i}, disipadorNombresC{i});
+                    fprintf('\t\t%d %s\n', disipadorNombresC{i}, disipadorNombresK{i});
                 end % for i
                 
                 % Se busca el indice de la carga objetivo
@@ -155,7 +155,9 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Al realizar esto el nuevo desplazamiento se guarda en la
                 % carga
-                patronDeCargasObj.calcularCargaGenerica(cpenzien, false, indiceCargaObjetivo, true, 0); % No uso disipadores
+                patronDeCargasObj.calcularCargaGenerica(cpenzien, ...
+                    false, indiceCargaObjetivo, true, 0, ...
+                    factor); % No uso disipadores
                 
                 % Calcula w asociado al modo que mueve mas energia
                 w = patronDeCargasObj.analisisObj.calcularModosEnergia(cargaDisipadorObj, false);
@@ -207,7 +209,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         
                         % Calcula la carga
                         fprintf('\t\tIteracion %d:\n', j);
-                        patronDeCargasObj.calcularCargaGenerica(cpenzien, true, indiceCargaObjetivo, true, 0);
+                        patronDeCargasObj.calcularCargaGenerica(cpenzien, ...
+                            true, indiceCargaObjetivo, true, 0, factor);
                         
                         % Actualiza los disipadores
                         fprintf('\t\t\tActualizando disipadores\n');
@@ -286,17 +289,18 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     fprintf('\tNo se realizo el proceso de iteracion de los disipadores\n');
                     fprintf('\tAmortiguamiento del modelo: %.3f\n', beta);
                     fprintf('\tInicio calculo de cargas con los disipadores sin actualizar\n');
-                    tcalculo = cputime - tinicio;
                     
                 end
                 
                 % Calcula todas las cargas con los disipadores actualizados
-                patronDeCargasObj.calcularCargaGenerica(cpenzien, true, 0, false, tcalculo);
+                patronDeCargasObj.calcularCargaGenerica(cpenzien, true, 0, ...
+                    false, tcalculo, factor);
                 
             else
                 
                 % Calcula todas las cargas sin usar disipadores
-                patronDeCargasObj.calcularCargaGenerica(cpenzien, false, 0, false, 0);
+                patronDeCargasObj.calcularCargaGenerica(cpenzien, false, 0, ...
+                    false, 0, factor);
                 
             end
             
@@ -338,13 +342,14 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         end % calcularBetaModelo function
         
         function calcularCargaGenerica(patronDeCargasObj, cpenzien, disipadores, ...
-                cargaIndiceDisipador, calculaDisipadores, tcalculoAnterior)
+                cargaIndiceDisipador, calculaDisipadores, tcalculoAnterior, factor)
             % calcularCargaGenerica: Funcion que calcula el tema de las
             % cargas, es generica en cuanto al calculo. Esta puede
             % funcionar tanto si hay o no hay disipadores
             %
             % calcularCargaGenerica(patronDeCargasObj,cpenzien,disipadores,
-            %   cargaIndiceDisipador,calculaDisipadores,tcalculoAnterior)
+            %   cargaIndiceDisipador,calculaDisipadores,tcalculoAnterior,
+            %   factor)
             
             % Obtiene los parametros de la estructura
             k = patronDeCargasObj.analisisObj.obtenerMatrizRigidez();
@@ -435,7 +440,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 if ~calculaDisipadores
                     fprintf('\t\t\tGenerando la matriz de cargas\n');
                 end
-                p = patronDeCargasObj.cargas{i}.calcularCarga(1, m, r, ~calculaDisipadores);
+                p = patronDeCargasObj.cargas{i}.calcularCarga(factor, m, r, ~calculaDisipadores);
                 
                 % Descomposicion modal
                 if patronDeCargasObj.desModal

@@ -41,6 +41,9 @@
 %       disp(cargaVigaDistribuidaObj)
 %  Methods SuperClass (Carga):
 %       masa = obtenerMasa(cargaObj)
+%       definirFactorUnidadMasa(cargaObj,factor)
+%       definirFactorCargaMasa(cargaObj,factor)
+%       nodos = obtenerNodos(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -95,6 +98,7 @@ classdef CargaVigaDistribuida < CargaEstatica
             cargaVigaDistribuidaObj.dist1 = distancia1 * elemObjeto.obtenerLargo();
             cargaVigaDistribuidaObj.carga2 = carga2;
             cargaVigaDistribuidaObj.dist2 = distancia2 * elemObjeto.obtenerLargo();
+            cargaVigaDistribuidaObj.nodosCarga = elemObjeto.obtenerNodos();
             
         end % CargaVigaDistribuida constructor
         

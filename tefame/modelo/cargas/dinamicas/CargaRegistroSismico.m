@@ -34,7 +34,30 @@
 %       CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(cargaRegistroObj,factorDeCarga)
 %       disp(cargaRegistroObj)
-%  Methods SuperClass (Carga):
+%  Methods SuperClass (CargaDinamica):
+%       cargaRegistroObj = Carga(etiquetaCarga)
+%       aplicarCarga(cargaRegistroObj)
+%       disp(cargaRegistroObj)
+%       guardarCarga(cargaRegistroObj,p)
+%       guardarDesplazamiento(cargaRegistroObj,u)
+%       guardarVelocidad(cargaRegistroObj,v)
+%       guardarAceleracion(cargaRegistroObj,a)
+%       amortiguamientoRayleigh(cargaRegistroObj,rayleigh)
+%       usoDisipadores(cargaRegistroObj,disipador)
+%       descomposicionModal(cargaRegistroObj,desmodal)
+%       t = obtenerVectorTiempo(cargaRegistroObj)
+%       p = obtenerCarga(cargaRegistroObj)
+%       u = obtenerDesplazamiento(cargaRegistroObj)
+%       u = obtenerDesplazamientoTiempo(cargaRegistroObj,gdl,tiempo)
+%       v = obtenerVelocidad(cargaRegistroObj)
+%       a = obtenerAceleracion(cargaRegistroObj)
+%       r = usoAmortiguamientoRayleigh(cargaRegistroObj)
+%       dm = usoDescomposicionModal(cargaRegistroObj)
+%       disipador = usoDeDisipadores(cargaRegistroObj)
+%       masa = obtenerMasa(cargaRegistroObj)
+%       definirFactorUnidadMasa(cargaRegistroObj,factor)
+%       definirFactorCargaMasa(cargaRegistroObj,factor)
+%       nodos = obtenerNodos(cargaRegistroObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -101,6 +124,7 @@ classdef CargaRegistroSismico < CargaDinamica
             cargaRegistroObj.tAnalisis = tAnalisis;
             cargaRegistroObj.tInicio = tInicio;
             cargaRegistroObj.dt = dt;
+            cargaRegistroObj.nodosCarga = {};
             
         end % CargaRegistroSismico constructor
         

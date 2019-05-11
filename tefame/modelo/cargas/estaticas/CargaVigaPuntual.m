@@ -40,6 +40,9 @@
 %       disp(cargaVigaPuntualObj)
 %  Methods SuperClass (CargaEsatica):
 %       masa = obtenerMasa(cargaObj)
+%       definirFactorUnidadMasa(cargaObj,factor)
+%       definirFactorCargaMasa(cargaObj,factor)
+%       nodos = obtenerNodos(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -78,6 +81,7 @@ classdef CargaVigaPuntual < CargaEstatica
             cargaVigaPuntualObj.elemObj = elemObjeto;
             cargaVigaPuntualObj.carga = carga;
             cargaVigaPuntualObj.dist = distancia * elemObjeto.obtenerLargo();
+            cargaVigaPuntualObj.nodosCarga = elemObjeto.obtenerNodos();
             
         end % CargaVigaPuntual constructor
         

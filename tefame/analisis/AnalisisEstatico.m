@@ -136,22 +136,31 @@ classdef AnalisisEstatico < handle
             
         end % definirNumeracionGDL function
         
-        function analizar(analisisObj)
+        function analizar(analisisObj, varargin)
             % analizar: es un metodo de la clase AnalisisEstatico que se usa para
             % realizar el analisis estatico
-            %
-            % analizar(analisisObj)
-            %
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas
+            %
+            % analizar(analisisObj, varargin)
+            %
+            % Parametros opcionales:
+            %   'factorCargaE'      Factor de cargas estaticas
             
             fprintf('Ejecuntando analisis estatico\n');
+            
+            % Define parametros
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'factor', 1);
+            parse(p, varargin{:});
+            r = p.Results;
             
             % Se definen los grados de libertad por nodo -> elementos
             analisisObj.definirNumeracionGDL();
             
             % Se aplica patron de carga
-            analisisObj.modeloObj.aplicarPatronesDeCargasEstatico();
+            analisisObj.modeloObj.aplicarPatronesDeCargasEstatico(r.factorCargaE);
             
             % Se calcula la matriz de rigidez
             analisisObj.ensamblarMatrizRigidez();

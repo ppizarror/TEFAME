@@ -44,6 +44,9 @@
 %       disp(cargaVigaColumnaDistribuidaObj)
 %  Methods SuperClass (CargaEstatica):
 %       masa = obtenerMasa(cargaObj)
+%       definirFactorUnidadMasa(cargaObj,factor)
+%       definirFactorCargaMasa(cargaObj,factor)
+%       nodos = obtenerNodos(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -105,6 +108,7 @@ classdef CargaVigaColumnaDistribuida < CargaEstatica
             cargaVigaColumnaDistribuidaObj.carga2 = carga2;
             cargaVigaColumnaDistribuidaObj.dist2 = distancia2 * elemObjeto.obtenerLargo();
             cargaVigaColumnaDistribuidaObj.theta = theta;
+            cargaVigaColumnaDistribuidaObj.nodosCarga = elemObjeto.obtenerNodos();
             
         end % CargaVigaColumnaDistribuida constructor
         
@@ -196,7 +200,7 @@ classdef CargaVigaColumnaDistribuida < CargaEstatica
             fprintf('\tCarga distribuida entre los Nodos: %s y %s del Elemento: %s\n', ...
                 nodo1etiqueta, nodo2etiqueta, etiqueta);
             fprintf('\t\tComponente NORMAL:\t%.3f en %.3f hasta %.3f en %.3f\n', P1, a, P2, b);
-            fprintf('\t\tComponente AXIAL:\t%.3f en %.3f hasta %.3f en %.3f\n', H1, a, H2, b);         
+            fprintf('\t\tComponente AXIAL:\t%.3f en %.3f hasta %.3f en %.3f\n', H1, a, H2, b);
             dispMetodoTEFAME();
             
         end % disp function

@@ -41,7 +41,10 @@
 %       aplicarCarga(cargaBielaTemperaturaObj,factorDeCarga)
 %       disp(cargaBielaTemperaturaObj)
 %  Methods SuperClass (CargaEstatica):
-%       masa = obtenerMasa(cargaObj)
+%       masa = obtenerMasa(cargaBielaTemperaturaObj)
+%       definirFactorUnidadMasa(cargaBielaTemperaturaObj,factor)
+%       definirFactorCargaMasa(cargaBielaTemperaturaObj,factor)
+%       nodos = obtenerNodos(cargaBielaTemperaturaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -80,11 +83,21 @@ classdef CargaBielaTemperatura < CargaEstatica
             cargaBielaTemperaturaObj.deltaTemperatura = deltaTemperatura;
             cargaBielaTemperaturaObj.alpha = alpha;
             cargaBielaTemperaturaObj.elemObj = elemObjeto;
+            cargaBielaTemperaturaObj.nodosCarga = elemObjeto.obtenerNodos();
             
             % Crea la carga
             cargaBielaTemperaturaObj.carga = elemObjeto.obtenerAE() * deltaTemperatura * alpha;
             
         end % CargaBielaTemperatura constructor
+        
+        function masa = obtenerMasa(cargaBielaTemperaturaObj)
+            % obtenerMasa: Obtiene la masa asociada a la carga
+            %
+            % masa = obtenerMasa(cargaBielaTemperaturaObj)
+            
+            masa = cargaBielaTemperaturaObj.carga .* (cargaDinamicaObj.factorCargaMasa * cargaDinamicaObj.factorUnidadMasa);
+            
+        end % obtenerMasa function
         
         function aplicarCarga(cargaBielaTemperaturaObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaBielaTemperatura
@@ -130,7 +143,7 @@ classdef CargaBielaTemperatura < CargaEstatica
             etiqueta = cargaBielaTemperaturaObj.elemObj.obtenerEtiqueta();
             
             fprintf('\tCarga: %.3f aplicada en Elemento: %s producto de una diferencia de temperatura: %.3f\n', ...
-                cargaBielaTemperaturaObj.carga, etiqueta, cargaBielaTemperaturaObj.deltaTemperatura);           
+                cargaBielaTemperaturaObj.carga, etiqueta, cargaBielaTemperaturaObj.deltaTemperatura);
             dispMetodoTEFAME();
             
         end % disp function

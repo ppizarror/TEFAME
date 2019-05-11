@@ -101,15 +101,15 @@ classdef Biela2D < Elemento
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             
-            biela2DObj.dx = abs(coordNodo2(1) - coordNodo1(1));
-            biela2DObj.dy = abs(coordNodo2(2) - coordNodo1(2));
+            biela2DObj.dx = abs(coordNodo2(1)-coordNodo1(1));
+            biela2DObj.dy = abs(coordNodo2(2)-coordNodo1(2));
             biela2DObj.theta = atan(biela2DObj.dy/biela2DObj.dx);
             
             biela2DObj.L = sqrt(biela2DObj.dx^2+biela2DObj.dy^2);
             biela2DObj.TcargaReacc = [0, 0, 0, 0]';
             
             % Agrega el elemento a los nodos
-            for i=1:2
+            for i = 1:2
                 bielas2DObj.nodosObj{i}.agregarElementos(biela2DObj);
             end
             
@@ -119,7 +119,7 @@ classdef Biela2D < Elemento
             % obtenerNumeroNodos: Obtiene el numero de nodos
             %
             % numeroNodos = obtenerNumeroNodos(biela2DObj)
-
+            
             numeroNodos = 2;
             
         end % obtenerNumeroNodos function
@@ -128,7 +128,7 @@ classdef Biela2D < Elemento
             % obtenerNodos: Obtiene los nodos de la biela
             %
             % nodosBiela = obtenerNodos(biela2DObj)
-
+            
             nodosBiela = biela2DObj.nodosObj;
             
         end % obtenerNodos function
@@ -137,7 +137,7 @@ classdef Biela2D < Elemento
             % obtenerNumeroGDL: Obtiene el numero de GDL de la biela
             %
             % numeroGDL = obtenerNumeroGDL(biela2DObj)
-
+            
             numeroGDL = 4;
             
         end % obtenerNumeroGDL function
@@ -146,7 +146,7 @@ classdef Biela2D < Elemento
             % obtenerGDLID: Obtiene los GDLID de la biela
             %
             % gdlIDBiela = obtenerGDLID(biela2DObj)
-
+            
             gdlIDBiela = biela2DObj.gdlID;
             
         end % gdlIDBiela function
@@ -164,7 +164,7 @@ classdef Biela2D < Elemento
             % obtenerAngulo: Obtiene el angulo de inclinacion de la biela
             %
             % theta = obtenerAngulo(biela2DObj)
-
+            
             theta = biela2DObj.theta;
             
         end % obtenerAngulo function
@@ -197,7 +197,7 @@ classdef Biela2D < Elemento
             % en coordenadas locales
             %
             % k_local = obtenerMatrizRigidezCoordLocal(biela2DObj)
-
+            
             % Genera matriz
             k_local = [1, 0, -1, 0; 0, 0, 0, 0; -1, 0, 1, 0; 0, 0, 0, 0];
             

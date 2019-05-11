@@ -34,29 +34,39 @@
 %       sol_v
 %       sol_a
 %       cargaActiva
+%       cRayleigh
+%       usoDisipador
+%       desModal
+%       factorCargaMasa
+%       factorUnidadMasa
+%       nodosCarga
 %  Properties(Access=public):
 %       tAnalisis
 %       dt
 %  Methods:
-%       cargaObj = Carga(etiquetaCarga)
-%       aplicarCarga(cargaObj)
-%       disp(cargaObj)
-%       guardarCarga(cargaObj,p)
-%       guardarDesplazamiento(cargaObj,u)
-%       guardarVelocidad(cargaObj,v)
-%       guardarAceleracion(cargaObj,a)
+%       cargaDinamicaObj = Carga(etiquetaCarga)
+%       aplicarCarga(cargaDinamicaObj)
+%       disp(cargaDinamicaObj)
+%       guardarCarga(cargaDinamicaObj,p)
+%       guardarDesplazamiento(cargaDinamicaObj,u)
+%       guardarVelocidad(cargaDinamicaObj,v)
+%       guardarAceleracion(cargaDinamicaObj,a)
 %       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
 %       usoDisipadores(cargaDinamicaObj,disipador)
 %       descomposicionModal(cargaDinamicaObj,desmodal)
 %       t = obtenerVectorTiempo(cargaDinamicaObj)
-%       p = obtenerCarga(cargaObj)
-%       u = obtenerDesplazamiento(cargaObj)
-%       u = obtenerDesplazamientoTiempo(cargaObj,gdl,tiempo)
-%       v = obtenerVelocidad(cargaObj)
-%       a = obtenerAceleracion(cargaObj)
+%       p = obtenerCarga(cargaDinamicaObj)
+%       u = obtenerDesplazamiento(cargaDinamicaObj)
+%       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
+%       v = obtenerVelocidad(cargaDinamicaObj)
+%       a = obtenerAceleracion(cargaDinamicaObj)
 %       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
 %       dm = usoDescomposicionModal(cargaDinamicaObj)
 %       disipador = usoDeDisipadores(cargaDinamicaObj)
+%       masa = obtenerMasa(cargaDinamicaObj)
+%       definirFactorUnidadMasa(cargaDinamicaObj,factor)
+%       definirFactorCargaMasa(cargaDinamicaObj,factor)
+%       nodos = obtenerNodos(cargaDinamicaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -72,6 +82,9 @@ classdef CargaDinamica < ComponenteModelo
         cRayleigh % Indica que la carga se calculo con C de Rayleigh
         usoDisipador % Indica que se usaron disipadores
         desModal % Indica que la carga se calculo usando descomposicion modal
+        factorCargaMasa % Factor de masa de la carga
+        factorUnidadMasa % Factor unidad de la masa
+        nodosCarga % Nodos que participan en la carga
     end % properties CargaDinamica
     
     properties(Access = public)
@@ -312,6 +325,40 @@ classdef CargaDinamica < ComponenteModelo
             % No usar dispMetodoTEFAME()
             
         end % disp function
+        
+        function masa = obtenerMasa(cargaDinamicaObj)
+            % obtenerMasa: Obtiene la masa de la carga
+            %
+            % masa = obtenerMasa(cargaDinamicaObj)
+            
+            masa = [] .* (cargaDinamicaObj.factorCargaMasa * cargaDinamicaObj.factorUnidadMasa);
+            
+        end % obtenerMasa function
+        
+        function definirFactorUnidadMasa(cargaDinamicaObj, factor)
+            % definirFactorUnidadMasa: Define el factor de conversion de
+            % unidades de la carga a unidades de masa
+            
+            cargaDinamicaObj.factorUnidadMasa = factor;
+            
+        end % definirFactorUnidadMasa function
+        
+        function definirFactorCargaMasa(cargaDinamicaObj, factor)
+            % definirFactorCargaMasa: Define cuanto porcentaje de la carga
+            % se convierte en masa
+            
+            cargaDinamicaObj.factorCargaMasa = factor;
+            
+        end % definirFactorCargaMasa function
+        
+        function nodos = obtenerNodos(cargaDinamicaObj)
+            % obtenerNodos: Retorna los nodos de la carga
+            %
+            % nodos = obtenerNodos(cargaDinamicaObj)
+            
+            nodos = cargaDinamicaObj.nodosCarga;
+            
+        end % obtenerNodos function
         
     end % methods CargaDinamica
     

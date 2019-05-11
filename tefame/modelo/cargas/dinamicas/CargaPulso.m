@@ -34,7 +34,30 @@
 %       CargaPulso(etiquetaCargaPulso,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(CargaPulsoObj,factorDeCarga)
 %       disp(CargaPulsoObj)
-%  Methods SuperClass (Carga):
+%  Methods SuperClass (CargaDinamica):
+%       cargaPulsoObj = Carga(etiquetaCarga)
+%       aplicarCarga(cargaPulsoObj)
+%       disp(cargaPulsoObj)
+%       guardarCarga(cargaPulsoObj,p)
+%       guardarDesplazamiento(cargaPulsoObj,u)
+%       guardarVelocidad(cargaPulsoObj,v)
+%       guardarAceleracion(cargaPulsoObj,a)
+%       amortiguamientoRayleigh(cargaPulsoObj,rayleigh)
+%       usoDisipadores(cargaPulsoObj,disipador)
+%       descomposicionModal(cargaPulsoObj,desmodal)
+%       t = obtenerVectorTiempo(cargaPulsoObj)
+%       p = obtenerCarga(cargaPulsoObj)
+%       u = obtenerDesplazamiento(cargaPulsoObj)
+%       u = obtenerDesplazamientoTiempo(cargaPulsoObj,gdl,tiempo)
+%       v = obtenerVelocidad(cargaPulsoObj)
+%       a = obtenerAceleracion(cargaPulsoObj)
+%       r = usoAmortiguamientoRayleigh(cargaPulsoObj)
+%       dm = usoDescomposicionModal(cargaPulsoObj)
+%       disipador = usoDeDisipadores(cargaPulsoObj)
+%       masa = obtenerMasa(cargaPulsoObj)
+%       definirFactorUnidadMasa(cargaPulsoObj,factor)
+%       definirFactorCargaMasa(cargaPulsoObj,factor)
+%       nodos = obtenerNodos(cargaPulsoObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -52,10 +75,10 @@ classdef CargaPulso < CargaDinamica
     
     methods
         
-        function CargaPulsoObj = CargaPulso(etiquetaCargaPulso, nodo, direccion, amplitud, tpulso, dt, tInicio, tAnalisis)
+        function cargaPulsoObj = CargaPulso(etiquetaCargaPulso, nodo, direccion, amplitud, tpulso, dt, tInicio, tAnalisis)
             % CargaPulso: es el constructor de la clase CargaPulso
             %
-            % CargaPulsoObj=CargaPulso(etiquetaCargaPulso,nodo,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)
+            % cargaPulsoObj=CargaPulso(etiquetaCargaPulso,nodo,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)
             %
             % Crea una carga tipo pulso
             
@@ -64,7 +87,7 @@ classdef CargaPulso < CargaDinamica
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            CargaPulsoObj = CargaPulsoObj@CargaDinamica(etiquetaCargaPulso);
+            cargaPulsoObj = cargaPulsoObj@CargaDinamica(etiquetaCargaPulso);
             
             % Verifica que tenga sentido la direccion
             if ~verificarVectorDireccion(direccion, nodo.obtenerNumeroGDL())
@@ -77,12 +100,13 @@ classdef CargaPulso < CargaDinamica
             end
             
             % Guarda el registro
-            CargaPulsoObj.tpulso = tpulso;
-            CargaPulsoObj.amplitud = amplitud;
-            CargaPulsoObj.direccion = direccion;
-            CargaPulsoObj.tAnalisis = tAnalisis;
-            CargaPulsoObj.dt = dt;
-            CargaPulsoObj.nodo = nodo; % Objeto del nodo donde se aplica la carga
+            cargaPulsoObj.tpulso = tpulso;
+            cargaPulsoObj.amplitud = amplitud;
+            cargaPulsoObj.direccion = direccion;
+            cargaPulsoObj.tAnalisis = tAnalisis;
+            cargaPulsoObj.dt = dt;
+            cargaPulsoObj.nodo = nodo; % Objeto del nodo donde se aplica la carga
+            cargaPulsoObj.nodosCarga = {nodo};
             
         end % CargaPulso constructor
         

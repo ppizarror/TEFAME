@@ -38,6 +38,9 @@
 %       aplicarCarga(cargaObj)
 %       disp(cargaObj)
 %       masa = obtenerMasa(cargaObj)
+%       definirFactorUnidadMasa(cargaObj,factor)
+%       definirFactorCargaMasa(cargaObj,factor)
+%       nodos = obtenerNodos(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -50,6 +53,7 @@ classdef CargaEstatica < ComponenteModelo
     properties(Access = protected)
         factorCargaMasa % Factor de masa de la carga
         factorUnidadMasa % Factor unidad de la masa
+        nodosCarga % Nodos que comparten la carga
     end
     
     methods
@@ -100,7 +104,7 @@ classdef CargaEstatica < ComponenteModelo
             %
             % masa = obtenerMasa(cargaObj)
             
-            masa = [] .* cargaObj.factorCargaMasa;
+            masa = [] .* (cargaObj.factorCargaMasa * cargaObj.factorUnidadMasa);
             
         end % obtenerMasa function
         
@@ -111,6 +115,23 @@ classdef CargaEstatica < ComponenteModelo
             cargaObj.factorUnidadMasa = factor;
             
         end % definirFactorUnidadMasa function
+        
+        function definirFactorCargaMasa(cargaObj, factor)
+            % definirFactorCargaMasa: Define cuanto porcentaje de la carga
+            % se convierte en masa
+            
+            cargaObj.factorCargaMasa = factor;
+            
+        end % definirFactorCargaMasa function
+        
+        function nodos = obtenerNodos(cargaObj)
+            % obtenerNodos: Retorna los nodos de la carga
+            %
+            % nodos = obtenerNodos(cargaObj)
+            
+            nodos = cargaObj.nodosCarga;
+            
+        end % obtenerNodos function
         
     end % methods CargaEstatica
     

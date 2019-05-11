@@ -55,7 +55,6 @@
 %       numGDL = obtenerNumerosGDL(modeloObj)
 %       inicializar(modeloObj)
 %       aplicarRestricciones(modeloObj)
-%       aplicarPatronesDeCargas(modeloObj)
 %       actualizar(modeloObj,u)
 %       guardarResultados(modeloObj,nombreArchivo)
 %       disp(modeloObj)
@@ -170,7 +169,7 @@ classdef Modelo < handle
             % Agrega el arreglo con los elementos (arregloDisipadores) al modelo
             % (modeloObj) para que esto lo guarde y tenga acceso a los
             % disipadores
-                                 
+            
             for i = 1:length(arregloDisipadores)
                 if ~isa(arregloDisipadores{i}, 'Disipador')
                     error('Elemento %d del arreglo de disipadores no es un disipador', i);
@@ -319,11 +318,11 @@ classdef Modelo < handle
             for i = 1:length(modeloObj.nodos)
                 modeloObj.nodos{i}.inicializar()
             end % for i
-
+            
             for i = 1:length(modeloObj.elementos)
                 modeloObj.elementos{i}.inicializar()
             end % for i
-
+            
             for i = 1:length(modeloObj.disipadores)
                 modeloObj.disipadores{i}.inicializar()
             end % for i
@@ -344,20 +343,21 @@ classdef Modelo < handle
             
         end % aplicarRestricciones function
         
-        function aplicarPatronesDeCargasEstatico(modeloObj)
+        function aplicarPatronesDeCargasEstatico(modeloObj, factor)
             % aplicarPatronesDeCargas: es un metodo de la clase Modelo que se usa
             % para aplicar las patrones de cargas en el Modelo
             %
-            % aplicarPatronesDeCargasEstatico(modeloObj)
+            % aplicarPatronesDeCargasEstatico(modeloObj,factor)
             %
             % Aplica los patrones de cargas que estan guardados en el Modelo
             % (modeloObj), es decir, aplica las cargas sobre los nodos y
             % elementos
             
             fprintf('\tAplica patron de cargas estatico\n');
+            fprintf('\t\tFactor: %f\n', factor);
             for i = 1:length(modeloObj.patronesDeCargas)
                 if ~modeloObj.patronesDeCargas{i}.patronDinamico()
-                    modeloObj.patronesDeCargas{i}.aplicarCargas();
+                    modeloObj.patronesDeCargas{i}.aplicarCargas(factor);
                 end
             end % for i
             
@@ -365,13 +365,13 @@ classdef Modelo < handle
         
         function aplicarPatronesDeCargasDinamico(modeloObj, cpenzien, disipadores, cargaDisipador, ...
                 betaObjetivo, arregloDisipadores, iterDisipador, tolIterDisipador, ...
-                betaGrafico)
+                betaGrafico, factor)
             % aplicarPatronesDeCargasDinamico: es un metodo de la clase Modelo que se usa
             % para aplicar las patrones de cargas en el Modelo
             %
             % aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,
             %   betaObjetivo,arregloDisipadores,iterDisipador,tolIterDisipador,
-            %   betaGrafico)
+            %   betaGrafico,factor)
             %
             % Aplica los patrones de cargas que estan guardados en el Modelo
             % (modeloObj), es decir, aplica las cargas sobre los nodos y
@@ -380,12 +380,13 @@ classdef Modelo < handle
             % Rayleigh y si se usan disipadores o no en el calculo
             
             fprintf('\tAplica patron de cargas dinamico\n');
+            fprintf('\t\tFactor: %f\n', factor);
             for i = 1:length(modeloObj.patronesDeCargas)
                 if modeloObj.patronesDeCargas{i}.patronDinamico()
                     modeloObj.patronesDeCargas{i}.aplicarCargas(cpenzien, ...
                         disipadores, cargaDisipador, betaObjetivo, ...
                         arregloDisipadores, iterDisipador, tolIterDisipador, ...
-                        betaGrafico);
+                        betaGrafico, factor);
                 end
             end % for i
             

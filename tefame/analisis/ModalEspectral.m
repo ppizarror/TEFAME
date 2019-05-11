@@ -163,6 +163,7 @@ classdef ModalEspectral < handle
             %   'condensar'         Aplica condensacion (true por defecto)
             %   'valvecAlgoritmo'   'eigvc','itDir','matBarr','itInv','itInvDesp','itSubesp'
             %   'valvecTolerancia'  Tolerancia calculo valores y vectores propios
+            %   'factorCargaE'      Factor de cargas estaticas
             
             % Define parametros
             p = inputParser;
@@ -176,6 +177,7 @@ classdef ModalEspectral < handle
             addOptional(p, 'condensar', true);
             addOptional(p, 'valvecAlgoritmo', 'eigs');
             addOptional(p, 'valvecTolerancia', 0.001);
+            addOptional(p, 'factorCargaE', 1);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -243,7 +245,7 @@ classdef ModalEspectral < handle
             analisisObj.definirNumeracionGDL();
             
             % Se aplica patron de carga
-            analisisObj.modeloObj.aplicarPatronesDeCargasEstatico();
+            analisisObj.modeloObj.aplicarPatronesDeCargasEstatico(r.factorCargaE);
             
             % Se calcula la matriz de rigidez
             analisisObj.ensamblarMatrizRigidez();
@@ -282,6 +284,7 @@ classdef ModalEspectral < handle
             %   'iterDisipador'     Numero de iteraciones para el calculo de disipadores
             %   'tolIterDisipador'  Tolerancia usada para las iteraciones del calculo de disipadores
             %   'activado'          Indica que se realiza el analisi
+            %   'factorCargasD'     Factor de cargas dinamico
             
             if ~analisisObj.analisisFinalizado
                 error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
@@ -297,6 +300,7 @@ classdef ModalEspectral < handle
             addOptional(p, 'iterDisipador', 10);
             addOptional(p, 'tolIterDisipador', 0.001);
             addOptional(p, 'activado', true);
+            addOptional(p, 'factorCargasD', 1);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -319,7 +323,8 @@ classdef ModalEspectral < handle
             fprintf('Metodo modal espectral:\n');
             analisisObj.modeloObj.aplicarPatronesDeCargasDinamico(r.cpenzien, r.disipadores, ...
                 r.cargaDisipador, r.betaObjetivo, analisisObj.modeloObj.obtenerDisipadores(), ...
-                r.iterDisipador, r.tolIterDisipador, r.betaGrafico);
+                r.iterDisipador, r.tolIterDisipador, r.betaGrafico, ...
+                r.factorCargasD);
             
         end % resolverCargasDinamicas function
         
@@ -2109,7 +2114,7 @@ classdef ModalEspectral < handle
                 
                 MtotalRed = sum(diag(Meq));
                 fprintf('\t\tTras la condensacion la masa se redujo en %.2f (%.2f%%)\n', ...
-                    analisisObj.Mtotal-MtotalRed, 100*(analisisObj.Mtotal-MtotalRed)/analisisObj.Mtotal);
+                    analisisObj.Mtotal-MtotalRed, 100*(analisisObj.Mtotal - MtotalRed)/analisisObj.Mtotal);
                 
             else % No condensa grados
                 

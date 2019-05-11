@@ -41,6 +41,9 @@
 %       disp(cargaNodoObj)
 %  Methods SuperClass (CargaEstatica):
 %       masa = obtenerMasa(cargaObj)
+%       definirFactorUnidadMasa(cargaObj,factor)
+%       definirFactorCargaMasa(cargaObj,factor)
+%       nodos = obtenerNodos(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -48,7 +51,7 @@
 classdef CargaNodo < CargaEstatica
     
     properties(Access = private)
-        nodoObj     % Variable que guarda el Nodo que se le va a aplicar la carga
+        nodoObj % Variable que guarda el Nodo que se le va a aplicar la carga
         vectorCarga % Variable que guarda el vector de cargas a aplicar
     end % properties CargaNodo
     
@@ -73,7 +76,9 @@ classdef CargaNodo < CargaEstatica
             % CargaEstatica
             cargaNodoObj = cargaNodoObj@CargaEstatica(etiquetaCargaNodo);
             
+            % Guarda objetos
             cargaNodoObj.nodoObj = nodoObjeto;
+            cargaNodoObj.nodosCarga = {nodoObjeto};
             
             if size(cargaNodo, 1) == 1
                 cargaNodoObj.vectorCarga = cargaNodo';
@@ -82,6 +87,15 @@ classdef CargaNodo < CargaEstatica
             end % if
             
         end % CargaNodo constructor
+        
+        function masa = obtenerMasa(cargaNodoObj)
+            % obtenerMasa: Obtiene la masa asociada a la carga
+            %
+            % masa = obtenerMasa(cargaNodoObj)
+            
+            masa = sum(cargaNodoObj.vectorCarga) .* (cargaDinamicaObj.factorCargaMasa * cargaDinamicaObj.factorUnidadMasa);
+            
+        end % obtenerMasa function
         
         function aplicarCarga(cargaNodoObj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaNodo que se usa para aplicar
@@ -109,7 +123,7 @@ classdef CargaNodo < CargaEstatica
             
             numGDL = length(cargaNodoObj.cargas);
             cargaNodo = arrayNum2str(cargaNodoObj.cargas, numGDL);
-            fprintf('Cargas: %s\n', [cargaNodo{:}]);    
+            fprintf('Cargas: %s\n', [cargaNodo{:}]);
             dispMetodoTEFAME();
             
         end % disp function

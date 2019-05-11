@@ -79,17 +79,17 @@ classdef PatronDeCargasConstante < PatronDeCargas
             
         end % PatronDeCargasConstante constructor
         
-        function aplicarCargas(patronDeCargasObj)
+        function aplicarCargas(patronDeCargasObj, factor)
             % aplicarCargas: es un metodo de la clase PatronDeCargasConstante que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj)
+            % aplicarCargas(patronDeCargasObj, factor)
             %
             % Aplica las cargas que estan guardadas en el PatronDeCargasConstante
             % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
             % y elementos
             
-            % Se aplica la carga con un factor de carga = 1
+            % Se aplica la carga con un factor de carga
             for i = 1:length(patronDeCargasObj.cargas)
                 
                 % Chequea que la carga sea estatica
@@ -97,7 +97,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
                     error('PatronDeCargasConstante solo puede resolver cargas estaticas');
                 end
                 
-                patronDeCargasObj.cargas{i}.aplicarCarga(1);
+                patronDeCargasObj.cargas{i}.aplicarCarga(factor);
 
             end % for i
             

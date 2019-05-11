@@ -34,7 +34,30 @@
 %       CargaSinusoidal(etiquetaCargaSinusoidal,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(CargaSinusoidalObj,factorDeCarga)
 %       disp(CargaSinusoidalObj)
-%  Methods SuperClass (Carga):
+%  Methods SuperClass (CargaDinamica):
+%       cargaSinusoidalObj = Carga(etiquetaCarga)
+%       aplicarCarga(cargaSinusoidalObj)
+%       disp(cargaSinusoidalObj)
+%       guardarCarga(cargaSinusoidalObj,p)
+%       guardarDesplazamiento(cargaSinusoidalObj,u)
+%       guardarVelocidad(cargaSinusoidalObj,v)
+%       guardarAceleracion(cargaSinusoidalObj,a)
+%       amortiguamientoRayleigh(cargaSinusoidalObj,rayleigh)
+%       usoDisipadores(cargaSinusoidalObj,disipador)
+%       descomposicionModal(cargaSinusoidalObj,desmodal)
+%       t = obtenerVectorTiempo(cargaSinusoidalObj)
+%       p = obtenerCarga(cargaSinusoidalObj)
+%       u = obtenerDesplazamiento(cargaSinusoidalObj)
+%       u = obtenerDesplazamientoTiempo(cargaSinusoidalObj,gdl,tiempo)
+%       v = obtenerVelocidad(cargaSinusoidalObj)
+%       a = obtenerAceleracion(cargaSinusoidalObj)
+%       r = usoAmortiguamientoRayleigh(cargaSinusoidalObj)
+%       dm = usoDescomposicionModal(cargaSinusoidalObj)
+%       disipador = usoDeDisipadores(cargaSinusoidalObj)
+%       masa = obtenerMasa(cargaSinusoidalObj)
+%       definirFactorUnidadMasa(cargaSinusoidalObj,factor)
+%       definirFactorCargaMasa(cargaSinusoidalObj,factor)
+%       nodos = obtenerNodos(cargaSinusoidalObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -52,10 +75,10 @@ classdef CargaSinusoidal < CargaDinamica
     
     methods
         
-        function CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tInicio,tAnalisis)
+        function cargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tInicio, tAnalisis)
             % CargaSinusoidal: es el constructor de la clase CargaSinusoidal
             %
-            % CargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,nodo,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)
+            % cargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,nodo,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)
             %
             % Crea una carga del tipo sinusoidal
             
@@ -64,7 +87,7 @@ classdef CargaSinusoidal < CargaDinamica
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            CargaSinusoidalObj = CargaSinusoidalObj@CargaDinamica(etiquetaCargaSinusoidal);
+            cargaSinusoidalObj = cargaSinusoidalObj@CargaDinamica(etiquetaCargaSinusoidal);
             
             % Verifica que tenga sentido la direccion
             if ~verificarVectorDireccion(direccion, nodo.obtenerNumeroGDL())
@@ -77,14 +100,15 @@ classdef CargaSinusoidal < CargaDinamica
             end
             
             % Guarda los parametros de la carga
-            CargaSinusoidalObj.w = w;
-            CargaSinusoidalObj.amplitud = amplitud;
-            CargaSinusoidalObj.direccion = direccion;
-            CargaSinusoidalObj.tOscilacion = tOscilacion;
-            CargaSinusoidalObj.tAnalisis = tAnalisis;
-            CargaSinusoidalObj.tInicio = tInicio;
-            CargaSinusoidalObj.dt = dt;
-            CargaSinusoidalObj.nodo = nodo; % Nodo al que se le aplica la carga
+            cargaSinusoidalObj.w = w;
+            cargaSinusoidalObj.amplitud = amplitud;
+            cargaSinusoidalObj.direccion = direccion;
+            cargaSinusoidalObj.tOscilacion = tOscilacion;
+            cargaSinusoidalObj.tAnalisis = tAnalisis;
+            cargaSinusoidalObj.tInicio = tInicio;
+            cargaSinusoidalObj.dt = dt;
+            cargaSinusoidalObj.nodo = nodo; % Nodo al que se le aplica la carga
+            cargaSinusoidalObj.nodosCarga = {nodo};
             
         end % CargaSinusoidal constructor
         

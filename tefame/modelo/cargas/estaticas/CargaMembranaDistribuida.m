@@ -44,8 +44,11 @@
 %       cargaMembranaDistribuidaObj = CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
 %       aplicarCarga(cargaMembranaDistribuidaObj,factorDeCarga)
 %       disp(cargaMembranaDistribuidaObj)
-%  Methods SuperClass (Carga):
+%  Methods SuperClass (CargaEstatica):
 %       masa = obtenerMasa(cargaObj)
+%       definirFactorUnidadMasa(cargaObj,factor)
+%       definirFactorCargaMasa(cargaObj,factor)
+%       nodos = obtenerNodos(cargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -138,6 +141,8 @@ classdef CargaMembranaDistribuida < CargaEstatica
             cargaMembranaDistribuidaObj.carga2 = carga2;
             cargaMembranaDistribuidaObj.dist2 = distancia2 * largo;
             cargaMembranaDistribuidaObj.nodo2 = nodo2;
+            
+            cargaMembranaDistribuidaObj.nodosCarga = {nodo1, nodo2};
             
         end % CargaMembranaDistribuida constructor
         
