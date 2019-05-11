@@ -793,6 +793,9 @@ classdef ModalEspectral < handle
             %
             % calcularDesplazamientoDrift(analisisObj,carga,xanalisis)
             
+            % Inicia proceso
+            tinicial = cputime;
+            
             % Verifica que la carga se haya calculado
             if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
                 error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
@@ -802,10 +805,8 @@ classdef ModalEspectral < handle
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
             
-            ctitle = 'Carga';
-            if ~isa(carga, 'CargaDinamica')
-                ctitle = 'Combinacion';
-            end
+            fprintf('Calculando desplazamiento y drift:\n');
+            ctitle = analisisObj.imprimirPropiedadesAnalisisCarga(carga);
             
             % Se genera vector en que las filas contienen nodos en un mismo piso,
             % rellenando con ceros la matriz en caso de diferencia de nodos por piso.
@@ -905,6 +906,11 @@ classdef ModalEspectral < handle
             ylabel('Altura (m)');
             title(fig_title);
             
+            % Finaliza proceso
+            drawnow();
+            fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            dispMetodoTEFAME();
+            
         end % calcularDesplazamientoDrift function
         
         function calcularMomentoCorteBasal(analisisObj, carga, varargin)
@@ -920,7 +926,7 @@ classdef ModalEspectral < handle
             
             % Inicia proceso
             tinicial = cputime;
-            fprintf('Calculando grafico momento corte basal');
+            fprintf('Calculando grafico momento corte basal:\n');
             
             % Rescata parametros
             p = inputParser;
@@ -945,7 +951,7 @@ classdef ModalEspectral < handle
             if isempty(acel)
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
-            ctitle = imprimirPropiedadesAnalisisCarga(carga);
+            ctitle = analisisObj.imprimirPropiedadesAnalisisCarga(carga);
             
             % Verifica que envmodo sea correcto
             [~, lphi] = size(analisisObj.phin);
@@ -1042,6 +1048,11 @@ classdef ModalEspectral < handle
                     'corte, momento, envcorte, envmomento');
             end
             
+            % Finaliza proceso
+            drawnow();
+            fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            dispMetodoTEFAME();
+            
         end % calcularMomentoCorteBasal function
         
         function calcularCurvasEnergia(analisisObj, carga, varargin)
@@ -1094,8 +1105,8 @@ classdef ModalEspectral < handle
             end
             
             % Realiza calculos de energia
-            fprintf('Calculando curvas de energia\n');
-            ctitle = imprimirPropiedadesAnalisisCarga(carga);
+            fprintf('Calculando curvas de energia:\n');
+            ctitle = analisisObj.imprimirPropiedadesAnalisisCarga(carga);
             
             % Obtiene las matrices
             k = analisisObj.obtenerMatrizRigidez();
@@ -1454,17 +1465,8 @@ classdef ModalEspectral < handle
             end
             
             if dispinfo
-                fprintf('Calculando energia elastica por cada modo, Carga %s\n', carga.obtenerEtiqueta());
-                if carga.usoAmortiguamientoRayleigh()
-                    fprintf('\tLa carga se calculo con amortiguamiento Rayleigh\n');
-                else
-                    fprintf('\tLa carga se calculo con amortiguamiento de Wilson-Penzien\n');
-                end
-                if carga.usoDescomposicionModal()
-                    fprintf('\tLa carga se calculo usando descomposicion modal\n');
-                else
-                    fprintf('\tLa carga se calculo sin usar descomposicion modal\n');
-                end
+                fprintf('\tCalculando energia elastica por cada modo:\n');
+                analisisObj.imprimirPropiedadesAnalisisCarga(carga);
             end
             
             % Obtiene las matrices
@@ -1506,13 +1508,16 @@ classdef ModalEspectral < handle
             
         end % calcularModosEnergia function
         
-        function plotEsfuerzosElemento(analisisObj, carga, elemento, direccion, varargin) %#ok<INUSL>
+        function plotEsfuerzosElemento(analisisObj, carga, elemento, direccion, varargin)
             % plotEsfuerzosElemento: Grafica los esfuerzos de un elemento
             %
             % plotEsfuerzosElemento(analisisObj,carga,elemento,direccion,varargin)
             %
             % Parametros opcionales:
             %   'tlim'      Tiempo de analisis limite
+            
+            % Inicia el proceso
+            tinicial = cputime;
             
             % Recorre parametros opcionales
             p = inputParser;
@@ -1531,13 +1536,14 @@ classdef ModalEspectral < handle
             if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
                 error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
             end
-            ctitle = 'Carga';
-            if isa(carga, 'CombinacionCargas')
-                ctitle = 'Combinacion';
-            end
             if isempty(u_c)
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
+            
+            % Realiza calculos de esfuerzo
+            fprintf('Calculando esfuerzos elemento:\n');
+            fprintf('\tElemento %s\n', elemento.obtenerEtiqueta());
+            ctitle = analisisObj.imprimirPropiedadesAnalisisCarga(carga);
             
             % Verifica que el elemento este bien definido
             if ~isa(elemento, 'Elemento')
@@ -1636,7 +1642,7 @@ classdef ModalEspectral < handle
             hold on;
             
             % Grafica el maximo
-            drawVyline(esf(maxp), 'k--', 1.25);
+            drawVyLine(esf(maxp), 'k--', 1.25);
             xlim(tlim);
             grid on;
             title(fig_title);
@@ -1645,16 +1651,23 @@ classdef ModalEspectral < handle
                 sprintf('Esfuerzo maximo: %.2f (%s)', esf(maxp), diru)}, ...
                 'location', 'southeast');
             
+            % Finaliza proceso
+            fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            dispMetodoTEFAME();
+            
         end % plotEsfuerzosElemento function
         
-        function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, varargin) %#ok<INUSL>
+        function plotTrayectoriaNodo(analisisObj, carga, nodo, direccion, varargin)
             % plotTrayectoriaNodo: Grafica la trayectoria de un nodo
             % (desplazamiento, velocidad y aceleracion) para todo el tiempo
             %
-            % plotTrayectoriaNodo(analisisObj,carga,nodo,direccion,tlim)
+            % plotTrayectoriaNodo(analisisObj,carga,nodo,direccion,varargin)
             %
             % Parametros opcionales:
             %   'tlim'      Tiempo de analisis limite
+            
+            % Inicia proceso
+            tinicial = cputime;
             
             % Verifica que la direccion sea correcta
             if sum(direccion) ~= 1
@@ -1684,13 +1697,13 @@ classdef ModalEspectral < handle
             if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
                 error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
             end
-            ctitle = 'Carga';
-            if isa(carga, 'CombinacionCargas')
-                ctitle = 'Combinacion';
-            end
             if isempty(a_c)
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
+            
+            fprintf('Calculando trayectoria nodo:\n');
+            fprintf('\tNodo %s\n', nodo.obtenerEtiqueta());
+            ctitle = analisisObj.imprimirPropiedadesAnalisisCarga(carga);
             
             % Elige al nodo
             [r, ~] = size(a_c);
@@ -1755,6 +1768,10 @@ classdef ModalEspectral < handle
             xlabel('t (s)');
             xlim(tlim);
             grid on;
+            
+            % Finaliza proceso
+            fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            dispMetodoTEFAME();
             
         end % plotTrayectoriaNodo function
         
@@ -2379,7 +2396,7 @@ classdef ModalEspectral < handle
                 ngdl = elementoObjetos{i}.obtenerNumeroGDL;
                 
                 % Se obtiene la matriz de masa
-                m_elem = elementoObjetos{i}.obtenerMatrizMasa();
+                m_elem = elementoObjetos{i}.obtenerVectorMasa();
                 
                 % Se calcula el metodo indicial
                 for r = 1:ngdl

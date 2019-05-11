@@ -269,7 +269,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         set(gca, 'XTick', betaxticks);
                         if betaObjetivo > 0
                             hold on;
-                            drawVyline(betaObjetivo, 'b--', 1.2);
+                            drawVyLine(betaObjetivo, 'b--', 1.2);
                             legend({'Variacion amortiguamiento', sprintf('Amortiguamiento objetivo: %.3f', ...
                                 betaObjetivo)}, 'location', 'southeast');
                         end

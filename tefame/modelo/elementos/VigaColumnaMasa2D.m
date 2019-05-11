@@ -46,7 +46,7 @@
 %       gdlIDBiela = obtenerGDLID(vigaColumnaMasa2DObj)
 %       k_global = obtenerMatrizRigidezCoordGlobal(vigaColumnaMasa2DObj)
 %       k_local = obtenerMatrizRigidezCoordLocal(vigaColumnaMasa2DObj)
-%       m_masa = obtenerMatrizMasa(vigaColumnaMasa2DObj)
+%       m_masa = obtenerVectorMasa(vigaColumnaMasa2DObj)
 %       m = obtenerMasa(vigaColumnaMasa2DObj)
 %       fr_global = obtenerFuerzaResistenteCoordGlobal(vigaColumnaMasa2DObj)
 %       fr_local = obtenerFuerzaResistenteCoordLocal(vigaColumnaMasa2DObj)
@@ -83,7 +83,7 @@ classdef VigaColumnaMasa2D < Elemento
     
     methods
         
-        function vigaColumnaMasa2DObj = VigaColumnaMasa2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, Amaterial, Densidad)
+        function vigaColumnaMasa2DObj = VigaColumnaMasa2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, Amaterial, densidad)
             
             % Completa con ceros si no hay argumentos
             if nargin == 0
@@ -98,7 +98,7 @@ classdef VigaColumnaMasa2D < Elemento
             vigaColumnaMasa2DObj.Ao = Amaterial;
             vigaColumnaMasa2DObj.Eo = Ematerial;
             vigaColumnaMasa2DObj.Io = Imaterial;
-            vigaColumnaMasa2DObj.rho = Densidad;
+            vigaColumnaMasa2DObj.rho = densidad;
             vigaColumnaMasa2DObj.gdlID = [];
             
             % Calcula componentes geometricas
@@ -202,7 +202,7 @@ classdef VigaColumnaMasa2D < Elemento
             
         end % obtenerMatrizRigidezCoordLocal function
         
-        function m_masa = obtenerMatrizMasa(vigaColumnaMasa2DObj)
+        function m_masa = obtenerVectorMasa(vigaColumnaMasa2DObj)
             
             % Retorna la matriz calculada en el constructor
             m_masa = zeros(6, 1);

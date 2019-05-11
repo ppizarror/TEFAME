@@ -1,4 +1,4 @@
-function obj = drawVxline(x, style, lw)
+function obj = drawVxLine(x, style, lw)
 % DRAW VX LINE
 % This function draw a vertical line on x value.
 %

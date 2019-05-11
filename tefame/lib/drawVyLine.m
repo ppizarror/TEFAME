@@ -1,4 +1,4 @@
-function obj = drawVyline(y, style, lw)
+function obj = drawVyLine(y, style, lw)
 % DRAW VX LINE
 % This function draw a horizontal line on y value.
 %
