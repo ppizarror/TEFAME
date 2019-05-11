@@ -37,6 +37,7 @@
 %       dy
 %       L
 %       Feq
+%
 %  Methods:
 %       vigaColumna2DObj = VigaColumna2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial)
 %       numeroNodos = obtenerNumeroNodos(vigaColumna2DObj)
@@ -45,6 +46,8 @@
 %       gdlIDBiela = obtenerGDLID(vigaColumna2DObj)
 %       k_global = obtenerMatrizRigidezCoordGlobal(vigaColumna2DObj)
 %       k_local = obtenerMatrizRigidezCoordLocal(vigaColumna2DObj)
+%       m_masa = obtenerVectorMasa(vigaColumna2DObj)
+%       m = obtenerMasa(vigaColumna2DObj)
 %       fr_global = obtenerFuerzaResistenteCoordGlobal(vigaColumna2DObj)
 %       fr_local = obtenerFuerzaResistenteCoordLocal(vigaColumna2DObj)
 %       l = obtenerLargo(vigaColumna2DObj)
@@ -65,6 +68,7 @@ classdef VigaColumna2D < Elemento
         nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
         Ao % Area de la seccion transversal
+        rho % Densidad
         Eo % Modulo de elasticidad
         Io % Inercia de la seccion
         dx % Distancia en el eje x entre los nodos
@@ -79,7 +83,7 @@ classdef VigaColumna2D < Elemento
     
     methods
         
-        function vigaColumna2DObj = VigaColumna2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, Amaterial)
+        function vigaColumna2DObj = VigaColumna2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, Amaterial, densidad)
             
             % Completa con ceros si no hay argumentos
             if nargin == 0
@@ -94,6 +98,7 @@ classdef VigaColumna2D < Elemento
             vigaColumna2DObj.Ao = Amaterial;
             vigaColumna2DObj.Eo = Ematerial;
             vigaColumna2DObj.Io = Imaterial;
+            vigaColumna2DObj.rho = densidad;
             vigaColumna2DObj.gdlID = [];
             
             % Calcula componentes geometricas
@@ -129,6 +134,10 @@ classdef VigaColumna2D < Elemento
             
             % Fuerza equivalente de la viga
             vigaColumna2DObj.Feq = [0, 0, 0, 0, 0, 0]';
+            
+            % Agrega el elemento a los nodos
+            nodo1Obj.agregarElementos(vigaColumna2DObj);
+            nodo2Obj.agregarElementos(vigaColumna2DObj);
             
             % Otros
             vigaColumna2DObj.PLOTNELEM = 10;
@@ -193,17 +202,45 @@ classdef VigaColumna2D < Elemento
             
         end % obtenerMatrizRigidezCoordLocal function
         
+        function m_masa = obtenerVectorMasa(vigaColumna2DObj)
+            
+            % Retorna la matriz calculada en el constructor
+            m_masa = zeros(6, 1);
+            
+            % Inicializamos la masa de los grados
+            elem_nodo1 = vigaColumna2DObj.nodosObj{1}.obtenerElementos();
+            elem_nodo2 = vigaColumna2DObj.nodosObj{2}.obtenerElementos();
+            
+            % Agrega la tributacion de las masas
+            % 1,4: horizontal | 2,5: vertical | 3,6: giro
+            for i = 1:length(elem_nodo1)
+                m_masa(1) = m_masa(1) + elem_nodo1{i}.obtenerMasa() * 0.5;
+                m_masa(2) = m_masa(2) + elem_nodo1{i}.obtenerMasa() * 0.5;
+                m_masa(3) = m_masa(3) + elem_nodo1{i}.obtenerMasa() * 0.5 * 0.0001;
+                % m_masa(3) = 0;
+            end % for i
+            for i = 1:length(elem_nodo2)
+                m_masa(4) = m_masa(4) + elem_nodo2{i}.obtenerMasa() * 0.5;
+                m_masa(5) = m_masa(5) + elem_nodo2{i}.obtenerMasa() * 0.5;
+                m_masa(6) = m_masa(6) + elem_nodo2{i}.obtenerMasa() * 0.5 * 0.0001;
+                % m_masa(6) = 0;
+            end % for i
+            
+        end % obtenerMatrizMasa function
+        
+        function m = obtenerMasa(vigaColumna2DObj)
+            
+            m = vigaColumna2DObj.rho * vigaColumna2DObj.L * vigaColumna2DObj.Ao;
+            
+        end % obtenerMasa function
+        
         function fr_global = obtenerFuerzaResistenteCoordGlobal(vigaColumna2DObj)
             
             % Obtiene fr local
             fr_local = vigaColumna2DObj.obtenerFuerzaResistenteCoordLocal();
             
             % Resta a fuerza equivalente para obtener la fuerza global
-            fr_local_c = fr_local - vigaColumna2DObj.Feq;
-            
-            % Calcula fuerza resistente global
-            T_theta = vigaColumna2DObj.T;
-            fr_global = T_theta' * fr_local_c;
+            fr_global = vigaColumna2DObj.T' * (fr_local - vigaColumna2DObj.Feq);
             
         end % obtenerFuerzaResistenteCoordGlobal function
         
@@ -232,6 +269,10 @@ classdef VigaColumna2D < Elemento
         end % obtenerFuerzaResistenteCoordLocal function
         
         function definirGDLID(vigaColumna2DObj)
+            % definirGDLID: Define los ID de los grados de libertad de la
+            % viga columna
+            %
+            % definirGDLID(vigaColumna2DObj)
             
             % Se obtienen los nodos extremos
             nodo1 = vigaColumna2DObj.nodosObj{1};
@@ -254,6 +295,9 @@ classdef VigaColumna2D < Elemento
         end % definirGDLID function
         
         function sumarFuerzaEquivalente(vigaColumna2DObj, f)
+            % sumarFuerzaEquivalente: Suma fuerza equivalente a vigas
+            %
+            % sumarFuerzaEquivalente(vigaColumna2DObj,f)
             
             for i = 1:length(f)
                 vigaColumna2DObj.Feq(i) = vigaColumna2DObj.Feq(i) + f(i);
@@ -261,7 +305,21 @@ classdef VigaColumna2D < Elemento
             
         end % sumarFuerzaEquivalente function
         
+        function f = obtenerFuerzaEquivalente(vigaColumna2DObj)
+            % obtenerFuerzaEquivalente: Obtiene la fuerza equivalente de la
+            % viga columna
+            %
+            % f = obtenerFuerzaEquivalente(vigaColumna2DObj)
+            
+            f = vigaColumna2DObj.Feq;
+            
+        end % obtenerFuerzaEquivalente function
+        
         function agregarFuerzaResistenteAReacciones(vigaColumna2DObj)
+            % agregarFuerzaResistenteAReacciones: Agrega fuerza resistente
+            % de la viga a las reacciones
+            %
+            % agregarFuerzaResistenteAReacciones(vigaColumna2DObj)
             
             % Se calcula la fuerza resistente global
             fr_global = vigaColumna2DObj.obtenerFuerzaResistenteCoordGlobal();
@@ -284,14 +342,24 @@ classdef VigaColumna2D < Elemento
         end % agregarFuerzaResistenteAReacciones function
         
         function guardarPropiedades(vigaColumna2DObj, archivoSalidaHandle)
+            % guardarPropiedades: Guarda las propiedades del elemento en un
+            % archivo
+            %
+            % guardarPropiedades(vigaColumna2DObj,archivoSalidaHandle)
             
-            fprintf(archivoSalidaHandle, '\tViga-Columna 2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n', ...
+            fprintf(archivoSalidaHandle, '\tViga-Columna 2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n\t\tDensidad:\t\t\t%s\n', ...
                 vigaColumna2DObj.obtenerEtiqueta(), num2str(vigaColumna2DObj.L), ...
-                num2str(vigaColumna2DObj.Io), num2str(vigaColumna2DObj.Eo), num2str(vigaColumna2DObj.Eo*vigaColumna2DObj.Io));
+                num2str(vigaColumna2DObj.Io), num2str(vigaColumna2DObj.Eo), ...
+                num2str(vigaColumna2DObj.Eo*vigaColumna2DObj.Io), ...
+                num2str(vigaColumna2DObj.rho));
             
         end % guardarPropiedades function
         
         function guardarEsfuerzosInternos(vigaColumna2DObj, archivoSalidaHandle)
+            % guardarEsfuerzosInternos: Guarda los esfuerzos internos del
+            % elemento
+            %
+            % guardarEsfuerzosInternos(vigaColumna2DObj,archivoSalidaHandle)
             
             fr = vigaColumna2DObj.obtenerFuerzaResistenteCoordGlobal();
             n1 = pad(num2str(fr(1), '%.04f'), 10);
@@ -306,71 +374,35 @@ classdef VigaColumna2D < Elemento
             
         end % guardarEsfuerzosInternos function
         
-%         function y = plotVigaDeformar(elementoObj, deformadas) %#ok<INUSL>
-%             % plotVigaDeformar: Evalua si se grafica una viga con
-%             % deformacion
-%             %
-%             % plotVigaDeformar(elementoObj, deformadas)
-%             
-%             y = length(deformadas{1}) == 3;
-%             
-%         end % plotVigaDeformar function
-%         
-%         function N = obtenerVectorN(elementoObj, x, l) %#ok<INUSL>
-%             % obtenerVectorN: Obtiene el vector de transformada N a partir
-%             % de x como porcentaje del largo
-%             
-%             x = x * l;
-%             N = zeros(4, 1);
-%             N(1) = 1 - 3 * (x / l)^2 + 2 * (x / l)^3;
-%             N(2) = x * (1 - x / l)^2;
-%             N(3) = 3 * (x / l)^2 - 2 * (x / l)^3;
-%             N(4) = (x^2 / l) * (x / l - 1);
-%             
-%         end % obtenerVectorN function
-%         
-%        function plot(elementoObj, deformadas, tipoLinea, grosorLinea, defElem)
-%             % plot: Grafica un elemento
-%             %
-%             % plot(elementoObj,deformadas,tipoLinea,grosorLinea,defElem)
-%             
-%             % Obtiene las coordenadas de los objetos
-%             coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
-%             coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
-%             
-%             % Si hay deformacion
-%             if ~isempty(deformadas)
-%                 coord1 = coord1 + deformadas{1}(1:2);
-%                 coord2 = coord2 + deformadas{2}(1:2);
-%                 if defElem && elementoObj.plotVigaDeformar(deformadas) && elementoObj.graficaDeformada
-%                     ndx = abs(coord2(1)-coord1(1));
-%                     ndy = abs(coord2(2)-coord1(2));
-%                     nl = sqrt(ndx^2+ndy^2);
-%                     tht = elementoObj.theta;
-%                     coordx = [coord1(1), deformadas{1}(3), coord2(1), deformadas{2}(3)];
-%                     coordy = [coord1(2), deformadas{1}(3), coord2(2), deformadas{2}(3)];
-%                     coordi = coord1;
-%                     for i = 1:elementoObj.PLOTNELEM
-%                         p = i / elementoObj.PLOTNELEM;
-%                         n = elementoObj.obtenerVectorN(p, nl);
-%                         coordf = [(coord1(1) + ndx * p) * cos(tht) + (coordx * n) * sin(tht), ...
-%                             (coordy * n) * cos(tht) + (coord1(2) + ndy * p) * sin(tht)];
-%                         elementoObj.graficarLinea(coordi, coordf, tipoLinea, grosorLinea);
-%                         coordi = coordf;
-%                     end
-%                     return;
-%                 end
-%             end
-%             
-%             % Grafica en forma lineal
-%             elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
-%             
-%         end % plot function
+        function N = obtenerVectorN(elementoObj, x, l) %#ok<INUSL>
+            % obtenerVectorN: Obtiene el vector de transformada N a partir
+            % de x como porcentaje del largo
+            %
+            % N = obtenerVectorN(elementoObj,x,l)
+            
+            x = x * l;
+            N = zeros(4, 1);
+            N(1) = 1 - 3 * (x / l)^2 + 2 * (x / l)^3;
+            N(2) = x * (1 - x / l)^2;
+            N(3) = 3 * (x / l)^2 - 2 * (x / l)^3;
+            N(4) = (x^2 / l) * (x / l - 1);
+            
+        end % obtenerVectorN function
         
-        function plot(elementoObj, deformadas, tipoLinea, grosorLinea, ~)
+        function y = plotVigaDeformar(elementoObj, deformadas) %#ok<INUSL>
+            % plotVigaDeformar: Evalua si se grafica una viga con
+            % deformacion
+            %
+            % plotVigaDeformar(elementoObj,deformadas)
+            
+            y = length(deformadas{1}) == 3;
+            
+        end % plotVigaDeformar function
+        
+        function plot(elementoObj, deformadas, tipoLinea, grosorLinea, defElem)
             % plot: Grafica un elemento
             %
-            % plot(elementoObj,deformadas,tipoLinea,grosorLinea)
+            % plot(elementoObj,deformadas,tipoLinea,grosorLinea,defElem)
             
             % Obtiene las coordenadas de los objetos
             coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
@@ -380,6 +412,24 @@ classdef VigaColumna2D < Elemento
             if ~isempty(deformadas)
                 coord1 = coord1 + deformadas{1}(1:2);
                 coord2 = coord2 + deformadas{2}(1:2);
+                if defElem && elementoObj.plotVigaDeformar(deformadas) && elementoObj.graficaDeformada
+                    ndx = abs(coord2(1)-coord1(1));
+                    ndy = abs(coord2(2)-coord1(2));
+                    nl = sqrt(ndx^2+ndy^2);
+                    tht = elementoObj.theta;
+                    coordx = [coord1(1), deformadas{1}(3), coord2(1), deformadas{2}(3)];
+                    coordy = [coord1(2), deformadas{1}(3), coord2(2), deformadas{2}(3)];
+                    coordi = coord1;
+                    for i = 1:elementoObj.PLOTNELEM
+                        p = i / elementoObj.PLOTNELEM;
+                        n = elementoObj.obtenerVectorN(p, nl);
+                        coordf = [(coord1(1) + ndx * p) * cos(tht) + (coordx * n) * sin(tht), ...
+                            (coordy * n) * cos(tht) + (coord1(2) + ndy * p) * sin(tht)];
+                        elementoObj.graficarLinea(coordi, coordf, tipoLinea, grosorLinea);
+                        coordi = coordf;
+                    end
+                    return;
+                end
             end
             
             % Grafica en forma lineal
@@ -388,13 +438,16 @@ classdef VigaColumna2D < Elemento
         end % plot function
         
         function disp(vigaColumna2DObj)
+            % disp: Imprime propiedades en pantalla del objeto
+            %
+            % disp(vigaColumna2DObj)
             
-            % Imprime propiedades de la Viga-Columna 2D
-            fprintf('Propiedades viga-columna 2D:\n\t');
+            % Imprime propiedades de la Viga-Columna-2D
+            fprintf('Propiedades viga columna 2D:\n\t');
             disp@ComponenteModelo(vigaColumna2DObj);
-            fprintf('\t\tLargo: %s\tArea: %s\tI: %s\tE: %s\n', pad(num2str(vigaColumna2DObj.L), 12), ...
+            fprintf('\t\tLargo: %s\tArea: %s\tI: %s\tE: %s\tDensidad: %s\n', pad(num2str(vigaColumna2DObj.L), 12), ...
                 pad(num2str(vigaColumna2DObj.Ao), 10), pad(num2str(vigaColumna2DObj.Io), 10), ...
-                pad(num2str(vigaColumna2DObj.Eo), 10));
+                pad(num2str(vigaColumna2DObj.Eo), 10), pad(num2str(vigaColumna2DObj.rho), 10));
             
             % Se imprime matriz de rigidez local
             fprintf('\tMatriz de rigidez coordenadas locales:\n');
@@ -403,6 +456,10 @@ classdef VigaColumna2D < Elemento
             % Se imprime matriz de rigidez global
             fprintf('\tMatriz de rigidez coordenadas globales:\n');
             disp(vigaColumna2DObj.obtenerMatrizRigidezCoordGlobal());
+            
+            % Imprime vector de masa
+            fprintf('\tVector de masa:\n');
+            disp(vigaColumna2DObj.obtenerVectorMasa());
             
             dispMetodoTEFAME();
             
