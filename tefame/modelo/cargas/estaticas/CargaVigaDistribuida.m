@@ -102,11 +102,8 @@ classdef CargaVigaDistribuida < CargaEstatica
             
         end % CargaVigaDistribuida constructor
         
-        function aplicarCarga(cargaVigaDistribuidaObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase cargaVigaDistribuidaObj que se usa para aplicar
-            % la carga sobre los dos nodos del elemento
-            %
-            % aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
+        function [v1, v2, theta1, theta2] = calcularCarga(cargaVigaDistribuidaObj)
+            % calcularCarga: Calcula la carga
             
             % Largo de la viga
             L = cargaVigaDistribuidaObj.elemObj.obtenerLargo();
@@ -134,6 +131,26 @@ classdef CargaVigaDistribuida < CargaEstatica
             v2 = integral(@(x) rho(x).*N3(x), d1, d2);
             theta2 = integral(@(x) rho(x).*N4(x), d1, d2);
             
+        end % calcularCarga function
+        
+        function masa = obtenerMasa(cargaVigaDistribuidaObj)
+            % obtenerMasa: Obtiene la masa asociada a la carga
+            %
+            % masa = obtenerMasa(cargaVigaDistribuidaObj)
+            
+            [v1, v2, ~, ~] = cargaVigaDistribuidaObj.calcularCarga();
+            masa = (v1+v2) .* (cargaVigaDistribuidaObj.factorCargaMasa * cargaVigaDistribuidaObj.factorUnidadMasa);
+            
+        end % obtenerMasa function
+        
+        function aplicarCarga(cargaVigaDistribuidaObj, factorDeCarga)
+            % aplicarCarga: es un metodo de la clase cargaVigaDistribuidaObj que se usa para aplicar
+            % la carga sobre los dos nodos del elemento
+            %
+            % aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
+            
+            % Calcula la carga
+            [v1, v2, theta1, theta2] = cargaVigaDistribuidaObj.calcularCarga();
             vectorCarga1 = factorDeCarga * [0, v1, theta1]';
             vectorCarga2 = factorDeCarga * [0, v2, theta2]';
             cargaVigaDistribuidaObj.elemObj.sumarFuerzaEquivalente( ...

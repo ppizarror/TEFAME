@@ -90,12 +90,20 @@ classdef CargaBielaTemperatura < CargaEstatica
             
         end % CargaBielaTemperatura constructor
         
+        function c = calcularCarga(cargaBielaTemperaturaObj)
+            % calcularCarga: Calcula la carga
+            
+            c = cargaBielaTemperaturaObj.carga;
+            
+        end % calcularCarga function
+        
         function masa = obtenerMasa(cargaBielaTemperaturaObj)
             % obtenerMasa: Obtiene la masa asociada a la carga
             %
             % masa = obtenerMasa(cargaBielaTemperaturaObj)
             
-            masa = cargaBielaTemperaturaObj.carga .* (cargaDinamicaObj.factorCargaMasa * cargaDinamicaObj.factorUnidadMasa);
+            c = cargaBielaTemperaturaObj.calcularCarga();
+            masa =  c.* (cargaBielaTemperaturaObj.factorCargaMasa * cargaBielaTemperaturaObj.factorUnidadMasa);
             
         end % obtenerMasa function
         
@@ -109,7 +117,7 @@ classdef CargaBielaTemperatura < CargaEstatica
             theta = cargaBielaTemperaturaObj.elemObj.obtenerAngulo();
             
             % Carga sin cambiar el angulo
-            c = cargaBielaTemperaturaObj.carga;
+            c = cargaBielaTemperaturaObj.calcularCarga();
             
             % Genera las cargas nodales
             vectorCarga1 = factorDeCarga * [-c * cos(theta), -c * sin(theta)]';

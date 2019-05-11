@@ -169,6 +169,29 @@ classdef Biela2D < Elemento
             
         end % obtenerAngulo function
         
+        function m = obtenerMasa(biela2DObj)
+            % obtenerMasa: Retorna la masa total del elemento
+            %
+            % m = obtenerMasa(biela2DObj)
+            
+            m = biela2DObj.rho * biela2DObj.L * biela2DObj.Ao;
+            
+        end % obtenerMasa function
+        
+        function m_masa = obtenerVectorMasa(biela2DObj)
+            % obtenerVectorMasa: Obtiene el vector de masa del elemento
+            %
+            % m_masa = obtenerVectorMasa(biela2DObj)
+            
+            m_masa = zeros(4, 1);
+            m = biela2DObj.obtenerMasa();         
+            m_masa(1) = m * 0.5;
+            m_masa(2) = m * 0.5;
+            m_masa(3) = m * 0.5;
+            m_masa(4) = m * 0.5;
+            
+        end % obtenerMatrizMasa function
+        
         function k_global = obtenerMatrizRigidezCoordGlobal(biela2DObj)
             % obtenerMatrizRigidezCoordGlobal: Obtiene la matriz de rigidez
             % en coordenadas globales de la biela

@@ -85,11 +85,8 @@ classdef CargaVigaPuntual < CargaEstatica
             
         end % CargaVigaPuntual constructor
         
-        function aplicarCarga(cargaVigaPuntualObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase CargaVigaPuntual que se usa para aplicar
-            % la carga sobre los dos nodos del elemento
-            %
-            % aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
+        function [v1, v2, theta1, theta2] = calcularCarga(cargaVigaPuntualObj)
+            % calcularCarga: Calcula la carga
             
             % Largo de la viga
             L = cargaVigaPuntualObj.elemObj.obtenerLargo();
@@ -111,6 +108,26 @@ classdef CargaVigaPuntual < CargaEstatica
             theta1 = P * d * (L - d)^2 / (L^2);
             theta2 = -P * (d^2) * (L - d) / (L^2);
             
+        end % calcularCarga function
+        
+        function masa = obtenerMasa(cargaVigaPuntualObj)
+            % obtenerMasa: Obtiene la masa asociada a la carga
+            %
+            % masa = obtenerMasa(cargaVigaPuntualObj)
+            
+            [v1, v2, ~, ~] = cargaVigaPuntualObj.calcularCarga();
+            masa = (v1 + v2) .* (cargaVigaPuntualObj.factorCargaMasa * cargaVigaPuntualObj.factorUnidadMasa);
+            
+        end % obtenerMasa function
+        
+        function aplicarCarga(cargaVigaPuntualObj, factorDeCarga)
+            % aplicarCarga: es un metodo de la clase CargaVigaPuntual que se usa para aplicar
+            % la carga sobre los dos nodos del elemento
+            %
+            % aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
+            
+            % Calcula la carga
+            [v1, v2, theta1, theta2] = cargaVigaPuntualObj.calcularCarga();
             vectorCarga1 = factorDeCarga * [0, v1, theta1]';
             vectorCarga2 = factorDeCarga * [0, v2, theta2]';
             cargaVigaPuntualObj.elemObj.sumarFuerzaEquivalente([ ...

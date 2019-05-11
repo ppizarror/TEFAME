@@ -93,7 +93,7 @@ classdef CargaNodo < CargaEstatica
             %
             % masa = obtenerMasa(cargaNodoObj)
             
-            masa = sum(cargaNodoObj.vectorCarga) .* (cargaDinamicaObj.factorCargaMasa * cargaDinamicaObj.factorUnidadMasa);
+            masa = sum(cargaNodoObj.vectorCarga) .* (cargaNodoObj.factorCargaMasa * cargaNodoObj.factorUnidadMasa);
             
         end % obtenerMasa function
         

@@ -234,6 +234,15 @@ classdef VigaColumna2D < Elemento
             
         end % obtenerMatrizRigidezCoordLocal function
         
+        function m = obtenerMasa(vigaColumna2DObj)
+            % obtenerMasa: Retorna la masa total del elemento
+            %
+            % m = obtenerMasa(vigaColumna2DObj)
+            
+            m = vigaColumna2DObj.rho * vigaColumna2DObj.L * vigaColumna2DObj.Ao;
+            
+        end % obtenerMasa function
+        
         function m_masa = obtenerVectorMasa(vigaColumna2DObj)
             % obtenerVectorMasa: Obtiene el vector de masa del elemento
             %
@@ -249,15 +258,6 @@ classdef VigaColumna2D < Elemento
             m_masa(6) = 0;
             
         end % obtenerMatrizMasa function
-        
-        function m = obtenerMasa(vigaColumna2DObj)
-            % obtenerMasa: Retorna la masa total del elemento
-            %
-            % m = obtenerMasa(vigaColumna2DObj)
-            
-            m = vigaColumna2DObj.rho * vigaColumna2DObj.L * vigaColumna2DObj.Ao;
-            
-        end % obtenerMasa function
         
         function fr_global = obtenerFuerzaResistenteCoordGlobal(vigaColumna2DObj)
             % obtenerFuerzaResistenteCoordGlobal: Retorna la fuerza

@@ -112,11 +112,8 @@ classdef CargaVigaColumnaDistribuida < CargaEstatica
             
         end % CargaVigaColumnaDistribuida constructor
         
-        function aplicarCarga(cargaVigaColumnaDistribuidaObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase cargaVigaColumnaDistribuidaObj
-            % que se usa para aplicar la carga sobre los dos nodos del elemento
-            %
-            % aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
+        function [u1, u2, v1, v2, theta1, theta2] = calcularCarga(cargaVigaColumnaDistribuidaObj)
+            % calcularCarga: Calcula la carga
             
             % Largo de la viga
             L = cargaVigaColumnaDistribuidaObj.elemObj.obtenerLargo();
@@ -156,6 +153,26 @@ classdef CargaVigaColumnaDistribuida < CargaEstatica
             theta1 = integral(@(x) rhoV(x).*Nv2(x), d1, d2);
             theta2 = integral(@(x) rhoV(x).*Nv4(x), d1, d2);
             
+        end % calcularCarga function
+        
+        function masa = obtenerMasa(cargaVigaColumnaDistribuidaObj)
+            % obtenerMasa: Obtiene la masa asociada a la carga
+            %
+            % masa = obtenerMasa(cargaVigaColumnaDistribuidaObj)
+            
+            [u1, u2, v1, v2, ~, ~] = cargaVigaColumnaDistribuidaObj.calcularCarga();
+            masa = (u1 + u2 + v1 + v2) .* (cargaVigaColumnaDistribuidaObj.factorCargaMasa * cargaVigaColumnaDistribuidaObj.factorUnidadMasa);
+            
+        end % obtenerMasa function
+        
+        function aplicarCarga(cargaVigaColumnaDistribuidaObj, factorDeCarga)
+            % aplicarCarga: es un metodo de la clase cargaVigaColumnaDistribuidaObj
+            % que se usa para aplicar la carga sobre los dos nodos del elemento
+            %
+            % aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
+            
+            % Calcula la carga
+            [u1, u2, v1, v2, theta1, theta2] = cargaVigaColumnaDistribuidaObj.calcularCarga();
             vectorCarga = factorDeCarga * [u1, v1, theta1, u2, v2, theta2]';
             cargaVigaColumnaDistribuidaObj.elemObj.sumarFuerzaEquivalente(vectorCarga);
             

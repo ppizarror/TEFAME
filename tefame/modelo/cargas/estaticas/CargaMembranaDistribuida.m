@@ -146,11 +146,8 @@ classdef CargaMembranaDistribuida < CargaEstatica
             
         end % CargaMembranaDistribuida constructor
         
-        function aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase cargaMembranaDistribuidaObj
-            % que se usa para aplicar la carga sobre los dos nodos correspondientes del elemento
-            %
-            % aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
+        function [v1, v2] = calcularCarga(cargaMembranaDistribuidaObj)
+            % calcularCarga: Calcula la carga
             
             % Limites de las cargas
             d1 = cargaMembranaDistribuidaObj.dist1;
@@ -170,6 +167,27 @@ classdef CargaMembranaDistribuida < CargaEstatica
             % Calcula cada valor
             v1 = integral(@(x) rho(x).*N1(x), d1, d2);
             v2 = integral(@(x) rho(x).*N3(x), d1, d2);
+            
+        end % calcularCarga function
+        
+        function masa = obtenerMasa(cargaMembranaDistribuidaObj)
+            % obtenerMasa: Obtiene la masa asociada a la carga
+            %
+            % masa = obtenerMasa(cargaMembranaDistribuidaObj)
+            
+            [v1, v2] = cargaMembranaDistribuidaObj.calcularCarga();
+            masa = (v1 + v2) .* (cargaMembranaDistribuidaObj.factorCargaMasa * cargaMembranaDistribuidaObj.factorUnidadMasa);
+            
+        end % obtenerMasa function
+        
+        function aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
+            % aplicarCarga: es un metodo de la clase cargaMembranaDistribuidaObj
+            % que se usa para aplicar la carga sobre los dos nodos correspondientes del elemento
+            %
+            % aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
+            
+            % Calcula la carga
+            [v1, v2] = cargaMembranaDistribuidaObj.calcularCarga();
             
             % Aplica el angulo
             v1x = v1 * sin(cargaMembranaDistribuidaObj.theta);
