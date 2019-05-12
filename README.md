@@ -23,7 +23,7 @@
 - Biela 2D
 - Biela 3D
 - Membrana (Shell 2D)
-- Viga 2D (c/s masa)
+- Viga 2D
 - Viga-columna 2D
 
 ## Tipo de disipadores
@@ -59,6 +59,10 @@
 - Registro sísmico
 - Carga sinusoidal
 
+## Documentacion
+
+La documentación del proyecto se puede encontrar en [https://ppizarror.com/TEFAME/docs/](https://ppizarror.com/TEFAME/docs/)
+
 ## Autor
 
 - Pablo Pizarro (pablo.pizarro@ing.uchile.cl)
@@ -67,4 +71,4 @@
 
 ## Licencia
 
-Este proyecto está licenciado bajo la licencia MIT [https://opensource.org/licenses/MIT]
+Este proyecto está licenciado bajo la licencia MIT [https://opensource.org/licenses/MIT](MIT)
