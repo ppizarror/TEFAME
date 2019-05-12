@@ -32,7 +32,6 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       modeloObj
 %       numeroGDL
 %       Kt
 %       F
@@ -52,15 +51,12 @@
 %       plot(analisisObj)
 %       disp(analisisObj)
 
-classdef AnalisisEstatico < handle
+classdef AnalisisEstatico < Analisis
     
     properties(Access = private)
-        modeloObj % Guarda el objeto que contiene el modelo
-        numeroGDL % Guarda el numero de grados de libertad totales del modelo
-        Kt % Matriz de Rigidez del modelo
-        F % Vector de Fuerzas aplicadas sobre el modelo
+        Kt % Matriz de rigidez del modelo
+        F % Vector de fuerzas aplicadas sobre el modelo
         u % Vector con los desplazamientos de los grados de libertad del modelo
-        analisisFinalizado % Analisis termino
     end % properties AnalisisEstatico
     
     methods
@@ -77,12 +73,11 @@ classdef AnalisisEstatico < handle
                 modeloObjeto = [];
             end % if
             
-            analisisObj.modeloObj = modeloObjeto;
+            analisisObj = analisisObj@Analisis(modeloObjeto);
             analisisObj.numeroGDL = 0;
             analisisObj.Kt = [];
             analisisObj.u = [];
             analisisObj.F = [];
-            analisisObj.analisisFinalizado = false;
             
         end % AnalisisEstatico constructor
         
@@ -142,7 +137,7 @@ classdef AnalisisEstatico < handle
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas
             %
-            % analizar(analisisObj, varargin)
+            % analizar(analisisObj,varargin)
             %
             % Parametros opcionales:
             %   'factorCargaE'      Factor de cargas estaticas
@@ -222,15 +217,29 @@ classdef AnalisisEstatico < handle
         end % ensamblarMatrizRigidez function
         
         function Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
-            % ensamblarMatrizAmortiguamientoDisipadores: Analisis Estatico no soporta disipadores
-            % ya que estos responden a un caracter dinamico, por tal se retorna
-            % una matriz de ceros
+            % ensamblarMatrizAmortiguamientoDisipadores: Analisis Estatico
+            % no soporta disipadores ya que estos responden a un caracter
+            % dinamico, por tal se retorna una matriz de ceros
             %
             % Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
             
             Cd = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
         end % ensamblarMatrizAmortiguamientoDisipadores function
+        
+        function Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)
+            % ensamblarMatrizRigidezDisipadores: Analisis Estatico
+            % no soporta disipadores ya que estos responden a un caracter
+            % dinamico, por tal se retorna una matriz de ceros
+            %
+            % Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)
+            %
+            % Ensambla la matriz de rigidez de los disipadores del modelo
+            % analizado usando el metodo indicial
+            
+            Kdv = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
+            
+        end % ensamblarMatrizRigidezDisipadores function
         
         function ensamblarVectorFuerzas(analisisObj)
             % ensamblarVectorFuerzas: es un metodo de la clase AnalisisEstatico que se usa para
@@ -296,8 +305,8 @@ classdef AnalisisEstatico < handle
         end % obtenerMatrizRigidez function
         
         function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
-            % obtenerMatrizRigidez: es un metodo de la clase que retorna la matriz
-            % de amortiguamiento de los disipadores
+            % obtenerMatrizAmortiguamientoDisipadores: es un metodo de la
+            % clase que retorna la matriz de amortiguamiento de los disipadores
             %
             % Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
             %
@@ -307,8 +316,19 @@ classdef AnalisisEstatico < handle
             
         end % obtenerMatrizAmortiguamientoDisipadores function
         
+        function Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
+            % obtenerMatrizRigidezDisipadores: es un metodo de la clase ModalEspectral
+            % que se usa para obtener la matriz de rigidez de los
+            % disipadores
+            %
+            % Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
+            
+            Kdv_Modelo = analisisObj.ensamblarMatrizRigidezDisipadores();
+            
+        end % obtenerMatrizRigidezDisipadores function
+        
         function F_Modelo = obtenerVectorFuerzas(analisisObj)
-            % obtenerMatrizRigidez: es un metodo de la clase AnalisisEstatico
+            % obtenerVectorFuerzas: es un metodo de la clase AnalisisEstatico
             % que se usa para obtener el vector de fuerza del modelo
             %
             % F_Modelo = obtenerVectorFuerzas(analisisObj)
@@ -396,7 +416,7 @@ classdef AnalisisEstatico < handle
         function plt = plot(analisisObj, varargin)
             % plt: Grafica el modelo
             %
-            % plt = plot(varargin)
+            % plt = plot(analisisObj,varargin)
             %
             % Parametros opcionales:
             %   'deformada'     Dibuja la deformada del problema

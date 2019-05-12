@@ -73,7 +73,7 @@ patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
-%% Analiza el sistema
+%% Analiza el sistema y resuelve para cargas estaticas
 analisisObj.analizar('nModos', 50, 'rayleighBeta', [0.02, 0.02], 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
     'valvecAlgoritmo', 'eigs', 'valvecTolerancia', 0.0001, ...
@@ -101,4 +101,6 @@ analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...
 % analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 
 %% Finaliza el analisis
+modeloObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt');
+analisisObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt');
 clear h h1 i v;

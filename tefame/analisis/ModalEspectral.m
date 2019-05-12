@@ -65,6 +65,7 @@
 %       C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)
 %       K_Modelo = obtenerMatrizRigidez(analisisObj)
 %       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
+%       Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
 %       r_Modelo = obtenerVectorInfluencia(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
@@ -83,15 +84,13 @@
 %       plot(analisisObj,varargin)
 %       disp(analisisObj)
 
-classdef ModalEspectral < handle
+classdef ModalEspectral < Analisis
     
     properties(Access = private)
-        modeloObj % Guarda el objeto que contiene el modelo
-        numeroGDL % Guarda el numero de grados de libertad totales del modelo
-        Kt % Matriz de Rigidez del modelo
-        Mt % Matriz de Masa del modelo
+        Kt % Matriz de rigidez del modelo
+        Mt % Matriz de masa del modelo
         gdlCond % Grados de libertad condensados
-        F % Vector de Fuerzas aplicadas sobre el modelo
+        F % Vector de fuerzas aplicadas sobre el modelo
         u % Vector con los desplazamientos de los grados de libertad del modelo
         wn % Frecuencias del sistema
         Tn % Periodos del sistema
@@ -108,7 +107,6 @@ classdef ModalEspectral < handle
         Mmeff % Masa modal efectiva
         Mmeffacum % Masa modal efectiva acumulada
         Mtotal % Masa total del modelo
-        analisisFinalizado % Indica que el analisis ha sido realizado
         numModos % Numero de modos del analisis
         numDG % Numero de ejes de analisis despues de condensar
         numDGReal % Numero de ejes de analisis antes de condensar
@@ -132,13 +130,11 @@ classdef ModalEspectral < handle
                 modeloObjeto = [];
             end % if
             
-            analisisObj.modeloObj = modeloObjeto;
-            analisisObj.numeroGDL = 0;
+            analisisObj = analisisObj@Analisis(modeloObjeto);
             analisisObj.Kt = [];
             analisisObj.Mt = [];
             analisisObj.u = [];
             analisisObj.F = [];
-            analisisObj.analisisFinalizado = false;
             analisisObj.mostrarDeformada = false;
             analisisObj.cargarAnimacion = true;
             
@@ -402,16 +398,14 @@ classdef ModalEspectral < handle
         
         function Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
             % obtenerMatrizRigidezDisipadores: es un metodo de la clase ModalEspectral
-            % que se usa para obtener la matriz de rigidez del modelo
-            % producto de los disipadores incorporados
+            % que se usa para obtener la matriz de rigidez de los
+            % disipadores
             %
-            % Cdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
-            %
-            % Obtiene la matriz de Rigidez del modelo
+            % Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
             
             Kdv_Modelo = analisisObj.ensamblarMatrizRigidezDisipadores();
             
-        end % obtenerMatrizAmortiguamientoDisipadores function
+        end % obtenerMatrizRigidezDisipadores function
         
         function r_Modelo = obtenerVectorInfluencia(analisisObj)
             % obtenerVectorInfluencia: es un metodo de la clase ModalEspectral
@@ -808,6 +802,27 @@ classdef ModalEspectral < handle
             end
             
         end % plot function
+        
+        function guardarResultados(analisisObj, nombreArchivo)
+            % guardarResultados: Guarda resultados adicionales del analisis
+            %
+            % guardarResultados(analisisObj,nombreArchivo)
+            
+            % Abre el archivo donde se guardara la informacion
+            try
+                archivoSalida = fopen(nombreArchivo, 'a');
+            catch
+                error('No se puede abrir el archivo %s', nombreArchivo);
+            end
+            
+            % Guarda las cargas maximas de los elementos
+            for i=1:length(analisisObj.modeloObj.obtenerElementos())
+            end % for i
+            
+            % Cierra el archivo
+            fclose(archivoSalida);
+            
+        end % guardarResultados function
         
         function calcularDesplazamientoDrift(analisisObj, carga, xanalisis, varargin)
             % calcularDesplazamientoDrift: Funcion que calcula el desplazamiento y
@@ -2525,10 +2540,11 @@ classdef ModalEspectral < handle
         end % ensamblarMatrizMasa function
         
         function Cdv = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
-            % ensamblarMatrizRigidez: es un metodo de la clase ModalEspectral que se usa para
-            % realizar el armado de la matriz de rigidez del modelo analizado
+            % ensamblarMatrizRigidez: es un metodo de la clase ModalEspectral
+            % que se usa para realizar el armado de la matriz de
+            % amortiguamiento de los disipadores del modelo
             %
-            % ensamblarMatrizRigidez(analisisObj)
+            % Cdv = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
             %
             % Ensambla la matriz de rigidez del modelo analizado usando el metodo
             % indicial
@@ -2571,19 +2587,20 @@ classdef ModalEspectral < handle
         end % ensamblarMatrizAmortiguamientoDisipadores function
         
         function Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)
-            % ensamblarMatrizRigidezDisipadores: es un metodo de la clase ModalEspectral
-            % que se usa para realizar el armado de la matriz de rigidez del modelo analizado
+            % ensamblarMatrizRigidezDisipadores: es un metodo de la clase
+            % ModalEspectral que se usa para realizar el armado de la matriz
+            % de rigidez del modelo analizado
             %
-            % ensamblarMatrizRigidezDisipadores(analisisObj)
+            % Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)
             %
-            % Ensambla la matriz de rigidez de los disipadores del modelo analizado usando el metodo
-            % indicial
+            % Ensambla la matriz de rigidez de los disipadores del modelo
+            % analizado usando el metodo indicial
             
             % fprintf('\tEnsamblando matriz de rigidez disipadores\n');
             ndglc = analisisObj.numeroGDL - analisisObj.gdlCond; % Numero de grados de libertad condensados
             Kdv = zeros(ndglc, ndglc);
             
-            % Extraemos los Elementos
+            % Extraemos los elementos
             disipadorObj = analisisObj.modeloObj.obtenerDisipadores();
             numeroDisipadores = length(disipadorObj);
             

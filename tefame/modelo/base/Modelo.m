@@ -479,7 +479,7 @@ classdef Modelo < handle
             
             fprintf(archivoSalida, '\n');
             fprintf(archivoSalida, '-------------------------------------------------------------------------------\n');
-            fprintf(archivoSalida, 'Resultados del analisis\n');
+            fprintf(archivoSalida, 'Resultados del analisis estatico\n');
             fprintf(archivoSalida, '-------------------------------------------------------------------------------\n');
             fprintf(archivoSalida, '\n');
             
@@ -502,6 +502,8 @@ classdef Modelo < handle
             for i = 1:length(modeloObj.elementos)
                 modeloObj.elementos{i}.guardarEsfuerzosInternos(archivoSalida);
             end % for i
+            
+            % Cierra el archivo
             fclose(archivoSalida);
             
         end % guardarResultados function
