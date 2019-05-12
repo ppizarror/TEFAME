@@ -1,0 +1,578 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Nodo</title>
+  <meta name="keywords" content="Nodo">
+  <meta name="description" content="______________________________________________________________________">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- # modelo --><!-- menu.html nodo -->
+<h1>Nodo
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>______________________________________________________________________</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ______________________________________________________________________
+|                                                                      |
+|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+|                  Matricial de Estructuras en MATLAB                  |
+|                                                                      |
+|                   Area  de Estructuras y Geotecnia                   |
+|                   Departamento de Ingenieria Civil                   |
+|              Facultad de Ciencias Fisicas y Matematicas              |
+|                         Universidad de Chile                         |
+|                                                                      |
+| TEFAME es una  plataforma en base a objetos para modelar, analizar y |
+| visualizar  la respuesta de sistemas  estructurales usando el metodo |
+| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
+| La plataforma es desarrollada en  propagacion orientada a objetos en |
+| MATLAB.                                                              |
+|______________________________________________________________________|
+ ______________________________________________________________________
+|                                                                      |
+| Clase Nodo                                                           |
+|                                                                      |
+| Este archivo contiene la definicion de la Clase Nodo                 |
+| Nodo es una subclase de la clase ComponenteModelo y corresponde a la |
+| representacion  abstracta  de los  nodos en  el metodo  de elementos |
+| finitos o analisis matricial de estructuras.                         |
+| La clase nodo  guarda la  informacion de  las coordenadas  del nodo, |
+| , los ID de grados de libertad y los resultados de desplazamiento.   |
+|                                                                      |
+| Programado: FR                                                       |
+| Fecha: 05/08/2015                                                    |
+|                                                                      |
+| Modificado por: FR - 24/10/2016                                      |
+|                 Pablo Pizarro @ppizarror - 10/04/2019                |
+|______________________________________________________________________|
+
+  Properties (Access=private):
+       nGDL
+       coords
+       gdlID
+       despl
+       cargas
+       reacciones
+  Methods:
+       nodoObj = Nodo(etiquetaNodo,nGDLNodo,coordenadasNodo)
+       nGDLNodo = obtenerNumeroGDL(nodoObj)
+       coordenadasNodo = obtenerCoordenadas(nodoObj)
+       gdlIDNodo = obtenerGDLID(nodoObj)
+       gdlIDNodoCondensado = obtenerGDLIDCondensado(nodoObj)
+       cargasResultantesNodo = obtenerCargasResultantes(nodoObj)
+       desplazamientosNodo = obtenerDesplazamientos(nodoObj)
+       reaccionesNodo = obtenerReacciones(nodoObj)
+       definirGDLID(nodoObj,gdlIDNodo)
+       definirGDLIDCondensado(nodoObj,gdlIDNodoCondensado)
+       definirDesplazamientos(nodoObj,desplazamientosNodo)
+       agregarCarga(nodoObj,cargaNodo)
+       agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)
+       inicializar(nodoObj)
+       guardarPropiedades(nodoObj,archivoSalidaHandle)
+       guardarDesplazamientos(nodoObj,archivoSalidaHandle)
+       guardarReacciones(nodoObj,archivoSalidaHandle)
+       Disp(nodoObj)
+       agregarElementos(nodoObj, elemObj)
+       obtenerElementos(nodoObj)
+       tipoApoyoRestringido(nodoObj)
+  Methods Suplerclass (ComponenteModelo):
+       etiqueta = obtenerEtiqueta(componenteModeloObj)
+       e = equals(componenteModeloObj,obj)
+       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../tefame/lib/arrayIntNum2str.html" class="code" title="function textCell = arrayIntNum2str(a, num)">arrayIntNum2str</a>	textCell = array2str(a,num) function that transform the array of number to a</li><li><a href="../../../tefame/lib/arrayNum2str.html" class="code" title="function textCell = arrayNum2str(a, num)">arrayNum2str</a>	textCell = array2str(a,num) function that transform the array of number to a</li><li><a href="../../../tefame/lib/isArrayEqual.html" class="code" title="function y = isArrayEqual(x, a)">isArrayEqual</a>	ISARRAYEQUAL Check if array x is equal to number a</li><li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li><li><a href="Nodo.html" class="code" title="">Nodo</a>	______________________________________________________________________</li><li><a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="Nodo.html" class="code" title="">Nodo</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function nodoObj = Nodo(etiquetaNodo, nGDLNodo, coordenadasNodo)</a></li><li><a href="#_sub2" class="code">function nGDLNodo = obtenerNumeroGDL(nodoObj)</a></li><li><a href="#_sub3" class="code">function coordenadasNodo = obtenerCoordenadas(nodoObj)</a></li><li><a href="#_sub4" class="code">function gdlIDNodo = obtenerGDLID(nodoObj)</a></li><li><a href="#_sub5" class="code">function gdlIDNodoCondensado = obtenerGDLIDCondensado(nodoObj)</a></li><li><a href="#_sub6" class="code">function cargasResultantesNodo = obtenerCargasResultantes(nodoObj)</a></li><li><a href="#_sub7" class="code">function desplazamientosNodo = obtenerDesplazamientos(nodoObj)</a></li><li><a href="#_sub8" class="code">function reaccionesNodo = obtenerReacciones(nodoObj)</a></li><li><a href="#_sub9" class="code">function definirGDLID(nodoObj, gdlIDNodo)</a></li><li><a href="#_sub10" class="code">function definirGDLIDCondensado(nodoObj, gdlIDNodoCondensado)</a></li><li><a href="#_sub11" class="code">function y = tipoApoyoRestringido(nodoObj)</a></li><li><a href="#_sub12" class="code">function definirDesplazamientos(nodoObj, desplazamientosNodo)</a></li><li><a href="#_sub13" class="code">function agregarCarga(nodoObj, cargaNodo)</a></li><li><a href="#_sub14" class="code">function agregarElementos(nodoObj, elemObj)</a></li><li><a href="#_sub15" class="code">function elem_nodos = obtenerElementos(nodoObj)</a></li><li><a href="#_sub16" class="code">function agregarEsfuerzosElementoAReaccion(nodoObj, esfuerzosElemento)</a></li><li><a href="#_sub17" class="code">function inicializar(nodoObj)</a></li><li><a href="#_sub18" class="code">function guardarPropiedades(nodoObj, archivoSalidaHandle)</a></li><li><a href="#_sub19" class="code">function guardarDesplazamientos(nodoObj, archivoSalidaHandle)</a></li><li><a href="#_sub20" class="code">function guardarReacciones(nodoObj, archivoSalidaHandle)</a></li><li><a href="#_sub21" class="code">function plot(nodoObj, deformada, color, escala)</a></li><li><a href="#_sub22" class="code">function disp(nodoObj)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
+0002 <span class="comment">%|                                                                      |</span>
+0003 <span class="comment">%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |</span>
+0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
+0005 <span class="comment">%|                                                                      |</span>
+0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
+0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
+0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
+0009 <span class="comment">%|                         Universidad de Chile                         |</span>
+0010 <span class="comment">%|                                                                      |</span>
+0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
+0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
+0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
+0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
+0015 <span class="comment">%| MATLAB.                                                              |</span>
+0016 <span class="comment">%|______________________________________________________________________|</span>
+0017 <span class="comment">% ______________________________________________________________________</span>
+0018 <span class="comment">%|                                                                      |</span>
+0019 <span class="comment">%| Clase Nodo                                                           |</span>
+0020 <span class="comment">%|                                                                      |</span>
+0021 <span class="comment">%| Este archivo contiene la definicion de la Clase Nodo                 |</span>
+0022 <span class="comment">%| Nodo es una subclase de la clase ComponenteModelo y corresponde a la |</span>
+0023 <span class="comment">%| representacion  abstracta  de los  nodos en  el metodo  de elementos |</span>
+0024 <span class="comment">%| finitos o analisis matricial de estructuras.                         |</span>
+0025 <span class="comment">%| La clase nodo  guarda la  informacion de  las coordenadas  del nodo, |</span>
+0026 <span class="comment">%| , los ID de grados de libertad y los resultados de desplazamiento.   |</span>
+0027 <span class="comment">%|                                                                      |</span>
+0028 <span class="comment">%| Programado: FR                                                       |</span>
+0029 <span class="comment">%| Fecha: 05/08/2015                                                    |</span>
+0030 <span class="comment">%|                                                                      |</span>
+0031 <span class="comment">%| Modificado por: FR - 24/10/2016                                      |</span>
+0032 <span class="comment">%|                 Pablo Pizarro @ppizarror - 10/04/2019                |</span>
+0033 <span class="comment">%|______________________________________________________________________|</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">%  Properties (Access=private):</span>
+0036 <span class="comment">%       nGDL</span>
+0037 <span class="comment">%       coords</span>
+0038 <span class="comment">%       gdlID</span>
+0039 <span class="comment">%       despl</span>
+0040 <span class="comment">%       cargas</span>
+0041 <span class="comment">%       reacciones</span>
+0042 <span class="comment">%  Methods:</span>
+0043 <span class="comment">%       nodoObj = Nodo(etiquetaNodo,nGDLNodo,coordenadasNodo)</span>
+0044 <span class="comment">%       nGDLNodo = obtenerNumeroGDL(nodoObj)</span>
+0045 <span class="comment">%       coordenadasNodo = obtenerCoordenadas(nodoObj)</span>
+0046 <span class="comment">%       gdlIDNodo = obtenerGDLID(nodoObj)</span>
+0047 <span class="comment">%       gdlIDNodoCondensado = obtenerGDLIDCondensado(nodoObj)</span>
+0048 <span class="comment">%       cargasResultantesNodo = obtenerCargasResultantes(nodoObj)</span>
+0049 <span class="comment">%       desplazamientosNodo = obtenerDesplazamientos(nodoObj)</span>
+0050 <span class="comment">%       reaccionesNodo = obtenerReacciones(nodoObj)</span>
+0051 <span class="comment">%       definirGDLID(nodoObj,gdlIDNodo)</span>
+0052 <span class="comment">%       definirGDLIDCondensado(nodoObj,gdlIDNodoCondensado)</span>
+0053 <span class="comment">%       definirDesplazamientos(nodoObj,desplazamientosNodo)</span>
+0054 <span class="comment">%       agregarCarga(nodoObj,cargaNodo)</span>
+0055 <span class="comment">%       agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)</span>
+0056 <span class="comment">%       inicializar(nodoObj)</span>
+0057 <span class="comment">%       guardarPropiedades(nodoObj,archivoSalidaHandle)</span>
+0058 <span class="comment">%       guardarDesplazamientos(nodoObj,archivoSalidaHandle)</span>
+0059 <span class="comment">%       guardarReacciones(nodoObj,archivoSalidaHandle)</span>
+0060 <span class="comment">%       Disp(nodoObj)</span>
+0061 <span class="comment">%       agregarElementos(nodoObj, elemObj)</span>
+0062 <span class="comment">%       obtenerElementos(nodoObj)</span>
+0063 <span class="comment">%       tipoApoyoRestringido(nodoObj)</span>
+0064 <span class="comment">%  Methods Suplerclass (ComponenteModelo):</span>
+0065 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0066 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0067 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0068 
+0069 classdef <a href="Nodo.html" class="code" title="">Nodo</a> &lt; <a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>
+0070     
+0071     properties(Access = private)
+0072         nGDL <span class="comment">% Numbero de grados de libertad (GDL)</span>
+0073         coords <span class="comment">% Coordenadas del nodo</span>
+0074         gdlID <span class="comment">% Vector que guarda el ID de los grados de libertad</span>
+0075         gdlIDCondensado <span class="comment">% Vector que guarda el ID de los grados de libertad despues de la condensacion</span>
+0076         despl <span class="comment">% Vector que guarda los desplazamientos del nodo</span>
+0077         cargas <span class="comment">% Vector que guarda las cargas aplicadas sobre el nodo</span>
+0078         reacciones <span class="comment">% Vector que guarda las reacciones del nodo</span>
+0079         elementos <span class="comment">% Cell que guarda los elementos que conectan el nodo</span>
+0080     <span class="keyword">end</span> <span class="comment">% properties Nodo</span>
+0081     
+0082     methods
+0083         
+0084         <a name="_sub0" href="#_subfunctions" class="code">function nodoObj = Nodo(etiquetaNodo, nGDLNodo, coordenadasNodo)</a>
+0085             <span class="comment">% Nodo: es el constructor de la clase Nodo</span>
+0086             <span class="comment">%</span>
+0087             <span class="comment">% nodoObj = Nodo(etiquetaNodo,nGDLNodo,coordenadasNodo)</span>
+0088             <span class="comment">%</span>
+0089             <span class="comment">% Crea un objeto de la clase Nodo, con un identificador unico (etiquetaNodo),</span>
+0090             <span class="comment">% con el el numero de GDL (nGDLNodo) y un vector que contine las</span>
+0091             <span class="comment">% coordenadas globales del nodo (coordenadasNodo)</span>
+0092             
+0093             <span class="comment">% Si no hay argumentos completa con ceros</span>
+0094             <span class="keyword">if</span> nargin == 0
+0095                 etiquetaNodo = <span class="string">''</span>;
+0096                 nGDLNodo = 0;
+0097                 coordenadasNodo = [];
+0098             <span class="keyword">end</span> <span class="comment">% if</span>
+0099             
+0100             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase ComponenteModelo</span>
+0101             nodoObj = nodoObj@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(etiquetaNodo);
+0102             
+0103             <span class="comment">% Guardamos el numero de grados de libertad (GDL) que tiene el nodo</span>
+0104             nodoObj.nGDL = nGDLNodo;
+0105             
+0106             <span class="comment">% Revisamos la orientacion del vector de coordenadas, para dejarlo como columna</span>
+0107             <span class="keyword">if</span> size(coordenadasNodo, 1) == 1
+0108                 nodoObj.coords = coordenadasNodo';
+0109             <span class="keyword">else</span>
+0110                 nodoObj.coords = coordenadasNodo;
+0111             <span class="keyword">end</span> <span class="comment">% if</span>
+0112             
+0113             <span class="comment">% Creamos el vector que guardara los ID para los diferentes</span>
+0114             <span class="comment">% GDL, que se usara en el analisis del modelo</span>
+0115             nodoObj.gdlID = -ones(nGDLNodo, 1);
+0116             nodoObj.gdlIDCondensado = -ones(nGDLNodo, 1);
+0117             
+0118             <span class="comment">% Definimos en zero todos los componentes guardados en el Nodo</span>
+0119             nodoObj.despl = zeros(nodoObj.nGDL, 1);
+0120             nodoObj.reacciones = zeros(nodoObj.nGDL, 1);
+0121             nodoObj.cargas = zeros(nodoObj.nGDL, 1);
+0122             
+0123             <span class="comment">% Crea el vector de eleentos</span>
+0124             nodoObj.elementos = {};
+0125             
+0126         <span class="keyword">end</span> <span class="comment">% Nodo constructor</span>
+0127         
+0128         <a name="_sub1" href="#_subfunctions" class="code">function nGDLNodo = obtenerNumeroGDL(nodoObj)</a>
+0129             <span class="comment">% obtenerNumeroGDL: es un metodo de la clase Nodo que se usa para</span>
+0130             <span class="comment">% obtener el numero de GDL que tiene el nodo</span>
+0131             <span class="comment">%</span>
+0132             <span class="comment">% nGDLNodo = obtenerNumeroGDL(nodoObj)</span>
+0133             <span class="comment">%</span>
+0134             <span class="comment">% Entrega el numero de grados de libertad (nGDLNodo) que tiene el</span>
+0135             <span class="comment">% nodo (nodoObj)</span>
+0136             
+0137             nGDLNodo = nodoObj.nGDL;
+0138             
+0139         <span class="keyword">end</span> <span class="comment">% obtenerNumeroGDL function</span>
+0140         
+0141         <a name="_sub2" href="#_subfunctions" class="code">function coordenadasNodo = obtenerCoordenadas(nodoObj)</a>
+0142             <span class="comment">% obtenerCoordenadas: es un metodo de la clase Nodo que se usa para</span>
+0143             <span class="comment">% obtener las coordenadas que tiene el Nodo en esl sistema de</span>
+0144             <span class="comment">% coordenadas global</span>
+0145             <span class="comment">%</span>
+0146             <span class="comment">% coordenadasNodo = obtenerCoordenadas(nodoObj)</span>
+0147             <span class="comment">%</span>
+0148             <span class="comment">% Entrega el vector con las coordenadas (coordenadasNodo) que tiene</span>
+0149             <span class="comment">% el Nodo (nodoObj) en el sistema de coordenadas global</span>
+0150             
+0151             coordenadasNodo = nodoObj.coords;
+0152             
+0153         <span class="keyword">end</span> <span class="comment">% obtenerCoordenadas function</span>
+0154         
+0155         <a name="_sub3" href="#_subfunctions" class="code">function gdlIDNodo = obtenerGDLID(nodoObj)</a>
+0156             <span class="comment">% obtenerGDLID: es un metodo de la clase Nodo que se usa para</span>
+0157             <span class="comment">% obtener los ID de los GDL que tiene el Nodo</span>
+0158             <span class="comment">%</span>
+0159             <span class="comment">% gdlIDNodo = obtenerGDLID(nodoObj)</span>
+0160             <span class="comment">%</span>
+0161             <span class="comment">% Entrega el vector con los ID de los GDL (gdlIDNodo) que tiene el</span>
+0162             <span class="comment">% Nodo (nodoObj)</span>
+0163             
+0164             gdlIDNodo = nodoObj.gdlID;
+0165             
+0166         <span class="keyword">end</span> <span class="comment">% obtenerGDLID function</span>
+0167         
+0168         <a name="_sub4" href="#_subfunctions" class="code">function gdlIDNodoCondensado = obtenerGDLIDCondensado(nodoObj)</a>
+0169             <span class="comment">% obtenerGDLIDCondensado: es un metodo de la clase Nodo que se usa para</span>
+0170             <span class="comment">% obtener los ID de los GDL que tiene el Nodo, una vez se</span>
+0171             <span class="comment">% llevo a cabo el proceso de condensacion</span>
+0172             <span class="comment">%</span>
+0173             <span class="comment">% gdlIDNodo = obtenerGDLID(nodoObj)</span>
+0174             <span class="comment">%</span>
+0175             <span class="comment">% Entrega el vector con los ID de los GDL (gdlIDNodo) que tiene el</span>
+0176             <span class="comment">% Nodo (nodoObj)</span>
+0177             
+0178             gdlIDNodoCondensado = nodoObj.gdlIDCondensado;
+0179             
+0180         <span class="keyword">end</span> <span class="comment">% obtenerGDLID function</span>
+0181         
+0182         <a name="_sub5" href="#_subfunctions" class="code">function cargasResultantesNodo = obtenerCargasResultantes(nodoObj)</a>
+0183             <span class="comment">% obtenerCargasResultantes: es un metodo de la clase Nodo que se usa</span>
+0184             <span class="comment">% para obtener las cargas resultantes que son aplicadas finalmente en</span>
+0185             <span class="comment">% el Nodo despues de aplicar todos los patrones de carga</span>
+0186             <span class="comment">%</span>
+0187             <span class="comment">% cargasResultantesNodo = obtenerCargasResultantes(nodoObj)</span>
+0188             <span class="comment">%</span>
+0189             <span class="comment">% Entrega el vector con las cargas resultantes (cargasResultantesNodo)</span>
+0190             <span class="comment">% que son finalmente aplicads sobre cada Nodo (nodoObj)</span>
+0191             
+0192             cargasResultantesNodo = nodoObj.cargas;
+0193             
+0194         <span class="keyword">end</span> <span class="comment">% obtenerCargasResultantes function</span>
+0195         
+0196         <a name="_sub6" href="#_subfunctions" class="code">function desplazamientosNodo = obtenerDesplazamientos(nodoObj)</a>
+0197             <span class="comment">% obtenerDesplazamientos: es un metodo de la clase Nodo que se usa para</span>
+0198             <span class="comment">% obtener los desplazamientos que son obtenidos en el Nodo despues</span>
+0199             <span class="comment">% de realizar el analisis</span>
+0200             <span class="comment">%</span>
+0201             <span class="comment">% desplazmientosNodo = obtenerDesplazamientos(nodoObj)</span>
+0202             <span class="comment">%</span>
+0203             <span class="comment">% Entrega el vector con los desplazamientos o rotaciones (desplazmientosNodo)</span>
+0204             <span class="comment">% que sufrio el Nodo (nodoObj) debido a la aplicacion de los patrones</span>
+0205             <span class="comment">% de carga</span>
+0206             
+0207             desplazamientosNodo = nodoObj.despl;
+0208             
+0209         <span class="keyword">end</span> <span class="comment">% obtenerDesplazamientos function</span>
+0210         
+0211         <a name="_sub7" href="#_subfunctions" class="code">function reaccionesNodo = obtenerReacciones(nodoObj)</a>
+0212             <span class="comment">% obtenerReacciones: es un metodo de la clase Nodo que se usa para</span>
+0213             <span class="comment">% obtener las reacciones que son obtenidos en el Nodo despues de</span>
+0214             <span class="comment">% realizar el analisis</span>
+0215             <span class="comment">%</span>
+0216             <span class="comment">% reaccionesNodo = obtenerReacciones(nodoObj)</span>
+0217             <span class="comment">%</span>
+0218             <span class="comment">% Entrega el vector con las reacciones (reaccionesNodo), fuerzas o</span>
+0219             <span class="comment">% momentos, que se obtinen el Nodo (nodoObj) debido a las</span>
+0220             <span class="comment">% restricciones del Modelo</span>
+0221             
+0222             reaccionesNodo = nodoObj.reacciones;
+0223             
+0224         <span class="keyword">end</span> <span class="comment">% obtenerReacciones function</span>
+0225         
+0226         <a name="_sub8" href="#_subfunctions" class="code">function definirGDLID(nodoObj, gdlIDNodo)</a>
+0227             <span class="comment">% definirGDLID: es un metodo de la clase Nodo que se usa para definir</span>
+0228             <span class="comment">% los ID de los GDL que tiene el Nodo asignados durante el proceso</span>
+0229             <span class="comment">% de enumeracion de estos, por defecto los ID condensados</span>
+0230             <span class="comment">% corresponden a los mismos que se enumeraron en un principio</span>
+0231             <span class="comment">%</span>
+0232             <span class="comment">% definirGDLID(nodoObj,gdlIDNodo)</span>
+0233             <span class="comment">%</span>
+0234             <span class="comment">% Guarda el ID que se fueron asignados a los grados de libertad (gdlIDNodo)</span>
+0235             <span class="comment">% que tiene el Nodo (nodoObj)</span>
+0236             
+0237             nodoObj.gdlID = gdlIDNodo;
+0238             nodoObj.gdlIDCondensado = gdlIDNodo;
+0239             
+0240         <span class="keyword">end</span> <span class="comment">% definirGDLID function</span>
+0241         
+0242         <a name="_sub9" href="#_subfunctions" class="code">function definirGDLIDCondensado(nodoObj, gdlIDNodoCondensado)</a>
+0243             <span class="comment">% definirGDLIDCondensado: es un metodo de la clase Nodo que se usa para definir</span>
+0244             <span class="comment">% los ID de los GDL que tiene el Nodo asignados una vez se</span>
+0245             <span class="comment">% condensa el modelo</span>
+0246             <span class="comment">%</span>
+0247             <span class="comment">% definirGDLID(nodoObj,gdlIDNodoCondensado)</span>
+0248             <span class="comment">%</span>
+0249             <span class="comment">% Guarda el ID que se fueron asignados a los grados de libertad (gdlIDNodo)</span>
+0250             <span class="comment">% que tiene el Nodo (nodoObj) una vez se aplica la condensacion</span>
+0251             
+0252             nodoObj.gdlIDCondensado = gdlIDNodoCondensado;
+0253             
+0254         <span class="keyword">end</span> <span class="comment">% definirGDLID function</span>
+0255         
+0256         <a name="_sub10" href="#_subfunctions" class="code">function y = tipoApoyoRestringido(nodoObj)</a>
+0257             <span class="comment">% tipoApoyoRestringido: el nodo esta completamente restringido</span>
+0258             <span class="comment">% al movimiento</span>
+0259             <span class="comment">%</span>
+0260             <span class="comment">% y = tipoApoyoRestringido(nodoObj)</span>
+0261             
+0262             y = <a href="../../../tefame/lib/isArrayEqual.html" class="code" title="function y = isArrayEqual(x, a)">isArrayEqual</a>(nodoObj.gdlID, 0) || <a href="../../../tefame/lib/isArrayEqual.html" class="code" title="function y = isArrayEqual(x, a)">isArrayEqual</a>(nodoObj.gdlID, -1);
+0263             
+0264         <span class="keyword">end</span> <span class="comment">% tipoApoyoRestringido function</span>
+0265         
+0266         <a name="_sub11" href="#_subfunctions" class="code">function definirDesplazamientos(nodoObj, desplazamientosNodo)</a>
+0267             <span class="comment">% definirDesplazamientos: es un metodo de la clase Nodo que se usa</span>
+0268             <span class="comment">% para informar sobre los desplazamientos que fueron obtenidos para</span>
+0269             <span class="comment">% el Nodo durante el analisis de sistema</span>
+0270             <span class="comment">%</span>
+0271             <span class="comment">% definirDesplazamientos(nodoObj,desplazamientosNodo)</span>
+0272             <span class="comment">%</span>
+0273             <span class="comment">% Guarda el vector con los desplazamientos (desplazamientosNodo) que</span>
+0274             <span class="comment">% fueron obtenidos para el Nodo (nodoObj)</span>
+0275             
+0276             nodoObj.despl = desplazamientosNodo;
+0277             
+0278         <span class="keyword">end</span> <span class="comment">% definirDesplazamiento function</span>
+0279         
+0280         <a name="_sub12" href="#_subfunctions" class="code">function agregarCarga(nodoObj, cargaNodo)</a>
+0281             <span class="comment">% agregarCarga: es un metodo de la clase Nodo que se usa para agregar</span>
+0282             <span class="comment">% un vector de fuerzas al nodo al aplicar el patron de cargas</span>
+0283             <span class="comment">%</span>
+0284             <span class="comment">% agregarCarga(nodoObj,cargaNodo)</span>
+0285             <span class="comment">% Agrega al vector de fuerzas del Nodo (nodoObj), el vector de fuerzas</span>
+0286             <span class="comment">% entregado (cargaNodo)</span>
+0287             
+0288             <span class="comment">% Se procede a sumar la carga entregada al vector de cargas del nodo</span>
+0289             <span class="comment">%             nodoObj.cargas = nodoObj.cargas + cargaNodo;</span>
+0290             <span class="comment">% Se resta la carga entregada al vector de reacciones para</span>
+0291             <span class="comment">% obtener las reacciones posterior al analisis</span>
+0292             
+0293             nodoObj.reacciones = nodoObj.reacciones - cargaNodo;
+0294             
+0295         <span class="keyword">end</span> <span class="comment">% agregarCarga function</span>
+0296         
+0297         <a name="_sub13" href="#_subfunctions" class="code">function agregarElementos(nodoObj, elemObj)</a>
+0298             <span class="comment">% agregarElementos: Agrega elementos al nodo</span>
+0299             <span class="comment">%</span>
+0300             <span class="comment">% agregarElementos(nodoObj, elemObj)</span>
+0301             
+0302             n = length(nodoObj.elementos);
+0303             nodoObj.elementos{n+1} = elemObj;
+0304             
+0305         <span class="keyword">end</span> <span class="comment">% agregarElementos function</span>
+0306         
+0307         <a name="_sub14" href="#_subfunctions" class="code">function elem_nodos = obtenerElementos(nodoObj)</a>
+0308             <span class="comment">% obtenerElementos: Obtiene los elementos que convergen en el nodo</span>
+0309             <span class="comment">%</span>
+0310             <span class="comment">% elem_nodos = obtenerElementos(nodoObj)</span>
+0311             
+0312             elem_nodos = nodoObj.elementos;
+0313             
+0314         <span class="keyword">end</span> <span class="comment">% obtenerElementos function</span>
+0315         
+0316         <a name="_sub15" href="#_subfunctions" class="code">function agregarEsfuerzosElementoAReaccion(nodoObj, esfuerzosElemento)</a>
+0317             <span class="comment">% agregarEsfuerzosElementoAReaccion: es un metodo de la clase Nodo</span>
+0318             <span class="comment">% que se usa para agregar el vector de fuerzas resistentes de un</span>
+0319             <span class="comment">% elemento al nodo</span>
+0320             <span class="comment">%</span>
+0321             <span class="comment">% agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)</span>
+0322             <span class="comment">%</span>
+0323             <span class="comment">% Agrega al vector de reacciones del Nodo (nodoObj), el vector de</span>
+0324             <span class="comment">% fuerzas resistente de un elemento entregados (cargaNodo)</span>
+0325             <span class="comment">% Se procede a sumar el vector con las fuerzas resistente entregada</span>
+0326             <span class="comment">% de un elemento al vector de reacciones del nodo</span>
+0327             
+0328             nodoObj.reacciones = nodoObj.reacciones + esfuerzosElemento;
+0329             
+0330         <span class="keyword">end</span> <span class="comment">% agregarEsfuerzoAReaccion function</span>
+0331         
+0332         <a name="_sub16" href="#_subfunctions" class="code">function inicializar(nodoObj)</a>
+0333             <span class="comment">% inicializar: es un metodo de la clase Nodo que se usa para inicializar</span>
+0334             <span class="comment">% las diferentes vectores que contienne los desplazamientos, cargas</span>
+0335             <span class="comment">% y reacciones en el nodo</span>
+0336             <span class="comment">%</span>
+0337             <span class="comment">% inicializar(nodoObj)</span>
+0338             <span class="comment">%</span>
+0339             <span class="comment">% Inicializa los diferentes vectores del Nodo que estan guardados en</span>
+0340             <span class="comment">% este (nodoObj), para poder preparar estos para realizar el analisis</span>
+0341             
+0342             <span class="comment">% Se inicializan en zero los vectores del tamano de los numero de GDL</span>
+0343             nodoObj.despl = zeros(nodoObj.nGDL, 1);
+0344             nodoObj.reacciones = zeros(nodoObj.nGDL, 1);
+0345             nodoObj.cargas = zeros(nodoObj.nGDL, 1);
+0346             
+0347         <span class="keyword">end</span> <span class="comment">% reiniciar function</span>
+0348         
+0349         <a name="_sub17" href="#_subfunctions" class="code">function guardarPropiedades(nodoObj, archivoSalidaHandle)</a>
+0350             <span class="comment">% guardarPropiedades: es un metodo de la clase Nodo que se usa para</span>
+0351             <span class="comment">% guardar en un archivo de salida las propiedades del Nodo</span>
+0352             <span class="comment">% (Coordenadas)</span>
+0353             <span class="comment">%</span>
+0354             <span class="comment">% guardarPropiedades(nodoObj,archivoSalidaHandle)</span>
+0355             <span class="comment">%</span>
+0356             <span class="comment">% Guarda las propiedades de los Nodos (nodoObj), en un archivo de</span>
+0357             <span class="comment">% salida (archivoSalidaHandle)</span>
+0358             
+0359             <span class="comment">% Se procede a imprimir en el archivo</span>
+0360             fprintf(archivoSalidaHandle, [<span class="string">'\tNodo '</span>, nodoObj.obtenerEtiqueta(), <span class="string">': '</span>]);
+0361             Crds = <a href="../../../tefame/lib/arrayNum2str.html" class="code" title="function textCell = arrayNum2str(a, num)">arrayNum2str</a>(nodoObj.coords, length(nodoObj.coords));
+0362             fprintf(archivoSalidaHandle, <span class="string">'%s\n'</span>, [Crds{2:end-1}]);
+0363             
+0364         <span class="keyword">end</span> <span class="comment">% guardarPropiedades function</span>
+0365         
+0366         <a name="_sub18" href="#_subfunctions" class="code">function guardarDesplazamientos(nodoObj, archivoSalidaHandle)</a>
+0367             <span class="comment">% guardarDesplazamientos: es un metodo de la clase Nodo que se usa</span>
+0368             <span class="comment">% para guardar en un archivo de salida el vector de desplazamientos</span>
+0369             <span class="comment">% del Nodo obtenido en el analisis</span>
+0370             <span class="comment">%</span>
+0371             <span class="comment">% guardarDesplazamientos(nodoObj,archivoSalidaHandle)</span>
+0372             <span class="comment">%</span>
+0373             <span class="comment">% Guarda el vector de desplazamientos del Nodo (nodoObj), en un archivo</span>
+0374             <span class="comment">% de salida (archivoSalidaHandle)</span>
+0375             
+0376             <span class="comment">% Se procede a imprimir en el archivo</span>
+0377             fprintf(archivoSalidaHandle, [<span class="string">'\tNodo '</span>, nodoObj.obtenerEtiqueta(), <span class="string">': '</span>]);
+0378             desplazamientos = <a href="../../../tefame/lib/arrayNum2str.html" class="code" title="function textCell = arrayNum2str(a, num)">arrayNum2str</a>(round(nodoObj.despl, 5), length(nodoObj.despl));
+0379             fprintf(archivoSalidaHandle, <span class="string">'%s\n'</span>, [desplazamientos{2:end-1}]);
+0380             
+0381         <span class="keyword">end</span> <span class="comment">% guardarDesplazamientos function</span>
+0382         
+0383         <a name="_sub19" href="#_subfunctions" class="code">function guardarReacciones(nodoObj, archivoSalidaHandle)</a>
+0384             <span class="comment">% guardarReacciones: es un metodo de la clase Nodo que se usa para</span>
+0385             <span class="comment">% guardar en un archivo de salida el vector de reacciones del Nodo</span>
+0386             <span class="comment">% obtenido en el analisis</span>
+0387             <span class="comment">%</span>
+0388             <span class="comment">% guardarReacciones(nodoObj,archivoSalidaHandle)</span>
+0389             <span class="comment">%</span>
+0390             <span class="comment">% Guarda el vector de reacciones del Nodo (nodoObj), en un archivo</span>
+0391             <span class="comment">% de salida (archivoSalidaHandle)</span>
+0392             
+0393             <span class="comment">% Se procede a imprimir en el archivo</span>
+0394             fprintf(archivoSalidaHandle, [<span class="string">'\tNodo '</span>, nodoObj.obtenerEtiqueta(), <span class="string">': '</span>]);
+0395             reacc = <a href="../../../tefame/lib/arrayNum2str.html" class="code" title="function textCell = arrayNum2str(a, num)">arrayNum2str</a>(nodoObj.reacciones, length(nodoObj.despl));
+0396             fprintf(archivoSalidaHandle, <span class="string">'%s\n'</span>, [reacc{2:end-1}]);
+0397             
+0398         <span class="keyword">end</span> <span class="comment">% guardarReacciones function</span>
+0399         
+0400         <a name="_sub20" href="#_subfunctions" class="code">function plot(nodoObj, deformada, color, escala)</a>
+0401             <span class="comment">% plot: Grafica el nodo</span>
+0402             <span class="comment">%</span>
+0403             <span class="comment">% plot(nodoObj,deformada,estilo)</span>
+0404             
+0405             <span class="keyword">if</span> ~exist(<span class="string">'escala'</span>, <span class="string">'var'</span>)
+0406                 escala = 20;
+0407             <span class="keyword">end</span>
+0408             
+0409             coord = nodoObj.obtenerCoordenadas();
+0410             <span class="keyword">if</span> ~length(deformada) == 0
+0411                 coord = coord + deformada;
+0412             <span class="keyword">end</span>
+0413             
+0414             <span class="comment">% Determina el tipo de apoyo</span>
+0415             <span class="keyword">if</span> nodoObj.tipoApoyoRestringido()
+0416                 <span class="keyword">return</span>
+0417             <span class="keyword">else</span>
+0418                 color = strcat(color, <span class="string">'.'</span>);
+0419             <span class="keyword">end</span>
+0420             
+0421             <span class="comment">% Grafica el nodo</span>
+0422             ngdlid = length(coord);
+0423             <span class="keyword">if</span> ngdlid == 2
+0424                 <a href="#_sub21" class="code" title="subfunction plot(nodoObj, deformada, color, escala)">plot</a>(coord(1), coord(2), color, <span class="string">'MarkerSize'</span>, escala);
+0425             <span class="keyword">else</span>
+0426                 plot3(coord(1), coord(2), coord(3), color, <span class="string">'MarkerSize'</span>, escala);
+0427             <span class="keyword">end</span>
+0428             
+0429         <span class="keyword">end</span> <span class="comment">% plot function</span>
+0430         
+0431         <a name="_sub21" href="#_subfunctions" class="code">function disp(nodoObj)</a>
+0432             <span class="comment">% disp: es un metodo de la clase Nodo que se usa para imprimir en</span>
+0433             <span class="comment">% command Window la informacion del Nodo</span>
+0434             <span class="comment">%</span>
+0435             <span class="comment">% disp(nodoObj)</span>
+0436             <span class="comment">%</span>
+0437             <span class="comment">% Imprime la informacion guardada en el Nodo (nodoObj) en pantalla</span>
+0438             
+0439             fprintf(<span class="string">'Propiedades nodo:\n'</span>);
+0440             <a href="#_sub22" class="code" title="subfunction disp(nodoObj)">disp</a>@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(nodoObj);
+0441             
+0442             numCrds = length(nodoObj.coords);
+0443             Crds = <a href="../../../tefame/lib/arrayNum2str.html" class="code" title="function textCell = arrayNum2str(a, num)">arrayNum2str</a>(nodoObj.coords, numCrds);
+0444             fprintf(<span class="string">'\tCoordenadas: %s\n'</span>, [Crds{:}]);
+0445             
+0446             nGDLNodo = nodoObj.nGDL;
+0447             fprintf(<span class="string">'\tNumero de grados de libertad: %s\n'</span>, num2str(nGDLNodo));
+0448             
+0449             GdlID = <a href="../../../tefame/lib/arrayIntNum2str.html" class="code" title="function textCell = arrayIntNum2str(a, num)">arrayIntNum2str</a>(nodoObj.gdlID, nGDLNodo);
+0450             fprintf(<span class="string">'\tID global de los grados de libertad: %s\n'</span>, [GdlID{:}]);
+0451             GdlID = <a href="../../../tefame/lib/arrayIntNum2str.html" class="code" title="function textCell = arrayIntNum2str(a, num)">arrayIntNum2str</a>(nodoObj.gdlIDCondensado, nGDLNodo);
+0452             fprintf(<span class="string">'\tID condensados de los grados de libertad: %s\n'</span>, [GdlID{:}]);
+0453             desplazamientoNodo = <a href="../../../tefame/lib/arrayNum2str.html" class="code" title="function textCell = arrayNum2str(a, num)">arrayNum2str</a>(nodoObj.despl, nGDLNodo);
+0454             fprintf(<span class="string">'\tDesplazamientos: %s\n'</span>, [desplazamientoNodo{:}]);
+0455             reaccionesNodo = <a href="../../../tefame/lib/arrayNum2str.html" class="code" title="function textCell = arrayNum2str(a, num)">arrayNum2str</a>(nodoObj.reacciones, nGDLNodo);
+0456             fprintf(<span class="string">'\tReacciones: %s\n'</span>, [reaccionesNodo{:}]);
+0457 
+0458             <a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
+0459             
+0460         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0461         
+0462     <span class="keyword">end</span> <span class="comment">% methods Nodo</span>
+0463     
+0464 <span class="keyword">end</span> <span class="comment">% class Nodo</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

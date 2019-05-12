@@ -1,0 +1,12 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  PatronDeCargas -> PatronDeCargas;
+  PatronDeCargasConstante -> PatronDeCargas;
+  PatronDeCargasConstante -> PatronDeCargasConstante;
+  PatronDeCargasDinamico -> PatronDeCargas;
+  PatronDeCargasDinamico -> PatronDeCargasDinamico;
+
+  PatronDeCargas [URL="PatronDeCargas.html"];
+  PatronDeCargasConstante [URL="PatronDeCargasConstante.html"];
+  PatronDeCargasDinamico [URL="PatronDeCargasDinamico.html"];
+}

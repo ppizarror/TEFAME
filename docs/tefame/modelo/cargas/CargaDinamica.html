@@ -1,0 +1,511 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of CargaDinamica</title>
+  <meta name="keywords" content="CargaDinamica">
+  <meta name="description" content="______________________________________________________________________">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- # modelo --><!-- menu.html cargas -->
+<h1>CargaDinamica
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>______________________________________________________________________</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ______________________________________________________________________
+|                                                                      |
+|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+|                  Matricial de Estructuras en MATLAB                  |
+|                                                                      |
+|                   Area  de Estructuras y Geotecnia                   |
+|                   Departamento de Ingenieria Civil                   |
+|              Facultad de Ciencias Fisicas y Matematicas              |
+|                         Universidad de Chile                         |
+|                                                                      |
+| TEFAME es una  plataforma en base a objetos para modelar, analizar y |
+| visualizar  la respuesta de sistemas  estructurales usando el metodo |
+| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
+| La plataforma es desarrollada en  propagacion orientada a objetos en |
+| MATLAB.                                                              |
+|______________________________________________________________________|
+ ______________________________________________________________________
+|                                                                      |
+| Clase CargaDinamica                                                  |
+|                                                                      |
+| Este archivo contiene la definicion de la Clase CargaDinamica        |
+| Carga  es una  subclase  de la  clase ComponenteModelo y corresponde |
+| a la representacion  de una carga dinamica, la cual se ejecuta y     |
+| guarda los resultados del analisis en la carga misma.                |
+| La clase  Carga se usa  como una superclase  para todos los tipos de |
+| cargas dinamicas a aplicar                                           |
+|                                                                      |
+| Programado: Pablo Pizarro @ppizarror                                 |
+| Fecha: 10/04/2019                                                    |
+|______________________________________________________________________|
+
+  Properties(Access=private):
+       sol_u
+       sol_v
+       sol_a
+       cargaActiva
+       cRayleigh
+       usoDisipador
+       desModal
+       factorCargaMasa
+       factorUnidadMasa
+       nodosCarga
+  Properties(Access=public):
+       tAnalisis
+       dt
+  Methods:
+       cargaDinamicaObj = Carga(etiquetaCarga)
+       aplicarCarga(cargaDinamicaObj)
+       disp(cargaDinamicaObj)
+       guardarCarga(cargaDinamicaObj,p)
+       guardarDesplazamiento(cargaDinamicaObj,u)
+       guardarVelocidad(cargaDinamicaObj,v)
+       guardarAceleracion(cargaDinamicaObj,a)
+       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
+       usoDisipadores(cargaDinamicaObj,disipador)
+       descomposicionModal(cargaDinamicaObj,desmodal)
+       t = obtenerVectorTiempo(cargaDinamicaObj)
+       p = obtenerCarga(cargaDinamicaObj)
+       u = obtenerDesplazamiento(cargaDinamicaObj)
+       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
+       v = obtenerVelocidad(cargaDinamicaObj)
+       a = obtenerAceleracion(cargaDinamicaObj)
+       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
+       dm = usoDescomposicionModal(cargaDinamicaObj)
+       disipador = usoDeDisipadores(cargaDinamicaObj)
+       masa = obtenerMasa(cargaDinamicaObj)
+       definirFactorUnidadMasa(cargaDinamicaObj,factor)
+       definirFactorCargaMasa(cargaDinamicaObj,factor)
+       nodos = obtenerNodos(cargaDinamicaObj)
+  Methods SuperClass (ComponenteModelo):
+       etiqueta = obtenerEtiqueta(componenteModeloObj)
+       e = equals(componenteModeloObj,obj)
+       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li><li><a href="CargaDinamica.html" class="code" title="">CargaDinamica</a>	______________________________________________________________________</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li><li><a href="CargaDinamica.html" class="code" title="">CargaDinamica</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/dinamicas/CargaPulso.html" class="code" title="">CargaPulso</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/dinamicas/CargaRegistroSismico.html" class="code" title="">CargaRegistroSismico</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/dinamicas/CargaSinusoidal.html" class="code" title="">CargaSinusoidal</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function cargaDinamicaObj = CargaDinamica(etiquetaCarga)</a></li><li><a href="#_sub2" class="code">function bloquearCargaMasa(cargaDinamicaObj)</a></li><li><a href="#_sub3" class="code">function c = cargaSumaMasa(cargaDinamicaObj)</a></li><li><a href="#_sub4" class="code">function t = obtenerVectorTiempo(cargaDinamicaObj)</a></li><li><a href="#_sub5" class="code">function activarCarga(cargaDinamicaObj)</a></li><li><a href="#_sub6" class="code">function desactivarCarga(cargaDinamicaObj)</a></li><li><a href="#_sub7" class="code">function y = cargaActivada(cargaDinamicaObj)</a></li><li><a href="#_sub8" class="code">function p = calcularCarga(cargaDinamicaObj, factor, m, r, dispinfo)</a></li><li><a href="#_sub9" class="code">function guardarCarga(cargaDinamicaObj, p)</a></li><li><a href="#_sub10" class="code">function guardarDesplazamiento(cargaDinamicaObj, u)</a></li><li><a href="#_sub11" class="code">function guardarVelocidad(cargaDinamicaObj, v)</a></li><li><a href="#_sub12" class="code">function guardarAceleracion(cargaDinamicaObj, a)</a></li><li><a href="#_sub13" class="code">function amortiguamientoRayleigh(cargaDinamicaObj, rayleigh)</a></li><li><a href="#_sub14" class="code">function usoDisipadores(cargaDinamicaObj, disipador)</a></li><li><a href="#_sub15" class="code">function descomposicionModal(cargaDinamicaObj, desmodal)</a></li><li><a href="#_sub16" class="code">function p = obtenerCarga(cargaDinamicaObj)</a></li><li><a href="#_sub17" class="code">function u = obtenerDesplazamiento(cargaDinamicaObj)</a></li><li><a href="#_sub18" class="code">function u = obtenerDesplazamientoTiempo(cargaDinamicaObj, gdl, tiempo)</a></li><li><a href="#_sub19" class="code">function v = obtenerVelocidad(cargaDinamicaObj)</a></li><li><a href="#_sub20" class="code">function a = obtenerAceleracion(cargaDinamicaObj)</a></li><li><a href="#_sub21" class="code">function r = usoAmortiguamientoRayleigh(cargaDinamicaObj)</a></li><li><a href="#_sub22" class="code">function disipador = usoDeDisipadores(cargaDinamicaObj)</a></li><li><a href="#_sub23" class="code">function dm = usoDescomposicionModal(cargaDinamicaObj)</a></li><li><a href="#_sub24" class="code">function disp(cargaDinamicaObj)</a></li><li><a href="#_sub25" class="code">function masa = obtenerMasa(cargaDinamicaObj)</a></li><li><a href="#_sub26" class="code">function definirFactorUnidadMasa(cargaDinamicaObj, factor)</a></li><li><a href="#_sub27" class="code">function definirFactorCargaMasa(cargaDinamicaObj, factor)</a></li><li><a href="#_sub28" class="code">function nodos = obtenerNodos(cargaDinamicaObj)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
+0002 <span class="comment">%|                                                                      |</span>
+0003 <span class="comment">%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |</span>
+0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
+0005 <span class="comment">%|                                                                      |</span>
+0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
+0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
+0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
+0009 <span class="comment">%|                         Universidad de Chile                         |</span>
+0010 <span class="comment">%|                                                                      |</span>
+0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
+0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
+0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
+0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
+0015 <span class="comment">%| MATLAB.                                                              |</span>
+0016 <span class="comment">%|______________________________________________________________________|</span>
+0017 <span class="comment">% ______________________________________________________________________</span>
+0018 <span class="comment">%|                                                                      |</span>
+0019 <span class="comment">%| Clase CargaDinamica                                                  |</span>
+0020 <span class="comment">%|                                                                      |</span>
+0021 <span class="comment">%| Este archivo contiene la definicion de la Clase CargaDinamica        |</span>
+0022 <span class="comment">%| Carga  es una  subclase  de la  clase ComponenteModelo y corresponde |</span>
+0023 <span class="comment">%| a la representacion  de una carga dinamica, la cual se ejecuta y     |</span>
+0024 <span class="comment">%| guarda los resultados del analisis en la carga misma.                |</span>
+0025 <span class="comment">%| La clase  Carga se usa  como una superclase  para todos los tipos de |</span>
+0026 <span class="comment">%| cargas dinamicas a aplicar                                           |</span>
+0027 <span class="comment">%|                                                                      |</span>
+0028 <span class="comment">%| Programado: Pablo Pizarro @ppizarror                                 |</span>
+0029 <span class="comment">%| Fecha: 10/04/2019                                                    |</span>
+0030 <span class="comment">%|______________________________________________________________________|</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%  Properties(Access=private):</span>
+0033 <span class="comment">%       sol_u</span>
+0034 <span class="comment">%       sol_v</span>
+0035 <span class="comment">%       sol_a</span>
+0036 <span class="comment">%       cargaActiva</span>
+0037 <span class="comment">%       cRayleigh</span>
+0038 <span class="comment">%       usoDisipador</span>
+0039 <span class="comment">%       desModal</span>
+0040 <span class="comment">%       factorCargaMasa</span>
+0041 <span class="comment">%       factorUnidadMasa</span>
+0042 <span class="comment">%       nodosCarga</span>
+0043 <span class="comment">%  Properties(Access=public):</span>
+0044 <span class="comment">%       tAnalisis</span>
+0045 <span class="comment">%       dt</span>
+0046 <span class="comment">%  Methods:</span>
+0047 <span class="comment">%       cargaDinamicaObj = Carga(etiquetaCarga)</span>
+0048 <span class="comment">%       aplicarCarga(cargaDinamicaObj)</span>
+0049 <span class="comment">%       disp(cargaDinamicaObj)</span>
+0050 <span class="comment">%       guardarCarga(cargaDinamicaObj,p)</span>
+0051 <span class="comment">%       guardarDesplazamiento(cargaDinamicaObj,u)</span>
+0052 <span class="comment">%       guardarVelocidad(cargaDinamicaObj,v)</span>
+0053 <span class="comment">%       guardarAceleracion(cargaDinamicaObj,a)</span>
+0054 <span class="comment">%       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)</span>
+0055 <span class="comment">%       usoDisipadores(cargaDinamicaObj,disipador)</span>
+0056 <span class="comment">%       descomposicionModal(cargaDinamicaObj,desmodal)</span>
+0057 <span class="comment">%       t = obtenerVectorTiempo(cargaDinamicaObj)</span>
+0058 <span class="comment">%       p = obtenerCarga(cargaDinamicaObj)</span>
+0059 <span class="comment">%       u = obtenerDesplazamiento(cargaDinamicaObj)</span>
+0060 <span class="comment">%       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)</span>
+0061 <span class="comment">%       v = obtenerVelocidad(cargaDinamicaObj)</span>
+0062 <span class="comment">%       a = obtenerAceleracion(cargaDinamicaObj)</span>
+0063 <span class="comment">%       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)</span>
+0064 <span class="comment">%       dm = usoDescomposicionModal(cargaDinamicaObj)</span>
+0065 <span class="comment">%       disipador = usoDeDisipadores(cargaDinamicaObj)</span>
+0066 <span class="comment">%       masa = obtenerMasa(cargaDinamicaObj)</span>
+0067 <span class="comment">%       definirFactorUnidadMasa(cargaDinamicaObj,factor)</span>
+0068 <span class="comment">%       definirFactorCargaMasa(cargaDinamicaObj,factor)</span>
+0069 <span class="comment">%       nodos = obtenerNodos(cargaDinamicaObj)</span>
+0070 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
+0071 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0072 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0073 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0074 
+0075 classdef <a href="CargaDinamica.html" class="code" title="">CargaDinamica</a> &lt; <a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>
+0076     
+0077     properties(Access = private)
+0078         cargaSumoMasa <span class="comment">% Indica que la carga ya sumo masa</span>
+0079     <span class="keyword">end</span> <span class="comment">% properties CargaDinamica</span>
+0080     
+0081     properties(Access = protected)
+0082         sol_u <span class="comment">% Guarda la solucion de los desplazamientos</span>
+0083         sol_v <span class="comment">% Guarda la solucion de las velocidades</span>
+0084         sol_a <span class="comment">% Guarda la solucion de las aceleraciones</span>
+0085         sol_p <span class="comment">% Guarda la carga generada</span>
+0086         cargaActiva <span class="comment">% Indica si la carga esta activada o no</span>
+0087         cRayleigh <span class="comment">% Indica que la carga se calculo con C de Rayleigh</span>
+0088         usoDisipador <span class="comment">% Indica que se usaron disipadores</span>
+0089         desModal <span class="comment">% Indica que la carga se calculo usando descomposicion modal</span>
+0090         factorCargaMasa <span class="comment">% Factor de masa de la carga</span>
+0091         factorUnidadMasa <span class="comment">% Factor unidad de la masa</span>
+0092         nodosCarga <span class="comment">% Nodos que participan en la carga</span>
+0093     <span class="keyword">end</span> <span class="comment">% properties CargaDinamica</span>
+0094     
+0095     properties(Access = public)
+0096         tAnalisis <span class="comment">% Tiempo de analisis</span>
+0097         tInicio <span class="comment">% Tiempo de inicio</span>
+0098         dt <span class="comment">% Delta de tiempo</span>
+0099     <span class="keyword">end</span> <span class="comment">% properties CargaDinamica</span>
+0100     
+0101     methods
+0102         
+0103         <a name="_sub0" href="#_subfunctions" class="code">function cargaDinamicaObj = CargaDinamica(etiquetaCarga)</a>
+0104             <span class="comment">% CargaDinamica: es el constructor de la clase CargaDinamica</span>
+0105             <span class="comment">%</span>
+0106             <span class="comment">% cargaDinamicaObj = CargaDinamica(etiquetaCarga)</span>
+0107             <span class="comment">%</span>
+0108             <span class="comment">% Crea un objeto de la clase CargaDinamica, con un identificador unico</span>
+0109             <span class="comment">% (etiquetaCarga)</span>
+0110             
+0111             <span class="keyword">if</span> nargin == 0
+0112                 etiquetaCarga = <span class="string">''</span>;
+0113             <span class="keyword">end</span> <span class="comment">% if</span>
+0114             
+0115             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase ComponenteModelo</span>
+0116             cargaDinamicaObj = cargaDinamicaObj@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(etiquetaCarga);
+0117             cargaDinamicaObj.cargaActiva = true;
+0118             cargaDinamicaObj.cRayleigh = false;
+0119             cargaDinamicaObj.usoDisipador = false;
+0120             cargaDinamicaObj.desModal = false;
+0121             cargaDinamicaObj.factorUnidadMasa = 1;
+0122             cargaDinamicaObj.factorCargaMasa = 0;
+0123             
+0124             <span class="comment">% Define algunos parametros iniciales</span>
+0125             cargaDinamicaObj.tInicio = 0;
+0126             cargaDinamicaObj.dt = 1;
+0127             cargaDinamicaObj.tAnalisis = 0;
+0128             cargaDinamicaObj.cargaSumoMasa = false;
+0129             
+0130         <span class="keyword">end</span> <span class="comment">% CargaDinamica constructor</span>
+0131         
+0132         <a name="_sub1" href="#_subfunctions" class="code">function bloquearCargaMasa(cargaDinamicaObj)</a>
+0133             <span class="comment">% bloquearCargaMasa: La carga deja de sumar masa</span>
+0134             <span class="comment">%</span>
+0135             <span class="comment">% bloquearCargaMasa(cargaDinamicaObj)</span>
+0136            
+0137             cargaDinamicaObj.cargaSumoMasa = true;
+0138             
+0139         <span class="keyword">end</span> <span class="comment">% bloquearCargaMasa function</span>
+0140         
+0141         <a name="_sub2" href="#_subfunctions" class="code">function c = cargaSumaMasa(cargaDinamicaObj)</a>
+0142             <span class="comment">% cargaSumaMasa: Indica que la carga suma masa al sistema</span>
+0143             <span class="comment">%</span>
+0144             <span class="comment">% c = cargaSumaMasa(cargaDinamicaObj)</span>
+0145             
+0146             c = ~cargaDinamicaObj.cargaSumoMasa;
+0147             
+0148         <span class="keyword">end</span> <span class="comment">% cargaSumaMasa function</span>
+0149         
+0150         <a name="_sub3" href="#_subfunctions" class="code">function t = obtenerVectorTiempo(cargaDinamicaObj)</a>
+0151             <span class="comment">% obtenerVectorTiempo: Obtiene el vector de tiempo que define</span>
+0152             <span class="comment">% la carga</span>
+0153             <span class="comment">%</span>
+0154             <span class="comment">% t = obtenerVectorTiempo(cargaDinamicaObj)</span>
+0155             
+0156             nt = cargaDinamicaObj.tAnalisis / cargaDinamicaObj.dt;
+0157             t = linspace(cargaDinamicaObj.tInicio, cargaDinamicaObj.tInicio+cargaDinamicaObj.tAnalisis, nt);
+0158             
+0159         <span class="keyword">end</span> <span class="comment">% obtenerVectorTiempo function</span>
+0160         
+0161         <a name="_sub4" href="#_subfunctions" class="code">function activarCarga(cargaDinamicaObj)</a>
+0162             <span class="comment">% activarCarga: Activa la carga para el analisis</span>
+0163             <span class="comment">%</span>
+0164             <span class="comment">% activarCarga(cargaDinamicaObj)</span>
+0165             
+0166             cargaDinamicaObj.cargaActiva = true;
+0167             
+0168         <span class="keyword">end</span> <span class="comment">% activarCarga function</span>
+0169         
+0170         <a name="_sub5" href="#_subfunctions" class="code">function desactivarCarga(cargaDinamicaObj)</a>
+0171             <span class="comment">% desactivarCarga: Desactiva la carga para el analisis</span>
+0172             <span class="comment">%</span>
+0173             <span class="comment">% desactivarCarga(cargaDinamicaObj)</span>
+0174             
+0175             cargaDinamicaObj.cargaActiva = false;
+0176             
+0177         <span class="keyword">end</span> <span class="comment">% desactivarCarga function</span>
+0178         
+0179         <a name="_sub6" href="#_subfunctions" class="code">function y = cargaActivada(cargaDinamicaObj)</a>
+0180             <span class="comment">% cargaActivada: Indica si la carga esta activada para el</span>
+0181             <span class="comment">% analisis</span>
+0182             <span class="comment">%</span>
+0183             <span class="comment">% y = cargaActivada(cargaDinamicaObj)</span>
+0184             
+0185             y = cargaDinamicaObj.cargaActiva;
+0186             
+0187         <span class="keyword">end</span> <span class="comment">% cargaActivada function</span>
+0188         
+0189         <a name="_sub7" href="#_subfunctions" class="code">function p = calcularCarga(cargaDinamicaObj, factor, m, r, dispinfo) </a><span class="comment">%#ok&lt;*STOUT,*VANUS,INUSD&gt;</span>
+0190             <span class="comment">% calcularCarga: es un metodo de la clase CargaDinamica que se usa para</span>
+0191             <span class="comment">% calcular la carga a aplicar</span>
+0192             <span class="comment">%</span>
+0193             <span class="comment">% calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)</span>
+0194             
+0195         <span class="keyword">end</span> <span class="comment">% calcularCarga function</span>
+0196         
+0197         <a name="_sub8" href="#_subfunctions" class="code">function guardarCarga(cargaDinamicaObj, p)</a>
+0198             <span class="comment">% guardarCarga: Guarda la carga generada</span>
+0199             <span class="comment">%</span>
+0200             <span class="comment">% guardarCarga(cargaDinamicaObj,u)</span>
+0201             
+0202             cargaDinamicaObj.sol_p = p;
+0203             
+0204         <span class="keyword">end</span> <span class="comment">% guardarCarga function</span>
+0205         
+0206         <a name="_sub9" href="#_subfunctions" class="code">function guardarDesplazamiento(cargaDinamicaObj, u)</a>
+0207             <span class="comment">% guardarDesplazamiento: Guarda el desplazamiento de la carga</span>
+0208             <span class="comment">%</span>
+0209             <span class="comment">% guardarDesplazamiento(cargaDinamicaObj,u)</span>
+0210             
+0211             cargaDinamicaObj.sol_u = u;
+0212             
+0213         <span class="keyword">end</span> <span class="comment">% guardarDesplazamiento function</span>
+0214         
+0215         <a name="_sub10" href="#_subfunctions" class="code">function guardarVelocidad(cargaDinamicaObj, v)</a>
+0216             <span class="comment">% guardarVelocidad: Guarda la velocidad de la carga</span>
+0217             <span class="comment">%</span>
+0218             <span class="comment">% guardarVelocidad(cargaDinamicaObj,v)</span>
+0219             
+0220             cargaDinamicaObj.sol_v = v;
+0221             
+0222         <span class="keyword">end</span> <span class="comment">% guardarVelocidad function</span>
+0223         
+0224         <a name="_sub11" href="#_subfunctions" class="code">function guardarAceleracion(cargaDinamicaObj, a)</a>
+0225             <span class="comment">% guardarAceleracion: Guarda la aceleracion de la carga</span>
+0226             <span class="comment">%</span>
+0227             <span class="comment">% guardarAceleracion(cargaDinamicaObj,a)</span>
+0228             
+0229             cargaDinamicaObj.sol_a = a;
+0230             
+0231         <span class="keyword">end</span> <span class="comment">% guardarAceleracion function</span>
+0232         
+0233         <a name="_sub12" href="#_subfunctions" class="code">function amortiguamientoRayleigh(cargaDinamicaObj, rayleigh)</a>
+0234             <span class="comment">% amortiguamientoRayleigh: Indica el tipo de amortiguamiento usado en el</span>
+0235             <span class="comment">% calculo</span>
+0236             <span class="comment">%</span>
+0237             <span class="comment">% amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)</span>
+0238             
+0239             cargaDinamicaObj.cRayleigh = rayleigh;
+0240             
+0241         <span class="keyword">end</span> <span class="comment">% disipasionRayleigh</span>
+0242         
+0243         <a name="_sub13" href="#_subfunctions" class="code">function usoDisipadores(cargaDinamicaObj, disipador)</a>
+0244             <span class="comment">% usoDisipadores: Indica que se usaron disipadores en el calculo</span>
+0245             <span class="comment">%</span>
+0246             <span class="comment">% usoDisipadores(cargaDinamicaObj,disipador)</span>
+0247             
+0248             cargaDinamicaObj.usoDisipador = disipador;
+0249             
+0250         <span class="keyword">end</span> <span class="comment">% usoDisipadores function</span>
+0251         
+0252         <a name="_sub14" href="#_subfunctions" class="code">function descomposicionModal(cargaDinamicaObj, desmodal)</a>
+0253             <span class="comment">% descomposicionModal: La carga se calculo usando</span>
+0254             <span class="comment">% descomposicion modal</span>
+0255             <span class="comment">%</span>
+0256             <span class="comment">% descomposicionModal(cargaDinamicaObj,desmodal)</span>
+0257             
+0258             cargaDinamicaObj.desModal = desmodal;
+0259             
+0260         <span class="keyword">end</span> <span class="comment">% descomposicionModal function</span>
+0261         
+0262         <a name="_sub15" href="#_subfunctions" class="code">function p = obtenerCarga(cargaDinamicaObj)</a>
+0263             <span class="comment">% obtenerCarga: Obtiene la carga generada</span>
+0264             <span class="comment">%</span>
+0265             <span class="comment">% obtenerCarga(cargaDinamicaObj)</span>
+0266             
+0267             p = cargaDinamicaObj.sol_p;
+0268             
+0269         <span class="keyword">end</span> <span class="comment">% obtenerCarga function</span>
+0270         
+0271         <a name="_sub16" href="#_subfunctions" class="code">function u = obtenerDesplazamiento(cargaDinamicaObj)</a>
+0272             <span class="comment">% obtenerDesplazamiento: Obtiene el desplazamiento de la carga</span>
+0273             <span class="comment">%</span>
+0274             <span class="comment">% obtenerDesplazamiento(cargaDinamicaObj)</span>
+0275             
+0276             u = cargaDinamicaObj.sol_u;
+0277             
+0278         <span class="keyword">end</span> <span class="comment">% obtenerDesplazamiento function</span>
+0279         
+0280         <a name="_sub17" href="#_subfunctions" class="code">function u = obtenerDesplazamientoTiempo(cargaDinamicaObj, gdl, tiempo)</a>
+0281             <span class="comment">% obtenerDesplazamientoTiempo obtiene el desplazamiento de un</span>
+0282             <span class="comment">% grado de libertad en un determinado tiempo</span>
+0283             <span class="comment">%</span>
+0284             <span class="comment">% u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)</span>
+0285             
+0286             <span class="keyword">if</span> tiempo &lt; 0 <span class="comment">% Retorna el maximo</span>
+0287                 u = max(cargaDinamicaObj.sol_u(gdl, :));
+0288             <span class="keyword">else</span>
+0289                 u = cargaDinamicaObj.sol_u(gdl, tiempo);
+0290             <span class="keyword">end</span>
+0291             
+0292         <span class="keyword">end</span> <span class="comment">% obtenerDesplazamientoTiempo function</span>
+0293         
+0294         <a name="_sub18" href="#_subfunctions" class="code">function v = obtenerVelocidad(cargaDinamicaObj)</a>
+0295             <span class="comment">% obtenerVelocidad: Obtiene la velocidad de la carga</span>
+0296             <span class="comment">%</span>
+0297             <span class="comment">% obtenerVelocidad(cargaDinamicaObj)</span>
+0298             
+0299             v = cargaDinamicaObj.sol_v;
+0300             
+0301         <span class="keyword">end</span> <span class="comment">% obtenerVelocidad function</span>
+0302         
+0303         <a name="_sub19" href="#_subfunctions" class="code">function a = obtenerAceleracion(cargaDinamicaObj)</a>
+0304             <span class="comment">% obtenerAceleracion: Obtiene la aceleracion de la carga</span>
+0305             <span class="comment">%</span>
+0306             <span class="comment">% obtenerAceleracion(cargaDinamicaObj)</span>
+0307             
+0308             a = cargaDinamicaObj.sol_a;
+0309             
+0310         <span class="keyword">end</span> <span class="comment">% obtenerAceleracion function</span>
+0311         
+0312         <a name="_sub20" href="#_subfunctions" class="code">function r = usoAmortiguamientoRayleigh(cargaDinamicaObj)</a>
+0313             <span class="comment">% usoAmortiguamientoRayleighh: Indica que los resultados se</span>
+0314             <span class="comment">% guardaron o no con la disipasion de Rayleigh</span>
+0315             <span class="comment">%</span>
+0316             <span class="comment">% r = usoAmortiguamientoRayleigh(cargaDinamicaObj)</span>
+0317             
+0318             r = cargaDinamicaObj.cRayleigh;
+0319             
+0320         <span class="keyword">end</span> <span class="comment">% usoAmortiguamientoRayleigh function</span>
+0321         
+0322         <a name="_sub21" href="#_subfunctions" class="code">function disipador = usoDeDisipadores(cargaDinamicaObj)</a>
+0323             <span class="comment">% usoDeDisipadores: Indica que la carga se calculo usando</span>
+0324             <span class="comment">% disipadores</span>
+0325             <span class="comment">%</span>
+0326             <span class="comment">% disipador = usoDeDisipadores(cargaDinamicaObj)</span>
+0327             
+0328             disipador = cargaDinamicaObj.usoDisipador;
+0329             
+0330         <span class="keyword">end</span> <span class="comment">% usoDeDisipadores function</span>
+0331         
+0332         <a name="_sub22" href="#_subfunctions" class="code">function dm = usoDescomposicionModal(cargaDinamicaObj)</a>
+0333             <span class="comment">% usoDescomposicionModal: Indica que la carga se calculo usando</span>
+0334             <span class="comment">% descomposicion modal</span>
+0335             <span class="comment">%</span>
+0336             <span class="comment">% dm = usoDescomposicionModal(cargaDinamicaObj)</span>
+0337             
+0338             dm = cargaDinamicaObj.desModal;
+0339             
+0340         <span class="keyword">end</span> <span class="comment">% usoDescomposicionModal function</span>
+0341         
+0342         <a name="_sub23" href="#_subfunctions" class="code">function disp(cargaDinamicaObj)</a>
+0343             <span class="comment">% disp: es un metodo de la clase CargaDinamica que se usa para imprimir en</span>
+0344             <span class="comment">% command Window la informacion de la carga</span>
+0345             <span class="comment">%</span>
+0346             <span class="comment">% disp(cargaDinamicaObj)</span>
+0347             <span class="comment">%</span>
+0348             <span class="comment">% Imprime la informacion guardada en la carga (cargaDinamicaObj) en pantalla</span>
+0349             
+0350             <a href="#_sub24" class="code" title="subfunction disp(cargaDinamicaObj)">disp</a>@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(cargaDinamicaObj);
+0351             <span class="comment">% No usar dispMetodoTEFAME()</span>
+0352             
+0353         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0354         
+0355         <a name="_sub24" href="#_subfunctions" class="code">function masa = obtenerMasa(cargaDinamicaObj)</a>
+0356             <span class="comment">% obtenerMasa: Obtiene la masa de la carga</span>
+0357             <span class="comment">%</span>
+0358             <span class="comment">% masa = obtenerMasa(cargaDinamicaObj)</span>
+0359             
+0360             masa = [] .* (cargaDinamicaObj.factorCargaMasa * cargaDinamicaObj.factorUnidadMasa);
+0361             
+0362         <span class="keyword">end</span> <span class="comment">% obtenerMasa function</span>
+0363         
+0364         <a name="_sub25" href="#_subfunctions" class="code">function definirFactorUnidadMasa(cargaDinamicaObj, factor)</a>
+0365             <span class="comment">% definirFactorUnidadMasa: Define el factor de conversion de</span>
+0366             <span class="comment">% unidades de la carga a unidades de masa</span>
+0367             
+0368             cargaDinamicaObj.factorUnidadMasa = factor;
+0369             
+0370         <span class="keyword">end</span> <span class="comment">% definirFactorUnidadMasa function</span>
+0371         
+0372         <a name="_sub26" href="#_subfunctions" class="code">function definirFactorCargaMasa(cargaDinamicaObj, factor)</a>
+0373             <span class="comment">% definirFactorCargaMasa: Define cuanto porcentaje de la carga</span>
+0374             <span class="comment">% se convierte en masa</span>
+0375             
+0376             cargaDinamicaObj.factorCargaMasa = factor;
+0377             
+0378         <span class="keyword">end</span> <span class="comment">% definirFactorCargaMasa function</span>
+0379         
+0380         <a name="_sub27" href="#_subfunctions" class="code">function nodos = obtenerNodos(cargaDinamicaObj)</a>
+0381             <span class="comment">% obtenerNodos: Retorna los nodos de la carga</span>
+0382             <span class="comment">%</span>
+0383             <span class="comment">% nodos = obtenerNodos(cargaDinamicaObj)</span>
+0384             
+0385             nodos = cargaDinamicaObj.nodosCarga;
+0386             
+0387         <span class="keyword">end</span> <span class="comment">% obtenerNodos function</span>
+0388         
+0389     <span class="keyword">end</span> <span class="comment">% methods CargaDinamica</span>
+0390     
+0391 <span class="keyword">end</span> <span class="comment">% class CargaDinamica</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

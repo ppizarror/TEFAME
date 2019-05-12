@@ -1,0 +1,10 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  Analisis -> Analisis;
+  AnalisisEstatico -> AnalisisEstatico;
+  ModalEspectral -> ModalEspectral;
+
+  Analisis [URL="Analisis.html"];
+  AnalisisEstatico [URL="AnalisisEstatico.html"];
+  ModalEspectral [URL="ModalEspectral.html"];
+}

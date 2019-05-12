@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of verificarVectorDireccion</title>
+  <meta name="keywords" content="verificarVectorDireccion">
+  <meta name="description" content="verificarVectorDireccion: Verifica que un vector direccion tenga sentido y">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- menu.html utils -->
+<h1>verificarVectorDireccion
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>verificarVectorDireccion: Verifica que un vector direccion tenga sentido y</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function y = verificarVectorDireccion(vec, ndg) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> verificarVectorDireccion: Verifica que un vector direccion tenga sentido y
+ este bien definido</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li><li><a href="../../tefame/modelo/cargas/dinamicas/CargaPulso.html" class="code" title="">CargaPulso</a>	______________________________________________________________________</li><li><a href="../../tefame/modelo/cargas/dinamicas/CargaRegistroSismico.html" class="code" title="">CargaRegistroSismico</a>	______________________________________________________________________</li><li><a href="../../tefame/modelo/cargas/dinamicas/CargaSinusoidal.html" class="code" title="">CargaSinusoidal</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function y = verificarVectorDireccion(vec, ndg)</a>
+0002 <span class="comment">% verificarVectorDireccion: Verifica que un vector direccion tenga sentido y</span>
+0003 <span class="comment">% este bien definido</span>
+0004 
+0005 <span class="comment">% Chequea que solo existan 0 o 1</span>
+0006 y = true;
+0007 nv = length(vec);
+0008 <span class="keyword">for</span> i=1:nv
+0009     <span class="keyword">if</span> ~ (vec(i) == 0 || vec(i) == 1)
+0010         y = false;
+0011         <span class="keyword">return</span>;
+0012     <span class="keyword">end</span>
+0013 <span class="keyword">end</span> <span class="comment">% for i</span>
+0014 
+0015 <span class="comment">% Chequea el largo</span>
+0016 y = y &amp;&amp; nv &lt;= ndg;
+0017 
+0018 <span class="comment">% Chequea que la direccion no sea nula</span>
+0019 y = y &amp;&amp; sum(vec) &gt; 0;
+0020 
+0021 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

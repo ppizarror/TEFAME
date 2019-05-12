@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of CargaPulso</title>
+  <meta name="keywords" content="CargaPulso">
+  <meta name="description" content="______________________________________________________________________">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html dinamicas -->
+<h1>CargaPulso
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>______________________________________________________________________</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ______________________________________________________________________
+|                                                                      |
+|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+|                  Matricial de Estructuras en MATLAB                  |
+|                                                                      |
+|                   Area  de Estructuras y Geotecnia                   |
+|                   Departamento de Ingenieria Civil                   |
+|              Facultad de Ciencias Fisicas y Matematicas              |
+|                         Universidad de Chile                         |
+|                                                                      |
+| TEFAME es una  plataforma en base a objetos para modelar, analizar y |
+| visualizar  la respuesta de sistemas  estructurales usando el metodo |
+| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
+| La plataforma es desarrollada en  propagacion orientada a objetos en |
+| MATLAB.                                                              |
+|______________________________________________________________________|
+ ______________________________________________________________________
+|                                                                      |
+| Clase CargaPulso                                                     |
+|                                                                      |
+| Este archivo contiene la definicion de la Clase CargaPulso           |
+| CargaPulso es una subclase de la clase CargaDinamica y corresponde a |
+| la representacion de una carga nodal en el metodo de elementos       |
+| finitos o analisis matricial de estructuras.                         |
+| La clase CargaPulso es una clase que contiene el nodo al que se le   |
+| va aplicar la carga y el valor de esta carga.                        |
+|                                                                      |
+| Programado: Pablo Pizarro @ppizarror                                 |
+| Fecha: 10/04/2019                                                    |
+|______________________________________________________________________|
+
+  Properties (Access=private):
+  Methods:
+       CargaPulso(etiquetaCargaPulso,registro,direccion,dt,tAnalisis)
+       aplicarCarga(CargaPulsoObj,factorDeCarga)
+       disp(CargaPulsoObj)
+  Methods SuperClass (CargaDinamica):
+       cargaPulsoObj = Carga(etiquetaCarga)
+       aplicarCarga(cargaPulsoObj)
+       disp(cargaPulsoObj)
+       guardarCarga(cargaPulsoObj,p)
+       guardarDesplazamiento(cargaPulsoObj,u)
+       guardarVelocidad(cargaPulsoObj,v)
+       guardarAceleracion(cargaPulsoObj,a)
+       amortiguamientoRayleigh(cargaPulsoObj,rayleigh)
+       usoDisipadores(cargaPulsoObj,disipador)
+       descomposicionModal(cargaPulsoObj,desmodal)
+       t = obtenerVectorTiempo(cargaPulsoObj)
+       p = obtenerCarga(cargaPulsoObj)
+       u = obtenerDesplazamiento(cargaPulsoObj)
+       u = obtenerDesplazamientoTiempo(cargaPulsoObj,gdl,tiempo)
+       v = obtenerVelocidad(cargaPulsoObj)
+       a = obtenerAceleracion(cargaPulsoObj)
+       r = usoAmortiguamientoRayleigh(cargaPulsoObj)
+       dm = usoDescomposicionModal(cargaPulsoObj)
+       disipador = usoDeDisipadores(cargaPulsoObj)
+       masa = obtenerMasa(cargaPulsoObj)
+       definirFactorUnidadMasa(cargaPulsoObj,factor)
+       definirFactorCargaMasa(cargaPulsoObj,factor)
+       nodos = obtenerNodos(cargaPulsoObj)
+  Methods SuperClass (ComponenteModelo):
+       etiqueta = obtenerEtiqueta(componenteModeloObj)
+       e = equals(componenteModeloObj,obj)
+       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>	______________________________________________________________________</li><li><a href="CargaPulso.html" class="code" title="">CargaPulso</a>	______________________________________________________________________</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li><li><a href="../../../../tefame/utils/verificarVectorDireccion.html" class="code" title="function y = verificarVectorDireccion(vec, ndg)">verificarVectorDireccion</a>	verificarVectorDireccion: Verifica que un vector direccion tenga sentido y</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="CargaPulso.html" class="code" title="">CargaPulso</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function cargaPulsoObj = CargaPulso(etiquetaCargaPulso, nodo, direccion, amplitud, tpulso, dt, tInicio, tAnalisis)</a></li><li><a href="#_sub2" class="code">function p = calcularCarga(CargaPulsoObj, ~, m, ~, dispinfo)</a></li><li><a href="#_sub3" class="code">function disp(CargaPulsoObj)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
+0002 <span class="comment">%|                                                                      |</span>
+0003 <span class="comment">%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |</span>
+0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
+0005 <span class="comment">%|                                                                      |</span>
+0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
+0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
+0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
+0009 <span class="comment">%|                         Universidad de Chile                         |</span>
+0010 <span class="comment">%|                                                                      |</span>
+0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
+0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
+0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
+0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
+0015 <span class="comment">%| MATLAB.                                                              |</span>
+0016 <span class="comment">%|______________________________________________________________________|</span>
+0017 <span class="comment">% ______________________________________________________________________</span>
+0018 <span class="comment">%|                                                                      |</span>
+0019 <span class="comment">%| Clase CargaPulso                                                     |</span>
+0020 <span class="comment">%|                                                                      |</span>
+0021 <span class="comment">%| Este archivo contiene la definicion de la Clase CargaPulso           |</span>
+0022 <span class="comment">%| CargaPulso es una subclase de la clase CargaDinamica y corresponde a |</span>
+0023 <span class="comment">%| la representacion de una carga nodal en el metodo de elementos       |</span>
+0024 <span class="comment">%| finitos o analisis matricial de estructuras.                         |</span>
+0025 <span class="comment">%| La clase CargaPulso es una clase que contiene el nodo al que se le   |</span>
+0026 <span class="comment">%| va aplicar la carga y el valor de esta carga.                        |</span>
+0027 <span class="comment">%|                                                                      |</span>
+0028 <span class="comment">%| Programado: Pablo Pizarro @ppizarror                                 |</span>
+0029 <span class="comment">%| Fecha: 10/04/2019                                                    |</span>
+0030 <span class="comment">%|______________________________________________________________________|</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%  Properties (Access=private):</span>
+0033 <span class="comment">%  Methods:</span>
+0034 <span class="comment">%       CargaPulso(etiquetaCargaPulso,registro,direccion,dt,tAnalisis)</span>
+0035 <span class="comment">%       aplicarCarga(CargaPulsoObj,factorDeCarga)</span>
+0036 <span class="comment">%       disp(CargaPulsoObj)</span>
+0037 <span class="comment">%  Methods SuperClass (CargaDinamica):</span>
+0038 <span class="comment">%       cargaPulsoObj = Carga(etiquetaCarga)</span>
+0039 <span class="comment">%       aplicarCarga(cargaPulsoObj)</span>
+0040 <span class="comment">%       disp(cargaPulsoObj)</span>
+0041 <span class="comment">%       guardarCarga(cargaPulsoObj,p)</span>
+0042 <span class="comment">%       guardarDesplazamiento(cargaPulsoObj,u)</span>
+0043 <span class="comment">%       guardarVelocidad(cargaPulsoObj,v)</span>
+0044 <span class="comment">%       guardarAceleracion(cargaPulsoObj,a)</span>
+0045 <span class="comment">%       amortiguamientoRayleigh(cargaPulsoObj,rayleigh)</span>
+0046 <span class="comment">%       usoDisipadores(cargaPulsoObj,disipador)</span>
+0047 <span class="comment">%       descomposicionModal(cargaPulsoObj,desmodal)</span>
+0048 <span class="comment">%       t = obtenerVectorTiempo(cargaPulsoObj)</span>
+0049 <span class="comment">%       p = obtenerCarga(cargaPulsoObj)</span>
+0050 <span class="comment">%       u = obtenerDesplazamiento(cargaPulsoObj)</span>
+0051 <span class="comment">%       u = obtenerDesplazamientoTiempo(cargaPulsoObj,gdl,tiempo)</span>
+0052 <span class="comment">%       v = obtenerVelocidad(cargaPulsoObj)</span>
+0053 <span class="comment">%       a = obtenerAceleracion(cargaPulsoObj)</span>
+0054 <span class="comment">%       r = usoAmortiguamientoRayleigh(cargaPulsoObj)</span>
+0055 <span class="comment">%       dm = usoDescomposicionModal(cargaPulsoObj)</span>
+0056 <span class="comment">%       disipador = usoDeDisipadores(cargaPulsoObj)</span>
+0057 <span class="comment">%       masa = obtenerMasa(cargaPulsoObj)</span>
+0058 <span class="comment">%       definirFactorUnidadMasa(cargaPulsoObj,factor)</span>
+0059 <span class="comment">%       definirFactorCargaMasa(cargaPulsoObj,factor)</span>
+0060 <span class="comment">%       nodos = obtenerNodos(cargaPulsoObj)</span>
+0061 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
+0062 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0063 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0064 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0065 
+0066 classdef <a href="CargaPulso.html" class="code" title="">CargaPulso</a> &lt; <a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>
+0067     
+0068     properties(Access = private)
+0069         registro <span class="comment">% Matriz del registro</span>
+0070         direccion <span class="comment">% Vector de direcciones</span>
+0071         tpulso <span class="comment">% Tiempo de aplicacion del pulso</span>
+0072         intervalos <span class="comment">% Intervalos</span>
+0073         nodo <span class="comment">% Nodo al que se aplica la carga</span>
+0074         amplitud <span class="comment">% Ampitud de la carga</span>
+0075     <span class="keyword">end</span> <span class="comment">% properties CargaPulso</span>
+0076     
+0077     methods
+0078         
+0079         <a name="_sub0" href="#_subfunctions" class="code">function cargaPulsoObj = CargaPulso(etiquetaCargaPulso, nodo, direccion, amplitud, tpulso, dt, tInicio, tAnalisis)</a>
+0080             <span class="comment">% CargaPulso: es el constructor de la clase CargaPulso</span>
+0081             <span class="comment">%</span>
+0082             <span class="comment">% cargaPulsoObj=CargaPulso(etiquetaCargaPulso,nodo,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)</span>
+0083             <span class="comment">%</span>
+0084             <span class="comment">% Crea una carga tipo pulso</span>
+0085             
+0086             <span class="keyword">if</span> nargin == 0
+0087                 etiquetaCargaPulso = <span class="string">''</span>;
+0088             <span class="keyword">end</span> <span class="comment">% if</span>
+0089             
+0090             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase Carga</span>
+0091             cargaPulsoObj = cargaPulsoObj@<a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>(etiquetaCargaPulso);
+0092             
+0093             <span class="comment">% Verifica que tenga sentido la direccion</span>
+0094             <span class="keyword">if</span> ~<a href="../../../../tefame/utils/verificarVectorDireccion.html" class="code" title="function y = verificarVectorDireccion(vec, ndg)">verificarVectorDireccion</a>(direccion, nodo.obtenerNumeroGDL())
+0095                 error(<span class="string">'Vector direccion mal definido'</span>);
+0096             <span class="keyword">end</span>
+0097             
+0098             <span class="comment">% Chequea que los tiempos esten bien definidos</span>
+0099             <span class="keyword">if</span> tAnalisis &lt; 0 || tInicio &lt; 0 || dt &lt;= 0
+0100                 error(<span class="string">'Tiempo de carga mal definido'</span>);
+0101             <span class="keyword">end</span>
+0102             
+0103             <span class="comment">% Guarda el registro</span>
+0104             cargaPulsoObj.tpulso = tpulso;
+0105             cargaPulsoObj.amplitud = amplitud;
+0106             cargaPulsoObj.direccion = direccion;
+0107             cargaPulsoObj.tAnalisis = tAnalisis;
+0108             cargaPulsoObj.dt = dt;
+0109             cargaPulsoObj.nodo = nodo; <span class="comment">% Objeto del nodo donde se aplica la carga</span>
+0110             cargaPulsoObj.nodosCarga = {nodo};
+0111             
+0112         <span class="keyword">end</span> <span class="comment">% CargaPulso constructor</span>
+0113         
+0114         <a name="_sub1" href="#_subfunctions" class="code">function p = calcularCarga(CargaPulsoObj, ~, m, ~, dispinfo)</a>
+0115             <span class="comment">% calcularCarga: es un metodo de la clase Carga que se usa para</span>
+0116             <span class="comment">% calcular la carga a aplicar</span>
+0117             <span class="comment">%</span>
+0118             <span class="comment">% calcularCarga(cargaPulsoObj,factor,m,r,dispinfo)</span>
+0119             
+0120             <span class="comment">% Crea la matriz de carga</span>
+0121             ng = length(m);
+0122             nt = CargaPulsoObj.tAnalisis / CargaPulsoObj.dt;
+0123             p = zeros(ng, nt);
+0124             <span class="keyword">if</span> dispinfo
+0125                 fprintf(<span class="string">'\t\t\t\tAplicando carga a nodo %s\n'</span>, CargaPulsoObj.nodo.obtenerEtiqueta());
+0126             <span class="keyword">end</span>
+0127             
+0128             <span class="comment">% Crea el vector de influencia</span>
+0129             rf = zeros(ng, 1);
+0130             nodoGDL = CargaPulsoObj.nodo.obtenerGDLIDCondensado();
+0131             
+0132             <span class="comment">% Verifica que la direccion no sea mayor que el numero de nodos</span>
+0133             <span class="keyword">if</span> length(nodoGDL) &lt; length(CargaPulsoObj.direccion)
+0134                 error(<span class="string">'Las direcciones de analisis superan el numero de direcciones del nodo %s'</span>, <span class="keyword">...</span>
+0135                     CargaPulsoObj.nodo.obtenerEtiqueta());
+0136             <span class="keyword">end</span>
+0137             
+0138             gdl = 0;
+0139             <span class="keyword">for</span> i = 1:length(CargaPulsoObj.direccion)
+0140                 <span class="keyword">if</span> CargaPulsoObj.direccion(i) ~= 0
+0141                     gdl = nodoGDL(i); <span class="comment">% Obtiene el GDL asociado</span>
+0142                     <span class="keyword">if</span> gdl &gt; 0
+0143                         rf(gdl) = 1;
+0144                         <span class="keyword">if</span> dispinfo
+0145                             fprintf(<span class="string">'\t\t\t\tSe aplica la carga en el grado condensado %d\n'</span>, gdl);
+0146                         <span class="keyword">end</span>
+0147                     <span class="keyword">end</span>
+0148                 <span class="keyword">end</span>
+0149             <span class="keyword">end</span> <span class="comment">% for i</span>
+0150             
+0151             <span class="comment">% Verifica que el grado sea valido</span>
+0152             <span class="keyword">if</span> gdl == 0
+0153                 error(<span class="string">'No es posible aplicar la carga en un grado condensado del nodo %s'</span>, <span class="keyword">...</span>
+0154                     CargaPulsoObj.nodo.obtenerEtiqueta());
+0155             <span class="keyword">end</span>
+0156             
+0157             <span class="comment">% Carga pulso</span>
+0158             t = linspace(0, CargaPulsoObj.tAnalisis, nt);
+0159             <span class="keyword">for</span> i = 1:nt
+0160                 <span class="keyword">if</span> t(i) &lt;= CargaPulsoObj.tpulso
+0161                     p(:, i) = rf .* CargaPulsoObj.amplitud;
+0162                 <span class="keyword">else</span>
+0163                     <span class="keyword">break</span>;
+0164                 <span class="keyword">end</span>
+0165             <span class="keyword">end</span> <span class="comment">% for i</span>
+0166             
+0167             <span class="keyword">if</span> dispinfo
+0168                 fprintf(<span class="string">'\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n'</span>, <span class="keyword">...</span>
+0169                     i, nt, (i / nt)*100);
+0170             <span class="keyword">end</span>
+0171             
+0172         <span class="keyword">end</span> <span class="comment">% calcularCarga function</span>
+0173         
+0174         <a name="_sub2" href="#_subfunctions" class="code">function disp(CargaPulsoObj)</a>
+0175             <span class="comment">% disp: es un metodo de la clase CargaPulso que se usa para imprimir en</span>
+0176             <span class="comment">% command Window la informacion de la carga del tipo registro</span>
+0177             <span class="comment">% sismico</span>
+0178             <span class="comment">%</span>
+0179             <span class="comment">% disp(CargaPulsoObj)</span>
+0180             <span class="comment">%</span>
+0181             <span class="comment">% Imprime la informacion guardada en la carga (CargaPulsoObj) en pantalla</span>
+0182             
+0183             fprintf(<span class="string">'Propiedades carga pulso:\n'</span>);
+0184             <a href="#_sub3" class="code" title="subfunction disp(CargaPulsoObj)">disp</a>@<a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>(CargaPulsoObj);
+0185             <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
+0186             
+0187         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0188         
+0189     <span class="keyword">end</span> <span class="comment">% methods CargaPulso</span>
+0190     
+0191 <span class="keyword">end</span> <span class="comment">% class CargaPulso</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

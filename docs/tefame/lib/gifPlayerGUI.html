@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of gifPlayerGUI</title>
+  <meta name="keywords" content="gifPlayerGUI">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- menu.html lib -->
+<h1>gifPlayerGUI
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function gifPlayerGUI(fname, delayTime) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function gifPlayerGUI(fname, delayTime)</a>
+0002 <span class="keyword">if</span> ~exist(<span class="string">'delayTime'</span>, <span class="string">'var'</span>)
+0003     delayTime = 0;
+0004 <span class="keyword">end</span>
+0005 <span class="comment">%# read all GIF frames</span>
+0006 info = imfinfo(fname, <span class="string">'gif'</span>);
+0007 delay = max((info(1).DelayTime)/100, delayTime);
+0008 [img, map] = imread(fname, <span class="string">'gif'</span>, <span class="string">'frames'</span>, <span class="string">'all'</span>);
+0009 [imgH, imgW, ~, numFrames] = size(img);
+0010 
+0011 <span class="comment">%# prepare GUI, and show first frame</span>
+0012 hFig = figure(<span class="string">'Menubar'</span>, <span class="string">'none'</span>, <span class="string">'Resize'</span>, <span class="string">'off'</span>, <span class="keyword">...</span>
+0013     <span class="string">'Units'</span>, <span class="string">'pixels'</span>, <span class="string">'Position'</span>, [300, 300, imgW, imgH]);
+0014 movegui(hFig, <span class="string">'center'</span>);
+0015 hAx = axes(<span class="string">'Parent'</span>, hFig, <span class="keyword">...</span>
+0016     <span class="string">'Units'</span>, <span class="string">'pixels'</span>, <span class="string">'Position'</span>, [1, 1, imgW, imgH]);
+0017 hImg = imshow(img(:, :, :, 1), map, <span class="string">'Parent'</span>, hAx);
+0018 pause(delay);
+0019 
+0020 <span class="comment">%# loop over frames continuously</span>
+0021 counter = 1;
+0022 <span class="keyword">while</span> ishandle(hImg)
+0023     <span class="comment">%# increment counter circularly</span>
+0024     counter = rem(counter, numFrames) + 1;
+0025     
+0026     <span class="comment">%# update frame</span>
+0027     set(hImg, <span class="string">'CData'</span>, img(:, :, :, counter));
+0028     
+0029     <span class="comment">%# update colormap</span>
+0030     n = max(max(img(:, :, :, counter)));
+0031     colormap(info(counter).ColorTable(1:n, :));
+0032     
+0033     <span class="comment">%# pause for the specified delay</span>
+0034     pause(delay);
+0035 <span class="keyword">end</span>
+0036 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

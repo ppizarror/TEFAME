@@ -1,0 +1,452 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Biela3D</title>
+  <meta name="keywords" content="Biela3D">
+  <meta name="description" content="______________________________________________________________________">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- # modelo --><!-- menu.html elementos -->
+<h1>Biela3D
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>______________________________________________________________________</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ______________________________________________________________________
+|                                                                      |
+|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+|                  Matricial de Estructuras en MATLAB                  |
+|                                                                      |
+|                   Area  de Estructuras y Geotecnia                   |
+|                   Departamento de Ingenieria Civil                   |
+|              Facultad de Ciencias Fisicas y Matematicas              |
+|                         Universidad de Chile                         |
+|                                                                      |
+| TEFAME es una  plataforma en base a objetos para modelar, analizar y |
+| visualizar  la respuesta de sistemas  estructurales usando el metodo |
+| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
+| La plataforma es desarrollada en  propagacion orientada a objetos en |
+| MATLAB.                                                              |
+|______________________________________________________________________|
+ ______________________________________________________________________
+|                                                                      |
+| Clase Biela3D                                                        |
+|                                                                      |
+| Este archivo contiene la definicion de la Clase Biela3D              |
+| Biela3D  es una  subclase de la  clase Elemento y  corresponde a  la |
+| representacion del elemento  biela o  barra que solo tiene  esfuerzo |
+| Axiales en un sistema de tres coordenadas.                           |
+|                                                                      |
+| Programado por: Pablo Pizarro @ppizarror - 14/05/2018                |
+|______________________________________________________________________|
+
+  Properties (Access=private):
+       nodosObj
+       gdlID
+       Eo
+       Ao
+       dx
+       dy
+       L
+       rho
+  Methods:
+       biela3DObj = Biela3D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
+       numeroNodos = obtenerNumeroNodos(biela3DObj)
+       nodosBiela = obtenerNodos(biela3DObj)
+       numeroGDL = obtenerNumeroGDL(biela3DObj)
+       gdlIDBiela = obtenerGDLID(biela3DObj)
+       k_global = obtenerMatrizRigidezCoordGlobal(biela3DObj)
+       k_local = obtenerMatrizRigidezCoordLocal(biela3DObj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(biela3DObj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(biela3DObj)
+       ae = obtenerAE(biela3DObj)
+       theta = obtenerAngulo(biela3DObj)
+       definirGDLID(biela3DObj)
+       agregarFuerzaResistenteAReacciones(biela3DObj)
+       guardarPropiedades(biela3DObj,archivoSalidaHandle)
+       guardarEsfuerzosInternos(biela3DObj,archivoSalidaHandle)
+       disp(biela3DObj)
+  Methods SuperClass (ComponenteModelo):
+       etiqueta = obtenerEtiqueta(componenteModeloObj)
+       e = equals(componenteModeloObj,obj)
+       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li><li><a href="Biela3D.html" class="code" title="">Biela3D</a>	______________________________________________________________________</li><li><a href="Elemento.html" class="code" title="">Elemento</a>	______________________________________________________________________</li><li><a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="Biela3D.html" class="code" title="">Biela3D</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function biela3DObj = Biela3D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial, densidad)</a></li><li><a href="#_sub2" class="code">function numeroNodos = obtenerNumeroNodos(biela3DObj)</a></li><li><a href="#_sub3" class="code">function nodosBiela = obtenerNodos(biela3DObj)</a></li><li><a href="#_sub4" class="code">function numeroGDL = obtenerNumeroGDL(biela3DObj)</a></li><li><a href="#_sub5" class="code">function gdlIDBiela = obtenerGDLID(biela3DObj)</a></li><li><a href="#_sub6" class="code">function ae = obtenerAE(biela3DObj)</a></li><li><a href="#_sub7" class="code">function m = obtenerMasa(biela3DObj)</a></li><li><a href="#_sub8" class="code">function m_masa = obtenerVectorMasa(biela3DObj)</a></li><li><a href="#_sub9" class="code">function theta = obtenerAngulo(biela3DObj)</a></li><li><a href="#_sub10" class="code">function k_global = obtenerMatrizRigidezCoordGlobal(biela3DObj)</a></li><li><a href="#_sub11" class="code">function k_local = obtenerMatrizRigidezCoordLocal(biela3DObj)</a></li><li><a href="#_sub12" class="code">function fr_global = obtenerFuerzaResistenteCoordGlobal(biela3DObj)</a></li><li><a href="#_sub13" class="code">function fr_local = obtenerFuerzaResistenteCoordLocal(biela3DObj)</a></li><li><a href="#_sub14" class="code">function definirGDLID(biela3DObj)</a></li><li><a href="#_sub15" class="code">function agregarFuerzaResistenteAReacciones(biela3DObj)</a></li><li><a href="#_sub16" class="code">function guardarPropiedades(biela3DObj, archivoSalidaHandle)</a></li><li><a href="#_sub17" class="code">function guardarEsfuerzosInternos(biela3DObj, archivoSalidaHandle)</a></li><li><a href="#_sub18" class="code">function plot(elementoObj, deformadas, tipoLinea, grosorLinea, ~)</a></li><li><a href="#_sub19" class="code">function disp(biela3DObj)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
+0002 <span class="comment">%|                                                                      |</span>
+0003 <span class="comment">%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |</span>
+0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
+0005 <span class="comment">%|                                                                      |</span>
+0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
+0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
+0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
+0009 <span class="comment">%|                         Universidad de Chile                         |</span>
+0010 <span class="comment">%|                                                                      |</span>
+0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
+0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
+0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
+0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
+0015 <span class="comment">%| MATLAB.                                                              |</span>
+0016 <span class="comment">%|______________________________________________________________________|</span>
+0017 <span class="comment">% ______________________________________________________________________</span>
+0018 <span class="comment">%|                                                                      |</span>
+0019 <span class="comment">%| Clase Biela3D                                                        |</span>
+0020 <span class="comment">%|                                                                      |</span>
+0021 <span class="comment">%| Este archivo contiene la definicion de la Clase Biela3D              |</span>
+0022 <span class="comment">%| Biela3D  es una  subclase de la  clase Elemento y  corresponde a  la |</span>
+0023 <span class="comment">%| representacion del elemento  biela o  barra que solo tiene  esfuerzo |</span>
+0024 <span class="comment">%| Axiales en un sistema de tres coordenadas.                           |</span>
+0025 <span class="comment">%|                                                                      |</span>
+0026 <span class="comment">%| Programado por: Pablo Pizarro @ppizarror - 14/05/2018                |</span>
+0027 <span class="comment">%|______________________________________________________________________|</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%  Properties (Access=private):</span>
+0030 <span class="comment">%       nodosObj</span>
+0031 <span class="comment">%       gdlID</span>
+0032 <span class="comment">%       Eo</span>
+0033 <span class="comment">%       Ao</span>
+0034 <span class="comment">%       dx</span>
+0035 <span class="comment">%       dy</span>
+0036 <span class="comment">%       L</span>
+0037 <span class="comment">%       rho</span>
+0038 <span class="comment">%  Methods:</span>
+0039 <span class="comment">%       biela3DObj = Biela3D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)</span>
+0040 <span class="comment">%       numeroNodos = obtenerNumeroNodos(biela3DObj)</span>
+0041 <span class="comment">%       nodosBiela = obtenerNodos(biela3DObj)</span>
+0042 <span class="comment">%       numeroGDL = obtenerNumeroGDL(biela3DObj)</span>
+0043 <span class="comment">%       gdlIDBiela = obtenerGDLID(biela3DObj)</span>
+0044 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(biela3DObj)</span>
+0045 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(biela3DObj)</span>
+0046 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(biela3DObj)</span>
+0047 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(biela3DObj)</span>
+0048 <span class="comment">%       ae = obtenerAE(biela3DObj)</span>
+0049 <span class="comment">%       theta = obtenerAngulo(biela3DObj)</span>
+0050 <span class="comment">%       definirGDLID(biela3DObj)</span>
+0051 <span class="comment">%       agregarFuerzaResistenteAReacciones(biela3DObj)</span>
+0052 <span class="comment">%       guardarPropiedades(biela3DObj,archivoSalidaHandle)</span>
+0053 <span class="comment">%       guardarEsfuerzosInternos(biela3DObj,archivoSalidaHandle)</span>
+0054 <span class="comment">%       disp(biela3DObj)</span>
+0055 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
+0056 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0057 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0058 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0059 
+0060 classdef <a href="Biela3D.html" class="code" title="">Biela3D</a> &lt; <a href="Elemento.html" class="code" title="">Elemento</a>
+0061     
+0062     properties(Access = private)
+0063         nodosObj <span class="comment">% Cell con los nodos</span>
+0064         gdlID <span class="comment">% Lista con los ID de los grados de libertad</span>
+0065         Ao <span class="comment">% Area de la seccion transversal</span>
+0066         Eo <span class="comment">% Modulo de elasticidad</span>
+0067         dx <span class="comment">% Distancia en el eje x entre los nodos</span>
+0068         dy <span class="comment">% Distancia en el eje y entre los nodos</span>
+0069         dz <span class="comment">% Distancia en el eje z entre los nodos</span>
+0070         L <span class="comment">% Largo del elemento</span>
+0071         theta <span class="comment">% Angulo de inclinacion de la viga</span>
+0072         T <span class="comment">% Matriz de transformacion</span>
+0073         rho <span class="comment">% Densidad de la biela</span>
+0074     <span class="keyword">end</span> <span class="comment">% properties Biela3D</span>
+0075     
+0076     methods
+0077         
+0078         <a name="_sub0" href="#_subfunctions" class="code">function biela3DObj = Biela3D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial, densidad)</a>
+0079             <span class="comment">% Biela3D: Constructor de clase, genera una biela en tres dimensiones</span>
+0080             <span class="comment">%</span>
+0081             <span class="comment">% biela3DObj = Biela3D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)</span>
+0082             
+0083             <span class="comment">% Si no hay argumentos completa con ceros</span>
+0084             <span class="keyword">if</span> nargin == 0
+0085                 etiquetaBiela = <span class="string">''</span>;
+0086             <span class="keyword">end</span> <span class="comment">% if</span>
+0087             <span class="keyword">if</span> ~exist(<span class="string">'densidad'</span>, <span class="string">'var'</span>)
+0088                 densidad = 0;
+0089             <span class="keyword">end</span>
+0090             
+0091             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase Elemento</span>
+0092             biela3DObj = biela3DObj@<a href="Elemento.html" class="code" title="">Elemento</a>(etiquetaBiela);
+0093             
+0094             biela3DObj.nodosObj = {nodo1Obj; nodo2Obj};
+0095             biela3DObj.Eo = Ematerial;
+0096             biela3DObj.Ao = AreaSeccion;
+0097             biela3DObj.gdlID = [];
+0098             
+0099             coordNodo1 = nodo1Obj.obtenerCoordenadas();
+0100             coordNodo2 = nodo2Obj.obtenerCoordenadas();
+0101             
+0102             <span class="comment">% Calcula propiedades geometricas</span>
+0103             biela3DObj.dx = abs(coordNodo2(1)-coordNodo1(1));
+0104             biela3DObj.dy = abs(coordNodo2(2)-coordNodo1(2));
+0105             biela3DObj.dz = abs(coordNodo2(3)-coordNodo1(3));
+0106             biela3DObj.theta = atan(biela3DObj.dy/biela3DObj.dx);
+0107             biela3DObj.rho = densidad;
+0108             
+0109             <span class="comment">% Largo de la biela</span>
+0110             biela3DObj.L = sqrt(biela3DObj.dx^2+biela3DObj.dy^2+biela3DObj.dz^2);
+0111             
+0112             <span class="comment">% Calcula matriz de transformacion</span>
+0113             cosx = biela3DObj.dx / biela3DObj.L;
+0114             cosy = biela3DObj.dy / biela3DObj.L;
+0115             cosz = biela3DObj.dz / biela3DObj.L;
+0116             biela3DObj.T = [cosx, cosy, cosz, 0, 0, 0; 0, 0, 0, cosx, cosy, cosz];
+0117             
+0118         <span class="keyword">end</span> <span class="comment">% Biela2D constructor</span>
+0119         
+0120         <a name="_sub1" href="#_subfunctions" class="code">function numeroNodos = obtenerNumeroNodos(biela3DObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0121             
+0122             numeroNodos = 2;
+0123             
+0124         <span class="keyword">end</span> <span class="comment">% obtenerNumeroNodos function</span>
+0125         
+0126         <a name="_sub2" href="#_subfunctions" class="code">function nodosBiela = obtenerNodos(biela3DObj)</a>
+0127             
+0128             nodosBiela = biela3DObj.nodosObj;
+0129             
+0130         <span class="keyword">end</span> <span class="comment">% obtenerNodos function</span>
+0131         
+0132         <a name="_sub3" href="#_subfunctions" class="code">function numeroGDL = obtenerNumeroGDL(biela3DObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0133             
+0134             numeroGDL = 6;
+0135             
+0136         <span class="keyword">end</span> <span class="comment">% obtenerNumeroGDL function</span>
+0137         
+0138         <a name="_sub4" href="#_subfunctions" class="code">function gdlIDBiela = obtenerGDLID(biela3DObj)</a>
+0139             
+0140             gdlIDBiela = biela3DObj.gdlID;
+0141             
+0142         <span class="keyword">end</span> <span class="comment">% gdlIDBiela function</span>
+0143         
+0144         <a name="_sub5" href="#_subfunctions" class="code">function ae = obtenerAE(biela3DObj)</a>
+0145             
+0146             ae = biela3DObj.Ao * biela3DObj.Eo;
+0147             
+0148         <span class="keyword">end</span> <span class="comment">% obtenerAE function</span>
+0149         
+0150         <a name="_sub6" href="#_subfunctions" class="code">function m = obtenerMasa(biela3DObj)</a>
+0151             <span class="comment">% obtenerMasa: Retorna la masa total del elemento</span>
+0152             <span class="comment">%</span>
+0153             <span class="comment">% m = obtenerMasa(biela3DObj)</span>
+0154             
+0155             m = biela3DObj.rho * biela3DObj.L * biela3DObj.Ao;
+0156             
+0157         <span class="keyword">end</span> <span class="comment">% obtenerMasa function</span>
+0158         
+0159         <a name="_sub7" href="#_subfunctions" class="code">function m_masa = obtenerVectorMasa(biela3DObj)</a>
+0160             <span class="comment">% obtenerVectorMasa: Obtiene el vector de masa del elemento</span>
+0161             <span class="comment">%</span>
+0162             <span class="comment">% m_masa = obtenerVectorMasa(biela3DObj)</span>
+0163             
+0164             m_masa = zeros(6, 1);
+0165             m = biela3DObj.obtenerMasa();
+0166             m_masa(1) = m * 0.5;
+0167             m_masa(2) = m * 0.5;
+0168             m_masa(3) = 1e-6;
+0169             m_masa(4) = m * 0.5;
+0170             m_masa(5) = m * 0.5;
+0171             m_masa(6) = 1e-6;
+0172             
+0173         <span class="keyword">end</span> <span class="comment">% obtenerMatrizMasa function</span>
+0174         
+0175         <a name="_sub8" href="#_subfunctions" class="code">function theta = obtenerAngulo(biela3DObj)</a>
+0176             
+0177             theta = biela3DObj.theta;
+0178             
+0179         <span class="keyword">end</span> <span class="comment">% obtenerAngulo function</span>
+0180         
+0181         <a name="_sub9" href="#_subfunctions" class="code">function k_global = obtenerMatrizRigidezCoordGlobal(biela3DObj)</a>
+0182             
+0183             <span class="comment">% Obtiene la matriz de coordenadas locales</span>
+0184             k_local = biela3DObj.obtenerMatrizRigidezCoordLocal();
+0185             
+0186             <span class="comment">% Premultiplica y multiplica por [T]</span>
+0187             k_global = biela3DObj.T' * k_local * biela3DObj.T;
+0188             
+0189         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidezCoordGlobal function</span>
+0190         
+0191         <a name="_sub10" href="#_subfunctions" class="code">function k_local = obtenerMatrizRigidezCoordLocal(biela3DObj)</a>
+0192             
+0193             <span class="comment">% Genera matriz</span>
+0194             k_local = [1, -1; -1, 1];
+0195             
+0196             <span class="comment">% Multiplica por AoEo/L</span>
+0197             k_local = k_local .* (biela3DObj.Eo * biela3DObj.Ao / biela3DObj.L);
+0198             
+0199         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidezCoordLocal function</span>
+0200         
+0201         <a name="_sub11" href="#_subfunctions" class="code">function fr_global = obtenerFuerzaResistenteCoordGlobal(biela3DObj)</a>
+0202             
+0203             <span class="comment">% Obtiene fr local</span>
+0204             fr_local = biela3DObj.obtenerFuerzaResistenteCoordLocal();
+0205             
+0206             <span class="comment">% Calcula fuerza resistente global</span>
+0207             fr_global = biela3DObj.T' * fr_local;
+0208             
+0209         <span class="keyword">end</span> <span class="comment">% obtenerFuerzaResistenteCoordGlobal function</span>
+0210         
+0211         <a name="_sub12" href="#_subfunctions" class="code">function fr_local = obtenerFuerzaResistenteCoordLocal(biela3DObj)</a>
+0212             
+0213             <span class="comment">% Obtiene los nodos</span>
+0214             nodo1 = biela3DObj.nodosObj{1};
+0215             nodo2 = biela3DObj.nodosObj{2};
+0216             
+0217             <span class="comment">% Obtiene los desplazamientos</span>
+0218             u1 = nodo1.obtenerDesplazamientos();
+0219             u2 = nodo2.obtenerDesplazamientos();
+0220             
+0221             <span class="comment">% Vector desplazamientos u'</span>
+0222             u = [u1(1); u1(2); u1(3); u2(1); u2(2); u2(3)];
+0223             
+0224             <span class="comment">% Calcula u''</span>
+0225             f = biela3DObj.T * u;
+0226             
+0227             <span class="comment">% Obtiene K local</span>
+0228             k_local = biela3DObj.obtenerMatrizRigidezCoordLocal();
+0229             
+0230             <span class="comment">% Calcula F</span>
+0231             fr_local = k_local * f;
+0232             
+0233         <span class="keyword">end</span> <span class="comment">% obtenerFuerzaResistenteCoordLocal function</span>
+0234         
+0235         <a name="_sub13" href="#_subfunctions" class="code">function definirGDLID(biela3DObj)</a>
+0236             
+0237             <span class="comment">% Se obtienen los nodos extremos</span>
+0238             nodo1 = biela3DObj.nodosObj{1};
+0239             nodo2 = biela3DObj.nodosObj{2};
+0240             
+0241             <span class="comment">% Se obtienen los gdl de los nodos</span>
+0242             gdlnodo1 = nodo1.obtenerGDLID();
+0243             gdlnodo2 = nodo2.obtenerGDLID();
+0244             
+0245             <span class="comment">% Se establecen gdl</span>
+0246             gdl = [0, 0, 0, 0, 0, 0];
+0247             gdl(1) = gdlnodo1(1);
+0248             gdl(2) = gdlnodo1(2);
+0249             gdl(3) = gdlnodo1(3);
+0250             gdl(4) = gdlnodo2(1);
+0251             gdl(5) = gdlnodo2(2);
+0252             gdl(6) = gdlnodo2(3);
+0253             biela3DObj.gdlID = gdl;
+0254             
+0255         <span class="keyword">end</span> <span class="comment">% definirGDLID function</span>
+0256         
+0257         <a name="_sub14" href="#_subfunctions" class="code">function agregarFuerzaResistenteAReacciones(biela3DObj)</a>
+0258             
+0259             <span class="comment">% Se calcula la fuerza resistente</span>
+0260             fr_global = biela3DObj.obtenerFuerzaResistenteCoordGlobal();
+0261             
+0262             <span class="comment">% Carga los nodos</span>
+0263             nodo1 = biela3DObj.nodosObj{1};
+0264             nodo2 = biela3DObj.nodosObj{2};
+0265             
+0266             <span class="comment">% Agrega fuerzas resistentes como cargas</span>
+0267             nodo1.agregarCarga(-[fr_global(1); fr_global(2); fr_global(3)]);
+0268             nodo2.agregarCarga(-[fr_global(4); fr_global(5); fr_global(6)]);
+0269             
+0270         <span class="keyword">end</span> <span class="comment">% agregarFuerzaResistenteAReacciones function</span>
+0271         
+0272         <a name="_sub15" href="#_subfunctions" class="code">function guardarPropiedades(biela3DObj, archivoSalidaHandle)</a>
+0273             
+0274             fprintf(archivoSalidaHandle, <span class="string">'\tBiela3D %s:\n\t\tLargo:\t%s\n\t\tArea:\t%s\n\t\tEo:\t\t%s\n\t\tMasa:\t%s\n'</span>, <span class="keyword">...</span>
+0275                 biela3DObj.obtenerEtiqueta(), num2str(biela3DObj.L), <span class="keyword">...</span>
+0276                 num2str(biela3DObj.Ao), num2str(biela3DObj.Eo), <span class="keyword">...</span>
+0277                 num2str(biela3DObj.obtenerMasa()));
+0278             
+0279         <span class="keyword">end</span> <span class="comment">% guardarPropiedades function</span>
+0280         
+0281         <a name="_sub16" href="#_subfunctions" class="code">function guardarEsfuerzosInternos(biela3DObj, archivoSalidaHandle)</a>
+0282             
+0283             esf_int = biela3DObj.obtenerFuerzaResistenteCoordLocal();
+0284             f = esf_int(1);
+0285             
+0286             <span class="comment">% Determina si es traccion o compresion</span>
+0287             t = <span class="string">'TRACCION'</span>;
+0288             <span class="keyword">if</span> f &gt; 0
+0289                 t = <span class="string">'COMPRESION'</span>;
+0290             <span class="keyword">end</span>
+0291             <span class="keyword">if</span> abs(f) &lt; 1e-10
+0292                 t = <span class="string">'--'</span>;
+0293                 f = 0;
+0294             <span class="keyword">end</span>
+0295             
+0296             fprintf(archivoSalidaHandle, <span class="string">'\n\tBiela 3D %s:\t%s%s'</span>, biela3DObj.obtenerEtiqueta(), <span class="keyword">...</span>
+0297                 pad(num2str(f), 15), t);
+0298             
+0299         <span class="keyword">end</span> <span class="comment">% guardarEsfuerzosInternos function</span>
+0300         
+0301         <a name="_sub17" href="#_subfunctions" class="code">function plot(elementoObj, deformadas, tipoLinea, grosorLinea, ~)</a>
+0302             <span class="comment">% plot: Grafica un elemento</span>
+0303             <span class="comment">%</span>
+0304             <span class="comment">% plot(elementoObj,deformadas,tipoLinea,grosorLinea)</span>
+0305             
+0306             <span class="comment">% Obtiene las coordenadas de los objetos</span>
+0307             coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
+0308             coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
+0309             
+0310             <span class="comment">% Si hay deformadas</span>
+0311             <span class="keyword">if</span> ~isempty(deformadas)
+0312                 coord1 = coord1 + deformadas{1};
+0313                 coord2 = coord2 + deformadas{2};
+0314             <span class="keyword">end</span>
+0315             
+0316             <span class="comment">% Grafica el elemento</span>
+0317             elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
+0318             
+0319         <span class="keyword">end</span> <span class="comment">% plot function</span>
+0320         
+0321         <a name="_sub18" href="#_subfunctions" class="code">function disp(biela3DObj)</a>
+0322             
+0323             <span class="comment">% Imprime propiedades</span>
+0324             fprintf(<span class="string">'Propiedades biela 3D:\n'</span>);
+0325             <a href="#_sub19" class="code" title="subfunction disp(biela3DObj)">disp</a>@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(biela3DObj);
+0326             fprintf(<span class="string">'\tLargo: %s\tArea: %s\tE: %s\n'</span>, pad(num2str(biela3DObj.L), 12), <span class="keyword">...</span>
+0327                 pad(num2str(biela3DObj.Ao), 10), pad(num2str(biela3DObj.Eo), 10));
+0328             
+0329             <span class="comment">% Imprime la matiz de transformacion</span>
+0330             fprintf(<span class="string">'\tMatriz de transformacion:\n'</span>);
+0331             <a href="#_sub19" class="code" title="subfunction disp(biela3DObj)">disp</a>(biela3DObj.T);
+0332             
+0333             <span class="comment">% Se imprime matriz de rigidez local</span>
+0334             fprintf(<span class="string">'\tMatriz de rigidez coordenadas locales:\n'</span>);
+0335             <a href="#_sub19" class="code" title="subfunction disp(biela3DObj)">disp</a>(biela3DObj.obtenerMatrizRigidezCoordLocal());
+0336             
+0337             <span class="comment">% Se imprime matriz de rigidez global</span>
+0338             fprintf(<span class="string">'\tMatriz de rigidez coordenadas globales:\n'</span>);
+0339             <a href="#_sub19" class="code" title="subfunction disp(biela3DObj)">disp</a>(biela3DObj.obtenerMatrizRigidezCoordGlobal());
+0340             
+0341             <a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
+0342             
+0343         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0344         
+0345     <span class="keyword">end</span> <span class="comment">% methods Biela3D</span>
+0346     
+0347 <span class="keyword">end</span> <span class="comment">% class Biela3D</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Membrana</title>
+  <meta name="keywords" content="Membrana">
+  <meta name="description" content="______________________________________________________________________">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- # modelo --><!-- menu.html elementos -->
+<h1>Membrana
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>______________________________________________________________________</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ______________________________________________________________________
+|                                                                      |
+|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+|                  Matricial de Estructuras en MATLAB                  |
+|                                                                      |
+|                   Area  de Estructuras y Geotecnia                   |
+|                   Departamento de Ingenieria Civil                   |
+|              Facultad de Ciencias Fisicas y Matematicas              |
+|                         Universidad de Chile                         |
+|                                                                      |
+| TEFAME es una  plataforma en base a objetos para modelar, analizar y |
+| visualizar  la respuesta de sistemas  estructurales usando el metodo |
+| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
+| La plataforma es desarrollada en  propagacion orientada a objetos en |
+| MATLAB.                                                              |
+|______________________________________________________________________|
+ ______________________________________________________________________
+|                                                                      |
+| Clase Membrana                                                       |
+|                                                                      |
+| Este archivo contiene la definicion de la Clase Membrana             |
+| Membrana es una subclase de la clase Elemento y  corresponde a  la   |
+| representacion del elemento membrana bidimensional sencilla de secc- |
+| ion rectangular de cuatro nodos sometida a un estado de fuerzas.     |
+|                                                                      |
+| Programado: Pablo Pizarro @ppizarror.com                             |
+| Fecha: 27/08/2018                                                    |
+|______________________________________________________________________|
+
+  Properties (Access=private):
+       nodosObj
+       gdlID
+       E
+       nu
+       D
+       t
+       h
+       b
+       Feq
+       NPOINTS
+       rho
+  Methods:
+       membranaObj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,E,nu,t,densidad)
+       numeroNodos = obtenerNumeroNodos(membranaObj)
+       nodosMembrana = obtenerNodos(membranaObj)
+       numeroGDL = obtenerNumeroGDL(membranaObj)
+       gdlIDMembrana = obtenerGDLID(membranaObj)
+       k_global = obtenerMatrizRigidezCoordGlobal(membranaObj)
+       k_local = obtenerMatrizRigidezCoordLocal(membranaObj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(membranaObj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(membranaObj)
+       b = obtenerAncho(membranaObj)
+       h = obtenerAlto(membranaObj)
+       u = obtenerDesplazamiento(membranaObj, x, y)
+       e = obtenerDeformaciones(membranaObj, x, y)
+       sigma = obtenerTensiones(membranaObj, x, y)
+       lista = crearListaTensiones(membranaObj)
+       validarXY(membranaObj, x, y)
+       definirGDLID(membranaObj)
+       agregarFuerzaResistenteAReacciones(membranaObj)
+       guardarPropiedades(membranaObj,archivoSalidaHandle)
+       guardarEsfuerzosInternos(membranaObj,archivoSalidaHandle)
+       disp(membranaObj)
+  Methods SuperClass (ComponenteModelo):
+       etiqueta = obtenerEtiqueta(componenteModeloObj)
+       e = equals(componenteModeloObj,obj)
+       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li><li><a href="Elemento.html" class="code" title="">Elemento</a>	______________________________________________________________________</li><li><a href="Membrana.html" class="code" title="">Membrana</a>	______________________________________________________________________</li><li><a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="Membrana.html" class="code" title="">Membrana</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function membranaObj = Membrana(etiquetaMembrana, nodo1Obj, nodo2Obj, nodo3Obj, nodo4Obj, E, nu, t, densidad)</a></li><li><a href="#_sub2" class="code">function b = obtenerAncho(membranaObj)</a></li><li><a href="#_sub3" class="code">function h = obtenerAlto(membranaObj)</a></li><li><a href="#_sub4" class="code">function numeroNodos = obtenerNumeroNodos(membranaObj)</a></li><li><a href="#_sub5" class="code">function nodosMembrana = obtenerNodos(membranaObj)</a></li><li><a href="#_sub6" class="code">function numeroGDL = obtenerNumeroGDL(membranaObj)</a></li><li><a href="#_sub7" class="code">function gdlIDMembrana = obtenerGDLID(membranaObj)</a></li><li><a href="#_sub8" class="code">function m = obtenerMasa(membranaObj)</a></li><li><a href="#_sub9" class="code">function m_masa = obtenerVectorMasa(membranaObj)</a></li><li><a href="#_sub10" class="code">function k_global = obtenerMatrizRigidezCoordGlobal(membranaObj)</a></li><li><a href="#_sub11" class="code">function k_local = obtenerMatrizRigidezCoordLocal(membranaObj)</a></li><li><a href="#_sub12" class="code">function validarXY(membranaObj, x, y)</a></li><li><a href="#_sub13" class="code">function u = obtenerDesplazamiento(membranaObj, x, y)</a></li><li><a href="#_sub14" class="code">function e = obtenerDeformaciones(membranaObj, x, y)</a></li><li><a href="#_sub15" class="code">function sigma = obtenerTensiones(membranaObj, x, y)</a></li><li><a href="#_sub16" class="code">function fr_global = obtenerFuerzaResistenteCoordGlobal(membranaObj)</a></li><li><a href="#_sub17" class="code">function fr_local = obtenerFuerzaResistenteCoordLocal(membranaObj)</a></li><li><a href="#_sub18" class="code">function definirGDLID(membranaObj)</a></li><li><a href="#_sub19" class="code">function sumarFuerzaEquivalente(membranaObj, nodo, f)</a></li><li><a href="#_sub20" class="code">function agregarFuerzaResistenteAReacciones(membranaObj)</a></li><li><a href="#_sub21" class="code">function guardarPropiedades(membranaObj, archivoSalidaHandle)</a></li><li><a href="#_sub22" class="code">function lista = crearListaTensiones(membranaObj)</a></li><li><a href="#_sub23" class="code">function guardarEsfuerzosInternos(membranaObj, archivoSalidaHandle)</a></li><li><a href="#_sub24" class="code">function plot(elementoObj, deformadas, tipoLinea, grosorLinea, ~)</a></li><li><a href="#_sub25" class="code">function disp(membranaObj)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
+0002 <span class="comment">%|                                                                      |</span>
+0003 <span class="comment">%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |</span>
+0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
+0005 <span class="comment">%|                                                                      |</span>
+0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
+0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
+0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
+0009 <span class="comment">%|                         Universidad de Chile                         |</span>
+0010 <span class="comment">%|                                                                      |</span>
+0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
+0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
+0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
+0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
+0015 <span class="comment">%| MATLAB.                                                              |</span>
+0016 <span class="comment">%|______________________________________________________________________|</span>
+0017 <span class="comment">% ______________________________________________________________________</span>
+0018 <span class="comment">%|                                                                      |</span>
+0019 <span class="comment">%| Clase Membrana                                                       |</span>
+0020 <span class="comment">%|                                                                      |</span>
+0021 <span class="comment">%| Este archivo contiene la definicion de la Clase Membrana             |</span>
+0022 <span class="comment">%| Membrana es una subclase de la clase Elemento y  corresponde a  la   |</span>
+0023 <span class="comment">%| representacion del elemento membrana bidimensional sencilla de secc- |</span>
+0024 <span class="comment">%| ion rectangular de cuatro nodos sometida a un estado de fuerzas.     |</span>
+0025 <span class="comment">%|                                                                      |</span>
+0026 <span class="comment">%| Programado: Pablo Pizarro @ppizarror.com                             |</span>
+0027 <span class="comment">%| Fecha: 27/08/2018                                                    |</span>
+0028 <span class="comment">%|______________________________________________________________________|</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">%  Properties (Access=private):</span>
+0031 <span class="comment">%       nodosObj</span>
+0032 <span class="comment">%       gdlID</span>
+0033 <span class="comment">%       E</span>
+0034 <span class="comment">%       nu</span>
+0035 <span class="comment">%       D</span>
+0036 <span class="comment">%       t</span>
+0037 <span class="comment">%       h</span>
+0038 <span class="comment">%       b</span>
+0039 <span class="comment">%       Feq</span>
+0040 <span class="comment">%       NPOINTS</span>
+0041 <span class="comment">%       rho</span>
+0042 <span class="comment">%  Methods:</span>
+0043 <span class="comment">%       membranaObj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,E,nu,t,densidad)</span>
+0044 <span class="comment">%       numeroNodos = obtenerNumeroNodos(membranaObj)</span>
+0045 <span class="comment">%       nodosMembrana = obtenerNodos(membranaObj)</span>
+0046 <span class="comment">%       numeroGDL = obtenerNumeroGDL(membranaObj)</span>
+0047 <span class="comment">%       gdlIDMembrana = obtenerGDLID(membranaObj)</span>
+0048 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(membranaObj)</span>
+0049 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(membranaObj)</span>
+0050 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(membranaObj)</span>
+0051 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(membranaObj)</span>
+0052 <span class="comment">%       b = obtenerAncho(membranaObj)</span>
+0053 <span class="comment">%       h = obtenerAlto(membranaObj)</span>
+0054 <span class="comment">%       u = obtenerDesplazamiento(membranaObj, x, y)</span>
+0055 <span class="comment">%       e = obtenerDeformaciones(membranaObj, x, y)</span>
+0056 <span class="comment">%       sigma = obtenerTensiones(membranaObj, x, y)</span>
+0057 <span class="comment">%       lista = crearListaTensiones(membranaObj)</span>
+0058 <span class="comment">%       validarXY(membranaObj, x, y)</span>
+0059 <span class="comment">%       definirGDLID(membranaObj)</span>
+0060 <span class="comment">%       agregarFuerzaResistenteAReacciones(membranaObj)</span>
+0061 <span class="comment">%       guardarPropiedades(membranaObj,archivoSalidaHandle)</span>
+0062 <span class="comment">%       guardarEsfuerzosInternos(membranaObj,archivoSalidaHandle)</span>
+0063 <span class="comment">%       disp(membranaObj)</span>
+0064 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
+0065 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0066 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0067 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0068 
+0069 classdef <a href="Membrana.html" class="code" title="">Membrana</a> &lt; <a href="Elemento.html" class="code" title="">Elemento</a>
+0070     
+0071     properties(Access = private)
+0072         nodosObj <span class="comment">% Lista de nodos de la membrana</span>
+0073         gdlID <span class="comment">% ID de los grados de libertad</span>
+0074         E <span class="comment">% Constante elastica del material</span>
+0075         nu <span class="comment">% Modulo de Poisson</span>
+0076         D <span class="comment">% Matriz de constantes elasticas</span>
+0077         t <span class="comment">% Ancho de la membrana</span>
+0078         h <span class="comment">% Alto de la membrana desde el eje (r,s)</span>
+0079         b <span class="comment">% Largo de la membrana desde el eje (r,s)</span>
+0080         Feq <span class="comment">% Vector de fuerzas equivalentes en nodos</span>
+0081         NPOINTS <span class="comment">% Numero de interpolaciones</span>
+0082         rho <span class="comment">% Densidad de la membrana</span>
+0083     <span class="keyword">end</span> <span class="comment">% properties Membrana</span>
+0084     
+0085     methods
+0086         
+0087         <a name="_sub0" href="#_subfunctions" class="code">function membranaObj = Membrana(etiquetaMembrana, nodo1Obj, nodo2Obj, nodo3Obj, nodo4Obj, E, nu, t, densidad)</a>
+0088             <span class="comment">% Membrana: Constructor de clase, crea una membrana de 4</span>
+0089             <span class="comment">% vertices planar</span>
+0090             <span class="comment">%</span>
+0091             <span class="comment">% membranaObj = Membrana(etiquetaMembrana,nodo1Obj,nodo2Obj,</span>
+0092             <span class="comment">%   nodo3Obj,nodo4Obj,E,nu,t,densidad)</span>
+0093             
+0094             <span class="comment">% Si no se pasan argumentos se crean vacios</span>
+0095             <span class="keyword">if</span> nargin == 0
+0096                 etiquetaMembrana = <span class="string">''</span>;
+0097             <span class="keyword">end</span> <span class="comment">% if</span>
+0098             <span class="keyword">if</span> ~exist(<span class="string">'densidad'</span>, <span class="string">'var'</span>)
+0099                 densidad = 0;
+0100             <span class="keyword">end</span>
+0101             
+0102             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase Elemento</span>
+0103             membranaObj = membranaObj@<a href="Elemento.html" class="code" title="">Elemento</a>(etiquetaMembrana);
+0104             
+0105             <span class="comment">% Guarda material</span>
+0106             membranaObj.nodosObj = {nodo1Obj; nodo2Obj; nodo3Obj; nodo4Obj};
+0107             membranaObj.E = E;
+0108             membranaObj.nu = nu;
+0109             membranaObj.rho = densidad;
+0110             
+0111             <span class="comment">% ID de los grados de libertad (4 aristas)</span>
+0112             membranaObj.gdlID = [];
+0113             
+0114             <span class="comment">% Calcula matriz D de constantes elasticas (constitutiva)</span>
+0115             membranaObj.D = E * [ <span class="keyword">...</span>
+0116                 1 / (1 - nu^2), nu / (1 - nu^2), 0; <span class="keyword">...</span>
+0117                 nu / (1 - nu^2), 1 / (1 - nu^2), 0; <span class="keyword">...</span>
+0118                 0, 0, 1 / (2 + 2 * nu)];
+0119             
+0120             <span class="comment">% Calcula largo (2b) y alto (2h), se usa el siguiente orden:</span>
+0121             <span class="comment">%</span>
+0122             <span class="comment">%           4 ------------- 3</span>
+0123             <span class="comment">%           |       y       |</span>
+0124             <span class="comment">%        2h |       #x      |</span>
+0125             <span class="comment">%           |               |</span>
+0126             <span class="comment">%           1 ------------- 2</span>
+0127             <span class="comment">%                  2b</span>
+0128             <span class="comment">%</span>
+0129             coordNodo1 = nodo1Obj.obtenerCoordenadas();
+0130             coordNodo2 = nodo2Obj.obtenerCoordenadas();
+0131             coordNodo3 = nodo3Obj.obtenerCoordenadas();
+0132             coordNodo4 = nodo4Obj.obtenerCoordenadas();
+0133             
+0134             db1 = abs(coordNodo1(1)-coordNodo2(1)) / 2;
+0135             db2 = abs(coordNodo3(1)-coordNodo4(1)) / 2;
+0136             dh1 = abs(coordNodo1(2)-coordNodo4(2)) / 2;
+0137             dh2 = abs(coordNodo2(2)-coordNodo3(2)) / 2;
+0138             <span class="keyword">if</span> (db1 ~= db2)
+0139                 error(<span class="string">'Dimensiones no correctas en @x Membrana ID %s'</span>, etiquetaMembrana);
+0140             <span class="keyword">end</span>
+0141             <span class="keyword">if</span> (dh1 ~= dh2)
+0142                 error(<span class="string">'Dimensiones no correctas en @y Membrana ID %s'</span>, etiquetaMembrana);
+0143             <span class="keyword">end</span>
+0144             
+0145             membranaObj.b = db1;
+0146             membranaObj.h = dh1;
+0147             membranaObj.t = t;
+0148             
+0149             <span class="comment">% Fuerza equivalente de la membrana</span>
+0150             membranaObj.Feq = [0, 0, 0, 0, 0, 0, 0, 0]'; <span class="comment">% 8x1</span>
+0151             
+0152             <span class="comment">% Numero de puntos de la malla, itera segun alto y largo</span>
+0153             membranaObj.NPOINTS = 15; <span class="comment">% (NPOINTS+1)^2 puntos totales</span>
+0154             
+0155         <span class="keyword">end</span> <span class="comment">% Membrana constructor</span>
+0156         
+0157         <a name="_sub1" href="#_subfunctions" class="code">function b = obtenerAncho(membranaObj)</a>
+0158             
+0159             b = 2 * membranaObj.b;
+0160             
+0161         <span class="keyword">end</span> <span class="comment">% obtenerAncho function</span>
+0162         
+0163         <a name="_sub2" href="#_subfunctions" class="code">function h = obtenerAlto(membranaObj)</a>
+0164             
+0165             h = 2 * membranaObj.h;
+0166             
+0167         <span class="keyword">end</span> <span class="comment">% obtenerAlto function</span>
+0168         
+0169         <a name="_sub3" href="#_subfunctions" class="code">function numeroNodos = obtenerNumeroNodos(membranaObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0170             
+0171             numeroNodos = 2;
+0172             
+0173         <span class="keyword">end</span> <span class="comment">% obtenerNumeroNodos function</span>
+0174         
+0175         <a name="_sub4" href="#_subfunctions" class="code">function nodosMembrana = obtenerNodos(membranaObj)</a>
+0176             
+0177             nodosMembrana = membranaObj.nodosObj;
+0178             
+0179         <span class="keyword">end</span> <span class="comment">% obtenerNodos function</span>
+0180         
+0181         <a name="_sub5" href="#_subfunctions" class="code">function numeroGDL = obtenerNumeroGDL(membranaObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0182             
+0183             numeroGDL = 8;
+0184             
+0185         <span class="keyword">end</span> <span class="comment">% obtenerNumeroGDL function</span>
+0186         
+0187         <a name="_sub6" href="#_subfunctions" class="code">function gdlIDMembrana = obtenerGDLID(membranaObj)</a>
+0188             
+0189             gdlIDMembrana = membranaObj.gdlID;
+0190             
+0191         <span class="keyword">end</span> <span class="comment">% obtenerGDLID function</span>
+0192         
+0193         <a name="_sub7" href="#_subfunctions" class="code">function m = obtenerMasa(membranaObj)</a>
+0194             <span class="comment">% obtenerMasa: Retorna la masa total del elemento</span>
+0195             <span class="comment">%</span>
+0196             <span class="comment">% m = obtenerMasa(membranaObj)</span>
+0197             
+0198             m = membranaObj.rho * membranaObj.b * membranaObj.h * membranaObj.t;
+0199             
+0200         <span class="keyword">end</span> <span class="comment">% obtenerMasa function</span>
+0201         
+0202         <a name="_sub8" href="#_subfunctions" class="code">function m_masa = obtenerVectorMasa(membranaObj)</a>
+0203             <span class="comment">% obtenerVectorMasa: Obtiene el vector de masa del elemento</span>
+0204             <span class="comment">%</span>
+0205             <span class="comment">% m_masa = obtenerVectorMasa(membranaObj)</span>
+0206             
+0207             m_masa = zeros(8, 1);
+0208             m = membranaObj.obtenerMasa();
+0209             m_masa(1) = m * 0.25;
+0210             m_masa(2) = m * 0.25;
+0211             m_masa(3) = m * 0.25;
+0212             m_masa(4) = m * 0.25;
+0213             m_masa(5) = m * 0.25;
+0214             m_masa(6) = m * 0.25;
+0215             m_masa(7) = m * 0.25;
+0216             m_masa(8) = m * 0.25;
+0217             
+0218         <span class="keyword">end</span> <span class="comment">% obtenerMatrizMasa function</span>
+0219         
+0220         <a name="_sub9" href="#_subfunctions" class="code">function k_global = obtenerMatrizRigidezCoordGlobal(membranaObj)</a>
+0221             
+0222             <span class="comment">% Matriz global igual a la local, no hay rotacion</span>
+0223             k_global = membranaObj.obtenerMatrizRigidezCoordLocal();
+0224             
+0225         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidezCoordGlobal function</span>
+0226         
+0227         <a name="_sub10" href="#_subfunctions" class="code">function k_local = obtenerMatrizRigidezCoordLocal(membranaObj)</a>
+0228             
+0229             <span class="comment">% Crea la matriz vacia de 8x8</span>
+0230             k_local = zeros(8, 8);
+0231             
+0232             <span class="comment">% Calcula valores iniciales</span>
+0233             a1 = (membranaObj.t * membranaObj.h * membranaObj.D(1, 1)) / (6 * membranaObj.b);
+0234             a2 = (membranaObj.t * membranaObj.b * membranaObj.D(2, 2)) / (6 * membranaObj.h);
+0235             a3 = (membranaObj.t * membranaObj.D(1, 2)) / (4);
+0236             a4 = (membranaObj.t * membranaObj.b * membranaObj.D(3, 3)) / (6 * membranaObj.h);
+0237             a5 = (membranaObj.t * membranaObj.h * membranaObj.D(3, 3)) / (6 * membranaObj.b);
+0238             a6 = (membranaObj.t * membranaObj.D(3, 3)) / (4);
+0239             A = [a1; a2; a3; a4; a5; a6];
+0240             
+0241             <span class="comment">% Crea las funciones</span>
+0242             aij = @(i, j) (A(i) + A(j));
+0243             bij = @(i, j) (A(i) - A(j));
+0244             cij = @(i, j) (A(i) - 2 * A(j));
+0245             
+0246             <span class="comment">% Aplica valores T supr</span>
+0247             k_local(1, 1) = 2 * aij(1, 4);
+0248             k_local(1, 2) = aij(3, 6);
+0249             k_local(1, 3) = cij(4, 1);
+0250             k_local(1, 4) = bij(3, 6);
+0251             k_local(1, 5) = -aij(1, 4);
+0252             k_local(1, 6) = -aij(3, 6);
+0253             k_local(1, 7) = cij(1, 4);
+0254             k_local(1, 8) = bij(6, 3);
+0255             
+0256             k_local(2, 2) = 2 * aij(2, 4);
+0257             k_local(2, 3) = bij(6, 3);
+0258             k_local(2, 4) = cij(2, 5);
+0259             k_local(2, 5) = -aij(3, 6);
+0260             k_local(2, 6) = -aij(2, 5);
+0261             k_local(2, 7) = bij(3, 6);
+0262             k_local(2, 8) = cij(5, 2);
+0263             
+0264             k_local(3, 3) = 2 * aij(1, 4);
+0265             k_local(3, 4) = -aij(3, 6);
+0266             k_local(3, 5) = cij(1, 4);
+0267             k_local(3, 6) = bij(3, 6);
+0268             k_local(3, 7) = -aij(1, 4);
+0269             k_local(3, 8) = aij(6, 3);
+0270             
+0271             k_local(4, 4) = 2 * aij(2, 4);
+0272             k_local(4, 5) = bij(6, 3);
+0273             k_local(4, 6) = cij(5, 2);
+0274             k_local(4, 7) = aij(3, 6);
+0275             k_local(4, 8) = -aij(5, 2);
+0276             
+0277             k_local(5, 5) = 2 * aij(1, 4);
+0278             k_local(5, 6) = aij(3, 6);
+0279             k_local(5, 7) = cij(4, 1);
+0280             k_local(5, 8) = -bij(6, 3);
+0281             
+0282             k_local(6, 6) = 2 * aij(2, 4);
+0283             k_local(6, 7) = bij(6, 3);
+0284             k_local(6, 8) = cij(2, 5);
+0285             
+0286             k_local(7, 7) = 2 * aij(1, 4);
+0287             k_local(7, 8) = -aij(3, 6);
+0288             
+0289             k_local(8, 8) = 2 * aij(2, 4);
+0290             
+0291             <span class="comment">% Aplica traspuesta</span>
+0292             <span class="keyword">for</span> i = 2:8 <span class="comment">% fila</span>
+0293                 <span class="keyword">for</span> j = 1:8 <span class="comment">% columna</span>
+0294                     <span class="keyword">if</span> (j &lt; i)
+0295                         k_local(i, j) = k_local(j, i);
+0296                     <span class="keyword">end</span>
+0297                 <span class="keyword">end</span> <span class="comment">% for j</span>
+0298             <span class="keyword">end</span> <span class="comment">% for i</span>
+0299             
+0300         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidezCoordLocal function</span>
+0301         
+0302         <a name="_sub11" href="#_subfunctions" class="code">function validarXY(membranaObj, x, y)</a>
+0303             
+0304             <span class="keyword">if</span> (abs(x) &gt; membranaObj.b || abs(y) &gt; membranaObj.h)
+0305                 error(<span class="string">'Valores x e y exceden dimensiones permitidas'</span>);
+0306             <span class="keyword">end</span>
+0307             
+0308         <span class="keyword">end</span> <span class="comment">% validarXY function</span>
+0309         
+0310         <a name="_sub12" href="#_subfunctions" class="code">function u = obtenerDesplazamiento(membranaObj, x, y)</a>
+0311             <span class="comment">% Calcula el desplazamiento en cualquier punto de la membrana</span>
+0312             
+0313             <span class="comment">% Verifica que x e y sean validos</span>
+0314             membranaObj.validarXY(x, y);
+0315             
+0316             <span class="comment">% Obtiene los factores N1, N2, N3, N4</span>
+0317             N1 = (membranaObj.b - x) * (membranaObj.h - y) / (4 * membranaObj.b * membranaObj.h);
+0318             N2 = (membranaObj.b + x) * (membranaObj.h - y) / (4 * membranaObj.b * membranaObj.h);
+0319             N3 = (membranaObj.b + x) * (membranaObj.h + y) / (4 * membranaObj.b * membranaObj.h);
+0320             N4 = (membranaObj.b - x) * (membranaObj.h + y) / (4 * membranaObj.b * membranaObj.h);
+0321             
+0322             <span class="comment">% Calcula la matriz N [2x8]</span>
+0323             N = [N1, 0, N2, 0, N3, 0, N4, 0; <span class="keyword">...</span>
+0324                 0, N1, 0, N2, 0, N3, 0, N4];
+0325             
+0326             <span class="comment">% Obtiene los nodos</span>
+0327             nodo1 = membranaObj.nodosObj{1};
+0328             nodo2 = membranaObj.nodosObj{2};
+0329             nodo3 = membranaObj.nodosObj{3};
+0330             nodo4 = membranaObj.nodosObj{4};
+0331             
+0332             <span class="comment">% Obtiene los desplazamientos</span>
+0333             u1 = nodo1.obtenerDesplazamientos();
+0334             u2 = nodo2.obtenerDesplazamientos();
+0335             u3 = nodo3.obtenerDesplazamientos();
+0336             u4 = nodo4.obtenerDesplazamientos();
+0337             
+0338             <span class="comment">% Vector desplazamientos u'</span>
+0339             d = [u1(1), u1(2), u2(1), u2(2), u3(1), u3(2), u4(1), u4(2)]';
+0340             
+0341             <span class="comment">% Multiplica por d [8x1] =&gt; vector u [2x8]x[8x1] =&gt; [2x1]</span>
+0342             u = N * d;
+0343             
+0344         <span class="keyword">end</span> <span class="comment">% obtenerDesplazamiento function</span>
+0345         
+0346         <a name="_sub13" href="#_subfunctions" class="code">function e = obtenerDeformaciones(membranaObj, x, y)</a>
+0347             <span class="comment">% Obtiene el vector de deformaciones [3x1] una vez se tiene el</span>
+0348             <span class="comment">% vector de desplazamientos</span>
+0349             
+0350             <span class="comment">% Verifica que x e y sean validos</span>
+0351             membranaObj.validarXY(x, y);
+0352             
+0353             <span class="comment">% Calcula los factores a1,a2,a3 y a4</span>
+0354             a1 = (membranaObj.b + x) / (4 * membranaObj.b * membranaObj.h);
+0355             a2 = (membranaObj.b - x) / (4 * membranaObj.b * membranaObj.h);
+0356             a3 = (membranaObj.h + y) / (4 * membranaObj.b * membranaObj.h);
+0357             a4 = (membranaObj.h - y) / (4 * membranaObj.b * membranaObj.h);
+0358             
+0359             <span class="comment">% Calcula el vector B [3x8]</span>
+0360             B = [-a4, 0, a4, 0, a3, 0, -a3, 0; <span class="keyword">...</span>
+0361                 0, -a2, 0, -a1, 0, a1, 0, a2; <span class="keyword">...</span>
+0362                 -a2, -a4, -a1, a4, a1, a3, a2, -a3];
+0363             
+0364             <span class="comment">% Obtiene los nodos</span>
+0365             nodo1 = membranaObj.nodosObj{1};
+0366             nodo2 = membranaObj.nodosObj{2};
+0367             nodo3 = membranaObj.nodosObj{3};
+0368             nodo4 = membranaObj.nodosObj{4};
+0369             
+0370             <span class="comment">% Obtiene el vector de desplazamientos de los nodos</span>
+0371             u1 = nodo1.obtenerDesplazamientos();
+0372             u2 = nodo2.obtenerDesplazamientos();
+0373             u3 = nodo3.obtenerDesplazamientos();
+0374             u4 = nodo4.obtenerDesplazamientos();
+0375             
+0376             <span class="comment">% Vector desplazamientos u' [8x1]</span>
+0377             d = [u1(1), u1(2), u2(1), u2(2), u3(1), u3(2), u4(1), u4(2)]';
+0378             
+0379             <span class="comment">% Calcula las deformaciones [3x8]x[8x1] = [3x1]</span>
+0380             e = B * d;
+0381             
+0382         <span class="keyword">end</span> <span class="comment">% obtenerDeformaciones function</span>
+0383         
+0384         <a name="_sub14" href="#_subfunctions" class="code">function sigma = obtenerTensiones(membranaObj, x, y)</a>
+0385             <span class="comment">% Retorna las tensiones una vez se corre el analisis</span>
+0386             
+0387             <span class="comment">% Obtiene las deformaciones</span>
+0388             e = membranaObj.obtenerDeformaciones(x, y);
+0389             
+0390             <span class="comment">% Retorna las tensiones [3x3]x[3x1] = [3x1]</span>
+0391             sigma = membranaObj.D * e;
+0392             
+0393         <span class="keyword">end</span> <span class="comment">% obtenerTensiones function</span>
+0394         
+0395         <a name="_sub15" href="#_subfunctions" class="code">function fr_global = obtenerFuerzaResistenteCoordGlobal(membranaObj)</a>
+0396             
+0397             <span class="comment">% Obtiene fr local</span>
+0398             fr_local = membranaObj.obtenerFuerzaResistenteCoordLocal();
+0399             
+0400             <span class="comment">% Resta a fuerza equivalente para obtener la fuerza global</span>
+0401             fr_global = fr_local - membranaObj.Feq;
+0402             
+0403         <span class="keyword">end</span> <span class="comment">% obtenerFuerzaResistenteCoordGlobal function</span>
+0404         
+0405         <a name="_sub16" href="#_subfunctions" class="code">function fr_local = obtenerFuerzaResistenteCoordLocal(membranaObj)</a>
+0406             
+0407             <span class="comment">% Obtiene los nodos</span>
+0408             nodo1 = membranaObj.nodosObj{1};
+0409             nodo2 = membranaObj.nodosObj{2};
+0410             nodo3 = membranaObj.nodosObj{3};
+0411             nodo4 = membranaObj.nodosObj{4};
+0412             
+0413             <span class="comment">% Obtiene los desplazamientos</span>
+0414             u1 = nodo1.obtenerDesplazamientos();
+0415             u2 = nodo2.obtenerDesplazamientos();
+0416             u3 = nodo3.obtenerDesplazamientos();
+0417             u4 = nodo4.obtenerDesplazamientos();
+0418             
+0419             <span class="comment">% Vector desplazamientos u'</span>
+0420             u = [u1(1), u1(2), u2(1), u2(2), u3(1), u3(2), u4(1), u4(2)]';
+0421             
+0422             <span class="comment">% Obtiene K local</span>
+0423             k_local = membranaObj.obtenerMatrizRigidezCoordLocal();
+0424             
+0425             <span class="comment">% Calcula F</span>
+0426             fr_local = k_local * u;
+0427             
+0428         <span class="keyword">end</span> <span class="comment">% obtenerFuerzaResistenteCoordLocal function</span>
+0429         
+0430         <a name="_sub17" href="#_subfunctions" class="code">function definirGDLID(membranaObj)</a>
+0431             
+0432             <span class="comment">% Se obtienen los nodos extremos</span>
+0433             nodo1 = membranaObj.nodosObj{1};
+0434             nodo2 = membranaObj.nodosObj{2};
+0435             nodo3 = membranaObj.nodosObj{3};
+0436             nodo4 = membranaObj.nodosObj{4};
+0437             
+0438             <span class="comment">% Se obtienen los gdl de los nodos</span>
+0439             gdlnodo1 = nodo1.obtenerGDLID();
+0440             gdlnodo2 = nodo2.obtenerGDLID();
+0441             gdlnodo3 = nodo3.obtenerGDLID();
+0442             gdlnodo4 = nodo4.obtenerGDLID();
+0443             
+0444             <span class="comment">% Se establecen gdl</span>
+0445             gdl = [0, 0, 0, 0, 0, 0, 0, 0];
+0446             gdl(1) = gdlnodo1(1);
+0447             gdl(2) = gdlnodo1(2);
+0448             gdl(3) = gdlnodo2(1);
+0449             gdl(4) = gdlnodo2(2);
+0450             gdl(5) = gdlnodo3(1);
+0451             gdl(6) = gdlnodo3(2);
+0452             gdl(7) = gdlnodo4(1);
+0453             gdl(8) = gdlnodo4(2);
+0454             membranaObj.gdlID = gdl;
+0455             
+0456         <span class="keyword">end</span> <span class="comment">% definirGDLID function</span>
+0457         
+0458         <a name="_sub18" href="#_subfunctions" class="code">function sumarFuerzaEquivalente(membranaObj, nodo, f)</a>
+0459             
+0460             fnodo = length(f); <span class="comment">% Largo del vector</span>
+0461             nodo = floor(nodo); <span class="comment">% Se redondea</span>
+0462             <span class="keyword">if</span> (nodo &lt; 0 || nodo &gt; 4)
+0463                 error(<span class="string">'Numero de nodo invalido @sumarFuerzaEquivalente Nodo %s'</span>, nodo);
+0464             <span class="keyword">end</span>
+0465             pos = nodo * fnodo - 1; <span class="comment">% Posicion de la fuerza</span>
+0466             <span class="keyword">for</span> i = 1:fnodo
+0467                 membranaObj.Feq(pos+i-1) = membranaObj.Feq(pos+i-1) + f(i);
+0468             <span class="keyword">end</span> <span class="comment">% for i</span>
+0469             
+0470         <span class="keyword">end</span> <span class="comment">% sumarFuerzaEquivalente function</span>
+0471         
+0472         <a name="_sub19" href="#_subfunctions" class="code">function agregarFuerzaResistenteAReacciones(membranaObj)</a>
+0473             
+0474             <span class="comment">% Se calcula la fuerza resistente global</span>
+0475             fr_global = membranaObj.obtenerFuerzaResistenteCoordGlobal();
+0476             
+0477             <span class="comment">% Carga los nodos</span>
+0478             nodo1 = membranaObj.nodosObj{1};
+0479             nodo2 = membranaObj.nodosObj{2};
+0480             nodo3 = membranaObj.nodosObj{3};
+0481             nodo4 = membranaObj.nodosObj{4};
+0482             
+0483             <span class="comment">% Agrega fuerzas equivalentes como cargas</span>
+0484             nodo1.agregarCarga(-[membranaObj.Feq(1), membranaObj.Feq(2)]');
+0485             nodo2.agregarCarga(-[membranaObj.Feq(3), membranaObj.Feq(4)]');
+0486             nodo3.agregarCarga(-[membranaObj.Feq(5), membranaObj.Feq(6)]');
+0487             nodo4.agregarCarga(-[membranaObj.Feq(7), membranaObj.Feq(8)]');
+0488             
+0489             <span class="comment">% Agrega fuerzas resistentes como cargas</span>
+0490             nodo1.agregarEsfuerzosElementoAReaccion([fr_global(1), fr_global(2)]');
+0491             nodo2.agregarEsfuerzosElementoAReaccion([fr_global(3), fr_global(4)]');
+0492             nodo3.agregarEsfuerzosElementoAReaccion([fr_global(5), fr_global(6)]');
+0493             nodo4.agregarEsfuerzosElementoAReaccion([fr_global(7), fr_global(8)]');
+0494             
+0495         <span class="keyword">end</span> <span class="comment">% agregarFuerzaResistenteAReacciones function</span>
+0496         
+0497         <a name="_sub20" href="#_subfunctions" class="code">function guardarPropiedades(membranaObj, archivoSalidaHandle)</a>
+0498             
+0499             <span class="comment">% Carga los nodos</span>
+0500             nodo1 = membranaObj.nodosObj{1};
+0501             nodo2 = membranaObj.nodosObj{2};
+0502             nodo3 = membranaObj.nodosObj{3};
+0503             nodo4 = membranaObj.nodosObj{4};
+0504             
+0505             <span class="comment">% Escribe la membrana en el archivo</span>
+0506             fprintf(archivoSalidaHandle, <span class="string">'\tMembrana %s:\n\t\tAncho (2b):\t\t%s\n\t\tAlto (2h):\t\t%s\n\t\tEspesor (t):\t%s\n\t\tE:\t\t\t\t%s\n\t\tv:\t\t\t\t%s\n\t\tMasa:\t\t\t%s\n\t\tNodos:\t\t\t%s %s %s %s\n'</span>, <span class="keyword">...</span>
+0507                 membranaObj.obtenerEtiqueta(), num2str(2*membranaObj.b), num2str(2*membranaObj.h), <span class="keyword">...</span>
+0508                 num2str(membranaObj.t), num2str(membranaObj.E), num2str(membranaObj.nu), <span class="keyword">...</span>
+0509                 num2str(membranaObj.obtenerMasa()), nodo1.obtenerEtiqueta(), <span class="keyword">...</span>
+0510                 nodo2.obtenerEtiqueta(), nodo3.obtenerEtiqueta(), nodo4.obtenerEtiqueta());
+0511             
+0512         <span class="keyword">end</span> <span class="comment">% guardarPropiedades function</span>
+0513         
+0514         <a name="_sub21" href="#_subfunctions" class="code">function lista = crearListaTensiones(membranaObj)</a>
+0515             <span class="comment">% Itera segun x e y</span>
+0516             
+0517             <span class="comment">% Elementos totales</span>
+0518             el = (membranaObj.NPOINTS + 1)^2;
+0519             lista = zeros(el, 7);
+0520             
+0521             <span class="comment">% Calcula los dx y dy para avanzar segun NPOINTS</span>
+0522             dx = (2 * membranaObj.b) / (membranaObj.NPOINTS + 1);
+0523             dy = (2 * membranaObj.h) / (membranaObj.NPOINTS + 1);
+0524             
+0525             <span class="comment">% Obtiene las coordenadas del elemento con respecto al</span>
+0526             <span class="comment">% global (0,0) asociado al nodo 1</span>
+0527             cglob = membranaObj.nodosObj{1}.obtenerCoordenadas();
+0528             
+0529             <span class="comment">% Avanza por cada NPOINT y obtiene tensiones</span>
+0530             k = 1;
+0531             <span class="keyword">for</span> i = 1:(membranaObj.NPOINTS + 2) <span class="comment">% Avanza en el ancho</span>
+0532                 <span class="keyword">for</span> j = 1:(membranaObj.NPOINTS + 2) <span class="comment">% Avanza en el alto</span>
+0533                     
+0534                     <span class="comment">% Obtiene coordenadas (x,y)</span>
+0535                     x = -membranaObj.b + (i - 1) * dx;
+0536                     y = -membranaObj.h + (j - 1) * dy;
+0537                     
+0538                     <span class="comment">% Obtiene tensiones y las guarda</span>
+0539                     ten = membranaObj.obtenerTensiones(x, y);
+0540                     lista(k, 1) = cglob(1) + x + membranaObj.b;
+0541                     lista(k, 2) = cglob(2) + y + membranaObj.h;
+0542                     lista(k, 3) = x;
+0543                     lista(k, 4) = y;
+0544                     lista(k, 5) = ten(1);
+0545                     lista(k, 6) = ten(2);
+0546                     lista(k, 7) = ten(3);
+0547                     
+0548                     <span class="comment">% Aumenta el contador</span>
+0549                     k = k + 1;
+0550                     
+0551                 <span class="keyword">end</span> <span class="comment">% for j</span>
+0552             <span class="keyword">end</span> <span class="comment">% for i</span>
+0553             
+0554         <span class="keyword">end</span> <span class="comment">% crearListaTensiones function</span>
+0555         
+0556         <a name="_sub22" href="#_subfunctions" class="code">function guardarEsfuerzosInternos(membranaObj, archivoSalidaHandle)</a>
+0557             
+0558             fr = membranaObj.obtenerFuerzaResistenteCoordGlobal();
+0559             
+0560             <span class="comment">% Indica si se guardan las tensiones</span>
+0561             GUARDAR_TENSIONES = true;
+0562             
+0563             <span class="comment">% Obtiene las fuerzas para cada elemento</span>
+0564             n1x = pad(num2str(fr(1), <span class="string">'%.04f'</span>), 10);
+0565             n1y = pad(num2str(fr(2), <span class="string">'%.04f'</span>), 10);
+0566             n2x = pad(num2str(fr(3), <span class="string">'%.04f'</span>), 10);
+0567             n2y = pad(num2str(fr(4), <span class="string">'%.04f'</span>), 10);
+0568             n3x = pad(num2str(fr(5), <span class="string">'%.04f'</span>), 10);
+0569             n3y = pad(num2str(fr(6), <span class="string">'%.04f'</span>), 10);
+0570             n4x = pad(num2str(fr(7), <span class="string">'%.04f'</span>), 10);
+0571             n4y = pad(num2str(fr(8), <span class="string">'%.04f'</span>), 10);
+0572             
+0573             <span class="comment">% Dibuja las fuerzas (fx,fy) en cada nodo</span>
+0574             fprintf(archivoSalidaHandle, <span class="string">'\n\tMembrana %s:\n\t\tNodo 1 (-b, -h): %s\t%s\n\t\tNodo 2 (+b, -h): %s\t%s\n\t\tNodo 3 (+b, +h): %s\t%s\n\t\tNodo 4 (-b, +h): %s\t%s'</span>, <span class="keyword">...</span>
+0575                 membranaObj.obtenerEtiqueta(), n1x, n1y, n2x, n2y, n3x, n3y, n4x, n4y);
+0576             
+0577             <span class="comment">% Dibuja las tensiones</span>
+0578             fprintf(archivoSalidaHandle, <span class="string">'\n\t\tTensiones %s [GLOBALX GLOBALY X Y SIGMAX SIGMAY SIGMAXY DESPLX DESPLY]:'</span>, membranaObj.obtenerEtiqueta());
+0579             
+0580             <span class="comment">% Crea la lista de tensiones y las dibuja</span>
+0581             <span class="keyword">if</span> GUARDAR_TENSIONES
+0582                 tension = membranaObj.crearListaTensiones();
+0583                 <span class="keyword">for</span> i = 1:length(tension)
+0584                     globalx = pad(num2str(tension(i, 1), <span class="string">'%.04f'</span>), 10);
+0585                     globaly = pad(num2str(tension(i, 2), <span class="string">'%.04f'</span>), 10);
+0586                     x = pad(num2str(tension(i, 3), <span class="string">'%.04f'</span>), 10);
+0587                     y = pad(num2str(tension(i, 4), <span class="string">'%.04f'</span>), 10);
+0588                     sigmax = pad(num2str(tension(i, 5), <span class="string">'%.04f'</span>), 10);
+0589                     sigmay = pad(num2str(tension(i, 6), <span class="string">'%.04f'</span>), 10);
+0590                     sigmaxy = pad(num2str(tension(i, 7), <span class="string">'%.04f'</span>), 10);
+0591                     despl = membranaObj.obtenerDesplazamiento(tension(i, 3), tension(i, 4));
+0592                     desplx = pad(num2str(despl(1), <span class="string">'%.04f'</span>), 10);
+0593                     desply = pad(num2str(despl(2), <span class="string">'%.04f'</span>), 10);
+0594                     fprintf(archivoSalidaHandle, <span class="string">'\n\t\t\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s'</span>, <span class="keyword">...</span>
+0595                         globalx, globaly, x, y, sigmax, sigmay, sigmaxy, desplx, desply);
+0596                 <span class="keyword">end</span> <span class="comment">% for i</span>
+0597             <span class="keyword">end</span>
+0598             
+0599         <span class="keyword">end</span> <span class="comment">% guardarEsfuerzosInternos function</span>
+0600         
+0601         <a name="_sub23" href="#_subfunctions" class="code">function plot(elementoObj, deformadas, tipoLinea, grosorLinea, ~)</a>
+0602             <span class="comment">% plot: Grafica un elemento</span>
+0603             <span class="comment">%</span>
+0604             <span class="comment">% plot(elementoObj,deformadas,tipoLinea,grosorLinea)</span>
+0605             
+0606             <span class="comment">% Obtiene las coordenadas de los objetos</span>
+0607             coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
+0608             coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
+0609             coord3 = elementoObj.nodosObj{3}.obtenerCoordenadas();
+0610             coord4 = elementoObj.nodosObj{4}.obtenerCoordenadas();
+0611             
+0612             <span class="comment">% Si hay deformadas</span>
+0613             <span class="keyword">if</span> ~isempty(deformadas)
+0614                 coord1 = coord1 + deformadas{1};
+0615                 coord2 = coord2 + deformadas{2};
+0616                 coord3 = coord3 + deformadas{3};
+0617                 coord4 = coord4 + deformadas{4};
+0618             <span class="keyword">end</span>
+0619             
+0620             <span class="comment">% Grafica el elemento</span>
+0621             elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
+0622             elementoObj.graficarLinea(coord2, coord3, tipoLinea, grosorLinea);
+0623             elementoObj.graficarLinea(coord3, coord4, tipoLinea, grosorLinea);
+0624             elementoObj.graficarLinea(coord4, coord1, tipoLinea, grosorLinea);
+0625             
+0626         <span class="keyword">end</span> <span class="comment">% plot function</span>
+0627         
+0628         <a name="_sub24" href="#_subfunctions" class="code">function disp(membranaObj)</a>
+0629             
+0630             <span class="comment">% Imprime propiedades de la membrana</span>
+0631             fprintf(<span class="string">'Propiedades membrana:\n\t'</span>);
+0632             <a href="#_sub25" class="code" title="subfunction disp(membranaObj)">disp</a>@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(membranaObj);
+0633             
+0634             fprintf(<span class="string">'\t\tAncho (2b): %s\tAlto (2h): %s\tE: %s\tv: %s\n'</span>, pad(num2str(2*membranaObj.b), 10), <span class="keyword">...</span>
+0635                 pad(num2str(2*membranaObj.h), 10), pad(num2str(membranaObj.E), 10), pad(num2str(membranaObj.nu), 10));
+0636             
+0637             <span class="comment">% Se imprime matriz de rigidez local</span>
+0638             fprintf(<span class="string">'\tMatriz de rigidez coordenadas locales:\n'</span>);
+0639             <a href="#_sub25" class="code" title="subfunction disp(membranaObj)">disp</a>(membranaObj.obtenerMatrizRigidezCoordLocal());
+0640             
+0641             <span class="comment">% Se imprime matriz de rigidez global</span>
+0642             fprintf(<span class="string">'\tMatriz de rigidez coordenadas globales:\n'</span>);
+0643             <a href="#_sub25" class="code" title="subfunction disp(membranaObj)">disp</a>(membranaObj.obtenerMatrizRigidezCoordGlobal());
+0644             
+0645             <a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
+0646             
+0647         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0648         
+0649     <span class="keyword">end</span> <span class="comment">% methods Membrana</span>
+0650     
+0651 <span class="keyword">end</span> <span class="comment">% class Membrana</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

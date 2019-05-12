@@ -1,0 +1,10 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  CargaPulso -> CargaPulso;
+  CargaRegistroSismico -> CargaRegistroSismico;
+  CargaSinusoidal -> CargaSinusoidal;
+
+  CargaPulso [URL="CargaPulso.html"];
+  CargaRegistroSismico [URL="CargaRegistroSismico.html"];
+  CargaSinusoidal [URL="CargaSinusoidal.html"];
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of calculoEigIterInvDesplazamiento</title>
+  <meta name="keywords" content="calculoEigIterInvDesplazamiento">
+  <meta name="description" content="calculoEigIterDirecta: Calcula los valores y vectores propios del sistema">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- ../menu.html analisis --><!-- menu.html eig -->
+<h1>calculoEigIterInvDesplazamiento
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>calculoEigIterDirecta: Calcula los valores y vectores propios del sistema</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [v, w, error] = calculoEigIterInvDesplazamiento(M, K, mu, tol) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> calculoEigIterDirecta: Calcula los valores y vectores propios del sistema
+ usando el algoritmo de iteracion directo
+
+ [v,w,error] = calculoEigIterInvDesplazamiento(M,K,mu,tol)
+
+ Parametros:
+   M, K        Matriz masa y rigidez
+   mu          Parametro externo que multiplica a K
+
+ Salida:
+   v           Matriz vectores propios
+   w           Valores propios</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="modonorm.html" class="code" title="function [phi] = modonorm(phi, M, opt)">modonorm</a>	modonorm: Normaliza formas modales</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [v, w, error] = calculoEigIterInvDesplazamiento(M, K, mu, tol)</a>
+0002 <span class="comment">% calculoEigIterDirecta: Calcula los valores y vectores propios del sistema</span>
+0003 <span class="comment">% usando el algoritmo de iteracion directo</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% [v,w,error] = calculoEigIterInvDesplazamiento(M,K,mu,tol)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% Parametros:</span>
+0008 <span class="comment">%   M, K        Matriz masa y rigidez</span>
+0009 <span class="comment">%   mu          Parametro externo que multiplica a K</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Salida:</span>
+0012 <span class="comment">%   v           Matriz vectores propios</span>
+0013 <span class="comment">%   w           Valores propios</span>
+0014 
+0015 <span class="comment">% Parametros iniciales</span>
+0016 err = tol * 10;
+0017 K_eff = K - mu .* M;
+0018 [L, D] = ldl(K_eff); <span class="comment">% Descomposicion ldl'</span>
+0019 
+0020 <span class="comment">% Primera iteracion</span>
+0021 vo = rand(length(K), 1); <span class="comment">% Primer desplazamiento</span>
+0022 w = sqrt(mu + sqrt((vo' * K * vo)/(vo' * M * vo))); <span class="comment">% Primera aproximacion</span>
+0023 error = err;
+0024 v = vo;
+0025 b = M * vo;
+0026 contador = 2;
+0027 
+0028 <span class="comment">% Interaciones</span>
+0029 <span class="keyword">while</span> tol &lt;= err
+0030     yTemp = (L * D) \ b;
+0031     vTemp = L' \ yTemp;
+0032     vTemp = <a href="modonorm.html" class="code" title="function [phi] = modonorm(phi, M, opt)">modonorm</a>(vTemp, M, 3);
+0033     wTemp = sqrt(mu + sqrt((vTemp' * K * vTemp)/(vTemp' * M * vTemp)));
+0034     
+0035     err = abs(wTemp-w(contador-1));
+0036     b = M * vTemp;
+0037     
+0038     w = [w, wTemp]; <span class="comment">%#ok&lt;*AGROW&gt;</span>
+0039     v = [v, vTemp];
+0040     error = [error, err];
+0041     contador = contador + 1;
+0042 <span class="keyword">end</span>
+0043 
+0044 error = error';
+0045 w = w';
+0046 
+0047 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

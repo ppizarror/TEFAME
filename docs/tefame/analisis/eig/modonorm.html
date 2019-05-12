@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of modonorm</title>
+  <meta name="keywords" content="modonorm">
+  <meta name="description" content="modonorm: Normaliza formas modales">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- ../menu.html analisis --><!-- menu.html eig -->
+<h1>modonorm
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>modonorm: Normaliza formas modales</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [phi] = modonorm(phi, M, opt) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> modonorm: Normaliza formas modales
+
+ w = modonorm(phi,M,opt)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="calculoEigDirectaBarrido.html" class="code" title="function [v, w, error] = calculoEigDirectaBarrido(M, K, nModos, tol)">calculoEigDirectaBarrido</a>	calculoEigIterDirecta: Calcula los valores y vectores propios del sistema</li><li><a href="calculoEigItSubespacio.html" class="code" title="function [v, w] = calculoEigItSubespacio(M, K, nModos, tol)">calculoEigItSubespacio</a>	calculoEigItSubespacio: Calcula los valores y vectores propios del sistema</li><li><a href="calculoEigIterDirecta.html" class="code" title="function [v, w, error] = calculoEigIterDirecta(M, K, tol)">calculoEigIterDirecta</a>	calculoEigIterDirecta: Calcula los valores y vectores propios del sistema</li><li><a href="calculoEigIterInvDesplazamiento.html" class="code" title="function [v, w, error] = calculoEigIterInvDesplazamiento(M, K, mu, tol)">calculoEigIterInvDesplazamiento</a>	calculoEigIterDirecta: Calcula los valores y vectores propios del sistema</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [phi] = modonorm(phi, M, opt)</a>
+0002 <span class="comment">% modonorm: Normaliza formas modales</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% w = modonorm(phi,M,opt)</span>
+0005 
+0006 <span class="keyword">if</span> nargin &lt; 2
+0007     opt = 1;
+0008 <span class="keyword">end</span>
+0009 
+0010 <span class="keyword">if</span> nargin &lt; 3 || isempty(opt)
+0011     opt = 2;
+0012 <span class="keyword">end</span>
+0013 
+0014 <span class="comment">% Para caso general</span>
+0015 <span class="keyword">if</span> opt == 0
+0016 <span class="keyword">end</span>
+0017 
+0018 <span class="comment">% Normaliza con primera linea</span>
+0019 <span class="keyword">if</span> opt == 1
+0020     aux = (phi(1, :));
+0021     <span class="keyword">if</span> min(abs(aux)) &lt;= eps
+0022         opt = 3;
+0023         warning(<span class="string">'No se puede dividir debido a un valor nulo, se usa opt=3'</span>);
+0024     <span class="keyword">else</span>
+0025         phi = phi * diag(1./aux);
+0026     <span class="keyword">end</span>
+0027 <span class="keyword">end</span>
+0028 
+0029 <span class="keyword">if</span> opt == 2
+0030     Mn = sqrt(diag(conj(phi)'*M*phi));
+0031     phi = phi * diag(Mn^-1);
+0032 <span class="keyword">end</span>
+0033 
+0034 <span class="keyword">if</span> opt == 3
+0035     aux = max(phi);
+0036     phi = phi * diag(1./aux);
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="comment">% Simplemente normaliza por el valor absoluto</span>
+0040 <span class="keyword">if</span> opt == 4
+0041     phi = phi ./ norm(phi);
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,18 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  Disipador -> Disipador;
+  Disipador2D -> Disipador;
+  Disipador2D -> Disipador2D;
+  DisipadorFriccionalPuro2D -> Disipador2D;
+  DisipadorFriccionalPuro2D -> DisipadorFriccionalPuro2D;
+  DisipadorTriangular2D -> Disipador2D;
+  DisipadorTriangular2D -> DisipadorTriangular2D;
+  DisipadorViscoso2D -> Disipador2D;
+  DisipadorViscoso2D -> DisipadorViscoso2D;
+
+  Disipador [URL="Disipador.html"];
+  Disipador2D [URL="Disipador2D.html"];
+  DisipadorFriccionalPuro2D [URL="DisipadorFriccionalPuro2D.html"];
+  DisipadorTriangular2D [URL="DisipadorTriangular2D.html"];
+  DisipadorViscoso2D [URL="DisipadorViscoso2D.html"];
+}

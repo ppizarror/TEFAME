@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Disipador2D</title>
+  <meta name="keywords" content="Disipador2D">
+  <meta name="description" content="______________________________________________________________________">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- # modelo --><!-- menu.html disipadores -->
+<h1>Disipador2D
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>______________________________________________________________________</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ______________________________________________________________________
+|                                                                      |
+|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+|                  Matricial de Estructuras en MATLAB                  |
+|                                                                      |
+|                   Area  de Estructuras y Geotecnia                   |
+|                   Departamento de Ingenieria Civil                   |
+|              Facultad de Ciencias Fisicas y Matematicas              |
+|                         Universidad de Chile                         |
+|                                                                      |
+| TEFAME es una  plataforma en base a objetos para modelar, analizar y |
+| visualizar  la respuesta de sistemas  estructurales usando el metodo |
+| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
+| La plataforma es desarrollada en  propagacion orientada a objetos en |
+| MATLAB.                                                              |
+|______________________________________________________________________|
+ ______________________________________________________________________
+|                                                                      |
+| Clase Disipador2D                                                    |
+|                                                                      |
+| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |
+| es una  subclase de la clase Disipador y  corresponde a la           |
+| representacion de un disipador viscoso en 2D.                        |
+|                                                                      |
+| Programado: Pablo Pizarro @ppizarror.com                             |
+| Fecha: 30/04/2019                                                    |
+|______________________________________________________________________|
+
+  Properties (Access=private):
+  Methods:
+       disipador2DObj = Disipador2D(etiquetaDisipador)
+       numeroNodos = obtenerNumeroNodos(disipador2DObj)
+       numeroGDL = obtenerNumeroGDL(disipador2DObj)
+       gdlIDDisipador = obtenerGDLID(disipador2DObj)
+       k_global = obtenerMatrizRigidezCoordGlobal(disipador2DObj)
+       k_local = obtenerMatrizRigidezCoordLocal(disipador2DObj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(disipador2DObj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(disipador2DObj)
+       T = obtenerMatrizTransformacion(disipador2DObj)
+       definirGDLID(disipador2DObj)
+       disp(disipador2DObj)
+       plot(disipador2DObj,tipoLinea,grosorLinea,colorLinea)
+  Methods SuperClass (ComponenteModelo):
+       etiqueta = obtenerEtiqueta(componenteModeloObj)
+       e = equals(componenteModeloObj,obj)
+       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="Disipador.html" class="code" title="">Disipador</a>	______________________________________________________________________</li><li><a href="Disipador2D.html" class="code" title="">Disipador2D</a>	______________________________________________________________________</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="Disipador2D.html" class="code" title="">Disipador2D</a>	______________________________________________________________________</li><li><a href="DisipadorFriccionalPuro2D.html" class="code" title="">DisipadorFriccionalPuro2D</a>	______________________________________________________________________</li><li><a href="DisipadorTriangular2D.html" class="code" title="">DisipadorTriangular2D</a>	______________________________________________________________________</li><li><a href="DisipadorViscoso2D.html" class="code" title="">DisipadorViscoso2D</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function disipador2DObj = Disipador2D(etiquetaDisipador)</a></li><li><a href="#_sub2" class="code">function numeroNodos = obtenerNumeroNodos(disipador2DObj)</a></li><li><a href="#_sub3" class="code">function numeroGDL = obtenerNumeroGDL(disipador2DObj)</a></li><li><a href="#_sub4" class="code">function nodosDisipador = obtenerNodos(disipadorViscoso2DObj)</a></li><li><a href="#_sub5" class="code">function actualizarDisipador(disipador2DObj, w, carga)</a></li><li><a href="#_sub6" class="code">function v0 = calcularv0(disipador2DObj, nodos, carga)</a></li><li><a href="#_sub7" class="code">function definirGDLID(disipadorViscoso2DObj)</a></li><li><a href="#_sub8" class="code">function gdl = obtenerGDLIDCondensado(disipadorViscoso2DObj)</a></li><li><a href="#_sub9" class="code">function plot(disipador2DObj, deformadas, tipoLinea, grosorLinea, colorLinea)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
+0002 <span class="comment">%|                                                                      |</span>
+0003 <span class="comment">%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |</span>
+0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
+0005 <span class="comment">%|                                                                      |</span>
+0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
+0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
+0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
+0009 <span class="comment">%|                         Universidad de Chile                         |</span>
+0010 <span class="comment">%|                                                                      |</span>
+0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
+0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
+0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
+0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
+0015 <span class="comment">%| MATLAB.                                                              |</span>
+0016 <span class="comment">%|______________________________________________________________________|</span>
+0017 <span class="comment">% ______________________________________________________________________</span>
+0018 <span class="comment">%|                                                                      |</span>
+0019 <span class="comment">%| Clase Disipador2D                                                    |</span>
+0020 <span class="comment">%|                                                                      |</span>
+0021 <span class="comment">%| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |</span>
+0022 <span class="comment">%| es una  subclase de la clase Disipador y  corresponde a la           |</span>
+0023 <span class="comment">%| representacion de un disipador viscoso en 2D.                        |</span>
+0024 <span class="comment">%|                                                                      |</span>
+0025 <span class="comment">%| Programado: Pablo Pizarro @ppizarror.com                             |</span>
+0026 <span class="comment">%| Fecha: 30/04/2019                                                    |</span>
+0027 <span class="comment">%|______________________________________________________________________|</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%  Properties (Access=private):</span>
+0030 <span class="comment">%  Methods:</span>
+0031 <span class="comment">%       disipador2DObj = Disipador2D(etiquetaDisipador)</span>
+0032 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipador2DObj)</span>
+0033 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipador2DObj)</span>
+0034 <span class="comment">%       gdlIDDisipador = obtenerGDLID(disipador2DObj)</span>
+0035 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipador2DObj)</span>
+0036 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipador2DObj)</span>
+0037 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipador2DObj)</span>
+0038 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipador2DObj)</span>
+0039 <span class="comment">%       T = obtenerMatrizTransformacion(disipador2DObj)</span>
+0040 <span class="comment">%       definirGDLID(disipador2DObj)</span>
+0041 <span class="comment">%       disp(disipador2DObj)</span>
+0042 <span class="comment">%       plot(disipador2DObj,tipoLinea,grosorLinea,colorLinea)</span>
+0043 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
+0044 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0045 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0046 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0047 
+0048 classdef <a href="Disipador2D.html" class="code" title="">Disipador2D</a> &lt; <a href="Disipador.html" class="code" title="">Disipador</a>
+0049     
+0050     properties(Access = private)
+0051     <span class="keyword">end</span> <span class="comment">% properties Disipador2D</span>
+0052     
+0053     methods
+0054         
+0055         <a name="_sub0" href="#_subfunctions" class="code">function disipador2DObj = Disipador2D(etiquetaDisipador)</a>
+0056             <span class="comment">% Disipador2D: es el constructor de la clase Disipador2D</span>
+0057             <span class="comment">%</span>
+0058             <span class="comment">% disipador2DObj = Disipador2D(etiquetaDisipador)</span>
+0059             <span class="comment">%</span>
+0060             <span class="comment">% Crea un objeto de la clase Disipador2D, con un identificador unico</span>
+0061             <span class="comment">% (etiquetaDisipador)</span>
+0062             
+0063             <span class="comment">% Si no se pasan argumentos se crean vacios</span>
+0064             <span class="keyword">if</span> nargin == 0
+0065                 etiquetaDisipador = <span class="string">''</span>;
+0066             <span class="keyword">end</span> <span class="comment">% if</span>
+0067             
+0068             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase ComponenteModelo</span>
+0069             disipador2DObj = disipador2DObj@<a href="Disipador.html" class="code" title="">Disipador</a>(etiquetaDisipador);
+0070             
+0071         <span class="keyword">end</span> <span class="comment">% Disipador2D constructor</span>
+0072         
+0073         <a name="_sub1" href="#_subfunctions" class="code">function numeroNodos = obtenerNumeroNodos(disipador2DObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0074             <span class="comment">% obtenerNumeroNodos: Obtiene el numero de nodos del disipador</span>
+0075             <span class="comment">%</span>
+0076             <span class="comment">% numeroNodos = obtenerNumeroNodos(disipador2DObj)</span>
+0077             
+0078             numeroNodos = 2;
+0079             
+0080         <span class="keyword">end</span> <span class="comment">% obtenerNumeroNodos function</span>
+0081         
+0082         <a name="_sub2" href="#_subfunctions" class="code">function numeroGDL = obtenerNumeroGDL(disipador2DObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0083             <span class="comment">% obtenerNumeroGDL: Retorna el numero de grados de libertad del</span>
+0084             <span class="comment">% disipador</span>
+0085             <span class="comment">%</span>
+0086             <span class="comment">% numeroGDL = obtenerNumeroGDL(disipador2DObj)</span>
+0087             
+0088             numeroGDL = 4;
+0089             
+0090         <span class="keyword">end</span> <span class="comment">% obtenerNumeroGDL function</span>
+0091         
+0092         <a name="_sub3" href="#_subfunctions" class="code">function nodosDisipador = obtenerNodos(disipadorViscoso2DObj)</a>
+0093             <span class="comment">% nodosDisipador: Obtiene los nodos del disipador</span>
+0094             <span class="comment">%</span>
+0095             <span class="comment">% nodosDisipador = obtenerNodos(disipadorViscoso2DObj)</span>
+0096             
+0097             nodosDisipador = disipadorViscoso2DObj.nodosObj;
+0098             
+0099         <span class="keyword">end</span> <span class="comment">% obtenerNodos function</span>
+0100         
+0101         <a name="_sub4" href="#_subfunctions" class="code">function actualizarDisipador(disipador2DObj, w, carga) </a><span class="comment">%#ok&lt;INUSD&gt;</span>
+0102             <span class="comment">% actualizarDisipador: Actualiza el disipador con la carga y la</span>
+0103             <span class="comment">% frecuencia</span>
+0104             <span class="comment">%</span>
+0105             <span class="comment">% actualizarDisipador(disipador2DObj,w,carga)</span>
+0106             
+0107         <span class="keyword">end</span> <span class="comment">% actualizarDisipador function</span>
+0108         
+0109         <a name="_sub5" href="#_subfunctions" class="code">function v0 = calcularv0(disipador2DObj, nodos, carga) </a><span class="comment">%#ok&lt;INUSL&gt;</span>
+0110             <span class="comment">% calcularv0: Calcula v0 a partir de una carga</span>
+0111             <span class="comment">%</span>
+0112             <span class="comment">% v0 = calcularv0(disipador2DObj, nodos, carga)</span>
+0113             
+0114             <span class="comment">% Calcula v0</span>
+0115             u = carga.obtenerDesplazamiento();
+0116             gdl1 = nodos{1}.obtenerGDLIDCondensado();
+0117             gdl2 = nodos{2}.obtenerGDLIDCondensado();
+0118             
+0119             <span class="comment">% Recorre cada tiempo y calcula v0</span>
+0120             v0 = 0;
+0121             <span class="keyword">for</span> i = 1:length(u) <span class="comment">% Recorre los tiempos</span>
+0122                 d11 = 0; <span class="comment">% Obtiene los desplazamientos</span>
+0123                 d12 = 0;
+0124                 d21 = 0;
+0125                 d22 = 0;
+0126                 <span class="keyword">if</span> gdl1(1) ~= 0
+0127                     d11 = u(gdl1(1), i);
+0128                 <span class="keyword">end</span>
+0129                 <span class="keyword">if</span> gdl1(2) ~= 0
+0130                     d12 = u(gdl1(2), i);
+0131                 <span class="keyword">end</span>
+0132                 <span class="keyword">if</span> gdl2(1) ~= 0
+0133                     d21 = u(gdl2(1), i);
+0134                 <span class="keyword">end</span>
+0135                 <span class="keyword">if</span> gdl2(2) ~= 0
+0136                     d22 = u(gdl2(2), i);
+0137                 <span class="keyword">end</span>
+0138                 v0 = max(v0, sqrt((d21 - d11)^2+(d22 - d12)^2));
+0139             <span class="keyword">end</span> <span class="comment">% for i</span>
+0140             
+0141         <span class="keyword">end</span> <span class="comment">% calcularv0 function</span>
+0142         
+0143         <a name="_sub6" href="#_subfunctions" class="code">function definirGDLID(disipadorViscoso2DObj)</a>
+0144             <span class="comment">% definirGDLID: Define los GDLID del disipador</span>
+0145             <span class="comment">%</span>
+0146             <span class="comment">% definirGDLID(disipadorViscoso2DObj)</span>
+0147             
+0148             <span class="comment">% Se obtienen los nodos extremos</span>
+0149             nodo1 = disipadorViscoso2DObj.nodosObj{1};
+0150             nodo2 = disipadorViscoso2DObj.nodosObj{2};
+0151             
+0152             <span class="comment">% Se obtienen los gdl de los nodos</span>
+0153             gdlnodo1 = nodo1.obtenerGDLID();
+0154             gdlnodo2 = nodo2.obtenerGDLID();
+0155             
+0156             <span class="comment">% Se establecen gdl</span>
+0157             gdl = [0, 0, 0, 0];
+0158             gdl(1) = gdlnodo1(1);
+0159             gdl(2) = gdlnodo1(2);
+0160             gdl(3) = gdlnodo2(1);
+0161             gdl(4) = gdlnodo2(2);
+0162             disipadorViscoso2DObj.gdlID = gdl;
+0163             
+0164         <span class="keyword">end</span> <span class="comment">% definirGDLID function</span>
+0165         
+0166         <a name="_sub7" href="#_subfunctions" class="code">function gdl = obtenerGDLIDCondensado(disipadorViscoso2DObj)</a>
+0167             <span class="comment">% obtenerGDLIDCondensado: Obtiene los GDLID condensados del</span>
+0168             <span class="comment">% disipador</span>
+0169             
+0170             <span class="comment">% Se obtienen los nodos extremos</span>
+0171             nodo1 = disipadorViscoso2DObj.nodosObj{1};
+0172             nodo2 = disipadorViscoso2DObj.nodosObj{2};
+0173             
+0174             <span class="comment">% Se obtienen los gdl de los nodos</span>
+0175             gdlnodo1 = nodo1.obtenerGDLIDCondensado();
+0176             gdlnodo2 = nodo2.obtenerGDLIDCondensado();
+0177             
+0178             <span class="comment">% Se establecen gdl</span>
+0179             gdl = [0, 0, 0, 0];
+0180             gdl(1) = gdlnodo1(1);
+0181             gdl(2) = gdlnodo1(2);
+0182             gdl(3) = gdlnodo2(1);
+0183             gdl(4) = gdlnodo2(2);
+0184             
+0185         <span class="keyword">end</span> <span class="comment">% obtenerGDLIDCondensado function</span>
+0186         
+0187         <a name="_sub8" href="#_subfunctions" class="code">function plot(disipador2DObj, deformadas, tipoLinea, grosorLinea, colorLinea)</a>
+0188             <span class="comment">% plot: Grafica el disipador</span>
+0189             <span class="comment">%</span>
+0190             <span class="comment">% plot(disipador2DObj,deformadas,tipoLinea,grosorLinea,colorLinea)</span>
+0191             
+0192             coord1 = disipador2DObj.nodosObj{1}.obtenerCoordenadas();
+0193             coord2 = disipador2DObj.nodosObj{2}.obtenerCoordenadas();
+0194             coord1 = coord1 + deformadas{1}(1:2);
+0195             coord2 = coord2 + deformadas{2}(1:2);
+0196             dibujarDisipador(disipador2DObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea)
+0197             
+0198         <span class="keyword">end</span> <span class="comment">% plot function</span>
+0199         
+0200     <span class="keyword">end</span> <span class="comment">% methods Disipador2D</span>
+0201     
+0202 <span class="keyword">end</span> <span class="comment">% class Disipador2D</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

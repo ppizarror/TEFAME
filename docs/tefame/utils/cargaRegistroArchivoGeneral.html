@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of cargaRegistroArchivoGeneral</title>
+  <meta name="keywords" content="cargaRegistroArchivoGeneral">
+  <meta name="description" content="cargaRegistroArchivoGeneral: Carga un archivo sismico y retorna una matriz del">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- menu.html utils -->
+<h1>cargaRegistroArchivoGeneral
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>cargaRegistroArchivoGeneral: Carga un archivo sismico y retorna una matriz del</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function reg = cargaRegistroArchivoGeneral(archivo, linedelim, coldelim, header, footer, ncol, dt, factor) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> cargaRegistroArchivoGeneral: Carga un archivo sismico y retorna una matriz del
+ tipo [t1, a1; t2, a2; ...]
+
+ reg = cargaRegistroSismico(archivo,linedelim,coldelim,header,ncol,dt,factor)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="cargaRegistroSimple.html" class="code" title="function reg = cargaRegistroSimple(archivo, dt, varargin)">cargaRegistroSimple</a>	cargaRegistroSimple: Carga un registro simple de un archivo sin encabezado</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function reg = cargaRegistroArchivoGeneral(archivo, linedelim, coldelim, header, footer, ncol, dt, factor)</a>
+0002 <span class="comment">% cargaRegistroArchivoGeneral: Carga un archivo sismico y retorna una matriz del</span>
+0003 <span class="comment">% tipo [t1, a1; t2, a2; ...]</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% reg = cargaRegistroSismico(archivo,linedelim,coldelim,header,ncol,dt,factor)</span>
+0006 
+0007 <span class="comment">% Obtiene el archivo</span>
+0008 fprintf(<span class="string">'Cargando registro sismico %s ... '</span>, archivo);
+0009 <span class="keyword">try</span>
+0010     C = textread(archivo, <span class="string">'%s'</span>, <span class="string">'delimiter'</span>, linedelim); <span class="comment">%#ok&lt;*DTXTRD&gt;</span>
+0011 <span class="keyword">catch</span> <span class="comment">%#ok&lt;*CTCH&gt;</span>
+0012     error(<span class="string">'Archivo no encontrado'</span>);
+0013 <span class="keyword">end</span>
+0014 lc = length(C);
+0015 
+0016 <span class="comment">% Lineas utiles</span>
+0017 lu = lc - footer - header;
+0018 lcol = length(ncol);
+0019 
+0020 <span class="comment">% Crea la matriz</span>
+0021 reg = zeros(lu, 1+lcol);
+0022 
+0023 <span class="comment">% Comprueba que las columnas esten bien definidas</span>
+0024 d = strsplit(C{1+header}, coldelim);
+0025 lcolr = length(d);
+0026 
+0027 <span class="keyword">if</span> lcol &gt; lcolr
+0028     error(<span class="string">'El numero de columnas requerido excede el existente en el archivo'</span>);
+0029 <span class="keyword">end</span>
+0030 <span class="keyword">if</span> max(ncol) &lt; lcolr
+0031     error(<span class="string">'Indice de columna invalido, excede las columnas existentes en el archivo'</span>);
+0032 <span class="keyword">end</span>
+0033 
+0034 <span class="comment">% Recorre el archivo</span>
+0035 t = 0; <span class="comment">% Guarda el tiempo</span>
+0036 <span class="keyword">for</span> i = 1:lu
+0037     d = strsplit(C{i+header}, coldelim);
+0038     <span class="keyword">for</span> j = 1:lcol
+0039         reg(i, 1+j) = str2double(d{ncol(j)}) * factor;
+0040     <span class="keyword">end</span> <span class="comment">% for j</span>
+0041     reg(i, 1) = t;
+0042     t = t + dt;
+0043 <span class="keyword">end</span> <span class="comment">% for i</span>
+0044 
+0045 <span class="comment">% Aplica correccion por linea base</span>
+0046 <span class="keyword">for</span> i = 1:lcol
+0047     reg(:, 1+i) = detrend(reg(:, i+1), 0);
+0048 <span class="keyword">end</span> <span class="comment">% for i</span>
+0049 
+0050 fprintf(<span class="string">'OK\n'</span>);
+0051 
+0052 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

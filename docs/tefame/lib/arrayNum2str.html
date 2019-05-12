@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of arrayNum2str</title>
+  <meta name="keywords" content="arrayNum2str">
+  <meta name="description" content="textCell = array2str(a,num) function that transform the array of number to a">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- menu.html lib -->
+<h1>arrayNum2str
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>textCell = array2str(a,num) function that transform the array of number to a</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function textCell = arrayNum2str(a, num) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> textCell = array2str(a,num) function that transform the array of number to a
+ array of cell elements that is used to print the array in string format
+ = [ a1 a2 a3 ... ]</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li><li><a href="../../tefame/modelo/cargas/estaticas/CargaNodo.html" class="code" title="">CargaNodo</a>	______________________________________________________________________</li><li><a href="../../tefame/modelo/nodo/Nodo.html" class="code" title="">Nodo</a>	______________________________________________________________________</li><li><a href="../../tefame/modelo/restricciones/RestriccionNodo.html" class="code" title="">RestriccionNodo</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function textCell = arrayNum2str(a, num)</a>
+0002 <span class="comment">% textCell = array2str(a,num) function that transform the array of number to a</span>
+0003 <span class="comment">% array of cell elements that is used to print the array in string format</span>
+0004 <span class="comment">% = [ a1 a2 a3 ... ]</span>
+0005 
+0006 <span class="keyword">if</span> ~exist(<span class="string">'num'</span>, <span class="string">'var'</span>)
+0007     num = length(a);
+0008 <span class="keyword">end</span>
+0009 
+0010 <span class="comment">% We create the array of cell that will keep the numbers in str format</span>
+0011 textCell = cell(1, 2*num+1);
+0012 textCell(1) = {<span class="string">'['</span>};
+0013 
+0014 <span class="keyword">for</span> i = 1:num  
+0015     <span class="keyword">if</span> abs(a(i)) &lt; 1e-10
+0016         textCell(2*i) = {pad(num2str(0), 10)};
+0017     <span class="keyword">else</span>
+0018         <span class="keyword">if</span> abs(a(i)) &lt; 1e-4
+0019             textCell(2*i) = {pad(num2str(a(i), <span class="string">'%.05f'</span>), 10)};
+0020         <span class="keyword">else</span>
+0021             textCell(2*i) = {pad(num2str(a(i), <span class="string">'%.04f'</span>), 10)};
+0022         <span class="keyword">end</span>
+0023     <span class="keyword">end</span>
+0024     textCell(1+2*i) = {<span class="string">' '</span>};    
+0025 <span class="keyword">end</span> <span class="comment">% for i</span>
+0026 
+0027 textCell(2*num+1) = {<span class="string">']'</span>};
+0028 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

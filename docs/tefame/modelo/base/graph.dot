@@ -1,0 +1,8 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  ComponenteModelo -> ComponenteModelo;
+  Modelo -> Modelo;
+
+  ComponenteModelo [URL="ComponenteModelo.html"];
+  Modelo [URL="Modelo.html"];
+}

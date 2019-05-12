@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of CargaVigaColumnaPuntual</title>
+  <meta name="keywords" content="CargaVigaColumnaPuntual">
+  <meta name="description" content="______________________________________________________________________">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html estaticas -->
+<h1>CargaVigaColumnaPuntual
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>______________________________________________________________________</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ______________________________________________________________________
+|                                                                      |
+|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+|                  Matricial de Estructuras en MATLAB                  |
+|                                                                      |
+|                   Area  de Estructuras y Geotecnia                   |
+|                   Departamento de Ingenieria Civil                   |
+|              Facultad de Ciencias Fisicas y Matematicas              |
+|                         Universidad de Chile                         |
+|                                                                      |
+| TEFAME es una  plataforma en base a objetos para modelar, analizar y |
+| visualizar  la respuesta de sistemas  estructurales usando el metodo |
+| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
+| La plataforma es desarrollada en  propagacion orientada a objetos en |
+| MATLAB.                                                              |
+|______________________________________________________________________|
+ ______________________________________________________________________
+|                                                                      |
+| Clase CargaVigaColumnaPuntual                                        |
+|                                                                      |
+| Este archivo contiene la definicion de la Clase CargaVigaColumnaPuntual|
+| CargaVigaColumnaPuntual es una subclase de la clase Carga y          |
+| corresponde a la representacion de una carga puntual en un elemento  |
+| tipo Viga-Columna.                                                   |
+| La clase CargaVigaColumnaPuntual es una clase que contiene el        |
+| elemento al al que se le va a aplicar la carga, el valor de esta     |
+| carga, la distancia a uno de los nodos como porcentaje del largo y   |
+| el angulo de aplicacion.                                             |
+|                                                                      |
+| Programado: Pablo Pizarro @ppizarror.com                             |
+| Fecha: 11/06/2018                                                    |
+|______________________________________________________________________|
+
+  Properties (Access=private):
+       elemObj
+       carga
+       dist
+       theta
+  Methods:
+       cargaVigaColumnaPuntualObj = CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
+       aplicarCarga(cargaVigaColumnaPuntualObj,factorDeCarga)
+       disp(cargaVigaColumnaPuntualObj)
+  Methods SuperClass (CargaEstatica):
+       masa = obtenerMasa(cargaVigaColumnaPuntualObj)
+       definirFactorUnidadMasa(cargaVigaColumnaPuntualObj,factor)
+       definirFactorCargaMasa(cargaVigaColumnaPuntualObj,factor)
+       nodos = obtenerNodos(cargaVigaColumnaPuntualObj)
+  Methods SuperClass (ComponenteModelo):
+       etiqueta = obtenerEtiqueta(componenteModeloObj)
+       e = equals(componenteModeloObj,obj)
+       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	______________________________________________________________________</li><li><a href="CargaVigaColumnaPuntual.html" class="code" title="">CargaVigaColumnaPuntual</a>	______________________________________________________________________</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="CargaVigaColumnaPuntual.html" class="code" title="">CargaVigaColumnaPuntual</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function cargaVigaColumnaPuntualObj = CargaVigaColumnaPuntual(etiquetaCarga,</a></li><li><a href="#_sub2" class="code">function [u1, u2, v1, v2, theta1, theta2] = calcularCarga(cargaVigaColumnaPuntualObj)</a></li><li><a href="#_sub3" class="code">function masa = obtenerMasa(cargaVigaColumnaPuntualObj)</a></li><li><a href="#_sub4" class="code">function aplicarCarga(cargaVigaColumnaPuntualObj, factorDeCarga)</a></li><li><a href="#_sub5" class="code">function disp(cargaVigaColumnaPuntualObj)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
+0002 <span class="comment">%|                                                                      |</span>
+0003 <span class="comment">%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |</span>
+0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
+0005 <span class="comment">%|                                                                      |</span>
+0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
+0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
+0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
+0009 <span class="comment">%|                         Universidad de Chile                         |</span>
+0010 <span class="comment">%|                                                                      |</span>
+0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
+0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
+0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
+0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
+0015 <span class="comment">%| MATLAB.                                                              |</span>
+0016 <span class="comment">%|______________________________________________________________________|</span>
+0017 <span class="comment">% ______________________________________________________________________</span>
+0018 <span class="comment">%|                                                                      |</span>
+0019 <span class="comment">%| Clase CargaVigaColumnaPuntual                                        |</span>
+0020 <span class="comment">%|                                                                      |</span>
+0021 <span class="comment">%| Este archivo contiene la definicion de la Clase CargaVigaColumnaPuntual|</span>
+0022 <span class="comment">%| CargaVigaColumnaPuntual es una subclase de la clase Carga y          |</span>
+0023 <span class="comment">%| corresponde a la representacion de una carga puntual en un elemento  |</span>
+0024 <span class="comment">%| tipo Viga-Columna.                                                   |</span>
+0025 <span class="comment">%| La clase CargaVigaColumnaPuntual es una clase que contiene el        |</span>
+0026 <span class="comment">%| elemento al al que se le va a aplicar la carga, el valor de esta     |</span>
+0027 <span class="comment">%| carga, la distancia a uno de los nodos como porcentaje del largo y   |</span>
+0028 <span class="comment">%| el angulo de aplicacion.                                             |</span>
+0029 <span class="comment">%|                                                                      |</span>
+0030 <span class="comment">%| Programado: Pablo Pizarro @ppizarror.com                             |</span>
+0031 <span class="comment">%| Fecha: 11/06/2018                                                    |</span>
+0032 <span class="comment">%|______________________________________________________________________|</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">%  Properties (Access=private):</span>
+0035 <span class="comment">%       elemObj</span>
+0036 <span class="comment">%       carga</span>
+0037 <span class="comment">%       dist</span>
+0038 <span class="comment">%       theta</span>
+0039 <span class="comment">%  Methods:</span>
+0040 <span class="comment">%       cargaVigaColumnaPuntualObj = CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)</span>
+0041 <span class="comment">%       aplicarCarga(cargaVigaColumnaPuntualObj,factorDeCarga)</span>
+0042 <span class="comment">%       disp(cargaVigaColumnaPuntualObj)</span>
+0043 <span class="comment">%  Methods SuperClass (CargaEstatica):</span>
+0044 <span class="comment">%       masa = obtenerMasa(cargaVigaColumnaPuntualObj)</span>
+0045 <span class="comment">%       definirFactorUnidadMasa(cargaVigaColumnaPuntualObj,factor)</span>
+0046 <span class="comment">%       definirFactorCargaMasa(cargaVigaColumnaPuntualObj,factor)</span>
+0047 <span class="comment">%       nodos = obtenerNodos(cargaVigaColumnaPuntualObj)</span>
+0048 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
+0049 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0050 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0051 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0052 
+0053 classdef <a href="CargaVigaColumnaPuntual.html" class="code" title="">CargaVigaColumnaPuntual</a> &lt; <a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>
+0054     
+0055     properties(Access = private)
+0056         elemObj <span class="comment">% Variable que guarda el elemento que se le va a aplicar la carga</span>
+0057         carga <span class="comment">% Valor de la carga</span>
+0058         dist <span class="comment">% Distancia de la carga al primer nodo del elemento</span>
+0059         theta <span class="comment">% Angulo de aplicacion de la carga</span>
+0060     <span class="keyword">end</span> <span class="comment">% properties CargaVigaColumnaPuntual</span>
+0061     
+0062     methods
+0063         
+0064         <a name="_sub0" href="#_subfunctions" class="code">function cargaVigaColumnaPuntualObj = CargaVigaColumnaPuntual(etiquetaCarga, </a><span class="keyword">...</span>
+0065                 elemObjeto, carga, distancia, theta)
+0066             <span class="comment">% CargaVigaColumnaPuntual: es el constructor de la clase CargaVigaColumnaPuntual</span>
+0067             <span class="comment">%</span>
+0068             <span class="comment">% cargaVigaColumnaPuntualObj=CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)</span>
+0069             <span class="comment">%</span>
+0070             <span class="comment">% Crea un objeto de la clase CargaVigaColumnaPuntual, en donde toma como atributo</span>
+0071             <span class="comment">% el objeto a aplicar la carga, la distancia como porcentaje</span>
+0072             <span class="comment">% del largo del elemento con respecto al primer nodo, el</span>
+0073             <span class="comment">% elemento tipo viga y el angulo de aplicacion de la carga con respecto a la normal</span>
+0074             
+0075             <span class="keyword">if</span> nargin == 0
+0076                 etiquetaCarga = <span class="string">''</span>;
+0077                 elemObjeto = [];
+0078                 carga = 0;
+0079                 distancia = 0;
+0080                 theta = 0;
+0081             <span class="keyword">end</span> <span class="comment">% if</span>
+0082             
+0083             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase Carga</span>
+0084             cargaVigaColumnaPuntualObj = cargaVigaColumnaPuntualObj@<a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>(etiquetaCarga);
+0085             
+0086             <span class="comment">% Guarda los valores</span>
+0087             cargaVigaColumnaPuntualObj.elemObj = elemObjeto;
+0088             cargaVigaColumnaPuntualObj.carga = carga;
+0089             cargaVigaColumnaPuntualObj.dist = distancia * elemObjeto.obtenerLargo();
+0090             cargaVigaColumnaPuntualObj.theta = theta;
+0091             cargaVigaColumnaPuntualObj.nodosCarga = elemObjeto.obtenerNodos();
+0092             
+0093         <span class="keyword">end</span> <span class="comment">% CargaVigaColumnaPuntual constructor</span>
+0094         
+0095         <a name="_sub1" href="#_subfunctions" class="code">function [u1, u2, v1, v2, theta1, theta2] = calcularCarga(cargaVigaColumnaPuntualObj)</a>
+0096             <span class="comment">% calcularCarga: Calcula la carga</span>
+0097             
+0098             <span class="comment">% Largo de la viga</span>
+0099             L = cargaVigaColumnaPuntualObj.elemObj.obtenerLargo();
+0100             
+0101             <span class="comment">% Posicion de la carga</span>
+0102             d = cargaVigaColumnaPuntualObj.dist;
+0103             
+0104             <span class="comment">% Carga normal</span>
+0105             P = cargaVigaColumnaPuntualObj.carga * cos(cargaVigaColumnaPuntualObj.theta);
+0106             
+0107             <span class="comment">% Carga axial</span>
+0108             H = -cargaVigaColumnaPuntualObj.carga * sin(cargaVigaColumnaPuntualObj.theta);
+0109             
+0110             <span class="comment">% Se calculan apoyos y reacciones en un caso de viga empotrada</span>
+0111             <span class="comment">% sometida a una carga P aplicada a (L-d) de un apoyo y d del</span>
+0112             <span class="comment">% otro. Esto se hizo al no tener la funcion dirac(x) y</span>
+0113             <span class="comment">% distintos errores fruto de la evaluacion de la integral</span>
+0114             v1 = P * ((L - d)^2 / L^2) * (3 - 2 * (L - d) / L);
+0115             v2 = P * (d^2 / L^2) * (3 - 2 * d / L);
+0116             theta1 = P * d * (L - d)^2 / (L^2);
+0117             theta2 = -P * (d^2) * (L - d) / (L^2);
+0118             
+0119             <span class="comment">% Para el caso de las cargas normales se usan las funciones de</span>
+0120             <span class="comment">% interpolacion</span>
+0121             Nu1 = @(x) (1 - x / L);
+0122             Nu2 = @(x) x / L;
+0123             u1 = H * Nu1(d);
+0124             u2 = H * Nu2(d);
+0125             
+0126         <span class="keyword">end</span> <span class="comment">% calcularCarga function</span>
+0127         
+0128         <a name="_sub2" href="#_subfunctions" class="code">function masa = obtenerMasa(cargaVigaColumnaPuntualObj)</a>
+0129             <span class="comment">% obtenerMasa: Obtiene la masa asociada a la carga</span>
+0130             <span class="comment">%</span>
+0131             <span class="comment">% masa = obtenerMasa(cargaVigaColumnaPuntualObj)</span>
+0132             
+0133             [u1, u2, v1, v2, ~, ~] = cargaVigaColumnaPuntualObj.calcularCarga();
+0134             masa = abs(u1 + u2 + v1 + v2) .* (cargaVigaColumnaPuntualObj.factorCargaMasa * cargaVigaColumnaPuntualObj.factorUnidadMasa);
+0135             
+0136         <span class="keyword">end</span> <span class="comment">% obtenerMasa function</span>
+0137         
+0138         <a name="_sub3" href="#_subfunctions" class="code">function aplicarCarga(cargaVigaColumnaPuntualObj, factorDeCarga)</a>
+0139             <span class="comment">% aplicarCarga: es un metodo de la clase CargaVigaColumnaPuntual</span>
+0140             <span class="comment">% que se usa para aplicar la carga sobre los dos nodos del elemento</span>
+0141             <span class="comment">%</span>
+0142             <span class="comment">% aplicarCarga(cargaVigaColumnaPuntualObj,factorDeCarga)</span>
+0143             
+0144             <span class="comment">% Calcula la carga</span>
+0145             [u1, u2, v1, v2, theta1, theta2] = cargaVigaColumnaPuntualObj.calcularCarga();
+0146             vectorCarga = factorDeCarga * [u1, v1, theta1, u2, v2, theta2]';
+0147             cargaVigaColumnaPuntualObj.elemObj.sumarFuerzaEquivalente(vectorCarga);
+0148             
+0149             <span class="comment">% Aplica vectores de carga en coordenadas globales</span>
+0150             vectorCarga = cargaVigaColumnaPuntualObj.elemObj.obtenerMatrizTransformacion()' * vectorCarga;
+0151             nodos = cargaVigaColumnaPuntualObj.elemObj.obtenerNodos();
+0152             nodos{1}.agregarCarga([vectorCarga(1), vectorCarga(2), vectorCarga(3)]');
+0153             nodos{2}.agregarCarga([vectorCarga(4), vectorCarga(5), vectorCarga(6)]');
+0154             
+0155         <span class="keyword">end</span> <span class="comment">% aplicarCarga function</span>
+0156         
+0157         <a name="_sub4" href="#_subfunctions" class="code">function disp(cargaVigaColumnaPuntualObj)</a>
+0158             <span class="comment">% disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en</span>
+0159             <span class="comment">% command Window la informacion de la carga aplicada sobre el</span>
+0160             <span class="comment">% elemento</span>
+0161             <span class="comment">%</span>
+0162             <span class="comment">% disp(cargaVigaColumnaPuntualObj)</span>
+0163             <span class="comment">%</span>
+0164             <span class="comment">% Imprime la informacion guardada en la carga puntual de la</span>
+0165             <span class="comment">% Viga-Columna (cargaVigaColumnaPuntualObj) en pantalla</span>
+0166             
+0167             fprintf(<span class="string">'Propiedades carga viga-columna puntual:\n'</span>);
+0168             <a href="#_sub5" class="code" title="subfunction disp(cargaVigaColumnaPuntualObj)">disp</a>@Carga(cargaVigaColumnaPuntualObj);
+0169             
+0170             <span class="comment">% Obtiene la etiqueta del elemento</span>
+0171             etiqueta = cargaVigaColumnaPuntualObj.elemObj.obtenerEtiqueta();
+0172             
+0173             <span class="comment">% Obtiene la etiqueta del primer nodo</span>
+0174             nodo1etiqueta = cargaVigaColumnaPuntualObj.elemObj.obtenerNodos();
+0175             nodo1etiqueta = nodo1etiqueta{1}.obtenerEtiqueta();
+0176             
+0177             <span class="comment">% Obtiene cargas axiales y normales</span>
+0178             P = cargaVigaColumnaPuntualObj.carga * cos(cargaVigaColumnaPuntualObj.theta);
+0179             H = cargaVigaColumnaPuntualObj.carga * sin(cargaVigaColumnaPuntualObj.theta);
+0180             
+0181             fprintf(<span class="string">'\tCarga aplicada en Elemento: %s a %.3f del Nodo: %s\n'</span>, <span class="keyword">...</span>
+0182                 etiqueta, cargaVigaColumnaPuntualObj.dist, nodo1etiqueta);
+0183             fprintf(<span class="string">'\t\tComponente NORMAL:\t%.3f\n'</span>, P);
+0184             fprintf(<span class="string">'\t\tComponente AXIAL:\t%.3f\n'</span>, H);
+0185             <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
+0186             
+0187         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0188         
+0189     <span class="keyword">end</span> <span class="comment">% methods CargaVigaColumnaPuntual</span>
+0190     
+0191 <span class="keyword">end</span> <span class="comment">% class CargaVigaColumnaPuntual</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

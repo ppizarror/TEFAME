@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Disipador</title>
+  <meta name="keywords" content="Disipador">
+  <meta name="description" content="______________________________________________________________________">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- # modelo --><!-- menu.html disipadores -->
+<h1>Disipador
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>______________________________________________________________________</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ______________________________________________________________________
+|                                                                      |
+|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+|                  Matricial de Estructuras en MATLAB                  |
+|                                                                      |
+|                   Area  de Estructuras y Geotecnia                   |
+|                   Departamento de Ingenieria Civil                   |
+|              Facultad de Ciencias Fisicas y Matematicas              |
+|                         Universidad de Chile                         |
+|                                                                      |
+| TEFAME es una  plataforma en base a objetos para modelar, analizar y |
+| visualizar  la respuesta de sistemas  estructurales usando el metodo |
+| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
+| La plataforma es desarrollada en  propagacion orientada a objetos en |
+| MATLAB.                                                              |
+|______________________________________________________________________|
+ ______________________________________________________________________
+|                                                                      |
+| Clase Disipador                                                      |
+|                                                                      |
+| Este archivo contiene la definicion general de la clase disipador.   |
+|                                                                      |
+| Programado: Pablo Pizarro @ppizarror.com                             |
+| Fecha: 29/04/2019                                                    |
+|______________________________________________________________________|
+
+  Properties (Access=private):
+  Methods:
+       disipadorObj = Disipador(etiquetaDisipador)
+       numeroNodos = obtenerNumeroNodos(disipadorObj)
+       numeroGDL = obtenerNumeroGDL(disipadorObj)
+       gdlIDDisipador = obtenerGDLID(disipadorObj)
+       k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj)
+       k_local = obtenerMatrizRigidezCoordLocal(disipadorObj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorObj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorObj)
+       T = obtenerMatrizTransformacion(disipadorObj)
+       definirGDLID(disipadorObj)
+       disp(disipadorObj)
+       plot(disipadorObj,tipoLinea,grosorLinea,colorLinea)
+  Methods SuperClass (ComponenteModelo):
+       etiqueta = obtenerEtiqueta(componenteModeloObj)
+       e = equals(componenteModeloObj,obj)
+       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li><li><a href="Disipador.html" class="code" title="">Disipador</a>	______________________________________________________________________</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="Disipador.html" class="code" title="">Disipador</a>	______________________________________________________________________</li><li><a href="Disipador2D.html" class="code" title="">Disipador2D</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function disipadorObj = Disipador(etiquetaDisipador)</a></li><li><a href="#_sub2" class="code">function inicializar(disipadorObj)</a></li><li><a href="#_sub3" class="code">function numeroNodos = obtenerNumeroNodos(disipadorObj)</a></li><li><a href="#_sub4" class="code">function nodosDisipador = obtenerNodos(disipadorObj)</a></li><li><a href="#_sub5" class="code">function numeroGDL = obtenerNumeroGDL(disipadorObj)</a></li><li><a href="#_sub6" class="code">function gdlIDDisipador = obtenerGDLID(disipadorObj)</a></li><li><a href="#_sub7" class="code">function T = obtenerMatrizTransformacion(disipadorObj)</a></li><li><a href="#_sub8" class="code">function k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj)</a></li><li><a href="#_sub9" class="code">function k_local = obtenerMatrizRigidezCoordLocal(disipadorObj)</a></li><li><a href="#_sub10" class="code">function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorObj)</a></li><li><a href="#_sub11" class="code">function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorObj)</a></li><li><a href="#_sub12" class="code">function definirGDLID(disipadorObj)</a></li><li><a href="#_sub13" class="code">function plot(disipadorObj, deformadas, tipoLinea, grosorLinea, colorLinea)</a></li><li><a href="#_sub14" class="code">function dibujarDisipador(disipadorObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea)</a></li><li><a href="#_sub15" class="code">function disp(disipadorObj)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
+0002 <span class="comment">%|                                                                      |</span>
+0003 <span class="comment">%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |</span>
+0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
+0005 <span class="comment">%|                                                                      |</span>
+0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
+0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
+0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
+0009 <span class="comment">%|                         Universidad de Chile                         |</span>
+0010 <span class="comment">%|                                                                      |</span>
+0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
+0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
+0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
+0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
+0015 <span class="comment">%| MATLAB.                                                              |</span>
+0016 <span class="comment">%|______________________________________________________________________|</span>
+0017 <span class="comment">% ______________________________________________________________________</span>
+0018 <span class="comment">%|                                                                      |</span>
+0019 <span class="comment">%| Clase Disipador                                                      |</span>
+0020 <span class="comment">%|                                                                      |</span>
+0021 <span class="comment">%| Este archivo contiene la definicion general de la clase disipador.   |</span>
+0022 <span class="comment">%|                                                                      |</span>
+0023 <span class="comment">%| Programado: Pablo Pizarro @ppizarror.com                             |</span>
+0024 <span class="comment">%| Fecha: 29/04/2019                                                    |</span>
+0025 <span class="comment">%|______________________________________________________________________|</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%  Properties (Access=private):</span>
+0028 <span class="comment">%  Methods:</span>
+0029 <span class="comment">%       disipadorObj = Disipador(etiquetaDisipador)</span>
+0030 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipadorObj)</span>
+0031 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipadorObj)</span>
+0032 <span class="comment">%       gdlIDDisipador = obtenerGDLID(disipadorObj)</span>
+0033 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj)</span>
+0034 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipadorObj)</span>
+0035 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorObj)</span>
+0036 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorObj)</span>
+0037 <span class="comment">%       T = obtenerMatrizTransformacion(disipadorObj)</span>
+0038 <span class="comment">%       definirGDLID(disipadorObj)</span>
+0039 <span class="comment">%       disp(disipadorObj)</span>
+0040 <span class="comment">%       plot(disipadorObj,tipoLinea,grosorLinea,colorLinea)</span>
+0041 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
+0042 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0043 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0044 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0045 
+0046 classdef <a href="Disipador.html" class="code" title="">Disipador</a> &lt; <a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>
+0047     
+0048     properties(Access = private)
+0049     <span class="keyword">end</span> <span class="comment">% properties Disipador</span>
+0050     
+0051     properties(Access = protected)
+0052         nodosObj <span class="comment">% Cell con los nodos</span>
+0053         gdlID <span class="comment">% Lista con los ID de los grados de libertad</span>
+0054         T <span class="comment">% Matriz de transformacion</span>
+0055     <span class="keyword">end</span> <span class="comment">% properties Disipador2D</span>
+0056     
+0057     methods
+0058         
+0059         <a name="_sub0" href="#_subfunctions" class="code">function disipadorObj = Disipador(etiquetaDisipador)</a>
+0060             <span class="comment">% Disipador: es el constructor de la clase Disipador</span>
+0061             <span class="comment">%</span>
+0062             <span class="comment">% disipadorObj = Disipador(etiquetaDisipador)</span>
+0063             <span class="comment">%</span>
+0064             <span class="comment">% Crea un objeto de la clase Disipador, con un identificador unico</span>
+0065             <span class="comment">% (etiquetaDisipador)</span>
+0066             
+0067             <span class="comment">% Si no se pasan argumentos se crean vacios</span>
+0068             <span class="keyword">if</span> nargin == 0
+0069                 etiquetaDisipador = <span class="string">''</span>;
+0070             <span class="keyword">end</span> <span class="comment">% if</span>
+0071             
+0072             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase ComponenteModelo</span>
+0073             disipadorObj = disipadorObj@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(etiquetaDisipador);
+0074             disipadorObj.gdlID = [];
+0075             disipadorObj.T = [];
+0076             
+0077         <span class="keyword">end</span> <span class="comment">% Disipador constructor</span>
+0078 
+0079         <a name="_sub1" href="#_subfunctions" class="code">function inicializar(disipadorObj)</a><span class="comment">%#ok&lt;MANU&gt;</span>
+0080             <span class="comment">% inicializar: es un metodo de la clase Disipador que se usa para</span>
+0081             <span class="comment">% inicializar las diferentes componentes que sean necesario en los</span>
+0082             <span class="comment">% disipadores para realizar posteriormente el analisis</span>
+0083             <span class="comment">%</span>
+0084             <span class="comment">% inicializar(elementoObj)</span>
+0085             <span class="comment">% Inicializa los diferentes componetes del Disipador (disipadorObj),</span>
+0086             <span class="comment">% para poder preparar estos para realizar el analisis</span>
+0087 
+0088         <span class="keyword">end</span> <span class="comment">% inicializar function</span>
+0089         
+0090         <a name="_sub2" href="#_subfunctions" class="code">function numeroNodos = obtenerNumeroNodos(disipadorObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0091             <span class="comment">% obtenerNumeroNodos: Obtiene el numero de nodos del disipador</span>
+0092             <span class="comment">%</span>
+0093             <span class="comment">% numeroNodos = obtenerNumeroNodos(disipadorObj)</span>
+0094             
+0095             numeroNodos = 0;
+0096             
+0097         <span class="keyword">end</span> <span class="comment">% obtenerNumeroNodos function</span>
+0098         
+0099         <a name="_sub3" href="#_subfunctions" class="code">function nodosDisipador = obtenerNodos(disipadorObj)</a>
+0100             <span class="comment">% nodosDisipador: Obtiene los nodos del disipador</span>
+0101             <span class="comment">%</span>
+0102             <span class="comment">% nodosDisipador = obtenerNodos(disipadorObj)</span>
+0103             
+0104             nodosDisipador = disipadorObj.nodosObj;
+0105             
+0106         <span class="keyword">end</span> <span class="comment">% obtenerNodos function</span>
+0107         
+0108         <a name="_sub4" href="#_subfunctions" class="code">function numeroGDL = obtenerNumeroGDL(disipadorObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0109             <span class="comment">% obtenerNumeroGDL: Retorna el numero de grados de libertad del</span>
+0110             <span class="comment">% disipador</span>
+0111             <span class="comment">%</span>
+0112             <span class="comment">% numeroGDL = obtenerNumeroGDL(disipadorObj)</span>
+0113             
+0114             numeroGDL = 0;
+0115             
+0116         <span class="keyword">end</span> <span class="comment">% obtenerNumeroGDL function</span>
+0117         
+0118         <a name="_sub5" href="#_subfunctions" class="code">function gdlIDDisipador = obtenerGDLID(disipadorObj)</a>
+0119             <span class="comment">% obtenerGDLID: Obtiene los ID de los grados de libertad del</span>
+0120             <span class="comment">% disipador</span>
+0121             <span class="comment">%</span>
+0122             <span class="comment">% gdlIDDisipador = obtenerGDLID(disipadorObj)</span>
+0123             
+0124             gdlIDDisipador = disipadorObj.gdlID;
+0125             
+0126         <span class="keyword">end</span> <span class="comment">% obtenerGDLID function</span>
+0127         
+0128         <a name="_sub6" href="#_subfunctions" class="code">function T = obtenerMatrizTransformacion(disipadorObj)</a>
+0129             <span class="comment">% obtenerMatrizTransformacion: Obtiene la matriz de</span>
+0130             <span class="comment">% transformacion del disipador</span>
+0131             <span class="comment">%</span>
+0132             <span class="comment">% T = obtenerMatrizTransformacion(disipadorObj)</span>
+0133             
+0134             T = disipadorObj.T;
+0135             
+0136         <span class="keyword">end</span> <span class="comment">% obtenerMatrizTransformacion function</span>
+0137         
+0138         <a name="_sub7" href="#_subfunctions" class="code">function k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj)</a>
+0139             <span class="comment">% obtenerMatrizRigidezCoordGlobal: Obtiene la matriz de rigidez</span>
+0140             <span class="comment">% en coordenadas globales</span>
+0141             <span class="comment">%</span>
+0142             <span class="comment">% k_global = obtenerMatrizRigidezCoordGlobal(disipadorObj)</span>
+0143             
+0144             <span class="comment">% Multiplica por la matriz de transformacion</span>
+0145             k_local = disipadorObj.obtenerMatrizRigidezCoordLocal();
+0146             t_theta = disipadorObj.obtenerMatrizTransformacion();
+0147             k_global = t_theta' * k_local * t_theta;
+0148             
+0149         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidezCoordGlobal function</span>
+0150         
+0151         <a name="_sub8" href="#_subfunctions" class="code">function k_local = obtenerMatrizRigidezCoordLocal(disipadorObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0152             <span class="comment">% obtenerMatrizRigidezCoordLocal: Obtiene la matriz de rigidez</span>
+0153             <span class="comment">% en coordenadas locales</span>
+0154             <span class="comment">%</span>
+0155             <span class="comment">% k_local = obtenerMatrizRigidezCoordLocal(disipadorObj)</span>
+0156             
+0157             k_local = [];
+0158             
+0159         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidezCoordLocal function</span>
+0160         
+0161         <a name="_sub9" href="#_subfunctions" class="code">function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0162             <span class="comment">% obtenerMatrizAmortiguamientoCoordLocal: Obtiene la matriz de</span>
+0163             <span class="comment">% armortiguamiento en coordenadas locales</span>
+0164             <span class="comment">%</span>
+0165             <span class="comment">% c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorObj)</span>
+0166             
+0167             c_local = [];
+0168             
+0169         <span class="keyword">end</span> <span class="comment">% obtenerMatrizAmortiguamientoCoordLocal function</span>
+0170         
+0171         <a name="_sub10" href="#_subfunctions" class="code">function c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorObj)</a>
+0172             <span class="comment">% obtenerMatrizAmortiguamientoCoordGlobal: Obtiene la matriz de</span>
+0173             <span class="comment">% amortiguamiento en coordenadas globales</span>
+0174             <span class="comment">%</span>
+0175             <span class="comment">% c_global = obtenerMatrizAmortiguamientoCoordGlobal(disipadorObj)</span>
+0176             
+0177             <span class="comment">% Multiplica por la matriz de transformacion</span>
+0178             ceq_local = disipadorObj.obtenerMatrizAmortiguamientoCoordLocal();
+0179             t_theta = disipadorObj.obtenerMatrizTransformacion();
+0180             c_global = t_theta' * ceq_local * t_theta;
+0181             
+0182         <span class="keyword">end</span> <span class="comment">% obtenerMatrizAmortiguamientoCoordGlobal function</span>
+0183         
+0184         <a name="_sub11" href="#_subfunctions" class="code">function definirGDLID(disipadorObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
+0185             <span class="comment">% definirGDLID: Define los GDLID del disipador</span>
+0186             <span class="comment">%</span>
+0187             <span class="comment">% definirGDLID(disipadorObj)</span>
+0188             
+0189         <span class="keyword">end</span> <span class="comment">% definirGDLID function</span>
+0190         
+0191         <a name="_sub12" href="#_subfunctions" class="code">function plot(disipadorObj, deformadas, tipoLinea, grosorLinea, colorLinea) </a><span class="comment">%#ok&lt;INUSD&gt;</span>
+0192             <span class="comment">% plot: Grafica el disipador</span>
+0193             <span class="comment">%</span>
+0194             <span class="comment">% plot(disipadorObj,deformadas,tipoLinea,grosorLinea,colorLinea)</span>
+0195             
+0196         <span class="keyword">end</span> <span class="comment">% plot function</span>
+0197         
+0198         <a name="_sub13" href="#_subfunctions" class="code">function dibujarDisipador(disipadorObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea) </a><span class="comment">%#ok&lt;INUSL&gt;</span>
+0199             <span class="comment">% dibujarDisipador: Grafica una linea para un disipador</span>
+0200             <span class="comment">%</span>
+0201             <span class="comment">% dibujarDisipador(elementoObj,coord1,coord2,tipoLinea,grosorLinea)</span>
+0202             
+0203             <span class="keyword">if</span> length(coord1) == 2
+0204                 <a href="#_sub13" class="code" title="subfunction plot(disipadorObj, deformadas, tipoLinea, grosorLinea, colorLinea) ">plot</a>(coord1(1), coord1(2), <span class="string">'.'</span>, <span class="string">'Color'</span>, colorLinea);
+0205                 <a href="#_sub13" class="code" title="subfunction plot(disipadorObj, deformadas, tipoLinea, grosorLinea, colorLinea) ">plot</a>(coord2(1), coord2(2), <span class="string">'.'</span>, <span class="string">'Color'</span>, colorLinea);
+0206                 <a href="#_sub13" class="code" title="subfunction plot(disipadorObj, deformadas, tipoLinea, grosorLinea, colorLinea) ">plot</a>([coord1(1), coord2(1)], [coord1(2), coord2(2)], tipoLinea, <span class="keyword">...</span>
+0207                     <span class="string">'LineWidth'</span>, grosorLinea, <span class="string">'Color'</span>, colorLinea);
+0208             <span class="keyword">else</span>
+0209                 plot3(coord1(1), coord1(2), coord1(3), <span class="string">'.'</span>, <span class="string">'Color'</span>, colorLinea);
+0210                 plot3(coord2(1), coord2(2), coord2(3), <span class="string">'.'</span>, <span class="string">'Color'</span>, colorLinea);
+0211                 plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], <span class="keyword">...</span>
+0212                     tipoLinea, <span class="string">'LineWidth'</span>, grosorLinea, <span class="string">'Color'</span>, colorLinea);
+0213             <span class="keyword">end</span>
+0214             
+0215         <span class="keyword">end</span> <span class="comment">% dibujarDisipador function</span>
+0216         
+0217         <a name="_sub14" href="#_subfunctions" class="code">function disp(disipadorObj)</a>
+0218             <span class="comment">% disp: Imprime propiedades del disipador</span>
+0219             
+0220             <a href="#_sub15" class="code" title="subfunction disp(disipadorObj)">disp</a>@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(disipadorObj);
+0221             <span class="comment">% No usar dispMetodoTEFAME()</span>
+0222             
+0223         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0224         
+0225     <span class="keyword">end</span> <span class="comment">% methods Disipador</span>
+0226     
+0227 <span class="keyword">end</span> <span class="comment">% class Disipador</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

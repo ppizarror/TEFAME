@@ -1,0 +1,16 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  calculoEigDirectaBarrido -> modonorm;
+  calculoEigItSubespacio -> GSM;
+  calculoEigItSubespacio -> modonorm;
+  calculoEigIterDirecta -> modonorm;
+  calculoEigIterInvDesplazamiento -> modonorm;
+
+  GSM [URL="GSM.html"];
+  calculoEigDirectaBarrido [URL="calculoEigDirectaBarrido.html"];
+  calculoEigEigs [URL="calculoEigEigs.html"];
+  calculoEigItSubespacio [URL="calculoEigItSubespacio.html"];
+  calculoEigIterDirecta [URL="calculoEigIterDirecta.html"];
+  calculoEigIterInvDesplazamiento [URL="calculoEigIterInvDesplazamiento.html"];
+  modonorm [URL="modonorm.html"];
+}

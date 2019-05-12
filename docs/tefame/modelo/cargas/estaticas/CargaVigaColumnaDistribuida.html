@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of CargaVigaColumnaDistribuida</title>
+  <meta name="keywords" content="CargaVigaColumnaDistribuida">
+  <meta name="description" content="______________________________________________________________________">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html estaticas -->
+<h1>CargaVigaColumnaDistribuida
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>______________________________________________________________________</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ______________________________________________________________________
+|                                                                      |
+|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+|                  Matricial de Estructuras en MATLAB                  |
+|                                                                      |
+|                   Area  de Estructuras y Geotecnia                   |
+|                   Departamento de Ingenieria Civil                   |
+|              Facultad de Ciencias Fisicas y Matematicas              |
+|                         Universidad de Chile                         |
+|                                                                      |
+| TEFAME es una  plataforma en base a objetos para modelar, analizar y |
+| visualizar  la respuesta de sistemas  estructurales usando el metodo |
+| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
+| La plataforma es desarrollada en  propagacion orientada a objetos en |
+| MATLAB.                                                              |
+|______________________________________________________________________|
+ ______________________________________________________________________
+|                                                                      |
+| Clase CargaVigaColumnaDistribuida                                    |
+|                                                                      |
+| Este archivo contiene la definicion de la Clase CargaVigaColumnaDist |
+| ribuida, CargaVigaDistribuida es una subclase de la clase Carga y    |
+| corresponde a la representacion de una carga distribuida en un       |
+| elemento tipo Viga. La clase CargaVigaDistribuida es una clase que   |
+| contiene el elemento, al que se le va a aplicar la carga, las cargas |
+| en cada punto, las distancias de las dos cargas y el angulo con      |
+| respecto a la normal.                                                |
+|                                                                      |
+| Programado: Pablo Pizarro @ppizarror.com                             |
+| Fecha: 11/06/2018                                                    |
+|______________________________________________________________________|
+
+  Properties (Access=private):
+       elemObj
+       carga1
+       carga2
+       dist1
+       dist2
+       theta
+  Methods:
+       cargaVigaColumnaDistribuidaObj = CargaVigaColumnaDistribuida(etiquetaCarga,elemObjeto,carga1,
+                                        distancia1,carga2,distancia2,theta)
+       aplicarCarga(cargaVigaColumnaDistribuidaObj,factorDeCarga)
+       disp(cargaVigaColumnaDistribuidaObj)
+  Methods SuperClass (CargaEstatica):
+       masa = obtenerMasa(cargaVigaColumnaDistribuidaObj)
+       definirFactorUnidadMasa(cargaVigaColumnaDistribuidaObj,factor)
+       definirFactorCargaMasa(cargaVigaColumnaDistribuidaObj,factor)
+       nodos = obtenerNodos(cargaVigaColumnaDistribuidaObj)
+  Methods SuperClass (ComponenteModelo):
+       etiqueta = obtenerEtiqueta(componenteModeloObj)
+       e = equals(componenteModeloObj,obj)
+       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	______________________________________________________________________</li><li><a href="CargaVigaColumnaDistribuida.html" class="code" title="">CargaVigaColumnaDistribuida</a>	______________________________________________________________________</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="CargaVigaColumnaDistribuida.html" class="code" title="">CargaVigaColumnaDistribuida</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function cargaVigaColumnaDistribuidaObj = CargaVigaColumnaDistribuida(etiquetaCarga,</a></li><li><a href="#_sub2" class="code">function [u1, u2, v1, v2, theta1, theta2] = calcularCarga(cargaVigaColumnaDistribuidaObj)</a></li><li><a href="#_sub3" class="code">function masa = obtenerMasa(cargaVigaColumnaDistribuidaObj)</a></li><li><a href="#_sub4" class="code">function aplicarCarga(cargaVigaColumnaDistribuidaObj, factorDeCarga)</a></li><li><a href="#_sub5" class="code">function disp(cargaVigaColumnaDistribuidaObj)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
+0002 <span class="comment">%|                                                                      |</span>
+0003 <span class="comment">%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |</span>
+0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
+0005 <span class="comment">%|                                                                      |</span>
+0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
+0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
+0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
+0009 <span class="comment">%|                         Universidad de Chile                         |</span>
+0010 <span class="comment">%|                                                                      |</span>
+0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
+0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
+0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
+0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
+0015 <span class="comment">%| MATLAB.                                                              |</span>
+0016 <span class="comment">%|______________________________________________________________________|</span>
+0017 <span class="comment">% ______________________________________________________________________</span>
+0018 <span class="comment">%|                                                                      |</span>
+0019 <span class="comment">%| Clase CargaVigaColumnaDistribuida                                    |</span>
+0020 <span class="comment">%|                                                                      |</span>
+0021 <span class="comment">%| Este archivo contiene la definicion de la Clase CargaVigaColumnaDist |</span>
+0022 <span class="comment">%| ribuida, CargaVigaDistribuida es una subclase de la clase Carga y    |</span>
+0023 <span class="comment">%| corresponde a la representacion de una carga distribuida en un       |</span>
+0024 <span class="comment">%| elemento tipo Viga. La clase CargaVigaDistribuida es una clase que   |</span>
+0025 <span class="comment">%| contiene el elemento, al que se le va a aplicar la carga, las cargas |</span>
+0026 <span class="comment">%| en cada punto, las distancias de las dos cargas y el angulo con      |</span>
+0027 <span class="comment">%| respecto a la normal.                                                |</span>
+0028 <span class="comment">%|                                                                      |</span>
+0029 <span class="comment">%| Programado: Pablo Pizarro @ppizarror.com                             |</span>
+0030 <span class="comment">%| Fecha: 11/06/2018                                                    |</span>
+0031 <span class="comment">%|______________________________________________________________________|</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">%  Properties (Access=private):</span>
+0034 <span class="comment">%       elemObj</span>
+0035 <span class="comment">%       carga1</span>
+0036 <span class="comment">%       carga2</span>
+0037 <span class="comment">%       dist1</span>
+0038 <span class="comment">%       dist2</span>
+0039 <span class="comment">%       theta</span>
+0040 <span class="comment">%  Methods:</span>
+0041 <span class="comment">%       cargaVigaColumnaDistribuidaObj = CargaVigaColumnaDistribuida(etiquetaCarga,elemObjeto,carga1,</span>
+0042 <span class="comment">%                                        distancia1,carga2,distancia2,theta)</span>
+0043 <span class="comment">%       aplicarCarga(cargaVigaColumnaDistribuidaObj,factorDeCarga)</span>
+0044 <span class="comment">%       disp(cargaVigaColumnaDistribuidaObj)</span>
+0045 <span class="comment">%  Methods SuperClass (CargaEstatica):</span>
+0046 <span class="comment">%       masa = obtenerMasa(cargaVigaColumnaDistribuidaObj)</span>
+0047 <span class="comment">%       definirFactorUnidadMasa(cargaVigaColumnaDistribuidaObj,factor)</span>
+0048 <span class="comment">%       definirFactorCargaMasa(cargaVigaColumnaDistribuidaObj,factor)</span>
+0049 <span class="comment">%       nodos = obtenerNodos(cargaVigaColumnaDistribuidaObj)</span>
+0050 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
+0051 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0052 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0053 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0054 
+0055 classdef <a href="CargaVigaColumnaDistribuida.html" class="code" title="">CargaVigaColumnaDistribuida</a> &lt; <a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>
+0056     
+0057     properties(Access = private)
+0058         elemObj <span class="comment">% Variable que guarda el elemento que se le va a aplicar la carga</span>
+0059         carga1 <span class="comment">% Valor de la carga 1</span>
+0060         carga2 <span class="comment">% Valor de la carga 2</span>
+0061         dist1 <span class="comment">% Distancia de la carga 1 al primer nodo del elemento (porcentaje del largo)</span>
+0062         dist2 <span class="comment">% Distancia de la carga 2 al primer nodo del elemento (porcentaje del largo)</span>
+0063         theta <span class="comment">% Angulo de la carga</span>
+0064     <span class="keyword">end</span> <span class="comment">% properties CargaVigaColumnaDistribuida</span>
+0065     
+0066     methods
+0067         
+0068         <a name="_sub0" href="#_subfunctions" class="code">function cargaVigaColumnaDistribuidaObj = CargaVigaColumnaDistribuida(etiquetaCarga, </a><span class="keyword">...</span>
+0069                 elemObjeto, carga1, distancia1, carga2, distancia2, theta)
+0070             <span class="comment">% CargaVigaColumnaDistribuida: es el constructor de la clase CargaVigaColumnaDistribuida</span>
+0071             <span class="comment">%</span>
+0072             <span class="comment">% cargaVigaColumnaDistribuidaObj=CargaVigaColumnaDistribuida(etiquetaCarga,</span>
+0073             <span class="comment">%   elemObjeto,carga1,distancia1,carga2,distancia2,theta)</span>
+0074             <span class="comment">%</span>
+0075             <span class="comment">% Crea un objeto de la clase Carga, en donde toma como atributo</span>
+0076             <span class="comment">% el objeto a aplicar la carga, las cargas, las distancias de</span>
+0077             <span class="comment">% aplicacion y el angulo de la carga con respecto a la normal</span>
+0078             <span class="comment">% (0=Completamente normal, pi/2=Carga axial a la viga)</span>
+0079             
+0080             <span class="comment">% Si no se pasan argumentos se crea una carga vacia</span>
+0081             <span class="keyword">if</span> nargin == 0
+0082                 etiquetaCarga = <span class="string">''</span>;
+0083                 elemObjeto = [];
+0084                 carga1 = 0;
+0085                 distancia1 = 0;
+0086                 carga2 = 0;
+0087                 distancia2 = 0;
+0088                 theta = 0;
+0089             <span class="keyword">end</span> <span class="comment">% if</span>
+0090             
+0091             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase</span>
+0092             <span class="comment">% CargaEstatica</span>
+0093             cargaVigaColumnaDistribuidaObj = cargaVigaColumnaDistribuidaObj@<a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>(etiquetaCarga);
+0094             
+0095             <span class="comment">% Aplica limites al minimo y maximo</span>
+0096             <span class="keyword">if</span> (distancia1 &lt; 0 || distancia1 &gt; 1 || distancia2 &gt; 1 || distancia2 &lt; 0)
+0097                 warning(<span class="string">'Distancias deben estar dentro del rango [0, 1] @CargaVigaColumnaDistribuida %s'</span>, etiquetaCarga);
+0098             <span class="keyword">end</span>
+0099             <span class="keyword">if</span> (distancia1 == distancia2)
+0100                 warning(<span class="string">'Distancias son iguales @CargaVigaColumnaDistribuida %s'</span>, etiquetaCarga);
+0101             <span class="keyword">end</span>
+0102             distancia1 = max(0, min(distancia1, 1));
+0103             distancia2 = min(1, max(distancia2, 0));
+0104             
+0105             <span class="comment">% Guarda los valores</span>
+0106             cargaVigaColumnaDistribuidaObj.elemObj = elemObjeto;
+0107             cargaVigaColumnaDistribuidaObj.carga1 = carga1;
+0108             cargaVigaColumnaDistribuidaObj.dist1 = distancia1 * elemObjeto.obtenerLargo();
+0109             cargaVigaColumnaDistribuidaObj.carga2 = carga2;
+0110             cargaVigaColumnaDistribuidaObj.dist2 = distancia2 * elemObjeto.obtenerLargo();
+0111             cargaVigaColumnaDistribuidaObj.theta = theta;
+0112             cargaVigaColumnaDistribuidaObj.nodosCarga = elemObjeto.obtenerNodos();
+0113             
+0114         <span class="keyword">end</span> <span class="comment">% CargaVigaColumnaDistribuida constructor</span>
+0115         
+0116         <a name="_sub1" href="#_subfunctions" class="code">function [u1, u2, v1, v2, theta1, theta2] = calcularCarga(cargaVigaColumnaDistribuidaObj)</a>
+0117             <span class="comment">% calcularCarga: Calcula la carga</span>
+0118             
+0119             <span class="comment">% Largo de la viga</span>
+0120             L = cargaVigaColumnaDistribuidaObj.elemObj.obtenerLargo();
+0121             
+0122             <span class="comment">% Limites de las cargas</span>
+0123             d1 = cargaVigaColumnaDistribuidaObj.dist1;
+0124             d2 = cargaVigaColumnaDistribuidaObj.dist2;
+0125             
+0126             <span class="comment">% Angulo de la carga</span>
+0127             ang = cargaVigaColumnaDistribuidaObj.theta;
+0128             
+0129             <span class="comment">% Cargas normales</span>
+0130             P1 = cargaVigaColumnaDistribuidaObj.carga1 * cos(ang);
+0131             P2 = cargaVigaColumnaDistribuidaObj.carga2 * cos(ang);
+0132             
+0133             <span class="comment">% Cargas axiales</span>
+0134             H1 = cargaVigaColumnaDistribuidaObj.carga1 * sin(ang);
+0135             H2 = cargaVigaColumnaDistribuidaObj.carga2 * sin(ang);
+0136             
+0137             <span class="comment">% Crea funcion de carga distribuida normal y axial</span>
+0138             rhoV = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
+0139             rhoH = @(x) H1 + (x - d1) * ((H2 - H1) / d2);
+0140             
+0141             <span class="comment">% Funciones de interpolacion</span>
+0142             Nu1 = @(x) - (1 - x / L);
+0143             Nu2 = @(x) - x / L;
+0144             Nv1 = @(x) 1 - 3 * (x / L).^2 + 2 * (x / L).^3;
+0145             Nv2 = @(x) x .* (1 - x / L).^2;
+0146             Nv3 = @(x) 3 * (x / L).^2 - 2 * (x / L).^3;
+0147             Nv4 = @(x) ((x.^2) / L) .* (x / L - 1);
+0148             
+0149             <span class="comment">% Calcula cada valor</span>
+0150             u1 = integral(@(x) rhoH(x).*Nu1(x), d1, d2);
+0151             u2 = integral(@(x) rhoH(x).*Nu2(x), d1, d2);
+0152             v1 = integral(@(x) rhoV(x).*Nv1(x), d1, d2);
+0153             v2 = integral(@(x) rhoV(x).*Nv3(x), d1, d2);
+0154             theta1 = integral(@(x) rhoV(x).*Nv2(x), d1, d2);
+0155             theta2 = integral(@(x) rhoV(x).*Nv4(x), d1, d2);
+0156             
+0157         <span class="keyword">end</span> <span class="comment">% calcularCarga function</span>
+0158         
+0159         <a name="_sub2" href="#_subfunctions" class="code">function masa = obtenerMasa(cargaVigaColumnaDistribuidaObj)</a>
+0160             <span class="comment">% obtenerMasa: Obtiene la masa asociada a la carga</span>
+0161             <span class="comment">%</span>
+0162             <span class="comment">% masa = obtenerMasa(cargaVigaColumnaDistribuidaObj)</span>
+0163             
+0164             [u1, u2, v1, v2, ~, ~] = cargaVigaColumnaDistribuidaObj.calcularCarga();
+0165             masa = abs(u1 + u2 + v1 + v2) .* (cargaVigaColumnaDistribuidaObj.factorCargaMasa * cargaVigaColumnaDistribuidaObj.factorUnidadMasa);
+0166             
+0167         <span class="keyword">end</span> <span class="comment">% obtenerMasa function</span>
+0168         
+0169         <a name="_sub3" href="#_subfunctions" class="code">function aplicarCarga(cargaVigaColumnaDistribuidaObj, factorDeCarga)</a>
+0170             <span class="comment">% aplicarCarga: es un metodo de la clase cargaVigaColumnaDistribuidaObj</span>
+0171             <span class="comment">% que se usa para aplicar la carga sobre los dos nodos del elemento</span>
+0172             <span class="comment">%</span>
+0173             <span class="comment">% aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)</span>
+0174             
+0175             <span class="comment">% Calcula la carga</span>
+0176             [u1, u2, v1, v2, theta1, theta2] = cargaVigaColumnaDistribuidaObj.calcularCarga();
+0177             vectorCarga = factorDeCarga * [u1, v1, theta1, u2, v2, theta2]';
+0178             cargaVigaColumnaDistribuidaObj.elemObj.sumarFuerzaEquivalente(vectorCarga);
+0179             
+0180             <span class="comment">% Aplica vectores de carga en coordenadas globales</span>
+0181             vectorCarga = cargaVigaColumnaDistribuidaObj.elemObj.obtenerMatrizTransformacion()' * vectorCarga;
+0182             nodos = cargaVigaColumnaDistribuidaObj.elemObj.obtenerNodos();
+0183             nodos{1}.agregarCarga([vectorCarga(1), vectorCarga(2), vectorCarga(3)]');
+0184             nodos{2}.agregarCarga([vectorCarga(4), vectorCarga(5), vectorCarga(6)]');
+0185             
+0186         <span class="keyword">end</span> <span class="comment">% aplicarCarga function</span>
+0187         
+0188         <a name="_sub4" href="#_subfunctions" class="code">function disp(cargaVigaColumnaDistribuidaObj)</a>
+0189             <span class="comment">% disp: es un metodo de la clase Carga que se usa para imprimir en</span>
+0190             <span class="comment">% command Window la informacion de la carga aplicada sobre el</span>
+0191             <span class="comment">% elemento</span>
+0192             <span class="comment">%</span>
+0193             <span class="comment">% disp(cargaVigaColumnaDistribuidaObj)</span>
+0194             <span class="comment">%</span>
+0195             <span class="comment">% Imprime la informacion guardada en la carga viga-columna distribuida</span>
+0196             <span class="comment">% (cargaVigaColumnaDistribuidaObj) en pantalla</span>
+0197             
+0198             fprintf(<span class="string">'Propiedades carga viga-columna distribuida:\n'</span>);
+0199             <a href="#_sub5" class="code" title="subfunction disp(cargaVigaColumnaDistribuidaObj)">disp</a>@Carga(cargaVigaColumnaDistribuidaObj);
+0200             
+0201             <span class="comment">% Obtiene la etiqueta del elemento</span>
+0202             etiqueta = cargaVigaColumnaDistribuidaObj.elemObj.obtenerEtiqueta();
+0203             
+0204             <span class="comment">% Obtiene la etiqueta del primer nodo</span>
+0205             nodosetiqueta = cargaVigaColumnaDistribuidaObj.elemObj.obtenerNodos();
+0206             nodo1etiqueta = nodosetiqueta{1}.obtenerEtiqueta();
+0207             nodo2etiqueta = nodosetiqueta{2}.obtenerEtiqueta();
+0208             
+0209             <span class="comment">% Obtiene cargas horizontales y verticales</span>
+0210             ang = cargaVigaColumnaDistribuidaObj.theta;
+0211             P1 = cargaVigaColumnaDistribuidaObj.carga1 * cos(ang);
+0212             P2 = cargaVigaColumnaDistribuidaObj.carga2 * cos(ang);
+0213             H1 = cargaVigaColumnaDistribuidaObj.carga1 * sin(ang);
+0214             H2 = cargaVigaColumnaDistribuidaObj.carga2 * sin(ang);
+0215             a = cargaVigaColumnaDistribuidaObj.dist1;
+0216             b = cargaVigaColumnaDistribuidaObj.dist2;
+0217             
+0218             fprintf(<span class="string">'\tCarga distribuida entre los Nodos: %s y %s del Elemento: %s\n'</span>, <span class="keyword">...</span>
+0219                 nodo1etiqueta, nodo2etiqueta, etiqueta);
+0220             fprintf(<span class="string">'\t\tComponente NORMAL:\t%.3f en %.3f hasta %.3f en %.3f\n'</span>, P1, a, P2, b);
+0221             fprintf(<span class="string">'\t\tComponente AXIAL:\t%.3f en %.3f hasta %.3f en %.3f\n'</span>, H1, a, H2, b);
+0222             <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
+0223             
+0224         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0225         
+0226     <span class="keyword">end</span> <span class="comment">% methods CargaVigaColumnaDistribuida</span>
+0227     
+0228 <span class="keyword">end</span> <span class="comment">% class CargaVigaColumnaDistribuida</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>
