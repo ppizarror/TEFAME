@@ -57,6 +57,8 @@
 %       actualizarDisipador(disipadorTriangular2DObj,w,carga)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
+%       e = equals(componenteModeloObj,obj)
+%       objID = obtenerIDObjeto(componenteModeloObj)
 
 classdef DisipadorTriangular2D < Disipador2D
     
