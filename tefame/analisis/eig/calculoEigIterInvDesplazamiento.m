@@ -19,18 +19,18 @@ K_eff = K - mu .* M;
 
 % Primera iteracion
 vo = rand(length(K), 1); % Primer desplazamiento
-w = sqrt((vo' * K * vo)/(vo' * M * vo)); % Primera aproximacion
-error = err; % Graficar el error relativo
+w = sqrt(mu + sqrt((vo' * K * vo)/(vo' * M * vo))); % Primera aproximacion
+error = err;
 v = vo;
 b = M * vo;
 contador = 2;
 
 % Interaciones
 while tol <= err
-    yTemp = L * D \ b;
+    yTemp = (L * D) \ b;
     vTemp = L' \ yTemp;
     vTemp = modonorm(vTemp, M, 3);
-    wTemp = mu + sqrt((vTemp' * K * vTemp)/(vTemp' * M * vTemp));
+    wTemp = sqrt(mu + sqrt((vTemp' * K * vTemp)/(vTemp' * M * vTemp)));
     
     err = abs(wTemp-w(contador-1));
     b = M * vTemp;

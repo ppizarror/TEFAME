@@ -2204,6 +2204,8 @@ classdef ModalEspectral < handle
             %     fprintf('\t\tCalculo valores y vectores propios con metodo iteracion inversa\n');
             elseif strcmp(valvecAlgoritmo, 'itInvDesp')
                 fprintf('\t\tCalculo valores y vectores propios con metodo iteracion inversa con desplazamientos\n');
+                fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
+                fprintf('\t\t\tMu: %.4f\n', muIterDesplazamiento);
                 [modalPhin, modalWn] = calculoEigIterInvDesplazamiento(Meq, Keq, muIterDesplazamiento, valvecTolerancia);
                 nModos = length(modalWn);
             elseif strcmp(valvecAlgoritmo, 'itSubesp')
