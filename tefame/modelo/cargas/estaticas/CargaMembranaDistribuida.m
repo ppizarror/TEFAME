@@ -177,7 +177,7 @@ classdef CargaMembranaDistribuida < CargaEstatica
             % masa = obtenerMasa(cargaMembranaDistribuidaObj)
             
             [v1, v2] = cargaMembranaDistribuidaObj.calcularCarga();
-            masa = (v1 + v2) .* (cargaMembranaDistribuidaObj.factorCargaMasa * cargaMembranaDistribuidaObj.factorUnidadMasa);
+            masa = abs(v1 + v2) .* (cargaMembranaDistribuidaObj.factorCargaMasa * cargaMembranaDistribuidaObj.factorUnidadMasa);
             
         end % obtenerMasa function
         

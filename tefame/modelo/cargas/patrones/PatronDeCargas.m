@@ -44,6 +44,7 @@
 %       aplicarCargas(patronDeCargasObj)
 %       patronDinamico(patronDeCargasObj)
 %       disp(patronDeCargasObj)
+%       cargas = obtenerCargas(patronDeCargasObj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -53,6 +54,10 @@ classdef PatronDeCargas < ComponenteModelo
     
     properties(Access = private)
     end % properties private PatronDeCargas
+    
+    properties(Access = protected)
+        cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
+    end
     
     properties(Access = public)
         patronEsDinamico
@@ -74,6 +79,7 @@ classdef PatronDeCargas < ComponenteModelo
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             patronDeCargasObj = patronDeCargasObj@ComponenteModelo(etiquetaPatronDeCargas);
+            patronDeCargasObj.cargas = {};
             
         end % PatronDeCargas constructor
         
@@ -88,7 +94,9 @@ classdef PatronDeCargas < ComponenteModelo
         end % aplicarCargas function
         
         function y = patronDinamico(patronDeCargasObj)
-            % patron_dinamico: Indica si el patron es dinamico o no
+            % patronDinamico: Indica si el patron es dinamico o no
+            %
+            % y = patronDinamico(patronDeCargasObj)
             
             y = patronDeCargasObj.patronEsDinamico;
             
@@ -107,6 +115,15 @@ classdef PatronDeCargas < ComponenteModelo
             % No usar dispMetodoTEFAME()
             
         end % disp function
+        
+        function cargas = obtenerCargas(patronDeCargasObj)
+            % obtenerCargas: Obtiene las cargas del patron
+            %
+            % cargas = obtenerCargas(patronDeCargasObj)
+            
+            cargas = patronDeCargasObj.cargas;
+            
+        end % obtenerCargas function
         
     end % methods PatronDeCargas
     

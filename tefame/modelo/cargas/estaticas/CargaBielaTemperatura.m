@@ -104,7 +104,7 @@ classdef CargaBielaTemperatura < CargaEstatica
             % masa = obtenerMasa(cargaBielaTemperaturaObj)
             
             c = cargaBielaTemperaturaObj.calcularCarga();
-            masa =  c.* (cargaBielaTemperaturaObj.factorCargaMasa * cargaBielaTemperaturaObj.factorUnidadMasa);
+            masa =  abs(c).* (cargaBielaTemperaturaObj.factorCargaMasa * cargaBielaTemperaturaObj.factorUnidadMasa);
             
         end % obtenerMasa function
         

@@ -162,7 +162,7 @@ classdef CargaVigaColumnaDistribuida < CargaEstatica
             % masa = obtenerMasa(cargaVigaColumnaDistribuidaObj)
             
             [u1, u2, v1, v2, ~, ~] = cargaVigaColumnaDistribuidaObj.calcularCarga();
-            masa = (u1 + u2 + v1 + v2) .* (cargaVigaColumnaDistribuidaObj.factorCargaMasa * cargaVigaColumnaDistribuidaObj.factorUnidadMasa);
+            masa = abs(u1 + u2 + v1 + v2) .* (cargaVigaColumnaDistribuidaObj.factorCargaMasa * cargaVigaColumnaDistribuidaObj.factorUnidadMasa);
             
         end % obtenerMasa function
         

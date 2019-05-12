@@ -49,6 +49,7 @@
 classdef CargaEstatica < ComponenteModelo
     
     properties(Access = private)
+        cargaSumoMasa % Indica que la carga ya sumo masa
     end % properties CargaEstatica
     
     properties(Access = protected)
@@ -75,8 +76,27 @@ classdef CargaEstatica < ComponenteModelo
             cargaEstaticaObj = cargaEstaticaObj@ComponenteModelo(etiquetaCarga);
             cargaEstaticaObj.factorCargaMasa = 0;
             cargaEstaticaObj.factorUnidadMasa = 1;
+            cargaEstaticaObj.cargaSumoMasa = false;
             
         end % Carga constructor
+        
+        function bloquearCargaMasa(cargaEstaticaObj)
+            % bloquearCargaMasa: La carga deja de sumar masa
+            %
+            % bloquearCargaMasa(cargaEstaticaObj)
+           
+            cargaEstaticaObj.cargaSumoMasa = true;
+            
+        end % bloquearCargaMasa function
+        
+        function c = cargaSumaMasa(cargaEstaticaObj)
+            % cargaSumaMasa: Indica que la carga suma masa al sistema
+            %
+            % c = cargaSumaMasa(cargaEstaticaObj)
+            
+            c = ~cargaEstaticaObj.cargaSumoMasa;
+            
+        end % cargaSumaMasa function
         
         function aplicarCarga(cargaEstaticaObj, varargin) %#ok<*VANUS,INUSD>
             % aplicarCarga: es un metodo de la clase CargaEstatica que se usa

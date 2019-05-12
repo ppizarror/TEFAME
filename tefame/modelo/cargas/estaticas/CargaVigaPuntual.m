@@ -117,7 +117,7 @@ classdef CargaVigaPuntual < CargaEstatica
             % masa = obtenerMasa(cargaVigaPuntualObj)
             
             [v1, v2, ~, ~] = cargaVigaPuntualObj.calcularCarga();
-            masa = (v1 + v2) .* (cargaVigaPuntualObj.factorCargaMasa * cargaVigaPuntualObj.factorUnidadMasa);
+            masa = abs(v1 + v2) .* (cargaVigaPuntualObj.factorCargaMasa * cargaVigaPuntualObj.factorUnidadMasa);
             
         end % obtenerMasa function
         

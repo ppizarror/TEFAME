@@ -38,7 +38,6 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       cargas
 %       analisisObj
 %       desModal
 %  Methods:
@@ -47,6 +46,7 @@
 %           arregloDisipadores,iterDisipador,tolIterDisipador,betaGrafico)
 %       disp(patronDeCargasObj)
 %  Methods SuperClass (PatronDeCargas):
+%       cargas = obtenerCargas(patronDeCargasObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -55,7 +55,6 @@
 classdef PatronDeCargasDinamico < PatronDeCargas
     
     properties(Access = private)
-        cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
         analisisObj % Guarda el objeto de analisis con tal de obtener M, K, C y el vector de influencia
         desModal % Realiza descomposicion modal
     end % properties PatronDeCargasDinamico

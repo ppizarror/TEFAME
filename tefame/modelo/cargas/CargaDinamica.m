@@ -74,6 +74,10 @@
 
 classdef CargaDinamica < ComponenteModelo
     
+    properties(Access = private)
+        cargaSumoMasa % Indica que la carga ya sumo masa
+    end % properties CargaDinamica
+    
     properties(Access = protected)
         sol_u % Guarda la solucion de los desplazamientos
         sol_v % Guarda la solucion de las velocidades
@@ -121,8 +125,27 @@ classdef CargaDinamica < ComponenteModelo
             cargaDinamicaObj.tInicio = 0;
             cargaDinamicaObj.dt = 1;
             cargaDinamicaObj.tAnalisis = 0;
+            cargaDinamicaObj.cargaSumoMasa = false;
             
         end % CargaDinamica constructor
+        
+        function bloquearCargaMasa(cargaDinamicaObj)
+            % bloquearCargaMasa: La carga deja de sumar masa
+            %
+            % bloquearCargaMasa(cargaDinamicaObj)
+           
+            cargaDinamicaObj.cargaSumoMasa = true;
+            
+        end % bloquearCargaMasa function
+        
+        function c = cargaSumaMasa(cargaDinamicaObj)
+            % cargaSumaMasa: Indica que la carga suma masa al sistema
+            %
+            % c = cargaSumaMasa(cargaDinamicaObj)
+            
+            c = ~cargaDinamicaObj.cargaSumoMasa;
+            
+        end % cargaSumaMasa function
         
         function t = obtenerVectorTiempo(cargaDinamicaObj)
             % obtenerVectorTiempo: Obtiene el vector de tiempo que define

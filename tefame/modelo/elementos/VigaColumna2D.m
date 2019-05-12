@@ -258,10 +258,10 @@ classdef VigaColumna2D < Elemento
             m = vigaColumna2DObj.obtenerMasa();
             m_masa(1) = m * 0.5;
             m_masa(2) = m * 0.5;
-            m_masa(3) = 0;
+            m_masa(3) = 1e-6;
             m_masa(4) = m * 0.5;
             m_masa(5) = m * 0.5;
-            m_masa(6) = 0;
+            m_masa(6) = 1e-6;
             
         end % obtenerMatrizMasa function
         

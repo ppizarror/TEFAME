@@ -17,11 +17,6 @@ disipadores = {};
 Modelo_DinamicaAvanzadaElementos();
 Modelo_DinamicaAvanzadaDisipadores();
 
-m = 0;
-for i=1:length(elementos)
-    m = m + elementos{i}.obtenerMasa();
-end
-
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
 modeloObj.agregarDisipadores(disipadores);
@@ -46,7 +41,9 @@ modeloObj.agregarRestricciones(restricciones);
 cargasEstaticas = cell(103, 1);
 for i = 1:103
     cargasEstaticas{i} = CargaVigaColumnaDistribuida('Carga distribuida piso', ...
-        elementos{i}, -1, 0, -1, 1, 0);
+        elementos{i}, -4, 0, -4, 1, 0);
+    cargasEstaticas{i}.definirFactorCargaMasa(1);
+    cargasEstaticas{i}.definirFactorUnidadMasa(1/9.80665);
 end % for i
 
 %% Creamos las cargas dinamicas
@@ -77,7 +74,7 @@ patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
 %% Analiza el sistema
-analisisObj.analizar('nModos', 41, 'rayleighBeta', [0.02, 0.02], 'rayleighModo', [1, 8], ...
+analisisObj.analizar('nModos', 50, 'rayleighBeta', [0.02, 0.02], 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
     'valvecAlgoritmo', 'eigs', 'valvecTolerancia', 0.0001);
 analisisObj.disp();

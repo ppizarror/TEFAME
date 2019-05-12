@@ -36,12 +36,12 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       cargas
 %  Methods:
 %       patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arregloCargas)
 %       aplicarCargas(patronDeCargasObj)
 %       disp(patronDeCargasObj)
 %  Methods SuperClass (PatronDeCargas):
+%       cargas = obtenerCargas(patronDeCargasObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -50,7 +50,6 @@
 classdef PatronDeCargasConstante < PatronDeCargas
     
     properties(Access = private)
-        cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
     end % properties PatronDeCargasConstante
     
     methods

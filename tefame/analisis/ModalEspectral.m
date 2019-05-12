@@ -933,6 +933,8 @@ classdef ModalEspectral < handle
             %   'plot'      'all','momento','corte','envmomento','envcorte'
             %   'modo'      Vector con graficos de modos
             %   'closeall'  Cierra todos los graficos
+            %   'unidadC'   Unidad corte del modelo
+            %   'unidadM'   Unidad momento del modelo
             
             % Inicia proceso
             tinicial = cputime;
@@ -944,6 +946,8 @@ classdef ModalEspectral < handle
             addOptional(p, 'plot', 'all');
             addOptional(p, 'modo', []);
             addOptional(p, 'closeall', false);
+            addOptional(p, 'unidadC', 'tonf');
+            addOptional(p, 'unidadM', 'tonf-m');
             parse(p, varargin{:});
             r = p.Results;
             tipoplot = r.plot;
@@ -989,7 +993,7 @@ classdef ModalEspectral < handle
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
-                ylabel('Corte (tonf)');
+                ylabel(sprintf('Corte (%s)', r.unidadC));
                 title(fig_title);
                 dplot = true;
             end
@@ -1002,7 +1006,7 @@ classdef ModalEspectral < handle
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
-                ylabel('Momento (tonf-m)');
+                ylabel(sprintf('Momento (%s)', r.unidadM));
                 title(fig_title);
                 dplot = true;
             end
@@ -1015,7 +1019,7 @@ classdef ModalEspectral < handle
                 hold on;
                 grid on;
                 grid minor;
-                xlabel('Corte (tonf)');
+                xlabel(sprintf('Corte (%s)', r.unidadC));
                 ylabel('Altura (m)');
                 title(fig_title);
                 
@@ -1046,7 +1050,7 @@ classdef ModalEspectral < handle
                 plot(MBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
                 grid on;
                 grid minor;
-                xlabel('Momento (tonf-m)');
+                xlabel(sprintf('Momento (%s)', r.unidadM));
                 ylabel('Altura (m)');
                 title(fig_title);
                 dplot = true;
@@ -2002,7 +2006,7 @@ classdef ModalEspectral < handle
             
             % Obtiene matriz de masa
             diagMt = diag(analisisObj.Mt);
-            analisisObj.Mtotal = sum(diagMt);
+            analisisObj.Mtotal = sum(diagMt) / 2;
             
             % Obtiene los grados de libertad
             ngdl = length(analisisObj.Mt); % Numero de grados de libertad
@@ -2112,7 +2116,7 @@ classdef ModalEspectral < handle
                     nodos{i}.definirGDLIDCondensado(gdlaux);
                 end % for i
                 
-                MtotalRed = sum(diag(Meq));
+                MtotalRed = sum(diag(Meq)) / 2;
                 fprintf('\t\tTras la condensacion la masa se redujo en %.2f (%.2f%%)\n', ...
                     analisisObj.Mtotal-MtotalRed, 100*(analisisObj.Mtotal - MtotalRed)/analisisObj.Mtotal);
                 
@@ -2401,6 +2405,7 @@ classdef ModalEspectral < handle
             analisisObj.Mt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
             % Extraemos los Elementos
+            fprintf('\t\tAgrega masa de elementos\n');
             elementoObjetos = analisisObj.modeloObj.obtenerElementos();
             numeroElementos = length(elementoObjetos);
             
@@ -2431,19 +2436,58 @@ classdef ModalEspectral < handle
                 
             end % for i
             
-            % Agrega las cargas de los nodos
-            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
-            numeroNodos = length(nodoObjetos);
+            % Masa de los elementos
+            mElementos = sum(diag(analisisObj.Mt)) / 2;
             
-            for i = 1:numeroNodos
-                gdlidNodo = nodoObjetos{i}.obtenerGDLID; % (x, y, giro)
-                gly = gdlidNodo(2);
-                carga = nodoObjetos{i}.obtenerReacciones(); % (x, y, giro)
-                if gly == 0
-                    continue;
-                end
-                analisisObj.Mt(gly, gly) = analisisObj.Mt(gly, gly) + carga(2);
+            % Agrega las cargas
+            fprintf('\t\tAgrega masa de cargas\n');
+            pat = analisisObj.modeloObj.obtenerPatronesDeCargas();
+            for i = 1:length(pat)
+                
+                cargas = pat{i}.obtenerCargas();
+                for j = 1:length(cargas)
+                    
+                    % Si la carga ya sumo masa se bloquea
+                    if ~cargas{j}.cargaSumaMasa()
+                        continue;
+                    end
+                    
+                    nodoCarga = cargas{j}.obtenerNodos();
+                    m = cargas{j}.obtenerMasa();
+                    
+                    % Recorre los nodos
+                    for k = 1:length(nodoCarga)
+                        
+                        n = nodoCarga{i}.obtenerGDLID();
+                        analisisObj.Mt(n(1), n(1)) = analisisObj.Mt(n(1), n(1)) + 0.5 * m;
+                        analisisObj.Mt(n(2), n(2)) = analisisObj.Mt(n(2), n(2)) + 0.5 * m;
+                        if length(n) == 3
+                            analisisObj.Mt(n(3), n(3)) = analisisObj.Mt(n(3), n(3)) + 1e-6;
+                        end
+                        % u(3) no se agrega dado que es el giro
+                        
+                    end % for k
+                    
+                    % Bloquea la suma de masa de esta carga
+                    cargas{j}.bloquearCargaMasa();
+                    
+                end % for j
+                
             end % for i
+            
+            % Masa total
+            mTotal = sum(diag(analisisObj.Mt)) / 2;
+            
+            % Masa de las cargas
+            mCargas = mTotal - mElementos;
+            
+            % Despliega informacion
+            fprintf('\tDistribucion de masa\n');
+            fprintf('\t\tMasa de elementos: %.1f (%.2f%%)\n', mElementos, ...
+                mElementos/mTotal*100);
+            fprintf('\t\tMasa de cargas: %.1f (%.2f%%)\n', mCargas, ...
+                mCargas/mTotal*100);
+            fprintf('\t\tMasa total: %.1f\n', mTotal);
             
         end % ensamblarMatrizMasa function
         
