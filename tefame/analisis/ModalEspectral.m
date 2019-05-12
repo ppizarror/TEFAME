@@ -161,7 +161,7 @@ classdef ModalEspectral < handle
             %   'cpenzienBeta'      Vector amortiguamiento Cpenzien
             %   'toleranciaMasa'    Tolerancia de la masa para la condensacion
             %   'condensar'         Aplica condensacion (true por defecto)
-            %   'valvecAlgoritmo'   'eigvc','itDir','matBarr','itInv','itInvDesp','itSubesp'
+            %   'valvecAlgoritmo'   'eigvc','itDir','matBarr','itInvDesp','itSubesp'
             %   'valvecTolerancia'  Tolerancia calculo valores y vectores propios
             %   'factorCargaE'      Factor de cargas estaticas
             
@@ -178,6 +178,7 @@ classdef ModalEspectral < handle
             addOptional(p, 'valvecAlgoritmo', 'eigs');
             addOptional(p, 'valvecTolerancia', 0.001);
             addOptional(p, 'factorCargaE', 1);
+            addOptional(p, 'muIterDespl', 0.5);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -262,7 +263,8 @@ classdef ModalEspectral < handle
             % Calcula el metodo modal espectral
             analisisObj.calcularModalEspectral(r.nModos, r.rayleighBeta, ...
                 r.rayleighModo, r.rayleighDir, r.cpenzienBeta, ...
-                maxcond, r.valvecAlgoritmo, r.valvecTolerancia);
+                maxcond, r.valvecAlgoritmo, r.valvecTolerancia, ...
+                r.muIterDespl);
             
             % Termina el analisis
             dispMetodoTEFAME();
@@ -2036,11 +2038,12 @@ classdef ModalEspectral < handle
         end % definirNumeracionGDL function
         
         function calcularModalEspectral(analisisObj, nModos, betacR, modocR, ...
-                direcR, betacP, maxcond, valvecAlgoritmo, valvecTolerancia)
+                direcR, betacP, maxcond, valvecAlgoritmo, valvecTolerancia, ...
+                muIterDesplazamiento)
             % calcularModalEspectral: Calcula el metodo modal espectral
             %
             % calcularModalEspectral(analisisObj,nModos,betacR,modocR,direcR,
-            %   betacP,maxcond,valvecAlgoritmo,valvecTolerancia)
+            %   betacP,maxcond,valvecAlgoritmo,valvecTolerancia,muIterDesplazamiento)
             
             % Calcula tiempo inicio
             fprintf('\tCalculando metodo modal espectral:\n');
@@ -2184,46 +2187,32 @@ classdef ModalEspectral < handle
             
             %------------- CALCULO VALORES Y VECTORES PROPIOS ---------------
             eigCalcT = cputime;
-            modalPhin = [];
-            modalWn = [];
             
             if strcmp(valvecAlgoritmo, 'eigs')
-                
                 fprintf('\t\tCalculo valores y vectores propios con metodo eigs\n');
                 [modalPhin, modalWn] = calculoEigEigs(Meq, Keq, nModos);
-                
             elseif strcmp(valvecAlgoritmo, 'itDir')
-                
                 fprintf('\t\tCalculo valores y vectores con algoritmo iteracion directa\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
                 [modalPhin, modalWn] = calculoEigIterDirecta(Meq, Keq, valvecTolerancia);
                 nModos = length(modalWn);
-                
             elseif strcmp(valvecAlgoritmo, 'matBarr')
-                
                 fprintf('\t\tCalculo valores y vectores propios con algoritmo matriz de barrido\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
                 [modalPhin, modalWn] = calculoEigDirectaBarrido(Meq, Keq, nModos, valvecTolerancia);
-                
-            elseif strcmp(valvecAlgoritmo, 'itInv')
-                
-                fprintf('\t\tCalculo valores y vectores propios con metodo iteracion inversa\n');
-                
+            % elseif strcmp(valvecAlgoritmo, 'itInv')
+            %     fprintf('\t\tCalculo valores y vectores propios con metodo iteracion inversa\n');
             elseif strcmp(valvecAlgoritmo, 'itInvDesp')
-                
                 fprintf('\t\tCalculo valores y vectores propios con metodo iteracion inversa con desplazamientos\n');
-                
+                [modalPhin, modalWn] = calculoEigIterInvDesplazamiento(Meq, Keq, muIterDesplazamiento, valvecTolerancia);
+                nModos = length(modalWn);
             elseif strcmp(valvecAlgoritmo, 'itSubesp')
-                
                 fprintf('\t\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
-                [modalPhin, modalWn] = calculoEigItSubespacio(Meq, Keq, nModos, valvecTolerancia);
-                
+                [modalPhin, modalWn] = calculoEigItSubespacio(Meq, Keq, nModos, valvecTolerancia);                
             else
-                
-                error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,itDir,matBarr,itInv,itInvDesp,itSubesp', ...
+                error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,itDir,matBarr,itInvDesp,itSubesp', ...
                     valvecAlgoritmo);
-                
             end
             fprintf('\t\t\tFinalizado en %.3f segundos\n', cputime-eigCalcT);
             analisisObj.numModos = nModos;
