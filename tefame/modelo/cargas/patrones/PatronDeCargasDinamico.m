@@ -436,6 +436,13 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     continue;
                 end
                 
+                % Chequea que la carga no haya sido calculada
+                if patronDeCargasObj.cargas{i}.cargaCalculada() && ~calculaDisipadores
+                    fprintf('\t\t\tLa carga %s ya fue calculada\n', ...
+                        patronDeCargasObj.cargas{i}.obtenerEtiqueta());
+                    continue;
+                end
+                
                 % Genera las cargas
                 if ~calculaDisipadores
                     fprintf('\t\t\tGenerando la matriz de cargas\n');
@@ -468,7 +475,9 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 patronDeCargasObj.cargas{i}.amortiguamientoRayleigh(~cpenzien);
                 patronDeCargasObj.cargas{i}.usoDisipadores(disipadores);
                 patronDeCargasObj.cargas{i}.descomposicionModal(patronDeCargasObj.desModal);
+                
                 if ~calculaDisipadores
+                    patronDeCargasObj.cargas{i}.establecerCargaCalculada();
                     fprintf('\n\t\t\tSe completo calculo en %.3f segundos\n', cputime-tInicio);
                 end
                 

@@ -28,92 +28,93 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       modeloObj
-%       numeroGDL
-%       Kt
-%       Mt
-%       gdlCond
-%       F
-%       u
-%       wn
-%       Tn
-%       phin
-%       phiExt
-%       condMatT
+%       analisisFinalizado
+%       cargarAnimacion
 %       condMatRot
-%       Mm
+%       condMatT
+%       cPenzien
+%       cRayleigh
+%       F
+%       gdlCond
 %       Km
-%       rm
+%       Kt
 %       Lm
+%       Mm
 %       Mmeff
 %       Mmeffacum
+%       modeloObj
+%       mostrarDeformada
+%       Mt
 %       Mtotal
-%       analisisFinalizado
-%       numModos
 %       numDG
 %       numDGReal
-%       cRayleigh
-%       cPenzien
-%       mostrarDeformada
-%       cargarAnimacion
+%       numeroGDL
+%       numModos
+%       phiExt
+%       phin
+%       rm
+%       Tn
+%       u
+%       wn
 %  Methods:
 %       analisisObj = ModalEspectral(modeloObjeto)
-%       definirNumeracionGDL(analisisObj)
+%       [esfmax,esf,maxp,dirk] = calcularEsfuerzosElemento(analisisObj,carga,elemento,direccion)
+%       activarCargaAnimacion(analisisObj)
+%       activarPlotDeformadaInicial(analisisObj)
 %       analizar(analisisObj,varargin)
-%       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
-%       M_Modelo = obtenerMatrizMasa(analisisObj)
+%       c = obtenerCargaEstatica(analisisObj,varargin)
 %       C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)
-%       K_Modelo = obtenerMatrizRigidez(analisisObj)
+%       calcularCurvasEnergia(analisisObj,carga)
+%       calcularDesplazamientoDrift(analisisObj,xanalisis)
+%       calcularMomentoCorteBasal(analisisObj,carga)
 %       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
-%       Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
-%       r_Modelo = obtenerVectorInfluencia(analisisObj)
+%       definirNumeracionGDL(analisisObj)
+%       desactivarCargaAnimacion(analisisObj)
+%       desactivarPlotDeformadaInicial(analisisObj)
+%       disp(analisisObj)
 %       F_Modelo = obtenerVectorFuerzas(analisisObj)
+%       K_Modelo = obtenerMatrizRigidez(analisisObj)
+%       Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
+%       M_Modelo = obtenerMatrizMasa(analisisObj)
+%       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
+%       phi_Modelo = obtenerMatrizPhi(analisisObj)
+%       plot(analisisObj,varargin)
+%       plotEsfuerzosElemento(analisisObj,carga)
+%       plotTrayectoriaNodo(analisisObj,carga,nodo,direccion)
+%       r_Modelo = obtenerVectorInfluencia(analisisObj)
 %       u_Modelo = obtenerDesplazamientos(analisisObj)
 %       wn_Modelo = obtenerValoresPropios(analisisObj)
-%       phi_Modelo = obtenerMatrizPhi(analisisObj)
-%       c = obtenerCargaEstatica(analisisObj,varargin)
-%       activarPlotDeformadaInicial(analisisObj)
-%       desactivarPlotDeformadaInicial(analisisObj)
-%       activarCargaAnimacion(analisisObj)
-%       desactivarCargaAnimacion(analisisObj)
-%       calcularMomentoCorteBasal(analisisObj,carga)
-%       plotTrayectoriaNodo(analisisObj,carga,nodo,direccion)
-%       plotEsfuerzosElemento(analisisObj,carga)
-%       calcularDesplazamientoDrift(analisisObj,xanalisis)
-%       calcularCurvasEnergia(analisisObj,carga)
-%       plot(analisisObj,varargin)
-%       disp(analisisObj)
 
 classdef ModalEspectral < Analisis
     
     properties(Access = private)
-        Kt % Matriz de rigidez del modelo
-        Mt % Matriz de masa del modelo
-        gdlCond % Grados de libertad condensados
-        F % Vector de fuerzas aplicadas sobre el modelo
-        u % Vector con los desplazamientos de los grados de libertad del modelo
-        wn % Frecuencias del sistema
-        Tn % Periodos del sistema
-        phin % Vectores propios del sistema
-        phinExt % Vector propio del sistema extendido considerando grados condensados
-        condMatT % Matriz de condensacion T
+        cargarAnimacion % Carga la animacion del grafico una vez renderizado
         condMatRot % Matriz de condensacion rotacion
-        Mteq % Matriz masa equivalente
-        Kteq % Matriz rigidez equivalente
-        Mm % Matriz masa modal
+        condMatT % Matriz de condensacion T
+        cPenzien % Matriz de amortiguamiento de Wilson-Penzien
+        cRayleigh % Matriz de amortiguamiento de Rayleigh
+        F % Vector de fuerzas aplicadas sobre el modelo
+        gdlCond % Grados de libertad condensados
         Km % Matriz rigidez modal
-        rm % Vector influencia
+        Kt % Matriz de rigidez del modelo
+        Kteq % Matriz rigidez equivalente
         Lm % Factor de participacion modal
+        Mm % Matriz masa modal
         Mmeff % Masa modal efectiva
         Mmeffacum % Masa modal efectiva acumulada
+        mostrarDeformada % Muestra la posicion no deformada en los graficos
+        Mt % Matriz de masa del modelo
+        Mteq % Matriz masa equivalente
         Mtotal % Masa total del modelo
-        numModos % Numero de modos del analisis
         numDG % Numero de ejes de analisis despues de condensar
         numDGReal % Numero de ejes de analisis antes de condensar
-        cRayleigh % Matriz de amortiguamiento de Rayleigh
-        cPenzien % Matriz de amortiguamiento de Wilson-Penzien
-        mostrarDeformada % Muestra la posicion no deformada en los graficos
-        cargarAnimacion % Carga la animacion del grafico una vez renderizado
+        numModos % Numero de modos del analisis
+        phin % Vectores propios del sistema
+        phinExt % Vector propio del sistema extendido considerando grados condensados
+        rm % Vector influencia
+        Tn % Periodos del sistema
+        u % Vector con los desplazamientos de los grados de libertad del modelo
+        wn % Frecuencias del sistema
     end % properties ModalEspectral
     
     methods(Access = public)
@@ -149,32 +150,32 @@ classdef ModalEspectral < Analisis
             %
             % analizar(analisisObj,varargin)
             %
-            % Parametros:
+            % Parametros opcionales:
+            %   'condensar'         Aplica condensacion (true por defecto)
+            %   'cpenzienBeta'      Vector amortiguamiento Cpenzien
+            %   'factorCargaE'      Factor de cargas estaticas
             %   'nModos'            Numero de modos de analisis (obligatorio)
             %   'rayleighBeta'      Vector amortiguamientos de Rayleigh
-            %   'rayleighModo'      Vector modos de Rayleigh
             %   'rayleighDir'       Direccion amortiguamiento Rayleigh
-            %   'cpenzienBeta'      Vector amortiguamiento Cpenzien
+            %   'rayleighModo'      Vector modos de Rayleigh
             %   'toleranciaMasa'    Tolerancia de la masa para la condensacion
-            %   'condensar'         Aplica condensacion (true por defecto)
             %   'valvecAlgoritmo'   'eigvc','itDir','matBarr','itInvDesp','itSubesp'
             %   'valvecTolerancia'  Tolerancia calculo valores y vectores propios
-            %   'factorCargaE'      Factor de cargas estaticas
             
             % Define parametros
             p = inputParser;
             p.KeepUnmatched = true;
-            addOptional(p, 'nModos', 0);
-            addOptional(p, 'rayleighBeta', []);
-            addOptional(p, 'rayleighModo', []);
-            addOptional(p, 'rayleighDir', []);
-            addOptional(p, 'cpenzienBeta', []);
-            addOptional(p, 'toleranciamasa', 0.001);
             addOptional(p, 'condensar', true);
-            addOptional(p, 'valvecAlgoritmo', 'eigs');
-            addOptional(p, 'valvecTolerancia', 0.001);
+            addOptional(p, 'cpenzienBeta', []);
             addOptional(p, 'factorCargaE', 1);
             addOptional(p, 'muIterDespl', 0.5);
+            addOptional(p, 'nModos', 0);
+            addOptional(p, 'rayleighBeta', []);
+            addOptional(p, 'rayleighDir', []);
+            addOptional(p, 'rayleighModo', []);
+            addOptional(p, 'toleranciamasa', 0.001);
+            addOptional(p, 'valvecAlgoritmo', 'eigs');
+            addOptional(p, 'valvecTolerancia', 0.001);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -274,15 +275,15 @@ classdef ModalEspectral < Analisis
             % resolverCargasDinamicas(analisisObj,varargin)
             %
             % Parametros opcionales:
+            %   'activado'          Indica que se realiza el analisis
+            %   'betaGrafico'       Indica si se grafica la variacion del amortiguamiento en cada iteracion
+            %   'betaObjetivo'      Beta objetivo para el calculo de disipadores
+            %   'cargaDisipador'    Carga objetivo disipador para el calculo de v0
             %   'cpenzien'          Usa el amortiguamiento de cpenzien (false por defecto)
             %   'disipadores'       Usa los disipadores en el calculo (false por defecto)
-            %   'cargaDisipador'    Carga objetivo disipador para el calculo de v0
-            %   'betaObjetivo'      Beta objetivo para el calculo de disipadores
-            %   'betaGrafico'       Indica si se grafica la variacion del amortiguamiento en cada iteracion
+            %   'factorCargasD'     Factor de cargas dinamico
             %   'iterDisipador'     Numero de iteraciones para el calculo de disipadores
             %   'tolIterDisipador'  Tolerancia usada para las iteraciones del calculo de disipadores
-            %   'activado'          Indica que se realiza el analisi
-            %   'factorCargasD'     Factor de cargas dinamico
             
             if ~analisisObj.analisisFinalizado
                 error('No se puede resolver las cargas dinamicas sin haber analizado la estructura');
@@ -290,15 +291,15 @@ classdef ModalEspectral < Analisis
             
             p = inputParser;
             p.KeepUnmatched = true;
+            addOptional(p, 'activado', true);
+            addOptional(p, 'betaGrafico', false);
+            addOptional(p, 'betaObjetivo', 0);
+            addOptional(p, 'cargaDisipador', false);
             addOptional(p, 'cpenzien', false);
             addOptional(p, 'disipadores', true);
-            addOptional(p, 'cargaDisipador', false);
-            addOptional(p, 'betaObjetivo', 0);
-            addOptional(p, 'betaGrafico', false);
+            addOptional(p, 'factorCargasD', 1);
             addOptional(p, 'iterDisipador', 10);
             addOptional(p, 'tolIterDisipador', 0.001);
-            addOptional(p, 'activado', true);
-            addOptional(p, 'factorCargasD', 1);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -481,58 +482,58 @@ classdef ModalEspectral < Analisis
             % plt = plot(analisisObj,'var1',val1,'var2',val2)
             %
             % Parametros opcionales:
-            %   'modo'              Numero de modo a graficar
-            %   'factor'            Escala de la deformacion
-            %   'cuadros'           Numero de cuadros de la animacion
-            %   'gif'               Archivo en el que se guarda la animacion
-            %   'defElem'           Dibuja la deformada de cada elemento
-            %   'mostrarEstatico'   Dibuja la estructura estatica al animar
-            %   'tmin'              Tiempo minimo al graficar cargas
-            %   'tmax'              Tiempo maximo al graficar cargas
-            %   'disipador'         Dibuja los disipadores
-            %   'styleNodoE'        Estilo nodo estatico
-            %   'sizeNodoE'         Porte nodo estatico
-            %   'styleNodoD'        Estilo nodo dinamico
-            %   'sizeNodoE'         Porte nodo dinamico
-            %   'styleElemE'        Estilo elemento estatico
-            %   'lwElemE'           Ancho linea elemento estatico
-            %   'styleElemD'        Estilo elemento dinamico
-            %   'lwElemD'           Ancho linea elemento dinamico
-            %   'styleDisipador'    Estilo linea disipador
-            %   'lwDisipador'       Ancho linea disipador
-            %   'colorDisipador'    Color del disipador
-            %   'unidad'            Unidad de longitud
             %   '3dAngAzh'          Angulo azimutal grafico 3D
             %   '3dAngPol'          Angulo polar grafico 3D
+            %   'colorDisipador'    Color del disipador
+            %   'cuadros'           Numero de cuadros de la animacion
+            %   'defElem'           Dibuja la deformada de cada elemento
+            %   'disipador'         Dibuja los disipadores
+            %   'factor'            Escala de la deformacion
+            %   'gif'               Archivo en el que se guarda la animacion
+            %   'lwDisipador'       Ancho linea disipador
+            %   'lwElemD'           Ancho linea elemento dinamico
+            %   'lwElemE'           Ancho linea elemento estatico
+            %   'modo'              Numero de modo a graficar
+            %   'mostrarEstatico'   Dibuja la estructura estatica al animar
+            %   'sizeNodoE'         Porte nodo dinamico
+            %   'sizeNodoE'         Porte nodo estatico
+            %   'styleDisipador'    Estilo linea disipador
+            %   'styleElemD'        Estilo elemento dinamico
+            %   'styleElemE'        Estilo elemento estatico
+            %   'styleNodoD'        Estilo nodo dinamico
+            %   'styleNodoE'        Estilo nodo estatico
+            %   'tmax'              Tiempo maximo al graficar cargas
+            %   'tmin'              Tiempo minimo al graficar cargas
+            %   'unidad'            Unidad de longitud
             
             % Establece variables iniciales
             fprintf('Generando animacion analisis modal espectral:\n');
             p = inputParser;
             p.KeepUnmatched = true;
-            addOptional(p, 'modo', 0);
-            addOptional(p, 'factor', 1);
-            addOptional(p, 'cuadros', 0);
-            addOptional(p, 'gif', '');
-            addOptional(p, 'defElem', false);
-            addOptional(p, 'carga', false);
-            addOptional(p, 'tmin', 0);
-            addOptional(p, 'tmax', -1);
-            addOptional(p, 'mostrarEstatico', analisisObj.mostrarDeformada);
-            addOptional(p, 'disipadores', true);
-            addOptional(p, 'styleNodoE', 'b');
-            addOptional(p, 'sizeNodoE', 5);
-            addOptional(p, 'styleNodoD', 'k');
-            addOptional(p, 'sizeNodoD', 10);
-            addOptional(p, 'styleElemE', 'b-');
-            addOptional(p, 'lwElemE', 0.5);
-            addOptional(p, 'styleElemD', 'k-');
-            addOptional(p, 'lwElemD', 1.2);
-            addOptional(p, 'styleDisipador', '--');
-            addOptional(p, 'colorDisipador', 'r');
-            addOptional(p, 'lwDisipador', 1.3);
-            addOptional(p, 'unidad', 'm');
             addOptional(p, 'angAzh', 45);
             addOptional(p, 'angPol', 45);
+            addOptional(p, 'carga', false);
+            addOptional(p, 'colorDisipador', 'r');
+            addOptional(p, 'cuadros', 0);
+            addOptional(p, 'defElem', false);
+            addOptional(p, 'disipadores', true);
+            addOptional(p, 'factor', 1);
+            addOptional(p, 'gif', '');
+            addOptional(p, 'lwDisipador', 1.3);
+            addOptional(p, 'lwElemD', 1.2);
+            addOptional(p, 'lwElemE', 0.5);
+            addOptional(p, 'modo', 0);
+            addOptional(p, 'mostrarEstatico', analisisObj.mostrarDeformada);
+            addOptional(p, 'sizeNodoD', 10);
+            addOptional(p, 'sizeNodoE', 5);
+            addOptional(p, 'styleDisipador', '--');
+            addOptional(p, 'styleElemD', 'k-');
+            addOptional(p, 'styleElemE', 'b-');
+            addOptional(p, 'styleNodoD', 'k');
+            addOptional(p, 'styleNodoE', 'b');
+            addOptional(p, 'tmax', -1);
+            addOptional(p, 'tmin', 0);
+            addOptional(p, 'unidad', 'm');
             parse(p, varargin{:});
             r = p.Results;
             modo = floor(r.modo);
@@ -803,10 +804,10 @@ classdef ModalEspectral < Analisis
             
         end % plot function
         
-        function guardarResultados(analisisObj, nombreArchivo)
+        function guardarResultados(analisisObj, nombreArchivo, cargas)
             % guardarResultados: Guarda resultados adicionales del analisis
             %
-            % guardarResultados(analisisObj,nombreArchivo)
+            % guardarResultados(analisisObj,nombreArchivo,cargas)
             
             % Abre el archivo donde se guardara la informacion
             try
@@ -815,8 +816,45 @@ classdef ModalEspectral < Analisis
                 error('No se puede abrir el archivo %s', nombreArchivo);
             end
             
+            % Chequea que cargas sea un cell de cargas dinamicas
+            if ~exist('cargas', 'var') || isempty(cargas)
+                error('Cargas debe ser un cell de cargas dinamicas no nulo');
+            end
+            
+            % Chequea que cada elemento de cargas dinamicas sea una carga
+            % dinamica
+            for i=1:length(cargas)
+                if ~isa(cargas{i}, 'CargaDinamica')
+                    error('Elemento %d del cell de cargas no es un objeto de CargaDinamica', i);
+                end
+            end % for i
+            
+            fprintf(archivoSalida, '\n');
+            fprintf(archivoSalida, '-------------------------------------------------------------------------------\n');
+            fprintf(archivoSalida, 'Resultados del analisis dinamico\n');
+            fprintf(archivoSalida, '-------------------------------------------------------------------------------\n');
+            fprintf(archivoSalida, '\n');
+            
             % Guarda las cargas maximas de los elementos
             for i=1:length(analisisObj.modeloObj.obtenerElementos())
+                
+                % Recorre cada carga dinamica
+                for j=1:length(cargas)
+                    fprintf(archivoSalida, 'Carga: %s\n', cargas{j}.obtenerEtiqueta());
+                    
+                    if ~cargas{j}.cargaCalculada()
+                        fprintf(archivoSalida, '\tCarga no fue calculada\n');
+                        continue;
+                    end
+                    
+                    if ~cargas{j}.cargaCalculada()
+                        fprintf(archivoSalida, '\tCarga no fue calculada\n');
+                        continue;
+                    end
+                    
+                    
+                end % for j
+                
             end % for i
             
             % Cierra el archivo
@@ -848,7 +886,7 @@ classdef ModalEspectral < Analisis
                 error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
             end
             desp = carga.obtenerDesplazamiento();
-            if isempty(desp)
+            if ~carga.cargaCalculada()
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
             
@@ -972,9 +1010,9 @@ classdef ModalEspectral < Analisis
             % calcularMomentoCorteBasal(analisisObj,carga,varargin)
             %
             % Parametros opcionales:
-            %   'plot'      'all','momento','corte','envmomento','envcorte'
-            %   'modo'      Vector con graficos de modos
             %   'closeall'  Cierra todos los graficos
+            %   'modo'      Vector con graficos de modos
+            %   'plot'      'all','momento','corte','envmomento','envcorte'
             %   'unidadC'   Unidad corte del modelo
             %   'unidadM'   Unidad momento del modelo
             
@@ -985,9 +1023,9 @@ classdef ModalEspectral < Analisis
             % Rescata parametros
             p = inputParser;
             p.KeepUnmatched = true;
-            addOptional(p, 'plot', 'all');
-            addOptional(p, 'modo', []);
             addOptional(p, 'closeall', false);
+            addOptional(p, 'modo', []);
+            addOptional(p, 'plot', 'all');
             addOptional(p, 'unidadC', 'tonf');
             addOptional(p, 'unidadM', 'tonf-m');
             parse(p, varargin{:});
@@ -1004,7 +1042,7 @@ classdef ModalEspectral < Analisis
                 error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
             end
             acel = carga.obtenerAceleracion();
-            if isempty(acel)
+            if ~carga.cargaCalculada()
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
             ctitle = analisisObj.imprimirPropiedadesAnalisisCarga(carga);
@@ -1118,12 +1156,12 @@ classdef ModalEspectral < Analisis
             % calcularCurvasEnergia(analisisObj,carga,varargin)
             %
             % Parametros opcionales:
-            %   'plot'          'all','ek','ev','ekev','ebe','et','ed'
             %   'carga'         Booleano que indica si se grafica la carga o no
-            %   'mfilt'         Porcentaje de filtrado por numero de datos
-            %   'linewidth'     Ancho de linea de los graficos
-            %   'norm1'         Normaliza con respecto al primer valor
             %   'closeall'      Cierra todos los graficos
+            %   'linewidth'     Ancho de linea de los graficos
+            %   'mfilt'         Porcentaje de filtrado por numero de datos
+            %   'norm1'         Normaliza con respecto al primer valor
+            %   'plot'          'all','ek','ev','ekev','ebe','et','ed'
             
             % Inicia el proceso
             tinicial = cputime;
@@ -1131,12 +1169,12 @@ classdef ModalEspectral < Analisis
             % Recorre parametros opcionales
             p = inputParser;
             p.KeepUnmatched = true;
+            addOptional(p, 'closeall', false);
+            addOptional(p, 'linewidth', 1.2);
+            addOptional(p, 'mfilt', 0.005);
+            addOptional(p, 'norm1', false);
             addOptional(p, 'plot', 'all');
             addOptional(p, 'plotcarga', false);
-            addOptional(p, 'mfilt', 0.005);
-            addOptional(p, 'linewidth', 1.2);
-            addOptional(p, 'norm1', false);
-            addOptional(p, 'closeall', false);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -1156,7 +1194,7 @@ classdef ModalEspectral < Analisis
             c_v = carga.obtenerVelocidad();
             c_p = carga.obtenerCarga();
             
-            if isempty(c_u)
+            if ~carga.cargaCalculada()
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
             
@@ -1516,6 +1554,8 @@ classdef ModalEspectral < Analisis
             end
             c_u = carga.obtenerDesplazamiento();
             
+            % No usar carga.cargaCalculada() dado que este metodo es usado
+            % por Newmark al iterar sobre los disipadores
             if isempty(c_u)
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
@@ -1564,30 +1604,11 @@ classdef ModalEspectral < Analisis
             
         end % calcularModosEnergia function
         
-        function esfmax = plotEsfuerzosElemento(analisisObj, carga, elemento, direccion, varargin)
-            % plotEsfuerzosElemento: Grafica los esfuerzos de un elemento
+        function [esfmax, esf, maxp, dirk] = calcularEsfuerzosElemento(analisisObj, carga, elemento, direccion)
+            % calcularEsfuerzosElemento: Calcula los esfuerzos maximos de
+            % un elemento a partir de una carga dinamica
             %
-            % esfmax = plotEsfuerzosElemento(analisisObj,carga,elemento,direccion,varargin)
-            %
-            % Parametros opcionales:
-            %   'tlim'      Tiempo de analisis limite
-            %   'unidadC'   Unidad corte
-            %   'unidadM'   Unidad momento
-            
-            % Inicia el proceso
-            tinicial = cputime;
-            
-            % Recorre parametros opcionales
-            p = inputParser;
-            p.KeepUnmatched = true;
-            addOptional(p, 'tlim', 0);
-            addOptional(p, 'unidadC', 'tonf');
-            addOptional(p, 'unidadM', 'tonf-m');
-            parse(p, varargin{:});
-            r = p.Results;
-            
-            % Obtiene las variables
-            tlim = r.tlim;
+            % [esfmax,esf,maxp,dirk] = calcularEsfuerzosElemento(analisisObj,carga,elemento,direccion)
             
             % Obtiene resultados de la carga
             u_c = carga.obtenerDesplazamiento();
@@ -1596,26 +1617,13 @@ classdef ModalEspectral < Analisis
             if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
                 error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
             end
-            if isempty(u_c)
+            if ~carga.cargaCalculada()
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
-            
-            % Realiza calculos de esfuerzo
-            fprintf('Calculando esfuerzos elemento:\n');
-            fprintf('\tElemento %s\n', elemento.obtenerEtiqueta());
-            ctitle = analisisObj.imprimirPropiedadesAnalisisCarga(carga);
             
             % Verifica que el elemento este bien definido
             if ~isa(elemento, 'Elemento')
                 error('El elemento no pertenece a la clase Elemento');
-            end
-            
-            % Genera el vector de tiempo
-            t = carga.obtenerVectorTiempo(); % Vector de tiempo
-            if tlim == 0
-                tlim = [min(t), max(t)];
-            else
-                tlim = [max(min(tlim), min(t)), min(max(tlim), max(t))];
             end
             
             % Genera el esfuerzo por el tiempo
@@ -1641,19 +1649,6 @@ classdef ModalEspectral < Analisis
                     break;
                 end
             end % for i
-            
-            dirn = '';
-            diru = '';
-            if dirk == 1
-                dirn = 'Axial';
-                diru = r.unidadC;
-            elseif dirk == 2
-                dirn = 'Corte';
-                diru = r.unidadC;
-            elseif dirk == 3
-                dirn = 'Giro';
-                diru = r.unidadM;
-            end
             
             % Posicion del maximo
             maxp = 1;
@@ -1698,6 +1693,65 @@ classdef ModalEspectral < Analisis
             for i = 1:length(nodos)
                 nodos{i}.definirDesplazamientos(despl{i});
             end % for i
+            
+        end % calcularEsfuerzosElemento function
+        
+        function plotEsfuerzosElemento(analisisObj, carga, elemento, direccion, varargin)
+            % plotEsfuerzosElemento: Grafica los esfuerzos de un elemento
+            %
+            % plotEsfuerzosElemento(analisisObj,carga,elemento,direccion,varargin)
+            %
+            % Parametros opcionales:
+            %   'tlim'      Tiempo de analisis limite
+            %   'unidadC'   Unidad corte
+            %   'unidadM'   Unidad momento
+            
+            % Inicia el proceso
+            tinicial = cputime;
+            
+            % Recorre parametros opcionales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'tlim', 0);
+            addOptional(p, 'unidadC', 'tonf');
+            addOptional(p, 'unidadM', 'tonf-m');
+            parse(p, varargin{:});
+            r = p.Results;
+            
+            % Obtiene las variables
+            tlim = r.tlim;
+            
+            % Verifica que el elemento este bien definido
+            if ~isa(elemento, 'Elemento')
+                error('El elemento no pertenece a la clase Elemento');
+            end
+            
+            % Realiza calculos de esfuerzo
+            fprintf('Calculando esfuerzos elemento:\n');
+            fprintf('\tElemento %s\n', elemento.obtenerEtiqueta());
+            ctitle = analisisObj.imprimirPropiedadesAnalisisCarga(carga);
+            [~, esf, maxp, dirk] = analisisObj.calcularEsfuerzosElemento(carga, elemento, direccion);
+            
+            % Genera el vector de tiempo
+            t = carga.obtenerVectorTiempo(); % Vector de tiempo
+            if tlim == 0
+                tlim = [min(t), max(t)];
+            else
+                tlim = [max(min(tlim), min(t)), min(max(tlim), max(t))];
+            end
+            
+            dirn = '';
+            diru = '';
+            if dirk == 1
+                dirn = 'Axial';
+                diru = r.unidadC;
+            elseif dirk == 2
+                dirn = 'Corte';
+                diru = r.unidadC;
+            elseif dirk == 3
+                dirn = 'Giro';
+                diru = r.unidadM;
+            end
             
             % Crea el grafico
             fig_title = sprintf('%s %s - Elemento %s - Direccion %s', ...
@@ -1770,7 +1824,7 @@ classdef ModalEspectral < Analisis
             if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
                 error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
             end
-            if isempty(a_c)
+            if ~carga.cargaCalculada()
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
             

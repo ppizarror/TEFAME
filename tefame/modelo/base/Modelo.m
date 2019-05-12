@@ -31,45 +31,45 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
+%       elementos
 %       nDimensiones
 %       nGDL
 %       nodos
-%       elementos
-%       restricciones
 %       patronesDeCargas
+%       restricciones
 %  Methods:
-%       modeloObj = Modelo(numeroDimensiones,numerosGDL)
-%       definirNombre(modeloObj,nombre)
-%       nombre = obtenerNombre(modeloObj)
-%       agregarNodos(modeloObj,arregloNodos)
-%       agregarElementos(modeloObj,arregloElementos)
-%       agregarRestricciones(modeloObj,arregloRestricciones)
-%       aplicarPatronesDeCargasEstatico(modeloObj)
-%       aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,betaDisipador,arregloDisipadores)
+%       actualizar(modeloObj,u)
 %       agregarDisipadores(modeloObj,arregloDisipadores)
-%       nodosModelo = obtenerNodos(modeloObj)
+%       agregarElementos(modeloObj,arregloElementos)
+%       agregarNodos(modeloObj,arregloNodos)
+%       agregarRestricciones(modeloObj,arregloRestricciones)
+%       aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,betaDisipador,arregloDisipadores)
+%       aplicarPatronesDeCargasEstatico(modeloObj)
+%       aplicarRestricciones(modeloObj)
+%       definirNombre(modeloObj,nombre)
+%       disp(modeloObj)
 %       elementosModelo = obtenerElementos(modeloObj)
-%       restriccionesModelo = obtenerRestricciones(modeloObj)
-%       patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
+%       guardarResultados(modeloObj,nombreArchivo)
+%       inicializar(modeloObj)
+%       modeloObj = Modelo(numeroDimensiones,numerosGDL)
+%       nodosModelo = obtenerNodos(modeloObj)
+%       nombre = obtenerNombre(modeloObj)
 %       numDimensiones = obtenerNumeroDimensiones(modeloObj)
 %       numGDL = obtenerNumerosGDL(modeloObj)
-%       inicializar(modeloObj)
-%       aplicarRestricciones(modeloObj)
-%       actualizar(modeloObj,u)
-%       guardarResultados(modeloObj,nombreArchivo)
-%       disp(modeloObj)
+%       patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
+%       restriccionesModelo = obtenerRestricciones(modeloObj)
 
 classdef Modelo < handle
     
     properties(Access = private)
+        disipadores % Variable que guarda en un arreglo de celdas todos los disipadores del modelo
+        elementos % Variable que guarda en un arreglo de celdas todos los elementos del modelo
         nDimensiones % Variable que guarda las dimensiones del sistema de coordenadas del modelo
         nGDL % Variable que guarda el numero de grados de libertad de cada nodo (GDL)
         nodos % Variable que guarda en un arreglo de celdas todos los nodos del modelo
-        elementos % Variable que guarda en un arreglo de celdas todos los elementos del modelo
-        disipadores % Variable que guarda en un arreglo de celdas todos los disipadores del modelo
-        restricciones % Variable que guarda en un arreglo de celdas todos las restricciones del modelo
-        patronesDeCargas % Variable que guarda en un arreglo de celdas todos los patrones de cargas aplicadas sobre el modelo
         nombreModelo % Nombre del modelo
+        patronesDeCargas % Variable que guarda en un arreglo de celdas todos los patrones de cargas aplicadas sobre el modelo
+        restricciones % Variable que guarda en un arreglo de celdas todos las restricciones del modelo
     end % properties Modelo
     
     methods
@@ -502,6 +502,7 @@ classdef Modelo < handle
             for i = 1:length(modeloObj.elementos)
                 modeloObj.elementos{i}.guardarEsfuerzosInternos(archivoSalida);
             end % for i
+            fprintf(archivoSalida, '\n');
             
             % Cierra el archivo
             fclose(archivoSalida);

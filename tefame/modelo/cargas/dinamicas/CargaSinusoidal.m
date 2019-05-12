@@ -30,34 +30,47 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
+%       amplitud
+%       direccion
+%       nodo
+%       registro
+%       tOscilacion
+%       w
 %  Methods:
 %       CargaSinusoidal(etiquetaCargaSinusoidal,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(CargaSinusoidalObj,factorDeCarga)
 %       disp(CargaSinusoidalObj)
 %  Methods SuperClass (CargaDinamica):
-%       cargaSinusoidalObj = Carga(etiquetaCarga)
-%       aplicarCarga(cargaSinusoidalObj)
-%       disp(cargaSinusoidalObj)
-%       guardarCarga(cargaSinusoidalObj,p)
-%       guardarDesplazamiento(cargaSinusoidalObj,u)
-%       guardarVelocidad(cargaSinusoidalObj,v)
-%       guardarAceleracion(cargaSinusoidalObj,a)
-%       amortiguamientoRayleigh(cargaSinusoidalObj,rayleigh)
-%       usoDisipadores(cargaSinusoidalObj,disipador)
-%       descomposicionModal(cargaSinusoidalObj,desmodal)
-%       t = obtenerVectorTiempo(cargaSinusoidalObj)
-%       p = obtenerCarga(cargaSinusoidalObj)
-%       u = obtenerDesplazamiento(cargaSinusoidalObj)
-%       u = obtenerDesplazamientoTiempo(cargaSinusoidalObj,gdl,tiempo)
-%       v = obtenerVelocidad(cargaSinusoidalObj)
-%       a = obtenerAceleracion(cargaSinusoidalObj)
-%       r = usoAmortiguamientoRayleigh(cargaSinusoidalObj)
-%       dm = usoDescomposicionModal(cargaSinusoidalObj)
-%       disipador = usoDeDisipadores(cargaSinusoidalObj)
-%       masa = obtenerMasa(cargaSinusoidalObj)
-%       definirFactorUnidadMasa(cargaSinusoidalObj,factor)
-%       definirFactorCargaMasa(cargaSinusoidalObj,factor)
-%       nodos = obtenerNodos(cargaSinusoidalObj)
+%       cargaDinamicaObj = Carga(etiquetaCarga)
+%       desactivarCarga(cargaDinamicaObj)
+%       p = calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)
+%       disp(cargaDinamicaObj)
+%       y = cargaActivada(cargaDinamicaObj)
+%       guardarCarga(cargaDinamicaObj,p)
+%       guardarDesplazamiento(cargaDinamicaObj,u)
+%       guardarVelocidad(cargaDinamicaObj,v)
+%       guardarAceleracion(cargaDinamicaObj,a)
+%       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
+%       usoDisipadores(cargaDinamicaObj,disipador)
+%       descomposicionModal(cargaDinamicaObj,desmodal)
+%       c = cargaSumaMasa(cargaDinamicaObj)
+%       t = obtenerVectorTiempo(cargaDinamicaObj)
+%       p = obtenerCarga(cargaDinamicaObj)
+%       u = obtenerDesplazamiento(cargaDinamicaObj)
+%       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
+%       v = obtenerVelocidad(cargaDinamicaObj)
+%       a = obtenerAceleracion(cargaDinamicaObj)
+%       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
+%       dm = usoDescomposicionModal(cargaDinamicaObj)
+%       disipador = usoDeDisipadores(cargaDinamicaObj)
+%       masa = obtenerMasa(cargaDinamicaObj)
+%       definirFactorUnidadMasa(cargaDinamicaObj,factor)
+%       definirFactorCargaMasa(cargaDinamicaObj,factor)
+%       nodos = obtenerNodos(cargaDinamicaObj)
+%       activarCarga(cargaDinamicaObj)
+%       establecerCargaCalculada(cargaDinamicaObj)
+%       c = cargaCalculada(cargaDinamicaObj)
+%       bloquearCargaMasa(cargaDinamicaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -66,12 +79,12 @@
 classdef CargaSinusoidal < CargaDinamica
     
     properties(Access = private)
-        registro % Matriz del registro
-        direccion % Vector de direcciones
-        w % Frecuencia de la carga
-        nodo % Nodo al que se aplica la carga
         amplitud % Amplitud de la carga
+        direccion % Vector de direcciones
+        nodo % Nodo al que se aplica la carga
+        registro % Matriz del registro
         tOscilacion % Tiempo de oscilacion
+        w % Frecuencia de la carga
     end % properties CargaSinusoidal
     
     methods

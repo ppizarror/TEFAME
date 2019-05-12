@@ -28,18 +28,18 @@
 %
 %  Properties (Access=private):
 %  Methods:
+%       definirGDLID(disipador2DObj)
 %       disipador2DObj = Disipador2D(etiquetaDisipador)
-%       numeroNodos = obtenerNumeroNodos(disipador2DObj)
-%       numeroGDL = obtenerNumeroGDL(disipador2DObj)
+%       disp(disipador2DObj)
+%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipador2DObj)
+%       fr_local = obtenerFuerzaResistenteCoordLocal(disipador2DObj)
 %       gdlIDDisipador = obtenerGDLID(disipador2DObj)
 %       k_global = obtenerMatrizRigidezCoordGlobal(disipador2DObj)
 %       k_local = obtenerMatrizRigidezCoordLocal(disipador2DObj)
-%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipador2DObj)
-%       fr_local = obtenerFuerzaResistenteCoordLocal(disipador2DObj)
-%       T = obtenerMatrizTransformacion(disipador2DObj)
-%       definirGDLID(disipador2DObj)
-%       disp(disipador2DObj)
+%       numeroGDL = obtenerNumeroGDL(disipador2DObj)
+%       numeroNodos = obtenerNumeroNodos(disipador2DObj)
 %       plot(disipador2DObj,tipoLinea,grosorLinea,colorLinea)
+%       T = obtenerMatrizTransformacion(disipador2DObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)

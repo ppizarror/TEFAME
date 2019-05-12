@@ -38,18 +38,18 @@
 %       u
 %  Methods:
 %       analisisObj = AnalisisEstatico(modeloObjeto)
-%       definirNumeracionGDL(analisisObj)
 %       analizar(analisisObj)
-%       ensamblarMatrizRigidez(analisisObj)
 %       Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
-%       ensamblarVectorFuerzas(analisisObj)
-%       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
-%       K_Modelo = obtenerMatrizRigidez(analisisObj)
 %       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
-%       F_Modelo = obtenerVectorFuerzas(analisisObj)
-%       u_Modelo = obtenerDesplazamientos(analisisObj)
-%       plot(analisisObj)
+%       definirNumeracionGDL(analisisObj)
 %       disp(analisisObj)
+%       ensamblarMatrizRigidez(analisisObj)
+%       ensamblarVectorFuerzas(analisisObj)
+%       F_Modelo = obtenerVectorFuerzas(analisisObj)
+%       K_Modelo = obtenerMatrizRigidez(analisisObj)
+%       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
+%       plot(analisisObj)
+%       u_Modelo = obtenerDesplazamientos(analisisObj)
 
 classdef AnalisisEstatico < Analisis
     
@@ -419,37 +419,37 @@ classdef AnalisisEstatico < Analisis
             % plt = plot(analisisObj,varargin)
             %
             % Parametros opcionales:
-            %   'deformada'     Dibuja la deformada del problema
-            %   'factor'        Factor de la deformada
-            %   'defElem'       Dibuja la deformada de cada elemento
-            %   'styleNodoE'    Estilo nodos estaticos
-            %   'sizeNodoE'     Porte nodo estatico
-            %   'styleNodoD'    Estilo nodo deformado
-            %   'sizeNodoD'     Porte nodo deformado
-            %   'styleElemE'    Estilo elemento estatico
-            %   'lwElemE'       Ancho linea elemento estatico
-            %   'styleElemD'    Estilo elemento deformado
-            %   'lwElemD'       Ancho linea elemento deformado
-            %   'unidad'        Unidar longitud
             %   'angAzh'        Angulo grafico 3d azimutal
             %   'angPol'        Angulo grafico 3d polar
+            %   'defElem'       Dibuja la deformada de cada elemento
+            %   'deformada'     Dibuja la deformada del problema
+            %   'factor'        Factor de la deformada
+            %   'lwElemD'       Ancho linea elemento deformado
+            %   'lwElemE'       Ancho linea elemento estatico
+            %   'sizeNodoD'     Porte nodo deformado
+            %   'sizeNodoE'     Porte nodo estatico
+            %   'styleElemD'    Estilo elemento deformado
+            %   'styleElemE'    Estilo elemento estatico
+            %   'styleNodoD'    Estilo nodo deformado
+            %   'styleNodoE'    Estilo nodos estaticos
+            %   'unidad'        Unidar longitud
             
             p = inputParser;
             p.KeepUnmatched = true;
-            addOptional(p, 'deformada', false);
-            addOptional(p, 'factor', 1);
-            addOptional(p, 'defElem', true);
-            addOptional(p, 'styleNodoE', 'b');
-            addOptional(p, 'sizeNodoE', 5);
-            addOptional(p, 'styleNodoD', 'k');
-            addOptional(p, 'sizeNodoD', 10);
-            addOptional(p, 'styleElemE', 'b-');
-            addOptional(p, 'lwElemE', 0.5);
-            addOptional(p, 'styleElemD', 'k-');
-            addOptional(p, 'lwElemD', 1.25);
-            addOptional(p, 'unidad', 'm');
             addOptional(p, 'angAzh', 45);
             addOptional(p, 'angPol', 45);
+            addOptional(p, 'defElem', true);
+            addOptional(p, 'deformada', false);
+            addOptional(p, 'factor', 1);
+            addOptional(p, 'lwElemD', 1.25);
+            addOptional(p, 'lwElemE', 0.5);
+            addOptional(p, 'sizeNodoD', 10);
+            addOptional(p, 'sizeNodoE', 5);
+            addOptional(p, 'styleElemD', 'k-');
+            addOptional(p, 'styleElemE', 'b-');
+            addOptional(p, 'styleNodoD', 'k');
+            addOptional(p, 'styleNodoE', 'b');
+            addOptional(p, 'unidad', 'm');
             parse(p, varargin{:});
             r = p.Results;
             

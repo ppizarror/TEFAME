@@ -33,13 +33,18 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
+%       cargaSumoMasa
+%  Properties (Access=protected)
+%       factorCargaMasa
+%       factorUnidadMasa
+%       nodosCarga
 %  Methods:
-%       cargaEstaticaObj = Carga(etiquetaCarga)
 %       aplicarCarga(cargaEstaticaObj)
+%       cargaEstaticaObj = Carga(etiquetaCarga)
+%       definirFactorCargaMasa(cargaEstaticaObj,factor)
+%       definirFactorUnidadMasa(cargaEstaticaObj,factor)
 %       disp(cargaEstaticaObj)
 %       masa = obtenerMasa(cargaEstaticaObj)
-%       definirFactorUnidadMasa(cargaEstaticaObj,factor)
-%       definirFactorCargaMasa(cargaEstaticaObj,factor)
 %       nodos = obtenerNodos(cargaEstaticaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)

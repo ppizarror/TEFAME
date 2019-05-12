@@ -30,23 +30,27 @@
 %|______________________________________________________________________|
 %
 %  Properties(Access=private):
-%       sol_u
-%       sol_v
-%       sol_a
 %       cargaActiva
+%       cargaFueCalculada
 %       cRayleigh
-%       usoDisipador
 %       desModal
 %       factorCargaMasa
 %       factorUnidadMasa
 %       nodosCarga
+%       sol_a
+%       sol_u
+%       sol_v
+%       usoDisipador
 %  Properties(Access=public):
 %       tAnalisis
+%       tInicio
 %       dt
 %  Methods:
 %       cargaDinamicaObj = Carga(etiquetaCarga)
-%       aplicarCarga(cargaDinamicaObj)
+%       desactivarCarga(cargaDinamicaObj)
+%       p = calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)
 %       disp(cargaDinamicaObj)
+%       y = cargaActivada(cargaDinamicaObj)
 %       guardarCarga(cargaDinamicaObj,p)
 %       guardarDesplazamiento(cargaDinamicaObj,u)
 %       guardarVelocidad(cargaDinamicaObj,v)
@@ -54,6 +58,7 @@
 %       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
 %       usoDisipadores(cargaDinamicaObj,disipador)
 %       descomposicionModal(cargaDinamicaObj,desmodal)
+%       c = cargaSumaMasa(cargaDinamicaObj)
 %       t = obtenerVectorTiempo(cargaDinamicaObj)
 %       p = obtenerCarga(cargaDinamicaObj)
 %       u = obtenerDesplazamiento(cargaDinamicaObj)
@@ -67,6 +72,10 @@
 %       definirFactorUnidadMasa(cargaDinamicaObj,factor)
 %       definirFactorCargaMasa(cargaDinamicaObj,factor)
 %       nodos = obtenerNodos(cargaDinamicaObj)
+%       activarCarga(cargaDinamicaObj)
+%       establecerCargaCalculada(cargaDinamicaObj)
+%       c = cargaCalculada(cargaDinamicaObj)
+%       bloquearCargaMasa(cargaDinamicaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -79,17 +88,18 @@ classdef CargaDinamica < ComponenteModelo
     end % properties CargaDinamica
     
     properties(Access = protected)
-        sol_u % Guarda la solucion de los desplazamientos
-        sol_v % Guarda la solucion de las velocidades
-        sol_a % Guarda la solucion de las aceleraciones
-        sol_p % Guarda la carga generada
         cargaActiva % Indica si la carga esta activada o no
+        cargaFueCalculada % La carga fue calculada o no
         cRayleigh % Indica que la carga se calculo con C de Rayleigh
-        usoDisipador % Indica que se usaron disipadores
         desModal % Indica que la carga se calculo usando descomposicion modal
         factorCargaMasa % Factor de masa de la carga
         factorUnidadMasa % Factor unidad de la masa
         nodosCarga % Nodos que participan en la carga
+        sol_a % Guarda la solucion de las aceleraciones
+        sol_p % Guarda la carga generada
+        sol_u % Guarda la solucion de los desplazamientos
+        sol_v % Guarda la solucion de las velocidades
+        usoDisipador % Indica que se usaron disipadores
     end % properties CargaDinamica
     
     properties(Access = public)
@@ -120,6 +130,7 @@ classdef CargaDinamica < ComponenteModelo
             cargaDinamicaObj.desModal = false;
             cargaDinamicaObj.factorUnidadMasa = 1;
             cargaDinamicaObj.factorCargaMasa = 0;
+            cargaDinamicaObj.cargaFueCalculada = false;
             
             % Define algunos parametros iniciales
             cargaDinamicaObj.tInicio = 0;
@@ -385,6 +396,24 @@ classdef CargaDinamica < ComponenteModelo
             nodos = cargaDinamicaObj.nodosCarga;
             
         end % obtenerNodos function
+        
+        function establecerCargaCalculada(cargaDinamicaObj)
+            % establecerCargaCalculada: Establece la carga como calculada
+            %
+            % establecerCargaCalculada(cargaDinamicaObj)
+            
+            cargaDinamicaObj.cargaFueCalculada = true;
+            
+        end % establecerCargaCalculada function
+        
+        function c = cargaCalculada(cargaDinamicaObj)
+            % cargaCalculada: Indica si la carga fue calculada o no
+            %
+            % c = cargaCalculada(cargaDinamicaObj)
+            
+            c = cargaDinamicaObj.cargaFueCalculada && cargaDinamicaObj.cargaActiva;
+            
+        end % cargaCalculada function
         
     end % methods CargaDinamica
     

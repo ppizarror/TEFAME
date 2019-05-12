@@ -30,34 +30,47 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
+%       amplitud
+%       direccion
+%       intervalos
+%       nodo
+%       registro
+%       tpulso
 %  Methods:
 %       CargaPulso(etiquetaCargaPulso,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(CargaPulsoObj,factorDeCarga)
 %       disp(CargaPulsoObj)
 %  Methods SuperClass (CargaDinamica):
-%       cargaPulsoObj = Carga(etiquetaCarga)
-%       aplicarCarga(cargaPulsoObj)
-%       disp(cargaPulsoObj)
-%       guardarCarga(cargaPulsoObj,p)
-%       guardarDesplazamiento(cargaPulsoObj,u)
-%       guardarVelocidad(cargaPulsoObj,v)
-%       guardarAceleracion(cargaPulsoObj,a)
-%       amortiguamientoRayleigh(cargaPulsoObj,rayleigh)
-%       usoDisipadores(cargaPulsoObj,disipador)
-%       descomposicionModal(cargaPulsoObj,desmodal)
-%       t = obtenerVectorTiempo(cargaPulsoObj)
-%       p = obtenerCarga(cargaPulsoObj)
-%       u = obtenerDesplazamiento(cargaPulsoObj)
-%       u = obtenerDesplazamientoTiempo(cargaPulsoObj,gdl,tiempo)
-%       v = obtenerVelocidad(cargaPulsoObj)
-%       a = obtenerAceleracion(cargaPulsoObj)
-%       r = usoAmortiguamientoRayleigh(cargaPulsoObj)
-%       dm = usoDescomposicionModal(cargaPulsoObj)
-%       disipador = usoDeDisipadores(cargaPulsoObj)
-%       masa = obtenerMasa(cargaPulsoObj)
-%       definirFactorUnidadMasa(cargaPulsoObj,factor)
-%       definirFactorCargaMasa(cargaPulsoObj,factor)
-%       nodos = obtenerNodos(cargaPulsoObj)
+%       cargaDinamicaObj = Carga(etiquetaCarga)
+%       desactivarCarga(cargaDinamicaObj)
+%       p = calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)
+%       disp(cargaDinamicaObj)
+%       y = cargaActivada(cargaDinamicaObj)
+%       guardarCarga(cargaDinamicaObj,p)
+%       guardarDesplazamiento(cargaDinamicaObj,u)
+%       guardarVelocidad(cargaDinamicaObj,v)
+%       guardarAceleracion(cargaDinamicaObj,a)
+%       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
+%       usoDisipadores(cargaDinamicaObj,disipador)
+%       descomposicionModal(cargaDinamicaObj,desmodal)
+%       c = cargaSumaMasa(cargaDinamicaObj)
+%       t = obtenerVectorTiempo(cargaDinamicaObj)
+%       p = obtenerCarga(cargaDinamicaObj)
+%       u = obtenerDesplazamiento(cargaDinamicaObj)
+%       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
+%       v = obtenerVelocidad(cargaDinamicaObj)
+%       a = obtenerAceleracion(cargaDinamicaObj)
+%       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
+%       dm = usoDescomposicionModal(cargaDinamicaObj)
+%       disipador = usoDeDisipadores(cargaDinamicaObj)
+%       masa = obtenerMasa(cargaDinamicaObj)
+%       definirFactorUnidadMasa(cargaDinamicaObj,factor)
+%       definirFactorCargaMasa(cargaDinamicaObj,factor)
+%       nodos = obtenerNodos(cargaDinamicaObj)
+%       activarCarga(cargaDinamicaObj)
+%       establecerCargaCalculada(cargaDinamicaObj)
+%       c = cargaCalculada(cargaDinamicaObj)
+%       bloquearCargaMasa(cargaDinamicaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
@@ -66,12 +79,12 @@
 classdef CargaPulso < CargaDinamica
     
     properties(Access = private)
-        registro % Matriz del registro
+        amplitud % Ampitud de la carga
         direccion % Vector de direcciones
-        tpulso % Tiempo de aplicacion del pulso
         intervalos % Intervalos
         nodo % Nodo al que se aplica la carga
-        amplitud % Ampitud de la carga
+        registro % Matriz del registro
+        tpulso % Tiempo de aplicacion del pulso
     end % properties CargaPulso
     
     methods

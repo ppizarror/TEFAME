@@ -30,16 +30,16 @@
 %  Properties (Access=private):
 %       cargas
 %  Methods:
+%       a = obtenerAceleracion(combinacionCargaObj)
 %       combinacionCargaObj = CombinacionCargas(etiquetaCombinacion,cargas)
+%       disp(combinacionCargaObj)
+%       p = obtenerCarga(combinacionCargaObj)
+%       t = dt(combinacionCargaObj)
 %       t = obtenerVectorTiempo(combinacionCargaObj)
 %       t = tAnalisis(combinacionCargaObj)
-%       t = dt(combinacionCargaObj)
-%       p = obtenerCarga(combinacionCargaObj)
 %       u = obtenerDesplazamiento(combinacionCargaObj)
 %       u = obtenerDesplazamientoTiempo(combinacionCargaObj,gdl,tiempo)
 %       v = obtenerVelocidad(combinacionCargaObj)
-%       a = obtenerAceleracion(combinacionCargaObj)
-%       disp(combinacionCargaObj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(componenteModeloObj)
 %       e = equals(componenteModeloObj,obj)
