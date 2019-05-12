@@ -533,110 +533,119 @@ This function is called by:
 0436                     <span class="keyword">continue</span>;
 0437                 <span class="keyword">end</span>
 0438                 
-0439                 <span class="comment">% Genera las cargas</span>
-0440                 <span class="keyword">if</span> ~calculaDisipadores
-0441                     fprintf(<span class="string">'\t\t\tGenerando la matriz de cargas\n'</span>);
-0442                 <span class="keyword">end</span>
-0443                 p = patronDeCargasObj.cargas{i}.calcularCarga(factor, m, r, ~calculaDisipadores);
-0444                 
-0445                 <span class="comment">% Descomposicion modal</span>
-0446                 <span class="keyword">if</span> patronDeCargasObj.desModal
-0447                     pmodal = phi' * p;
-0448                 <span class="keyword">else</span>
-0449                     pmodal = p;
-0450                 <span class="keyword">end</span>
+0439                 <span class="comment">% Chequea que la carga no haya sido calculada</span>
+0440                 <span class="keyword">if</span> patronDeCargasObj.cargas{i}.cargaCalculada() &amp;&amp; ~calculaDisipadores
+0441                     fprintf(<span class="string">'\t\t\tLa carga %s ya fue calculada\n'</span>, <span class="keyword">...</span>
+0442                         patronDeCargasObj.cargas{i}.obtenerEtiqueta());
+0443                     <span class="keyword">continue</span>;
+0444                 <span class="keyword">end</span>
+0445                 
+0446                 <span class="comment">% Genera las cargas</span>
+0447                 <span class="keyword">if</span> ~calculaDisipadores
+0448                     fprintf(<span class="string">'\t\t\tGenerando la matriz de cargas\n'</span>);
+0449                 <span class="keyword">end</span>
+0450                 p = patronDeCargasObj.cargas{i}.calcularCarga(factor, m, r, ~calculaDisipadores);
 0451                 
-0452                 <span class="comment">% Resuelve newmark</span>
-0453                 [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, <span class="keyword">...</span>
-0454                     c, pmodal, patronDeCargasObj.cargas{i}.dt, 0, 0);
-0455                 
-0456                 <span class="comment">% Aplica descomposicion si aplica</span>
-0457                 <span class="keyword">if</span> patronDeCargasObj.desModal
-0458                     u = phi * u;
-0459                     du = phi * du;
-0460                     ddu = phi * ddu;
-0461                 <span class="keyword">end</span>
+0452                 <span class="comment">% Descomposicion modal</span>
+0453                 <span class="keyword">if</span> patronDeCargasObj.desModal
+0454                     pmodal = phi' * p;
+0455                 <span class="keyword">else</span>
+0456                     pmodal = p;
+0457                 <span class="keyword">end</span>
+0458                 
+0459                 <span class="comment">% Resuelve newmark</span>
+0460                 [u, du, ddu] = patronDeCargasObj.newmark(k, mmodal, minv, <span class="keyword">...</span>
+0461                     c, pmodal, patronDeCargasObj.cargas{i}.dt, 0, 0);
 0462                 
-0463                 <span class="comment">% Guarda los resultados</span>
-0464                 patronDeCargasObj.cargas{i}.guardarCarga(p);
-0465                 patronDeCargasObj.cargas{i}.guardarDesplazamiento(u);
-0466                 patronDeCargasObj.cargas{i}.guardarVelocidad(du);
-0467                 patronDeCargasObj.cargas{i}.guardarAceleracion(ddu);
-0468                 patronDeCargasObj.cargas{i}.amortiguamientoRayleigh(~cpenzien);
-0469                 patronDeCargasObj.cargas{i}.usoDisipadores(disipadores);
-0470                 patronDeCargasObj.cargas{i}.descomposicionModal(patronDeCargasObj.desModal);
-0471                 <span class="keyword">if</span> ~calculaDisipadores
-0472                     fprintf(<span class="string">'\n\t\t\tSe completo calculo en %.3f segundos\n'</span>, cputime-tInicio);
-0473                 <span class="keyword">end</span>
-0474                 
-0475                 <span class="comment">% Si ya se calculo la carga objetivo para el disipador</span>
-0476                 <span class="comment">% retorna</span>
-0477                 <span class="keyword">if</span> usaCargaIndice
-0478                     fprintf(<span class="string">'\n'</span>);
-0479                     <span class="keyword">break</span>;
-0480                 <span class="keyword">end</span>
-0481                 
-0482             <span class="keyword">end</span> <span class="comment">% for i</span>
-0483             
-0484             <span class="keyword">if</span> ~calculaDisipadores
-0485                 fprintf(<span class="string">'\tProceso finalizado en %.3f segundos\n'</span>, cputime-tInicioProceso+tcalculoAnterior);
-0486                 <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
-0487             <span class="keyword">end</span>
-0488             
-0489         <span class="keyword">end</span> <span class="comment">% calcularCargaGenerica function</span>
-0490         
-0491         <a name="_sub5" href="#_subfunctions" class="code">function [x, v, z] = newmark(patronDeCargasObj, k, m, minv, c, p, dt, xo, vo) </a><span class="comment">%#ok&lt;*INUSL&gt;</span>
-0492             <span class="comment">% Newmark: es un metodo de la clase ModalEspectral que se</span>
-0493             <span class="comment">% usa para obtener los valores de aceleracion, velociadad y desplazamiento</span>
-0494             <span class="comment">% de los grados de libertad a partir del metodo de Newmark</span>
-0495             <span class="comment">%</span>
-0496             <span class="comment">% [x,v,z]=newmark(patronDeCargasObj,k,m,minv,c,p,dt,xo,vo)</span>
+0463                 <span class="comment">% Aplica descomposicion si aplica</span>
+0464                 <span class="keyword">if</span> patronDeCargasObj.desModal
+0465                     u = phi * u;
+0466                     du = phi * du;
+0467                     ddu = phi * ddu;
+0468                 <span class="keyword">end</span>
+0469                 
+0470                 <span class="comment">% Guarda los resultados</span>
+0471                 patronDeCargasObj.cargas{i}.guardarCarga(p);
+0472                 patronDeCargasObj.cargas{i}.guardarDesplazamiento(u);
+0473                 patronDeCargasObj.cargas{i}.guardarVelocidad(du);
+0474                 patronDeCargasObj.cargas{i}.guardarAceleracion(ddu);
+0475                 patronDeCargasObj.cargas{i}.amortiguamientoRayleigh(~cpenzien);
+0476                 patronDeCargasObj.cargas{i}.usoDisipadores(disipadores);
+0477                 patronDeCargasObj.cargas{i}.descomposicionModal(patronDeCargasObj.desModal);
+0478                 
+0479                 <span class="keyword">if</span> ~calculaDisipadores
+0480                     patronDeCargasObj.cargas{i}.establecerCargaCalculada();
+0481                     fprintf(<span class="string">'\n\t\t\tSe completo calculo en %.3f segundos\n'</span>, cputime-tInicio);
+0482                 <span class="keyword">end</span>
+0483                 
+0484                 <span class="comment">% Si ya se calculo la carga objetivo para el disipador</span>
+0485                 <span class="comment">% retorna</span>
+0486                 <span class="keyword">if</span> usaCargaIndice
+0487                     fprintf(<span class="string">'\n'</span>);
+0488                     <span class="keyword">break</span>;
+0489                 <span class="keyword">end</span>
+0490                 
+0491             <span class="keyword">end</span> <span class="comment">% for i</span>
+0492             
+0493             <span class="keyword">if</span> ~calculaDisipadores
+0494                 fprintf(<span class="string">'\tProceso finalizado en %.3f segundos\n'</span>, cputime-tInicioProceso+tcalculoAnterior);
+0495                 <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
+0496             <span class="keyword">end</span>
 0497             
-0498             <span class="comment">% Define coeficientes</span>
-0499             alpha = 0;
-0500             gamma = 1 / 2 - alpha;
-0501             beta = 1 / 4 * (1 - alpha)^2;
-0502             
-0503             n = length(p);
-0504             ngl = length(k);
-0505             x = zeros(ngl, length(p));
-0506             v = zeros(ngl, length(p));
-0507             z = zeros(ngl, length(p));
-0508             x(:, 1) = xo;
-0509             v(:, 1) = vo;
-0510             z(:, 1) = minv * (p(:, 1) - c * v(:, 1) - k * x(:, 1));
-0511             c1 = 1 / (dt^2 * beta);
-0512             c2 = 1 / (dt * beta);
-0513             c3 = gamma / (dt * beta);
-0514             c4 = 1 - gamma / beta;
-0515             c5 = 1 - gamma / (2 * beta);
-0516             c6 = 1 / (2 * beta) - 1;
-0517             ks = c1 * m + (1 + alpha) * c3 * c + (1 + alpha) * k; <span class="comment">%hht</span>
-0518             ks_inv = ks^(-1);
-0519             ps = zeros(ngl, length(p));
-0520             reverse_porcent = <span class="string">''</span>;
-0521             
-0522             <span class="keyword">for</span> i = 1:1:(n - 1)
-0523                 
-0524                 <span class="comment">% Calcula</span>
-0525                 ps(:, i+1) = p(:, i+1) + k * alpha * x(:, i) + m * (c1 * x(:, i) + c2 * v(:, i) + c6 * z(:, i)) <span class="keyword">...</span>
-0526                     +c * ((1 + alpha) * c3 * x(:, i) + (alpha - (1 + alpha) * c4) * v(:, i) - (1 + alpha) * c5 * dt * z(:, i));<span class="comment">% HHT</span>
-0527                 x(:, i+1) = ks_inv * ps(:, i+1);
-0528                 v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
-0529                 z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
-0530                 
-0531                 <span class="comment">% Imprime estado</span>
-0532                 msg = sprintf(<span class="string">'\t\t\tCalculando ... %.1f/100'</span>, i/(n - 1)*100);
-0533                 fprintf([reverse_porcent, msg]);
-0534                 reverse_porcent = repmat(sprintf(<span class="string">'\b'</span>), 1, length(msg));
-0535                 
-0536             <span class="keyword">end</span> <span class="comment">% for i</span>
-0537             
-0538         <span class="keyword">end</span> <span class="comment">% newmark function</span>
-0539         
-0540     <span class="keyword">end</span> <span class="comment">% methods PatronDeCargasDinamico</span>
-0541     
-0542 <span class="keyword">end</span> <span class="comment">% class PatronDeCargasDinamico</span></pre></div>
-<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+0498         <span class="keyword">end</span> <span class="comment">% calcularCargaGenerica function</span>
+0499         
+0500         <a name="_sub5" href="#_subfunctions" class="code">function [x, v, z] = newmark(patronDeCargasObj, k, m, minv, c, p, dt, xo, vo) </a><span class="comment">%#ok&lt;*INUSL&gt;</span>
+0501             <span class="comment">% Newmark: es un metodo de la clase ModalEspectral que se</span>
+0502             <span class="comment">% usa para obtener los valores de aceleracion, velociadad y desplazamiento</span>
+0503             <span class="comment">% de los grados de libertad a partir del metodo de Newmark</span>
+0504             <span class="comment">%</span>
+0505             <span class="comment">% [x,v,z]=newmark(patronDeCargasObj,k,m,minv,c,p,dt,xo,vo)</span>
+0506             
+0507             <span class="comment">% Define coeficientes</span>
+0508             alpha = 0;
+0509             gamma = 1 / 2 - alpha;
+0510             beta = 1 / 4 * (1 - alpha)^2;
+0511             
+0512             n = length(p);
+0513             ngl = length(k);
+0514             x = zeros(ngl, length(p));
+0515             v = zeros(ngl, length(p));
+0516             z = zeros(ngl, length(p));
+0517             x(:, 1) = xo;
+0518             v(:, 1) = vo;
+0519             z(:, 1) = minv * (p(:, 1) - c * v(:, 1) - k * x(:, 1));
+0520             c1 = 1 / (dt^2 * beta);
+0521             c2 = 1 / (dt * beta);
+0522             c3 = gamma / (dt * beta);
+0523             c4 = 1 - gamma / beta;
+0524             c5 = 1 - gamma / (2 * beta);
+0525             c6 = 1 / (2 * beta) - 1;
+0526             ks = c1 * m + (1 + alpha) * c3 * c + (1 + alpha) * k; <span class="comment">%hht</span>
+0527             ks_inv = ks^(-1);
+0528             ps = zeros(ngl, length(p));
+0529             reverse_porcent = <span class="string">''</span>;
+0530             
+0531             <span class="keyword">for</span> i = 1:1:(n - 1)
+0532                 
+0533                 <span class="comment">% Calcula</span>
+0534                 ps(:, i+1) = p(:, i+1) + k * alpha * x(:, i) + m * (c1 * x(:, i) + c2 * v(:, i) + c6 * z(:, i)) <span class="keyword">...</span>
+0535                     +c * ((1 + alpha) * c3 * x(:, i) + (alpha - (1 + alpha) * c4) * v(:, i) - (1 + alpha) * c5 * dt * z(:, i));<span class="comment">% HHT</span>
+0536                 x(:, i+1) = ks_inv * ps(:, i+1);
+0537                 v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
+0538                 z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);
+0539                 
+0540                 <span class="comment">% Imprime estado</span>
+0541                 msg = sprintf(<span class="string">'\t\t\tCalculando ... %.1f/100'</span>, i/(n - 1)*100);
+0542                 fprintf([reverse_porcent, msg]);
+0543                 reverse_porcent = repmat(sprintf(<span class="string">'\b'</span>), 1, length(msg));
+0544                 
+0545             <span class="keyword">end</span> <span class="comment">% for i</span>
+0546             
+0547         <span class="keyword">end</span> <span class="comment">% newmark function</span>
+0548         
+0549     <span class="keyword">end</span> <span class="comment">% methods PatronDeCargasDinamico</span>
+0550     
+0551 <span class="keyword">end</span> <span class="comment">% class PatronDeCargasDinamico</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 13:43:37 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

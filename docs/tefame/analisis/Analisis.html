@@ -59,30 +59,30 @@
        numeroGDL
   Methods:
        analisisObj = Analisis(modeloObjeto)
-       definirNumeracionGDL(analisisObj)
-       analizar(analisisObj,varargin)
-       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
-       M_Modelo = obtenerMatrizMasa(analisisObj)
-       C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)
-       K_Modelo = obtenerMatrizRigidez(analisisObj)
-       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
-       r_Modelo = obtenerVectorInfluencia(analisisObj)
-       F_Modelo = obtenerVectorFuerzas(analisisObj)
-       u_Modelo = obtenerDesplazamientos(analisisObj)
-       wn_Modelo = obtenerValoresPropios(analisisObj)
-       phi_Modelo = obtenerMatrizPhi(analisisObj)
-       c = obtenerCargaEstatica(analisisObj,varargin)
-       activarPlotDeformadaInicial(analisisObj)
-       desactivarPlotDeformadaInicial(analisisObj)
        activarCargaAnimacion(analisisObj)
-       desactivarCargaAnimacion(analisisObj)
-       calcularMomentoCorteBasal(analisisObj,carga)
-       plotTrayectoriaNodo(analisisObj,carga,nodo,direccion)
-       plotEsfuerzosElemento(analisisObj,carga)
-       calcularDesplazamientoDrift(analisisObj,xanalisis)
+       activarPlotDeformadaInicial(analisisObj)
+       analizar(analisisObj,varargin)
+       c = obtenerCargaEstatica(analisisObj,varargin)
+       C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)
        calcularCurvasEnergia(analisisObj,carga)
+       calcularDesplazamientoDrift(analisisObj,xanalisis)
+       calcularMomentoCorteBasal(analisisObj,carga)
+       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
+       definirNumeracionGDL(analisisObj)
+       desactivarCargaAnimacion(analisisObj)
+       desactivarPlotDeformadaInicial(analisisObj)
+       disp(analisisObj)
+       F_Modelo = obtenerVectorFuerzas(analisisObj)
+       K_Modelo = obtenerMatrizRigidez(analisisObj)
+       M_Modelo = obtenerMatrizMasa(analisisObj)
+       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
+       phi_Modelo = obtenerMatrizPhi(analisisObj)
        plot(analisisObj,varargin)
-       disp(analisisObj)</pre></div>
+       plotEsfuerzosElemento(analisisObj,carga)
+       plotTrayectoriaNodo(analisisObj,carga,nodo,direccion)
+       r_Modelo = obtenerVectorInfluencia(analisisObj)
+       u_Modelo = obtenerDesplazamientos(analisisObj)
+       wn_Modelo = obtenerValoresPropios(analisisObj)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
@@ -91,12 +91,12 @@ This function calls:
 <li><a href="Analisis.html" class="code" title="">Analisis</a>	______________________________________________________________________</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="Analisis.html" class="code" title="">Analisis</a>	______________________________________________________________________</li></ul>
+<li><a href="Analisis.html" class="code" title="">Analisis</a>	______________________________________________________________________</li><li><a href="AnalisisEstatico.html" class="code" title="">AnalisisEstatico</a>	______________________________________________________________________</li><li><a href="ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
 <h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="#_sub1" class="code">function analisisObj = Analisis(modeloObjeto)</a></li><li><a href="#_sub2" class="code">function definirNumeracionGDL(analisisObj)</a></li><li><a href="#_sub3" class="code">function analizar(analisisObj, varargin)</a></li><li><a href="#_sub4" class="code">function M_Modelo = obtenerMatrizMasa(analisisObj)</a></li><li><a href="#_sub5" class="code">function C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, varargin)</a></li><li><a href="#_sub6" class="code">function ensamblarMatrizRigidez(analisisObj)</a></li><li><a href="#_sub7" class="code">function Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)</a></li><li><a href="#_sub8" class="code">function Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)</a></li><li><a href="#_sub9" class="code">function ensamblarVectorFuerzas(analisisObj)</a></li><li><a href="#_sub10" class="code">function numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)</a></li><li><a href="#_sub11" class="code">function K_Modelo = obtenerMatrizRigidez(analisisObj)</a></li><li><a href="#_sub12" class="code">function ensamblarMatrizMasa(analisisObj)</a></li><li><a href="#_sub13" class="code">function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)</a></li><li><a href="#_sub14" class="code">function F_Modelo = obtenerVectorFuerzas(analisisObj)</a></li><li><a href="#_sub15" class="code">function u_Modelo = obtenerDesplazamientos(analisisObj)</a></li><li><a href="#_sub16" class="code">function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, factor)</a></li><li><a href="#_sub17" class="code">function plt = plot(analisisObj, varargin)</a></li><li><a href="#_sub18" class="code">function disp(analisisObj)</a></li></ul>
+<li><a href="#_sub1" class="code">function analisisObj = Analisis(modeloObjeto)</a></li><li><a href="#_sub2" class="code">function analizar(analisisObj, varargin)</a></li><li><a href="#_sub3" class="code">function M_Modelo = obtenerMatrizMasa(analisisObj)</a></li><li><a href="#_sub4" class="code">function C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, varargin)</a></li><li><a href="#_sub5" class="code">function numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)</a></li><li><a href="#_sub6" class="code">function K_Modelo = obtenerMatrizRigidez(analisisObj)</a></li><li><a href="#_sub7" class="code">function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)</a></li><li><a href="#_sub8" class="code">function Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)</a></li><li><a href="#_sub9" class="code">function F_Modelo = obtenerVectorFuerzas(analisisObj)</a></li><li><a href="#_sub10" class="code">function u_Modelo = obtenerDesplazamientos(analisisObj)</a></li><li><a href="#_sub11" class="code">function plt = plot(analisisObj, varargin)</a></li><li><a href="#_sub12" class="code">function guardarResultados(analisisObj, nombreArchivo)</a></li><li><a href="#_sub13" class="code">function disp(analisisObj)</a></li></ul>
 
 <h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
 <div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
@@ -132,30 +132,30 @@ This function is called by:
 0031 <span class="comment">%       numeroGDL</span>
 0032 <span class="comment">%  Methods:</span>
 0033 <span class="comment">%       analisisObj = Analisis(modeloObjeto)</span>
-0034 <span class="comment">%       definirNumeracionGDL(analisisObj)</span>
-0035 <span class="comment">%       analizar(analisisObj,varargin)</span>
-0036 <span class="comment">%       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)</span>
-0037 <span class="comment">%       M_Modelo = obtenerMatrizMasa(analisisObj)</span>
+0034 <span class="comment">%       activarCargaAnimacion(analisisObj)</span>
+0035 <span class="comment">%       activarPlotDeformadaInicial(analisisObj)</span>
+0036 <span class="comment">%       analizar(analisisObj,varargin)</span>
+0037 <span class="comment">%       c = obtenerCargaEstatica(analisisObj,varargin)</span>
 0038 <span class="comment">%       C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,rayleigh)</span>
-0039 <span class="comment">%       K_Modelo = obtenerMatrizRigidez(analisisObj)</span>
-0040 <span class="comment">%       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)</span>
-0041 <span class="comment">%       r_Modelo = obtenerVectorInfluencia(analisisObj)</span>
-0042 <span class="comment">%       F_Modelo = obtenerVectorFuerzas(analisisObj)</span>
-0043 <span class="comment">%       u_Modelo = obtenerDesplazamientos(analisisObj)</span>
-0044 <span class="comment">%       wn_Modelo = obtenerValoresPropios(analisisObj)</span>
-0045 <span class="comment">%       phi_Modelo = obtenerMatrizPhi(analisisObj)</span>
-0046 <span class="comment">%       c = obtenerCargaEstatica(analisisObj,varargin)</span>
-0047 <span class="comment">%       activarPlotDeformadaInicial(analisisObj)</span>
-0048 <span class="comment">%       desactivarPlotDeformadaInicial(analisisObj)</span>
-0049 <span class="comment">%       activarCargaAnimacion(analisisObj)</span>
-0050 <span class="comment">%       desactivarCargaAnimacion(analisisObj)</span>
-0051 <span class="comment">%       calcularMomentoCorteBasal(analisisObj,carga)</span>
-0052 <span class="comment">%       plotTrayectoriaNodo(analisisObj,carga,nodo,direccion)</span>
+0039 <span class="comment">%       calcularCurvasEnergia(analisisObj,carga)</span>
+0040 <span class="comment">%       calcularDesplazamientoDrift(analisisObj,xanalisis)</span>
+0041 <span class="comment">%       calcularMomentoCorteBasal(analisisObj,carga)</span>
+0042 <span class="comment">%       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)</span>
+0043 <span class="comment">%       definirNumeracionGDL(analisisObj)</span>
+0044 <span class="comment">%       desactivarCargaAnimacion(analisisObj)</span>
+0045 <span class="comment">%       desactivarPlotDeformadaInicial(analisisObj)</span>
+0046 <span class="comment">%       disp(analisisObj)</span>
+0047 <span class="comment">%       F_Modelo = obtenerVectorFuerzas(analisisObj)</span>
+0048 <span class="comment">%       K_Modelo = obtenerMatrizRigidez(analisisObj)</span>
+0049 <span class="comment">%       M_Modelo = obtenerMatrizMasa(analisisObj)</span>
+0050 <span class="comment">%       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)</span>
+0051 <span class="comment">%       phi_Modelo = obtenerMatrizPhi(analisisObj)</span>
+0052 <span class="comment">%       plot(analisisObj,varargin)</span>
 0053 <span class="comment">%       plotEsfuerzosElemento(analisisObj,carga)</span>
-0054 <span class="comment">%       calcularDesplazamientoDrift(analisisObj,xanalisis)</span>
-0055 <span class="comment">%       calcularCurvasEnergia(analisisObj,carga)</span>
-0056 <span class="comment">%       plot(analisisObj,varargin)</span>
-0057 <span class="comment">%       disp(analisisObj)</span>
+0054 <span class="comment">%       plotTrayectoriaNodo(analisisObj,carga,nodo,direccion)</span>
+0055 <span class="comment">%       r_Modelo = obtenerVectorInfluencia(analisisObj)</span>
+0056 <span class="comment">%       u_Modelo = obtenerDesplazamientos(analisisObj)</span>
+0057 <span class="comment">%       wn_Modelo = obtenerValoresPropios(analisisObj)</span>
 0058 
 0059 classdef <a href="Analisis.html" class="code" title="">Analisis</a> &lt; handle
 0060     
@@ -165,7 +165,7 @@ This function is called by:
 0064         numeroGDL <span class="comment">% Numero GDL del sistema</span>
 0065     <span class="keyword">end</span> <span class="comment">% properties Analisis</span>
 0066     
-0067     methods
+0067     methods(Access = public)
 0068         
 0069         <a name="_sub0" href="#_subfunctions" class="code">function analisisObj = Analisis(modeloObjeto)</a>
 0070             <span class="comment">% Analisis: es el constructor de la clase Analisis</span>
@@ -181,208 +181,227 @@ This function is called by:
 0080             
 0081             analisisObj.modeloObj = modeloObjeto;
 0082             analisisObj.analisisFinalizado = false;
-0083             
-0084         <span class="keyword">end</span> <span class="comment">% Analisis constructor</span>
-0085         
-0086         <a name="_sub1" href="#_subfunctions" class="code">function definirNumeracionGDL(analisisObj)</a>
-0087             <span class="comment">% definirNumeracionGDL: es un metodo de la clase Analisis que</span>
-0088             <span class="comment">% se usa para definir como se enumeran los GDL en el modelo</span>
-0089             <span class="comment">%</span>
-0090             <span class="comment">% definirNumeracionGDL(analisisObj)</span>
-0091             <span class="comment">%</span>
-0092             <span class="comment">% Define y asigna la enumeracion de los GDL en el modelo</span>
-0093             
-0094         <span class="keyword">end</span> <span class="comment">% definirNumeracionGDL function</span>
-0095         
-0096         <a name="_sub2" href="#_subfunctions" class="code">function analizar(analisisObj, varargin)</a>
-0097             <span class="comment">% analizar: es un metodo de la clase Analisis que se usa para</span>
-0098             <span class="comment">% realizar el analisis</span>
-0099             <span class="comment">%</span>
-0100             <span class="comment">% analizar(analisisObj,varargin)</span>
-0101             
-0102         <span class="keyword">end</span> <span class="comment">% analizar function</span>
-0103         
-0104         <a name="_sub3" href="#_subfunctions" class="code">function M_Modelo = obtenerMatrizMasa(analisisObj)</a>
-0105             <span class="comment">% obtenerMatrizMasa: es un metodo de la clase Analisis</span>
-0106             <span class="comment">% que se usa para obtener la matriz de masa del modelo</span>
-0107             <span class="comment">%</span>
-0108             <span class="comment">% M_Modelo = obtenerMatrizRigidez(analisisObj)</span>
-0109             <span class="comment">%</span>
-0110             <span class="comment">% Obtiene la matriz de masa (M_Modelo) del modelo que se genero</span>
-0111             <span class="comment">% en el Analisis (analisisObj)</span>
-0112             
-0113             M_Modelo = [];
-0114             
-0115         <span class="keyword">end</span> <span class="comment">% obtenerMatrizMasa function</span>
-0116         
-0117         <a name="_sub4" href="#_subfunctions" class="code">function C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, varargin)</a>
-0118             <span class="comment">% obtenerMatrizAmortiguamiento: es un metodo de la clase</span>
-0119             <span class="comment">% que se usa para obtener la matriz de amortiguamiento del modelo</span>
-0120             <span class="comment">%</span>
-0121             <span class="comment">% C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,varargin)</span>
-0122             <span class="comment">%</span>
-0123             <span class="comment">% Obtiene la matriz de amortiguamiento (C_Modelo) del modelo que se genero</span>
-0124             <span class="comment">% en el Analisis (analisisObj)</span>
-0125             
-0126             C_Modelo = [];
-0127             
-0128         <span class="keyword">end</span> <span class="comment">% obtenerMatrizAmortiguamiento function</span>
-0129         
-0130         <a name="_sub5" href="#_subfunctions" class="code">function ensamblarMatrizRigidez(analisisObj)</a>
-0131             <span class="comment">% ensamblarMatrizRigidez: es un metodo de la clase Analisis que</span>
-0132             <span class="comment">% se usa para realizar el armado de la matriz de rigidez del</span>
-0133             <span class="comment">% modelo analizado</span>
-0134             <span class="comment">%</span>
-0135             <span class="comment">% ensamblarMatrizRigidez(analisisObj)</span>
-0136             <span class="comment">%</span>
-0137             <span class="comment">% Ensambla la matriz de Rigidez del modelo analizado usando el metodo</span>
-0138             <span class="comment">% indicial</span>
-0139             
-0140         <span class="keyword">end</span> <span class="comment">% ensamblarMatrizRigidez function</span>
-0141         
-0142         <a name="_sub6" href="#_subfunctions" class="code">function Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj) </a><span class="comment">%#ok&lt;*MANU&gt;</span>
-0143             <span class="comment">% ensamblarMatrizAmortiguamientoDisipadores: Ensambla la matriz</span>
-0144             <span class="comment">% de amortiguamiento de los disipadores</span>
-0145             <span class="comment">%</span>
-0146             <span class="comment">% Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)</span>
-0147             
-0148             Cd = [];
-0149             
-0150         <span class="keyword">end</span> <span class="comment">% ensamblarMatrizAmortiguamientoDisipadores function</span>
-0151         
-0152         <a name="_sub7" href="#_subfunctions" class="code">function Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)</a>
-0153             <span class="comment">% ensamblarMatrizRigidezDisipadores: Ensambla matriz de rigidez</span>
-0154             <span class="comment">% de los disipadores</span>
-0155             <span class="comment">%</span>
-0156             <span class="comment">% Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)</span>
-0157             
-0158             Kdv = [];
-0159             
-0160         <span class="keyword">end</span> <span class="comment">% ensamblarMatrizRigidezDisipadores function</span>
-0161         
-0162         <a name="_sub8" href="#_subfunctions" class="code">function ensamblarVectorFuerzas(analisisObj)</a>
-0163             <span class="comment">% ensamblarVectorFuerzas: es un metodo de la clase Analisis que</span>
-0164             <span class="comment">% se usa para realizar el armado del vector de fuerzas del</span>
-0165             <span class="comment">% modelo analizado</span>
-0166             <span class="comment">%</span>
-0167             <span class="comment">% ensamblarMatrizRigidez(analisisObj)</span>
-0168             <span class="comment">%</span>
-0169             <span class="comment">% Ensambla el vector de fuerzas del modelo analizado usando el metodo</span>
-0170             <span class="comment">% indicial</span>
-0171             
-0172         <span class="keyword">end</span> <span class="comment">% ensamblarVectorFuerzas function</span>
-0173         
-0174         <a name="_sub9" href="#_subfunctions" class="code">function numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)</a>
-0175             <span class="comment">% obtenerNumeroEcuaciones: es un metodo de la clase Analisis</span>
-0176             <span class="comment">% que se usa para obtener el numero total de GDL, es decir, ecuaciones</span>
-0177             <span class="comment">% del modelo</span>
-0178             <span class="comment">%</span>
-0179             <span class="comment">% numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)</span>
-0180             <span class="comment">%</span>
-0181             <span class="comment">% Obtiene el numero total de GDL (numeroEcuaciones) que esta guardado</span>
-0182             <span class="comment">% en el Analisis (analisisObj)</span>
-0183             
-0184             numeroEcuaciones = 0;
-0185             
-0186         <span class="keyword">end</span> <span class="comment">% obtenerNumeroEcuaciones function</span>
-0187         
-0188         <a name="_sub10" href="#_subfunctions" class="code">function K_Modelo = obtenerMatrizRigidez(analisisObj)</a>
-0189             <span class="comment">% obtenerMatrizRigidez: es un metodo de la clase Analisis</span>
-0190             <span class="comment">% que se usa para obtener la matriz de rigidez del modelo</span>
-0191             <span class="comment">%</span>
-0192             <span class="comment">% K_Modelo = obtenerMatrizRigidez(analisisObj)</span>
-0193             <span class="comment">%</span>
-0194             <span class="comment">% Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero</span>
-0195             <span class="comment">% en el Analisis (analisisObj)</span>
-0196             
-0197             K_Modelo = [];
-0198             
-0199         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidez function</span>
-0200         
-0201         <a name="_sub11" href="#_subfunctions" class="code">function ensamblarMatrizMasa(analisisObj)</a>
-0202             <span class="comment">% ensamblarMatrizMasa: es un metodo de la clase Analisis que se usa para</span>
-0203             <span class="comment">% realizar el armado de la matriz de masa del modelo</span>
-0204             <span class="comment">%</span>
-0205             <span class="comment">% ensamblarMatrizMasa(analisisObj)</span>
-0206             <span class="comment">%</span>
-0207             <span class="comment">% Ensambla la matriz de masa del modelo analizado usando el metodo</span>
-0208             <span class="comment">% indicial</span>
-0209             
-0210         <span class="keyword">end</span> <span class="comment">% ensamblarMatrizMasa function</span>
-0211         
-0212         <a name="_sub12" href="#_subfunctions" class="code">function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)</a>
-0213             <span class="comment">% obtenerMatrizRigidez: es un metodo de la clase que retorna la matriz</span>
-0214             <span class="comment">% de amortiguamiento de los disipadores</span>
-0215             <span class="comment">%</span>
-0216             <span class="comment">% Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)</span>
-0217             <span class="comment">%</span>
-0218             <span class="comment">% Obtiene la matriz de amortiguamiento de los disipadores del modelo</span>
-0219             
-0220             Cdv_Modelo = analisisObj.ensamblarMatrizAmortiguamientoDisipadores();
-0221             
-0222         <span class="keyword">end</span> <span class="comment">% obtenerMatrizAmortiguamientoDisipadores function</span>
-0223         
-0224         <a name="_sub13" href="#_subfunctions" class="code">function F_Modelo = obtenerVectorFuerzas(analisisObj)</a>
-0225             <span class="comment">% obtenerMatrizRigidez: es un metodo de la clase Analisis</span>
-0226             <span class="comment">% que se usa para obtener el vector de fuerza del modelo</span>
-0227             <span class="comment">%</span>
-0228             <span class="comment">% F_Modelo = obtenerVectorFuerzas(analisisObj)</span>
+0083             analisisObj.numeroGDL = 0;
+0084             
+0085         <span class="keyword">end</span> <span class="comment">% Analisis constructor</span>
+0086         
+0087 <span class="comment">%         function definirNumeracionGDL(analisisObj)</span>
+0088 <span class="comment">%             % definirNumeracionGDL: es un metodo de la clase Analisis que</span>
+0089 <span class="comment">%             % se usa para definir como se enumeran los GDL en el modelo</span>
+0090 <span class="comment">%             %</span>
+0091 <span class="comment">%             % definirNumeracionGDL(analisisObj)</span>
+0092 <span class="comment">%             %</span>
+0093 <span class="comment">%             % Define y asigna la enumeracion de los GDL en el modelo</span>
+0094 <span class="comment">%</span>
+0095 <span class="comment">%         end % definirNumeracionGDL function</span>
+0096         
+0097         <a name="_sub1" href="#_subfunctions" class="code">function analizar(analisisObj, varargin)</a>
+0098             <span class="comment">% analizar: es un metodo de la clase Analisis que se usa para</span>
+0099             <span class="comment">% realizar el analisis</span>
+0100             <span class="comment">%</span>
+0101             <span class="comment">% analizar(analisisObj,varargin)</span>
+0102             
+0103         <span class="keyword">end</span> <span class="comment">% analizar function</span>
+0104         
+0105         <a name="_sub2" href="#_subfunctions" class="code">function M_Modelo = obtenerMatrizMasa(analisisObj) </a><span class="comment">%#ok&lt;*MANU&gt;</span>
+0106             <span class="comment">% obtenerMatrizMasa: es un metodo de la clase Analisis</span>
+0107             <span class="comment">% que se usa para obtener la matriz de masa del modelo</span>
+0108             <span class="comment">%</span>
+0109             <span class="comment">% M_Modelo = obtenerMatrizRigidez(analisisObj)</span>
+0110             <span class="comment">%</span>
+0111             <span class="comment">% Obtiene la matriz de masa (M_Modelo) del modelo que se genero</span>
+0112             <span class="comment">% en el Analisis (analisisObj)</span>
+0113             
+0114             M_Modelo = [];
+0115             
+0116         <span class="keyword">end</span> <span class="comment">% obtenerMatrizMasa function</span>
+0117         
+0118         <a name="_sub3" href="#_subfunctions" class="code">function C_Modelo = obtenerMatrizAmortiguamiento(analisisObj, varargin)</a>
+0119             <span class="comment">% obtenerMatrizAmortiguamiento: es un metodo de la clase</span>
+0120             <span class="comment">% que se usa para obtener la matriz de amortiguamiento del modelo</span>
+0121             <span class="comment">%</span>
+0122             <span class="comment">% C_Modelo = obtenerMatrizAmortiguamiento(analisisObj,varargin)</span>
+0123             <span class="comment">%</span>
+0124             <span class="comment">% Obtiene la matriz de amortiguamiento (C_Modelo) del modelo que se genero</span>
+0125             <span class="comment">% en el Analisis (analisisObj)</span>
+0126             
+0127             C_Modelo = [];
+0128             
+0129         <span class="keyword">end</span> <span class="comment">% obtenerMatrizAmortiguamiento function</span>
+0130         
+0131 <span class="comment">%         function ensamblarMatrizRigidez(analisisObj)</span>
+0132 <span class="comment">%             % ensamblarMatrizRigidez: es un metodo de la clase Analisis que</span>
+0133 <span class="comment">%             % se usa para realizar el armado de la matriz de rigidez del</span>
+0134 <span class="comment">%             % modelo analizado</span>
+0135 <span class="comment">%             %</span>
+0136 <span class="comment">%             % ensamblarMatrizRigidez(analisisObj)</span>
+0137 <span class="comment">%             %</span>
+0138 <span class="comment">%             % Ensambla la matriz de Rigidez del modelo analizado usando el metodo</span>
+0139 <span class="comment">%             % indicial</span>
+0140 <span class="comment">%</span>
+0141 <span class="comment">%         end % ensamblarMatrizRigidez function</span>
+0142         
+0143 <span class="comment">%         function Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj) %#ok&lt;*MANU&gt;</span>
+0144 <span class="comment">%             % ensamblarMatrizAmortiguamientoDisipadores: Ensambla la matriz</span>
+0145 <span class="comment">%             % de amortiguamiento de los disipadores</span>
+0146 <span class="comment">%             %</span>
+0147 <span class="comment">%             % Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)</span>
+0148 <span class="comment">%</span>
+0149 <span class="comment">%             Cd = [];</span>
+0150 <span class="comment">%</span>
+0151 <span class="comment">%         end % ensamblarMatrizAmortiguamientoDisipadores function</span>
+0152         
+0153 <span class="comment">%         function Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)</span>
+0154 <span class="comment">%             % ensamblarMatrizRigidezDisipadores: Ensambla matriz de rigidez</span>
+0155 <span class="comment">%             % de los disipadores</span>
+0156 <span class="comment">%             %</span>
+0157 <span class="comment">%             % Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)</span>
+0158 <span class="comment">%</span>
+0159 <span class="comment">%             Kdv = [];</span>
+0160 <span class="comment">%</span>
+0161 <span class="comment">%         end % ensamblarMatrizRigidezDisipadores function</span>
+0162         
+0163 <span class="comment">%         function ensamblarVectorFuerzas(analisisObj)</span>
+0164 <span class="comment">%             % ensamblarVectorFuerzas: es un metodo de la clase Analisis que</span>
+0165 <span class="comment">%             % se usa para realizar el armado del vector de fuerzas del</span>
+0166 <span class="comment">%             % modelo analizado</span>
+0167 <span class="comment">%             %</span>
+0168 <span class="comment">%             % ensamblarMatrizRigidez(analisisObj)</span>
+0169 <span class="comment">%             %</span>
+0170 <span class="comment">%             % Ensambla el vector de fuerzas del modelo analizado usando el metodo</span>
+0171 <span class="comment">%             % indicial</span>
+0172 <span class="comment">%</span>
+0173 <span class="comment">%         end % ensamblarVectorFuerzas function</span>
+0174         
+0175         <a name="_sub4" href="#_subfunctions" class="code">function numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)</a>
+0176             <span class="comment">% obtenerNumeroEcuaciones: es un metodo de la clase Analisis</span>
+0177             <span class="comment">% que se usa para obtener el numero total de GDL, es decir, ecuaciones</span>
+0178             <span class="comment">% del modelo</span>
+0179             <span class="comment">%</span>
+0180             <span class="comment">% numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)</span>
+0181             <span class="comment">%</span>
+0182             <span class="comment">% Obtiene el numero total de GDL (numeroEcuaciones) que esta guardado</span>
+0183             <span class="comment">% en el Analisis (analisisObj)</span>
+0184             
+0185             numeroEcuaciones = 0;
+0186             
+0187         <span class="keyword">end</span> <span class="comment">% obtenerNumeroEcuaciones function</span>
+0188         
+0189         <a name="_sub5" href="#_subfunctions" class="code">function K_Modelo = obtenerMatrizRigidez(analisisObj)</a>
+0190             <span class="comment">% obtenerMatrizRigidez: es un metodo de la clase Analisis</span>
+0191             <span class="comment">% que se usa para obtener la matriz de rigidez del modelo</span>
+0192             <span class="comment">%</span>
+0193             <span class="comment">% K_Modelo = obtenerMatrizRigidez(analisisObj)</span>
+0194             <span class="comment">%</span>
+0195             <span class="comment">% Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero</span>
+0196             <span class="comment">% en el Analisis (analisisObj)</span>
+0197             
+0198             K_Modelo = [];
+0199             
+0200         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidez function</span>
+0201         
+0202 <span class="comment">%         function ensamblarMatrizMasa(analisisObj)</span>
+0203 <span class="comment">%             % ensamblarMatrizMasa: es un metodo de la clase Analisis que se usa para</span>
+0204 <span class="comment">%             % realizar el armado de la matriz de masa del modelo</span>
+0205 <span class="comment">%             %</span>
+0206 <span class="comment">%             % ensamblarMatrizMasa(analisisObj)</span>
+0207 <span class="comment">%             %</span>
+0208 <span class="comment">%             % Ensambla la matriz de masa del modelo analizado usando el metodo</span>
+0209 <span class="comment">%             % indicial</span>
+0210 <span class="comment">%</span>
+0211 <span class="comment">%         end % ensamblarMatrizMasa function</span>
+0212         
+0213         <a name="_sub6" href="#_subfunctions" class="code">function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)</a>
+0214             <span class="comment">% obtenerMatrizRigidez: es un metodo de la clase que retorna la matriz</span>
+0215             <span class="comment">% de amortiguamiento de los disipadores</span>
+0216             <span class="comment">%</span>
+0217             <span class="comment">% Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)</span>
+0218             <span class="comment">%</span>
+0219             <span class="comment">% Obtiene la matriz de amortiguamiento de los disipadores del modelo</span>
+0220             
+0221             Cdv_Modelo = [];
+0222             
+0223         <span class="keyword">end</span> <span class="comment">% obtenerMatrizAmortiguamientoDisipadores function</span>
+0224         
+0225         <a name="_sub7" href="#_subfunctions" class="code">function Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)</a>
+0226             <span class="comment">% obtenerMatrizRigidezDisipadores: es un metodo de la clase ModalEspectral</span>
+0227             <span class="comment">% que se usa para obtener la matriz de rigidez de los</span>
+0228             <span class="comment">% disipadores</span>
 0229             <span class="comment">%</span>
-0230             <span class="comment">% Obtiene el vector de fuerza (F_Modelo) del modelo que se genero</span>
-0231             <span class="comment">% en el Analisis (analisisObj)</span>
-0232             
-0233             F_Modelo = [];
-0234             
-0235         <span class="keyword">end</span> <span class="comment">% obtenerVectorFuerzas function</span>
-0236         
-0237         <a name="_sub14" href="#_subfunctions" class="code">function u_Modelo = obtenerDesplazamientos(analisisObj)</a>
-0238             <span class="comment">% obtenerDesplazamientos: es un metodo de la clase Analisis</span>
-0239             <span class="comment">% que se usa para obtener el vector de desplazamiento del modelo</span>
-0240             <span class="comment">% obtenido del analisis</span>
+0230             <span class="comment">% Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)</span>
+0231             
+0232             Kdv_Modelo = [];
+0233             
+0234         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidezDisipadores function</span>
+0235         
+0236         <a name="_sub8" href="#_subfunctions" class="code">function F_Modelo = obtenerVectorFuerzas(analisisObj)</a>
+0237             <span class="comment">% obtenerMatrizRigidez: es un metodo de la clase Analisis</span>
+0238             <span class="comment">% que se usa para obtener el vector de fuerza del modelo</span>
+0239             <span class="comment">%</span>
+0240             <span class="comment">% F_Modelo = obtenerVectorFuerzas(analisisObj)</span>
 0241             <span class="comment">%</span>
-0242             <span class="comment">% u_Modelo = obtenerDesplazamientos(analisisObj)</span>
-0243             <span class="comment">%</span>
-0244             <span class="comment">% Obtiene el vector de desplazamiento (u_Modelo) del modelo que se</span>
-0245             <span class="comment">% genero como resultado del Analisis (analisisObj)</span>
+0242             <span class="comment">% Obtiene el vector de fuerza (F_Modelo) del modelo que se genero</span>
+0243             <span class="comment">% en el Analisis (analisisObj)</span>
+0244             
+0245             F_Modelo = [];
 0246             
-0247             u_Modelo = [];
-0248             
-0249         <span class="keyword">end</span> <span class="comment">% obtenerDesplazamientos function</span>
-0250         
-0251         <a name="_sub15" href="#_subfunctions" class="code">function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, factor)</a>
-0252             <span class="comment">% obtenerLimitesDeformada: Obtiene los limites de deformacion</span>
+0247         <span class="keyword">end</span> <span class="comment">% obtenerVectorFuerzas function</span>
+0248         
+0249         <a name="_sub9" href="#_subfunctions" class="code">function u_Modelo = obtenerDesplazamientos(analisisObj)</a>
+0250             <span class="comment">% obtenerDesplazamientos: es un metodo de la clase Analisis</span>
+0251             <span class="comment">% que se usa para obtener el vector de desplazamiento del modelo</span>
+0252             <span class="comment">% obtenido del analisis</span>
 0253             <span class="comment">%</span>
-0254             <span class="comment">% [limx,limy,limz] = obtenerLimitesDeformada(analisisObj, factor)</span>
-0255             
-0256             limx = 0;
-0257             limy = 0;
-0258             limz = 0;
-0259             
-0260         <span class="keyword">end</span> <span class="comment">% obtenerLimitesDeformada function</span>
-0261         
-0262         <a name="_sub16" href="#_subfunctions" class="code">function plt = plot(analisisObj, varargin) </a><span class="comment">%#ok&lt;*VANUS,*INUSD&gt;</span>
-0263             <span class="comment">% plt: Grafica el modelo</span>
-0264             <span class="comment">%</span>
-0265             <span class="comment">% plt = plot(analisisObj,'var1',val1,'var2',val2)</span>
-0266             
-0267             plt = 0;
-0268             
-0269         <span class="keyword">end</span> <span class="comment">% plot function</span>
-0270         
-0271         <a name="_sub17" href="#_subfunctions" class="code">function disp(analisisObj)</a>
-0272             <span class="comment">% disp: es un metodo de la clase Analisis que se usa para imprimir en</span>
-0273             <span class="comment">% command Window la informacion del Analisis realizado</span>
-0274             <span class="comment">%</span>
-0275             <span class="comment">% disp(analisisObj)</span>
+0254             <span class="comment">% u_Modelo = obtenerDesplazamientos(analisisObj)</span>
+0255             <span class="comment">%</span>
+0256             <span class="comment">% Obtiene el vector de desplazamiento (u_Modelo) del modelo que se</span>
+0257             <span class="comment">% genero como resultado del Analisis (analisisObj)</span>
+0258             
+0259             u_Modelo = [];
+0260             
+0261         <span class="keyword">end</span> <span class="comment">% obtenerDesplazamientos function</span>
+0262         
+0263 <span class="comment">%         function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, factor)</span>
+0264 <span class="comment">%             % obtenerLimitesDeformada: Obtiene los limites de deformacion</span>
+0265 <span class="comment">%             %</span>
+0266 <span class="comment">%             % [limx,limy,limz] = obtenerLimitesDeformada(analisisObj, factor)</span>
+0267 <span class="comment">%</span>
+0268 <span class="comment">%             limx = 0;</span>
+0269 <span class="comment">%             limy = 0;</span>
+0270 <span class="comment">%             limz = 0;</span>
+0271 <span class="comment">%</span>
+0272 <span class="comment">%         end % obtenerLimitesDeformada function</span>
+0273         
+0274         <a name="_sub10" href="#_subfunctions" class="code">function plt = plot(analisisObj, varargin) </a><span class="comment">%#ok&lt;*VANUS,*INUSD&gt;</span>
+0275             <span class="comment">% plt: Grafica el modelo</span>
 0276             <span class="comment">%</span>
-0277             <span class="comment">% Imprime la informacion guardada en el Analisis (analisisObj) en</span>
-0278             <span class="comment">% pantalla</span>
-0279             
-0280         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0281         
-0282     <span class="keyword">end</span> <span class="comment">% methods Analisis</span>
-0283     
-0284 <span class="keyword">end</span> <span class="comment">% class Analisis</span></pre></div>
-<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+0277             <span class="comment">% plt = plot(analisisObj,'var1',val1,'var2',val2)</span>
+0278             
+0279             plt = 0;
+0280             
+0281         <span class="keyword">end</span> <span class="comment">% plot function</span>
+0282         
+0283         <a name="_sub11" href="#_subfunctions" class="code">function guardarResultados(analisisObj, nombreArchivo)</a>
+0284             <span class="comment">% guardarResultados: Guarda resultados adicionales del analisis</span>
+0285             <span class="comment">%</span>
+0286             <span class="comment">% guardarResultados(analisisObj,nombreArchivo)</span>
+0287             
+0288         <span class="keyword">end</span> <span class="comment">% guardarResultados function</span>
+0289         
+0290         <a name="_sub12" href="#_subfunctions" class="code">function disp(analisisObj)</a>
+0291             <span class="comment">% disp: es un metodo de la clase Analisis que se usa para imprimir en</span>
+0292             <span class="comment">% command Window la informacion del Analisis realizado</span>
+0293             <span class="comment">%</span>
+0294             <span class="comment">% disp(analisisObj)</span>
+0295             <span class="comment">%</span>
+0296             <span class="comment">% Imprime la informacion guardada en el Analisis (analisisObj) en</span>
+0297             <span class="comment">% pantalla</span>
+0298             
+0299         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0300         
+0301     <span class="keyword">end</span> <span class="comment">% methods Analisis</span>
+0302     
+0303 <span class="keyword">end</span> <span class="comment">% class Analisis</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 13:43:37 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

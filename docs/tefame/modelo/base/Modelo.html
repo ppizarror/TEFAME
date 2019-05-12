@@ -59,33 +59,33 @@
 |______________________________________________________________________|
 
   Properties (Access=private):
+       elementos
        nDimensiones
        nGDL
        nodos
-       elementos
-       restricciones
        patronesDeCargas
+       restricciones
   Methods:
-       modeloObj = Modelo(numeroDimensiones,numerosGDL)
-       definirNombre(modeloObj,nombre)
-       nombre = obtenerNombre(modeloObj)
-       agregarNodos(modeloObj,arregloNodos)
-       agregarElementos(modeloObj,arregloElementos)
-       agregarRestricciones(modeloObj,arregloRestricciones)
-       aplicarPatronesDeCargasEstatico(modeloObj)
-       aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,betaDisipador,arregloDisipadores)
+       actualizar(modeloObj,u)
        agregarDisipadores(modeloObj,arregloDisipadores)
-       nodosModelo = obtenerNodos(modeloObj)
+       agregarElementos(modeloObj,arregloElementos)
+       agregarNodos(modeloObj,arregloNodos)
+       agregarRestricciones(modeloObj,arregloRestricciones)
+       aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,betaDisipador,arregloDisipadores)
+       aplicarPatronesDeCargasEstatico(modeloObj)
+       aplicarRestricciones(modeloObj)
+       definirNombre(modeloObj,nombre)
+       disp(modeloObj)
        elementosModelo = obtenerElementos(modeloObj)
-       restriccionesModelo = obtenerRestricciones(modeloObj)
-       patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
+       guardarResultados(modeloObj,nombreArchivo)
+       inicializar(modeloObj)
+       modeloObj = Modelo(numeroDimensiones,numerosGDL)
+       nodosModelo = obtenerNodos(modeloObj)
+       nombre = obtenerNombre(modeloObj)
        numDimensiones = obtenerNumeroDimensiones(modeloObj)
        numGDL = obtenerNumerosGDL(modeloObj)
-       inicializar(modeloObj)
-       aplicarRestricciones(modeloObj)
-       actualizar(modeloObj,u)
-       guardarResultados(modeloObj,nombreArchivo)
-       disp(modeloObj)</pre></div>
+       patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
+       restriccionesModelo = obtenerRestricciones(modeloObj)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
@@ -135,45 +135,45 @@ This function is called by:
 0031 <span class="comment">%|______________________________________________________________________|</span>
 0032 <span class="comment">%</span>
 0033 <span class="comment">%  Properties (Access=private):</span>
-0034 <span class="comment">%       nDimensiones</span>
-0035 <span class="comment">%       nGDL</span>
-0036 <span class="comment">%       nodos</span>
-0037 <span class="comment">%       elementos</span>
-0038 <span class="comment">%       restricciones</span>
-0039 <span class="comment">%       patronesDeCargas</span>
+0034 <span class="comment">%       elementos</span>
+0035 <span class="comment">%       nDimensiones</span>
+0036 <span class="comment">%       nGDL</span>
+0037 <span class="comment">%       nodos</span>
+0038 <span class="comment">%       patronesDeCargas</span>
+0039 <span class="comment">%       restricciones</span>
 0040 <span class="comment">%  Methods:</span>
-0041 <span class="comment">%       modeloObj = Modelo(numeroDimensiones,numerosGDL)</span>
-0042 <span class="comment">%       definirNombre(modeloObj,nombre)</span>
-0043 <span class="comment">%       nombre = obtenerNombre(modeloObj)</span>
+0041 <span class="comment">%       actualizar(modeloObj,u)</span>
+0042 <span class="comment">%       agregarDisipadores(modeloObj,arregloDisipadores)</span>
+0043 <span class="comment">%       agregarElementos(modeloObj,arregloElementos)</span>
 0044 <span class="comment">%       agregarNodos(modeloObj,arregloNodos)</span>
-0045 <span class="comment">%       agregarElementos(modeloObj,arregloElementos)</span>
-0046 <span class="comment">%       agregarRestricciones(modeloObj,arregloRestricciones)</span>
+0045 <span class="comment">%       agregarRestricciones(modeloObj,arregloRestricciones)</span>
+0046 <span class="comment">%       aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,betaDisipador,arregloDisipadores)</span>
 0047 <span class="comment">%       aplicarPatronesDeCargasEstatico(modeloObj)</span>
-0048 <span class="comment">%       aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,betaDisipador,arregloDisipadores)</span>
-0049 <span class="comment">%       agregarDisipadores(modeloObj,arregloDisipadores)</span>
-0050 <span class="comment">%       nodosModelo = obtenerNodos(modeloObj)</span>
+0048 <span class="comment">%       aplicarRestricciones(modeloObj)</span>
+0049 <span class="comment">%       definirNombre(modeloObj,nombre)</span>
+0050 <span class="comment">%       disp(modeloObj)</span>
 0051 <span class="comment">%       elementosModelo = obtenerElementos(modeloObj)</span>
-0052 <span class="comment">%       restriccionesModelo = obtenerRestricciones(modeloObj)</span>
-0053 <span class="comment">%       patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)</span>
-0054 <span class="comment">%       numDimensiones = obtenerNumeroDimensiones(modeloObj)</span>
-0055 <span class="comment">%       numGDL = obtenerNumerosGDL(modeloObj)</span>
-0056 <span class="comment">%       inicializar(modeloObj)</span>
-0057 <span class="comment">%       aplicarRestricciones(modeloObj)</span>
-0058 <span class="comment">%       actualizar(modeloObj,u)</span>
-0059 <span class="comment">%       guardarResultados(modeloObj,nombreArchivo)</span>
-0060 <span class="comment">%       disp(modeloObj)</span>
+0052 <span class="comment">%       guardarResultados(modeloObj,nombreArchivo)</span>
+0053 <span class="comment">%       inicializar(modeloObj)</span>
+0054 <span class="comment">%       modeloObj = Modelo(numeroDimensiones,numerosGDL)</span>
+0055 <span class="comment">%       nodosModelo = obtenerNodos(modeloObj)</span>
+0056 <span class="comment">%       nombre = obtenerNombre(modeloObj)</span>
+0057 <span class="comment">%       numDimensiones = obtenerNumeroDimensiones(modeloObj)</span>
+0058 <span class="comment">%       numGDL = obtenerNumerosGDL(modeloObj)</span>
+0059 <span class="comment">%       patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)</span>
+0060 <span class="comment">%       restriccionesModelo = obtenerRestricciones(modeloObj)</span>
 0061 
 0062 classdef <a href="Modelo.html" class="code" title="">Modelo</a> &lt; handle
 0063     
 0064     properties(Access = private)
-0065         nDimensiones <span class="comment">% Variable que guarda las dimensiones del sistema de coordenadas del modelo</span>
-0066         nGDL <span class="comment">% Variable que guarda el numero de grados de libertad de cada nodo (GDL)</span>
-0067         nodos <span class="comment">% Variable que guarda en un arreglo de celdas todos los nodos del modelo</span>
-0068         elementos <span class="comment">% Variable que guarda en un arreglo de celdas todos los elementos del modelo</span>
-0069         disipadores <span class="comment">% Variable que guarda en un arreglo de celdas todos los disipadores del modelo</span>
-0070         restricciones <span class="comment">% Variable que guarda en un arreglo de celdas todos las restricciones del modelo</span>
+0065         disipadores <span class="comment">% Variable que guarda en un arreglo de celdas todos los disipadores del modelo</span>
+0066         elementos <span class="comment">% Variable que guarda en un arreglo de celdas todos los elementos del modelo</span>
+0067         nDimensiones <span class="comment">% Variable que guarda las dimensiones del sistema de coordenadas del modelo</span>
+0068         nGDL <span class="comment">% Variable que guarda el numero de grados de libertad de cada nodo (GDL)</span>
+0069         nodos <span class="comment">% Variable que guarda en un arreglo de celdas todos los nodos del modelo</span>
+0070         nombreModelo <span class="comment">% Nombre del modelo</span>
 0071         patronesDeCargas <span class="comment">% Variable que guarda en un arreglo de celdas todos los patrones de cargas aplicadas sobre el modelo</span>
-0072         nombreModelo <span class="comment">% Nombre del modelo</span>
+0072         restricciones <span class="comment">% Variable que guarda en un arreglo de celdas todos las restricciones del modelo</span>
 0073     <span class="keyword">end</span> <span class="comment">% properties Modelo</span>
 0074     
 0075     methods
@@ -583,7 +583,7 @@ This function is called by:
 0479             
 0480             fprintf(archivoSalida, <span class="string">'\n'</span>);
 0481             fprintf(archivoSalida, <span class="string">'-------------------------------------------------------------------------------\n'</span>);
-0482             fprintf(archivoSalida, <span class="string">'Resultados del analisis\n'</span>);
+0482             fprintf(archivoSalida, <span class="string">'Resultados del analisis estatico\n'</span>);
 0483             fprintf(archivoSalida, <span class="string">'-------------------------------------------------------------------------------\n'</span>);
 0484             fprintf(archivoSalida, <span class="string">'\n'</span>);
 0485             
@@ -606,29 +606,32 @@ This function is called by:
 0502             <span class="keyword">for</span> i = 1:length(modeloObj.elementos)
 0503                 modeloObj.elementos{i}.guardarEsfuerzosInternos(archivoSalida);
 0504             <span class="keyword">end</span> <span class="comment">% for i</span>
-0505             fclose(archivoSalida);
+0505             fprintf(archivoSalida, <span class="string">'\n'</span>);
 0506             
-0507         <span class="keyword">end</span> <span class="comment">% guardarResultados function</span>
-0508         
-0509         <a name="_sub21" href="#_subfunctions" class="code">function disp(modeloObj)</a>
-0510             <span class="comment">% disp: es un metodo de la clase Modelo que se usa para imprimir en</span>
-0511             <span class="comment">% command Window la informacion del Modelo</span>
-0512             <span class="comment">%</span>
-0513             <span class="comment">% disp(modeloObj)</span>
-0514             <span class="comment">%</span>
-0515             <span class="comment">% Imprime la informacion guardada en el Modelo (modeloObj) en</span>
-0516             <span class="comment">% pantalla</span>
-0517             
-0518             fprintf(<span class="string">'Propiedades modelo:\n'</span>);
-0519             fprintf(<span class="string">'\tDimensiones modelo: %iD\n'</span>, modeloObj.nDimensiones);
-0520             fprintf(<span class="string">'\tNumero de GDL del modelo: %i\n'</span>, modeloObj.nGDL);
-0521             <a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
-0522             
-0523         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0524         
-0525     <span class="keyword">end</span> <span class="comment">% methods Modelo</span>
-0526     
-0527 <span class="keyword">end</span> <span class="comment">% class Modelo</span></pre></div>
-<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+0507             <span class="comment">% Cierra el archivo</span>
+0508             fclose(archivoSalida);
+0509             
+0510         <span class="keyword">end</span> <span class="comment">% guardarResultados function</span>
+0511         
+0512         <a name="_sub21" href="#_subfunctions" class="code">function disp(modeloObj)</a>
+0513             <span class="comment">% disp: es un metodo de la clase Modelo que se usa para imprimir en</span>
+0514             <span class="comment">% command Window la informacion del Modelo</span>
+0515             <span class="comment">%</span>
+0516             <span class="comment">% disp(modeloObj)</span>
+0517             <span class="comment">%</span>
+0518             <span class="comment">% Imprime la informacion guardada en el Modelo (modeloObj) en</span>
+0519             <span class="comment">% pantalla</span>
+0520             
+0521             fprintf(<span class="string">'Propiedades modelo:\n'</span>);
+0522             fprintf(<span class="string">'\tDimensiones modelo: %iD\n'</span>, modeloObj.nDimensiones);
+0523             fprintf(<span class="string">'\tNumero de GDL del modelo: %i\n'</span>, modeloObj.nGDL);
+0524             <a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
+0525             
+0526         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0527         
+0528     <span class="keyword">end</span> <span class="comment">% methods Modelo</span>
+0529     
+0530 <span class="keyword">end</span> <span class="comment">% class Modelo</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 13:43:37 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

@@ -58,34 +58,47 @@
 |______________________________________________________________________|
 
   Properties (Access=private):
+       amplitud
+       direccion
+       nodo
+       registro
+       tOscilacion
+       w
   Methods:
        CargaSinusoidal(etiquetaCargaSinusoidal,registro,direccion,dt,tAnalisis)
        aplicarCarga(CargaSinusoidalObj,factorDeCarga)
        disp(CargaSinusoidalObj)
   Methods SuperClass (CargaDinamica):
-       cargaSinusoidalObj = Carga(etiquetaCarga)
-       aplicarCarga(cargaSinusoidalObj)
-       disp(cargaSinusoidalObj)
-       guardarCarga(cargaSinusoidalObj,p)
-       guardarDesplazamiento(cargaSinusoidalObj,u)
-       guardarVelocidad(cargaSinusoidalObj,v)
-       guardarAceleracion(cargaSinusoidalObj,a)
-       amortiguamientoRayleigh(cargaSinusoidalObj,rayleigh)
-       usoDisipadores(cargaSinusoidalObj,disipador)
-       descomposicionModal(cargaSinusoidalObj,desmodal)
-       t = obtenerVectorTiempo(cargaSinusoidalObj)
-       p = obtenerCarga(cargaSinusoidalObj)
-       u = obtenerDesplazamiento(cargaSinusoidalObj)
-       u = obtenerDesplazamientoTiempo(cargaSinusoidalObj,gdl,tiempo)
-       v = obtenerVelocidad(cargaSinusoidalObj)
-       a = obtenerAceleracion(cargaSinusoidalObj)
-       r = usoAmortiguamientoRayleigh(cargaSinusoidalObj)
-       dm = usoDescomposicionModal(cargaSinusoidalObj)
-       disipador = usoDeDisipadores(cargaSinusoidalObj)
-       masa = obtenerMasa(cargaSinusoidalObj)
-       definirFactorUnidadMasa(cargaSinusoidalObj,factor)
-       definirFactorCargaMasa(cargaSinusoidalObj,factor)
-       nodos = obtenerNodos(cargaSinusoidalObj)
+       cargaDinamicaObj = Carga(etiquetaCarga)
+       desactivarCarga(cargaDinamicaObj)
+       p = calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)
+       disp(cargaDinamicaObj)
+       y = cargaActivada(cargaDinamicaObj)
+       guardarCarga(cargaDinamicaObj,p)
+       guardarDesplazamiento(cargaDinamicaObj,u)
+       guardarVelocidad(cargaDinamicaObj,v)
+       guardarAceleracion(cargaDinamicaObj,a)
+       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
+       usoDisipadores(cargaDinamicaObj,disipador)
+       descomposicionModal(cargaDinamicaObj,desmodal)
+       c = cargaSumaMasa(cargaDinamicaObj)
+       t = obtenerVectorTiempo(cargaDinamicaObj)
+       p = obtenerCarga(cargaDinamicaObj)
+       u = obtenerDesplazamiento(cargaDinamicaObj)
+       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
+       v = obtenerVelocidad(cargaDinamicaObj)
+       a = obtenerAceleracion(cargaDinamicaObj)
+       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
+       dm = usoDescomposicionModal(cargaDinamicaObj)
+       disipador = usoDeDisipadores(cargaDinamicaObj)
+       masa = obtenerMasa(cargaDinamicaObj)
+       definirFactorUnidadMasa(cargaDinamicaObj,factor)
+       definirFactorCargaMasa(cargaDinamicaObj,factor)
+       nodos = obtenerNodos(cargaDinamicaObj)
+       activarCarga(cargaDinamicaObj)
+       establecerCargaCalculada(cargaDinamicaObj)
+       c = cargaCalculada(cargaDinamicaObj)
+       bloquearCargaMasa(cargaDinamicaObj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(componenteModeloObj)
        e = equals(componenteModeloObj,obj)
@@ -138,171 +151,184 @@ This function is called by:
 0030 <span class="comment">%|______________________________________________________________________|</span>
 0031 <span class="comment">%</span>
 0032 <span class="comment">%  Properties (Access=private):</span>
-0033 <span class="comment">%  Methods:</span>
-0034 <span class="comment">%       CargaSinusoidal(etiquetaCargaSinusoidal,registro,direccion,dt,tAnalisis)</span>
-0035 <span class="comment">%       aplicarCarga(CargaSinusoidalObj,factorDeCarga)</span>
-0036 <span class="comment">%       disp(CargaSinusoidalObj)</span>
-0037 <span class="comment">%  Methods SuperClass (CargaDinamica):</span>
-0038 <span class="comment">%       cargaSinusoidalObj = Carga(etiquetaCarga)</span>
-0039 <span class="comment">%       aplicarCarga(cargaSinusoidalObj)</span>
-0040 <span class="comment">%       disp(cargaSinusoidalObj)</span>
-0041 <span class="comment">%       guardarCarga(cargaSinusoidalObj,p)</span>
-0042 <span class="comment">%       guardarDesplazamiento(cargaSinusoidalObj,u)</span>
-0043 <span class="comment">%       guardarVelocidad(cargaSinusoidalObj,v)</span>
-0044 <span class="comment">%       guardarAceleracion(cargaSinusoidalObj,a)</span>
-0045 <span class="comment">%       amortiguamientoRayleigh(cargaSinusoidalObj,rayleigh)</span>
-0046 <span class="comment">%       usoDisipadores(cargaSinusoidalObj,disipador)</span>
-0047 <span class="comment">%       descomposicionModal(cargaSinusoidalObj,desmodal)</span>
-0048 <span class="comment">%       t = obtenerVectorTiempo(cargaSinusoidalObj)</span>
-0049 <span class="comment">%       p = obtenerCarga(cargaSinusoidalObj)</span>
-0050 <span class="comment">%       u = obtenerDesplazamiento(cargaSinusoidalObj)</span>
-0051 <span class="comment">%       u = obtenerDesplazamientoTiempo(cargaSinusoidalObj,gdl,tiempo)</span>
-0052 <span class="comment">%       v = obtenerVelocidad(cargaSinusoidalObj)</span>
-0053 <span class="comment">%       a = obtenerAceleracion(cargaSinusoidalObj)</span>
-0054 <span class="comment">%       r = usoAmortiguamientoRayleigh(cargaSinusoidalObj)</span>
-0055 <span class="comment">%       dm = usoDescomposicionModal(cargaSinusoidalObj)</span>
-0056 <span class="comment">%       disipador = usoDeDisipadores(cargaSinusoidalObj)</span>
-0057 <span class="comment">%       masa = obtenerMasa(cargaSinusoidalObj)</span>
-0058 <span class="comment">%       definirFactorUnidadMasa(cargaSinusoidalObj,factor)</span>
-0059 <span class="comment">%       definirFactorCargaMasa(cargaSinusoidalObj,factor)</span>
-0060 <span class="comment">%       nodos = obtenerNodos(cargaSinusoidalObj)</span>
-0061 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
-0062 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
-0063 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
-0064 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
-0065 
-0066 classdef <a href="CargaSinusoidal.html" class="code" title="">CargaSinusoidal</a> &lt; <a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>
-0067     
-0068     properties(Access = private)
-0069         registro <span class="comment">% Matriz del registro</span>
-0070         direccion <span class="comment">% Vector de direcciones</span>
-0071         w <span class="comment">% Frecuencia de la carga</span>
-0072         nodo <span class="comment">% Nodo al que se aplica la carga</span>
-0073         amplitud <span class="comment">% Amplitud de la carga</span>
-0074         tOscilacion <span class="comment">% Tiempo de oscilacion</span>
-0075     <span class="keyword">end</span> <span class="comment">% properties CargaSinusoidal</span>
-0076     
-0077     methods
-0078         
-0079         <a name="_sub0" href="#_subfunctions" class="code">function cargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tInicio, tAnalisis)</a>
-0080             <span class="comment">% CargaSinusoidal: es el constructor de la clase CargaSinusoidal</span>
-0081             <span class="comment">%</span>
-0082             <span class="comment">% cargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,nodo,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)</span>
-0083             <span class="comment">%</span>
-0084             <span class="comment">% Crea una carga del tipo sinusoidal</span>
-0085             
-0086             <span class="keyword">if</span> nargin == 0
-0087                 etiquetaCargaSinusoidal = <span class="string">''</span>;
-0088             <span class="keyword">end</span> <span class="comment">% if</span>
-0089             
-0090             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase Carga</span>
-0091             cargaSinusoidalObj = cargaSinusoidalObj@<a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>(etiquetaCargaSinusoidal);
-0092             
-0093             <span class="comment">% Verifica que tenga sentido la direccion</span>
-0094             <span class="keyword">if</span> ~<a href="../../../../tefame/utils/verificarVectorDireccion.html" class="code" title="function y = verificarVectorDireccion(vec, ndg)">verificarVectorDireccion</a>(direccion, nodo.obtenerNumeroGDL())
-0095                 error(<span class="string">'Vector direccion mal definido'</span>);
-0096             <span class="keyword">end</span>
-0097             
-0098             <span class="comment">% Chequea que los tiempos esten bien definidos</span>
-0099             <span class="keyword">if</span> tAnalisis &lt; 0 || tInicio &lt; 0 || dt &lt;= 0
-0100                 error(<span class="string">'Tiempo de carga mal definido'</span>);
-0101             <span class="keyword">end</span>
+0033 <span class="comment">%       amplitud</span>
+0034 <span class="comment">%       direccion</span>
+0035 <span class="comment">%       nodo</span>
+0036 <span class="comment">%       registro</span>
+0037 <span class="comment">%       tOscilacion</span>
+0038 <span class="comment">%       w</span>
+0039 <span class="comment">%  Methods:</span>
+0040 <span class="comment">%       CargaSinusoidal(etiquetaCargaSinusoidal,registro,direccion,dt,tAnalisis)</span>
+0041 <span class="comment">%       aplicarCarga(CargaSinusoidalObj,factorDeCarga)</span>
+0042 <span class="comment">%       disp(CargaSinusoidalObj)</span>
+0043 <span class="comment">%  Methods SuperClass (CargaDinamica):</span>
+0044 <span class="comment">%       cargaDinamicaObj = Carga(etiquetaCarga)</span>
+0045 <span class="comment">%       desactivarCarga(cargaDinamicaObj)</span>
+0046 <span class="comment">%       p = calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)</span>
+0047 <span class="comment">%       disp(cargaDinamicaObj)</span>
+0048 <span class="comment">%       y = cargaActivada(cargaDinamicaObj)</span>
+0049 <span class="comment">%       guardarCarga(cargaDinamicaObj,p)</span>
+0050 <span class="comment">%       guardarDesplazamiento(cargaDinamicaObj,u)</span>
+0051 <span class="comment">%       guardarVelocidad(cargaDinamicaObj,v)</span>
+0052 <span class="comment">%       guardarAceleracion(cargaDinamicaObj,a)</span>
+0053 <span class="comment">%       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)</span>
+0054 <span class="comment">%       usoDisipadores(cargaDinamicaObj,disipador)</span>
+0055 <span class="comment">%       descomposicionModal(cargaDinamicaObj,desmodal)</span>
+0056 <span class="comment">%       c = cargaSumaMasa(cargaDinamicaObj)</span>
+0057 <span class="comment">%       t = obtenerVectorTiempo(cargaDinamicaObj)</span>
+0058 <span class="comment">%       p = obtenerCarga(cargaDinamicaObj)</span>
+0059 <span class="comment">%       u = obtenerDesplazamiento(cargaDinamicaObj)</span>
+0060 <span class="comment">%       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)</span>
+0061 <span class="comment">%       v = obtenerVelocidad(cargaDinamicaObj)</span>
+0062 <span class="comment">%       a = obtenerAceleracion(cargaDinamicaObj)</span>
+0063 <span class="comment">%       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)</span>
+0064 <span class="comment">%       dm = usoDescomposicionModal(cargaDinamicaObj)</span>
+0065 <span class="comment">%       disipador = usoDeDisipadores(cargaDinamicaObj)</span>
+0066 <span class="comment">%       masa = obtenerMasa(cargaDinamicaObj)</span>
+0067 <span class="comment">%       definirFactorUnidadMasa(cargaDinamicaObj,factor)</span>
+0068 <span class="comment">%       definirFactorCargaMasa(cargaDinamicaObj,factor)</span>
+0069 <span class="comment">%       nodos = obtenerNodos(cargaDinamicaObj)</span>
+0070 <span class="comment">%       activarCarga(cargaDinamicaObj)</span>
+0071 <span class="comment">%       establecerCargaCalculada(cargaDinamicaObj)</span>
+0072 <span class="comment">%       c = cargaCalculada(cargaDinamicaObj)</span>
+0073 <span class="comment">%       bloquearCargaMasa(cargaDinamicaObj)</span>
+0074 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
+0075 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0076 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0077 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0078 
+0079 classdef <a href="CargaSinusoidal.html" class="code" title="">CargaSinusoidal</a> &lt; <a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>
+0080     
+0081     properties(Access = private)
+0082         amplitud <span class="comment">% Amplitud de la carga</span>
+0083         direccion <span class="comment">% Vector de direcciones</span>
+0084         nodo <span class="comment">% Nodo al que se aplica la carga</span>
+0085         registro <span class="comment">% Matriz del registro</span>
+0086         tOscilacion <span class="comment">% Tiempo de oscilacion</span>
+0087         w <span class="comment">% Frecuencia de la carga</span>
+0088     <span class="keyword">end</span> <span class="comment">% properties CargaSinusoidal</span>
+0089     
+0090     methods
+0091         
+0092         <a name="_sub0" href="#_subfunctions" class="code">function cargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tInicio, tAnalisis)</a>
+0093             <span class="comment">% CargaSinusoidal: es el constructor de la clase CargaSinusoidal</span>
+0094             <span class="comment">%</span>
+0095             <span class="comment">% cargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,nodo,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)</span>
+0096             <span class="comment">%</span>
+0097             <span class="comment">% Crea una carga del tipo sinusoidal</span>
+0098             
+0099             <span class="keyword">if</span> nargin == 0
+0100                 etiquetaCargaSinusoidal = <span class="string">''</span>;
+0101             <span class="keyword">end</span> <span class="comment">% if</span>
 0102             
-0103             <span class="comment">% Guarda los parametros de la carga</span>
-0104             cargaSinusoidalObj.w = w;
-0105             cargaSinusoidalObj.amplitud = amplitud;
-0106             cargaSinusoidalObj.direccion = direccion;
-0107             cargaSinusoidalObj.tOscilacion = tOscilacion;
-0108             cargaSinusoidalObj.tAnalisis = tAnalisis;
-0109             cargaSinusoidalObj.tInicio = tInicio;
-0110             cargaSinusoidalObj.dt = dt;
-0111             cargaSinusoidalObj.nodo = nodo; <span class="comment">% Nodo al que se le aplica la carga</span>
-0112             cargaSinusoidalObj.nodosCarga = {nodo};
-0113             
-0114         <span class="keyword">end</span> <span class="comment">% CargaSinusoidal constructor</span>
-0115         
-0116         <a name="_sub1" href="#_subfunctions" class="code">function p = calcularCarga(CargaSinusoidalObj, ~, m, ~, dispinfo)</a>
-0117             <span class="comment">% calcularCarga: es un metodo de la clase Carga que se usa para</span>
-0118             <span class="comment">% calcular la carga a aplicar</span>
-0119             <span class="comment">%</span>
-0120             <span class="comment">% calcularCarga(cargaSinusoidalObj,factor,m,r,dispinfo)</span>
-0121             
-0122             <span class="comment">% Crea la matriz de carga</span>
-0123             ng = length(m);
-0124             nint = CargaSinusoidalObj.tOscilacion / CargaSinusoidalObj.dt;
-0125             nt = CargaSinusoidalObj.tAnalisis / CargaSinusoidalObj.dt; <span class="comment">% Nro de intervalos</span>
-0126             p = zeros(ng, nt);
-0127             <span class="keyword">if</span> dispinfo
-0128                 fprintf(<span class="string">'\t\t\t\tAplicando carga a nodo %s\n'</span>, CargaSinusoidalObj.nodo.obtenerEtiqueta());
-0129             <span class="keyword">end</span>
-0130             
-0131             <span class="comment">% Crea el vector de influencia</span>
-0132             rf = zeros(ng, 1);
-0133             nodoGDL = CargaSinusoidalObj.nodo.obtenerGDLIDCondensado();
+0103             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase Carga</span>
+0104             cargaSinusoidalObj = cargaSinusoidalObj@<a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>(etiquetaCargaSinusoidal);
+0105             
+0106             <span class="comment">% Verifica que tenga sentido la direccion</span>
+0107             <span class="keyword">if</span> ~<a href="../../../../tefame/utils/verificarVectorDireccion.html" class="code" title="function y = verificarVectorDireccion(vec, ndg)">verificarVectorDireccion</a>(direccion, nodo.obtenerNumeroGDL())
+0108                 error(<span class="string">'Vector direccion mal definido'</span>);
+0109             <span class="keyword">end</span>
+0110             
+0111             <span class="comment">% Chequea que los tiempos esten bien definidos</span>
+0112             <span class="keyword">if</span> tAnalisis &lt; 0 || tInicio &lt; 0 || dt &lt;= 0
+0113                 error(<span class="string">'Tiempo de carga mal definido'</span>);
+0114             <span class="keyword">end</span>
+0115             
+0116             <span class="comment">% Guarda los parametros de la carga</span>
+0117             cargaSinusoidalObj.w = w;
+0118             cargaSinusoidalObj.amplitud = amplitud;
+0119             cargaSinusoidalObj.direccion = direccion;
+0120             cargaSinusoidalObj.tOscilacion = tOscilacion;
+0121             cargaSinusoidalObj.tAnalisis = tAnalisis;
+0122             cargaSinusoidalObj.tInicio = tInicio;
+0123             cargaSinusoidalObj.dt = dt;
+0124             cargaSinusoidalObj.nodo = nodo; <span class="comment">% Nodo al que se le aplica la carga</span>
+0125             cargaSinusoidalObj.nodosCarga = {nodo};
+0126             
+0127         <span class="keyword">end</span> <span class="comment">% CargaSinusoidal constructor</span>
+0128         
+0129         <a name="_sub1" href="#_subfunctions" class="code">function p = calcularCarga(CargaSinusoidalObj, ~, m, ~, dispinfo)</a>
+0130             <span class="comment">% calcularCarga: es un metodo de la clase Carga que se usa para</span>
+0131             <span class="comment">% calcular la carga a aplicar</span>
+0132             <span class="comment">%</span>
+0133             <span class="comment">% calcularCarga(cargaSinusoidalObj,factor,m,r,dispinfo)</span>
 0134             
-0135             <span class="comment">% Verifica que la direccion no sea mayor que el numero de nodos</span>
-0136             <span class="keyword">if</span> length(nodoGDL) &lt; length(CargaSinusoidalObj.direccion)
-0137                 error(<span class="string">'Las direcciones de analisis superan el numero de direcciones del nodo %s'</span>, <span class="keyword">...</span>
-0138                     CargaSinusoidalObj.nodo.obtenerEtiqueta());
-0139             <span class="keyword">end</span>
-0140             
-0141             gdl = 0;
-0142             <span class="keyword">for</span> i = 1:length(CargaSinusoidalObj.direccion)
-0143                 <span class="keyword">if</span> CargaSinusoidalObj.direccion(i) &gt; 0
-0144                     gdl = nodoGDL(i); <span class="comment">% Obtiene el GDL asociado</span>
-0145                     <span class="keyword">if</span> gdl &gt; 0
-0146                         rf(gdl) = 1;
-0147                         <span class="keyword">if</span> dispinfo
-0148                             fprintf(<span class="string">'\t\t\t\tSe aplica la carga en el grado condensado %d\n'</span>, gdl);
-0149                         <span class="keyword">end</span>
-0150                     <span class="keyword">end</span>
-0151                 <span class="keyword">end</span>
-0152             <span class="keyword">end</span> <span class="comment">% for i</span>
+0135             <span class="comment">% Crea la matriz de carga</span>
+0136             ng = length(m);
+0137             nint = CargaSinusoidalObj.tOscilacion / CargaSinusoidalObj.dt;
+0138             nt = CargaSinusoidalObj.tAnalisis / CargaSinusoidalObj.dt; <span class="comment">% Nro de intervalos</span>
+0139             p = zeros(ng, nt);
+0140             <span class="keyword">if</span> dispinfo
+0141                 fprintf(<span class="string">'\t\t\t\tAplicando carga a nodo %s\n'</span>, CargaSinusoidalObj.nodo.obtenerEtiqueta());
+0142             <span class="keyword">end</span>
+0143             
+0144             <span class="comment">% Crea el vector de influencia</span>
+0145             rf = zeros(ng, 1);
+0146             nodoGDL = CargaSinusoidalObj.nodo.obtenerGDLIDCondensado();
+0147             
+0148             <span class="comment">% Verifica que la direccion no sea mayor que el numero de nodos</span>
+0149             <span class="keyword">if</span> length(nodoGDL) &lt; length(CargaSinusoidalObj.direccion)
+0150                 error(<span class="string">'Las direcciones de analisis superan el numero de direcciones del nodo %s'</span>, <span class="keyword">...</span>
+0151                     CargaSinusoidalObj.nodo.obtenerEtiqueta());
+0152             <span class="keyword">end</span>
 0153             
-0154             <span class="comment">% Verifica que el grado sea valido</span>
-0155             <span class="keyword">if</span> gdl == 0
-0156                 error(<span class="string">'No es posible aplicar la carga en un grado condensado del nodo %s'</span>, <span class="keyword">...</span>
-0157                     CargaPulsoObj.nodo.obtenerEtiqueta());
-0158             <span class="keyword">end</span>
-0159             
-0160             <span class="comment">% Carga sinusoidal</span>
-0161             t = linspace(0, CargaSinusoidalObj.tOscilacion, nint);
-0162             carga = zeros(1, length(t));
-0163             <span class="keyword">for</span> i = 1:length(t)
-0164                 carga(i) = CargaSinusoidalObj.amplitud * sin(CargaSinusoidalObj.w*t(i));
+0154             gdl = 0;
+0155             <span class="keyword">for</span> i = 1:length(CargaSinusoidalObj.direccion)
+0156                 <span class="keyword">if</span> CargaSinusoidalObj.direccion(i) &gt; 0
+0157                     gdl = nodoGDL(i); <span class="comment">% Obtiene el GDL asociado</span>
+0158                     <span class="keyword">if</span> gdl &gt; 0
+0159                         rf(gdl) = 1;
+0160                         <span class="keyword">if</span> dispinfo
+0161                             fprintf(<span class="string">'\t\t\t\tSe aplica la carga en el grado condensado %d\n'</span>, gdl);
+0162                         <span class="keyword">end</span>
+0163                     <span class="keyword">end</span>
+0164                 <span class="keyword">end</span>
 0165             <span class="keyword">end</span> <span class="comment">% for i</span>
-0166             <span class="keyword">for</span> i = 1:nt
-0167                 <span class="keyword">if</span> i &lt; length(t)
-0168                     p(:, i) = rf .* carga(i);
-0169                 <span class="keyword">else</span>
-0170                     <span class="keyword">break</span>;
-0171                 <span class="keyword">end</span>
-0172             <span class="keyword">end</span> <span class="comment">% for i</span>
-0173             
-0174             <span class="keyword">if</span> dispinfo
-0175                 fprintf(<span class="string">'\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n'</span>, <span class="keyword">...</span>
-0176                     i, nt, (i / nt)*100);
-0177             <span class="keyword">end</span>
-0178             
-0179         <span class="keyword">end</span> <span class="comment">% calcularCarga function</span>
-0180         
-0181         <a name="_sub2" href="#_subfunctions" class="code">function disp(CargaSinusoidalObj)</a>
-0182             <span class="comment">% disp: es un metodo de la clase CargaDinamica que se usa para imprimir en</span>
-0183             <span class="comment">% command Window la informacion de la carga del tipo sinusoidal</span>
-0184             <span class="comment">%</span>
-0185             <span class="comment">% disp(CargaSinusoidalObj)</span>
-0186             <span class="comment">%</span>
-0187             <span class="comment">% Imprime la informacion guardada en la carga (CargaSinusoidalObj) en pantalla</span>
-0188             
-0189             fprintf(<span class="string">'Propiedades carga sinusoidal:\n'</span>);
-0190             <a href="#_sub3" class="code" title="subfunction disp(CargaSinusoidalObj)">disp</a>@<a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>(CargaSinusoidalObj);
-0191             <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
-0192             
-0193         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0194         
-0195     <span class="keyword">end</span> <span class="comment">% methods CargaSinusoidal</span>
-0196     
-0197 <span class="keyword">end</span> <span class="comment">% class CargaSinusoidal</span></pre></div>
-<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+0166             
+0167             <span class="comment">% Verifica que el grado sea valido</span>
+0168             <span class="keyword">if</span> gdl == 0
+0169                 error(<span class="string">'No es posible aplicar la carga en un grado condensado del nodo %s'</span>, <span class="keyword">...</span>
+0170                     CargaPulsoObj.nodo.obtenerEtiqueta());
+0171             <span class="keyword">end</span>
+0172             
+0173             <span class="comment">% Carga sinusoidal</span>
+0174             t = linspace(0, CargaSinusoidalObj.tOscilacion, nint);
+0175             carga = zeros(1, length(t));
+0176             <span class="keyword">for</span> i = 1:length(t)
+0177                 carga(i) = CargaSinusoidalObj.amplitud * sin(CargaSinusoidalObj.w*t(i));
+0178             <span class="keyword">end</span> <span class="comment">% for i</span>
+0179             <span class="keyword">for</span> i = 1:nt
+0180                 <span class="keyword">if</span> i &lt; length(t)
+0181                     p(:, i) = rf .* carga(i);
+0182                 <span class="keyword">else</span>
+0183                     <span class="keyword">break</span>;
+0184                 <span class="keyword">end</span>
+0185             <span class="keyword">end</span> <span class="comment">% for i</span>
+0186             
+0187             <span class="keyword">if</span> dispinfo
+0188                 fprintf(<span class="string">'\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n'</span>, <span class="keyword">...</span>
+0189                     i, nt, (i / nt)*100);
+0190             <span class="keyword">end</span>
+0191             
+0192         <span class="keyword">end</span> <span class="comment">% calcularCarga function</span>
+0193         
+0194         <a name="_sub2" href="#_subfunctions" class="code">function disp(CargaSinusoidalObj)</a>
+0195             <span class="comment">% disp: es un metodo de la clase CargaDinamica que se usa para imprimir en</span>
+0196             <span class="comment">% command Window la informacion de la carga del tipo sinusoidal</span>
+0197             <span class="comment">%</span>
+0198             <span class="comment">% disp(CargaSinusoidalObj)</span>
+0199             <span class="comment">%</span>
+0200             <span class="comment">% Imprime la informacion guardada en la carga (CargaSinusoidalObj) en pantalla</span>
+0201             
+0202             fprintf(<span class="string">'Propiedades carga sinusoidal:\n'</span>);
+0203             <a href="#_sub3" class="code" title="subfunction disp(CargaSinusoidalObj)">disp</a>@<a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>(CargaSinusoidalObj);
+0204             <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
+0205             
+0206         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0207         
+0208     <span class="keyword">end</span> <span class="comment">% methods CargaSinusoidal</span>
+0209     
+0210 <span class="keyword">end</span> <span class="comment">% class CargaSinusoidal</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 13:43:37 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

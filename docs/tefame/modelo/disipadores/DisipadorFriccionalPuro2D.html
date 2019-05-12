@@ -66,21 +66,21 @@
        alpha
        Cd
   Methods:
+       actualizardDisipador(disipadorFriccionalPuro2DObj,w,carga)
+       definirGDLID(disipadorFriccionalPuro2DObj)
        disipadorFriccionalPuro2DObj = DisipadorFriccionalPuro2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
-       numeroNodos = obtenerNumeroNodos(disipadorFriccionalPuro2DObj)
-       nodosBiela = obtenerNodos(disipadorFriccionalPuro2DObj)
-       numeroGDL = obtenerNumeroGDL(disipadorFriccionalPuro2DObj)
+       disp(disipadorFriccionalPuro2DObj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorFriccionalPuro2DObj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorFriccionalPuro2DObj)
        gdlIDBiela = obtenerGDLID(disipadorFriccionalPuro2DObj)
        k_global = obtenerMatrizRigidezCoordGlobal(disipadorFriccionalPuro2DObj)
        k_local = obtenerMatrizRigidezCoordLocal(disipadorFriccionalPuro2DObj)
-       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorFriccionalPuro2DObj)
-       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorFriccionalPuro2DObj)
        l = obtenerLargo(disipadorFriccionalPuro2DObj)
-       T = obtenerMatrizTransformacion(disipadorFriccionalPuro2DObj)
-       actualizardDisipador(disipadorFriccionalPuro2DObj,w,carga)
-       definirGDLID(disipadorFriccionalPuro2DObj)
-       disp(disipadorFriccionalPuro2DObj)
+       nodosBiela = obtenerNodos(disipadorFriccionalPuro2DObj)
+       numeroGDL = obtenerNumeroGDL(disipadorFriccionalPuro2DObj)
+       numeroNodos = obtenerNumeroNodos(disipadorFriccionalPuro2DObj)
        plot(disipadorFriccionalPuro2DObj,tipoLinea,grosorLinea,colorLinea)
+       T = obtenerMatrizTransformacion(disipadorFriccionalPuro2DObj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(componenteModeloObj)
        e = equals(componenteModeloObj,obj)
@@ -141,21 +141,21 @@ This function is called by:
 0038 <span class="comment">%       alpha</span>
 0039 <span class="comment">%       Cd</span>
 0040 <span class="comment">%  Methods:</span>
-0041 <span class="comment">%       disipadorFriccionalPuro2DObj = DisipadorFriccionalPuro2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)</span>
-0042 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipadorFriccionalPuro2DObj)</span>
-0043 <span class="comment">%       nodosBiela = obtenerNodos(disipadorFriccionalPuro2DObj)</span>
-0044 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipadorFriccionalPuro2DObj)</span>
-0045 <span class="comment">%       gdlIDBiela = obtenerGDLID(disipadorFriccionalPuro2DObj)</span>
-0046 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorFriccionalPuro2DObj)</span>
-0047 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipadorFriccionalPuro2DObj)</span>
-0048 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorFriccionalPuro2DObj)</span>
-0049 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorFriccionalPuro2DObj)</span>
+0041 <span class="comment">%       actualizardDisipador(disipadorFriccionalPuro2DObj,w,carga)</span>
+0042 <span class="comment">%       definirGDLID(disipadorFriccionalPuro2DObj)</span>
+0043 <span class="comment">%       disipadorFriccionalPuro2DObj = DisipadorFriccionalPuro2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)</span>
+0044 <span class="comment">%       disp(disipadorFriccionalPuro2DObj)</span>
+0045 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorFriccionalPuro2DObj)</span>
+0046 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorFriccionalPuro2DObj)</span>
+0047 <span class="comment">%       gdlIDBiela = obtenerGDLID(disipadorFriccionalPuro2DObj)</span>
+0048 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorFriccionalPuro2DObj)</span>
+0049 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipadorFriccionalPuro2DObj)</span>
 0050 <span class="comment">%       l = obtenerLargo(disipadorFriccionalPuro2DObj)</span>
-0051 <span class="comment">%       T = obtenerMatrizTransformacion(disipadorFriccionalPuro2DObj)</span>
-0052 <span class="comment">%       actualizardDisipador(disipadorFriccionalPuro2DObj,w,carga)</span>
-0053 <span class="comment">%       definirGDLID(disipadorFriccionalPuro2DObj)</span>
-0054 <span class="comment">%       disp(disipadorFriccionalPuro2DObj)</span>
-0055 <span class="comment">%       plot(disipadorFriccionalPuro2DObj,tipoLinea,grosorLinea,colorLinea)</span>
+0051 <span class="comment">%       nodosBiela = obtenerNodos(disipadorFriccionalPuro2DObj)</span>
+0052 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipadorFriccionalPuro2DObj)</span>
+0053 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipadorFriccionalPuro2DObj)</span>
+0054 <span class="comment">%       plot(disipadorFriccionalPuro2DObj,tipoLinea,grosorLinea,colorLinea)</span>
+0055 <span class="comment">%       T = obtenerMatrizTransformacion(disipadorFriccionalPuro2DObj)</span>
 0056 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
 0057 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
 0058 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
@@ -264,6 +264,6 @@ This function is called by:
 0161     <span class="keyword">end</span> <span class="comment">% methods DisipadorFriccionalPuro2D</span>
 0162     
 0163 <span class="keyword">end</span> <span class="comment">% class DisipadorFriccionalPuro2D</span></pre></div>
-<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Sun 12-May-2019 13:43:37 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

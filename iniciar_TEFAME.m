@@ -8,7 +8,7 @@
 %|                         Universidad de Chile                         |
 %|______________________________________________________________________|
 
-TEFAME_ver = 'v1.35';
+TEFAME_ver = 'v1.40';
 
 % Agrega las carpetas de la plataforma TEFAME al PATH
 addpath('tefame');

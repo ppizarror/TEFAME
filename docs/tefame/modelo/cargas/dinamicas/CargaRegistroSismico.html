@@ -63,29 +63,36 @@
        aplicarCarga(cargaRegistroObj,factorDeCarga)
        disp(cargaRegistroObj)
   Methods SuperClass (CargaDinamica):
-       cargaRegistroObj = Carga(etiquetaCarga)
-       aplicarCarga(cargaRegistroObj)
-       disp(cargaRegistroObj)
-       guardarCarga(cargaRegistroObj,p)
-       guardarDesplazamiento(cargaRegistroObj,u)
-       guardarVelocidad(cargaRegistroObj,v)
-       guardarAceleracion(cargaRegistroObj,a)
-       amortiguamientoRayleigh(cargaRegistroObj,rayleigh)
-       usoDisipadores(cargaRegistroObj,disipador)
-       descomposicionModal(cargaRegistroObj,desmodal)
-       t = obtenerVectorTiempo(cargaRegistroObj)
-       p = obtenerCarga(cargaRegistroObj)
-       u = obtenerDesplazamiento(cargaRegistroObj)
-       u = obtenerDesplazamientoTiempo(cargaRegistroObj,gdl,tiempo)
-       v = obtenerVelocidad(cargaRegistroObj)
-       a = obtenerAceleracion(cargaRegistroObj)
-       r = usoAmortiguamientoRayleigh(cargaRegistroObj)
-       dm = usoDescomposicionModal(cargaRegistroObj)
-       disipador = usoDeDisipadores(cargaRegistroObj)
-       masa = obtenerMasa(cargaRegistroObj)
-       definirFactorUnidadMasa(cargaRegistroObj,factor)
-       definirFactorCargaMasa(cargaRegistroObj,factor)
-       nodos = obtenerNodos(cargaRegistroObj)
+       cargaDinamicaObj = Carga(etiquetaCarga)
+       desactivarCarga(cargaDinamicaObj)
+       p = calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)
+       disp(cargaDinamicaObj)
+       y = cargaActivada(cargaDinamicaObj)
+       guardarCarga(cargaDinamicaObj,p)
+       guardarDesplazamiento(cargaDinamicaObj,u)
+       guardarVelocidad(cargaDinamicaObj,v)
+       guardarAceleracion(cargaDinamicaObj,a)
+       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
+       usoDisipadores(cargaDinamicaObj,disipador)
+       descomposicionModal(cargaDinamicaObj,desmodal)
+       c = cargaSumaMasa(cargaDinamicaObj)
+       t = obtenerVectorTiempo(cargaDinamicaObj)
+       p = obtenerCarga(cargaDinamicaObj)
+       u = obtenerDesplazamiento(cargaDinamicaObj)
+       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
+       v = obtenerVelocidad(cargaDinamicaObj)
+       a = obtenerAceleracion(cargaDinamicaObj)
+       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
+       dm = usoDescomposicionModal(cargaDinamicaObj)
+       disipador = usoDeDisipadores(cargaDinamicaObj)
+       masa = obtenerMasa(cargaDinamicaObj)
+       definirFactorUnidadMasa(cargaDinamicaObj,factor)
+       definirFactorCargaMasa(cargaDinamicaObj,factor)
+       nodos = obtenerNodos(cargaDinamicaObj)
+       activarCarga(cargaDinamicaObj)
+       establecerCargaCalculada(cargaDinamicaObj)
+       c = cargaCalculada(cargaDinamicaObj)
+       bloquearCargaMasa(cargaDinamicaObj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(componenteModeloObj)
        e = equals(componenteModeloObj,obj)
@@ -143,179 +150,186 @@ This function is called by:
 0035 <span class="comment">%       aplicarCarga(cargaRegistroObj,factorDeCarga)</span>
 0036 <span class="comment">%       disp(cargaRegistroObj)</span>
 0037 <span class="comment">%  Methods SuperClass (CargaDinamica):</span>
-0038 <span class="comment">%       cargaRegistroObj = Carga(etiquetaCarga)</span>
-0039 <span class="comment">%       aplicarCarga(cargaRegistroObj)</span>
-0040 <span class="comment">%       disp(cargaRegistroObj)</span>
-0041 <span class="comment">%       guardarCarga(cargaRegistroObj,p)</span>
-0042 <span class="comment">%       guardarDesplazamiento(cargaRegistroObj,u)</span>
-0043 <span class="comment">%       guardarVelocidad(cargaRegistroObj,v)</span>
-0044 <span class="comment">%       guardarAceleracion(cargaRegistroObj,a)</span>
-0045 <span class="comment">%       amortiguamientoRayleigh(cargaRegistroObj,rayleigh)</span>
-0046 <span class="comment">%       usoDisipadores(cargaRegistroObj,disipador)</span>
-0047 <span class="comment">%       descomposicionModal(cargaRegistroObj,desmodal)</span>
-0048 <span class="comment">%       t = obtenerVectorTiempo(cargaRegistroObj)</span>
-0049 <span class="comment">%       p = obtenerCarga(cargaRegistroObj)</span>
-0050 <span class="comment">%       u = obtenerDesplazamiento(cargaRegistroObj)</span>
-0051 <span class="comment">%       u = obtenerDesplazamientoTiempo(cargaRegistroObj,gdl,tiempo)</span>
-0052 <span class="comment">%       v = obtenerVelocidad(cargaRegistroObj)</span>
-0053 <span class="comment">%       a = obtenerAceleracion(cargaRegistroObj)</span>
-0054 <span class="comment">%       r = usoAmortiguamientoRayleigh(cargaRegistroObj)</span>
-0055 <span class="comment">%       dm = usoDescomposicionModal(cargaRegistroObj)</span>
-0056 <span class="comment">%       disipador = usoDeDisipadores(cargaRegistroObj)</span>
-0057 <span class="comment">%       masa = obtenerMasa(cargaRegistroObj)</span>
-0058 <span class="comment">%       definirFactorUnidadMasa(cargaRegistroObj,factor)</span>
-0059 <span class="comment">%       definirFactorCargaMasa(cargaRegistroObj,factor)</span>
-0060 <span class="comment">%       nodos = obtenerNodos(cargaRegistroObj)</span>
-0061 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
-0062 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
-0063 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
-0064 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
-0065 
-0066 classdef <a href="CargaRegistroSismico.html" class="code" title="">CargaRegistroSismico</a> &lt; <a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>
-0067     
-0068     properties(Access = private)
-0069         registro <span class="comment">% Cell con matrices de registro</span>
-0070         direccion <span class="comment">% Vector de direcciones</span>
-0071         rf <span class="comment">% Vector de influencia</span>
-0072         dispinfo <span class="comment">% Indica si se despliega la informacion</span>
-0073     <span class="keyword">end</span> <span class="comment">% properties CargaNodo</span>
+0038 <span class="comment">%       cargaDinamicaObj = Carga(etiquetaCarga)</span>
+0039 <span class="comment">%       desactivarCarga(cargaDinamicaObj)</span>
+0040 <span class="comment">%       p = calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)</span>
+0041 <span class="comment">%       disp(cargaDinamicaObj)</span>
+0042 <span class="comment">%       y = cargaActivada(cargaDinamicaObj)</span>
+0043 <span class="comment">%       guardarCarga(cargaDinamicaObj,p)</span>
+0044 <span class="comment">%       guardarDesplazamiento(cargaDinamicaObj,u)</span>
+0045 <span class="comment">%       guardarVelocidad(cargaDinamicaObj,v)</span>
+0046 <span class="comment">%       guardarAceleracion(cargaDinamicaObj,a)</span>
+0047 <span class="comment">%       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)</span>
+0048 <span class="comment">%       usoDisipadores(cargaDinamicaObj,disipador)</span>
+0049 <span class="comment">%       descomposicionModal(cargaDinamicaObj,desmodal)</span>
+0050 <span class="comment">%       c = cargaSumaMasa(cargaDinamicaObj)</span>
+0051 <span class="comment">%       t = obtenerVectorTiempo(cargaDinamicaObj)</span>
+0052 <span class="comment">%       p = obtenerCarga(cargaDinamicaObj)</span>
+0053 <span class="comment">%       u = obtenerDesplazamiento(cargaDinamicaObj)</span>
+0054 <span class="comment">%       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)</span>
+0055 <span class="comment">%       v = obtenerVelocidad(cargaDinamicaObj)</span>
+0056 <span class="comment">%       a = obtenerAceleracion(cargaDinamicaObj)</span>
+0057 <span class="comment">%       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)</span>
+0058 <span class="comment">%       dm = usoDescomposicionModal(cargaDinamicaObj)</span>
+0059 <span class="comment">%       disipador = usoDeDisipadores(cargaDinamicaObj)</span>
+0060 <span class="comment">%       masa = obtenerMasa(cargaDinamicaObj)</span>
+0061 <span class="comment">%       definirFactorUnidadMasa(cargaDinamicaObj,factor)</span>
+0062 <span class="comment">%       definirFactorCargaMasa(cargaDinamicaObj,factor)</span>
+0063 <span class="comment">%       nodos = obtenerNodos(cargaDinamicaObj)</span>
+0064 <span class="comment">%       activarCarga(cargaDinamicaObj)</span>
+0065 <span class="comment">%       establecerCargaCalculada(cargaDinamicaObj)</span>
+0066 <span class="comment">%       c = cargaCalculada(cargaDinamicaObj)</span>
+0067 <span class="comment">%       bloquearCargaMasa(cargaDinamicaObj)</span>
+0068 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
+0069 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
+0070 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
+0071 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
+0072 
+0073 classdef <a href="CargaRegistroSismico.html" class="code" title="">CargaRegistroSismico</a> &lt; <a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>
 0074     
-0075     methods
-0076         
-0077         <a name="_sub0" href="#_subfunctions" class="code">function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tInicio, tAnalisis)</a>
-0078             <span class="comment">% CargaRegistroSismico: es el constructor de la clase CargaNodo</span>
-0079             <span class="comment">%</span>
-0080             <span class="comment">% cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,tInicio,tAnalisis)</span>
-0081             <span class="comment">%</span>
-0082             <span class="comment">% Crea una carga del tipo registro de aceleracion, requiere un</span>
-0083             <span class="comment">% vector registro [Nxr], una direccion [1xr] y un tiempo maximo</span>
-0084             <span class="comment">% de analisis, dt lo obtiene del registro</span>
-0085             
-0086             <span class="keyword">if</span> nargin == 0
-0087                 etiquetaCargaRegistroSismico = <span class="string">''</span>;
-0088             <span class="keyword">end</span> <span class="comment">% if</span>
-0089             
-0090             <span class="keyword">if</span> length(registro) ~= length(direccion)
-0091                 error(<span class="string">'Cell registro no tiene igual dimension a las direcciones de analisis'</span>);
-0092             <span class="keyword">end</span>
-0093             <span class="keyword">if</span> ~<a href="../../../../tefame/utils/verificarVectorDireccion.html" class="code" title="function y = verificarVectorDireccion(vec, ndg)">verificarVectorDireccion</a>(direccion, length(direccion))
-0094                 error(<span class="string">'Vector direccion mal definido'</span>);
-0095             <span class="keyword">end</span>
+0075     properties(Access = private)
+0076         registro <span class="comment">% Cell con matrices de registro</span>
+0077         direccion <span class="comment">% Vector de direcciones</span>
+0078         rf <span class="comment">% Vector de influencia</span>
+0079         dispinfo <span class="comment">% Indica si se despliega la informacion</span>
+0080     <span class="keyword">end</span> <span class="comment">% properties CargaNodo</span>
+0081     
+0082     methods
+0083         
+0084         <a name="_sub0" href="#_subfunctions" class="code">function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tInicio, tAnalisis)</a>
+0085             <span class="comment">% CargaRegistroSismico: es el constructor de la clase CargaNodo</span>
+0086             <span class="comment">%</span>
+0087             <span class="comment">% cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,tInicio,tAnalisis)</span>
+0088             <span class="comment">%</span>
+0089             <span class="comment">% Crea una carga del tipo registro de aceleracion, requiere un</span>
+0090             <span class="comment">% vector registro [Nxr], una direccion [1xr] y un tiempo maximo</span>
+0091             <span class="comment">% de analisis, dt lo obtiene del registro</span>
+0092             
+0093             <span class="keyword">if</span> nargin == 0
+0094                 etiquetaCargaRegistroSismico = <span class="string">''</span>;
+0095             <span class="keyword">end</span> <span class="comment">% if</span>
 0096             
-0097             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase Carga</span>
-0098             cargaRegistroObj = cargaRegistroObj@<a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>(etiquetaCargaRegistroSismico);
-0099             
-0100             <span class="comment">% Chequea que el registro en cada direccion no sea nulo</span>
-0101             <span class="keyword">for</span> k = 1:length(direccion)
-0102                 reg = registro{k};
-0103                 <span class="keyword">if</span> direccion(k) ~= 0 &amp;&amp; isempty(reg)
-0104                     error(<span class="string">'Registro asociado a direccion %d no puede ser nulo'</span>, k);
-0105                 <span class="keyword">end</span>
-0106             <span class="keyword">end</span> <span class="comment">% for k</span>
-0107             
-0108             <span class="comment">% Calcula el dt</span>
-0109             <span class="keyword">for</span> k = 1:length(direccion)
-0110                 <span class="keyword">if</span> direccion(k) ~= 0
-0111                     reg = registro{k};
-0112                     dt = reg(2, 1) - reg(1, 1);
-0113                     <span class="keyword">break</span>;
-0114                 <span class="keyword">end</span>
-0115             <span class="keyword">end</span> <span class="comment">% for k</span>
-0116             
-0117             <span class="comment">% Chequea que los tiempos esten bien definidos</span>
-0118             <span class="keyword">if</span> tAnalisis &lt; 0 || tInicio &lt; 0 || dt &lt;= 0
-0119                 error(<span class="string">'Tiempo de carga mal definido'</span>);
-0120             <span class="keyword">end</span>
-0121             
-0122             <span class="comment">% Guarda el registro</span>
-0123             cargaRegistroObj.registro = registro;
-0124             cargaRegistroObj.direccion = direccion;
-0125             cargaRegistroObj.tAnalisis = tAnalisis;
-0126             cargaRegistroObj.tInicio = tInicio;
-0127             cargaRegistroObj.dt = dt;
-0128             cargaRegistroObj.nodosCarga = {};
-0129             
-0130         <span class="keyword">end</span> <span class="comment">% CargaRegistroSismico constructor</span>
-0131         
-0132         <a name="_sub1" href="#_subfunctions" class="code">function p = calcularCarga(cargaRegistroSismicoObj, ~, m, r, dispinfo)</a>
-0133             <span class="comment">% calcularCarga: es un metodo de la clase Carga que se usa para</span>
-0134             <span class="comment">% calcular la carga a aplicar</span>
-0135             <span class="comment">%</span>
-0136             <span class="comment">% calcularCarga(cargaRegistroSismicoObj,factor,m,r)</span>
-0137             
-0138             <span class="comment">% Guarda datos</span>
-0139             cargaRegistroSismicoObj.rf = r;
-0140             cargaRegistroSismicoObj.dispinfo = dispinfo;
-0141             
-0142             <span class="comment">% Crea la matriz de carga</span>
-0143             ng = length(m);
-0144             nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
-0145             nd = length(cargaRegistroSismicoObj.direccion);
-0146             p = zeros(ng, nt);
-0147             
-0148             <span class="comment">% Para cada aceleracion calcula la carga como -m*a</span>
-0149             <span class="keyword">for</span> k = 1:nd <span class="comment">% Recorre direccion</span>
-0150                 <span class="keyword">if</span> cargaRegistroSismicoObj.direccion(k) == 0 <span class="comment">% Salta direcciones nulas</span>
-0151                     <span class="keyword">continue</span>;
-0152                 <span class="keyword">end</span>
-0153                 reg = cargaRegistroSismicoObj.registro{k}; <span class="comment">% Registro direccion de estudio</span>
-0154                 nct = min(length(reg), nt); <span class="comment">% Numero de tiempos en los que se aplica la carga</span>
-0155                 <span class="keyword">for</span> i = 1:nct
-0156                     p(:, i) = p(:, i) - m * r(:, k) .* reg(i, 2);
-0157                 <span class="keyword">end</span> <span class="comment">% for i</span>
-0158                 <span class="keyword">if</span> dispinfo
-0159                     fprintf(<span class="string">'\t\t\t\tLa carga de la direccion %d es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n'</span>, <span class="keyword">...</span>
-0160                         k, i, nct, (i / nct)*100);
-0161                 <span class="keyword">end</span>
-0162             <span class="keyword">end</span> <span class="comment">% for k</span>
-0163             
-0164         <span class="keyword">end</span> <span class="comment">% calcularCarga function</span>
-0165         
-0166         <a name="_sub2" href="#_subfunctions" class="code">function guardarAceleracion(cargaRegistroSismicoObj, a)</a>
-0167             <span class="comment">% guardarAceleracion: Guarda la aceleracion de la carga</span>
-0168             <span class="comment">%</span>
-0169             <span class="comment">% guardarAceleracion(cargaRegistroSismicoObj,a)</span>
+0097             <span class="keyword">if</span> length(registro) ~= length(direccion)
+0098                 error(<span class="string">'Cell registro no tiene igual dimension a las direcciones de analisis'</span>);
+0099             <span class="keyword">end</span>
+0100             <span class="keyword">if</span> ~<a href="../../../../tefame/utils/verificarVectorDireccion.html" class="code" title="function y = verificarVectorDireccion(vec, ndg)">verificarVectorDireccion</a>(direccion, length(direccion))
+0101                 error(<span class="string">'Vector direccion mal definido'</span>);
+0102             <span class="keyword">end</span>
+0103             
+0104             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase Carga</span>
+0105             cargaRegistroObj = cargaRegistroObj@<a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>(etiquetaCargaRegistroSismico);
+0106             
+0107             <span class="comment">% Chequea que el registro en cada direccion no sea nulo</span>
+0108             <span class="keyword">for</span> k = 1:length(direccion)
+0109                 reg = registro{k};
+0110                 <span class="keyword">if</span> direccion(k) ~= 0 &amp;&amp; isempty(reg)
+0111                     error(<span class="string">'Registro asociado a direccion %d no puede ser nulo'</span>, k);
+0112                 <span class="keyword">end</span>
+0113             <span class="keyword">end</span> <span class="comment">% for k</span>
+0114             
+0115             <span class="comment">% Calcula el dt</span>
+0116             <span class="keyword">for</span> k = 1:length(direccion)
+0117                 <span class="keyword">if</span> direccion(k) ~= 0
+0118                     reg = registro{k};
+0119                     dt = reg(2, 1) - reg(1, 1);
+0120                     <span class="keyword">break</span>;
+0121                 <span class="keyword">end</span>
+0122             <span class="keyword">end</span> <span class="comment">% for k</span>
+0123             
+0124             <span class="comment">% Chequea que los tiempos esten bien definidos</span>
+0125             <span class="keyword">if</span> tAnalisis &lt; 0 || tInicio &lt; 0 || dt &lt;= 0
+0126                 error(<span class="string">'Tiempo de carga mal definido'</span>);
+0127             <span class="keyword">end</span>
+0128             
+0129             <span class="comment">% Guarda el registro</span>
+0130             cargaRegistroObj.registro = registro;
+0131             cargaRegistroObj.direccion = direccion;
+0132             cargaRegistroObj.tAnalisis = tAnalisis;
+0133             cargaRegistroObj.tInicio = tInicio;
+0134             cargaRegistroObj.dt = dt;
+0135             cargaRegistroObj.nodosCarga = {};
+0136             
+0137         <span class="keyword">end</span> <span class="comment">% CargaRegistroSismico constructor</span>
+0138         
+0139         <a name="_sub1" href="#_subfunctions" class="code">function p = calcularCarga(cargaRegistroSismicoObj, ~, m, r, dispinfo)</a>
+0140             <span class="comment">% calcularCarga: es un metodo de la clase Carga que se usa para</span>
+0141             <span class="comment">% calcular la carga a aplicar</span>
+0142             <span class="comment">%</span>
+0143             <span class="comment">% calcularCarga(cargaRegistroSismicoObj,factor,m,r)</span>
+0144             
+0145             <span class="comment">% Guarda datos</span>
+0146             cargaRegistroSismicoObj.rf = r;
+0147             cargaRegistroSismicoObj.dispinfo = dispinfo;
+0148             
+0149             <span class="comment">% Crea la matriz de carga</span>
+0150             ng = length(m);
+0151             nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
+0152             nd = length(cargaRegistroSismicoObj.direccion);
+0153             p = zeros(ng, nt);
+0154             
+0155             <span class="comment">% Para cada aceleracion calcula la carga como -m*a</span>
+0156             <span class="keyword">for</span> k = 1:nd <span class="comment">% Recorre direccion</span>
+0157                 <span class="keyword">if</span> cargaRegistroSismicoObj.direccion(k) == 0 <span class="comment">% Salta direcciones nulas</span>
+0158                     <span class="keyword">continue</span>;
+0159                 <span class="keyword">end</span>
+0160                 reg = cargaRegistroSismicoObj.registro{k}; <span class="comment">% Registro direccion de estudio</span>
+0161                 nct = min(length(reg), nt); <span class="comment">% Numero de tiempos en los que se aplica la carga</span>
+0162                 <span class="keyword">for</span> i = 1:nct
+0163                     p(:, i) = p(:, i) - m * r(:, k) .* reg(i, 2);
+0164                 <span class="keyword">end</span> <span class="comment">% for i</span>
+0165                 <span class="keyword">if</span> dispinfo
+0166                     fprintf(<span class="string">'\t\t\t\tLa carga de la direccion %d es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n'</span>, <span class="keyword">...</span>
+0167                         k, i, nct, (i / nct)*100);
+0168                 <span class="keyword">end</span>
+0169             <span class="keyword">end</span> <span class="comment">% for k</span>
 0170             
-0171             <span class="comment">% Registro sismico suma la aceleracion del registro para cada</span>
-0172             <span class="comment">% tiempo en cada columna de &lt;a&gt;</span>
-0173             <span class="keyword">if</span> cargaRegistroSismicoObj.dispinfo
-0174                 fprintf(<span class="string">'\n\t\t\tSumando aceleracion del registro a la calculada por Newmark'</span>);
-0175             <span class="keyword">end</span>
-0176             nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
-0177             nd = length(cargaRegistroSismicoObj.direccion);
-0178             
-0179             <span class="keyword">for</span> k = 1:nd <span class="comment">% Recorre direccion</span>
-0180                 <span class="keyword">if</span> cargaRegistroSismicoObj.direccion(k) == 0 <span class="comment">% Salta direcciones nulas</span>
-0181                     <span class="keyword">continue</span>;
-0182                 <span class="keyword">end</span>
-0183                 reg = cargaRegistroSismicoObj.registro{k}; <span class="comment">% Registro direccion de estudio</span>
-0184                 nct = min(length(reg), nt); <span class="comment">% Numero de tiempos en los que se aplica la carga</span>
-0185                 <span class="keyword">for</span> i = 1:nct
-0186                     a(:, i) = a(:, i) + cargaRegistroSismicoObj.rf(:, k) .* reg(i, 2);
-0187                 <span class="keyword">end</span> <span class="comment">% for i</span>
-0188             <span class="keyword">end</span> <span class="comment">% for k</span>
-0189             cargaRegistroSismicoObj.sol_a = a;
-0190             
-0191         <span class="keyword">end</span> <span class="comment">% guardarAceleracion function</span>
-0192         
-0193         <a name="_sub3" href="#_subfunctions" class="code">function disp(cargaRegistroSismicoObj)</a>
-0194             <span class="comment">% disp: es un metodo de la clase CargaRegistroSismico que se usa para imprimir en</span>
-0195             <span class="comment">% command Window la informacion de la carga del tipo registro</span>
-0196             <span class="comment">% sismico</span>
-0197             <span class="comment">%</span>
-0198             <span class="comment">% disp(cargaRegistroSismicoObj)</span>
-0199             <span class="comment">%</span>
-0200             <span class="comment">% Imprime la informacion guardada en la carga (cargaRegistroSismicoObj) en pantalla</span>
-0201             
-0202             fprintf(<span class="string">'Propiedades carga registro sismico:\n'</span>);
-0203             <a href="#_sub4" class="code" title="subfunction disp(cargaRegistroSismicoObj)">disp</a>@<a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>(cargaRegistroSismicoObj);
-0204             <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
-0205             
-0206         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0207         
-0208     <span class="keyword">end</span> <span class="comment">% methods CargaRegistroSismico</span>
-0209     
-0210 <span class="keyword">end</span> <span class="comment">% class CargaRegistroSismico</span></pre></div>
-<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+0171         <span class="keyword">end</span> <span class="comment">% calcularCarga function</span>
+0172         
+0173         <a name="_sub2" href="#_subfunctions" class="code">function guardarAceleracion(cargaRegistroSismicoObj, a)</a>
+0174             <span class="comment">% guardarAceleracion: Guarda la aceleracion de la carga</span>
+0175             <span class="comment">%</span>
+0176             <span class="comment">% guardarAceleracion(cargaRegistroSismicoObj,a)</span>
+0177             
+0178             <span class="comment">% Registro sismico suma la aceleracion del registro para cada</span>
+0179             <span class="comment">% tiempo en cada columna de &lt;a&gt;</span>
+0180             <span class="keyword">if</span> cargaRegistroSismicoObj.dispinfo
+0181                 fprintf(<span class="string">'\n\t\t\tSumando aceleracion del registro a la calculada por Newmark'</span>);
+0182             <span class="keyword">end</span>
+0183             nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
+0184             nd = length(cargaRegistroSismicoObj.direccion);
+0185             
+0186             <span class="keyword">for</span> k = 1:nd <span class="comment">% Recorre direccion</span>
+0187                 <span class="keyword">if</span> cargaRegistroSismicoObj.direccion(k) == 0 <span class="comment">% Salta direcciones nulas</span>
+0188                     <span class="keyword">continue</span>;
+0189                 <span class="keyword">end</span>
+0190                 reg = cargaRegistroSismicoObj.registro{k}; <span class="comment">% Registro direccion de estudio</span>
+0191                 nct = min(length(reg), nt); <span class="comment">% Numero de tiempos en los que se aplica la carga</span>
+0192                 <span class="keyword">for</span> i = 1:nct
+0193                     a(:, i) = a(:, i) + cargaRegistroSismicoObj.rf(:, k) .* reg(i, 2);
+0194                 <span class="keyword">end</span> <span class="comment">% for i</span>
+0195             <span class="keyword">end</span> <span class="comment">% for k</span>
+0196             cargaRegistroSismicoObj.sol_a = a;
+0197             
+0198         <span class="keyword">end</span> <span class="comment">% guardarAceleracion function</span>
+0199         
+0200         <a name="_sub3" href="#_subfunctions" class="code">function disp(cargaRegistroSismicoObj)</a>
+0201             <span class="comment">% disp: es un metodo de la clase CargaRegistroSismico que se usa para imprimir en</span>
+0202             <span class="comment">% command Window la informacion de la carga del tipo registro</span>
+0203             <span class="comment">% sismico</span>
+0204             <span class="comment">%</span>
+0205             <span class="comment">% disp(cargaRegistroSismicoObj)</span>
+0206             <span class="comment">%</span>
+0207             <span class="comment">% Imprime la informacion guardada en la carga (cargaRegistroSismicoObj) en pantalla</span>
+0208             
+0209             fprintf(<span class="string">'Propiedades carga registro sismico:\n'</span>);
+0210             <a href="#_sub4" class="code" title="subfunction disp(cargaRegistroSismicoObj)">disp</a>@<a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>(cargaRegistroSismicoObj);
+0211             <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
+0212             
+0213         <span class="keyword">end</span> <span class="comment">% disp function</span>
+0214         
+0215     <span class="keyword">end</span> <span class="comment">% methods CargaRegistroSismico</span>
+0216     
+0217 <span class="keyword">end</span> <span class="comment">% class CargaRegistroSismico</span></pre></div>
+<hr><address>Generated on Sun 12-May-2019 13:43:37 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

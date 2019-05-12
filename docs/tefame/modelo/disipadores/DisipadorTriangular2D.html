@@ -68,21 +68,21 @@
        alpha
        Cd
   Methods:
+       actualizarDisipador(disipadorTriangular2DObj,w,carga)
+       definirGDLID(disipadorTriangular2DObj)
        disipadorTriangular2DObj = DisipadorTriangular2D(etiquetaDisipador,nodo1Obj,nodo2Obj,k1,k2)
-       numeroNodos = obtenerNumeroNodos(disipadorTriangular2DObj)
-       nodosBiela = obtenerNodos(disipadorTriangular2DObj)
-       numeroGDL = obtenerNumeroGDL(disipadorTriangular2DObj)
+       disp(disipadorTriangular2DObj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorTriangular2DObj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorTriangular2DObj)
        gdlIDBiela = obtenerGDLID(disipadorTriangular2DObj)
        k_global = obtenerMatrizRigidezCoordGlobal(disipadorTriangular2DObj)
        k_local = obtenerMatrizRigidezCoordLocal(disipadorTriangular2DObj)
-       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorTriangular2DObj)
-       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorTriangular2DObj)
        l = obtenerLargo(disipadorTriangular2DObj)
-       T = obtenerMatrizTransformacion(disipadorTriangular2DObj)
-       definirGDLID(disipadorTriangular2DObj)
-       disp(disipadorTriangular2DObj)
+       nodosBiela = obtenerNodos(disipadorTriangular2DObj)
+       numeroGDL = obtenerNumeroGDL(disipadorTriangular2DObj)
+       numeroNodos = obtenerNumeroNodos(disipadorTriangular2DObj)
        plot(disipadorTriangular2DObj,tipoLinea,grosorLinea,colorLinea)
-       actualizarDisipador(disipadorTriangular2DObj,w,carga)
+       T = obtenerMatrizTransformacion(disipadorTriangular2DObj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(componenteModeloObj)
        e = equals(componenteModeloObj,obj)
@@ -145,21 +145,21 @@ This function is called by:
 0040 <span class="comment">%       alpha</span>
 0041 <span class="comment">%       Cd</span>
 0042 <span class="comment">%  Methods:</span>
-0043 <span class="comment">%       disipadorTriangular2DObj = DisipadorTriangular2D(etiquetaDisipador,nodo1Obj,nodo2Obj,k1,k2)</span>
-0044 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipadorTriangular2DObj)</span>
-0045 <span class="comment">%       nodosBiela = obtenerNodos(disipadorTriangular2DObj)</span>
-0046 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipadorTriangular2DObj)</span>
-0047 <span class="comment">%       gdlIDBiela = obtenerGDLID(disipadorTriangular2DObj)</span>
-0048 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorTriangular2DObj)</span>
-0049 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipadorTriangular2DObj)</span>
-0050 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorTriangular2DObj)</span>
-0051 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorTriangular2DObj)</span>
+0043 <span class="comment">%       actualizarDisipador(disipadorTriangular2DObj,w,carga)</span>
+0044 <span class="comment">%       definirGDLID(disipadorTriangular2DObj)</span>
+0045 <span class="comment">%       disipadorTriangular2DObj = DisipadorTriangular2D(etiquetaDisipador,nodo1Obj,nodo2Obj,k1,k2)</span>
+0046 <span class="comment">%       disp(disipadorTriangular2DObj)</span>
+0047 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorTriangular2DObj)</span>
+0048 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorTriangular2DObj)</span>
+0049 <span class="comment">%       gdlIDBiela = obtenerGDLID(disipadorTriangular2DObj)</span>
+0050 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorTriangular2DObj)</span>
+0051 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipadorTriangular2DObj)</span>
 0052 <span class="comment">%       l = obtenerLargo(disipadorTriangular2DObj)</span>
-0053 <span class="comment">%       T = obtenerMatrizTransformacion(disipadorTriangular2DObj)</span>
-0054 <span class="comment">%       definirGDLID(disipadorTriangular2DObj)</span>
-0055 <span class="comment">%       disp(disipadorTriangular2DObj)</span>
+0053 <span class="comment">%       nodosBiela = obtenerNodos(disipadorTriangular2DObj)</span>
+0054 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipadorTriangular2DObj)</span>
+0055 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipadorTriangular2DObj)</span>
 0056 <span class="comment">%       plot(disipadorTriangular2DObj,tipoLinea,grosorLinea,colorLinea)</span>
-0057 <span class="comment">%       actualizarDisipador(disipadorTriangular2DObj,w,carga)</span>
+0057 <span class="comment">%       T = obtenerMatrizTransformacion(disipadorTriangular2DObj)</span>
 0058 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
 0059 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
 0060 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
@@ -270,6 +270,6 @@ This function is called by:
 0165     <span class="keyword">end</span> <span class="comment">% methods DisipadorTriangular2D</span>
 0166     
 0167 <span class="keyword">end</span> <span class="comment">% class DisipadorTriangular2D</span></pre></div>
-<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Sun 12-May-2019 13:43:37 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

@@ -56,18 +56,18 @@
 
   Properties (Access=private):
   Methods:
+       definirGDLID(disipador2DObj)
        disipador2DObj = Disipador2D(etiquetaDisipador)
-       numeroNodos = obtenerNumeroNodos(disipador2DObj)
-       numeroGDL = obtenerNumeroGDL(disipador2DObj)
+       disp(disipador2DObj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(disipador2DObj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(disipador2DObj)
        gdlIDDisipador = obtenerGDLID(disipador2DObj)
        k_global = obtenerMatrizRigidezCoordGlobal(disipador2DObj)
        k_local = obtenerMatrizRigidezCoordLocal(disipador2DObj)
-       fr_global = obtenerFuerzaResistenteCoordGlobal(disipador2DObj)
-       fr_local = obtenerFuerzaResistenteCoordLocal(disipador2DObj)
-       T = obtenerMatrizTransformacion(disipador2DObj)
-       definirGDLID(disipador2DObj)
-       disp(disipador2DObj)
+       numeroGDL = obtenerNumeroGDL(disipador2DObj)
+       numeroNodos = obtenerNumeroNodos(disipador2DObj)
        plot(disipador2DObj,tipoLinea,grosorLinea,colorLinea)
+       T = obtenerMatrizTransformacion(disipador2DObj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(componenteModeloObj)
        e = equals(componenteModeloObj,obj)
@@ -118,18 +118,18 @@ This function is called by:
 0028 <span class="comment">%</span>
 0029 <span class="comment">%  Properties (Access=private):</span>
 0030 <span class="comment">%  Methods:</span>
-0031 <span class="comment">%       disipador2DObj = Disipador2D(etiquetaDisipador)</span>
-0032 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipador2DObj)</span>
-0033 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipador2DObj)</span>
-0034 <span class="comment">%       gdlIDDisipador = obtenerGDLID(disipador2DObj)</span>
-0035 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipador2DObj)</span>
-0036 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipador2DObj)</span>
-0037 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipador2DObj)</span>
-0038 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipador2DObj)</span>
-0039 <span class="comment">%       T = obtenerMatrizTransformacion(disipador2DObj)</span>
-0040 <span class="comment">%       definirGDLID(disipador2DObj)</span>
-0041 <span class="comment">%       disp(disipador2DObj)</span>
-0042 <span class="comment">%       plot(disipador2DObj,tipoLinea,grosorLinea,colorLinea)</span>
+0031 <span class="comment">%       definirGDLID(disipador2DObj)</span>
+0032 <span class="comment">%       disipador2DObj = Disipador2D(etiquetaDisipador)</span>
+0033 <span class="comment">%       disp(disipador2DObj)</span>
+0034 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipador2DObj)</span>
+0035 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipador2DObj)</span>
+0036 <span class="comment">%       gdlIDDisipador = obtenerGDLID(disipador2DObj)</span>
+0037 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipador2DObj)</span>
+0038 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipador2DObj)</span>
+0039 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipador2DObj)</span>
+0040 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipador2DObj)</span>
+0041 <span class="comment">%       plot(disipador2DObj,tipoLinea,grosorLinea,colorLinea)</span>
+0042 <span class="comment">%       T = obtenerMatrizTransformacion(disipador2DObj)</span>
 0043 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
 0044 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
 0045 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
@@ -290,6 +290,6 @@ This function is called by:
 0200     <span class="keyword">end</span> <span class="comment">% methods Disipador2D</span>
 0201     
 0202 <span class="keyword">end</span> <span class="comment">% class Disipador2D</span></pre></div>
-<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Sun 12-May-2019 13:43:37 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

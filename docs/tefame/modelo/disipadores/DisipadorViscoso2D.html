@@ -65,20 +65,20 @@
        alpha
        Cd
   Methods:
+       definirGDLID(disipadorViscoso2DObj)
        disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
-       numeroNodos = obtenerNumeroNodos(disipadorViscoso2DObj)
-       nodosBiela = obtenerNodos(disipadorViscoso2DObj)
-       numeroGDL = obtenerNumeroGDL(disipadorViscoso2DObj)
+       disp(disipadorViscoso2DObj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorViscoso2DObj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorViscoso2DObj)
        gdlIDBiela = obtenerGDLID(disipadorViscoso2DObj)
        k_global = obtenerMatrizRigidezCoordGlobal(disipadorViscoso2DObj)
        k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)
-       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorViscoso2DObj)
-       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorViscoso2DObj)
        l = obtenerLargo(disipadorViscoso2DObj)
-       T = obtenerMatrizTransformacion(disipadorViscoso2DObj)
-       definirGDLID(disipadorViscoso2DObj)
-       disp(disipadorViscoso2DObj)
+       nodosBiela = obtenerNodos(disipadorViscoso2DObj)
+       numeroGDL = obtenerNumeroGDL(disipadorViscoso2DObj)
+       numeroNodos = obtenerNumeroNodos(disipadorViscoso2DObj)
        plot(disipadorViscoso2DObj,tipoLinea,grosorLinea,colorLinea)
+       T = obtenerMatrizTransformacion(disipadorViscoso2DObj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(componenteModeloObj)
        e = equals(componenteModeloObj,obj)
@@ -138,20 +138,20 @@ This function is called by:
 0037 <span class="comment">%       alpha</span>
 0038 <span class="comment">%       Cd</span>
 0039 <span class="comment">%  Methods:</span>
-0040 <span class="comment">%       disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)</span>
-0041 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipadorViscoso2DObj)</span>
-0042 <span class="comment">%       nodosBiela = obtenerNodos(disipadorViscoso2DObj)</span>
-0043 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipadorViscoso2DObj)</span>
-0044 <span class="comment">%       gdlIDBiela = obtenerGDLID(disipadorViscoso2DObj)</span>
-0045 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorViscoso2DObj)</span>
-0046 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)</span>
-0047 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorViscoso2DObj)</span>
-0048 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorViscoso2DObj)</span>
-0049 <span class="comment">%       l = obtenerLargo(disipadorViscoso2DObj)</span>
-0050 <span class="comment">%       T = obtenerMatrizTransformacion(disipadorViscoso2DObj)</span>
-0051 <span class="comment">%       definirGDLID(disipadorViscoso2DObj)</span>
-0052 <span class="comment">%       disp(disipadorViscoso2DObj)</span>
-0053 <span class="comment">%       plot(disipadorViscoso2DObj,tipoLinea,grosorLinea,colorLinea)</span>
+0040 <span class="comment">%       definirGDLID(disipadorViscoso2DObj)</span>
+0041 <span class="comment">%       disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)</span>
+0042 <span class="comment">%       disp(disipadorViscoso2DObj)</span>
+0043 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorViscoso2DObj)</span>
+0044 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorViscoso2DObj)</span>
+0045 <span class="comment">%       gdlIDBiela = obtenerGDLID(disipadorViscoso2DObj)</span>
+0046 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorViscoso2DObj)</span>
+0047 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)</span>
+0048 <span class="comment">%       l = obtenerLargo(disipadorViscoso2DObj)</span>
+0049 <span class="comment">%       nodosBiela = obtenerNodos(disipadorViscoso2DObj)</span>
+0050 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipadorViscoso2DObj)</span>
+0051 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipadorViscoso2DObj)</span>
+0052 <span class="comment">%       plot(disipadorViscoso2DObj,tipoLinea,grosorLinea,colorLinea)</span>
+0053 <span class="comment">%       T = obtenerMatrizTransformacion(disipadorViscoso2DObj)</span>
 0054 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
 0055 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
 0056 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
@@ -270,6 +270,6 @@ This function is called by:
 0169     <span class="keyword">end</span> <span class="comment">% methods DisipadorViscoso2D</span>
 0170     
 0171 <span class="keyword">end</span> <span class="comment">% class DisipadorViscoso2D</span></pre></div>
-<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Sun 12-May-2019 13:43:37 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

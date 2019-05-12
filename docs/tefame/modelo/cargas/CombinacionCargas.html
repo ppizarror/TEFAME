@@ -58,16 +58,16 @@
   Properties (Access=private):
        cargas
   Methods:
+       a = obtenerAceleracion(combinacionCargaObj)
        combinacionCargaObj = CombinacionCargas(etiquetaCombinacion,cargas)
+       disp(combinacionCargaObj)
+       p = obtenerCarga(combinacionCargaObj)
+       t = dt(combinacionCargaObj)
        t = obtenerVectorTiempo(combinacionCargaObj)
        t = tAnalisis(combinacionCargaObj)
-       t = dt(combinacionCargaObj)
-       p = obtenerCarga(combinacionCargaObj)
        u = obtenerDesplazamiento(combinacionCargaObj)
        u = obtenerDesplazamientoTiempo(combinacionCargaObj,gdl,tiempo)
        v = obtenerVelocidad(combinacionCargaObj)
-       a = obtenerAceleracion(combinacionCargaObj)
-       disp(combinacionCargaObj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(componenteModeloObj)
        e = equals(componenteModeloObj,obj)
@@ -120,16 +120,16 @@ This function is called by:
 0030 <span class="comment">%  Properties (Access=private):</span>
 0031 <span class="comment">%       cargas</span>
 0032 <span class="comment">%  Methods:</span>
-0033 <span class="comment">%       combinacionCargaObj = CombinacionCargas(etiquetaCombinacion,cargas)</span>
-0034 <span class="comment">%       t = obtenerVectorTiempo(combinacionCargaObj)</span>
-0035 <span class="comment">%       t = tAnalisis(combinacionCargaObj)</span>
-0036 <span class="comment">%       t = dt(combinacionCargaObj)</span>
-0037 <span class="comment">%       p = obtenerCarga(combinacionCargaObj)</span>
-0038 <span class="comment">%       u = obtenerDesplazamiento(combinacionCargaObj)</span>
-0039 <span class="comment">%       u = obtenerDesplazamientoTiempo(combinacionCargaObj,gdl,tiempo)</span>
-0040 <span class="comment">%       v = obtenerVelocidad(combinacionCargaObj)</span>
-0041 <span class="comment">%       a = obtenerAceleracion(combinacionCargaObj)</span>
-0042 <span class="comment">%       disp(combinacionCargaObj)</span>
+0033 <span class="comment">%       a = obtenerAceleracion(combinacionCargaObj)</span>
+0034 <span class="comment">%       combinacionCargaObj = CombinacionCargas(etiquetaCombinacion,cargas)</span>
+0035 <span class="comment">%       disp(combinacionCargaObj)</span>
+0036 <span class="comment">%       p = obtenerCarga(combinacionCargaObj)</span>
+0037 <span class="comment">%       t = dt(combinacionCargaObj)</span>
+0038 <span class="comment">%       t = obtenerVectorTiempo(combinacionCargaObj)</span>
+0039 <span class="comment">%       t = tAnalisis(combinacionCargaObj)</span>
+0040 <span class="comment">%       u = obtenerDesplazamiento(combinacionCargaObj)</span>
+0041 <span class="comment">%       u = obtenerDesplazamientoTiempo(combinacionCargaObj,gdl,tiempo)</span>
+0042 <span class="comment">%       v = obtenerVelocidad(combinacionCargaObj)</span>
 0043 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
 0044 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
 0045 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
@@ -522,6 +522,6 @@ This function is called by:
 0432     <span class="keyword">end</span> <span class="comment">% methods CombinacionCargas private</span>
 0433     
 0434 <span class="keyword">end</span> <span class="comment">% class CombinacionCargas</span></pre></div>
-<hr><address>Generated on Sun 12-May-2019 12:27:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Sun 12-May-2019 13:43:37 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

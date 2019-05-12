@@ -1,8 +1,10 @@
 /* Created by mdot for Matlab */
 digraph m2html {
   Analisis -> Analisis;
+  AnalisisEstatico -> Analisis;
   AnalisisEstatico -> AnalisisEstatico;
   AnalisisEstatico -> dispMetodoTEFAME;
+  ModalEspectral -> Analisis;
   ModalEspectral -> ModalEspectral;
   ModalEspectral -> calculoEigDirectaBarrido;
   ModalEspectral -> calculoEigEigs;
