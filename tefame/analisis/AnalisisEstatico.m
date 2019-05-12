@@ -410,6 +410,9 @@ classdef AnalisisEstatico < handle
             %   'lwElemE'       Ancho linea elemento estatico
             %   'styleElemD'    Estilo elemento deformado
             %   'lwElemD'       Ancho linea elemento deformado
+            %   'unidad'        Unidar longitud
+            %   'angAzh'        Angulo grafico 3d azimutal
+            %   'angPol'        Angulo grafico 3d polar
             
             p = inputParser;
             p.KeepUnmatched = true;
@@ -424,6 +427,9 @@ classdef AnalisisEstatico < handle
             addOptional(p, 'lwElemE', 0.5);
             addOptional(p, 'styleElemD', 'k-');
             addOptional(p, 'lwElemD', 1.25);
+            addOptional(p, 'unidad', 'm');
+            addOptional(p, 'angAzh', 45);
+            addOptional(p, 'angPol', 45);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -513,13 +519,13 @@ classdef AnalisisEstatico < handle
                 zlim(limz);
             end
             if ngdl == 2
-                xlabel('X');
-                ylabel('Y');
+                xlabel(sprintf('X (%s)', r.unidad));
+                ylabel(sprintf('Y (%s)', r.unidad));
             else
-                xlabel('X');
-                ylabel('Y');
-                zlabel('Z');
-                view(45, 45);
+                xlabel(sprintf('X (%s)', r.unidad));
+                ylabel(sprintf('Y (%s)', r.unidad));
+                zlabel(sprintf('Z (%s)', r.unidad));
+                view(r.angAzh, r.angPol);
             end
             
         end % plot function

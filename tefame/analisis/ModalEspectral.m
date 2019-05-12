@@ -505,6 +505,9 @@ classdef ModalEspectral < handle
             %   'styleDisipador'    Estilo linea disipador
             %   'lwDisipador'       Ancho linea disipador
             %   'colorDisipador'    Color del disipador
+            %   'unidad'            Unidad de longitud
+            %   '3dAngAzh'          Angulo azimutal grafico 3D
+            %   '3dAngPol'          Angulo polar grafico 3D
             
             % Establece variables iniciales
             fprintf('Generando animacion analisis modal espectral:\n');
@@ -531,6 +534,9 @@ classdef ModalEspectral < handle
             addOptional(p, 'styleDisipador', '--');
             addOptional(p, 'colorDisipador', 'r');
             addOptional(p, 'lwDisipador', 1.3);
+            addOptional(p, 'unidad', 'm');
+            addOptional(p, 'angAzh', 45);
+            addOptional(p, 'angPol', 45);
             parse(p, varargin{:});
             r = p.Results;
             modo = floor(r.modo);
@@ -650,7 +656,8 @@ classdef ModalEspectral < handle
                 plotAnimado(analisisObj, false, 0, factor, 0, limx, limy, limz, ...
                     0, 1, 1, defElem, defCarga, carga, 1, tCargaEq, mostrarEstatico, disipadores, ...
                     r.styleNodoE, r.sizeNodoE, r.styleNodoD, r.sizeNodoD, r.styleElemE, r.lwElemE, ...
-                    r.styleElemD, r.lwElemD, r.styleDisipador, r.colorDisipador, r.lwDisipador);
+                    r.styleElemD, r.lwElemD, r.styleDisipador, r.colorDisipador, r.lwDisipador, ...
+                    r.unidad, r.angAzh, r.angPol);
                 figure(plt);
                 return;
             end
@@ -711,7 +718,8 @@ classdef ModalEspectral < handle
                     1, tCargaEq, mostrarEstatico, disipadores, r.styleNodoE, ...
                     r.sizeNodoE, r.styleNodoD, r.sizeNodoD, r.styleElemE, ...
                     r.lwElemE, r.styleElemD, r.lwElemD, r.styleDisipador, ...
-                    r.colorDisipador, r.lwDisipador);
+                    r.colorDisipador, r.lwDisipador, r.unidad, ...
+                    r.angAzh, r.angPol);
                 fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
             else
                 plotAnimado(analisisObj, deformada, modo, factor, 0, ...
@@ -719,7 +727,8 @@ classdef ModalEspectral < handle
                     carga, tCargaPos(1), tCargaEq, mostrarEstatico, disipadores, ...
                     r.styleNodoE, r.sizeNodoE, r.styleNodoD, r.sizeNodoD, ...
                     r.styleElemE, r.lwElemE, r.styleElemD, r.lwElemD, ...
-                    r.styleDisipador, r.colorDisipador, r.lwDisipador);
+                    r.styleDisipador, r.colorDisipador, r.lwDisipador, ...
+                    r.unidad, r.angAzh, r.angPol);
                 hold off;
                 
                 % Obtiene el numero de cuadros
@@ -748,7 +757,8 @@ classdef ModalEspectral < handle
                             carga, tCargaPos(i), tCargaEq, mostrarEstatico, disipadores, ...
                             r.styleNodoE, r.sizeNodoE, r.styleNodoD, r.sizeNodoD, ...
                             r.styleElemE, r.lwElemE, r.styleElemD, r.lwElemD, ...
-                            r.styleDisipador, r.colorDisipador, r.lwDisipador);
+                            r.styleDisipador, r.colorDisipador, r.lwDisipador, ...
+                            r.unidad, r.angAzh, r.angPol);
                         drawnow;
                         Fr(i) = getframe(plt);
                         im = frame2im(Fr(i));
@@ -797,14 +807,24 @@ classdef ModalEspectral < handle
             
         end % plot function
         
-        function calcularDesplazamientoDrift(analisisObj, carga, xanalisis)
+        function calcularDesplazamientoDrift(analisisObj, carga, xanalisis, varargin)
             % calcularDesplazamientoDrift: Funcion que calcula el desplazamiento y
             % drift a partir de una carga
             %
-            % calcularDesplazamientoDrift(analisisObj,carga,xanalisis)
+            % calcularDesplazamientoDrift(analisisObj,carga,xanalisis,varargin)
+            %
+            % Parametros opcionales:
+            %   'unidad'        Unidad de largo
             
             % Inicia proceso
             tinicial = cputime;
+            
+            % Define variables opcionales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'unidad', 'm');
+            parse(p, varargin{:});
+            r = p.Results;
             
             % Verifica que la carga se haya calculado
             if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
@@ -857,6 +877,11 @@ classdef ModalEspectral < handle
             
             [~, s] = size(desp);
             nndrift = length(ndrift);
+            
+            if isempty(ndrift)
+                error('Posicion direccion analisis %.2f invalida', xanalisis);
+            end
+            
             despx = zeros(nndrift, s);
             driftx = zeros(nndrift-1, s);
             
@@ -903,7 +928,7 @@ classdef ModalEspectral < handle
             grid on;
             grid minor;
             xlabel('Drift (%)');
-            ylabel('Altura (m)');
+            ylabel(sprintf('Altura (%s)', r.unidad));
             title(fig_title);
             
             fig_title = sprintf('Envolvente de Desplazamiento - %s %s', ctitle, carga.obtenerEtiqueta());
@@ -912,8 +937,8 @@ classdef ModalEspectral < handle
             plot(Despplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
             grid on;
             grid minor;
-            xlabel('Desplazamiento (m)');
-            ylabel('Altura (m)');
+            xlabel(sprintf('Desplazamiento (%s)', r.unidad));
+            ylabel(sprintf('Altura (%s)', r.unidad));
             title(fig_title);
             
             % Finaliza proceso
@@ -1522,13 +1547,15 @@ classdef ModalEspectral < handle
             
         end % calcularModosEnergia function
         
-        function plotEsfuerzosElemento(analisisObj, carga, elemento, direccion, varargin)
+        function esfmax = plotEsfuerzosElemento(analisisObj, carga, elemento, direccion, varargin)
             % plotEsfuerzosElemento: Grafica los esfuerzos de un elemento
             %
-            % plotEsfuerzosElemento(analisisObj,carga,elemento,direccion,varargin)
+            % esfmax = plotEsfuerzosElemento(analisisObj,carga,elemento,direccion,varargin)
             %
             % Parametros opcionales:
             %   'tlim'      Tiempo de analisis limite
+            %   'unidadC'   Unidad corte
+            %   'unidadM'   Unidad momento
             
             % Inicia el proceso
             tinicial = cputime;
@@ -1537,6 +1564,8 @@ classdef ModalEspectral < handle
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'tlim', 0);
+            addOptional(p, 'unidadC', 'tonf');
+            addOptional(p, 'unidadM', 'tonf-m');
             parse(p, varargin{:});
             r = p.Results;
             
@@ -1573,7 +1602,8 @@ classdef ModalEspectral < handle
             end
             
             % Genera el esfuerzo por el tiempo
-            esf = zeros(1, length(t));
+            esf = zeros(analisisObj.modeloObj.obtenerNumerosGDL(), length(t));
+            esfmax = zeros(analisisObj.modeloObj.obtenerNumerosGDL(), 1);
             
             % Obtiene desplazamientos originales de los nodos del elemento
             nodos = elemento.obtenerNodos();
@@ -1599,13 +1629,13 @@ classdef ModalEspectral < handle
             diru = '';
             if dirk == 1
                 dirn = 'Axial';
-                diru = 'tonf';
+                diru = r.unidadC;
             elseif dirk == 2
                 dirn = 'Corte';
-                diru = 'tonf';
+                diru = r.unidadC;
             elseif dirk == 3
                 dirn = 'Giro';
-                diru = 'tonf*m';
+                diru = r.unidadM;
             end
             
             % Posicion del maximo
@@ -1629,20 +1659,28 @@ classdef ModalEspectral < handle
                 
                 % Obtiene la fuerza resistente
                 fr = elemento.obtenerFuerzaResistenteCoordLocal();
-                esf(i) = fr(dirk);
+                for j = 1:length(fr) / 2
+                    esf(j, i) = fr(j);
+                end % for j
                 
                 % Actualiza el maximo
-                if abs(esf(i)) > maxv
-                    maxv = abs(esf(i));
+                if abs(esf(dirk, i)) > maxv
+                    maxv = abs(esf(dirk, i));
                     maxp = i;
                 end
+                
+                for j = 1:length(esfmax)
+                    if abs(esf(j, i)) > abs(esfmax(j))
+                        esfmax(j) = esf(j, i);
+                    end
+                end % for j
                 
             end % for i
             
             % Resetea los desplazamientos originales
             for i = 1:length(nodos)
                 nodos{i}.definirDesplazamientos(despl{i});
-            end
+            end % for i
             
             % Crea el grafico
             fig_title = sprintf('%s %s - Elemento %s - Direccion %s', ...
@@ -1650,19 +1688,19 @@ classdef ModalEspectral < handle
             plt = figure('Name', fig_title, 'NumberTitle', 'off');
             movegui(plt, 'center');
             
-            plot(t, esf, '-', 'LineWidth', 1);
+            plot(t, esf(dirk, :), '-', 'LineWidth', 1);
             ylabel(sprintf('Esfuerzo (%s)', diru));
             xlabel('t (s)');
             hold on;
             
             % Grafica el maximo
-            drawVyLine(esf(maxp), 'k--', 1.25);
+            drawVyLine(esf(dirk, maxp), 'k--', 1.25);
             xlim(tlim);
             grid on;
             title(fig_title);
             
             legend({sprintf('Esfuerzo elemento: %s', carga.obtenerEtiqueta()), ...
-                sprintf('Esfuerzo maximo: %.2f (%s)', esf(maxp), diru)}, ...
+                sprintf('Esfuerzo maximo: %.2f (%s)', esf(dirk, maxp), diru)}, ...
                 'location', 'southeast');
             
             % Finaliza proceso
@@ -1679,6 +1717,8 @@ classdef ModalEspectral < handle
             %
             % Parametros opcionales:
             %   'tlim'      Tiempo de analisis limite
+            %   'unidadC'   Unidad carga
+            %   'unidadL'   Unidad longitud
             
             % Inicia proceso
             tinicial = cputime;
@@ -1695,6 +1735,8 @@ classdef ModalEspectral < handle
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'tlim', 0);
+            addOptional(p, 'unidadC', 'tonf');
+            addOptional(p, 'unidadL', 'm');
             parse(p, varargin{:});
             r = p.Results;
             
@@ -1753,7 +1795,7 @@ classdef ModalEspectral < handle
             
             subplot(4, 1, 1);
             plot(t, p_c(ng, :), 'k-', 'LineWidth', 1);
-            ylabel('carga (tonf)');
+            ylabel(sprintf('carga (%s)', r.unidadC));
             xlabel('t (s)');
             xlim(tlim);
             grid on;
@@ -1762,7 +1804,7 @@ classdef ModalEspectral < handle
             subplot(4, 1, 2);
             plot(t, u_c(ng, :), 'k-', 'LineWidth', 1);
             title('Desplazamiento');
-            ylabel('u (m)');
+            ylabel(sprintf('u (%s)', r.unidadL));
             xlabel('t (s)');
             xlim(tlim);
             grid on;
@@ -1770,7 +1812,7 @@ classdef ModalEspectral < handle
             subplot(4, 1, 3);
             plot(t, v_c(ng, :), 'k-', 'LineWidth', 1);
             title('Velocidad');
-            ylabel('v (m/s)');
+            ylabel(sprintf('v (%s/s)', r.unidadL));
             xlabel('t (s)');
             xlim(tlim);
             grid on;
@@ -1778,7 +1820,7 @@ classdef ModalEspectral < handle
             subplot(4, 1, 4);
             plot(t, a_c(ng, :), 'k-', 'LineWidth', 1);
             title('Aceleracion');
-            ylabel('a (m/s^s)');
+            ylabel(sprintf('a (%s/s^s)', r.unidadL));
             xlabel('t (s)');
             xlim(tlim);
             grid on;
@@ -2623,7 +2665,8 @@ classdef ModalEspectral < handle
                 per, cuadro, totCuadros, defElem, defCarga, carga, tcarga, tcargaEq, ...
                 mostrarEstatico, mostrarDisipadores, styleNodoE, sizeNodoE, ...
                 styleNodoD, sizeNodoD, styleElemE, lwElemE, styleElemD, lwElemD, ...
-                styleDisipador, colorDisipador, lwDisipador)
+                styleDisipador, colorDisipador, lwDisipador, unidad, ...
+                angAzh, angPol)
             % plotAnimado: Anima el grafico en funcion del numero del modo
             
             % Si se grafica la carga no se aplica el factor sin(wt)
@@ -2750,13 +2793,13 @@ classdef ModalEspectral < handle
             end
             
             if ngdl == 2
-                xlabel('X');
-                ylabel('Y');
+                xlabel(sprintf('X (%s)', unidad));
+                ylabel(sprintf('Y (%s)', unidad));
             else
-                xlabel('X');
-                ylabel('Y');
-                zlabel('Z');
-                view(45, 45);
+                xlabel(sprintf('X (%s)', unidad));
+                ylabel(sprintf('Y (%s)', unidad));
+                zlabel(sprintf('Z (%s)', unidad));
+                view(angAzh, angPol);
             end
             
         end % plotAnimado function
