@@ -829,6 +829,7 @@ classdef ModalEspectral < Analisis
                 end
             end % for i
             
+            fprintf('Calculando resultados analisis dinamico\n');
             fprintf(archivoSalida, '\n');
             fprintf(archivoSalida, '-------------------------------------------------------------------------------\n');
             fprintf(archivoSalida, 'Resultados del analisis dinamico\n');
@@ -836,26 +837,47 @@ classdef ModalEspectral < Analisis
             fprintf(archivoSalida, '\n');
             
             % Guarda las cargas maximas de los elementos
-            for i=1:length(analisisObj.modeloObj.obtenerElementos())
+            elementos = analisisObj.modeloObj.obtenerElementos();
+            
+            % Estado
+            totproc = length(elementos) * length(cargas);
+            reverse_porcent = '';
+            k = 1; % Contador total
+            
+            for i=1:length(elementos)
                 
+                fprintf(archivoSalida, 'Elemento: %s\n', elementos{i}.obtenerEtiqueta());
                 % Recorre cada carga dinamica
                 for j=1:length(cargas)
-                    fprintf(archivoSalida, 'Carga: %s\n', cargas{j}.obtenerEtiqueta());
                     
                     if ~cargas{j}.cargaCalculada()
-                        fprintf(archivoSalida, '\tCarga no fue calculada\n');
+                        fprintf(archivoSalida, '\tCarga %s no fue calculada\n', ...
+                            cargas{j}.obtenerEtiqueta());
                         continue;
                     end
                     
                     if ~cargas{j}.cargaCalculada()
-                        fprintf(archivoSalida, '\tCarga no fue calculada\n');
+                        fprintf(archivoSalida, '\tCarga %s no fue calculada\n', ...
+                            cargas{j}.obtenerEtiqueta());
                         continue;
                     end
                     
+                    fprintf(archivoSalida, '\tCarga: %s\n', cargas{j}.obtenerEtiqueta());
+                    elmEsf = analisisObj.calcularEsfuerzosElemento(cargas{j}, elementos{i}, 0);
+                    elmEsf = arrayNum2str(elmEsf);
+                    fprintf(archivoSalida, '\t\tEsfuerzos: %s\n', [elmEsf{:}]); 
+                    
+                    % Imprime estado
+                    msg = sprintf('\tCalculando ... %.1f/100', k/totproc*100);
+                    fprintf([reverse_porcent, msg]);
+                    reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
+                    k = k + 1;
                     
                 end % for j
                 
             end % for i
+            fprintf('\n');
+            dispMetodoTEFAME();
             
             % Cierra el archivo
             fclose(archivoSalida);
@@ -1627,6 +1649,7 @@ classdef ModalEspectral < Analisis
             end
             
             % Genera el esfuerzo por el tiempo
+            t = carga.obtenerVectorTiempo(); % Vector de tiempo
             esf = zeros(analisisObj.modeloObj.obtenerNumerosGDL(), length(t));
             esfmax = zeros(analisisObj.modeloObj.obtenerNumerosGDL(), 1);
             
@@ -1639,16 +1662,18 @@ classdef ModalEspectral < Analisis
             ngdl = nodos{1}.obtenerNumeroGDL();
             
             % Verifica la direccion
-            if ~(verificarVectorDireccion(direccion, nodos{1}.obtenerNumeroGDL())) || sum(direccion) ~= 1
-                error('Direccion de analisis del elemento mal definido');
-            end
             dirk = 1; % Direccion de analisis de cada elemento
-            for i = 1:length(direccion)
-                if direccion(i) == 1
-                    dirk = i;
-                    break;
+            if direccion ~= 0
+                if ~(verificarVectorDireccion(direccion, nodos{1}.obtenerNumeroGDL())) || sum(direccion) ~= 1
+                    error('Direccion de analisis del elemento mal definido');
                 end
-            end % for i
+                for i = 1:length(direccion)
+                    if direccion(i) == 1
+                        dirk = i;
+                        break;
+                    end
+                end % for i
+            end
             
             % Posicion del maximo
             maxp = 1;
@@ -2963,8 +2988,6 @@ classdef ModalEspectral < Analisis
             % Tambien se genera vector que contiene alturas de piso
             
             % Iniciando el proceso
-            
-            
             nodos = analisisObj.modeloObj.obtenerNodos();
             nnodos = length(nodos);
             

@@ -91,7 +91,7 @@ combinacionCargas{2} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEsta
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...
     'cargaDisipador', cargasDinamicas{1}, 'betaObjetivo', 0.08, 'iterDisipador', 10, ...
-    'betaGrafico', false, 'activado', true);
+    'betaGrafico', false, 'activado', false);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
@@ -101,6 +101,6 @@ analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...
 % analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 
 %% Finaliza el analisis
-modeloObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt');
-analisisObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt');
+% modeloObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt');
+% analisisObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt', cargasDinamicas);
 clear h h1 i v;
