@@ -29,7 +29,7 @@
         },
         "1": {
             "IMAGE": "https://ppizarror.com/badges/licenciamit.svg",
-            "HREF": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
+            "HREF": "https://opensource.org/licenses/MIT",
             "ALT": "MIT"
         }
     },

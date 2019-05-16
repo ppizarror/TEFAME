@@ -6,7 +6,7 @@
   TEFAME</h1>
 <p align="center">Resuelve estructuras de varios grados de libertad utilizando métodos numéricos matriciales</p>
 <div align="center"><a href="https://ppizarror.com"><img alt="@ppizarror" src="https://ppizarror.com/badges/autor.svg" /></a>
-<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><img alt="MIT" src="https://ppizarror.com/badges/licenciamit.svg" /></a>
+<a href="https://opensource.org/licenses/MIT"><img alt="MIT" src="https://ppizarror.com/badges/licenciamit.svg" /></a>
 </div><br />
 
 <p align="center">
