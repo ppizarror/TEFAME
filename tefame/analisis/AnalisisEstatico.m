@@ -121,12 +121,12 @@ classdef AnalisisEstatico < Analisis
             analisisObj.numeroGDL = contadorGDL;
             
             % Extraemos los Elementos del modelo
-            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
-            numeroElementos = length(elementoObjetos);
+            objetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(objetos);
             
             % Definimos los GDLID en los elementos para poder formar la matriz de rigidez
             for i = 1:numeroElementos
-                elementoObjetos{i}.definirGDLID();
+                objetos{i}.definirGDLID();
             end % for i
             
         end % definirNumeracionGDL function
@@ -185,18 +185,18 @@ classdef AnalisisEstatico < Analisis
             analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
             % Extraemos los Elementos y Disipadores
-            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
-            numeroElementos = length(elementoObjetos);
+            objetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(objetos);
             
             % Definimos los GDLID en los elementos
             for i = 1:numeroElementos
                 
                 % Se obienen los gdl del elemento metodo indicial
-                gdl = elementoObjetos{i}.obtenerGDLID();
-                ngdl = elementoObjetos{i}.obtenerNumeroGDL();
+                gdl = objetos{i}.obtenerGDLID();
+                ngdl = objetos{i}.obtenerNumeroGDL();
                 
                 % Se obtiene la matriz de rigidez global del elemento-i
-                k_globl_elem = elementoObjetos{i}.obtenerMatrizRigidezCoordGlobal();
+                k_globl_elem = objetos{i}.obtenerMatrizRigidezCoordGlobal();
                 
                 % Se calcula el metodo indicial
                 for r = 1:ngdl
@@ -374,10 +374,10 @@ classdef AnalisisEstatico < Analisis
                 gdl = max(gdl, ngdlid);
             end % for i
             
-            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
-            numeroElementos = length(elementoObjetos);
+            objetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(objetos);
             for i = 1:numeroElementos
-                nodoElemento = elementoObjetos{i}.obtenerNodos();
+                nodoElemento = objetos{i}.obtenerNodos();
                 numNodo = length(nodoElemento);
                 for j = 1:numNodo
                     coord = nodoElemento{j}.obtenerCoordenadas();
@@ -490,23 +490,23 @@ classdef AnalisisEstatico < Analisis
             end % for i
             
             % Grafica los elementos
-            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
-            numeroElementos = length(elementoObjetos);
+            objetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(objetos);
             
             % Definimos los GDLID en los elementos
             for i = 1:numeroElementos
                 
                 % Se obienen los gdl del elemento metodo indicial
-                nodoElemento = elementoObjetos{i}.obtenerNodos();
+                nodoElemento = objetos{i}.obtenerNodos();
                 numNodo = length(nodoElemento);
-                elementoObjetos{i}.plot({}, r.styleElemE, r.lwElemE);
+                objetos{i}.plot({}, r.styleElemE, r.lwElemE);
                 
                 if deformada && analisisObj.analisisFinalizado
                     def = cell(numNodo, 1);
                     for j = 1:numNodo
                         def{j} = factor * nodoElemento{j}.obtenerDesplazamientos();
                     end % for j
-                    elementoObjetos{i}.plot(def, r.styleElemD, r.lwElemD, defElem);
+                    objetos{i}.plot(def, r.styleElemD, r.lwElemD, defElem);
                 end
                 
             end % for i

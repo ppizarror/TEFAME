@@ -41,9 +41,9 @@
 %       u = obtenerDesplazamientoTiempo(combinacionCargaObj,gdl,tiempo)
 %       v = obtenerVelocidad(combinacionCargaObj)
 %  Methods SuperClass (ComponenteModelo):
-%       etiqueta = obtenerEtiqueta(componenteModeloObj)
-%       e = equals(componenteModeloObj,obj)
-%       objID = obtenerIDObjeto(componenteModeloObj)
+%       etiqueta = obtenerEtiqueta(obj)
+%       e = equals(obj,obj)
+%       objID = obtenerIDObjeto(obj)
 
 classdef CombinacionCargas < ComponenteModelo
     

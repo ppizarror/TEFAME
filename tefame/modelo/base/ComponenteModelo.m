@@ -32,11 +32,11 @@
 %  Properties (Access=private):
 %       etiquetaID
 %  Methods:
-%       componenteModeloObj = ComponenteModelo(etiqueta)
-%       etiqueta = obtenerEtiqueta(componenteModeloObj)
-%       objID = obtenerIDObjeto(componenteModeloObj)
-%       disp(componenteModeloObj)
-%       e = equals(componenteModeloObj,obj)
+%       obj = ComponenteModelo(etiqueta)
+%       etiqueta = obtenerEtiqueta(obj)
+%       objID = obtenerIDObjeto(obj)
+%       disp(obj)
+%       e = equals(obj,obj)
 
 classdef ComponenteModelo < handle
     
@@ -50,10 +50,10 @@ classdef ComponenteModelo < handle
     
     methods
         
-        function componenteModeloObj = ComponenteModelo(etiqueta)
+        function obj = ComponenteModelo(etiqueta)
             % ComponenteModelo: es el constructor de la clase ComponenteModelo
             %
-            % componenteModeloObj = ComponenteModelo(etiqueta)
+            % obj = ComponenteModelo(etiqueta)
             %
             % Crea un objeto de la clase ComponenteModelo, con un identificador
             % unico (etiqueta)
@@ -64,28 +64,28 @@ classdef ComponenteModelo < handle
             end
             
             % Se guarda la etiqueta
-            componenteModeloObj.etiquetaID = etiqueta;
+            obj.etiquetaID = etiqueta;
             
             % Crea el ID
-            componenteModeloObj.objectID = char(java.util.UUID.randomUUID);
+            obj.objectID = char(java.util.UUID.randomUUID);
             
         end % ComponenteModelo constructor
         
-        function etiqueta = obtenerEtiqueta(componenteModeloObj)
+        function etiqueta = obtenerEtiqueta(obj)
             % obtenerEtiqueta: es un metodo de la clase ComponenteModelo que se
             % usa para obtener la etiqueta que identifica el componente del
             % modelo
             %
-            % etiqueta = obtenerEtiqueta(componenteModeloObj)
+            % etiqueta = obtenerEtiqueta(obj)
             %
             % Entrega la etiqueta o identificar (etiqueta) que tiene el
-            % ComponenteModelo (componenteModeloObj)
+            % ComponenteModelo (obj)
             
-            etiqueta = componenteModeloObj.etiquetaID;
+            etiqueta = obj.etiquetaID;
             
         end % obtenerEtiqueta function
         
-        function disp(componenteModeloObj)
+        function disp(obj)
             % disp: es un metodo de la clase ComponenteModelo que se usa para
             % imprimir en command Window la informacion del ComponenteModelo
             %
@@ -95,8 +95,8 @@ classdef ComponenteModelo < handle
             % del modelo
             
             % Se procede a imprimir en pantalla la etiqueta
-            etiquetaStr = componenteModeloObj.etiquetaID;
-            if (isnumeric(componenteModeloObj.etiquetaID) == 1)
+            etiquetaStr = obj.etiquetaID;
+            if (isnumeric(obj.etiquetaID) == 1)
                 etiquetaStr = num2str(etiquetaStr);
             end
             fprintf('\tEtiqueta: %s\n', etiquetaStr);
@@ -104,21 +104,21 @@ classdef ComponenteModelo < handle
             
         end % disp function
         
-        function e = equals(componenteModeloObj, obj)
+        function e = equals(obj, obj)
             % equals: Verifica si dos objetos son iguales
             %
-            % equals(componenteModeloObj,obj)
+            % equals(obj,obj)
             
-            e = strcmp(componenteModeloObj.objectID, obj.objectID);
+            e = strcmp(obj.objectID, obj.objectID);
             
         end % equals function
         
-        function objID = obtenerIDObjeto(componenteModeloObj)
+        function objID = obtenerIDObjeto(obj)
             % obtenerIDObjeto: Retorna el ID del objeto
             %
-            % objID = obtenerIDObjeto(componenteModeloObj)
+            % objID = obtenerIDObjeto(obj)
             
-            objID = componenteModeloObj.objectID;
+            objID = obj.objectID;
             
         end % obtenerIDObjeto function
         

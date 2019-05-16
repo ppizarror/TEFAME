@@ -28,7 +28,7 @@
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment"> ______________________________________________________________________
 |                                                                      |
-|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
+|          TEFAME - Toolbox para Elementos Finitos y Analisis          |
 |                  Matricial de Estructuras en MATLAB                  |
 |                                                                      |
 |                   Area  de Estructuras y Geotecnia                   |
@@ -73,9 +73,9 @@
        definirFactorCargaMasa(cargaNodoObj,factor)
        nodos = obtenerNodos(cargaNodoObj)
   Methods SuperClass (ComponenteModelo):
-       etiqueta = obtenerEtiqueta(componenteModeloObj)
-       e = equals(componenteModeloObj,obj)
-       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+       etiqueta = obtenerEtiqueta(obj)
+       e = equals(obj,obj)
+       objID = obtenerIDObjeto(obj)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
@@ -87,145 +87,9 @@ This function is called by:
 <li><a href="CargaNodo.html" class="code" title="">CargaNodo</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
-<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
-<ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="#_sub1" class="code">function cargaNodoObj = CargaNodo(etiquetaCargaNodo, nodoObjeto, cargaNodo)</a></li><li><a href="#_sub2" class="code">function masa = obtenerMasa(cargaNodoObj)</a></li><li><a href="#_sub3" class="code">function aplicarCarga(cargaNodoObj, factorDeCarga)</a></li><li><a href="#_sub4" class="code">function disp(cargaNodoObj)</a></li></ul>
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
-0002 <span class="comment">%|                                                                      |</span>
-0003 <span class="comment">%|          TEFAME - Toolbox para Elementos Finitos y Analisis          |</span>
-0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
-0005 <span class="comment">%|                                                                      |</span>
-0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
-0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
-0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
-0009 <span class="comment">%|                         Universidad de Chile                         |</span>
-0010 <span class="comment">%|                                                                      |</span>
-0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
-0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
-0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
-0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
-0015 <span class="comment">%| MATLAB.                                                              |</span>
-0016 <span class="comment">%|______________________________________________________________________|</span>
-0017 <span class="comment">% ______________________________________________________________________</span>
-0018 <span class="comment">%|                                                                      |</span>
-0019 <span class="comment">%| Clase CargaNodo                                                      |</span>
-0020 <span class="comment">%|                                                                      |</span>
-0021 <span class="comment">%| Este archivo contiene la definicion de la Clase CargaNodo            |</span>
-0022 <span class="comment">%| CargaNodo  es  una subclase  de la  clase  Nodo  y corresponde  a la |</span>
-0023 <span class="comment">%| representacion de una carga nodal en el metodo de elementos  finitos |</span>
-0024 <span class="comment">%| o analisis matricial de estructuras.                                 |</span>
-0025 <span class="comment">%| La clase CargaNodo es una clase que contiene el nodo al que se le va |</span>
-0026 <span class="comment">%| aplicar la carga y el valor de esta carga.                           |</span>
-0027 <span class="comment">%|                                                                      |</span>
-0028 <span class="comment">%| Programado: FR                                                       |</span>
-0029 <span class="comment">%| Fecha: 05/08/2015                                                    |</span>
-0030 <span class="comment">%|                                                                      |</span>
-0031 <span class="comment">%| Modificado por: FR - 24/10/2016                                      |</span>
-0032 <span class="comment">%|                 Pablo Pizarro @ppizarror - 10/04/2019                |</span>
-0033 <span class="comment">%|______________________________________________________________________|</span>
-0034 <span class="comment">%</span>
-0035 <span class="comment">%  Properties (Access=private):</span>
-0036 <span class="comment">%       nodoObj</span>
-0037 <span class="comment">%       vectorCarga</span>
-0038 <span class="comment">%  Methods:</span>
-0039 <span class="comment">%       cargaNodoObj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)</span>
-0040 <span class="comment">%       aplicarCarga(cargaNodoObj,factorDeCarga)</span>
-0041 <span class="comment">%       disp(cargaNodoObj)</span>
-0042 <span class="comment">%  Methods SuperClass (CargaEstatica):</span>
-0043 <span class="comment">%       masa = obtenerMasa(cargaNodoObj)</span>
-0044 <span class="comment">%       definirFactorUnidadMasa(cargaNodoObj,factor)</span>
-0045 <span class="comment">%       definirFactorCargaMasa(cargaNodoObj,factor)</span>
-0046 <span class="comment">%       nodos = obtenerNodos(cargaNodoObj)</span>
-0047 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
-0048 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
-0049 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
-0050 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
-0051 
-0052 classdef <a href="CargaNodo.html" class="code" title="">CargaNodo</a> &lt; <a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>
-0053     
-0054     properties(Access = private)
-0055         nodoObj <span class="comment">% Variable que guarda el Nodo que se le va a aplicar la carga</span>
-0056         vectorCarga <span class="comment">% Variable que guarda el vector de cargas a aplicar</span>
-0057     <span class="keyword">end</span> <span class="comment">% properties CargaNodo</span>
-0058     
-0059     methods
-0060         
-0061         <a name="_sub0" href="#_subfunctions" class="code">function cargaNodoObj = CargaNodo(etiquetaCargaNodo, nodoObjeto, cargaNodo)</a>
-0062             <span class="comment">% CargaNodo: es el constructor de la clase CargaNodo</span>
-0063             <span class="comment">%</span>
-0064             <span class="comment">% cargaNodoObj = CargaNodo(etiquetaCargaNodo,nodoObjeto,cargaNodo)</span>
-0065             <span class="comment">%</span>
-0066             <span class="comment">% Crea un objeto de la clase CargaNodo, con un identificador unico</span>
-0067             <span class="comment">% (etiquetaCargaNodo), guarda el nodo que sera cargado y el vector</span>
-0068             <span class="comment">% con los valores de la carga a aplicar</span>
-0069             
-0070             <span class="keyword">if</span> nargin == 0
-0071                 etiquetaCargaNodo = <span class="string">''</span>;
-0072                 nodoObjeto = [];
-0073                 cargaNodo = [];
-0074             <span class="keyword">end</span> <span class="comment">% if</span>
-0075             
-0076             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase</span>
-0077             <span class="comment">% CargaEstatica</span>
-0078             cargaNodoObj = cargaNodoObj@<a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>(etiquetaCargaNodo);
-0079             
-0080             <span class="comment">% Guarda objetos</span>
-0081             cargaNodoObj.nodoObj = nodoObjeto;
-0082             cargaNodoObj.nodosCarga = {nodoObjeto};
-0083             
-0084             <span class="keyword">if</span> size(cargaNodo, 1) == 1
-0085                 cargaNodoObj.vectorCarga = cargaNodo';
-0086             <span class="keyword">else</span>
-0087                 cargaNodoObj.vectorCarga = cargaNodo;
-0088             <span class="keyword">end</span> <span class="comment">% if</span>
-0089             
-0090         <span class="keyword">end</span> <span class="comment">% CargaNodo constructor</span>
-0091         
-0092         <a name="_sub1" href="#_subfunctions" class="code">function masa = obtenerMasa(cargaNodoObj)</a>
-0093             <span class="comment">% obtenerMasa: Obtiene la masa asociada a la carga</span>
-0094             <span class="comment">%</span>
-0095             <span class="comment">% masa = obtenerMasa(cargaNodoObj)</span>
-0096             
-0097             masa = abs(sum(cargaNodoObj.vectorCarga)) .* (cargaNodoObj.factorCargaMasa * cargaNodoObj.factorUnidadMasa);
-0098             
-0099         <span class="keyword">end</span> <span class="comment">% obtenerMasa function</span>
-0100         
-0101         <a name="_sub2" href="#_subfunctions" class="code">function aplicarCarga(cargaNodoObj, factorDeCarga)</a>
-0102             <span class="comment">% aplicarCarga: es un metodo de la clase CargaNodo que se usa para aplicar</span>
-0103             <span class="comment">% la carga sobre un nodo</span>
-0104             <span class="comment">%</span>
-0105             <span class="comment">% aplicarCarga(cargaNodoObj,factorDeCarga)</span>
-0106             <span class="comment">%</span>
-0107             <span class="comment">% Aplica el vector de carga que esta guardada en el nodo que corresponde</span>
-0108             <span class="comment">% amplificada por el factor (factorDeCarga)</span>
-0109             
-0110             cargaNodoObj.nodoObj.agregarCarga(factorDeCarga*cargaNodoObj.vectorCarga);
-0111             
-0112         <span class="keyword">end</span> <span class="comment">% aplicarCarga function</span>
-0113         
-0114         <a name="_sub3" href="#_subfunctions" class="code">function disp(cargaNodoObj)</a>
-0115             <span class="comment">% disp: es un metodo de la clase Carga que se usa para imprimir en</span>
-0116             <span class="comment">% command Window la informacion de la carga aplicada sobre el nodo</span>
-0117             <span class="comment">%</span>
-0118             <span class="comment">% disp(cargaNodoObj)</span>
-0119             <span class="comment">%</span>
-0120             <span class="comment">% Imprime la informacion guardada en la carga nodal (cargaNodoObj) en pantalla</span>
-0121             
-0122             fprintf(<span class="string">'Propiedades carga nodo:\n'</span>);
-0123             <a href="#_sub4" class="code" title="subfunction disp(cargaNodoObj)">disp</a>@<a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>(cargaNodoObj);
-0124             
-0125             numGDL = length(cargaNodoObj.cargas);
-0126             cargaNodo = <a href="../../../../tefame/lib/arrayNum2str.html" class="code" title="function textCell = arrayNum2str(a, num)">arrayNum2str</a>(cargaNodoObj.cargas, numGDL);
-0127             fprintf(<span class="string">'Cargas: %s\n'</span>, [cargaNodo{:}]);
-0128             <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
-0129             
-0130         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0131         
-0132     <span class="keyword">end</span> <span class="comment">% methods CargaNodo</span>
-0133     
-0134 <span class="keyword">end</span> <span class="comment">% class CargaNodo</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

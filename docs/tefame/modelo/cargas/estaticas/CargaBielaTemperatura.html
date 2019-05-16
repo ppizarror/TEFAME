@@ -28,7 +28,7 @@
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment"> ______________________________________________________________________
 |                                                                      |
-|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
+|          TEFAME - Toolbox para Elementos Finitos y Analisis          |
 |                  Matricial de Estructuras en MATLAB                  |
 |                                                                      |
 |                   Area  de Estructuras y Geotecnia                   |
@@ -74,9 +74,9 @@
        definirFactorCargaMasa(cargaBielaTemperaturaObj,factor)
        nodos = obtenerNodos(cargaBielaTemperaturaObj)
   Methods SuperClass (ComponenteModelo):
-       etiqueta = obtenerEtiqueta(componenteModeloObj)
-       e = equals(componenteModeloObj,obj)
-       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+       etiqueta = obtenerEtiqueta(obj)
+       e = equals(obj,obj)
+       objID = obtenerIDObjeto(obj)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
@@ -88,173 +88,9 @@ This function is called by:
 <li><a href="CargaBielaTemperatura.html" class="code" title="">CargaBielaTemperatura</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
-<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
-<ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="#_sub1" class="code">function cargaBielaTemperaturaObj = CargaBielaTemperatura(etiquetaCarga, elemObjeto, deltaTemperatura, alpha)</a></li><li><a href="#_sub2" class="code">function c = calcularCarga(cargaBielaTemperaturaObj)</a></li><li><a href="#_sub3" class="code">function masa = obtenerMasa(cargaBielaTemperaturaObj)</a></li><li><a href="#_sub4" class="code">function aplicarCarga(cargaBielaTemperaturaObj, factorDeCarga)</a></li><li><a href="#_sub5" class="code">function disp(cargaBielaTemperaturaObj)</a></li></ul>
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
-0002 <span class="comment">%|                                                                      |</span>
-0003 <span class="comment">%|          TEFAME - Toolbox para Elementos Finitos y Analisis          |</span>
-0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
-0005 <span class="comment">%|                                                                      |</span>
-0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
-0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
-0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
-0009 <span class="comment">%|                         Universidad de Chile                         |</span>
-0010 <span class="comment">%|                                                                      |</span>
-0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
-0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
-0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
-0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
-0015 <span class="comment">%| MATLAB.                                                              |</span>
-0016 <span class="comment">%|______________________________________________________________________|</span>
-0017 <span class="comment">% ______________________________________________________________________</span>
-0018 <span class="comment">%|                                                                      |</span>
-0019 <span class="comment">%| Clase CargaBielaTemperatura                                          |</span>
-0020 <span class="comment">%|                                                                      |</span>
-0021 <span class="comment">%| Este archivo contiene la definicion de la Clase CargaBielaTemperatura|</span>
-0022 <span class="comment">%| CargaBielaTemperatura es una subclase de la clase Carga y corresponde|</span>
-0023 <span class="comment">%| a la representacion de una carga producto de un incremento de la     |</span>
-0024 <span class="comment">%| temperatura en una biela, que genera esfuerzos axiales dependiendo de|</span>
-0025 <span class="comment">%| dT.                                                                  |</span>
-0026 <span class="comment">%| La clase CargaBielaTemperatura es una clase que contiene el elemento |</span>
-0027 <span class="comment">%| al que se le va a aplicar la diferencia de temperatura y el coefici- |</span>
-0028 <span class="comment">%| ente de dilatacion del material alpha.                               |</span>
-0029 <span class="comment">%|                                                                      |</span>
-0030 <span class="comment">%| Programado: Pablo Pizarro @ppizarror.com                             |</span>
-0031 <span class="comment">%| Fecha: 12/06/2018                                                    |</span>
-0032 <span class="comment">%|______________________________________________________________________|</span>
-0033 <span class="comment">%</span>
-0034 <span class="comment">%  Properties (Access=private):</span>
-0035 <span class="comment">%       elemObj</span>
-0036 <span class="comment">%       deltaTemepratura</span>
-0037 <span class="comment">%       alpha</span>
-0038 <span class="comment">%       carga</span>
-0039 <span class="comment">%  Methods:</span>
-0040 <span class="comment">%       cargaBielaTemperaturaObj = CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)</span>
-0041 <span class="comment">%       aplicarCarga(cargaBielaTemperaturaObj,factorDeCarga)</span>
-0042 <span class="comment">%       disp(cargaBielaTemperaturaObj)</span>
-0043 <span class="comment">%  Methods SuperClass (CargaEstatica):</span>
-0044 <span class="comment">%       masa = obtenerMasa(cargaBielaTemperaturaObj)</span>
-0045 <span class="comment">%       definirFactorUnidadMasa(cargaBielaTemperaturaObj,factor)</span>
-0046 <span class="comment">%       definirFactorCargaMasa(cargaBielaTemperaturaObj,factor)</span>
-0047 <span class="comment">%       nodos = obtenerNodos(cargaBielaTemperaturaObj)</span>
-0048 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
-0049 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
-0050 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
-0051 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
-0052 
-0053 classdef <a href="CargaBielaTemperatura.html" class="code" title="">CargaBielaTemperatura</a> &lt; <a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>
-0054     
-0055     properties(Access = private)
-0056         elemObj <span class="comment">% Variable que guarda el elemento que se le va a aplicar la carga</span>
-0057         deltaTemperatura <span class="comment">% Diferencia de temperatura aplicada al material</span>
-0058         alpha <span class="comment">% Coeficiente de dilatacion termica de la biela</span>
-0059         carga <span class="comment">% Carga generada por la temperatura</span>
-0060     <span class="keyword">end</span> <span class="comment">% properties CargaBielaTemperatura</span>
-0061     
-0062     methods
-0063         
-0064         <a name="_sub0" href="#_subfunctions" class="code">function cargaBielaTemperaturaObj = CargaBielaTemperatura(etiquetaCarga, elemObjeto, deltaTemperatura, alpha)</a>
-0065             <span class="comment">% CargaBielaTemperatura: es el constructor de la clase CargaBielaTemperatura</span>
-0066             <span class="comment">%</span>
-0067             <span class="comment">% cargaBielaTemperaturaObj=CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)</span>
-0068             <span class="comment">%</span>
-0069             <span class="comment">% Crea un objeto de la clase CargaBielaTemperatura, en donde toma como atributo</span>
-0070             <span class="comment">% el objeto a aplicar la carga, la diferencia de temperatura y</span>
-0071             <span class="comment">% el coeficiente de dilatacion termica del material (alpha)</span>
-0072             
-0073             <span class="keyword">if</span> nargin == 0
-0074                 etiquetaCarga = <span class="string">''</span>;
-0075                 deltaTemperatura = 0;
-0076                 alpha = 0;
-0077             <span class="keyword">end</span> <span class="comment">% if</span>
-0078             
-0079             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase</span>
-0080             <span class="comment">% CargaEstatica</span>
-0081             cargaBielaTemperaturaObj = cargaBielaTemperaturaObj@<a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>(etiquetaCarga);
-0082             
-0083             <span class="comment">% Guarda los valores</span>
-0084             cargaBielaTemperaturaObj.deltaTemperatura = deltaTemperatura;
-0085             cargaBielaTemperaturaObj.alpha = alpha;
-0086             cargaBielaTemperaturaObj.elemObj = elemObjeto;
-0087             cargaBielaTemperaturaObj.nodosCarga = elemObjeto.obtenerNodos();
-0088             
-0089             <span class="comment">% Crea la carga</span>
-0090             cargaBielaTemperaturaObj.carga = elemObjeto.obtenerAE() * deltaTemperatura * alpha;
-0091             
-0092         <span class="keyword">end</span> <span class="comment">% CargaBielaTemperatura constructor</span>
-0093         
-0094         <a name="_sub1" href="#_subfunctions" class="code">function c = calcularCarga(cargaBielaTemperaturaObj)</a>
-0095             <span class="comment">% calcularCarga: Calcula la carga</span>
-0096             
-0097             c = cargaBielaTemperaturaObj.carga;
-0098             
-0099         <span class="keyword">end</span> <span class="comment">% calcularCarga function</span>
-0100         
-0101         <a name="_sub2" href="#_subfunctions" class="code">function masa = obtenerMasa(cargaBielaTemperaturaObj)</a>
-0102             <span class="comment">% obtenerMasa: Obtiene la masa asociada a la carga</span>
-0103             <span class="comment">%</span>
-0104             <span class="comment">% masa = obtenerMasa(cargaBielaTemperaturaObj)</span>
-0105             
-0106             c = cargaBielaTemperaturaObj.calcularCarga();
-0107             masa =  abs(c).* (cargaBielaTemperaturaObj.factorCargaMasa * cargaBielaTemperaturaObj.factorUnidadMasa);
-0108             
-0109         <span class="keyword">end</span> <span class="comment">% obtenerMasa function</span>
-0110         
-0111         <a name="_sub3" href="#_subfunctions" class="code">function aplicarCarga(cargaBielaTemperaturaObj, factorDeCarga)</a>
-0112             <span class="comment">% aplicarCarga: es un metodo de la clase CargaBielaTemperatura</span>
-0113             <span class="comment">% que se usa para aplicar la carga en los nodos</span>
-0114             <span class="comment">%</span>
-0115             <span class="comment">% aplicarCarga(cargaVigaPuntualObj,factorDeCarga)</span>
-0116             
-0117             <span class="comment">% Obtiene el angulo de la Biela</span>
-0118             theta = cargaBielaTemperaturaObj.elemObj.obtenerAngulo();
-0119             
-0120             <span class="comment">% Carga sin cambiar el angulo</span>
-0121             c = cargaBielaTemperaturaObj.calcularCarga();
-0122             
-0123             <span class="comment">% Genera las cargas nodales</span>
-0124             vectorCarga1 = factorDeCarga * [-c * cos(theta), -c * sin(theta)]';
-0125             vectorCarga2 = factorDeCarga * [c * cos(theta), c * sin(theta)]';
-0126             cargaBielaTemperaturaObj.elemObj.sumarCargaTemperaturaReaccion( <span class="keyword">...</span>
-0127                 factorDeCarga*[vectorCarga1(1), vectorCarga1(2), vectorCarga2(1), vectorCarga2(2)]');
-0128             
-0129             <span class="comment">% Aplica vectores de carga</span>
-0130             nodos = cargaBielaTemperaturaObj.elemObj.obtenerNodos();
-0131             nodos{1}.agregarCarga(vectorCarga1);
-0132             nodos{2}.agregarCarga(vectorCarga2);
-0133             
-0134         <span class="keyword">end</span> <span class="comment">% aplicarCarga function</span>
-0135         
-0136         <a name="_sub4" href="#_subfunctions" class="code">function disp(cargaBielaTemperaturaObj)</a>
-0137             <span class="comment">% disp: es un metodo de la clase CargaBielaTemperatura que se usa para imprimir en</span>
-0138             <span class="comment">% command Window la informacion de la carga generada en los</span>
-0139             <span class="comment">% nodos fruto de la diferencia de temperatura y el coeficiente</span>
-0140             <span class="comment">% del material</span>
-0141             <span class="comment">%</span>
-0142             <span class="comment">% disp(cargaBielaTemperaturaObj)</span>
-0143             <span class="comment">%</span>
-0144             <span class="comment">% Imprime la informacion guardada en la carga fruto de la</span>
-0145             <span class="comment">% diferencia de temperatura de la Biela (cargaBielaTemperaturaObj)</span>
-0146             <span class="comment">% en pantalla</span>
-0147             
-0148             fprintf(<span class="string">'Propiedades carga biela temperatura:\n'</span>);
-0149             <a href="#_sub5" class="code" title="subfunction disp(cargaBielaTemperaturaObj)">disp</a>@<a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>(cargaBielaTemperaturaObj);
-0150             
-0151             <span class="comment">% Obtiene la etiqueta del elemento</span>
-0152             etiqueta = cargaBielaTemperaturaObj.elemObj.obtenerEtiqueta();
-0153             
-0154             fprintf(<span class="string">'\tCarga: %.3f aplicada en Elemento: %s producto de una diferencia de temperatura: %.3f\n'</span>, <span class="keyword">...</span>
-0155                 cargaBielaTemperaturaObj.carga, etiqueta, cargaBielaTemperaturaObj.deltaTemperatura);
-0156             <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
-0157             
-0158         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0159         
-0160     <span class="keyword">end</span> <span class="comment">% methods CargaBielaTemperatura</span>
-0161     
-0162 <span class="keyword">end</span> <span class="comment">% class CargaBielaTemperatura</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

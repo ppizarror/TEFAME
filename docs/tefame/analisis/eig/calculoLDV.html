@@ -2,9 +2,9 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of calculoEigIterDirecta</title>
-  <meta name="keywords" content="calculoEigIterDirecta">
-  <meta name="description" content="calculoEigIterDirecta: Calcula los valores y vectores propios del sistema">
+  <title>Description of calculoLDV</title>
+  <meta name="keywords" content="calculoLDV">
+  <meta name="description" content="calculoLDV: Esta funcion genera los vectores de Ritz Dependientes de la">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -16,38 +16,39 @@
 <body>
 <a name="_top"></a>
 <!-- # tefame --><!-- ../menu.html analisis --><!-- menu.html eig -->
-<h1>calculoEigIterDirecta
+<h1>calculoLDV
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="box"><strong>calculoEigIterDirecta: Calcula los valores y vectores propios del sistema</strong></div>
+<div class="box"><strong>calculoLDV: Esta funcion genera los vectores de Ritz Dependientes de la</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="box"><strong>function [v, w, error] = calculoEigIterDirecta(M, K, tol) </strong></div>
+<div class="box"><strong>function [phi, wn] = calculoLDV(M, K, F, nritz) </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"> calculoEigIterDirecta: Calcula los valores y vectores propios del sistema
- usando el algoritmo de iteracion directo
+<div class="fragment"><pre class="comment"> calculoLDV: Esta funcion genera los vectores de Ritz Dependientes de la
+ carga
 
- [w,v,error] = calculoEigIterDirecta(M,K,tol)
+ [phi,T] = calculoLDV(M , K , F , nritz)
 
  Parametros:
    M, K        Matriz masa y rigidez
-   tol         Tolerancia calculo
-
+   F           Matriz cuyas columnas son vectores de forma de las cargas
+               externas
+   nritz       Numero de vectores de Ritz a obtener para cada condicion de
+               carga
  Salida:
    w           Matriz vectores propios
-   v           Valores propios
-   error       Vector error de iteraciones</pre></div>
+   v           Valores propios</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="modonorm.html" class="code" title="function [phi] = modonorm(phi, M, opt)">modonorm</a>	modonorm: Normaliza formas modales</li></ul>
+<li><a href="GSM.html" class="code" title="function [V] = GSM(V, M, V_b)">GSM</a>	GSM: Gram - Shmidt Modificado</li><li><a href="modonorm.html" class="code" title="function [phi] = modonorm(phi, M, opt)">modonorm</a>	modonorm: Normaliza formas modales</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="../../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li></ul>
+</ul>
 <!-- crossreference -->
 
 

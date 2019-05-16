@@ -42,9 +42,9 @@
 %       aplicarRestriccion(restriccionNodoObj)
 %       disp(restriccionNodoObj)
 %  Methods Suplerclass (ComponenteModelo):
-%       etiqueta = obtenerEtiqueta(componenteModeloObj)
-%       e = equals(componenteModeloObj,obj)
-%       objID = obtenerIDObjeto(componenteModeloObj)
+%       etiqueta = obtenerEtiqueta(obj)
+%       e = equals(obj,obj)
+%       objID = obtenerIDObjeto(obj)
 
 classdef RestriccionNodo < ComponenteModelo
     

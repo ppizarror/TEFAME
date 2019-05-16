@@ -60,80 +60,9 @@ This function is called by:
 </ul>
 <!-- crossreference -->
 
-<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="#_sub1" class="code">function TmrFcn(src, event, handles)</a></li><li><a href="#_sub2" class="code">function CloseFigure(src, event, handles)</a></li></ul>
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function gifplayer(gif_image, delay_length)</a>
-0002 <span class="comment">% The function displays any animated GIF's in a figure window</span>
-0003 <span class="comment">% Demo : gifplayer; %plays the animated crystal.gif file</span>
-0004 <span class="comment">%</span>
-0005 <span class="comment">% Usage:</span>
-0006 <span class="comment">% ex: gifplayer('animated.gif',0.1); %name of the gif file and the delay in</span>
-0007 <span class="comment">% which to update the frames in the GIF file</span>
-0008 <span class="comment">%</span>
-0009 <span class="comment">% Vihang Patil, Oct 2006</span>
-0010 <span class="comment">% Copyright 2006-2007 Vihang Patil</span>
-0011 <span class="comment">% Email: vihang_patil@yahoo.com</span>
-0012 <span class="comment">% Created: 17th Oct 2006</span>
-0013 <span class="comment">%</span>
-0014 <span class="comment">%% Revision:</span>
-0015 <span class="comment">% Date: 19th Oct 2006. Removed the setappdata and getappdata and used</span>
-0016 <span class="comment">% functions handling property. Multiple Gif's can be called upon which can</span>
-0017 <span class="comment">% be opened in new figure window.</span>
-0018 <span class="comment">% ex: figure;gifplayer;</span>
-0019 <span class="comment">% ex: figure;gifplayer('abcd.gif',0.1); and so on</span>
-0020 <span class="comment">%</span>
-0021 <span class="comment">% P.N: PLease make sure to close the existing window in which the gif is</span>
-0022 <span class="comment">% currently being played and open a separate window for another GIF</span>
-0023 <span class="comment">% image.If another GIF is opened in the same window then the first timer</span>
-0024 <span class="comment">% continues to run even if you close the figure window</span>
-0025 
-0026 <span class="keyword">if</span> nargin &lt; 1
-0027     gif_image = <span class="string">'crystal.gif'</span>;
-0028     delay_length = 0.2; <span class="comment">% frame will be updated after 0.2 sec</span>
-0029 <span class="keyword">elseif</span> nargin &lt; 2
-0030     delay_length = 0.2; <span class="comment">% frame will be updated after 0.2 sec</span>
-0031 <span class="keyword">end</span>
-0032 
-0033 <span class="keyword">try</span> <span class="comment">%\\ r11a</span>
-0034     [pathstr, name, ext, versn] = fileparts(gif_image);
-0035 <span class="keyword">catch</span> <span class="comment">%\\ r11b</span>
-0036     [pathstr, name, ext] = fileparts(gif_image);
-0037 <span class="keyword">end</span>
-0038 
-0039 <span class="keyword">if</span> strcmp(ext, <span class="string">'.gif'</span>)
-0040     [handles.im, handles.map] = imread(gif_image, <span class="string">'frames'</span>, <span class="string">'all'</span>); <span class="comment">%read all frames of an gif image</span>
-0041     handles.len = size(handles.im, 4); <span class="comment">% number of frames in the gif image</span>
-0042     handles.h1 = imshow(handles.im(:, :, :, 1), handles.map); <span class="comment">% loads the first image along with its colormap</span>
-0043     handles.guifig = gcf;
-0044     handles.count = 1; <span class="comment">% initialise counter to update the next frame</span>
-0045     handles.tmr = timer(<span class="string">'TimerFcn'</span>, {@<a href="#_sub1" class="code" title="subfunction TmrFcn(src, event, handles)">TmrFcn</a>, handles.guifig}, <span class="string">'BusyMode'</span>, <span class="string">'Queue'</span>, <span class="keyword">...</span>
-0046         <span class="string">'ExecutionMode'</span>, <span class="string">'FixedRate'</span>, <span class="string">'Period'</span>, delay_length);<span class="comment">% form a Timer Object</span>
-0047     guidata(handles.guifig, handles);
-0048     start(handles.tmr); <span class="comment">% starts Timer</span>
-0049 <span class="keyword">else</span>
-0050     error(<span class="string">'Not a GIF image.Load only GIF images'</span>); <span class="comment">% If image is not GIF, show this error</span>
-0051 <span class="keyword">end</span>
-0052 set(gcf, <span class="string">'CloseRequestFcn'</span>, {@<a href="#_sub2" class="code" title="subfunction CloseFigure(src, event, handles)">CloseFigure</a>, handles});
-0053 
-0054 <a name="_sub1" href="#_subfunctions" class="code">function TmrFcn(src, event, handles)</a>
-0055 <span class="comment">% Timer Function to animate the GIF</span>
-0056 
-0057 handles = guidata(handles);
-0058 set(handles.h1, <span class="string">'CData'</span>, handles.im(:, :, :, handles.count)); <span class="comment">% update the frame in the axis</span>
-0059 handles.count = handles.count + 1; <span class="comment">% increment to next frame</span>
-0060 <span class="keyword">if</span> handles.count &gt; handles.len <span class="comment">%if the last frame is achieved intialise to first frame</span>
-0061     handles.count = 1;
-0062 <span class="keyword">end</span>
-0063 guidata(handles.guifig, handles);
-0064 
-0065 <a name="_sub2" href="#_subfunctions" class="code">function CloseFigure(src, event, handles)</a>
-0066 <span class="comment">% Function CloseFigure(varargin)</span>
-0067 stop(handles.tmr);
-0068 delete(handles.tmr); <span class="comment">% removes the timer from memory</span>
-0069 closereq;</pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

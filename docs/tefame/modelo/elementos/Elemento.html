@@ -28,7 +28,7 @@
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment"> ______________________________________________________________________
 |                                                                      |
-|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
+|          TEFAME - Toolbox para Elementos Finitos y Analisis          |
 |                  Matricial de Estructuras en MATLAB                  |
 |                                                                      |
 |                   Area  de Estructuras y Geotecnia                   |
@@ -63,29 +63,29 @@
 
   Properties (Access=private):
   Methods:
-       elementoObj = Elemento(etiquetaElemento)
-       numeroNodos = obtenerNumeroNodos(elementoObj)
-       nodosElemento = obtenerNodos(elementoObj)
-       numeroGDL = obtenerNumeroGDL(elementoObj)
-       gdlID = obtenerGDL(elementoObj)
-       k_global = obtenerMatrizRigidezCoordGlobal(elementoObj)
-       k_local = obtenerMatrizRigidezCoordLocal(elementoObj)
-       fr_global = obtenerFuerzaResistenteCoordGlobal(elementoObj)
-       fr_local = obtenerFuerzaResistenteCoordLocal(elementoObj)
-       inicializar(elementoObj)
-       definirGDLID(elementoObj)
-       agregarFuerzaResistenteAReacciones(elementoObj)
-       actualizar(elementoObj)
-       guardarPropiedades(elementoObj,archivoSalidaHandle)
-       guardarEsfuerzosInternos(elementoObj,archivoSalidaHandle)
-       activarGraficoDeformada(elementoObj)
-       desactivarGraficoDeformada(elementoObj)
-       graficaDeformada(elementoObj)
-       disp(elementoObj)
+       obj = Elemento(etiquetaElemento)
+       numeroNodos = obtenerNumeroNodos(obj)
+       nodosElemento = obtenerNodos(obj)
+       numeroGDL = obtenerNumeroGDL(obj)
+       gdlID = obtenerGDL(obj)
+       k_global = obtenerMatrizRigidezCoordGlobal(obj)
+       k_local = obtenerMatrizRigidezCoordLocal(obj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
+       inicializar(obj)
+       definirGDLID(obj)
+       agregarFuerzaResistenteAReacciones(obj)
+       actualizar(obj)
+       guardarPropiedades(obj,archivoSalidaHandle)
+       guardarEsfuerzosInternos(obj,archivoSalidaHandle)
+       activarGraficoDeformada(obj)
+       desactivarGraficoDeformada(obj)
+       graficaDeformada(obj)
+       disp(obj)
   Methods SuperClass (ComponenteModelo):
-       etiqueta = obtenerEtiqueta(componenteModeloObj)
-       e = equals(componenteModeloObj,obj)
-       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+       etiqueta = obtenerEtiqueta(obj)
+       e = equals(obj,obj)
+       objID = obtenerIDObjeto(obj)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
@@ -94,364 +94,12 @@ This function calls:
 <li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li><li><a href="Elemento.html" class="code" title="">Elemento</a>	______________________________________________________________________</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="Biela2D.html" class="code" title="">Biela2D</a>	______________________________________________________________________</li><li><a href="Biela3D.html" class="code" title="">Biela3D</a>	______________________________________________________________________</li><li><a href="Elemento.html" class="code" title="">Elemento</a>	______________________________________________________________________</li><li><a href="Membrana.html" class="code" title="">Membrana</a>	______________________________________________________________________</li><li><a href="Viga2D.html" class="code" title="">Viga2D</a>	______________________________________________________________________</li><li><a href="VigaColumna2D.html" class="code" title="">VigaColumna2D</a>	______________________________________________________________________</li></ul>
+<li><a href="Biela2D.html" class="code" title="">Biela2D</a>	______________________________________________________________________</li><li><a href="Biela3D.html" class="code" title="">Biela3D</a>	______________________________________________________________________</li><li><a href="Elemento.html" class="code" title="">Elemento</a>	______________________________________________________________________</li><li><a href="Fundacion2D.html" class="code" title="">Fundacion2D</a>	______________________________________________________________________</li><li><a href="Membrana.html" class="code" title="">Membrana</a>	______________________________________________________________________</li><li><a href="Viga2D.html" class="code" title="">Viga2D</a>	______________________________________________________________________</li><li><a href="VigaColumna2D.html" class="code" title="">VigaColumna2D</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
-<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="#_sub1" class="code">function elementoObj = Elemento(etiquetaElemento)</a></li><li><a href="#_sub2" class="code">function numeroNodos = obtenerNumeroNodos(elementoObj)</a></li><li><a href="#_sub3" class="code">function nodosElemento = obtenerNodos(elementoObj)</a></li><li><a href="#_sub4" class="code">function numeroGDL = obtenerNumeroGDL(elementoObj)</a></li><li><a href="#_sub5" class="code">function gdlID = obtenerGDL(elementoObj)</a></li><li><a href="#_sub6" class="code">function k_global = obtenerMatrizRigidezCoordGlobal(elementoObj)</a></li><li><a href="#_sub7" class="code">function k_local = obtenerMatrizRigidezCoordLocal(elementoObj)</a></li><li><a href="#_sub8" class="code">function fr_global = obtenerFuerzaResistenteCoordGlobal(elementoObj)</a></li><li><a href="#_sub9" class="code">function fr_local = obtenerFuerzaResistenteCoordLocal(elementoObj)</a></li><li><a href="#_sub10" class="code">function inicializar(elementoObj)</a></li><li><a href="#_sub11" class="code">function definirGDLID(elementoObj)</a></li><li><a href="#_sub12" class="code">function agregarFuerzaResistenteAReacciones(elementoObj)</a></li><li><a href="#_sub13" class="code">function actualizar(elementoObj)</a></li><li><a href="#_sub14" class="code">function guardarPropiedades(elementoObj, archivoSalidaHandle)</a></li><li><a href="#_sub15" class="code">function guardarEsfuerzosInternos(elementoObj, archivoSalidaHandle)</a></li><li><a href="#_sub16" class="code">function plot(elementoObj, deformadas, tipoLinea, grosorLinea, gdl)</a></li><li><a href="#_sub17" class="code">function activarGraficoDeformada(elementoObj)</a></li><li><a href="#_sub18" class="code">function desactivarGraficoDeformada(elementoObj)</a></li><li><a href="#_sub19" class="code">function def = graficaDeformada(elementoObj)</a></li><li><a href="#_sub20" class="code">function graficarLinea(elementoObj, coord1, coord2, tipoLinea, grosorLinea)</a></li><li><a href="#_sub21" class="code">function disp(elementoObj)</a></li><li><a href="#_sub22" class="code">function definirFactorUnidadMasa(elementoObj, factor)</a></li></ul>
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
-0002 <span class="comment">%|                                                                      |</span>
-0003 <span class="comment">%|          TEFAME - Toolbox para Elementos Finitos y Analisis          |</span>
-0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
-0005 <span class="comment">%|                                                                      |</span>
-0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
-0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
-0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
-0009 <span class="comment">%|                         Universidad de Chile                         |</span>
-0010 <span class="comment">%|                                                                      |</span>
-0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
-0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
-0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
-0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
-0015 <span class="comment">%| MATLAB.                                                              |</span>
-0016 <span class="comment">%|______________________________________________________________________|</span>
-0017 <span class="comment">% ______________________________________________________________________</span>
-0018 <span class="comment">%|                                                                      |</span>
-0019 <span class="comment">%| Clase Elemento                                                       |</span>
-0020 <span class="comment">%|                                                                      |</span>
-0021 <span class="comment">%| Este archivo contiene la definicion de la Clase Elemento             |</span>
-0022 <span class="comment">%| Elemento es una subclase de la  clase ComponenteModelo y corresponde |</span>
-0023 <span class="comment">%| a  la representacion  abstracta  de los elementos en  el  metodo  de |</span>
-0024 <span class="comment">%| elementos finitos o analisis matricial de estructuras.               |</span>
-0025 <span class="comment">%| La clase Elemento se usa como una superclase para todos los tipos de |</span>
-0026 <span class="comment">%| elementos que hay en la plataforma. Y define los metodos minimos que |</span>
-0027 <span class="comment">%| tiene que ser implementados en cada subclase                         |</span>
-0028 <span class="comment">%|                                                                      |</span>
-0029 <span class="comment">%| Programado: FR                                                       |</span>
-0030 <span class="comment">%| Fecha: 05/08/2015                                                    |</span>
-0031 <span class="comment">%|                                                                      |</span>
-0032 <span class="comment">%| Modificado por: FR - 24/10/2016                                      |</span>
-0033 <span class="comment">%|                 Pablo Pizarro @ppizarror - 10/04/2019                |</span>
-0034 <span class="comment">%|______________________________________________________________________|</span>
-0035 <span class="comment">%</span>
-0036 <span class="comment">%  Properties (Access=private):</span>
-0037 <span class="comment">%  Methods:</span>
-0038 <span class="comment">%       elementoObj = Elemento(etiquetaElemento)</span>
-0039 <span class="comment">%       numeroNodos = obtenerNumeroNodos(elementoObj)</span>
-0040 <span class="comment">%       nodosElemento = obtenerNodos(elementoObj)</span>
-0041 <span class="comment">%       numeroGDL = obtenerNumeroGDL(elementoObj)</span>
-0042 <span class="comment">%       gdlID = obtenerGDL(elementoObj)</span>
-0043 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(elementoObj)</span>
-0044 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(elementoObj)</span>
-0045 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(elementoObj)</span>
-0046 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(elementoObj)</span>
-0047 <span class="comment">%       inicializar(elementoObj)</span>
-0048 <span class="comment">%       definirGDLID(elementoObj)</span>
-0049 <span class="comment">%       agregarFuerzaResistenteAReacciones(elementoObj)</span>
-0050 <span class="comment">%       actualizar(elementoObj)</span>
-0051 <span class="comment">%       guardarPropiedades(elementoObj,archivoSalidaHandle)</span>
-0052 <span class="comment">%       guardarEsfuerzosInternos(elementoObj,archivoSalidaHandle)</span>
-0053 <span class="comment">%       activarGraficoDeformada(elementoObj)</span>
-0054 <span class="comment">%       desactivarGraficoDeformada(elementoObj)</span>
-0055 <span class="comment">%       graficaDeformada(elementoObj)</span>
-0056 <span class="comment">%       disp(elementoObj)</span>
-0057 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
-0058 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
-0059 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
-0060 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
-0061 
-0062 classdef <a href="Elemento.html" class="code" title="">Elemento</a> &lt; <a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>
-0063     
-0064     properties(Access = private)
-0065         graficaDeformadaElem <span class="comment">% Grafica la deformada del elemento</span>
-0066     <span class="keyword">end</span> <span class="comment">% properties Elemento</span>
-0067     
-0068     properties(Access = protected)
-0069         factorMasa <span class="comment">% Indica el factor en que convierte densidad en masa</span>
-0070     <span class="keyword">end</span> <span class="comment">% properties Elemento</span>
-0071     
-0072     methods
-0073         
-0074         <a name="_sub0" href="#_subfunctions" class="code">function elementoObj = Elemento(etiquetaElemento)</a>
-0075             <span class="comment">% Elemento: es el constructor de la clase Elemento</span>
-0076             <span class="comment">%</span>
-0077             <span class="comment">% elementoObj = Elemento(etiquetaElemento)</span>
-0078             <span class="comment">%</span>
-0079             <span class="comment">% Crea un objeto de la clase Elemento, con un identificador unico</span>
-0080             <span class="comment">% (etiquetaElemento)</span>
-0081             
-0082             <span class="comment">% Si no se pasan argumentos se crean vacios</span>
-0083             <span class="keyword">if</span> nargin == 0
-0084                 etiquetaElemento = <span class="string">''</span>;
-0085             <span class="keyword">end</span> <span class="comment">% if</span>
-0086             
-0087             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase ComponenteModelo</span>
-0088             elementoObj = elementoObj@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(etiquetaElemento);
-0089             elementoObj.graficaDeformadaElem = true;
-0090             
-0091         <span class="keyword">end</span> <span class="comment">% Elemento constructor</span>
-0092         
-0093         <a name="_sub1" href="#_subfunctions" class="code">function numeroNodos = obtenerNumeroNodos(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0094             <span class="comment">% obtenerNumeroNodos: es un metodo de la clase Elemento que se usa para</span>
-0095             <span class="comment">% obtener el numero de nodos que tiene el Elemento</span>
-0096             <span class="comment">%</span>
-0097             <span class="comment">% numeroNodos = obtenerNumeroNodos(elementoObj)</span>
-0098             <span class="comment">%</span>
-0099             <span class="comment">% Entrega el numero de nodos (numeroNodos) que tiene el Elemento</span>
-0100             <span class="comment">% (elementoObj)</span>
-0101             
-0102             numeroNodos = 0;
-0103             
-0104         <span class="keyword">end</span> <span class="comment">% obtenerNumeroNodos function</span>
-0105         
-0106         <a name="_sub2" href="#_subfunctions" class="code">function nodosElemento = obtenerNodos(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0107             <span class="comment">% obtenerNodos: es un metodo de la clase Elemento que se usa para</span>
-0108             <span class="comment">% obtener un arreglo con los nodos que tiene el Elemento</span>
-0109             <span class="comment">%</span>
-0110             <span class="comment">% nodosElemento = obtenerNumeroNodos(elementoObj)</span>
-0111             <span class="comment">%</span>
-0112             <span class="comment">% Entrega un arreglo con los Nodos (nodosElemento) que tiene el Elemento</span>
-0113             <span class="comment">% (elementoObj)</span>
-0114             
-0115             nodosElemento = [];
-0116             
-0117         <span class="keyword">end</span> <span class="comment">% obtenerNodos function</span>
-0118         
-0119         <a name="_sub3" href="#_subfunctions" class="code">function numeroGDL = obtenerNumeroGDL(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0120             <span class="comment">% obtenerNumeroGDL: es un metodo de la clase Elemento que se usa para</span>
-0121             <span class="comment">% obtener el numero total de grados de libertad que tiene el Elemento</span>
-0122             <span class="comment">%</span>
-0123             <span class="comment">% numeroGDL = obtenerNumeroGDL(elementoObj)</span>
-0124             <span class="comment">%</span>
-0125             <span class="comment">% Entrega el numero de GDL (numeroGDL) que tiene el Elemento (elementoObj)</span>
-0126             
-0127             numeroGDL = [];
-0128             
-0129         <span class="keyword">end</span> <span class="comment">% obtenerNumeroGDL function</span>
-0130         
-0131         <a name="_sub4" href="#_subfunctions" class="code">function gdlID = obtenerGDL(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0132             <span class="comment">% obtenerGDL: es un metodo de la clase Elemento que se usa para</span>
-0133             <span class="comment">% obtener un arreglo con los ID de los grados de libertad que estan</span>
-0134             <span class="comment">% asociados al Elemento</span>
-0135             <span class="comment">%</span>
-0136             <span class="comment">% gdlID = obtenerGDL(elementoObj)</span>
-0137             <span class="comment">%</span>
-0138             <span class="comment">% Entrega un arreglo con los ID de los GDL (gdlID) que tiene el Elemento</span>
-0139             <span class="comment">% (elementoObj)</span>
-0140             
-0141             gdlID = [];
-0142             
-0143         <span class="keyword">end</span> <span class="comment">% obtenerGDL function</span>
-0144         
-0145         <a name="_sub5" href="#_subfunctions" class="code">function k_global = obtenerMatrizRigidezCoordGlobal(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0146             <span class="comment">% obtenerMatrizRigidezCoordGlobal: es un metodo de la clase Elemento</span>
-0147             <span class="comment">% que se usa para obtener la matriz de rigidez para el Elemento en el</span>
-0148             <span class="comment">% sistema de coordenadas globales del sistema estructural o Modelo</span>
-0149             <span class="comment">%</span>
-0150             <span class="comment">% k_global = obtenerMatrizRigidezCoordGlobal(elementoObj)</span>
-0151             <span class="comment">%</span>
-0152             <span class="comment">% Entrega la matriz de rigidez (k_global) que tiene el Elemento (elementoObj)</span>
-0153             <span class="comment">%  en el sistema de coordenadas globales</span>
-0154             
-0155             k_global = [];
-0156             
-0157         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidezGlobal function</span>
-0158         
-0159         <a name="_sub6" href="#_subfunctions" class="code">function k_local = obtenerMatrizRigidezCoordLocal(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0160             <span class="comment">% obtenerMatrizRigidezCoordLocal: es un metodo de la clase Elemento</span>
-0161             <span class="comment">% que se usa para obtener la matriz de rigidez para el Elemento en el</span>
-0162             <span class="comment">% sistema de coordenadas locales del elemento</span>
-0163             <span class="comment">%</span>
-0164             <span class="comment">% k_local = obtenerMatrizRigidezCoordLocal(elementoObj)</span>
-0165             <span class="comment">%</span>
-0166             <span class="comment">% Entrega la matriz de rigidez (k_local)  en el sistema de coordenadas</span>
-0167             <span class="comment">% local que tiene el Elemento (elementoObj)</span>
-0168             
-0169             k_local = [];
-0170             
-0171         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidezLocal function</span>
-0172         
-0173         <a name="_sub7" href="#_subfunctions" class="code">function fr_global = obtenerFuerzaResistenteCoordGlobal(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0174             <span class="comment">% obtenerFuerzaResistenteCoordGlobal: es un metodo de la clase Elemento</span>
-0175             <span class="comment">% que se usa para obtener el vector de fuerzas resitente del Elemento</span>
-0176             <span class="comment">% en el sistema de coordenadas globales del modelo o sistema</span>
-0177             <span class="comment">% estructural</span>
-0178             <span class="comment">%</span>
-0179             <span class="comment">% fr_global = obtenerFuerzaResistenteCoordGlobal(elementoObj)</span>
-0180             <span class="comment">%</span>
-0181             <span class="comment">% Entrega el vector con las fuerzas resistentes (fr_global) que tiene</span>
-0182             <span class="comment">% elemento (elementoObj) en el sistema de coordenadas globales la</span>
-0183             <span class="comment">% estructura</span>
-0184             
-0185             fr_global = [];
-0186             
-0187         <span class="keyword">end</span> <span class="comment">% obtenerFuerzaResistenteCoordGlobal function</span>
-0188         
-0189         <a name="_sub8" href="#_subfunctions" class="code">function fr_local = obtenerFuerzaResistenteCoordLocal(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0190             <span class="comment">% obtenerFuerzaResistenteCoordLocal: es un metodo de la clase Elemento</span>
-0191             <span class="comment">% que se usa para obtener el vector de fuerzas resitente del Elemento</span>
-0192             <span class="comment">% en el sistema de coordenadas locales del elemento</span>
-0193             <span class="comment">%</span>
-0194             <span class="comment">% fr_local = obtenerFuerzaResistenteCoordLocal(elementoObj)</span>
-0195             <span class="comment">%</span>
-0196             <span class="comment">% Entrega el vector con las fuerzas resistentes (fr_local) que tiene</span>
-0197             <span class="comment">% elemento (elementoObj) en el sistema de coordenadas locales del</span>
-0198             <span class="comment">% elemento</span>
-0199             
-0200             fr_local = [];
-0201             
-0202         <span class="keyword">end</span> <span class="comment">% obtenerFuerzaResistenteCoordLocal function</span>
-0203         
-0204         <a name="_sub9" href="#_subfunctions" class="code">function inicializar(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0205             <span class="comment">% inicializar: es un metodo de la clase Elemento que se usa para</span>
-0206             <span class="comment">% inicializar las diferentes componentes que sean necesario en los</span>
-0207             <span class="comment">% elementos para realizar posteriormente el analisis</span>
-0208             <span class="comment">%</span>
-0209             <span class="comment">% inicializar(elementoObj)</span>
-0210             <span class="comment">%</span>
-0211             <span class="comment">% Inicializa los diferentes componetes del Elemento (elementoObj),</span>
-0212             <span class="comment">% para poder preparar estos para realizar el analisis</span>
-0213             
-0214         <span class="keyword">end</span> <span class="comment">% inicializar function</span>
-0215         
-0216         <a name="_sub10" href="#_subfunctions" class="code">function definirGDLID(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0217             <span class="comment">% definirGDLID: es un metodo de la clase Elemento que se usa para</span>
-0218             <span class="comment">% definir el vector con los ID de los GDL del elemento</span>
-0219             <span class="comment">%</span>
-0220             <span class="comment">% definirGDLID(elementoObj)</span>
-0221             <span class="comment">%</span>
-0222             <span class="comment">% Define los ID de los grados de libertad del Elemento (elementoObj)</span>
-0223             
-0224         <span class="keyword">end</span> <span class="comment">% definirGDLID function</span>
-0225         
-0226         <a name="_sub11" href="#_subfunctions" class="code">function agregarFuerzaResistenteAReacciones(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0227             <span class="comment">% agregarEsfuerzosElementoAReaccion: es un metodo de la clase Nodo</span>
-0228             <span class="comment">% que se usa para agregar el vector de fuerzas resistentes de un</span>
-0229             <span class="comment">% elemento al nodo</span>
-0230             <span class="comment">%</span>
-0231             <span class="comment">% agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)</span>
-0232             <span class="comment">%</span>
-0233             <span class="comment">% Agrega al vector de reacciones del Nodo (nodoObj), el vector de</span>
-0234             <span class="comment">% fuerzas resistente de un elemento entregados (cargaNodo)</span>
-0235             
-0236         <span class="keyword">end</span> <span class="comment">% agregarFuerzaResistenteAReacciones function</span>
-0237         
-0238         <a name="_sub12" href="#_subfunctions" class="code">function actualizar(elementoObj) </a><span class="comment">%#ok&lt;MANU&gt;</span>
-0239             <span class="comment">% actualizar: es un metodo de la clase Elemento que se usa para</span>
-0240             <span class="comment">% actualizar las diferentes componentes que sean necesario en los</span>
-0241             <span class="comment">% elementos posterior a realizar el analisis</span>
-0242             <span class="comment">%</span>
-0243             <span class="comment">% actualizar(elementoObj)</span>
-0244             <span class="comment">% Actualizar los diferentes componetes del Elemento (elementoObj),</span>
-0245             <span class="comment">% despues de realizar el analisis</span>
-0246             
-0247         <span class="keyword">end</span> <span class="comment">% actualizar function</span>
-0248         
-0249         <a name="_sub13" href="#_subfunctions" class="code">function guardarPropiedades(elementoObj, archivoSalidaHandle) </a><span class="comment">%#ok&lt;INUSD&gt;</span>
-0250             <span class="comment">% guardarPropiedades: es un metodo de la clase Elemento que se usa</span>
-0251             <span class="comment">% para guardar en un archivo de salida las propiedades del Elemento</span>
-0252             <span class="comment">%</span>
-0253             <span class="comment">% guardarPropiedades(elementoObj,archivoSalidaHandle)</span>
-0254             <span class="comment">%</span>
-0255             <span class="comment">% Guarda las propiedades de los Elemento (elementoObj), en un archivo</span>
-0256             <span class="comment">% de salida (archivoSalidaHandle)</span>
-0257             
-0258         <span class="keyword">end</span> <span class="comment">% guardarPropiedades function</span>
-0259         
-0260         <a name="_sub14" href="#_subfunctions" class="code">function guardarEsfuerzosInternos(elementoObj, archivoSalidaHandle) </a><span class="comment">%#ok&lt;INUSD&gt;</span>
-0261             <span class="comment">% guardarEsfuerzosInternos: es un metodo de la clase Elemento que se</span>
-0262             <span class="comment">% usa para guardar en un archivo de salida los esfuerzos internos del</span>
-0263             <span class="comment">% Elemento</span>
-0264             <span class="comment">%</span>
-0265             <span class="comment">% guardarEsfuerzosInternos(elementoObj,archivoSalidaHandle)</span>
-0266             <span class="comment">%</span>
-0267             <span class="comment">% Guarda los esfuerzos internos de los Elemento (elementoObj), en un</span>
-0268             <span class="comment">% archivo de salida (archivoSalidaHandle)</span>
-0269             
-0270         <span class="keyword">end</span> <span class="comment">% guardarEsfuerzosInternos function</span>
-0271         
-0272         <a name="_sub15" href="#_subfunctions" class="code">function plot(elementoObj, deformadas, tipoLinea, grosorLinea, gdl) </a><span class="comment">%#ok&lt;INUSD&gt;</span>
-0273             <span class="comment">% plot: Grafica un elemento</span>
-0274             <span class="comment">%</span>
-0275             <span class="comment">% plot(elementoObj,deformadas,tipoLinea,grosorLinea,gdl)</span>
-0276             
-0277         <span class="keyword">end</span> <span class="comment">% plot function</span>
-0278         
-0279         <a name="_sub16" href="#_subfunctions" class="code">function activarGraficoDeformada(elementoObj)</a>
-0280             <span class="comment">% activarGraficoDeformada: Activa el grafico de la</span>
-0281             <span class="comment">% deformada del elemento</span>
-0282             <span class="comment">%</span>
-0283             <span class="comment">% activarGraficoDeformada(elementoObj)</span>
-0284             
-0285             elementoObj.graficaDeformadaElem = true;
-0286             
-0287         <span class="keyword">end</span> <span class="comment">% activarGraficoDeformada function</span>
-0288         
-0289         <a name="_sub17" href="#_subfunctions" class="code">function desactivarGraficoDeformada(elementoObj)</a>
-0290             <span class="comment">% desactivarGraficoDeformada: Desactiva el grafico de la</span>
-0291             <span class="comment">% deformada del elemento</span>
-0292             <span class="comment">%</span>
-0293             <span class="comment">% desactivarGraficoDeformada(elementoObj)</span>
-0294             
-0295             elementoObj.graficaDeformadaElem = false;
-0296             
-0297         <span class="keyword">end</span> <span class="comment">% desactivarGraficoDeformada function</span>
-0298         
-0299         <a name="_sub18" href="#_subfunctions" class="code">function def = graficaDeformada(elementoObj)</a>
-0300             <span class="comment">% graficaDeformada: Indica si el objeto grafica su deformada o</span>
-0301             <span class="comment">% no</span>
-0302             <span class="comment">%</span>
-0303             <span class="comment">% def = graficaDeformada(elementoObj)</span>
-0304             
-0305             def = elementoObj.graficaDeformadaElem;
-0306             
-0307         <span class="keyword">end</span> <span class="comment">% graficaDeformada function</span>
-0308         
-0309         <a name="_sub19" href="#_subfunctions" class="code">function graficarLinea(elementoObj, coord1, coord2, tipoLinea, grosorLinea) </a><span class="comment">%#ok&lt;INUSL&gt;</span>
-0310             <span class="comment">% graficarLinea: Grafica una linea para un elemento</span>
-0311             <span class="comment">%</span>
-0312             <span class="comment">% graficarLinea(elementoObj,coord1,coord2,tipoLinea,grosorLinea)</span>
-0313             
-0314             <span class="keyword">if</span> length(coord1) == 2
-0315                 <a href="#_sub16" class="code" title="subfunction plot(elementoObj, deformadas, tipoLinea, grosorLinea, gdl) ">plot</a>([coord1(1), coord2(1)], [coord1(2), coord2(2)], tipoLinea, <span class="keyword">...</span>
-0316                     <span class="string">'LineWidth'</span>, grosorLinea);
-0317             <span class="keyword">else</span>
-0318                 plot3([coord1(1), coord2(1)], [coord1(2), coord2(2)], [coord1(3), coord2(3)], <span class="keyword">...</span>
-0319                     tipoLinea, <span class="string">'LineWidth'</span>, grosorLinea);
-0320             <span class="keyword">end</span>
-0321             
-0322         <span class="keyword">end</span> <span class="comment">% graficarLinea function</span>
-0323         
-0324         <a name="_sub20" href="#_subfunctions" class="code">function disp(elementoObj)</a>
-0325             <span class="comment">% disp: es un metodo de la clase Elemento que se usa para impimir en</span>
-0326             <span class="comment">% command Window la informacion del Elemento</span>
-0327             <span class="comment">%</span>
-0328             <span class="comment">% disp(elementoObj)</span>
-0329             <span class="comment">%</span>
-0330             <span class="comment">% Imprime la informacion guardada en el Elemento (elementoObj) en</span>
-0331             <span class="comment">% pantalla</span>
-0332             
-0333             <a href="#_sub21" class="code" title="subfunction disp(elementoObj)">disp</a>@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(elementoObj);
-0334             <span class="comment">% No usar dispMetodoTEFAME()</span>
-0335             
-0336         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0337         
-0338         <a name="_sub21" href="#_subfunctions" class="code">function definirFactorUnidadMasa(elementoObj, factor)</a>
-0339             <span class="comment">% definirFactorUnidadMasa: Funcion que define el cambio de</span>
-0340             <span class="comment">% unidad para pasar masa carga a masa real</span>
-0341             <span class="comment">%</span>
-0342             <span class="comment">% definirFactorUnidadMasa(elementoObj,factor)</span>
-0343             
-0344             elementoObj.factorMasa = factor;
-0345             
-0346         <span class="keyword">end</span> <span class="comment">% definirFactorUnidadMasa function</span>
-0347         
-0348     <span class="keyword">end</span> <span class="comment">% methods Elemento</span>
-0349     
-0350 <span class="keyword">end</span> <span class="comment">% class Elemento</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

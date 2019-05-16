@@ -42,27 +42,7 @@ This function is called by:
 
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function textCell = arrayStr2str(a, num)</a>
-0002 <span class="comment">% textCell = array2str(a,num) function that transform the array of string to a</span>
-0003 <span class="comment">% array of cell elements that is used to print the array in string format</span>
-0004 <span class="comment">% = [ a1 a2 a3 ... ]</span>
-0005 
-0006 <span class="keyword">if</span> ~exist(<span class="string">'num'</span>, <span class="string">'var'</span>)
-0007     num = length(a);
-0008 <span class="keyword">end</span>
-0009 
-0010 <span class="comment">% We create the array of cell that will keep the numbers in str format</span>
-0011 textCell = cell(1, 2*num+1);
-0012 textCell(1) = {<span class="string">'['</span>};
-0013 
-0014 <span class="keyword">for</span> i = 1:num
-0015     textCell(2*i) = {a(i)};
-0016     textCell(1+2*i) = {<span class="string">' '</span>};
-0017 <span class="keyword">end</span> <span class="comment">% for i</span>
-0018 
-0019 textCell(2*num+1) = {<span class="string">']'</span>};
-0020 <span class="keyword">end</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

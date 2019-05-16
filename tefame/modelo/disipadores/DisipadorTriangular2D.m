@@ -56,9 +56,9 @@
 %       plot(disipadorTriangular2DObj,tipoLinea,grosorLinea,colorLinea)
 %       T = obtenerMatrizTransformacion(disipadorTriangular2DObj)
 %  Methods SuperClass (ComponenteModelo):
-%       etiqueta = obtenerEtiqueta(componenteModeloObj)
-%       e = equals(componenteModeloObj,obj)
-%       objID = obtenerIDObjeto(componenteModeloObj)
+%       etiqueta = obtenerEtiqueta(obj)
+%       e = equals(obj,obj)
+%       objID = obtenerIDObjeto(obj)
 
 classdef DisipadorTriangular2D < Disipador2D
     

@@ -28,7 +28,7 @@
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment"> ______________________________________________________________________
 |                                                                      |
-|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
+|          TEFAME - Toolbox para Elementos Finitos y Analisis          |
 |                  Matricial de Estructuras en MATLAB                  |
 |                                                                      |
 |                   Area  de Estructuras y Geotecnia                   |
@@ -60,11 +60,11 @@
   Properties (Access=private):
        etiquetaID
   Methods:
-       componenteModeloObj = ComponenteModelo(etiqueta)
-       etiqueta = obtenerEtiqueta(componenteModeloObj)
-       objID = obtenerIDObjeto(componenteModeloObj)
-       disp(componenteModeloObj)
-       e = equals(componenteModeloObj,obj)</pre></div>
+       obj = ComponenteModelo(etiqueta)
+       etiqueta = obtenerEtiqueta(obj)
+       objID = obtenerIDObjeto(obj)
+       disp(obj)
+       e = equals(obj,obj)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
@@ -73,141 +73,12 @@ This function calls:
 <li><a href="ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/CombinacionCargas.html" class="code" title="">CombinacionCargas</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/patrones/PatronDeCargas.html" class="code" title="">PatronDeCargas</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/patrones/PatronDeCargasConstante.html" class="code" title="">PatronDeCargasConstante</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/patrones/PatronDeCargasDinamico.html" class="code" title="">PatronDeCargasDinamico</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/disipadores/Disipador.html" class="code" title="">Disipador</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/disipadores/DisipadorFriccionalPuro2D.html" class="code" title="">DisipadorFriccionalPuro2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/disipadores/DisipadorTriangular2D.html" class="code" title="">DisipadorTriangular2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/disipadores/DisipadorViscoso2D.html" class="code" title="">DisipadorViscoso2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Biela2D.html" class="code" title="">Biela2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Biela3D.html" class="code" title="">Biela3D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Elemento.html" class="code" title="">Elemento</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Membrana.html" class="code" title="">Membrana</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Viga2D.html" class="code" title="">Viga2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/VigaColumna2D.html" class="code" title="">VigaColumna2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/nodo/Nodo.html" class="code" title="">Nodo</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/restricciones/RestriccionNodo.html" class="code" title="">RestriccionNodo</a>	______________________________________________________________________</li></ul>
+<li><a href="ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/CombinacionCargas.html" class="code" title="">CombinacionCargas</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/patrones/PatronDeCargas.html" class="code" title="">PatronDeCargas</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/patrones/PatronDeCargasConstante.html" class="code" title="">PatronDeCargasConstante</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/patrones/PatronDeCargasDinamico.html" class="code" title="">PatronDeCargasDinamico</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/disipadores/Disipador.html" class="code" title="">Disipador</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/disipadores/DisipadorFriccionalPuro2D.html" class="code" title="">DisipadorFriccionalPuro2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/disipadores/DisipadorTriangular2D.html" class="code" title="">DisipadorTriangular2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/disipadores/DisipadorViscoso2D.html" class="code" title="">DisipadorViscoso2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Biela2D.html" class="code" title="">Biela2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Biela3D.html" class="code" title="">Biela3D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Elemento.html" class="code" title="">Elemento</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Fundacion2D.html" class="code" title="">Fundacion2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Membrana.html" class="code" title="">Membrana</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/Viga2D.html" class="code" title="">Viga2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/elementos/VigaColumna2D.html" class="code" title="">VigaColumna2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/nodo/Nodo.html" class="code" title="">Nodo</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/restricciones/RestriccionNodo.html" class="code" title="">RestriccionNodo</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
-<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="#_sub1" class="code">function componenteModeloObj = ComponenteModelo(etiqueta)</a></li><li><a href="#_sub2" class="code">function etiqueta = obtenerEtiqueta(componenteModeloObj)</a></li><li><a href="#_sub3" class="code">function disp(componenteModeloObj)</a></li><li><a href="#_sub4" class="code">function e = equals(componenteModeloObj, obj)</a></li><li><a href="#_sub5" class="code">function objID = obtenerIDObjeto(componenteModeloObj)</a></li></ul>
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
-0002 <span class="comment">%|                                                                      |</span>
-0003 <span class="comment">%|          TEFAME - Toolbox para Elementos Finitos y Analisis          |</span>
-0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
-0005 <span class="comment">%|                                                                      |</span>
-0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
-0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
-0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
-0009 <span class="comment">%|                         Universidad de Chile                         |</span>
-0010 <span class="comment">%|                                                                      |</span>
-0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
-0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
-0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
-0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
-0015 <span class="comment">%| MATLAB.                                                              |</span>
-0016 <span class="comment">%|______________________________________________________________________|</span>
-0017 <span class="comment">% ______________________________________________________________________</span>
-0018 <span class="comment">%|                                                                      |</span>
-0019 <span class="comment">%| Clase ComponenteModelo                                               |</span>
-0020 <span class="comment">%|                                                                      |</span>
-0021 <span class="comment">%| Este archivo contiene la definicion de la Clase ComponenteModelo     |</span>
-0022 <span class="comment">%| ComponenteModelo es  clase  abstracta  que es usada  como base  para |</span>
-0023 <span class="comment">%| todos los objetos que son una componente del Modelo                  |</span>
-0024 <span class="comment">%|                                                                      |</span>
-0025 <span class="comment">%| Programado: FR                                                       |</span>
-0026 <span class="comment">%| Fecha: 05/08/2015                                                    |</span>
-0027 <span class="comment">%|                                                                      |</span>
-0028 <span class="comment">%| Modificado por: FR - 24/10/2016                                      |</span>
-0029 <span class="comment">%|                 Pablo Pizarro @ppizarror - 10/04/2019                |</span>
-0030 <span class="comment">%|______________________________________________________________________|</span>
-0031 <span class="comment">%</span>
-0032 <span class="comment">%  Properties (Access=private):</span>
-0033 <span class="comment">%       etiquetaID</span>
-0034 <span class="comment">%  Methods:</span>
-0035 <span class="comment">%       componenteModeloObj = ComponenteModelo(etiqueta)</span>
-0036 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
-0037 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
-0038 <span class="comment">%       disp(componenteModeloObj)</span>
-0039 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
-0040 
-0041 classdef <a href="ComponenteModelo.html" class="code" title="">ComponenteModelo</a> &lt; handle
-0042     
-0043     properties(Access = private)
-0044         etiquetaID <span class="comment">% Variable que guarda el valor de la etiqueta usada para identificar el componente del modelo</span>
-0045     <span class="keyword">end</span> <span class="comment">% properties ComponenteModelo</span>
-0046     
-0047     properties(Access = protected)
-0048         objectID <span class="comment">% ID del objeto</span>
-0049     <span class="keyword">end</span> <span class="comment">% properties ComponenteModelo</span>
-0050     
-0051     methods
-0052         
-0053         <a name="_sub0" href="#_subfunctions" class="code">function componenteModeloObj = ComponenteModelo(etiqueta)</a>
-0054             <span class="comment">% ComponenteModelo: es el constructor de la clase ComponenteModelo</span>
-0055             <span class="comment">%</span>
-0056             <span class="comment">% componenteModeloObj = ComponenteModelo(etiqueta)</span>
-0057             <span class="comment">%</span>
-0058             <span class="comment">% Crea un objeto de la clase ComponenteModelo, con un identificador</span>
-0059             <span class="comment">% unico (etiqueta)</span>
-0060             
-0061             <span class="comment">% Verificamos si no se ingreso etiqueta</span>
-0062             <span class="keyword">if</span> nargin == 0
-0063                 etiqueta = -1;
-0064             <span class="keyword">end</span>
-0065             
-0066             <span class="comment">% Se guarda la etiqueta</span>
-0067             componenteModeloObj.etiquetaID = etiqueta;
-0068             
-0069             <span class="comment">% Crea el ID</span>
-0070             componenteModeloObj.objectID = char(java.util.UUID.randomUUID);
-0071             
-0072         <span class="keyword">end</span> <span class="comment">% ComponenteModelo constructor</span>
-0073         
-0074         <a name="_sub1" href="#_subfunctions" class="code">function etiqueta = obtenerEtiqueta(componenteModeloObj)</a>
-0075             <span class="comment">% obtenerEtiqueta: es un metodo de la clase ComponenteModelo que se</span>
-0076             <span class="comment">% usa para obtener la etiqueta que identifica el componente del</span>
-0077             <span class="comment">% modelo</span>
-0078             <span class="comment">%</span>
-0079             <span class="comment">% etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
-0080             <span class="comment">%</span>
-0081             <span class="comment">% Entrega la etiqueta o identificar (etiqueta) que tiene el</span>
-0082             <span class="comment">% ComponenteModelo (componenteModeloObj)</span>
-0083             
-0084             etiqueta = componenteModeloObj.etiquetaID;
-0085             
-0086         <span class="keyword">end</span> <span class="comment">% obtenerEtiqueta function</span>
-0087         
-0088         <a name="_sub2" href="#_subfunctions" class="code">function disp(componenteModeloObj)</a>
-0089             <span class="comment">% disp: es un metodo de la clase ComponenteModelo que se usa para</span>
-0090             <span class="comment">% imprimir en command Window la informacion del ComponenteModelo</span>
-0091             <span class="comment">%</span>
-0092             <span class="comment">% disp(nodoObj)</span>
-0093             <span class="comment">%</span>
-0094             <span class="comment">% Imprime la informacion de la etiqueta de identificacion del componente</span>
-0095             <span class="comment">% del modelo</span>
-0096             
-0097             <span class="comment">% Se procede a imprimir en pantalla la etiqueta</span>
-0098             etiquetaStr = componenteModeloObj.etiquetaID;
-0099             <span class="keyword">if</span> (isnumeric(componenteModeloObj.etiquetaID) == 1)
-0100                 etiquetaStr = num2str(etiquetaStr);
-0101             <span class="keyword">end</span>
-0102             fprintf(<span class="string">'\tEtiqueta: %s\n'</span>, etiquetaStr);
-0103             <span class="comment">% No usar dispMetodoTEFAME()</span>
-0104             
-0105         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0106         
-0107         <a name="_sub3" href="#_subfunctions" class="code">function e = equals(componenteModeloObj, obj)</a>
-0108             <span class="comment">% equals: Verifica si dos objetos son iguales</span>
-0109             <span class="comment">%</span>
-0110             <span class="comment">% equals(componenteModeloObj,obj)</span>
-0111             
-0112             e = strcmp(componenteModeloObj.objectID, obj.objectID);
-0113             
-0114         <span class="keyword">end</span> <span class="comment">% equals function</span>
-0115         
-0116         <a name="_sub4" href="#_subfunctions" class="code">function objID = obtenerIDObjeto(componenteModeloObj)</a>
-0117             <span class="comment">% obtenerIDObjeto: Retorna el ID del objeto</span>
-0118             <span class="comment">%</span>
-0119             <span class="comment">% objID = obtenerIDObjeto(componenteModeloObj)</span>
-0120             
-0121             objID = componenteModeloObj.objectID;
-0122             
-0123         <span class="keyword">end</span> <span class="comment">% obtenerIDObjeto function</span>
-0124         
-0125     <span class="keyword">end</span> <span class="comment">% methods ComponenteModelo</span>
-0126     
-0127 <span class="keyword">end</span> <span class="comment">% classdef ComponenteModelo</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

@@ -28,7 +28,7 @@
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment"> ______________________________________________________________________
 |                                                                      |
-|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
+|          TEFAME - Toolbox para Elementos Finitos y Analisis          |
 |                  Matricial de Estructuras en MATLAB                  |
 |                                                                      |
 |                   Area  de Estructuras y Geotecnia                   |
@@ -75,9 +75,9 @@
        masa = obtenerMasa(cargaEstaticaObj)
        nodos = obtenerNodos(cargaEstaticaObj)
   Methods SuperClass (ComponenteModelo):
-       etiqueta = obtenerEtiqueta(componenteModeloObj)
-       e = equals(componenteModeloObj,obj)
-       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+       etiqueta = obtenerEtiqueta(obj)
+       e = equals(obj,obj)
+       objID = obtenerIDObjeto(obj)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
@@ -89,177 +89,9 @@ This function is called by:
 <li><a href="CargaEstatica.html" class="code" title="">CargaEstatica</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/estaticas/CargaBielaTemperatura.html" class="code" title="">CargaBielaTemperatura</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/estaticas/CargaMembranaDistribuida.html" class="code" title="">CargaMembranaDistribuida</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/estaticas/CargaNodo.html" class="code" title="">CargaNodo</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/estaticas/CargaVigaColumnaDistribuida.html" class="code" title="">CargaVigaColumnaDistribuida</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/estaticas/CargaVigaColumnaPuntual.html" class="code" title="">CargaVigaColumnaPuntual</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/estaticas/CargaVigaDistribuida.html" class="code" title="">CargaVigaDistribuida</a>	______________________________________________________________________</li><li><a href="../../../tefame/modelo/cargas/estaticas/CargaVigaPuntual.html" class="code" title="">CargaVigaPuntual</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
-<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="#_sub1" class="code">function cargaEstaticaObj = CargaEstatica(etiquetaCarga)</a></li><li><a href="#_sub2" class="code">function bloquearCargaMasa(cargaEstaticaObj)</a></li><li><a href="#_sub3" class="code">function c = cargaSumaMasa(cargaEstaticaObj)</a></li><li><a href="#_sub4" class="code">function aplicarCarga(cargaEstaticaObj, varargin)</a></li><li><a href="#_sub5" class="code">function disp(cargaEstaticaObj)</a></li><li><a href="#_sub6" class="code">function masa = obtenerMasa(cargaEstaticaObj)</a></li><li><a href="#_sub7" class="code">function definirFactorUnidadMasa(cargaEstaticaObj, factor)</a></li><li><a href="#_sub8" class="code">function definirFactorCargaMasa(cargaEstaticaObj, factor)</a></li><li><a href="#_sub9" class="code">function nodos = obtenerNodos(cargaEstaticaObj)</a></li></ul>
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
-0002 <span class="comment">%|                                                                      |</span>
-0003 <span class="comment">%|          TEFAME - Toolbox para Elementos Finitos y Analisis          |</span>
-0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
-0005 <span class="comment">%|                                                                      |</span>
-0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
-0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
-0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
-0009 <span class="comment">%|                         Universidad de Chile                         |</span>
-0010 <span class="comment">%|                                                                      |</span>
-0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
-0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
-0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
-0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
-0015 <span class="comment">%| MATLAB.                                                              |</span>
-0016 <span class="comment">%|______________________________________________________________________|</span>
-0017 <span class="comment">% ______________________________________________________________________</span>
-0018 <span class="comment">%|                                                                      |</span>
-0019 <span class="comment">%| Clase CargaEstatica                                                  |</span>
-0020 <span class="comment">%|                                                                      |</span>
-0021 <span class="comment">%| Este archivo contiene la definicion de la Clase Carga Estatica       |</span>
-0022 <span class="comment">%| Carga  es una  subclase  de la  clase ComponenteModelo y corresponde |</span>
-0023 <span class="comment">%| a la representacion  de una carga en el metodo de elementos  finitos |</span>
-0024 <span class="comment">%| o analisis matricial de estructuras.                                 |</span>
-0025 <span class="comment">%| La clase  Carga se usa  como una superclase  para todos los tipos de |</span>
-0026 <span class="comment">%| cargas estaticas a aplicar.                                          |</span>
-0027 <span class="comment">%|                                                                      |</span>
-0028 <span class="comment">%| Programado: FR                                                       |</span>
-0029 <span class="comment">%| Fecha: 05/08/2015                                                    |</span>
-0030 <span class="comment">%|                                                                      |</span>
-0031 <span class="comment">%| Modificado por: FR - 24/10/2016                                      |</span>
-0032 <span class="comment">%|                 Pablo Pizarro @ppizarror - 10/04/2019                |</span>
-0033 <span class="comment">%|______________________________________________________________________|</span>
-0034 <span class="comment">%</span>
-0035 <span class="comment">%  Properties (Access=private):</span>
-0036 <span class="comment">%       cargaSumoMasa</span>
-0037 <span class="comment">%  Properties (Access=protected)</span>
-0038 <span class="comment">%       factorCargaMasa</span>
-0039 <span class="comment">%       factorUnidadMasa</span>
-0040 <span class="comment">%       nodosCarga</span>
-0041 <span class="comment">%  Methods:</span>
-0042 <span class="comment">%       aplicarCarga(cargaEstaticaObj)</span>
-0043 <span class="comment">%       cargaEstaticaObj = Carga(etiquetaCarga)</span>
-0044 <span class="comment">%       definirFactorCargaMasa(cargaEstaticaObj,factor)</span>
-0045 <span class="comment">%       definirFactorUnidadMasa(cargaEstaticaObj,factor)</span>
-0046 <span class="comment">%       disp(cargaEstaticaObj)</span>
-0047 <span class="comment">%       masa = obtenerMasa(cargaEstaticaObj)</span>
-0048 <span class="comment">%       nodos = obtenerNodos(cargaEstaticaObj)</span>
-0049 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
-0050 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
-0051 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
-0052 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
-0053 
-0054 classdef <a href="CargaEstatica.html" class="code" title="">CargaEstatica</a> &lt; <a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>
-0055     
-0056     properties(Access = private)
-0057         cargaSumoMasa <span class="comment">% Indica que la carga ya sumo masa</span>
-0058     <span class="keyword">end</span> <span class="comment">% properties CargaEstatica</span>
-0059     
-0060     properties(Access = protected)
-0061         factorCargaMasa <span class="comment">% Factor de masa de la carga</span>
-0062         factorUnidadMasa <span class="comment">% Factor unidad de la masa</span>
-0063         nodosCarga <span class="comment">% Nodos que comparten la carga</span>
-0064     <span class="keyword">end</span>
-0065     
-0066     methods
-0067         
-0068         <a name="_sub0" href="#_subfunctions" class="code">function cargaEstaticaObj = CargaEstatica(etiquetaCarga)</a>
-0069             <span class="comment">% CargaEstatica: es el constructor de la clase CargaEstatica</span>
-0070             <span class="comment">%</span>
-0071             <span class="comment">% cargaEstaticaObj = CargaEstatica(etiquetaCarga)</span>
-0072             <span class="comment">%</span>
-0073             <span class="comment">% Crea un objeto de la clase CargaEstatica, con un identificador unico</span>
-0074             <span class="comment">% (etiquetaCarga)</span>
-0075             
-0076             <span class="keyword">if</span> nargin == 0
-0077                 etiquetaCarga = <span class="string">''</span>;
-0078             <span class="keyword">end</span> <span class="comment">% if</span>
-0079             
-0080             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase ComponenteModelo</span>
-0081             cargaEstaticaObj = cargaEstaticaObj@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(etiquetaCarga);
-0082             cargaEstaticaObj.factorCargaMasa = 0;
-0083             cargaEstaticaObj.factorUnidadMasa = 1;
-0084             cargaEstaticaObj.cargaSumoMasa = false;
-0085             
-0086         <span class="keyword">end</span> <span class="comment">% Carga constructor</span>
-0087         
-0088         <a name="_sub1" href="#_subfunctions" class="code">function bloquearCargaMasa(cargaEstaticaObj)</a>
-0089             <span class="comment">% bloquearCargaMasa: La carga deja de sumar masa</span>
-0090             <span class="comment">%</span>
-0091             <span class="comment">% bloquearCargaMasa(cargaEstaticaObj)</span>
-0092            
-0093             cargaEstaticaObj.cargaSumoMasa = true;
-0094             
-0095         <span class="keyword">end</span> <span class="comment">% bloquearCargaMasa function</span>
-0096         
-0097         <a name="_sub2" href="#_subfunctions" class="code">function c = cargaSumaMasa(cargaEstaticaObj)</a>
-0098             <span class="comment">% cargaSumaMasa: Indica que la carga suma masa al sistema</span>
-0099             <span class="comment">%</span>
-0100             <span class="comment">% c = cargaSumaMasa(cargaEstaticaObj)</span>
-0101             
-0102             c = ~cargaEstaticaObj.cargaSumoMasa;
-0103             
-0104         <span class="keyword">end</span> <span class="comment">% cargaSumaMasa function</span>
-0105         
-0106         <a name="_sub3" href="#_subfunctions" class="code">function aplicarCarga(cargaEstaticaObj, varargin) </a><span class="comment">%#ok&lt;*VANUS,INUSD&gt;</span>
-0107             <span class="comment">% aplicarCarga: es un metodo de la clase CargaEstatica que se usa</span>
-0108             <span class="comment">% para aplicar la carga</span>
-0109             <span class="comment">%</span>
-0110             <span class="comment">% aplicarCarga(cargaEstaticaObj)</span>
-0111             <span class="comment">%</span>
-0112             <span class="comment">% Aplica el carga que estan guardada en el componente que corresponda</span>
-0113             
-0114         <span class="keyword">end</span> <span class="comment">% aplicarCarga function</span>
-0115         
-0116         <a name="_sub4" href="#_subfunctions" class="code">function disp(cargaEstaticaObj)</a>
-0117             <span class="comment">% disp: es un metodo de la clase CargaEstatica que se usa para imprimir en</span>
-0118             <span class="comment">% command Window la informacion de la carga aplicada sobre el</span>
-0119             <span class="comment">% componente que corresponda</span>
-0120             <span class="comment">%</span>
-0121             <span class="comment">% disp(cargaEstaticaObj)</span>
-0122             <span class="comment">%</span>
-0123             <span class="comment">% Imprime la informacion guardada en la carga (cargaEstaticaObj) en pantalla</span>
-0124             
-0125             <a href="#_sub5" class="code" title="subfunction disp(cargaEstaticaObj)">disp</a>@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(cargaEstaticaObj);
-0126             <span class="comment">% No usar dispMetodoTEFAME()</span>
-0127             
-0128         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0129         
-0130         <a name="_sub5" href="#_subfunctions" class="code">function masa = obtenerMasa(cargaEstaticaObj)</a>
-0131             <span class="comment">% obtenerMasa: Obtiene la masa de la carga</span>
-0132             <span class="comment">%</span>
-0133             <span class="comment">% masa = obtenerMasa(cargaEstaticaObj)</span>
-0134             
-0135             masa = [] .* (cargaEstaticaObj.factorCargaMasa * cargaEstaticaObj.factorUnidadMasa);
-0136             
-0137         <span class="keyword">end</span> <span class="comment">% obtenerMasa function</span>
-0138         
-0139         <a name="_sub6" href="#_subfunctions" class="code">function definirFactorUnidadMasa(cargaEstaticaObj, factor)</a>
-0140             <span class="comment">% definirFactorUnidadMasa: Define el factor de conversion de</span>
-0141             <span class="comment">% unidades de la carga a unidades de masa</span>
-0142             
-0143             cargaEstaticaObj.factorUnidadMasa = factor;
-0144             
-0145         <span class="keyword">end</span> <span class="comment">% definirFactorUnidadMasa function</span>
-0146         
-0147         <a name="_sub7" href="#_subfunctions" class="code">function definirFactorCargaMasa(cargaEstaticaObj, factor)</a>
-0148             <span class="comment">% definirFactorCargaMasa: Define cuanto porcentaje de la carga</span>
-0149             <span class="comment">% se convierte en masa</span>
-0150             
-0151             cargaEstaticaObj.factorCargaMasa = factor;
-0152             
-0153         <span class="keyword">end</span> <span class="comment">% definirFactorCargaMasa function</span>
-0154         
-0155         <a name="_sub8" href="#_subfunctions" class="code">function nodos = obtenerNodos(cargaEstaticaObj)</a>
-0156             <span class="comment">% obtenerNodos: Retorna los nodos de la carga</span>
-0157             <span class="comment">%</span>
-0158             <span class="comment">% nodos = obtenerNodos(cargaEstaticaObj)</span>
-0159             
-0160             nodos = cargaEstaticaObj.nodosCarga;
-0161             
-0162         <span class="keyword">end</span> <span class="comment">% obtenerNodos function</span>
-0163         
-0164     <span class="keyword">end</span> <span class="comment">% methods CargaEstatica</span>
-0165     
-0166 <span class="keyword">end</span> <span class="comment">% class CargaEstatica</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

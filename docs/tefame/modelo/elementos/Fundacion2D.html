@@ -2,8 +2,8 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of Nodo</title>
-  <meta name="keywords" content="Nodo">
+  <title>Description of Fundacion2D</title>
+  <meta name="keywords" content="Fundacion2D">
   <meta name="description" content="______________________________________________________________________">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
@@ -15,8 +15,8 @@
 </head>
 <body>
 <a name="_top"></a>
-<!-- # tefame --><!-- # modelo --><!-- menu.html nodo -->
-<h1>Nodo
+<!-- # tefame --><!-- # modelo --><!-- menu.html elementos -->
+<h1>Fundacion2D
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
@@ -44,52 +44,50 @@
 |______________________________________________________________________|
  ______________________________________________________________________
 |                                                                      |
-| Clase Nodo                                                           |
+| Clase Fundacion2D                                                    |
 |                                                                      |
-| Este archivo contiene la definicion de la Clase Nodo                 |
-| Nodo es una subclase de la clase ComponenteModelo y corresponde a la |
-| representacion  abstracta  de los  nodos en  el metodo  de elementos |
-| finitos o analisis matricial de estructuras.                         |
-| La clase nodo  guarda la  informacion de  las coordenadas  del nodo, |
-| , los ID de grados de libertad y los resultados de desplazamiento.   |
+| Este archivo contiene la definicion de la Clase Fundacion 2D         |
+| Fundacion2D es una  subclase de la clase Elemento y  corresponde a   |
+| la representacion del elemento fundacion.                            |
 |                                                                      |
-| Programado: FR                                                       |
-| Fecha: 05/08/2015                                                    |
-|                                                                      |
-| Modificado por: FR - 24/10/2016                                      |
-|                 Pablo Pizarro @ppizarror - 10/04/2019                |
+| Programado: Pablo Pizarro @ppizarror.com                             |
+| Fecha: 10/06/2018                                                    |
 |______________________________________________________________________|
 
   Properties (Access=private):
-       nGDL
-       coords
+       nodosObj
        gdlID
-       despl
-       cargas
-       reacciones
+       Eo
+       Ao
+       Io
+       dx
+       dy
+       L
+       Feq
+       T
+       Klp
+       PLOTNELEM
   Methods:
-       nodoObj = Nodo(etiquetaNodo,nGDLNodo,coordenadasNodo)
-       nGDLNodo = obtenerNumeroGDL(nodoObj)
-       coordenadasNodo = obtenerCoordenadas(nodoObj)
-       gdlIDNodo = obtenerGDLID(nodoObj)
-       gdlIDNodoCondensado = obtenerGDLIDCondensado(nodoObj)
-       cargasResultantesNodo = obtenerCargasResultantes(nodoObj)
-       desplazamientosNodo = obtenerDesplazamientos(nodoObj)
-       reaccionesNodo = obtenerReacciones(nodoObj)
-       definirGDLID(nodoObj,gdlIDNodo)
-       definirGDLIDCondensado(nodoObj,gdlIDNodoCondensado)
-       definirDesplazamientos(nodoObj,desplazamientosNodo)
-       agregarCarga(nodoObj,cargaNodo)
-       agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)
-       inicializar(nodoObj)
-       guardarPropiedades(nodoObj,archivoSalidaHandle)
-       guardarDesplazamientos(nodoObj,archivoSalidaHandle)
-       guardarReacciones(nodoObj,archivoSalidaHandle)
-       Disp(nodoObj)
-       agregarElementos(nodoObj, elemObj)
-       obtenerElementos(nodoObj)
-       tipoApoyoRestringido(nodoObj)
-  Methods Suplerclass (ComponenteModelo):
+       obj = Fundacion2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
+       numeroNodos = obtenerNumeroNodos(obj)
+       nodosBiela = obtenerNodos(obj)
+       numeroGDL = obtenerNumeroGDL(obj)
+       gdlIDBiela = obtenerGDLID(obj)
+       k_global = obtenerMatrizRigidezCoordGlobal(obj)
+       k_local = obtenerMatrizRigidezCoordLocal(obj)
+       m_masa = obtenerVectorMasa(obj)
+       m = obtenerMasa(obj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
+       l = obtenerLargo(obj)
+       T = obtenerMatrizTransformacion(obj)
+       theta = obtenerAngulo(obj)
+       definirGDLID(obj)
+       agregarFuerzaResistenteAReacciones(obj)
+       guardarPropiedades(obj,archivoSalidaHandle)
+       guardarEsfuerzosInternos(obj,archivoSalidaHandle)
+       disp(obj)
+  Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(obj)
        e = equals(obj,obj)
        objID = obtenerIDObjeto(obj)</pre></div>
@@ -98,10 +96,10 @@
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="../../../tefame/lib/arrayIntNum2str.html" class="code" title="function textCell = arrayIntNum2str(a, num)">arrayIntNum2str</a>	textCell = array2str(a,num) function that transform the array of number to a</li><li><a href="../../../tefame/lib/arrayNum2str.html" class="code" title="function textCell = arrayNum2str(a, num)">arrayNum2str</a>	textCell = array2str(a,num) function that transform the array of number to a</li><li><a href="../../../tefame/lib/isArrayEqual.html" class="code" title="function y = isArrayEqual(x, a)">isArrayEqual</a>	ISARRAYEQUAL Check if array x is equal to number a</li><li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li><li><a href="Nodo.html" class="code" title="">Nodo</a>	______________________________________________________________________</li><li><a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+<li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	______________________________________________________________________</li><li><a href="Elemento.html" class="code" title="">Elemento</a>	______________________________________________________________________</li><li><a href="Fundacion2D.html" class="code" title="">Fundacion2D</a>	______________________________________________________________________</li><li><a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="Nodo.html" class="code" title="">Nodo</a>	______________________________________________________________________</li></ul>
+<li><a href="Fundacion2D.html" class="code" title="">Fundacion2D</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
 

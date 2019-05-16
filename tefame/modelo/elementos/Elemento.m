@@ -35,29 +35,29 @@
 %
 %  Properties (Access=private):
 %  Methods:
-%       elementoObj = Elemento(etiquetaElemento)
-%       numeroNodos = obtenerNumeroNodos(elementoObj)
-%       nodosElemento = obtenerNodos(elementoObj)
-%       numeroGDL = obtenerNumeroGDL(elementoObj)
-%       gdlID = obtenerGDL(elementoObj)
-%       k_global = obtenerMatrizRigidezCoordGlobal(elementoObj)
-%       k_local = obtenerMatrizRigidezCoordLocal(elementoObj)
-%       fr_global = obtenerFuerzaResistenteCoordGlobal(elementoObj)
-%       fr_local = obtenerFuerzaResistenteCoordLocal(elementoObj)
-%       inicializar(elementoObj)
-%       definirGDLID(elementoObj)
-%       agregarFuerzaResistenteAReacciones(elementoObj)
-%       actualizar(elementoObj)
-%       guardarPropiedades(elementoObj,archivoSalidaHandle)
-%       guardarEsfuerzosInternos(elementoObj,archivoSalidaHandle)
-%       activarGraficoDeformada(elementoObj)
-%       desactivarGraficoDeformada(elementoObj)
-%       graficaDeformada(elementoObj)
-%       disp(elementoObj)
+%       obj = Elemento(etiquetaElemento)
+%       numeroNodos = obtenerNumeroNodos(obj)
+%       nodosElemento = obtenerNodos(obj)
+%       numeroGDL = obtenerNumeroGDL(obj)
+%       gdlID = obtenerGDL(obj)
+%       k_global = obtenerMatrizRigidezCoordGlobal(obj)
+%       k_local = obtenerMatrizRigidezCoordLocal(obj)
+%       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+%       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
+%       inicializar(obj)
+%       definirGDLID(obj)
+%       agregarFuerzaResistenteAReacciones(obj)
+%       actualizar(obj)
+%       guardarPropiedades(obj,archivoSalidaHandle)
+%       guardarEsfuerzosInternos(obj,archivoSalidaHandle)
+%       activarGraficoDeformada(obj)
+%       desactivarGraficoDeformada(obj)
+%       graficaDeformada(obj)
+%       disp(obj)
 %  Methods SuperClass (ComponenteModelo):
-%       etiqueta = obtenerEtiqueta(componenteModeloObj)
-%       e = equals(componenteModeloObj,obj)
-%       objID = obtenerIDObjeto(componenteModeloObj)
+%       etiqueta = obtenerEtiqueta(obj)
+%       e = equals(obj,obj)
+%       objID = obtenerIDObjeto(obj)
 
 classdef Elemento < ComponenteModelo
     
@@ -71,10 +71,10 @@ classdef Elemento < ComponenteModelo
     
     methods
         
-        function elementoObj = Elemento(etiquetaElemento)
+        function obj = Elemento(etiquetaElemento)
             % Elemento: es el constructor de la clase Elemento
             %
-            % elementoObj = Elemento(etiquetaElemento)
+            % obj = Elemento(etiquetaElemento)
             %
             % Crea un objeto de la clase Elemento, con un identificador unico
             % (etiquetaElemento)
@@ -85,145 +85,145 @@ classdef Elemento < ComponenteModelo
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
-            elementoObj = elementoObj@ComponenteModelo(etiquetaElemento);
-            elementoObj.graficaDeformadaElem = true;
+            obj = obj@ComponenteModelo(etiquetaElemento);
+            obj.graficaDeformadaElem = true;
             
         end % Elemento constructor
         
-        function numeroNodos = obtenerNumeroNodos(elementoObj) %#ok<MANU>
+        function numeroNodos = obtenerNumeroNodos(obj) %#ok<MANU>
             % obtenerNumeroNodos: es un metodo de la clase Elemento que se usa para
             % obtener el numero de nodos que tiene el Elemento
             %
-            % numeroNodos = obtenerNumeroNodos(elementoObj)
+            % numeroNodos = obtenerNumeroNodos(obj)
             %
             % Entrega el numero de nodos (numeroNodos) que tiene el Elemento
-            % (elementoObj)
+            % (obj)
             
             numeroNodos = 0;
             
         end % obtenerNumeroNodos function
         
-        function nodosElemento = obtenerNodos(elementoObj) %#ok<MANU>
+        function nodosElemento = obtenerNodos(obj) %#ok<MANU>
             % obtenerNodos: es un metodo de la clase Elemento que se usa para
             % obtener un arreglo con los nodos que tiene el Elemento
             %
-            % nodosElemento = obtenerNumeroNodos(elementoObj)
+            % nodosElemento = obtenerNumeroNodos(obj)
             %
             % Entrega un arreglo con los Nodos (nodosElemento) que tiene el Elemento
-            % (elementoObj)
+            % (obj)
             
             nodosElemento = [];
             
         end % obtenerNodos function
         
-        function numeroGDL = obtenerNumeroGDL(elementoObj) %#ok<MANU>
+        function numeroGDL = obtenerNumeroGDL(obj) %#ok<MANU>
             % obtenerNumeroGDL: es un metodo de la clase Elemento que se usa para
             % obtener el numero total de grados de libertad que tiene el Elemento
             %
-            % numeroGDL = obtenerNumeroGDL(elementoObj)
+            % numeroGDL = obtenerNumeroGDL(obj)
             %
-            % Entrega el numero de GDL (numeroGDL) que tiene el Elemento (elementoObj)
+            % Entrega el numero de GDL (numeroGDL) que tiene el Elemento (obj)
             
             numeroGDL = [];
             
         end % obtenerNumeroGDL function
         
-        function gdlID = obtenerGDL(elementoObj) %#ok<MANU>
+        function gdlID = obtenerGDL(obj) %#ok<MANU>
             % obtenerGDL: es un metodo de la clase Elemento que se usa para
             % obtener un arreglo con los ID de los grados de libertad que estan
             % asociados al Elemento
             %
-            % gdlID = obtenerGDL(elementoObj)
+            % gdlID = obtenerGDL(obj)
             %
             % Entrega un arreglo con los ID de los GDL (gdlID) que tiene el Elemento
-            % (elementoObj)
+            % (obj)
             
             gdlID = [];
             
         end % obtenerGDL function
         
-        function k_global = obtenerMatrizRigidezCoordGlobal(elementoObj) %#ok<MANU>
+        function k_global = obtenerMatrizRigidezCoordGlobal(obj) %#ok<MANU>
             % obtenerMatrizRigidezCoordGlobal: es un metodo de la clase Elemento
             % que se usa para obtener la matriz de rigidez para el Elemento en el
             % sistema de coordenadas globales del sistema estructural o Modelo
             %
-            % k_global = obtenerMatrizRigidezCoordGlobal(elementoObj)
+            % k_global = obtenerMatrizRigidezCoordGlobal(obj)
             %
-            % Entrega la matriz de rigidez (k_global) que tiene el Elemento (elementoObj)
+            % Entrega la matriz de rigidez (k_global) que tiene el Elemento (obj)
             %  en el sistema de coordenadas globales
             
             k_global = [];
             
         end % obtenerMatrizRigidezGlobal function
         
-        function k_local = obtenerMatrizRigidezCoordLocal(elementoObj) %#ok<MANU>
+        function k_local = obtenerMatrizRigidezCoordLocal(obj) %#ok<MANU>
             % obtenerMatrizRigidezCoordLocal: es un metodo de la clase Elemento
             % que se usa para obtener la matriz de rigidez para el Elemento en el
             % sistema de coordenadas locales del elemento
             %
-            % k_local = obtenerMatrizRigidezCoordLocal(elementoObj)
+            % k_local = obtenerMatrizRigidezCoordLocal(obj)
             %
             % Entrega la matriz de rigidez (k_local)  en el sistema de coordenadas
-            % local que tiene el Elemento (elementoObj)
+            % local que tiene el Elemento (obj)
             
             k_local = [];
             
         end % obtenerMatrizRigidezLocal function
         
-        function fr_global = obtenerFuerzaResistenteCoordGlobal(elementoObj) %#ok<MANU>
+        function fr_global = obtenerFuerzaResistenteCoordGlobal(obj) %#ok<MANU>
             % obtenerFuerzaResistenteCoordGlobal: es un metodo de la clase Elemento
             % que se usa para obtener el vector de fuerzas resitente del Elemento
             % en el sistema de coordenadas globales del modelo o sistema
             % estructural
             %
-            % fr_global = obtenerFuerzaResistenteCoordGlobal(elementoObj)
+            % fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
             %
             % Entrega el vector con las fuerzas resistentes (fr_global) que tiene
-            % elemento (elementoObj) en el sistema de coordenadas globales la
+            % elemento (obj) en el sistema de coordenadas globales la
             % estructura
             
             fr_global = [];
             
         end % obtenerFuerzaResistenteCoordGlobal function
         
-        function fr_local = obtenerFuerzaResistenteCoordLocal(elementoObj) %#ok<MANU>
+        function fr_local = obtenerFuerzaResistenteCoordLocal(obj) %#ok<MANU>
             % obtenerFuerzaResistenteCoordLocal: es un metodo de la clase Elemento
             % que se usa para obtener el vector de fuerzas resitente del Elemento
             % en el sistema de coordenadas locales del elemento
             %
-            % fr_local = obtenerFuerzaResistenteCoordLocal(elementoObj)
+            % fr_local = obtenerFuerzaResistenteCoordLocal(obj)
             %
             % Entrega el vector con las fuerzas resistentes (fr_local) que tiene
-            % elemento (elementoObj) en el sistema de coordenadas locales del
+            % elemento (obj) en el sistema de coordenadas locales del
             % elemento
             
             fr_local = [];
             
         end % obtenerFuerzaResistenteCoordLocal function
         
-        function inicializar(elementoObj) %#ok<MANU>
+        function inicializar(obj) %#ok<MANU>
             % inicializar: es un metodo de la clase Elemento que se usa para
             % inicializar las diferentes componentes que sean necesario en los
             % elementos para realizar posteriormente el analisis
             %
-            % inicializar(elementoObj)
+            % inicializar(obj)
             %
-            % Inicializa los diferentes componetes del Elemento (elementoObj),
+            % Inicializa los diferentes componetes del Elemento (obj),
             % para poder preparar estos para realizar el analisis
             
         end % inicializar function
         
-        function definirGDLID(elementoObj) %#ok<MANU>
+        function definirGDLID(obj) %#ok<MANU>
             % definirGDLID: es un metodo de la clase Elemento que se usa para
             % definir el vector con los ID de los GDL del elemento
             %
-            % definirGDLID(elementoObj)
+            % definirGDLID(obj)
             %
-            % Define los ID de los grados de libertad del Elemento (elementoObj)
+            % Define los ID de los grados de libertad del Elemento (obj)
             
         end % definirGDLID function
         
-        function agregarFuerzaResistenteAReacciones(elementoObj) %#ok<MANU>
+        function agregarFuerzaResistenteAReacciones(obj) %#ok<MANU>
             % agregarEsfuerzosElementoAReaccion: es un metodo de la clase Nodo
             % que se usa para agregar el vector de fuerzas resistentes de un
             % elemento al nodo
@@ -235,81 +235,81 @@ classdef Elemento < ComponenteModelo
             
         end % agregarFuerzaResistenteAReacciones function
         
-        function actualizar(elementoObj) %#ok<MANU>
+        function actualizar(obj) %#ok<MANU>
             % actualizar: es un metodo de la clase Elemento que se usa para
             % actualizar las diferentes componentes que sean necesario en los
             % elementos posterior a realizar el analisis
             %
-            % actualizar(elementoObj)
-            % Actualizar los diferentes componetes del Elemento (elementoObj),
+            % actualizar(obj)
+            % Actualizar los diferentes componetes del Elemento (obj),
             % despues de realizar el analisis
             
         end % actualizar function
         
-        function guardarPropiedades(elementoObj, archivoSalidaHandle) %#ok<INUSD>
+        function guardarPropiedades(obj, archivoSalidaHandle) %#ok<INUSD>
             % guardarPropiedades: es un metodo de la clase Elemento que se usa
             % para guardar en un archivo de salida las propiedades del Elemento
             %
-            % guardarPropiedades(elementoObj,archivoSalidaHandle)
+            % guardarPropiedades(obj,archivoSalidaHandle)
             %
-            % Guarda las propiedades de los Elemento (elementoObj), en un archivo
+            % Guarda las propiedades de los Elemento (obj), en un archivo
             % de salida (archivoSalidaHandle)
             
         end % guardarPropiedades function
         
-        function guardarEsfuerzosInternos(elementoObj, archivoSalidaHandle) %#ok<INUSD>
+        function guardarEsfuerzosInternos(obj, archivoSalidaHandle) %#ok<INUSD>
             % guardarEsfuerzosInternos: es un metodo de la clase Elemento que se
             % usa para guardar en un archivo de salida los esfuerzos internos del
             % Elemento
             %
-            % guardarEsfuerzosInternos(elementoObj,archivoSalidaHandle)
+            % guardarEsfuerzosInternos(obj,archivoSalidaHandle)
             %
-            % Guarda los esfuerzos internos de los Elemento (elementoObj), en un
+            % Guarda los esfuerzos internos de los Elemento (obj), en un
             % archivo de salida (archivoSalidaHandle)
             
         end % guardarEsfuerzosInternos function
         
-        function plot(elementoObj, deformadas, tipoLinea, grosorLinea, gdl) %#ok<INUSD>
+        function plot(obj, deformadas, tipoLinea, grosorLinea, gdl) %#ok<INUSD>
             % plot: Grafica un elemento
             %
-            % plot(elementoObj,deformadas,tipoLinea,grosorLinea,gdl)
+            % plot(obj,deformadas,tipoLinea,grosorLinea,gdl)
             
         end % plot function
         
-        function activarGraficoDeformada(elementoObj)
+        function activarGraficoDeformada(obj)
             % activarGraficoDeformada: Activa el grafico de la
             % deformada del elemento
             %
-            % activarGraficoDeformada(elementoObj)
+            % activarGraficoDeformada(obj)
             
-            elementoObj.graficaDeformadaElem = true;
+            obj.graficaDeformadaElem = true;
             
         end % activarGraficoDeformada function
         
-        function desactivarGraficoDeformada(elementoObj)
+        function desactivarGraficoDeformada(obj)
             % desactivarGraficoDeformada: Desactiva el grafico de la
             % deformada del elemento
             %
-            % desactivarGraficoDeformada(elementoObj)
+            % desactivarGraficoDeformada(obj)
             
-            elementoObj.graficaDeformadaElem = false;
+            obj.graficaDeformadaElem = false;
             
         end % desactivarGraficoDeformada function
         
-        function def = graficaDeformada(elementoObj)
+        function def = graficaDeformada(obj)
             % graficaDeformada: Indica si el objeto grafica su deformada o
             % no
             %
-            % def = graficaDeformada(elementoObj)
+            % def = graficaDeformada(obj)
             
-            def = elementoObj.graficaDeformadaElem;
+            def = obj.graficaDeformadaElem;
             
         end % graficaDeformada function
         
-        function graficarLinea(elementoObj, coord1, coord2, tipoLinea, grosorLinea) %#ok<INUSL>
+        function graficarLinea(obj, coord1, coord2, tipoLinea, grosorLinea) %#ok<INUSL>
             % graficarLinea: Grafica una linea para un elemento
             %
-            % graficarLinea(elementoObj,coord1,coord2,tipoLinea,grosorLinea)
+            % graficarLinea(obj,coord1,coord2,tipoLinea,grosorLinea)
             
             if length(coord1) == 2
                 plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], tipoLinea, ...
@@ -321,27 +321,27 @@ classdef Elemento < ComponenteModelo
             
         end % graficarLinea function
         
-        function disp(elementoObj)
+        function disp(obj)
             % disp: es un metodo de la clase Elemento que se usa para impimir en
             % command Window la informacion del Elemento
             %
-            % disp(elementoObj)
+            % disp(obj)
             %
-            % Imprime la informacion guardada en el Elemento (elementoObj) en
+            % Imprime la informacion guardada en el Elemento (obj) en
             % pantalla
             
-            disp@ComponenteModelo(elementoObj);
+            disp@ComponenteModelo(obj);
             % No usar dispMetodoTEFAME()
             
         end % disp function
         
-        function definirFactorUnidadMasa(elementoObj, factor)
+        function definirFactorUnidadMasa(obj, factor)
             % definirFactorUnidadMasa: Funcion que define el cambio de
             % unidad para pasar masa carga a masa real
             %
-            % definirFactorUnidadMasa(elementoObj,factor)
+            % definirFactorUnidadMasa(obj,factor)
             
-            elementoObj.factorMasa = factor;
+            obj.factorMasa = factor;
             
         end % definirFactorUnidadMasa function
         

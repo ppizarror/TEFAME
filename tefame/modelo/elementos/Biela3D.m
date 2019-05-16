@@ -53,9 +53,9 @@
 %       guardarEsfuerzosInternos(biela3DObj,archivoSalidaHandle)
 %       disp(biela3DObj)
 %  Methods SuperClass (ComponenteModelo):
-%       etiqueta = obtenerEtiqueta(componenteModeloObj)
-%       e = equals(componenteModeloObj,obj)
-%       objID = obtenerIDObjeto(componenteModeloObj)
+%       etiqueta = obtenerEtiqueta(obj)
+%       e = equals(obj,obj)
+%       objID = obtenerIDObjeto(obj)
 
 classdef Biela3D < Elemento
     
@@ -298,14 +298,14 @@ classdef Biela3D < Elemento
             
         end % guardarEsfuerzosInternos function
         
-        function plot(elementoObj, deformadas, tipoLinea, grosorLinea, ~)
+        function plot(obj, deformadas, tipoLinea, grosorLinea, ~)
             % plot: Grafica un elemento
             %
-            % plot(elementoObj,deformadas,tipoLinea,grosorLinea)
+            % plot(obj,deformadas,tipoLinea,grosorLinea)
             
             % Obtiene las coordenadas de los objetos
-            coord1 = elementoObj.nodosObj{1}.obtenerCoordenadas();
-            coord2 = elementoObj.nodosObj{2}.obtenerCoordenadas();
+            coord1 = obj.nodosObj{1}.obtenerCoordenadas();
+            coord2 = obj.nodosObj{2}.obtenerCoordenadas();
             
             % Si hay deformadas
             if ~isempty(deformadas)
@@ -314,7 +314,7 @@ classdef Biela3D < Elemento
             end
             
             % Grafica el elemento
-            elementoObj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
+            obj.graficarLinea(coord1, coord2, tipoLinea, grosorLinea);
             
         end % plot function
         

@@ -51,54 +51,7 @@ This function is called by:
 
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [v, w, error] = calculoEigIterInvDesplazamiento(M, K, mu, tol)</a>
-0002 <span class="comment">% calculoEigIterDirecta: Calcula los valores y vectores propios del sistema</span>
-0003 <span class="comment">% usando el algoritmo de iteracion directo</span>
-0004 <span class="comment">%</span>
-0005 <span class="comment">% [v,w,error] = calculoEigIterInvDesplazamiento(M,K,mu,tol)</span>
-0006 <span class="comment">%</span>
-0007 <span class="comment">% Parametros:</span>
-0008 <span class="comment">%   M, K        Matriz masa y rigidez</span>
-0009 <span class="comment">%   mu          Parametro externo que multiplica a K</span>
-0010 <span class="comment">%</span>
-0011 <span class="comment">% Salida:</span>
-0012 <span class="comment">%   v           Matriz vectores propios</span>
-0013 <span class="comment">%   w           Valores propios</span>
-0014 
-0015 <span class="comment">% Parametros iniciales</span>
-0016 err = tol * 10;
-0017 K_eff = K - mu .* M;
-0018 [L, D] = ldl(K_eff); <span class="comment">% Descomposicion ldl'</span>
-0019 
-0020 <span class="comment">% Primera iteracion</span>
-0021 vo = rand(length(K), 1); <span class="comment">% Primer desplazamiento</span>
-0022 w = sqrt(mu + sqrt((vo' * K * vo)/(vo' * M * vo))); <span class="comment">% Primera aproximacion</span>
-0023 error = err;
-0024 v = vo;
-0025 b = M * vo;
-0026 contador = 2;
-0027 
-0028 <span class="comment">% Interaciones</span>
-0029 <span class="keyword">while</span> tol &lt;= err
-0030     yTemp = (L * D) \ b;
-0031     vTemp = L' \ yTemp;
-0032     vTemp = <a href="modonorm.html" class="code" title="function [phi] = modonorm(phi, M, opt)">modonorm</a>(vTemp, M, 3);
-0033     wTemp = sqrt(mu + sqrt((vTemp' * K * vTemp)/(vTemp' * M * vTemp)));
-0034     
-0035     err = abs(wTemp-w(contador-1));
-0036     b = M * vTemp;
-0037     
-0038     w = [w, wTemp]; <span class="comment">%#ok&lt;*AGROW&gt;</span>
-0039     v = [v, vTemp];
-0040     error = [error, err];
-0041     contador = contador + 1;
-0042 <span class="keyword">end</span>
-0043 
-0044 error = error';
-0045 w = w';
-0046 
-0047 <span class="keyword">end</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

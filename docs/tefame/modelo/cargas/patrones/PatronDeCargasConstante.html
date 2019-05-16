@@ -28,7 +28,7 @@
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment"> ______________________________________________________________________
 |                                                                      |
-|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
+|          TEFAME - Toolbox para Elementos Finitos y Analisis          |
 |                  Matricial de Estructuras en MATLAB                  |
 |                                                                      |
 |                   Area  de Estructuras y Geotecnia                   |
@@ -71,9 +71,9 @@
   Methods SuperClass (PatronDeCargas):
        cargas = obtenerCargas(patronDeCargasObj)
   Methods SuperClass (ComponenteModelo):
-       etiqueta = obtenerEtiqueta(componenteModeloObj)
-       e = equals(componenteModeloObj,obj)
-       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+       etiqueta = obtenerEtiqueta(obj)
+       e = equals(obj,obj)
+       objID = obtenerIDObjeto(obj)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
@@ -85,134 +85,9 @@ This function is called by:
 <li><a href="PatronDeCargasConstante.html" class="code" title="">PatronDeCargasConstante</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
-<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
-<ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="#_sub1" class="code">function patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas, arregloCargas)</a></li><li><a href="#_sub2" class="code">function aplicarCargas(patronDeCargasObj, factor)</a></li><li><a href="#_sub3" class="code">function disp(patronDeCargasObj)</a></li></ul>
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
-0002 <span class="comment">%|                                                                      |</span>
-0003 <span class="comment">%|          TEFAME - Toolbox para Elementos Finitos y Analisis          |</span>
-0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
-0005 <span class="comment">%|                                                                      |</span>
-0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
-0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
-0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
-0009 <span class="comment">%|                         Universidad de Chile                         |</span>
-0010 <span class="comment">%|                                                                      |</span>
-0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
-0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
-0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
-0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
-0015 <span class="comment">%| MATLAB.                                                              |</span>
-0016 <span class="comment">%|______________________________________________________________________|</span>
-0017 <span class="comment">% ______________________________________________________________________</span>
-0018 <span class="comment">%|                                                                      |</span>
-0019 <span class="comment">%| Clase PatronDeCargasConstante                                        |</span>
-0020 <span class="comment">%|                                                                      |</span>
-0021 <span class="comment">%| Este archivo contiene la definicion de la Clase                      |</span>
-0022 <span class="comment">%| PatronDeCargasConstante.                                             |</span>
-0023 <span class="comment">%| PatronDeCargasConstante es una subclase de la clase PatronDeCargas y |</span>
-0024 <span class="comment">%| corresponde  a la  representacion de un  patron de  cargas constante |</span>
-0025 <span class="comment">%| en  el   metodo  de   elementos  finitos  o  analisis  matricial  de |</span>
-0026 <span class="comment">%| estructuras.                                                         |</span>
-0027 <span class="comment">%| La clase PatronDeCargasConstante  es una clase contenedor que guarda |</span>
-0028 <span class="comment">%| y controla se  aplica en forma  constante las cargas  en los nodos y |</span>
-0029 <span class="comment">%| elementos, en este caso se mantiene constante.                       |</span>
-0030 <span class="comment">%|                                                                      |</span>
-0031 <span class="comment">%| Programado: FR                                                       |</span>
-0032 <span class="comment">%| Fecha: 05/08/2015                                                    |</span>
-0033 <span class="comment">%|                                                                      |</span>
-0034 <span class="comment">%| Modificado por: FR - 24/10/2016                                      |</span>
-0035 <span class="comment">%|                 Pablo Pizarro @ppizarror - 10/04/2019                |</span>
-0036 <span class="comment">%|______________________________________________________________________|</span>
-0037 <span class="comment">%</span>
-0038 <span class="comment">%  Properties (Access=private):</span>
-0039 <span class="comment">%  Methods:</span>
-0040 <span class="comment">%       patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arregloCargas)</span>
-0041 <span class="comment">%       aplicarCargas(patronDeCargasObj)</span>
-0042 <span class="comment">%       disp(patronDeCargasObj)</span>
-0043 <span class="comment">%  Methods SuperClass (PatronDeCargas):</span>
-0044 <span class="comment">%       cargas = obtenerCargas(patronDeCargasObj)</span>
-0045 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
-0046 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
-0047 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
-0048 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
-0049 
-0050 classdef <a href="PatronDeCargasConstante.html" class="code" title="">PatronDeCargasConstante</a> &lt; <a href="PatronDeCargas.html" class="code" title="">PatronDeCargas</a>
-0051     
-0052     properties(Access = private)
-0053     <span class="keyword">end</span> <span class="comment">% properties PatronDeCargasConstante</span>
-0054     
-0055     methods
-0056         
-0057         <a name="_sub0" href="#_subfunctions" class="code">function patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas, arregloCargas)</a>
-0058             <span class="comment">% PatronDeCargasConstante: es el constructor de la clase PatronDeCargas</span>
-0059             <span class="comment">%</span>
-0060             <span class="comment">% patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arregloCargas)</span>
-0061             <span class="comment">%</span>
-0062             <span class="comment">% Crea un objeto de la clase PatronDeCargas, con un identificador unico</span>
-0063             <span class="comment">% (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)</span>
-0064             <span class="comment">% a aplicar en el modelo</span>
-0065             
-0066             <span class="comment">% Si no se pasan argumentos se crean vacios</span>
-0067             <span class="keyword">if</span> nargin == 0
-0068                 etiquetaPatronDeCargas = <span class="string">''</span>;
-0069             <span class="keyword">end</span> <span class="comment">% if</span>
-0070             
-0071             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase ComponenteModelo</span>
-0072             patronDeCargasObj = patronDeCargasObj@<a href="PatronDeCargas.html" class="code" title="">PatronDeCargas</a>(etiquetaPatronDeCargas);
-0073             
-0074             <span class="comment">% Se guarda el arreglo con las cargas</span>
-0075             patronDeCargasObj.cargas = arregloCargas;
-0076             
-0077             <span class="comment">% Define propiedades</span>
-0078             patronDeCargasObj.patronEsDinamico = false;
-0079             
-0080         <span class="keyword">end</span> <span class="comment">% PatronDeCargasConstante constructor</span>
-0081         
-0082         <a name="_sub1" href="#_subfunctions" class="code">function aplicarCargas(patronDeCargasObj, factor)</a>
-0083             <span class="comment">% aplicarCargas: es un metodo de la clase PatronDeCargasConstante que</span>
-0084             <span class="comment">% se usa para aplicar las cargas guardadas en el Patron de Cargas</span>
-0085             <span class="comment">%</span>
-0086             <span class="comment">% aplicarCargas(patronDeCargasObj, factor)</span>
-0087             <span class="comment">%</span>
-0088             <span class="comment">% Aplica las cargas que estan guardadas en el PatronDeCargasConstante</span>
-0089             <span class="comment">% (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos</span>
-0090             <span class="comment">% y elementos</span>
-0091             
-0092             <span class="comment">% Se aplica la carga con un factor de carga</span>
-0093             <span class="keyword">for</span> i = 1:length(patronDeCargasObj.cargas)
-0094                 
-0095                 <span class="comment">% Chequea que la carga sea estatica</span>
-0096                 <span class="keyword">if</span> ~isa(patronDeCargasObj.cargas{i}, <span class="string">'CargaEstatica'</span>)
-0097                     error(<span class="string">'PatronDeCargasConstante solo puede resolver cargas estaticas'</span>);
-0098                 <span class="keyword">end</span>
-0099                 
-0100                 patronDeCargasObj.cargas{i}.aplicarCarga(factor);
-0101 
-0102             <span class="keyword">end</span> <span class="comment">% for i</span>
-0103             
-0104         <span class="keyword">end</span> <span class="comment">% aplicarCargas function</span>
-0105         
-0106         <a name="_sub2" href="#_subfunctions" class="code">function disp(patronDeCargasObj)</a>
-0107             <span class="comment">% disp: es un metodo de la clase PatronDeCargasConstante que se usa para imprimir en</span>
-0108             <span class="comment">% command Window la informacion del Patron de Cargas</span>
-0109             <span class="comment">%</span>
-0110             <span class="comment">% disp(patronDeCargasObj)</span>
-0111             <span class="comment">%</span>
-0112             <span class="comment">% Imprime la informacion guardada en el Patron de Cargas Constante (patronDeCargasObj)</span>
-0113             <span class="comment">% en pantalla</span>
-0114             
-0115             fprintf(<span class="string">'Propiedades patron de cargas constante :\n'</span>);
-0116             <a href="#_sub3" class="code" title="subfunction disp(patronDeCargasObj)">disp</a>@<a href="../../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(patronDeCargasObj);     
-0117             <a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
-0118             
-0119         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0120         
-0121     <span class="keyword">end</span> <span class="comment">% methods PatronDeCargasConstante</span>
-0122     
-0123 <span class="keyword">end</span> <span class="comment">% class PatronDeCargasConstante</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

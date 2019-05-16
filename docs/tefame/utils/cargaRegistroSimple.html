@@ -46,25 +46,7 @@ This function is called by:
 
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function reg = cargaRegistroSimple(archivo, dt, varargin)</a>
-0002 <span class="comment">% cargaRegistroSimple: Carga un registro simple de un archivo sin encabezado</span>
-0003 <span class="comment">% que tiene una sola columna con datos</span>
-0004 <span class="comment">%</span>
-0005 <span class="comment">% reg = cargaRegistroSimple(archivo,dt,varargin)</span>
-0006 <span class="comment">%</span>
-0007 <span class="comment">% Parametros opcionales:</span>
-0008 <span class="comment">%   'factor'    Factor que multiplica al registro (1 por defecto)</span>
-0009 
-0010 p = inputParser;
-0011 p.KeepUnmatched = true;
-0012 addOptional(p, <span class="string">'factor'</span>, 1);
-0013 parse(p, varargin{:});
-0014 r = p.Results;
-0015 
-0016 reg = <a href="cargaRegistroArchivoGeneral.html" class="code" title="function reg = cargaRegistroArchivoGeneral(archivo, linedelim, coldelim, header, footer, ncol, dt, factor)">cargaRegistroArchivoGeneral</a>(archivo, <span class="string">'\n'</span>, <span class="string">' '</span>, 0, 0, 1, dt, r.factor);
-0017 
-0018 <span class="keyword">end</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

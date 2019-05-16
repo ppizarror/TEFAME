@@ -42,44 +42,7 @@ This function is called by:
 
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function plotRegistro(registro, titulo, unidady, tmin, tmax)</a>
-0002 <span class="comment">% plotRegistro: Es una funcion que grafica un registro sismico</span>
-0003 <span class="comment">%</span>
-0004 <span class="comment">% plotRegistro(registro,titulo,unidady,tmin,tmax)</span>
-0005 
-0006 <span class="comment">% Obtiene el vector de tiempo y aceleracion</span>
-0007 t = registro(:, 1);
-0008 a = registro(:, 2);
-0009 dt = t(2) - t(1);
-0010 
-0011 <span class="comment">% Tiempos limite</span>
-0012 <span class="keyword">if</span> ~exist(<span class="string">'tmin'</span>, <span class="string">'var'</span>)
-0013     tmin = min(t);
-0014 <span class="keyword">end</span>
-0015 <span class="keyword">if</span> ~exist(<span class="string">'tmax'</span>, <span class="string">'var'</span>)
-0016     tmax = max(t);
-0017 <span class="keyword">end</span>
-0018 
-0019 <span class="comment">% Genera el grafico</span>
-0020 plt = figure();
-0021 movegui(plt, <span class="string">'center'</span>);
-0022 hold on;
-0023 grid on;
-0024 grid minor;
-0025 plot(t, a, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 0.8);
-0026 xlim([tmin, tmax]);
-0027 
-0028 <span class="comment">% Unidades</span>
-0029 <span class="keyword">if</span> exist(<span class="string">'unidady'</span>, <span class="string">'var'</span>)
-0030     ylabel(sprintf(<span class="string">'Aceleracion (%s)'</span>, unidady));
-0031 <span class="keyword">end</span>
-0032 <span class="keyword">if</span> exist(<span class="string">'titulo'</span>, <span class="string">'var'</span>)
-0033     title(sprintf(<span class="string">'%s - dt=%.2fs'</span>, titulo, dt));
-0034 <span class="keyword">end</span>
-0035 xlabel(<span class="string">'Tiempo (s)'</span>);
-0036 
-0037 <span class="keyword">end</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

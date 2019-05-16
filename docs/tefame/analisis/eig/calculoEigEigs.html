@@ -51,32 +51,7 @@ This function is called by:
 
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [w, v] = calculoEigEigs(M, K, nModos)</a>
-0002 <span class="comment">% calculoEigEigs: Calcula los valores y vectores propios del sistema usando</span>
-0003 <span class="comment">% la funcion eigs</span>
-0004 <span class="comment">%</span>
-0005 <span class="comment">% [w,v] = calculoEigEigs(M,K,nModos)</span>
-0006 <span class="comment">%</span>
-0007 <span class="comment">% Parametros:</span>
-0008 <span class="comment">%   M, K        Matriz masa y rigidez</span>
-0009 <span class="comment">%   nmodos      Numero de modos del analisis</span>
-0010 <span class="comment">%</span>
-0011 <span class="comment">% Salida:</span>
-0012 <span class="comment">%   w           Matriz vectores propios</span>
-0013 <span class="comment">%   v           Valores propios</span>
-0014 
-0015 ngdl = length(M);
-0016 nModos = min(nModos, ngdl);
-0017 invM = zeros(ngdl, ngdl);
-0018 <span class="keyword">for</span> i = 1:ngdl
-0019     invM(i, i) = 1 / M(i, i);
-0020 <span class="keyword">end</span> <span class="comment">% for i</span>
-0021 sysMat = invM * K;
-0022 [w, v] = eigs(sysMat, nModos, <span class="string">'smallestabs'</span>);
-0023 v = sqrt(diag(v));
-0024 
-0025 <span class="keyword">end</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

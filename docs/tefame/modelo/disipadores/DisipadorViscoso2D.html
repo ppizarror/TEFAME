@@ -28,7 +28,7 @@
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment"> ______________________________________________________________________
 |                                                                      |
-|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
+|          TEFAME - Toolbox para Elementos Finitos y Analisis          |
 |                  Matricial de Estructuras en MATLAB                  |
 |                                                                      |
 |                   Area  de Estructuras y Geotecnia                   |
@@ -80,9 +80,9 @@
        plot(disipadorViscoso2DObj,tipoLinea,grosorLinea,colorLinea)
        T = obtenerMatrizTransformacion(disipadorViscoso2DObj)
   Methods SuperClass (ComponenteModelo):
-       etiqueta = obtenerEtiqueta(componenteModeloObj)
-       e = equals(componenteModeloObj,obj)
-       objID = obtenerIDObjeto(componenteModeloObj)</pre></div>
+       etiqueta = obtenerEtiqueta(obj)
+       e = equals(obj,obj)
+       objID = obtenerIDObjeto(obj)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
@@ -94,182 +94,9 @@ This function is called by:
 <li><a href="DisipadorViscoso2D.html" class="code" title="">DisipadorViscoso2D</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
-<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="#_sub1" class="code">function disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaDisipador, nodo1Obj, nodo2Obj, Cd, alpha)</a></li><li><a href="#_sub2" class="code">function k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)</a></li><li><a href="#_sub3" class="code">function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)</a></li><li><a href="#_sub4" class="code">function actualizarDisipador(disipadorViscoso2DObj, w, carga)</a></li><li><a href="#_sub5" class="code">function disp(disipadorViscoso2DObj)</a></li></ul>
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <span class="comment">% ______________________________________________________________________</span>
-0002 <span class="comment">%|                                                                      |</span>
-0003 <span class="comment">%|          TEFAME - Toolbox para Elementos Finitos y Analisis          |</span>
-0004 <span class="comment">%|                  Matricial de Estructuras en MATLAB                  |</span>
-0005 <span class="comment">%|                                                                      |</span>
-0006 <span class="comment">%|                   Area  de Estructuras y Geotecnia                   |</span>
-0007 <span class="comment">%|                   Departamento de Ingenieria Civil                   |</span>
-0008 <span class="comment">%|              Facultad de Ciencias Fisicas y Matematicas              |</span>
-0009 <span class="comment">%|                         Universidad de Chile                         |</span>
-0010 <span class="comment">%|                                                                      |</span>
-0011 <span class="comment">%| TEFAME es una  plataforma en base a objetos para modelar, analizar y |</span>
-0012 <span class="comment">%| visualizar  la respuesta de sistemas  estructurales usando el metodo |</span>
-0013 <span class="comment">%| de elementos finitos y analisis matricial de estructuras en MATLAB.  |</span>
-0014 <span class="comment">%| La plataforma es desarrollada en  propagacion orientada a objetos en |</span>
-0015 <span class="comment">%| MATLAB.                                                              |</span>
-0016 <span class="comment">%|______________________________________________________________________|</span>
-0017 <span class="comment">% ______________________________________________________________________</span>
-0018 <span class="comment">%|                                                                      |</span>
-0019 <span class="comment">%| Clase DisipadorViscoso2D                                             |</span>
-0020 <span class="comment">%|                                                                      |</span>
-0021 <span class="comment">%| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |</span>
-0022 <span class="comment">%|  es una  subclase de la clase Disipador2D y  corresponde a           |</span>
-0023 <span class="comment">%| la representacion de un disipador viscoso en 2D.                     |</span>
-0024 <span class="comment">%|                                                                      |</span>
-0025 <span class="comment">%| Programado: Pablo Pizarro @ppizarror.com                             |</span>
-0026 <span class="comment">%| Fecha: 29/04/2019                                                    |</span>
-0027 <span class="comment">%|______________________________________________________________________|</span>
-0028 <span class="comment">%</span>
-0029 <span class="comment">%  Properties (Access=private):</span>
-0030 <span class="comment">%       Keq</span>
-0031 <span class="comment">%       Ceq</span>
-0032 <span class="comment">%       dx</span>
-0033 <span class="comment">%       dy</span>
-0034 <span class="comment">%       L</span>
-0035 <span class="comment">%       theta</span>
-0036 <span class="comment">%       Klp</span>
-0037 <span class="comment">%       alpha</span>
-0038 <span class="comment">%       Cd</span>
-0039 <span class="comment">%  Methods:</span>
-0040 <span class="comment">%       definirGDLID(disipadorViscoso2DObj)</span>
-0041 <span class="comment">%       disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)</span>
-0042 <span class="comment">%       disp(disipadorViscoso2DObj)</span>
-0043 <span class="comment">%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorViscoso2DObj)</span>
-0044 <span class="comment">%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorViscoso2DObj)</span>
-0045 <span class="comment">%       gdlIDBiela = obtenerGDLID(disipadorViscoso2DObj)</span>
-0046 <span class="comment">%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorViscoso2DObj)</span>
-0047 <span class="comment">%       k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)</span>
-0048 <span class="comment">%       l = obtenerLargo(disipadorViscoso2DObj)</span>
-0049 <span class="comment">%       nodosBiela = obtenerNodos(disipadorViscoso2DObj)</span>
-0050 <span class="comment">%       numeroGDL = obtenerNumeroGDL(disipadorViscoso2DObj)</span>
-0051 <span class="comment">%       numeroNodos = obtenerNumeroNodos(disipadorViscoso2DObj)</span>
-0052 <span class="comment">%       plot(disipadorViscoso2DObj,tipoLinea,grosorLinea,colorLinea)</span>
-0053 <span class="comment">%       T = obtenerMatrizTransformacion(disipadorViscoso2DObj)</span>
-0054 <span class="comment">%  Methods SuperClass (ComponenteModelo):</span>
-0055 <span class="comment">%       etiqueta = obtenerEtiqueta(componenteModeloObj)</span>
-0056 <span class="comment">%       e = equals(componenteModeloObj,obj)</span>
-0057 <span class="comment">%       objID = obtenerIDObjeto(componenteModeloObj)</span>
-0058 
-0059 classdef <a href="DisipadorViscoso2D.html" class="code" title="">DisipadorViscoso2D</a> &lt; <a href="Disipador2D.html" class="code" title="">Disipador2D</a>
-0060     
-0061     properties(Access = private)
-0062         Keq <span class="comment">% Modulo de elasticidad</span>
-0063         Ce <span class="comment">% Parametro</span>
-0064         Ceq <span class="comment">% Inercia de la seccion</span>
-0065         dx <span class="comment">% Distancia en el eje x entre los nodos</span>
-0066         dy <span class="comment">% Distancia en el eje y entre los nodos</span>
-0067         L <span class="comment">% Largo del elemento</span>
-0068         theta <span class="comment">% Angulo de inclinacion del disipador</span>
-0069         Klp <span class="comment">% Matriz de rigidez local del elemento</span>
-0070         alpha <span class="comment">% Paramatro del disipador</span>
-0071         Cd <span class="comment">% Parametro del disipador</span>
-0072         w <span class="comment">% Frecuencia del modo que controla la estructura</span>
-0073         Vo <span class="comment">% Desp</span>
-0074         v0 <span class="comment">% Desp</span>
-0075     <span class="keyword">end</span> <span class="comment">% properties DisipadorViscoso2D</span>
-0076     
-0077     methods
-0078         
-0079         <a name="_sub0" href="#_subfunctions" class="code">function disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaDisipador, nodo1Obj, nodo2Obj, Cd, alpha)</a>
-0080             <span class="comment">% DisipadorViscoso2D: Constructor de la clase, genera un</span>
-0081             <span class="comment">% disipador viscoso en 2D</span>
-0082             <span class="comment">%</span>
-0083             <span class="comment">% disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)</span>
-0084             
-0085             <span class="comment">% Completa con ceros si no hay argumentos</span>
-0086             <span class="keyword">if</span> nargin == 0
-0087                 etiquetaDisipador = <span class="string">''</span>;
-0088             <span class="keyword">end</span> <span class="comment">% if</span>
-0089             
-0090             <span class="comment">% Llamamos al constructor de la SuperClass que es la clase Disipador2D</span>
-0091             disipadorViscoso2DObj = disipadorViscoso2DObj@<a href="Disipador2D.html" class="code" title="">Disipador2D</a>(etiquetaDisipador);
-0092             
-0093             <span class="comment">% Guarda material</span>
-0094             disipadorViscoso2DObj.nodosObj = {nodo1Obj; nodo2Obj};
-0095             disipadorViscoso2DObj.alpha = alpha;
-0096             disipadorViscoso2DObj.Ce = [];
-0097             disipadorViscoso2DObj.Cd = Cd;
-0098             disipadorViscoso2DObj.w = 1;
-0099             disipadorViscoso2DObj.v0 = 1;
-0100             
-0101             <span class="comment">% Calcula componentes geometricas</span>
-0102             coordNodo1 = nodo1Obj.obtenerCoordenadas();
-0103             coordNodo2 = nodo2Obj.obtenerCoordenadas();
-0104             disipadorViscoso2DObj.dx = abs(coordNodo2(1)-coordNodo1(1));
-0105             disipadorViscoso2DObj.dy = abs(coordNodo2(2)-coordNodo1(2));
-0106             disipadorViscoso2DObj.L = sqrt(disipadorViscoso2DObj.dx^2+disipadorViscoso2DObj.dy^2);
-0107             theta = atan(disipadorViscoso2DObj.dy/disipadorViscoso2DObj.dx);
-0108             disipadorViscoso2DObj.theta = theta;
-0109             
-0110             <span class="comment">% Calcula matriz de transformacion dado el angulo</span>
-0111             cosx = disipadorViscoso2DObj.dx / disipadorViscoso2DObj.L;
-0112             cosy = disipadorViscoso2DObj.dy / disipadorViscoso2DObj.L;
-0113             disipadorViscoso2DObj.T = [cosx, cosy, 0, 0, 0, 0; 0, 0, 0, cosx, cosy, 0];
-0114             
-0115             <span class="comment">% Calcula matriz de rigidez local</span>
-0116             Klp = 0.001 .* eye(2);
-0117             disipadorViscoso2DObj.Klp = Klp;
-0118             
-0119         <span class="keyword">end</span> <span class="comment">% DisipadorViscoso2D constructor</span>
-0120         
-0121         <a name="_sub1" href="#_subfunctions" class="code">function k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)</a>
-0122             <span class="comment">% obtenerMatrizRigidezCoordLocal: Obtiene la matriz de rigidez</span>
-0123             <span class="comment">% en coordenadas locales</span>
-0124             <span class="comment">%</span>
-0125             <span class="comment">% k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)</span>
-0126             
-0127             <span class="comment">% Retorna la matriz calculada en el constructor</span>
-0128             k_local = disipadorViscoso2DObj.Klp;
-0129             
-0130         <span class="keyword">end</span> <span class="comment">% obtenerMatrizRigidezCoordLocal function</span>
-0131         
-0132         <a name="_sub2" href="#_subfunctions" class="code">function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)</a>
-0133             <span class="comment">% obtenerMatrizAmortiguamientoCoordLocal: Obtiene la matriz de</span>
-0134             <span class="comment">% armortiguamiento en coordenadas locales</span>
-0135             <span class="comment">%</span>
-0136             <span class="comment">% c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorViscoso2DObj)</span>
-0137             
-0138             alfa = disipadorViscoso2DObj.alpha;
-0139             disipadorViscoso2DObj.Ce = disipadorViscoso2DObj.Cd .* (4 * gamma(alfa+2)) / <span class="keyword">...</span>
-0140                 (2^(alfa + 2) * (gamma(alfa/2+3/2))^2) * disipadorViscoso2DObj.w^(alfa - 1) * <span class="keyword">...</span>
-0141                 disipadorViscoso2DObj.v0^(alfa - 1);
-0142             c_local = disipadorViscoso2DObj.Ce .* [1, -1; -1, 1];
-0143             
-0144         <span class="keyword">end</span> <span class="comment">% obtenerMatrizAmortiguamientoCoordLocal function</span>
-0145         
-0146         <a name="_sub3" href="#_subfunctions" class="code">function actualizarDisipador(disipadorViscoso2DObj, w, carga)</a>
-0147             <span class="comment">% actualizarDisipador: Actualiza el disipador con la carga y la</span>
-0148             <span class="comment">% frecuencia</span>
-0149             <span class="comment">%</span>
-0150             <span class="comment">% actualizarDisipador(disipadorViscoso2DObj,w,carga)</span>
-0151             
-0152             disipadorViscoso2DObj.w = w;
-0153             disipadorViscoso2DObj.v0 = disipadorViscoso2DObj.calcularv0(disipadorViscoso2DObj.nodosObj, carga);
-0154             
-0155         <span class="keyword">end</span> <span class="comment">% actualizarDisipador function</span>
-0156         
-0157         <a name="_sub4" href="#_subfunctions" class="code">function disp(disipadorViscoso2DObj)</a>
-0158             <span class="comment">% disp: Imprime propiedades del disipador viscoso</span>
-0159             <span class="comment">%</span>
-0160             <span class="comment">% disp(disipadorViscoso2DObj)</span>
-0161             
-0162             fprintf(<span class="string">'Propiedades disipador viscoso 2D:\n\t'</span>);
-0163             <a href="#_sub5" class="code" title="subfunction disp(disipadorViscoso2DObj)">disp</a>@<a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>(disipadorViscoso2DObj);
-0164             
-0165             <a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>();
-0166             
-0167         <span class="keyword">end</span> <span class="comment">% disp function</span>
-0168         
-0169     <span class="keyword">end</span> <span class="comment">% methods DisipadorViscoso2D</span>
-0170     
-0171 <span class="keyword">end</span> <span class="comment">% class DisipadorViscoso2D</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

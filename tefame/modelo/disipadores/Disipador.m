@@ -39,9 +39,9 @@
 %       plot(disipadorObj,tipoLinea,grosorLinea,colorLinea)
 %       T = obtenerMatrizTransformacion(disipadorObj)
 %  Methods SuperClass (ComponenteModelo):
-%       etiqueta = obtenerEtiqueta(componenteModeloObj)
-%       e = equals(componenteModeloObj,obj)
-%       objID = obtenerIDObjeto(componenteModeloObj)
+%       etiqueta = obtenerEtiqueta(obj)
+%       e = equals(obj,obj)
+%       objID = obtenerIDObjeto(obj)
 
 classdef Disipador < ComponenteModelo
     
@@ -81,7 +81,7 @@ classdef Disipador < ComponenteModelo
             % inicializar las diferentes componentes que sean necesario en los
             % disipadores para realizar posteriormente el analisis
             %
-            % inicializar(elementoObj)
+            % inicializar(obj)
             % Inicializa los diferentes componetes del Disipador (disipadorObj),
             % para poder preparar estos para realizar el analisis
 
@@ -198,7 +198,7 @@ classdef Disipador < ComponenteModelo
         function dibujarDisipador(disipadorObj, coord1, coord2, tipoLinea, grosorLinea, colorLinea) %#ok<INUSL>
             % dibujarDisipador: Grafica una linea para un disipador
             %
-            % dibujarDisipador(elementoObj,coord1,coord2,tipoLinea,grosorLinea)
+            % dibujarDisipador(obj,coord1,coord2,tipoLinea,grosorLinea)
             
             if length(coord1) == 2
                 plot(coord1(1), coord1(2), '.', 'Color', colorLinea);

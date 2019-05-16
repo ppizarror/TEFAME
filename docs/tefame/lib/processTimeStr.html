@@ -41,31 +41,7 @@ This function is called by:
 
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function s = processTimeStr(tini)</a>
-0002 <span class="comment">% processTimeStr: Retorna un string con el tiempo parseado en segundos o</span>
-0003 <span class="comment">% minutos segun corresponda</span>
-0004 
-0005 tot = cputime - tini;
-0006 min = floor(tot/60);
-0007 seg = floor(tot - 60*min);
-0008 mil = tot - 60*min - seg;
-0009 
-0010 s = <span class="string">''</span>;
-0011 <span class="keyword">if</span> min ~= 0
-0012     s = strcat(s, sprintf(<span class="string">'%d minutos'</span>, min));
-0013 <span class="keyword">end</span>
-0014 <span class="keyword">if</span> seg ~= 0
-0015     <span class="keyword">if</span> ~isempty(s)
-0016         s = strcat(s, sprintf(<span class="string">' %d segundos'</span>, seg));
-0017     <span class="keyword">else</span>
-0018         s = strcat(s, sprintf(<span class="string">'%d segundos'</span>, seg));
-0019     <span class="keyword">end</span>
-0020 <span class="keyword">if</span> mil ~= 0
-0021 <span class="keyword">end</span>
-0022 <span class="keyword">end</span>
-0023 
-0024 <span class="keyword">end</span></pre></div>
-<hr><address>Generated on Wed 15-May-2019 23:09:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+
+<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

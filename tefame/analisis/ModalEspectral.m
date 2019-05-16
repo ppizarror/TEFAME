@@ -2116,13 +2116,13 @@ classdef ModalEspectral < Analisis
             analisisObj.numeroGDL = contadorGDL;
             
             % Extraemos los Elementos del modelo
-            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
+            objetos = analisisObj.modeloObj.obtenerElementos();
             disipadorObjetos = analisisObj.modeloObj.obtenerDisipadores();
-            numeroElementos = length(elementoObjetos);
+            numeroElementos = length(objetos);
             numeroDisipadores = length(disipadorObjetos);
             % Definimos los GDLID en los elementos para poder formar la matriz de rigidez
             for i = 1:numeroElementos
-                elementoObjetos{i}.definirGDLID();
+                objetos{i}.definirGDLID();
             end % for i
             
             for i = 1:numeroDisipadores
@@ -2306,13 +2306,13 @@ classdef ModalEspectral < Analisis
                 fprintf('\t\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
                 [modalPhin, modalWn] = calculoEigItSubespacio(Meq, Keq, nModos, valvecTolerancia);
-%             elseif strcmp(valvecAlgoritmo, 'Ritz')
-%                 fprintf('\t\tCalculo valores y vectores propios con Vectores Ritz\n');
-%                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
-%                 [modalPhin, modalWn] = calculoVectorritz(Meq, Keq, nModos, valvecTolerancia);
-%                 nModos = length(modalWn);
+            elseif strcmp(valvecAlgoritmo, 'ritz')
+                fprintf('\t\tCalculo valores y vectores propios con Vectores Ritz\n');
+                fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
+                [modalPhin, modalWn] = calculoVectorritz(Meq, Keq, nModos, valvecTolerancia);
+                nModos = length(modalWn);
             else
-                error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,itDir,matBarr,itInvDesp,itSubesp', ...
+                error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,itDir,matBarr,itInvDesp,itSubesp,ritz', ...
                     valvecAlgoritmo);
             end
             fprintf('\t\t\tFinalizado en %.3f segundos\n', cputime-eigCalcT);
@@ -2492,18 +2492,18 @@ classdef ModalEspectral < Analisis
             analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
             
             % Extraemos los Elementos
-            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
-            numeroElementos = length(elementoObjetos);
+            objetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(objetos);
             
             % Definimos los GDLID en los elementos
             for i = 1:numeroElementos
                 
                 % Se obienen los gdl del elemento metodo indicial
-                gdl = elementoObjetos{i}.obtenerGDLID();
-                ngdl = elementoObjetos{i}.obtenerNumeroGDL();
+                gdl = objetos{i}.obtenerGDLID();
+                ngdl = objetos{i}.obtenerNumeroGDL();
                 
                 % Se obtiene la matriz de rigidez global del elemento-i
-                k_globl_elem = elementoObjetos{i}.obtenerMatrizRigidezCoordGlobal();
+                k_globl_elem = objetos{i}.obtenerMatrizRigidezCoordGlobal();
                 
                 % Se calcula el metodo indicial
                 for r = 1:ngdl
@@ -2538,18 +2538,18 @@ classdef ModalEspectral < Analisis
             
             % Extraemos los Elementos
             fprintf('\t\tAgrega masa de elementos\n');
-            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
-            numeroElementos = length(elementoObjetos);
+            objetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(objetos);
             
             % Definimos los GDLID en los elementos
             for i = 1:numeroElementos
                 
                 % Se obienen los gdl del elemento metodo indicial
-                gdl = elementoObjetos{i}.obtenerGDLID();
-                ngdl = elementoObjetos{i}.obtenerNumeroGDL();
+                gdl = objetos{i}.obtenerGDLID();
+                ngdl = objetos{i}.obtenerNumeroGDL();
                 
                 % Se obtiene la matriz de masa
-                m_elem = elementoObjetos{i}.obtenerVectorMasa();
+                m_elem = objetos{i}.obtenerVectorMasa();
                 
                 % Se calcula el metodo indicial
                 for r = 1:ngdl
@@ -2792,19 +2792,19 @@ classdef ModalEspectral < Analisis
             end % for i
             
             % Grafica los elementos
-            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
-            numeroElementos = length(elementoObjetos);
+            objetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(objetos);
             for i = 1:numeroElementos
                 
                 % Se obienen los gdl del elemento metodo indicial
-                nodoElemento = elementoObjetos{i}.obtenerNodos();
+                nodoElemento = objetos{i}.obtenerNodos();
                 numNodo = length(nodoElemento);
                 
                 if (~deformada || analisisObj.mostrarDeformada) && mostrarEstatico
                     if modo ~= 0 || defCarga
-                        elementoObjetos{i}.plot({}, styleElemE, lwElemE, false);
+                        objetos{i}.plot({}, styleElemE, lwElemE, false);
                     else
-                        elementoObjetos{i}.plot({}, styleElemD, lwElemD, false);
+                        objetos{i}.plot({}, styleElemD, lwElemD, false);
                     end
                 end
                 
@@ -2814,7 +2814,7 @@ classdef ModalEspectral < Analisis
                         def{j} = factor * phif * analisisObj.obtenerDeformadaNodo(nodoElemento{j}, ...
                             modo, analisisObj.numDGReal, defCarga, carga, tcarga);
                     end % for j
-                    elementoObjetos{i}.plot(def, styleElemD, lwElemD, defElem);
+                    objetos{i}.plot(def, styleElemD, lwElemD, defElem);
                     if i == 1
                         hold on;
                     end
@@ -2917,10 +2917,10 @@ classdef ModalEspectral < Analisis
                 gdl = max(gdl, ngdlid);
             end % for i
             
-            elementoObjetos = analisisObj.modeloObj.obtenerElementos();
-            numeroElementos = length(elementoObjetos);
+            objetos = analisisObj.modeloObj.obtenerElementos();
+            numeroElementos = length(objetos);
             for i = 1:numeroElementos
-                nodoElemento = elementoObjetos{i}.obtenerNodos();
+                nodoElemento = objetos{i}.obtenerNodos();
                 numNodo = length(nodoElemento);
                 for j = 1:numNodo
                     coord = nodoElemento{j}.obtenerCoordenadas();
