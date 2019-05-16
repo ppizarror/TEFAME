@@ -36,14 +36,14 @@
 %       nodoObj
 %       vectorCarga
 %  Methods:
-%       cargaNodoObj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)
-%       aplicarCarga(cargaNodoObj,factorDeCarga)
-%       disp(cargaNodoObj)
+%       obj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)
+%       aplicarCarga(obj,factorDeCarga)
+%       disp(obj)
 %  Methods SuperClass (CargaEstatica):
-%       masa = obtenerMasa(cargaNodoObj)
-%       definirFactorUnidadMasa(cargaNodoObj,factor)
-%       definirFactorCargaMasa(cargaNodoObj,factor)
-%       nodos = obtenerNodos(cargaNodoObj)
+%       masa = obtenerMasa(obj)
+%       definirFactorUnidadMasa(obj,factor)
+%       definirFactorCargaMasa(obj,factor)
+%       nodos = obtenerNodos(obj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -58,10 +58,8 @@ classdef CargaNodo < CargaEstatica
     
     methods
         
-        function cargaNodoObj = CargaNodo(etiquetaCargaNodo, nodoObjeto, cargaNodo)
+        function obj = CargaNodo(etiquetaCargaNodo, nodoObjeto, cargaNodo)
             % CargaNodo: es el constructor de la clase CargaNodo
-            %
-            % cargaNodoObj = CargaNodo(etiquetaCargaNodo,nodoObjeto,cargaNodo)
             %
             % Crea un objeto de la clase CargaNodo, con un identificador unico
             % (etiquetaCargaNodo), guarda el nodo que sera cargado y el vector
@@ -75,55 +73,49 @@ classdef CargaNodo < CargaEstatica
             
             % Llamamos al constructor de la SuperClass que es la clase
             % CargaEstatica
-            cargaNodoObj = cargaNodoObj@CargaEstatica(etiquetaCargaNodo);
+            obj = obj@CargaEstatica(etiquetaCargaNodo);
             
             % Guarda objetos
-            cargaNodoObj.nodoObj = nodoObjeto;
-            cargaNodoObj.nodosCarga = {nodoObjeto};
+            obj.nodoObj = nodoObjeto;
+            obj.nodosCarga = {nodoObjeto};
             
             if size(cargaNodo, 1) == 1
-                cargaNodoObj.vectorCarga = cargaNodo';
+                obj.vectorCarga = cargaNodo';
             else
-                cargaNodoObj.vectorCarga = cargaNodo;
+                obj.vectorCarga = cargaNodo;
             end % if
             
         end % CargaNodo constructor
         
-        function masa = obtenerMasa(cargaNodoObj)
+        function masa = obtenerMasa(obj)
             % obtenerMasa: Obtiene la masa asociada a la carga
-            %
-            % masa = obtenerMasa(cargaNodoObj)
             
-            masa = abs(sum(cargaNodoObj.vectorCarga)) .* (cargaNodoObj.factorCargaMasa * cargaNodoObj.factorUnidadMasa);
+            masa = abs(sum(obj.vectorCarga)) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         
-        function aplicarCarga(cargaNodoObj, factorDeCarga)
+        function aplicarCarga(obj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaNodo que se usa para aplicar
             % la carga sobre un nodo
-            %
-            % aplicarCarga(cargaNodoObj,factorDeCarga)
             %
             % Aplica el vector de carga que esta guardada en el nodo que corresponde
             % amplificada por el factor (factorDeCarga)
             
-            cargaNodoObj.nodoObj.agregarCarga(factorDeCarga*cargaNodoObj.vectorCarga);
+            obj.nodoObj.agregarCarga(factorDeCarga*obj.vectorCarga);
             
         end % aplicarCarga function
         
-        function disp(cargaNodoObj)
+        function disp(obj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el nodo
             %
-            % disp(cargaNodoObj)
-            %
-            % Imprime la informacion guardada en la carga nodal (cargaNodoObj) en pantalla
+            % Imprime la informacion guardada en la carga nodal (obj) en pantalla
             
             fprintf('Propiedades carga nodo:\n');
-            disp@CargaEstatica(cargaNodoObj);
+            disp@CargaEstatica(obj);
             
-            numGDL = length(cargaNodoObj.cargas);
-            cargaNodo = arrayNum2str(cargaNodoObj.cargas, numGDL);
+            numGDL = length(obj.cargas);
+            cargaNodo = arrayNum2str(obj.cargas, numGDL);
             fprintf('Cargas: %s\n', [cargaNodo{:}]);
             dispMetodoTEFAME();
             

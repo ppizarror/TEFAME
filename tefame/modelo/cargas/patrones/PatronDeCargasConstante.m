@@ -37,11 +37,11 @@
 %
 %  Properties (Access=private):
 %  Methods:
-%       patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arregloCargas)
-%       aplicarCargas(patronDeCargasObj)
-%       disp(patronDeCargasObj)
+%       obj = PatronDeCargasConstante(etiquetaPatronDeCargas,arregloCargas)
+%       aplicarCargas(obj)
+%       disp(obj)
 %  Methods SuperClass (PatronDeCargas):
-%       cargas = obtenerCargas(patronDeCargasObj)
+%       cargas = obtenerCargas(obj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -54,10 +54,8 @@ classdef PatronDeCargasConstante < PatronDeCargas
     
     methods
         
-        function patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas, arregloCargas)
+        function obj = PatronDeCargasConstante(etiquetaPatronDeCargas, arregloCargas)
             % PatronDeCargasConstante: es el constructor de la clase PatronDeCargas
-            %
-            % patronDeCargasObj = PatronDeCargasConstante(etiquetaPatronDeCargas,arregloCargas)
             %
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
             % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)
@@ -69,51 +67,47 @@ classdef PatronDeCargasConstante < PatronDeCargas
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
-            patronDeCargasObj = patronDeCargasObj@PatronDeCargas(etiquetaPatronDeCargas);
+            obj = obj@PatronDeCargas(etiquetaPatronDeCargas);
             
             % Se guarda el arreglo con las cargas
-            patronDeCargasObj.cargas = arregloCargas;
+            obj.cargas = arregloCargas;
             
             % Define propiedades
-            patronDeCargasObj.patronEsDinamico = false;
+            obj.patronEsDinamico = false;
             
         end % PatronDeCargasConstante constructor
         
-        function aplicarCargas(patronDeCargasObj, factor)
+        function aplicarCargas(obj, factor)
             % aplicarCargas: es un metodo de la clase PatronDeCargasConstante que
             % se usa para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj, factor)
-            %
             % Aplica las cargas que estan guardadas en el PatronDeCargasConstante
-            % (patronDeCargasObj), es decir, se aplican las cargas sobre los nodos
+            % (obj), es decir, se aplican las cargas sobre los nodos
             % y elementos
             
             % Se aplica la carga con un factor de carga
-            for i = 1:length(patronDeCargasObj.cargas)
+            for i = 1:length(obj.cargas)
                 
                 % Chequea que la carga sea estatica
-                if ~isa(patronDeCargasObj.cargas{i}, 'CargaEstatica')
+                if ~isa(obj.cargas{i}, 'CargaEstatica')
                     error('PatronDeCargasConstante solo puede resolver cargas estaticas');
                 end
                 
-                patronDeCargasObj.cargas{i}.aplicarCarga(factor);
+                obj.cargas{i}.aplicarCarga(factor);
 
             end % for i
             
         end % aplicarCargas function
         
-        function disp(patronDeCargasObj)
+        function disp(obj)
             % disp: es un metodo de la clase PatronDeCargasConstante que se usa para imprimir en
             % command Window la informacion del Patron de Cargas
             %
-            % disp(patronDeCargasObj)
-            %
-            % Imprime la informacion guardada en el Patron de Cargas Constante (patronDeCargasObj)
+            % Imprime la informacion guardada en el Patron de Cargas Constante (obj)
             % en pantalla
             
             fprintf('Propiedades patron de cargas constante :\n');
-            disp@ComponenteModelo(patronDeCargasObj);     
+            disp@ComponenteModelo(obj);     
             dispMetodoTEFAME();
             
         end % disp function

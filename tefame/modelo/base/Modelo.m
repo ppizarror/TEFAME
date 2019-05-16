@@ -38,26 +38,26 @@
 %       patronesDeCargas
 %       restricciones
 %  Methods:
-%       actualizar(modeloObj,u)
-%       agregarDisipadores(modeloObj,arregloDisipadores)
-%       agregarElementos(modeloObj,arregloElementos)
-%       agregarNodos(modeloObj,arregloNodos)
-%       agregarRestricciones(modeloObj,arregloRestricciones)
-%       aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,betaDisipador,arregloDisipadores)
-%       aplicarPatronesDeCargasEstatico(modeloObj)
-%       aplicarRestricciones(modeloObj)
-%       definirNombre(modeloObj,nombre)
-%       disp(modeloObj)
-%       elementosModelo = obtenerElementos(modeloObj)
-%       guardarResultados(modeloObj,nombreArchivo)
-%       inicializar(modeloObj)
-%       modeloObj = Modelo(numeroDimensiones,numerosGDL)
-%       nodosModelo = obtenerNodos(modeloObj)
-%       nombre = obtenerNombre(modeloObj)
-%       numDimensiones = obtenerNumeroDimensiones(modeloObj)
-%       numGDL = obtenerNumerosGDL(modeloObj)
-%       patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
-%       restriccionesModelo = obtenerRestricciones(modeloObj)
+%       actualizar(obj,u)
+%       agregarDisipadores(obj,arregloDisipadores)
+%       agregarElementos(obj,arregloElementos)
+%       agregarNodos(obj,arregloNodos)
+%       agregarRestricciones(obj,arregloRestricciones)
+%       aplicarPatronesDeCargasDinamico(obj,cpenzien,cargaDisipador,betaDisipador,arregloDisipadores)
+%       aplicarPatronesDeCargasEstatico(obj)
+%       aplicarRestricciones(obj)
+%       definirNombre(obj,nombre)
+%       disp(obj)
+%       elementosModelo = obtenerElementos(obj)
+%       guardarResultados(obj,nombreArchivo)
+%       inicializar(obj)
+%       obj = Modelo(numeroDimensiones,numerosGDL)
+%       nodosModelo = obtenerNodos(obj)
+%       nombre = obtenerNombre(obj)
+%       numDimensiones = obtenerNumeroDimensiones(obj)
+%       numGDL = obtenerNumerosGDL(obj)
+%       patronesDeCargasModelo = obtenerPatronesDeCargas(obj)
+%       restriccionesModelo = obtenerRestricciones(obj)
 
 classdef Modelo < handle
     
@@ -74,10 +74,8 @@ classdef Modelo < handle
     
     methods
         
-        function modeloObj = Modelo(numeroDimensiones, numerosGDL)
+        function obj = Modelo(numeroDimensiones, numerosGDL)
             % Modelo: es el constructor de la clase Modelo
-            %
-            % modeloObj = Modelo(numeroDimensiones,numerosGDL)
             %
             % Crea un objeto de la clase Modelo, con el numero de dimensiones
             % que tiene el sistema de coordenadas del modelo (nDimensiones) y
@@ -90,47 +88,41 @@ classdef Modelo < handle
             end % if
             
             % Definimos las propiedades en el modelo
-            modeloObj.nDimensiones = numeroDimensiones;
-            modeloObj.nGDL = numerosGDL;
+            obj.nDimensiones = numeroDimensiones;
+            obj.nGDL = numerosGDL;
             
             % Generamos el modelo con todos las variables que guardan las
             % componentes del modelo vacio
-            modeloObj.nodos = [];
-            modeloObj.elementos = [];
-            modeloObj.disipadores = [];
-            modeloObj.restricciones = [];
-            modeloObj.patronesDeCargas = [];
+            obj.nodos = [];
+            obj.elementos = [];
+            obj.disipadores = [];
+            obj.restricciones = [];
+            obj.patronesDeCargas = [];
             
             % Nombre del modelo
-            modeloObj.nombreModelo = 'Sin nombre';
+            obj.nombreModelo = 'Sin nombre';
             
         end % Modelo constructor
         
-        function definirNombre(modeloObj, nombre)
+        function definirNombre(obj, nombre)
             % definirNombre: Define el nombre del modelo
-            %
-            % definirNombre(modeloObj,nombre)
             
-            modeloObj.nombreModelo = nombre;
+            obj.nombreModelo = nombre;
             
         end % definirNombre function
         
-        function nombre = obtenerNombre(modeloObj)
+        function nombre = obtenerNombre(obj)
             % obtenerNombre: Obtiene el nombre del modelo
-            %
-            % nombre = obtenerNombre(modeloObj)
             
-            nombre = modeloObj.nombreModelo;
+            nombre = obj.nombreModelo;
             
         end % obtenerNombre function
         
-        function agregarNodos(modeloObj, arregloNodos)
+        function agregarNodos(obj, arregloNodos)
             % agregarNodos: es un metodo de la clase Modelo que se usa para
             % entregarle el arreglo con los nodos al Modelo
             %
-            % agregarNodos(modeloObj,arregloNodos)
-            %
-            % Agrega el arreglo con los nodos (arregloNodos) al Modelo (modeloObj)
+            % Agrega el arreglo con los nodos (arregloNodos) al Modelo (obj)
             % para que esto lo guarde y tenga acceso a los nodos
             
             for i = 1:length(arregloNodos)
@@ -138,36 +130,32 @@ classdef Modelo < handle
                     error('Elemento %d del arreglo de nodos no es un nodo', i);
                 end
             end % for i
-            modeloObj.nodos = arregloNodos;
+            obj.nodos = arregloNodos;
             
         end % agregarNodos function
         
-        function agregarElementos(modeloObj, arregloElementos)
+        function agregarElementos(obj, arregloElementos)
             % agregarElementos: es un metodo de la clase Modelo que se usa para
             % entregarle el arreglo con los elementos al Modelo
             %
-            % agregarElementos(modeloObj,arregloElementos)
-            %
             % Agrega el arreglo con los elementos (arregloElementos) al Modelo
-            % (modeloObj) para que esto lo guarde y tenga acceso a los elementos
+            % (obj) para que esto lo guarde y tenga acceso a los elementos
             
             for i = 1:length(arregloElementos)
                 if ~isa(arregloElementos{i}, 'Elemento')
                     error('Elemento %d del arreglo de elementos no es un elemento', i);
                 end
             end % for i
-            modeloObj.elementos = arregloElementos;
+            obj.elementos = arregloElementos;
             
         end % agregarElementos function
         
-        function agregarDisipadores(modeloObj, arregloDisipadores)
+        function agregarDisipadores(obj, arregloDisipadores)
             % agregarDisipadores: es un metodo de la clase Modelo que se usa
             % para entregarle el arreglo con los disipadores al modelo
             %
-            % agregarDisipadores(modeloObj,arregloDisipadores)
-            %
             % Agrega el arreglo con los elementos (arregloDisipadores) al modelo
-            % (modeloObj) para que esto lo guarde y tenga acceso a los
+            % (obj) para que esto lo guarde y tenga acceso a los
             % disipadores
             
             for i = 1:length(arregloDisipadores)
@@ -175,18 +163,16 @@ classdef Modelo < handle
                     error('Elemento %d del arreglo de disipadores no es un disipador', i);
                 end
             end % for i
-            modeloObj.disipadores = arregloDisipadores;
+            obj.disipadores = arregloDisipadores;
             
         end % agregarDisipadores function
         
-        function agregarRestricciones(modeloObj, arregloRestricciones)
+        function agregarRestricciones(obj, arregloRestricciones)
             % agregarRestricciones: es un metodo de la clase Modelo que se usa
             % para entregarle el arreglo con los restricciones al Modelo
             %
-            % agregarRestricciones(modeloObj,arregloRestricciones)
-            %
             % Agrega el arreglo con los restricciones (arregloRestricciones)
-            % al Modelo (modeloObj) para que esto lo guarde y tenga acceso a
+            % al Modelo (obj) para que esto lo guarde y tenga acceso a
             % los restricciones
             
             for i = 1:length(arregloRestricciones)
@@ -194,18 +180,16 @@ classdef Modelo < handle
                     error('Elemento %d del arreglo de restricciones no es una restriccion', i);
                 end
             end % for i
-            modeloObj.restricciones = arregloRestricciones;
+            obj.restricciones = arregloRestricciones;
             
         end % agregarRestricciones function
         
-        function agregarPatronesDeCargas(modeloObj, arregloPatronDeCargas)
+        function agregarPatronesDeCargas(obj, arregloPatronDeCargas)
             % agregarPatronesDeCargas: es un metodo de la clase Modelo que se usa
             % para entregarle el arreglo con los patrones de carga al Modelo
             %
-            % agregarPatronesDeCargas(modeloObj,arregloPatronDeCargas)
-            %
             % Agrega el arreglo con los patrones de carga (arregloPatronDeCargas)
-            % al Modelo (modeloObj) para que esto lo guarde y tenga acceso a los
+            % al Modelo (obj) para que esto lo guarde y tenga acceso a los
             % patrones de carga
             % Los patrones de cargas contienen las cargas que se aplican en los
             % nodos y elementos
@@ -215,175 +199,151 @@ classdef Modelo < handle
                     error('Elemento %d del arreglo de patrones de cargas no es un patron de carga', i);
                 end
             end % for i
-            modeloObj.patronesDeCargas = arregloPatronDeCargas;
+            obj.patronesDeCargas = arregloPatronDeCargas;
             
         end % agregarPatronesDeCargas function
         
-        function nodosModelo = obtenerNodos(modeloObj)
+        function nodosModelo = obtenerNodos(obj)
             % obtenerNodos: es un metodo de la clase Modelo que se usa para
             % obtener el arreglo con los nodos guardados en el Modelo
             %
-            % nodosModelo = obtenerNodos(modeloObj)
-            %
             % Obtiene el arreglo con los nodos (nodosModelo) que esta guardado
-            % en el Modelo (modeloObj)
+            % en el Modelo (obj)
             
-            nodosModelo = modeloObj.nodos;
+            nodosModelo = obj.nodos;
             
         end % obtenerNodos function
         
-        function elementosModelo = obtenerElementos(modeloObj)
+        function elementosModelo = obtenerElementos(obj)
             % obtenerElementos: es un metodo de la clase Modelo que se usa para
             % obtener el arreglo con los elementos guardados en el Modelo
             %
-            % elementosModelo = obtenerElementos(modeloObj)
-            %
             % Obtiene el arreglo con los elementos (elementosModelo) que esta
-            % guardado en el Modelo (modeloObj)
+            % guardado en el Modelo (obj)
             
-            elementosModelo = modeloObj.elementos;
+            elementosModelo = obj.elementos;
             
         end % obtenerElementos function
         
-        function disipadoresModelo = obtenerDisipadores(modeloObj)
+        function disipadoresModelo = obtenerDisipadores(obj)
             % obtenerDisipadores: es un metodo de la clase Modelo que se usa para
             % obtener el arreglo con los disipadores guardados del modelo
             %
-            % DisipadoresModelo = obtenerDisipadores(modeloObj)
-            %
             % Obtiene el arreglo con los disipadores (DisipadoresModelo) que esta
-            % guardado en el Modelo (modeloObj)
+            % guardado en el Modelo (obj)
             
-            disipadoresModelo = modeloObj.disipadores;
+            disipadoresModelo = obj.disipadores;
             
         end % obtenerDisipadores function
         
-        function restriccionesModelo = obtenerRestricciones(modeloObj)
+        function restriccionesModelo = obtenerRestricciones(obj)
             % obtenerPatronDeCargas: es un metodo de la clase Modelo que se usa para
             % obtener el arreglo con los patrones de carga guardados en el Modelo
             %
-            % patronDeCargasModelo = obtenerPatronDeCargas(modeloObj)
-            %
             % Obtiene el arreglo con los patrones de carga (patronDeCargasModelo)
-            % que esta guardado en el Modelo (modeloObj)
+            % que esta guardado en el Modelo (obj)
             
-            restriccionesModelo = modeloObj.restricciones;
+            restriccionesModelo = obj.restricciones;
             
         end % obtenerRestricciones function
         
-        function patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
+        function patronesDeCargasModelo = obtenerPatronesDeCargas(obj)
             % obtenerPatronesDeCargas: es un metodo de la clase Modelo que se usa para
             % obtener el arreglo con los patrones de carga guardados en el Modelo
             %
-            % patronesDeCargasModelo = obtenerPatronesDeCargas(modeloObj)
-            %
             % Obtiene el arreglo con los patrones de carga (patronesDeCargasModelo)
-            % que esta guardado en el Modelo (modeloObj)
+            % que esta guardado en el Modelo (obj)
             
-            patronesDeCargasModelo = modeloObj.patronesDeCargas;
+            patronesDeCargasModelo = obj.patronesDeCargas;
             
         end % obtenerPatronesDeCargas function
         
-        function numDimensiones = obtenerNumeroDimensiones(modeloObj)
+        function numDimensiones = obtenerNumeroDimensiones(obj)
             % obtenerNumeroDimensiones: es un metodo de la clase Modelo que
             % se usa para obtener el numero de dimensiones del modelo
-            %
-            % numDimensiones = obtenerNumeroDimensiones(modeloObj)
             
-            numDimensiones = modeloObj.nDimensiones;
+            numDimensiones = obj.nDimensiones;
             
         end % obtenerNumeroDimensiones function
         
-        function numGDL = obtenerNumerosGDL(modeloObj)
+        function numGDL = obtenerNumerosGDL(obj)
             % obtenerNumerosGDL: es un metodo de la clase Modelo que
             % se usa para obtener el numero de grados de libertad por nodo
             % del modelo
-            %
-            % numGDL = obtenerNumerosGDL(modeloObj)
             
-            numGDL = modeloObj.nGDL;
+            numGDL = obj.nGDL;
             
         end % obtenerNumerosGDL function
         
-        function inicializar(modeloObj)
+        function inicializar(obj)
             % inicializar: es un metodo de la clase Modelo que se usa para
             % inicializar las diferentes componentes en el Modelo
             %
-            % inicializar(modeloObj)
-            %
             % Inicializa los diferentes componentes del modelo que estan guardados
-            % en el Modelo (modeloObj), para poder preparar estos para realizar
+            % en el Modelo (obj), para poder preparar estos para realizar
             % el analisis
             
-            for i = 1:length(modeloObj.nodos)
-                modeloObj.nodos{i}.inicializar()
+            for i = 1:length(obj.nodos)
+                obj.nodos{i}.inicializar()
             end % for i
             
-            for i = 1:length(modeloObj.elementos)
-                modeloObj.elementos{i}.inicializar()
+            for i = 1:length(obj.elementos)
+                obj.elementos{i}.inicializar()
             end % for i
             
-            for i = 1:length(modeloObj.disipadores)
-                modeloObj.disipadores{i}.inicializar()
+            for i = 1:length(obj.disipadores)
+                obj.disipadores{i}.inicializar()
             end % for i
             
         end % inicializar function
         
-        function aplicarRestricciones(modeloObj)
+        function aplicarRestricciones(obj)
             % aplicarRestricciones: es un metodo de la clase Modelo que se usa para
             % aplicar las restricciones en el Modelo
             %
-            % aplicarRestricciones(modeloObj)
-            %
-            % Aplica las restricciones que estan guardadas en el Modelo (modeloObj)
+            % Aplica las restricciones que estan guardadas en el Modelo (obj)
             
-            for i = 1:length(modeloObj.restricciones)
-                modeloObj.restricciones{i}.aplicarRestriccion()
+            for i = 1:length(obj.restricciones)
+                obj.restricciones{i}.aplicarRestriccion()
             end % for i
             
         end % aplicarRestricciones function
         
-        function aplicarPatronesDeCargasEstatico(modeloObj, factor)
+        function aplicarPatronesDeCargasEstatico(obj, factor)
             % aplicarPatronesDeCargas: es un metodo de la clase Modelo que se usa
             % para aplicar las patrones de cargas en el Modelo
             %
-            % aplicarPatronesDeCargasEstatico(modeloObj,factor)
-            %
             % Aplica los patrones de cargas que estan guardados en el Modelo
-            % (modeloObj), es decir, aplica las cargas sobre los nodos y
+            % (obj), es decir, aplica las cargas sobre los nodos y
             % elementos
             
             fprintf('\tAplica patron de cargas estatico\n');
             fprintf('\t\tFactor: %f\n', factor);
-            for i = 1:length(modeloObj.patronesDeCargas)
-                if ~modeloObj.patronesDeCargas{i}.patronDinamico()
-                    modeloObj.patronesDeCargas{i}.aplicarCargas(factor);
+            for i = 1:length(obj.patronesDeCargas)
+                if ~obj.patronesDeCargas{i}.patronDinamico()
+                    obj.patronesDeCargas{i}.aplicarCargas(factor);
                 end
             end % for i
             
         end % aplicarPatronesDeCargasEstatico function
         
-        function aplicarPatronesDeCargasDinamico(modeloObj, cpenzien, disipadores, cargaDisipador, ...
+        function aplicarPatronesDeCargasDinamico(obj, cpenzien, disipadores, cargaDisipador, ...
                 betaObjetivo, arregloDisipadores, iterDisipador, tolIterDisipador, ...
                 betaGrafico, factor)
             % aplicarPatronesDeCargasDinamico: es un metodo de la clase Modelo que se usa
             % para aplicar las patrones de cargas en el Modelo
             %
-            % aplicarPatronesDeCargasDinamico(modeloObj,cpenzien,cargaDisipador,
-            %   betaObjetivo,arregloDisipadores,iterDisipador,tolIterDisipador,
-            %   betaGrafico,factor)
-            %
             % Aplica los patrones de cargas que estan guardados en el Modelo
-            % (modeloObj), es decir, aplica las cargas sobre los nodos y
+            % (obj), es decir, aplica las cargas sobre los nodos y
             % elementos. Requiere ademas si se usa la matriz de
             % amortiguamiento de penzien, por defecto es falso, o sea usa
             % Rayleigh y si se usan disipadores o no en el calculo
             
             fprintf('\tAplica patron de cargas dinamico\n');
             fprintf('\t\tFactor: %f\n', factor);
-            for i = 1:length(modeloObj.patronesDeCargas)
-                if modeloObj.patronesDeCargas{i}.patronDinamico()
-                    modeloObj.patronesDeCargas{i}.aplicarCargas(cpenzien, ...
+            for i = 1:length(obj.patronesDeCargas)
+                if obj.patronesDeCargas{i}.patronDinamico()
+                    obj.patronesDeCargas{i}.aplicarCargas(cpenzien, ...
                         disipadores, cargaDisipador, betaObjetivo, ...
                         arregloDisipadores, iterDisipador, tolIterDisipador, ...
                         betaGrafico, factor);
@@ -392,24 +352,20 @@ classdef Modelo < handle
             
         end % aplicarPatronesDeCargasDinamico function
         
-        function actualizar(modeloObj, u)
+        function actualizar(obj, u)
             % actualizar: es un metodo de la clase Modelo que se usa para actualizar
             % las componentes en el Modelo
             %
-            % actualizar(modeloObj,u)
-            %
             % Actualiza o informa de los desplazamientos (u), entregados por el
             % analisis al resolver el sistema de ecuaciones, a las componentes
-            % guardadas en el Modelo (modeloObj)
-            
-            % Se procede a actualizar los desplazamientos guardados
+            % guardadas en el Modelo (obj)
             
             % Se definen e informan los desplazmientos a cada nodo
-            numeroNodos = length(modeloObj.nodos);
+            numeroNodos = length(obj.nodos);
             for i = 1:numeroNodos
                 
                 % Nodo
-                nodo = modeloObj.nodos{i};
+                nodo = obj.nodos{i};
                 gdlnodo = nodo.obtenerGDLID();
                 
                 % Se buscan desplazamientos en el vector u
@@ -422,26 +378,24 @@ classdef Modelo < handle
                 end % for j
                 
                 % Guarda los desplazamientos
-                modeloObj.nodos{i}.definirDesplazamientos(d');
+                obj.nodos{i}.definirDesplazamientos(d');
                 
             end % for i
             
             % Agregamos las fuerzas resistentes a las reacciones
-            numeroElementos = length(modeloObj.elementos);
+            numeroElementos = length(obj.elementos);
             for i = 1:numeroElementos
-                modeloObj.elementos{i}.agregarFuerzaResistenteAReacciones();
+                obj.elementos{i}.agregarFuerzaResistenteAReacciones();
             end % for i
             
         end % actualizar function
         
-        function guardarResultados(modeloObj, nombreArchivo)
+        function guardarResultados(obj, nombreArchivo)
             % guardarResultados: es un metodo de la clase Modelo que se usa para
             % guardar o imprimir en un archivo las propiedades de las componentes
             % del Modelo y los resultados del analisis
             %
-            % guardarResultados(modeloObj,nombreArchivo)
-            %
-            % Guarda las propiedades de las componentes del Modelo (modeloObj) y
+            % Guarda las propiedades de las componentes del Modelo (obj) y
             % los resultados del analisis que tienen guardados los diferentes
             % componentes en un archivo (nombreArchivo)
             
@@ -460,21 +414,21 @@ classdef Modelo < handle
             fprintf(archivoSalida, '\n');
             
             % Se procede a guardar las propiedades de los nodos
-            fprintf(archivoSalida, 'Nombre modelo: %s\n', modeloObj.nombreModelo);
+            fprintf(archivoSalida, 'Nombre modelo: %s\n', obj.nombreModelo);
             fprintf(archivoSalida, 'Nodos:\n');
-            nNodos = length(modeloObj.nodos);
+            nNodos = length(obj.nodos);
             fprintf(archivoSalida, '\tNumero de nodos: %d\n', nNodos);
             for iNodo = 1:nNodos
-                modeloObj.nodos{iNodo}.guardarPropiedades(archivoSalida);
+                obj.nodos{iNodo}.guardarPropiedades(archivoSalida);
             end % for i
             fprintf(archivoSalida, '\n');
             
             % Se procede a guardar las propiedades de los elementos
             fprintf(archivoSalida, 'Elementos:\n');
-            nElementos = length(modeloObj.elementos);
+            nElementos = length(obj.elementos);
             fprintf(archivoSalida, '\tNumero de elementos: %d\n', nElementos);
             for iElem = 1:nElementos
-                modeloObj.elementos{iElem}.guardarPropiedades(archivoSalida);
+                obj.elementos{iElem}.guardarPropiedades(archivoSalida);
             end % for iElem
             
             fprintf(archivoSalida, '\n');
@@ -486,21 +440,21 @@ classdef Modelo < handle
             % Se procede a guardar los desplazamientos en cada nodo
             fprintf(archivoSalida, 'Desplazamientos nodos:\n');
             for iNodo = 1:nNodos
-                modeloObj.nodos{iNodo}.guardarDesplazamientos(archivoSalida);
+                obj.nodos{iNodo}.guardarDesplazamientos(archivoSalida);
             end % for iNodo
             fprintf(archivoSalida, '\n');
             
             % Se procede a guardar las reacciones
             fprintf(archivoSalida, 'Reacciones:\n');
             for iNodo = 1:nNodos
-                modeloObj.nodos{iNodo}.guardarReacciones(archivoSalida);
+                obj.nodos{iNodo}.guardarReacciones(archivoSalida);
             end % for iNodo
             fprintf(archivoSalida, '\n');
             
             % Se procede a guardar los esfuerzos en los elementos
             fprintf(archivoSalida, 'Esfuerzos Elementos:');
-            for i = 1:length(modeloObj.elementos)
-                modeloObj.elementos{i}.guardarEsfuerzosInternos(archivoSalida);
+            for i = 1:length(obj.elementos)
+                obj.elementos{i}.guardarEsfuerzosInternos(archivoSalida);
             end % for i
             fprintf(archivoSalida, '\n');
             
@@ -509,18 +463,16 @@ classdef Modelo < handle
             
         end % guardarResultados function
         
-        function disp(modeloObj)
+        function disp(obj)
             % disp: es un metodo de la clase Modelo que se usa para imprimir en
             % command Window la informacion del Modelo
             %
-            % disp(modeloObj)
-            %
-            % Imprime la informacion guardada en el Modelo (modeloObj) en
+            % Imprime la informacion guardada en el Modelo (obj) en
             % pantalla
             
             fprintf('Propiedades modelo:\n');
-            fprintf('\tDimensiones modelo: %iD\n', modeloObj.nDimensiones);
-            fprintf('\tNumero de GDL del modelo: %i\n', modeloObj.nGDL);
+            fprintf('\tDimensiones modelo: %iD\n', obj.nDimensiones);
+            fprintf('\tNumero de GDL del modelo: %i\n', obj.nGDL);
             dispMetodoTEFAME();
             
         end % disp function

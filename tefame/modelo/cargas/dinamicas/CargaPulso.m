@@ -89,10 +89,8 @@ classdef CargaPulso < CargaDinamica
     
     methods
         
-        function cargaPulsoObj = CargaPulso(etiquetaCargaPulso, nodo, direccion, amplitud, tpulso, dt, tInicio, tAnalisis)
+        function obj = CargaPulso(etiquetaCargaPulso, nodo, direccion, amplitud, tpulso, dt, tInicio, tAnalisis)
             % CargaPulso: es el constructor de la clase CargaPulso
-            %
-            % cargaPulsoObj=CargaPulso(etiquetaCargaPulso,nodo,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)
             %
             % Crea una carga tipo pulso
             
@@ -101,7 +99,7 @@ classdef CargaPulso < CargaDinamica
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaPulsoObj = cargaPulsoObj@CargaDinamica(etiquetaCargaPulso);
+            obj = obj@CargaDinamica(etiquetaCargaPulso);
             
             % Verifica que tenga sentido la direccion
             if ~verificarVectorDireccion(direccion, nodo.obtenerNumeroGDL())
@@ -114,21 +112,19 @@ classdef CargaPulso < CargaDinamica
             end
             
             % Guarda el registro
-            cargaPulsoObj.tpulso = tpulso;
-            cargaPulsoObj.amplitud = amplitud;
-            cargaPulsoObj.direccion = direccion;
-            cargaPulsoObj.tAnalisis = tAnalisis;
-            cargaPulsoObj.dt = dt;
-            cargaPulsoObj.nodo = nodo; % Objeto del nodo donde se aplica la carga
-            cargaPulsoObj.nodosCarga = {nodo};
+            obj.tpulso = tpulso;
+            obj.amplitud = amplitud;
+            obj.direccion = direccion;
+            obj.tAnalisis = tAnalisis;
+            obj.dt = dt;
+            obj.nodo = nodo; % Objeto del nodo donde se aplica la carga
+            obj.nodosCarga = {nodo};
             
         end % CargaPulso constructor
         
         function p = calcularCarga(CargaPulsoObj, ~, m, ~, dispinfo)
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
-            %
-            % calcularCarga(cargaPulsoObj,factor,m,r,dispinfo)
             
             % Crea la matriz de carga
             ng = length(m);
@@ -188,8 +184,6 @@ classdef CargaPulso < CargaDinamica
             % disp: es un metodo de la clase CargaPulso que se usa para imprimir en
             % command Window la informacion de la carga del tipo registro
             % sismico
-            %
-            % disp(CargaPulsoObj)
             %
             % Imprime la informacion guardada en la carga (CargaPulsoObj) en pantalla
             

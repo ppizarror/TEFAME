@@ -89,10 +89,8 @@ classdef CargaSinusoidal < CargaDinamica
     
     methods
         
-        function cargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tInicio, tAnalisis)
+        function obj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tInicio, tAnalisis)
             % CargaSinusoidal: es el constructor de la clase CargaSinusoidal
-            %
-            % cargaSinusoidalObj = CargaSinusoidal(etiquetaCargaSinusoidal,nodo,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)
             %
             % Crea una carga del tipo sinusoidal
             
@@ -101,7 +99,7 @@ classdef CargaSinusoidal < CargaDinamica
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaSinusoidalObj = cargaSinusoidalObj@CargaDinamica(etiquetaCargaSinusoidal);
+            obj = obj@CargaDinamica(etiquetaCargaSinusoidal);
             
             % Verifica que tenga sentido la direccion
             if ~verificarVectorDireccion(direccion, nodo.obtenerNumeroGDL())
@@ -114,23 +112,21 @@ classdef CargaSinusoidal < CargaDinamica
             end
             
             % Guarda los parametros de la carga
-            cargaSinusoidalObj.w = w;
-            cargaSinusoidalObj.amplitud = amplitud;
-            cargaSinusoidalObj.direccion = direccion;
-            cargaSinusoidalObj.tOscilacion = tOscilacion;
-            cargaSinusoidalObj.tAnalisis = tAnalisis;
-            cargaSinusoidalObj.tInicio = tInicio;
-            cargaSinusoidalObj.dt = dt;
-            cargaSinusoidalObj.nodo = nodo; % Nodo al que se le aplica la carga
-            cargaSinusoidalObj.nodosCarga = {nodo};
+            obj.w = w;
+            obj.amplitud = amplitud;
+            obj.direccion = direccion;
+            obj.tOscilacion = tOscilacion;
+            obj.tAnalisis = tAnalisis;
+            obj.tInicio = tInicio;
+            obj.dt = dt;
+            obj.nodo = nodo; % Nodo al que se le aplica la carga
+            obj.nodosCarga = {nodo};
             
         end % CargaSinusoidal constructor
         
         function p = calcularCarga(CargaSinusoidalObj, ~, m, ~, dispinfo)
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
-            %
-            % calcularCarga(cargaSinusoidalObj,factor,m,r,dispinfo)
             
             % Crea la matriz de carga
             ng = length(m);
@@ -194,8 +190,6 @@ classdef CargaSinusoidal < CargaDinamica
         function disp(CargaSinusoidalObj)
             % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en
             % command Window la informacion de la carga del tipo sinusoidal
-            %
-            % disp(CargaSinusoidalObj)
             %
             % Imprime la informacion guardada en la carga (CargaSinusoidalObj) en pantalla
             

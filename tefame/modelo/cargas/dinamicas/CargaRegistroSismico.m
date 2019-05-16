@@ -32,8 +32,8 @@
 %  Properties (Access=private):
 %  Methods:
 %       CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,dt,tAnalisis)
-%       aplicarCarga(cargaRegistroObj,factorDeCarga)
-%       disp(cargaRegistroObj)
+%       aplicarCarga(obj,factorDeCarga)
+%       disp(obj)
 %  Methods SuperClass (CargaDinamica):
 %       cargaDinamicaObj = Carga(etiquetaCarga)
 %       desactivarCarga(cargaDinamicaObj)
@@ -81,10 +81,8 @@ classdef CargaRegistroSismico < CargaDinamica
     
     methods
         
-        function cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tInicio, tAnalisis)
+        function obj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tInicio, tAnalisis)
             % CargaRegistroSismico: es el constructor de la clase CargaNodo
-            %
-            % cargaRegistroObj = CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,tInicio,tAnalisis)
             %
             % Crea una carga del tipo registro de aceleracion, requiere un
             % vector registro [Nxr], una direccion [1xr] y un tiempo maximo
@@ -102,7 +100,7 @@ classdef CargaRegistroSismico < CargaDinamica
             end
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaRegistroObj = cargaRegistroObj@CargaDinamica(etiquetaCargaRegistroSismico);
+            obj = obj@CargaDinamica(etiquetaCargaRegistroSismico);
             
             % Chequea que el registro en cada direccion no sea nulo
             for k = 1:length(direccion)
@@ -127,20 +125,18 @@ classdef CargaRegistroSismico < CargaDinamica
             end
             
             % Guarda el registro
-            cargaRegistroObj.registro = registro;
-            cargaRegistroObj.direccion = direccion;
-            cargaRegistroObj.tAnalisis = tAnalisis;
-            cargaRegistroObj.tInicio = tInicio;
-            cargaRegistroObj.dt = dt;
-            cargaRegistroObj.nodosCarga = {};
+            obj.registro = registro;
+            obj.direccion = direccion;
+            obj.tAnalisis = tAnalisis;
+            obj.tInicio = tInicio;
+            obj.dt = dt;
+            obj.nodosCarga = {};
             
         end % CargaRegistroSismico constructor
         
         function p = calcularCarga(cargaRegistroSismicoObj, ~, m, r, dispinfo)
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
-            %
-            % calcularCarga(cargaRegistroSismicoObj,factor,m,r)
             
             % Guarda datos
             cargaRegistroSismicoObj.rf = r;
@@ -172,8 +168,6 @@ classdef CargaRegistroSismico < CargaDinamica
         
         function guardarAceleracion(cargaRegistroSismicoObj, a)
             % guardarAceleracion: Guarda la aceleracion de la carga
-            %
-            % guardarAceleracion(cargaRegistroSismicoObj,a)
             
             % Registro sismico suma la aceleracion del registro para cada
             % tiempo en cada columna de <a>
@@ -201,8 +195,6 @@ classdef CargaRegistroSismico < CargaDinamica
             % disp: es un metodo de la clase CargaRegistroSismico que se usa para imprimir en
             % command Window la informacion de la carga del tipo registro
             % sismico
-            %
-            % disp(cargaRegistroSismicoObj)
             %
             % Imprime la informacion guardada en la carga (cargaRegistroSismicoObj) en pantalla
             

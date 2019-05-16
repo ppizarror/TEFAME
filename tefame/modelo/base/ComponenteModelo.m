@@ -53,8 +53,6 @@ classdef ComponenteModelo < handle
         function obj = ComponenteModelo(etiqueta)
             % ComponenteModelo: es el constructor de la clase ComponenteModelo
             %
-            % obj = ComponenteModelo(etiqueta)
-            %
             % Crea un objeto de la clase ComponenteModelo, con un identificador
             % unico (etiqueta)
             
@@ -76,8 +74,6 @@ classdef ComponenteModelo < handle
             % usa para obtener la etiqueta que identifica el componente del
             % modelo
             %
-            % etiqueta = obtenerEtiqueta(obj)
-            %
             % Entrega la etiqueta o identificar (etiqueta) que tiene el
             % ComponenteModelo (obj)
             
@@ -88,8 +84,6 @@ classdef ComponenteModelo < handle
         function disp(obj)
             % disp: es un metodo de la clase ComponenteModelo que se usa para
             % imprimir en command Window la informacion del ComponenteModelo
-            %
-            % disp(nodoObj)
             %
             % Imprime la informacion de la etiqueta de identificacion del componente
             % del modelo
@@ -104,19 +98,15 @@ classdef ComponenteModelo < handle
             
         end % disp function
         
-        function e = equals(obj, obj)
+        function e = equals(obj, obj1)
             % equals: Verifica si dos objetos son iguales
-            %
-            % equals(obj,obj)
             
-            e = strcmp(obj.objectID, obj.objectID);
+            e = strcmp(obj.objectID, obj1.objectID);
             
         end % equals function
         
         function objID = obtenerIDObjeto(obj)
             % obtenerIDObjeto: Retorna el ID del objeto
-            %
-            % objID = obtenerIDObjeto(obj)
             
             objID = obj.objectID;
             

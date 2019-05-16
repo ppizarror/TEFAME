@@ -30,16 +30,16 @@
 %  Properties (Access=private):
 %       cargas
 %  Methods:
-%       a = obtenerAceleracion(combinacionCargaObj)
-%       combinacionCargaObj = CombinacionCargas(etiquetaCombinacion,cargas)
-%       disp(combinacionCargaObj)
-%       p = obtenerCarga(combinacionCargaObj)
-%       t = dt(combinacionCargaObj)
-%       t = obtenerVectorTiempo(combinacionCargaObj)
-%       t = tAnalisis(combinacionCargaObj)
-%       u = obtenerDesplazamiento(combinacionCargaObj)
-%       u = obtenerDesplazamientoTiempo(combinacionCargaObj,gdl,tiempo)
-%       v = obtenerVelocidad(combinacionCargaObj)
+%       a = obtenerAceleracion(obj)
+%       obj = CombinacionCargas(etiquetaCombinacion,cargas)
+%       disp(obj)
+%       p = obtenerCarga(obj)
+%       t = dt(obj)
+%       t = obtenerVectorTiempo(obj)
+%       t = tAnalisis(obj)
+%       u = obtenerDesplazamiento(obj)
+%       u = obtenerDesplazamientoTiempo(obj,gdl,tiempo)
+%       v = obtenerVelocidad(obj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -54,18 +54,16 @@ classdef CombinacionCargas < ComponenteModelo
     
     methods(Access = public)
         
-        function combinacionCargaObj = CombinacionCargas(etiquetaCombinacion, cargas)
+        function obj = CombinacionCargas(etiquetaCombinacion, cargas)
             % CombinacionCargas: Es el constructor de la clase, requiere el
             % nombre de la combinacion y un cell de cargas
-            %
-            % combinacionCargaObj = CombinacionCargas(etiquetaCombinacion,cargas)
             
             if nargin == 0
                 etiquetaCombinacion = '';
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
-            combinacionCargaObj = combinacionCargaObj@ComponenteModelo(etiquetaCombinacion);
+            obj = obj@ComponenteModelo(etiquetaCombinacion);
             
             % Chequea que todas las cargas sean dinamicas
             for i = 1:length(cargas)
@@ -78,50 +76,46 @@ classdef CombinacionCargas < ComponenteModelo
             end % for i
             
             % Guarda datos
-            combinacionCargaObj.cargas = cargas;
-            combinacionCargaObj.uGuardado = [];
+            obj.cargas = cargas;
+            obj.uGuardado = [];
             
         end % CombinacionCargas constructor
         
-        function t = obtenerVectorTiempo(combinacionCargaObj)
+        function t = obtenerVectorTiempo(obj)
             % obtenerVectorTiempo: Retorna el vector de tiempo
-            %
-            % t = obtenerVectorTiempo(combinacionCargaObj)
             
-            [~, t] = obtenerDtMinimo(combinacionCargaObj);
+            [~, t] = obtenerDtMinimo(obj);
             
         end % obtenerVectorTiempo function
         
-        function p = obtenerCarga(combinacionCargaObj)
+        function p = obtenerCarga(obj)
             % obtenerCarga: Obtiene la carga de la combinacion de cargas
-            %
-            % obtenerCarga(combinacionCargaObj)
             
             % Genera el arreglo de tiempo de interpolacion
-            [dt, t] = obtenerDtMinimo(combinacionCargaObj);
-            [ngdlf, ~] = size(combinacionCargaObj.cargas{1}.obtenerCarga());
+            [dt, t] = obtenerDtMinimo(obj);
+            [ngdlf, ~] = size(obj.cargas{1}.obtenerCarga());
             
             % Genera el vector final
             p = zeros(ngdlf, length(t));
             
             % Interpola cada carga
-            for i = 1:length(combinacionCargaObj.cargas)
+            for i = 1:length(obj.cargas)
                 
-                [ndg, ~] = size(combinacionCargaObj.cargas{i}.obtenerCarga());
+                [ndg, ~] = size(obj.cargas{i}.obtenerCarga());
                 if ndg ~= ngdlf
                     error('Grado de libertad de la carga no corresponde con la combinacion de cargas');
                 end
                 
-                x = combinacionCargaObj.reshapeMatrix(combinacionCargaObj.cargas{i}.obtenerCarga(), ...
-                    combinacionCargaObj.cargas{i}.tInicio, combinacionCargaObj.cargas{i}.dt, ...
-                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t, ...
-                    combinacionCargaObj.cargas{i}.obtenerEtiqueta());
+                x = obj.reshapeMatrix(obj.cargas{i}.obtenerCarga(), ...
+                    obj.cargas{i}.tInicio, obj.cargas{i}.dt, ...
+                    obj.cargas{i}.tAnalisis, dt, t, ...
+                    obj.cargas{i}.obtenerEtiqueta());
                 [~, lx] = size(x);
                 
                 % Suma el vector
                 j = 1;
                 for k = 1:length(t)
-                    if t(k) >= combinacionCargaObj.cargas{i}.tInicio
+                    if t(k) >= obj.cargas{i}.tInicio
                         p(:, k) = p(:, k) + x(:, j);
                         j = j + 1;
                     end
@@ -134,37 +128,35 @@ classdef CombinacionCargas < ComponenteModelo
             
         end % obtenerCarga function
         
-        function u = obtenerDesplazamiento(combinacionCargaObj)
+        function u = obtenerDesplazamiento(obj)
             % obtenerDesplazamiento: Obtiene el desplazamiento de la
             % combinacion de cargas
-            %
-            % obtenerDesplazamiento(combinacionCargaObj)
             
             % Genera el arreglo de tiempo de interpolacion
-            [dt, t] = obtenerDtMinimo(combinacionCargaObj);
-            [ngdlf, ~] = size(combinacionCargaObj.cargas{1}.obtenerDesplazamiento());
+            [dt, t] = obtenerDtMinimo(obj);
+            [ngdlf, ~] = size(obj.cargas{1}.obtenerDesplazamiento());
             
             % Genera el vector final
             u = zeros(ngdlf, length(t));
             
             % Interpola cada desplazamiento
-            for i = 1:length(combinacionCargaObj.cargas)
+            for i = 1:length(obj.cargas)
                 
-                [ndg, ~] = size(combinacionCargaObj.cargas{i}.obtenerDesplazamiento());
+                [ndg, ~] = size(obj.cargas{i}.obtenerDesplazamiento());
                 if ndg ~= ngdlf
                     error('Grado de libertad de la carga no corresponde con la combinacion de cargas');
                 end
                 
-                x = combinacionCargaObj.reshapeMatrix(combinacionCargaObj.cargas{i}.obtenerDesplazamiento(), ...
-                    combinacionCargaObj.cargas{i}.tInicio, combinacionCargaObj.cargas{i}.dt, ...
-                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t, ...
-                    combinacionCargaObj.cargas{i}.obtenerEtiqueta());
+                x = obj.reshapeMatrix(obj.cargas{i}.obtenerDesplazamiento(), ...
+                    obj.cargas{i}.tInicio, obj.cargas{i}.dt, ...
+                    obj.cargas{i}.tAnalisis, dt, t, ...
+                    obj.cargas{i}.obtenerEtiqueta());
                 [~, lx] = size(x);
                 
                 % Suma el vector
                 j = 1;
                 for k = 1:length(t)
-                    if t(k) >= combinacionCargaObj.cargas{i}.tInicio
+                    if t(k) >= obj.cargas{i}.tInicio
                         u(:, k) = u(:, k) + x(:, j);
                         j = j + 1;
                     end
@@ -177,55 +169,51 @@ classdef CombinacionCargas < ComponenteModelo
             
         end % obtenerDesplazamiento function
         
-        function u = obtenerDesplazamientoTiempo(combinacionCargaObj, gdl, tiempo)
+        function u = obtenerDesplazamientoTiempo(obj, gdl, tiempo)
             % obtenerDesplazamientoTiempo obtiene el desplazamiento de un
             % grado de libertad en un determinado tiempo
-            %
-            % u = obtenerDesplazamientoTiempo(combinacionCargaObj,gdl,tiempo)
             
-            if isempty(combinacionCargaObj.uGuardado)
-                combinacionCargaObj.uGuardado = combinacionCargaObj.obtenerDesplazamiento();
+            if isempty(obj.uGuardado)
+                obj.uGuardado = obj.obtenerDesplazamiento();
             end
             
             if tiempo < 0 % Retorna el maximo
-                u = max(combinacionCargaObj.uGuardado(gdl, :));
+                u = max(obj.uGuardado(gdl, :));
             else
-                u = combinacionCargaObj.uGuardado(gdl, tiempo);
+                u = obj.uGuardado(gdl, tiempo);
             end
             
         end % obtenerDesplazamientoTiempo function
         
-        function v = obtenerVelocidad(combinacionCargaObj)
+        function v = obtenerVelocidad(obj)
             % obtenerVelocidad: Obtiene la velocidad de la combinacion de
             % cargas
-            %
-            % obtenerVelocidad(combinacionCargaObj)
             
             % Genera el arreglo de tiempo de interpolacion
-            [dt, t] = obtenerDtMinimo(combinacionCargaObj);
-            [ngdlf, ~] = size(combinacionCargaObj.cargas{1}.obtenerDesplazamiento());
+            [dt, t] = obtenerDtMinimo(obj);
+            [ngdlf, ~] = size(obj.cargas{1}.obtenerDesplazamiento());
             
             % Genera el vector final
             v = zeros(ngdlf, length(t));
             
             % Interpola cada desplazamiento
-            for i = 1:length(combinacionCargaObj.cargas)
+            for i = 1:length(obj.cargas)
                 
-                [ndg, ~] = size(combinacionCargaObj.cargas{i}.obtenerVelocidad());
+                [ndg, ~] = size(obj.cargas{i}.obtenerVelocidad());
                 if ndg ~= ngdlf
                     error('Grado de libertad de la carga no corresponde con la combinacion de cargas');
                 end
                 
-                x = combinacionCargaObj.reshapeMatrix(combinacionCargaObj.cargas{i}.obtenerVelocidad(), ...
-                    combinacionCargaObj.cargas{i}.tInicio, combinacionCargaObj.cargas{i}.dt, ...
-                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t, ...
-                    combinacionCargaObj.cargas{i}.obtenerEtiqueta());
+                x = obj.reshapeMatrix(obj.cargas{i}.obtenerVelocidad(), ...
+                    obj.cargas{i}.tInicio, obj.cargas{i}.dt, ...
+                    obj.cargas{i}.tAnalisis, dt, t, ...
+                    obj.cargas{i}.obtenerEtiqueta());
                 [~, lx] = size(x);
                 
                 % Suma el vector
                 j = 1;
                 for k = 1:length(t)
-                    if t(k) >= combinacionCargaObj.cargas{i}.tInicio
+                    if t(k) >= obj.cargas{i}.tInicio
                         v(:, k) = v(:, k) + x(:, j);
                         j = j + 1;
                     end
@@ -238,37 +226,35 @@ classdef CombinacionCargas < ComponenteModelo
             
         end % obtenerVelocidad function
         
-        function a = obtenerAceleracion(combinacionCargaObj)
+        function a = obtenerAceleracion(obj)
             % obtenerAceleracion: Obtiene la aceleracion de la combinacion
             % de cargas
-            %
-            % obtenerAceleracion(combinacionCargaObj)
             
             % Genera el arreglo de tiempo de interpolacion
-            [dt, t] = obtenerDtMinimo(combinacionCargaObj);
-            [ngdlf, ~] = size(combinacionCargaObj.cargas{1}.obtenerDesplazamiento());
+            [dt, t] = obtenerDtMinimo(obj);
+            [ngdlf, ~] = size(obj.cargas{1}.obtenerDesplazamiento());
             
             % Genera el vector final
             a = zeros(ngdlf, length(t));
             
             % Interpola cada desplazamiento
-            for i = 1:length(combinacionCargaObj.cargas)
+            for i = 1:length(obj.cargas)
                 
-                [ndg, ~] = size(combinacionCargaObj.cargas{i}.obtenerAceleracion());
+                [ndg, ~] = size(obj.cargas{i}.obtenerAceleracion());
                 if ndg ~= ngdlf
                     error('Grado de libertad de la carga no corresponde con la combinacion de cargas');
                 end
                 
-                x = combinacionCargaObj.reshapeMatrix(combinacionCargaObj.cargas{i}.obtenerAceleracion(), ...
-                    combinacionCargaObj.cargas{i}.tInicio, combinacionCargaObj.cargas{i}.dt, ...
-                    combinacionCargaObj.cargas{i}.tAnalisis, dt, t, ...
-                    combinacionCargaObj.cargas{i}.obtenerEtiqueta());
+                x = obj.reshapeMatrix(obj.cargas{i}.obtenerAceleracion(), ...
+                    obj.cargas{i}.tInicio, obj.cargas{i}.dt, ...
+                    obj.cargas{i}.tAnalisis, dt, t, ...
+                    obj.cargas{i}.obtenerEtiqueta());
                 [~, lx] = size(x);
                 
                 % Suma el vector
                 j = 1;
                 for k = 1:length(t)
-                    if t(k) >= combinacionCargaObj.cargas{i}.tInicio
+                    if t(k) >= obj.cargas{i}.tInicio
                         a(:, k) = a(:, k) + x(:, j);
                         j = j + 1;
                     end
@@ -281,78 +267,66 @@ classdef CombinacionCargas < ComponenteModelo
             
         end % obtenerAceleracion function
         
-        function r = usoAmortiguamientoRayleigh(combinacionCargaObj)
+        function r = usoAmortiguamientoRayleigh(obj)
             % usoAmortiguamientoRayleigh: Indica que las cargas se
             % calcularon con rayleigh
-            %
-            % t = usoAmortiguamientoRayleigh(combinacionCargaObj)
             
             r = false;
-            for i = 1:length(combinacionCargaObj.cargas)
-                r = r || combinacionCargaObj.cargas{i}.usoAmortiguamientoRayleigh();
+            for i = 1:length(obj.cargas)
+                r = r || obj.cargas{i}.usoAmortiguamientoRayleigh();
             end % for i
             
         end % usoAmortiguamientoRayleigh function
         
-        function m = usoDescomposicionModal(combinacionCargaObj)
+        function m = usoDescomposicionModal(obj)
             % usoDescomposicionModal: Indica que las cargas se
             % calcularon con descomposicion modal
-            %
-            % m = usoDescomposicionModal(combinacionCargaObj)
             
             m = false;
-            for i = 1:length(combinacionCargaObj.cargas)
-                m = m || combinacionCargaObj.cargas{i}.usoDescomposicionModal();
+            for i = 1:length(obj.cargas)
+                m = m || obj.cargas{i}.usoDescomposicionModal();
             end % for i
             
         end % usoDescomposicionModal function
         
-        function d = usoDeDisipadores(combinacionCargaObj)
+        function d = usoDeDisipadores(obj)
             % usoDescomposicionModal: Indica que las cargas se
             % calcularon con disipadores
-            %
-            % m = usoDeDisipadores(combinacionCargaObj)
             
             d = false;
-            for i = 1:length(combinacionCargaObj.cargas)
-                d = d || combinacionCargaObj.cargas{i}.usoDeDisipadores();
+            for i = 1:length(obj.cargas)
+                d = d || obj.cargas{i}.usoDeDisipadores();
             end % for i
             
         end % usoDeDisipadores function
         
-        function t = tAnalisis(combinacionCargaObj)
+        function t = tAnalisis(obj)
             % tAnalisis: Retorna el tiempo de analisis de la combinacion de
             % cargas
-            %
-            % t = tAnalisis(combinacionCargaObj)
             
-            [~, t] = obtenerDtMinimo(combinacionCargaObj);
+            [~, t] = obtenerDtMinimo(obj);
             t = max(t) - min(t);
             
         end % tAnalisis function
         
-        function t = dt(combinacionCargaObj)
+        function t = dt(obj)
             % dt: Obtiene el dt de la combinacion de cargas
-            %
-            % t = dt(combinacionCargaObj)
             
-            [t, ~] = obtenerDtMinimo(combinacionCargaObj);
+            [t, ~] = obtenerDtMinimo(obj);
             
         end % dt function
         
-        function disp(combinacionCargaObj)
+        function disp(obj)
             % disp: es un metodo de la clase CombinacionCarga que se usa
             % para imprimir en command Window la informacion de la
             % combinacion de cargas
-            %
-            % disp(combinacionCargaObj)
             
             fprintf('Propiedades combinacion cargas:\n');
-            disp@ComponenteModelo(combinacionCargaObj);
+            disp@ComponenteModelo(obj);
             
             fprintf('Cargas del modelo:');
-            for i = 1:length(combinacionCargaObj.cargas)
-                fprintf('\t%s', combinacionCargaObj.cargas.obtenerEtiqueta());
+            for i = 1:length(obj.cargas)
+                fprintf('\t%s', obj.cargas.obtenerEtiqueta());
             end % for i
             
             dispMetodoTEFAME();
@@ -363,20 +337,18 @@ classdef CombinacionCargas < ComponenteModelo
     
     methods(Access = private)
         
-        function [dt, t] = obtenerDtMinimo(combinacionCargaObj)
-            % combinacionCargaObj: Obtiene el arreglo de tiempo comun a
+        function [dt, t] = obtenerDtMinimo(obj)
+            % obj: Obtiene el arreglo de tiempo comun a
             % todas las cargas de la combinacion
-            %
-            % [dt, t] = obtenerDtMinimo(combinacionCargaObj)
             
             dt = Inf;
             tFin = 0;
             tInicio = Inf;
-            for i = 1:length(combinacionCargaObj.cargas)
+            for i = 1:length(obj.cargas)
                 
-                dt = min(dt, combinacionCargaObj.cargas{i}.dt);
-                tFin = max(tFin, combinacionCargaObj.cargas{i}.tAnalisis+combinacionCargaObj.cargas{i}.tInicio);
-                tInicio = min(tInicio, combinacionCargaObj.cargas{i}.tInicio);
+                dt = min(dt, obj.cargas{i}.dt);
+                tFin = max(tFin, obj.cargas{i}.tAnalisis+obj.cargas{i}.tInicio);
+                tInicio = min(tInicio, obj.cargas{i}.tInicio);
                 
             end % for i
             
@@ -385,10 +357,8 @@ classdef CombinacionCargas < ComponenteModelo
             
         end % obtenerDtMinimo function
         
-        function a = reshapeMatrix(combinacionCargaObj, m, tini, dtm, tanalisis, dt, t, cargaEtiqueta) %#ok<INUSL>
+        function a = reshapeMatrix(obj, m, tini, dtm, tanalisis, dt, t, cargaEtiqueta) %#ok<INUSL>
             % reshapeMatrix: reshapeMatrix reajusta una matriz dado un tiempo
-            %
-            % a = reshapeMatrix(combinacionCargaObj,m,tini,dtm,tanalisis,dt,t,cargaEtiqueta)
             
             % Si la carga no es calculada retorna error
             if isempty(m)

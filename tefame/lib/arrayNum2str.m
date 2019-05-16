@@ -1,5 +1,5 @@
 function textCell = arrayNum2str(a, num)
-% textCell = array2str(a,num) function that transform the array of number to a
+% arrayNum2str: Function that transform the array of number to a
 % array of cell elements that is used to print the array in string format
 % = [ a1 a2 a3 ... ]
 

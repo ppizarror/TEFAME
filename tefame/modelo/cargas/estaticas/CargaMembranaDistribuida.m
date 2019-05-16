@@ -41,14 +41,14 @@
 %       L
 %       theta
 %  Methods:
-%       cargaMembranaDistribuidaObj = CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
-%       aplicarCarga(cargaMembranaDistribuidaObj,factorDeCarga)
-%       disp(cargaMembranaDistribuidaObj)
+%       obj = CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
+%       aplicarCarga(obj,factorDeCarga)
+%       disp(obj)
 %  Methods SuperClass (CargaEstatica):
-%       masa = obtenerMasa(cargaMembranaDistribuidaObj)
-%       definirFactorUnidadMasa(cargaMembranaDistribuidaObj,factor)
-%       definirFactorCargaMasa(cargaMembranaDistribuidaObj,factor)
-%       nodos = obtenerNodos(cargaMembranaDistribuidaObj)
+%       masa = obtenerMasa(obj)
+%       definirFactorUnidadMasa(obj,factor)
+%       definirFactorCargaMasa(obj,factor)
+%       nodos = obtenerNodos(obj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -70,11 +70,11 @@ classdef CargaMembranaDistribuida < CargaEstatica
     
     methods
         
-        function cargaMembranaDistribuidaObj = CargaMembranaDistribuida(etiquetaCarga, elemObjeto, ...
+        function obj = CargaMembranaDistribuida(etiquetaCarga, elemObjeto, ...
                 nodo1, nodo2, carga1, distancia1, carga2, distancia2)
-            % CargaMembranaDistribuida: es el constructor de la clase CargaMembranaDistribuida
+            % CargaMembranaDistribuida: es el constructor de la clase
+            % CargaMembranaDistribuida
             %
-            % cargaMembranaDistribuidaObj=CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas y las distancias de
             % aplicacion
@@ -100,7 +100,7 @@ classdef CargaMembranaDistribuida < CargaEstatica
             
             % Llamamos al constructor de la SuperClass que es la clase
             % CargaEstatica
-            cargaMembranaDistribuidaObj = cargaMembranaDistribuidaObj@CargaEstatica(etiquetaCarga);
+            obj = obj@CargaEstatica(etiquetaCarga);
             
             % Verifica que se cumplan los nodos
             if abs(nodo1-nodo2) == 2
@@ -129,41 +129,41 @@ classdef CargaMembranaDistribuida < CargaEstatica
             % Calcula el angulo de aplicacion, puede ser 0 (en eje y) o 90 (eje x)
             dx = (membranaNodo2(1) - membranaNodo1(1));
             dy = (membranaNodo2(2) - membranaNodo1(2));
-            cargaMembranaDistribuidaObj.theta = atan(dy/dx);
+            obj.theta = atan(dy/dx);
             
             % Guarda los valores
-            cargaMembranaDistribuidaObj.elemObj = elemObjeto;
-            cargaMembranaDistribuidaObj.L = largo;
+            obj.elemObj = elemObjeto;
+            obj.L = largo;
             
-            cargaMembranaDistribuidaObj.carga1 = carga1;
-            cargaMembranaDistribuidaObj.dist1 = distancia1 * largo;
-            cargaMembranaDistribuidaObj.nodo1 = nodo1;
+            obj.carga1 = carga1;
+            obj.dist1 = distancia1 * largo;
+            obj.nodo1 = nodo1;
             
-            cargaMembranaDistribuidaObj.carga2 = carga2;
-            cargaMembranaDistribuidaObj.dist2 = distancia2 * largo;
-            cargaMembranaDistribuidaObj.nodo2 = nodo2;
+            obj.carga2 = carga2;
+            obj.dist2 = distancia2 * largo;
+            obj.nodo2 = nodo2;
             
-            cargaMembranaDistribuidaObj.nodosCarga = {nodo1, nodo2};
+            obj.nodosCarga = {nodo1, nodo2};
             
         end % CargaMembranaDistribuida constructor
         
-        function [v1, v2] = calcularCarga(cargaMembranaDistribuidaObj)
+        function [v1, v2] = calcularCarga(obj)
             % calcularCarga: Calcula la carga
             
             % Limites de las cargas
-            d1 = cargaMembranaDistribuidaObj.dist1;
-            d2 = cargaMembranaDistribuidaObj.dist2;
+            d1 = obj.dist1;
+            d2 = obj.dist2;
             
             % Cargas
-            P1 = cargaMembranaDistribuidaObj.carga1;
-            P2 = cargaMembranaDistribuidaObj.carga2;
+            P1 = obj.carga1;
+            P2 = obj.carga2;
             
             % Crea funcion de carga distribuida
             rho = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
             
             % Funciones de interpolacion
-            N1 = @(x) 1 - 3 * (x / cargaMembranaDistribuidaObj.L).^2 + 2 * (x / cargaMembranaDistribuidaObj.L).^3;
-            N3 = @(x) 3 * (x / cargaMembranaDistribuidaObj.L).^2 - 2 * (x / cargaMembranaDistribuidaObj.L).^3;
+            N1 = @(x) 1 - 3 * (x / obj.L).^2 + 2 * (x / obj.L).^3;
+            N3 = @(x) 3 * (x / obj.L).^2 - 2 * (x / obj.L).^3;
             
             % Calcula cada valor
             v1 = integral(@(x) rho(x).*N1(x), d1, d2);
@@ -171,80 +171,75 @@ classdef CargaMembranaDistribuida < CargaEstatica
             
         end % calcularCarga function
         
-        function masa = obtenerMasa(cargaMembranaDistribuidaObj)
+        function masa = obtenerMasa(obj)
             % obtenerMasa: Obtiene la masa asociada a la carga
-            %
-            % masa = obtenerMasa(cargaMembranaDistribuidaObj)
             
-            [v1, v2] = cargaMembranaDistribuidaObj.calcularCarga();
-            masa = abs(v1 + v2) .* (cargaMembranaDistribuidaObj.factorCargaMasa * cargaMembranaDistribuidaObj.factorUnidadMasa);
+            [v1, v2] = obj.calcularCarga();
+            masa = abs(v1 + v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         
-        function aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase cargaMembranaDistribuidaObj
-            % que se usa para aplicar la carga sobre los dos nodos correspondientes del elemento
-            %
-            % aplicarCarga(cargaMembranaDistribuidaObj, factorDeCarga)
+        function aplicarCarga(obj, factorDeCarga)
+            % aplicarCarga: es un metodo de la clase obj
+            % que se usa para aplicar la carga sobre los dos nodos
+            % correspondientes del elemento
             
             % Calcula la carga
-            [v1, v2] = cargaMembranaDistribuidaObj.calcularCarga();
+            [v1, v2] = obj.calcularCarga();
             
             % Aplica el angulo
-            v1x = v1 * sin(cargaMembranaDistribuidaObj.theta);
-            v1y = v1 * cos(cargaMembranaDistribuidaObj.theta);
-            v2x = v2 * sin(cargaMembranaDistribuidaObj.theta);
-            v2y = v2 * cos(cargaMembranaDistribuidaObj.theta);
+            v1x = v1 * sin(obj.theta);
+            v1y = v1 * cos(obj.theta);
+            v2x = v2 * sin(obj.theta);
+            v2y = v2 * cos(obj.theta);
             
             vectorCarga1 = factorDeCarga * [v1x, v1y]';
             vectorCarga2 = factorDeCarga * [v2x, v2y]';
             
             % Aplica fuerzas equivalentes;
-            cargaMembranaDistribuidaObj.elemObj.sumarFuerzaEquivalente(cargaMembranaDistribuidaObj.nodo1, vectorCarga1');
-            cargaMembranaDistribuidaObj.elemObj.sumarFuerzaEquivalente(cargaMembranaDistribuidaObj.nodo2, vectorCarga2');
+            obj.elemObj.sumarFuerzaEquivalente(obj.nodo1, vectorCarga1');
+            obj.elemObj.sumarFuerzaEquivalente(obj.nodo2, vectorCarga2');
             
             % Aplica vectores de carga
-            nodos = cargaMembranaDistribuidaObj.elemObj.obtenerNodos();
-            nodos{cargaMembranaDistribuidaObj.nodo1}.agregarCarga(vectorCarga1);
-            nodos{cargaMembranaDistribuidaObj.nodo2}.agregarCarga(vectorCarga2);
+            nodos = obj.elemObj.obtenerNodos();
+            nodos{obj.nodo1}.agregarCarga(vectorCarga1);
+            nodos{obj.nodo2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
         
-        function disp(cargaMembranaDistribuidaObj)
+        function disp(obj)
             % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
             % elemento membrana
             %
-            % disp(cargaMembranaDistribuidaObj)
-            %
             % Imprime la informacion guardada en la carga distribuida de la
-            % membrana (cargaMembranaDistribuidaObj) en pantalla
+            % membrana (obj) en pantalla
             
             fprintf('Propiedades carga membrana distribuida:\n');
-            disp@CargaEstatica(cargaMembranaDistribuidaObj);
+            disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento
-            etiqueta = cargaMembranaDistribuidaObj.elemObj.obtenerEtiqueta();
+            etiqueta = obj.elemObj.obtenerEtiqueta();
             
             % Obtiene la etiqueta del primer nodo
-            nodosetiqueta = cargaMembranaDistribuidaObj.elemObj.obtenerNodos();
-            nodo1etiqueta = nodosetiqueta{cargaMembranaDistribuidaObj.nodo1}.obtenerEtiqueta();
-            nodo2etiqueta = nodosetiqueta{cargaMembranaDistribuidaObj.nodo2}.obtenerEtiqueta();
+            nodosetiqueta = obj.elemObj.obtenerNodos();
+            nodo1etiqueta = nodosetiqueta{obj.nodo1}.obtenerEtiqueta();
+            nodo2etiqueta = nodosetiqueta{obj.nodo2}.obtenerEtiqueta();
             
             % Obtiene si la carga es horizontal o vertical
-            if (cargaMembranaDistribuidaObj.theta == 0)
+            if (obj.theta == 0)
                 dirc = 'Horizontal';
-            elseif (cargaMembranaDistribuidaObj.theta == pi / 2)
+            elseif (obj.theta == pi / 2)
                 dirc = 'Vertical';
             else
-                dirc = sprintf('Diagonal theta=%.3f', cargaMembranaDistribuidaObj.theta);
+                dirc = sprintf('Diagonal theta=%.3f', obj.theta);
             end
             
             fprintf('\tCarga distribuida: %.3f en %.3f hasta %.3f en %.3f (%s)\n', ...
-                cargaMembranaDistribuidaObj.carga1, cargaMembranaDistribuidaObj.dist1, cargaMembranaDistribuidaObj.carga2, ...
-                cargaMembranaDistribuidaObj.dist2, dirc);
+                obj.carga1, obj.dist1, obj.carga2, ...
+                obj.dist2, dirc);
             fprintf('\t                   entre los Nodos: %s (%d) y %s (%d) del Elemento: %s\n', ...
-                nodo1etiqueta, cargaMembranaDistribuidaObj.nodo1, nodo2etiqueta, cargaMembranaDistribuidaObj.nodo2, etiqueta);
+                nodo1etiqueta, obj.nodo1, nodo2etiqueta, obj.nodo2, etiqueta);
             dispMetodoTEFAME();
             
         end % disp function

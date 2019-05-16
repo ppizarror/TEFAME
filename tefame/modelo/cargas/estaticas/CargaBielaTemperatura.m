@@ -37,14 +37,14 @@
 %       alpha
 %       carga
 %  Methods:
-%       cargaBielaTemperaturaObj = CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
-%       aplicarCarga(cargaBielaTemperaturaObj,factorDeCarga)
-%       disp(cargaBielaTemperaturaObj)
+%       obj = CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
+%       aplicarCarga(obj,factorDeCarga)
+%       disp(obj)
 %  Methods SuperClass (CargaEstatica):
-%       masa = obtenerMasa(cargaBielaTemperaturaObj)
-%       definirFactorUnidadMasa(cargaBielaTemperaturaObj,factor)
-%       definirFactorCargaMasa(cargaBielaTemperaturaObj,factor)
-%       nodos = obtenerNodos(cargaBielaTemperaturaObj)
+%       masa = obtenerMasa(obj)
+%       definirFactorUnidadMasa(obj,factor)
+%       definirFactorCargaMasa(obj,factor)
+%       nodos = obtenerNodos(obj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -61,10 +61,8 @@ classdef CargaBielaTemperatura < CargaEstatica
     
     methods
         
-        function cargaBielaTemperaturaObj = CargaBielaTemperatura(etiquetaCarga, elemObjeto, deltaTemperatura, alpha)
+        function obj = CargaBielaTemperatura(etiquetaCarga, elemObjeto, deltaTemperatura, alpha)
             % CargaBielaTemperatura: es el constructor de la clase CargaBielaTemperatura
-            %
-            % cargaBielaTemperaturaObj=CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
             %
             % Crea un objeto de la clase CargaBielaTemperatura, en donde toma como atributo
             % el objeto a aplicar la carga, la diferencia de temperatura y
@@ -78,81 +76,75 @@ classdef CargaBielaTemperatura < CargaEstatica
             
             % Llamamos al constructor de la SuperClass que es la clase
             % CargaEstatica
-            cargaBielaTemperaturaObj = cargaBielaTemperaturaObj@CargaEstatica(etiquetaCarga);
+            obj = obj@CargaEstatica(etiquetaCarga);
             
             % Guarda los valores
-            cargaBielaTemperaturaObj.deltaTemperatura = deltaTemperatura;
-            cargaBielaTemperaturaObj.alpha = alpha;
-            cargaBielaTemperaturaObj.elemObj = elemObjeto;
-            cargaBielaTemperaturaObj.nodosCarga = elemObjeto.obtenerNodos();
+            obj.deltaTemperatura = deltaTemperatura;
+            obj.alpha = alpha;
+            obj.elemObj = elemObjeto;
+            obj.nodosCarga = elemObjeto.obtenerNodos();
             
             % Crea la carga
-            cargaBielaTemperaturaObj.carga = elemObjeto.obtenerAE() * deltaTemperatura * alpha;
+            obj.carga = elemObjeto.obtenerAE() * deltaTemperatura * alpha;
             
         end % CargaBielaTemperatura constructor
         
-        function c = calcularCarga(cargaBielaTemperaturaObj)
+        function c = calcularCarga(obj)
             % calcularCarga: Calcula la carga
             
-            c = cargaBielaTemperaturaObj.carga;
+            c = obj.carga;
             
         end % calcularCarga function
         
-        function masa = obtenerMasa(cargaBielaTemperaturaObj)
+        function masa = obtenerMasa(obj)
             % obtenerMasa: Obtiene la masa asociada a la carga
-            %
-            % masa = obtenerMasa(cargaBielaTemperaturaObj)
             
-            c = cargaBielaTemperaturaObj.calcularCarga();
-            masa =  abs(c).* (cargaBielaTemperaturaObj.factorCargaMasa * cargaBielaTemperaturaObj.factorUnidadMasa);
+            c = obj.calcularCarga();
+            masa =  abs(c).* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         
-        function aplicarCarga(cargaBielaTemperaturaObj, factorDeCarga)
+        function aplicarCarga(obj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaBielaTemperatura
             % que se usa para aplicar la carga en los nodos
-            %
-            % aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
             
             % Obtiene el angulo de la Biela
-            theta = cargaBielaTemperaturaObj.elemObj.obtenerAngulo();
+            theta = obj.elemObj.obtenerAngulo();
             
             % Carga sin cambiar el angulo
-            c = cargaBielaTemperaturaObj.calcularCarga();
+            c = obj.calcularCarga();
             
             % Genera las cargas nodales
             vectorCarga1 = factorDeCarga * [-c * cos(theta), -c * sin(theta)]';
             vectorCarga2 = factorDeCarga * [c * cos(theta), c * sin(theta)]';
-            cargaBielaTemperaturaObj.elemObj.sumarCargaTemperaturaReaccion( ...
+            obj.elemObj.sumarCargaTemperaturaReaccion( ...
                 factorDeCarga*[vectorCarga1(1), vectorCarga1(2), vectorCarga2(1), vectorCarga2(2)]');
             
             % Aplica vectores de carga
-            nodos = cargaBielaTemperaturaObj.elemObj.obtenerNodos();
+            nodos = obj.elemObj.obtenerNodos();
             nodos{1}.agregarCarga(vectorCarga1);
             nodos{2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
         
-        function disp(cargaBielaTemperaturaObj)
+        function disp(obj)
             % disp: es un metodo de la clase CargaBielaTemperatura que se usa para imprimir en
             % command Window la informacion de la carga generada en los
             % nodos fruto de la diferencia de temperatura y el coeficiente
             % del material
             %
-            % disp(cargaBielaTemperaturaObj)
-            %
             % Imprime la informacion guardada en la carga fruto de la
-            % diferencia de temperatura de la Biela (cargaBielaTemperaturaObj)
+            % diferencia de temperatura de la Biela (obj)
             % en pantalla
             
             fprintf('Propiedades carga biela temperatura:\n');
-            disp@CargaEstatica(cargaBielaTemperaturaObj);
+            disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento
-            etiqueta = cargaBielaTemperaturaObj.elemObj.obtenerEtiqueta();
+            etiqueta = obj.elemObj.obtenerEtiqueta();
             
             fprintf('\tCarga: %.3f aplicada en Elemento: %s producto de una diferencia de temperatura: %.3f\n', ...
-                cargaBielaTemperaturaObj.carga, etiqueta, cargaBielaTemperaturaObj.deltaTemperatura);
+                obj.carga, etiqueta, obj.deltaTemperatura);
             dispMetodoTEFAME();
             
         end % disp function

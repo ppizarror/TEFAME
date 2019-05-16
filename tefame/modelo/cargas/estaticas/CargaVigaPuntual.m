@@ -35,14 +35,14 @@
 %       carga
 %       dist
 %  Methods:
-%       cargaVigaPuntualObj = CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
-%       aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
-%       disp(cargaVigaPuntualObj)
+%       obj = CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
+%       aplicarCarga(obj,factorDeCarga)
+%       disp(obj)
 %  Methods SuperClass (CargaEsatica):
-%       masa = obtenerMasa(cargaVigaPuntualObj)
-%       definirFactorUnidadMasa(cargaVigaPuntualObj,factor)
-%       definirFactorCargaMasa(cargaVigaPuntualObj,factor)
-%       nodos = obtenerNodos(cargaVigaPuntualObj)
+%       masa = obtenerMasa(obj)
+%       definirFactorUnidadMasa(obj,factor)
+%       definirFactorCargaMasa(obj,factor)
+%       nodos = obtenerNodos(obj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -58,10 +58,8 @@ classdef CargaVigaPuntual < CargaEstatica
     
     methods
         
-        function cargaVigaPuntualObj = CargaVigaPuntual(etiquetaCarga, elemObjeto, carga, distancia)
+        function obj = CargaVigaPuntual(etiquetaCarga, elemObjeto, carga, distancia)
             % CargaVigaPuntual: es el constructor de la clase CargaVigaPuntual
-            %
-            % cargaVigaPuntualObj=CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
             %
             % Crea un objeto de la clase CargaVigaPuntual, en donde toma como atributo
             % el objeto a aplicar la carga, la distancia como porcentaje
@@ -76,27 +74,27 @@ classdef CargaVigaPuntual < CargaEstatica
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaVigaPuntualObj = cargaVigaPuntualObj@CargaEstatica(etiquetaCarga);
+            obj = obj@CargaEstatica(etiquetaCarga);
             
             % Guarda los valores
-            cargaVigaPuntualObj.elemObj = elemObjeto;
-            cargaVigaPuntualObj.carga = carga;
-            cargaVigaPuntualObj.dist = distancia * elemObjeto.obtenerLargo();
-            cargaVigaPuntualObj.nodosCarga = elemObjeto.obtenerNodos();
+            obj.elemObj = elemObjeto;
+            obj.carga = carga;
+            obj.dist = distancia * elemObjeto.obtenerLargo();
+            obj.nodosCarga = elemObjeto.obtenerNodos();
             
         end % CargaVigaPuntual constructor
         
-        function [v1, v2, theta1, theta2] = calcularCarga(cargaVigaPuntualObj)
+        function [v1, v2, theta1, theta2] = calcularCarga(obj)
             % calcularCarga: Calcula la carga
             
             % Largo de la viga
-            L = cargaVigaPuntualObj.elemObj.obtenerLargo();
+            L = obj.elemObj.obtenerLargo();
             
             % Posicion de la carga
-            d = cargaVigaPuntualObj.dist;
+            d = obj.dist;
             
             % Carga
-            P = cargaVigaPuntualObj.carga;
+            P = obj.carga;
             
             % Se calculan apoyos y reacciones en un caso de viga empotrada
             % sometida a una carga P aplicada a (L-d) de un apoyo y d del
@@ -111,58 +109,52 @@ classdef CargaVigaPuntual < CargaEstatica
             
         end % calcularCarga function
         
-        function masa = obtenerMasa(cargaVigaPuntualObj)
+        function masa = obtenerMasa(obj)
             % obtenerMasa: Obtiene la masa asociada a la carga
-            %
-            % masa = obtenerMasa(cargaVigaPuntualObj)
             
-            [v1, v2, ~, ~] = cargaVigaPuntualObj.calcularCarga();
-            masa = abs(v1 + v2) .* (cargaVigaPuntualObj.factorCargaMasa * cargaVigaPuntualObj.factorUnidadMasa);
+            [v1, v2, ~, ~] = obj.calcularCarga();
+            masa = abs(v1 + v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         
-        function aplicarCarga(cargaVigaPuntualObj, factorDeCarga)
+        function aplicarCarga(obj, factorDeCarga)
             % aplicarCarga: es un metodo de la clase CargaVigaPuntual que se usa para aplicar
             % la carga sobre los dos nodos del elemento
-            %
-            % aplicarCarga(cargaVigaPuntualObj,factorDeCarga)
             
             % Calcula la carga
-            [v1, v2, theta1, theta2] = cargaVigaPuntualObj.calcularCarga();
+            [v1, v2, theta1, theta2] = obj.calcularCarga();
             vectorCarga1 = factorDeCarga * [0, v1, theta1]';
             vectorCarga2 = factorDeCarga * [0, v2, theta2]';
-            cargaVigaPuntualObj.elemObj.sumarFuerzaEquivalente([ ...
+            obj.elemObj.sumarFuerzaEquivalente([ ...
                 vectorCarga1(2), vectorCarga1(3), vectorCarga2(2), vectorCarga2(3)]');
             
             % Aplica vectores de carga
-            nodos = cargaVigaPuntualObj.elemObj.obtenerNodos();
+            nodos = obj.elemObj.obtenerNodos();
             nodos{1}.agregarCarga(vectorCarga1);
             nodos{2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
         
-        function disp(cargaVigaPuntualObj)
+        function disp(obj)
             % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
             % elemento
             %
-            % disp(cargaVigaPuntualObj)
-            %
             % Imprime la informacion guardada en la carga puntual de la
-            % Viga (cargaVigaPuntualObj) en pantalla
+            % Viga (obj) en pantalla
             
             fprintf('Propiedades carga viga puntual:\n');
-            disp@CargaEstatica(cargaVigaPuntualObj);
+            disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento
-            etiqueta = cargaVigaPuntualObj.elemObj.obtenerEtiqueta();
+            etiqueta = obj.elemObj.obtenerEtiqueta();
             
             % Obtiene la etiqueta del primer nodo
-            nodo1etiqueta = cargaVigaPuntualObj.elemObj.obtenerNodos();
+            nodo1etiqueta = obj.elemObj.obtenerNodos();
             nodo1etiqueta = nodo1etiqueta{1}.obtenerEtiqueta();
             
             fprintf('\tCarga: %.3f aplicada en Elemento: %s a %.3f del Nodo: %s\n', ...
-                cargaVigaPuntualObj.carga, etiqueta, cargaVigaPuntualObj.dist, nodo1etiqueta);
+                obj.carga, etiqueta, obj.dist, nodo1etiqueta);
             dispMetodoTEFAME();
             
         end % disp function

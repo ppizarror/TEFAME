@@ -37,19 +37,19 @@
 %       F
 %       u
 %  Methods:
-%       analisisObj = AnalisisEstatico(modeloObjeto)
-%       analizar(analisisObj)
-%       Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
-%       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
-%       definirNumeracionGDL(analisisObj)
-%       disp(analisisObj)
-%       ensamblarMatrizRigidez(analisisObj)
-%       ensamblarVectorFuerzas(analisisObj)
-%       F_Modelo = obtenerVectorFuerzas(analisisObj)
-%       K_Modelo = obtenerMatrizRigidez(analisisObj)
-%       numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
-%       plot(analisisObj)
-%       u_Modelo = obtenerDesplazamientos(analisisObj)
+%       obj = AnalisisEstatico(modeloObjeto)
+%       analizar(obj)
+%       Cd = ensamblarMatrizAmortiguamientoDisipadores(obj)
+%       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(obj)
+%       definirNumeracionGDL(obj)
+%       disp(obj)
+%       ensamblarMatrizRigidez(obj)
+%       ensamblarVectorFuerzas(obj)
+%       F_Modelo = obtenerVectorFuerzas(obj)
+%       K_Modelo = obtenerMatrizRigidez(obj)
+%       numeroEcuaciones = obtenerNumeroEcuaciones(obj)
+%       plot(obj)
+%       u_Modelo = obtenerDesplazamientos(obj)
 
 classdef AnalisisEstatico < Analisis
     
@@ -61,10 +61,8 @@ classdef AnalisisEstatico < Analisis
     
     methods
         
-        function analisisObj = AnalisisEstatico(modeloObjeto)
+        function obj = AnalisisEstatico(modeloObjeto)
             % AnalisisEstatico: es el constructor de la clase AnalisisEstatico
-            %
-            % analisisObj = AnalisisEstatico(modeloObjeto)
             %
             % Crea un objeto de la clase AnalisisEstatico, y guarda el modelo,
             % que necesita ser analizado
@@ -73,29 +71,27 @@ classdef AnalisisEstatico < Analisis
                 modeloObjeto = [];
             end % if
             
-            analisisObj = analisisObj@Analisis(modeloObjeto);
-            analisisObj.numeroGDL = 0;
-            analisisObj.Kt = [];
-            analisisObj.u = [];
-            analisisObj.F = [];
+            obj = obj@Analisis(modeloObjeto);
+            obj.numeroGDL = 0;
+            obj.Kt = [];
+            obj.u = [];
+            obj.F = [];
             
         end % AnalisisEstatico constructor
         
-        function definirNumeracionGDL(analisisObj)
+        function definirNumeracionGDL(obj)
             % definirNumeracionGDL: es un metodo de la clase AnalisisEstatico que
             % se usa para definir como se enumeran los GDL en el modelo
-            %
-            % definirNumeracionGDL(analisisObj)
             %
             % Define y asigna la enumeracion de los GDL en el modelo
             
             fprintf('\tDefiniendo numeracion GDL\n');
             
             % Primero se aplican las restricciones al modelo
-            analisisObj.modeloObj.aplicarRestricciones();
+            obj.modeloObj.aplicarRestricciones();
             
             % Extraemos los nodos para que sean enumerados
-            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            nodoObjetos = obj.modeloObj.obtenerNodos();
             numeroNodos = length(nodoObjetos);
             
             % Inicializamos en cero el contador de GDL
@@ -118,10 +114,10 @@ classdef AnalisisEstatico < Analisis
             
             % Guardamos el numero de GDL, es decir el numero de ecuaciones
             % del sistema
-            analisisObj.numeroGDL = contadorGDL;
+            obj.numeroGDL = contadorGDL;
             
             % Extraemos los Elementos del modelo
-            objetos = analisisObj.modeloObj.obtenerElementos();
+            objetos = obj.modeloObj.obtenerElementos();
             numeroElementos = length(objetos);
             
             % Definimos los GDLID en los elementos para poder formar la matriz de rigidez
@@ -131,16 +127,14 @@ classdef AnalisisEstatico < Analisis
             
         end % definirNumeracionGDL function
         
-        function analizar(analisisObj, varargin)
+        function analizar(obj, varargin)
             % analizar: es un metodo de la clase AnalisisEstatico que se usa para
             % realizar el analisis estatico
             % Analiza estaticamente el modelo lineal y elastico sometido a un
             % set de cargas
             %
-            % analizar(analisisObj,varargin)
-            %
             % Parametros opcionales:
-            %   'factorCargaE'      Factor de cargas estaticas
+            %   factorCargaE        Factor de cargas estaticas
             
             fprintf('Ejecuntando analisis estatico\n');
             
@@ -152,40 +146,38 @@ classdef AnalisisEstatico < Analisis
             r = p.Results;
             
             % Se definen los grados de libertad por nodo -> elementos
-            analisisObj.definirNumeracionGDL();
+            obj.definirNumeracionGDL();
             
             % Se aplica patron de carga
-            analisisObj.modeloObj.aplicarPatronesDeCargasEstatico(r.factorCargaE);
+            obj.modeloObj.aplicarPatronesDeCargasEstatico(r.factorCargaE);
             
             % Se calcula la matriz de rigidez
-            analisisObj.ensamblarMatrizRigidez();
+            obj.ensamblarMatrizRigidez();
             
             % Guarda el resultado para las cargas estaticas
             fprintf('\tCalculando resultado carga estatica\n');
-            analisisObj.ensamblarVectorFuerzas();
-            analisisObj.u = (analisisObj.Kt^-1) * analisisObj.F;
-            analisisObj.modeloObj.actualizar(analisisObj.u);
+            obj.ensamblarVectorFuerzas();
+            obj.u = (obj.Kt^-1) * obj.F;
+            obj.modeloObj.actualizar(obj.u);
             
             % Termina el analisis
-            analisisObj.analisisFinalizado = true;
+            obj.analisisFinalizado = true;
             dispMetodoTEFAME();
             
         end % analizar function
         
-        function ensamblarMatrizRigidez(analisisObj)
+        function ensamblarMatrizRigidez(obj)
             % ensamblarMatrizRigidez: es un metodo de la clase AnalisisEstatico que se usa para
             % realizar el armado de la matriz de rigidez del modelo analizado
-            %
-            % ensamblarMatrizRigidez(analisisObj)
             %
             % Ensambla la matriz de Rigidez del modelo analizado usando el metodo
             % indicial
             
             fprintf('\tEnsamblando matriz de rigidez\n');
-            analisisObj.Kt = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
+            obj.Kt = zeros(obj.numeroGDL, obj.numeroGDL);
             
             % Extraemos los Elementos y Disipadores
-            objetos = analisisObj.modeloObj.obtenerElementos();
+            objetos = obj.modeloObj.obtenerElementos();
             numeroElementos = length(objetos);
             
             % Definimos los GDLID en los elementos
@@ -207,7 +199,7 @@ classdef AnalisisEstatico < Analisis
                         % Si corresponden a grados de libertad -> puntos en (i,j)
                         % se suma contribucion metodo indicial
                         if (i_ ~= 0 && j_ ~= 0)
-                            analisisObj.Kt(i_, j_) = analisisObj.Kt(i_, j_) + k_globl_elem(r, s);
+                            obj.Kt(i_, j_) = obj.Kt(i_, j_) + k_globl_elem(r, s);
                         end
                     end % for s
                 end % for r
@@ -216,45 +208,39 @@ classdef AnalisisEstatico < Analisis
             
         end % ensamblarMatrizRigidez function
         
-        function Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
+        function Cd = ensamblarMatrizAmortiguamientoDisipadores(obj)
             % ensamblarMatrizAmortiguamientoDisipadores: Analisis Estatico
             % no soporta disipadores ya que estos responden a un caracter
             % dinamico, por tal se retorna una matriz de ceros
-            %
-            % Cd = ensamblarMatrizAmortiguamientoDisipadores(analisisObj)
             
-            Cd = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
+            Cd = zeros(obj.numeroGDL, obj.numeroGDL);
             
         end % ensamblarMatrizAmortiguamientoDisipadores function
         
-        function Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)
+        function Kdv = ensamblarMatrizRigidezDisipadores(obj)
             % ensamblarMatrizRigidezDisipadores: Analisis Estatico
             % no soporta disipadores ya que estos responden a un caracter
             % dinamico, por tal se retorna una matriz de ceros
             %
-            % Kdv = ensamblarMatrizRigidezDisipadores(analisisObj)
-            %
             % Ensambla la matriz de rigidez de los disipadores del modelo
             % analizado usando el metodo indicial
             
-            Kdv = zeros(analisisObj.numeroGDL, analisisObj.numeroGDL);
+            Kdv = zeros(obj.numeroGDL, obj.numeroGDL);
             
         end % ensamblarMatrizRigidezDisipadores function
         
-        function ensamblarVectorFuerzas(analisisObj)
+        function ensamblarVectorFuerzas(obj)
             % ensamblarVectorFuerzas: es un metodo de la clase AnalisisEstatico que se usa para
             % realizar el armado del vector de fuerzas del modelo analizado
-            %
-            % ensamblarMatrizRigidez(analisisObj)
             %
             % Ensambla el vector de fuerzas del modelo analizado usando el metodo
             % indicial
             
             % En esta funcion se tiene que ensamblar el vector de fuerzas
-            analisisObj.F = zeros(analisisObj.numeroGDL, 1);
+            obj.F = zeros(obj.numeroGDL, 1);
             
             % Extraemos los nodos
-            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            nodoObjetos = obj.modeloObj.obtenerNodos();
             numeroNodos = length(nodoObjetos);
             
             % Definimos los GDLID en los nodos
@@ -269,7 +255,7 @@ classdef AnalisisEstatico < Analisis
                 % lograr el equilibrio
                 for j = 1:ngdlid
                     if (gdl(j) ~= 0)
-                        analisisObj.F(gdl(j)) = -reacc(j);
+                        obj.F(gdl(j)) = -reacc(j);
                     end
                 end % for j
                 
@@ -277,87 +263,83 @@ classdef AnalisisEstatico < Analisis
             
         end % ensamblarVectorFuerzas function
         
-        function numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
+        function numeroEcuaciones = obtenerNumeroEcuaciones(obj)
             % obtenerNumeroEcuaciones: es un metodo de la clase AnalisisEstatico
             % que se usa para obtener el numero total de GDL, es decir, ecuaciones
             % del modelo
             %
-            % numeroEcuaciones = obtenerNumeroEcuaciones(analisisObj)
-            %
             % Obtiene el numero total de GDL (numeroEcuaciones) que esta guardado
-            % en el Analisis (analisisObj)
+            % en el Analisis (obj)
             
-            numeroEcuaciones = analisisObj.numeroGDL;
+            numeroEcuaciones = obj.numeroGDL;
             
         end % obtenerNumeroEcuaciones function
         
-        function K_Modelo = obtenerMatrizRigidez(analisisObj)
+        function K_Modelo = obtenerMatrizRigidez(obj)
             % obtenerMatrizRigidez: es un metodo de la clase AnalisisEstatico
             % que se usa para obtener la matriz de rigidez del modelo
             %
-            % K_Modelo = obtenerMatrizRigidez(analisisObj)
-            %
             % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
-            % en el Analisis (analisisObj)
+            % en el Analisis (obj)
             
-            K_Modelo = analisisObj.Kt;
+            K_Modelo = obj.Kt;
             
         end % obtenerMatrizRigidez function
         
-        function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
+        function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(obj)
             % obtenerMatrizAmortiguamientoDisipadores: es un metodo de la
             % clase que retorna la matriz de amortiguamiento de los disipadores
             %
-            % Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(analisisObj)
+            % Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(obj)
             %
             % Obtiene la matriz de amortiguamiento de los disipadores del modelo
             
-            Cdv_Modelo = analisisObj.ensamblarMatrizAmortiguamientoDisipadores();
+            Cdv_Modelo = obj.ensamblarMatrizAmortiguamientoDisipadores();
             
         end % obtenerMatrizAmortiguamientoDisipadores function
         
-        function Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
+        function Kdv_Modelo = obtenerMatrizRigidezDisipadores(obj)
             % obtenerMatrizRigidezDisipadores: es un metodo de la clase ModalEspectral
             % que se usa para obtener la matriz de rigidez de los
             % disipadores
             %
-            % Kdv_Modelo = obtenerMatrizRigidezDisipadores(analisisObj)
+            % Kdv_Modelo = obtenerMatrizRigidezDisipadores(obj)
             
-            Kdv_Modelo = analisisObj.ensamblarMatrizRigidezDisipadores();
+            Kdv_Modelo = obj.ensamblarMatrizRigidezDisipadores();
             
         end % obtenerMatrizRigidezDisipadores function
         
-        function F_Modelo = obtenerVectorFuerzas(analisisObj)
+        function F_Modelo = obtenerVectorFuerzas(obj)
             % obtenerVectorFuerzas: es un metodo de la clase AnalisisEstatico
             % que se usa para obtener el vector de fuerza del modelo
             %
-            % F_Modelo = obtenerVectorFuerzas(analisisObj)
+            % F_Modelo = obtenerVectorFuerzas(obj)
             %
             % Obtiene el vector de fuerza (F_Modelo) del modelo que se genero
-            % en el Analisis (analisisObj)
+            % en el Analisis (obj)
             
-            F_Modelo = analisisObj.F;
+            F_Modelo = obj.F;
             
         end % obtenerVectorFuerzas function
         
-        function u_Modelo = obtenerDesplazamientos(analisisObj)
+        function u_Modelo = obtenerDesplazamientos(obj)
             % obtenerDesplazamientos: es un metodo de la clase AnalisisEstatico
             % que se usa para obtener el vector de desplazamiento del modelo
             % obtenido del analisis
             %
-            % u_Modelo = obtenerDesplazamientos(analisisObj)
+            % u_Modelo = obtenerDesplazamientos(obj)
             %
             % Obtiene el vector de desplazamiento (u_Modelo) del modelo que se
-            % genero como resultado del Analisis (analisisObj)
+            % genero como resultado del Analisis (obj)
             
-            u_Modelo = analisisObj.u;
+            u_Modelo = obj.u;
             
         end % obtenerDesplazamientos function
         
-        function [limx, limy, limz] = obtenerLimitesDeformada(analisisObj, factor)
+        function [limx, limy, limz] = obtenerLimitesDeformada(obj, factor)
             % obtenerLimitesDeformada: Obtiene los limites de deformacion
             %
-            % [limx,limy,limz] = obtenerLimitesDeformada(analisisObj, factor)
+            % [limx,limy,limz] = obtenerLimitesDeformada(obj, factor)
             
             factor = 1.25 * factor;
             limx = [inf, -inf];
@@ -365,7 +347,7 @@ classdef AnalisisEstatico < Analisis
             limz = [inf, -inf];
             
             % Carga objetos
-            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            nodoObjetos = obj.modeloObj.obtenerNodos();
             numeroNodos = length(nodoObjetos);
             gdl = 2;
             for i = 1:numeroNodos
@@ -374,7 +356,7 @@ classdef AnalisisEstatico < Analisis
                 gdl = max(gdl, ngdlid);
             end % for i
             
-            objetos = analisisObj.modeloObj.obtenerElementos();
+            objetos = obj.modeloObj.obtenerElementos();
             numeroElementos = length(objetos);
             for i = 1:numeroElementos
                 nodoElemento = objetos{i}.obtenerNodos();
@@ -382,7 +364,7 @@ classdef AnalisisEstatico < Analisis
                 for j = 1:numNodo
                     coord = nodoElemento{j}.obtenerCoordenadas();
                     def = nodoElemento{j}.obtenerDesplazamientos();
-                    if analisisObj.analisisFinalizado
+                    if obj.analisisFinalizado
                         coordi = coord + def .* factor;
                     else
                         coordi = coord;
@@ -395,7 +377,7 @@ classdef AnalisisEstatico < Analisis
                         limz(1) = min(limz(1), coordi(3));
                         limz(2) = max(limz(2), coordi(3));
                     end
-                    if analisisObj.analisisFinalizado
+                    if obj.analisisFinalizado
                         coordf = coord - def .* factor;
                     else
                         coordf = coord;
@@ -413,10 +395,10 @@ classdef AnalisisEstatico < Analisis
             
         end % obtenerLimitesDeformada function
         
-        function plt = plot(analisisObj, varargin)
+        function plt = plot(obj, varargin)
             % plt: Grafica el modelo
             %
-            % plt = plot(analisisObj,varargin)
+            % plt = plot(obj,varargin)
             %
             % Parametros opcionales:
             %   'angAzh'        Angulo grafico 3d azimutal
@@ -459,13 +441,13 @@ classdef AnalisisEstatico < Analisis
             defElem = r.defElem;
             
             % Grafica la estructura
-            nodoObjetos = analisisObj.modeloObj.obtenerNodos();
+            nodoObjetos = obj.modeloObj.obtenerNodos();
             numeroNodos = length(nodoObjetos);
             
             % Calcula los limites
-            [limx, limy, limz] = analisisObj.obtenerLimitesDeformada(factor);
+            [limx, limy, limz] = obj.obtenerLimitesDeformada(factor);
             
-            plt = figure('Name', sprintf('Plot %s', analisisObj.modeloObj.obtenerNombre()), ...
+            plt = figure('Name', sprintf('Plot %s', obj.modeloObj.obtenerNombre()), ...
                 'NumberTitle', 'off');
             if ~deformada
                 title('Analisis Estatico');
@@ -478,7 +460,7 @@ classdef AnalisisEstatico < Analisis
             
             % Obtiene cuantos GDL tiene el modelo
             gdl = 2;
-            ngdl = analisisObj.modeloObj.obtenerNumeroDimensiones();
+            ngdl = obj.modeloObj.obtenerNumeroDimensiones();
             
             for i = 1:numeroNodos
                 coords = nodoObjetos{i}.obtenerCoordenadas();
@@ -490,7 +472,7 @@ classdef AnalisisEstatico < Analisis
             end % for i
             
             % Grafica los elementos
-            objetos = analisisObj.modeloObj.obtenerElementos();
+            objetos = obj.modeloObj.obtenerElementos();
             numeroElementos = length(objetos);
             
             % Definimos los GDLID en los elementos
@@ -501,7 +483,7 @@ classdef AnalisisEstatico < Analisis
                 numNodo = length(nodoElemento);
                 objetos{i}.plot({}, r.styleElemE, r.lwElemE);
                 
-                if deformada && analisisObj.analisisFinalizado
+                if deformada && obj.analisisFinalizado
                     def = cell(numNodo, 1);
                     for j = 1:numNodo
                         def{j} = factor * nodoElemento{j}.obtenerDesplazamientos();
@@ -512,7 +494,7 @@ classdef AnalisisEstatico < Analisis
             end % for i
             
             % Grafica los nodos deformados
-            if deformada && analisisObj.analisisFinalizado
+            if deformada && obj.analisisFinalizado
                 for i = 1:numeroNodos
                     coords = nodoObjetos{i}.obtenerCoordenadas();
                     def = nodoObjetos{i}.obtenerDesplazamientos();
@@ -550,23 +532,23 @@ classdef AnalisisEstatico < Analisis
             
         end % plot function
         
-        function disp(analisisObj)
+        function disp(obj)
             % disp: es un metodo de la clase AnalisisEstatico que se usa para imprimir en
             % command Window la informacion del Analisis Estatico realizado
             %
-            % disp(analisisObj)
+            % disp(obj)
             %
-            % Imprime la informacion guardada en el AnalisisEstatico (analisisObj) en
+            % Imprime la informacion guardada en el AnalisisEstatico (obj) en
             % pantalla
             
             fprintf('Propiedades analisis estatico:\n');
             fprintf('\tMatriz de Rigidez:\n');
-            disp(analisisObj.Kt);
-            fprintf('\tDeterminante: %f\n\n', det(analisisObj.Kt));
+            disp(obj.Kt);
+            fprintf('\tDeterminante: %f\n\n', det(obj.Kt));
             fprintf('\tVector de Fuerzas:\n');
-            disp(analisisObj.F);
+            disp(obj.F);
             fprintf('\tVector de Desplazamientos:\n');
-            disp(analisisObj.u);
+            disp(obj.u);
             dispMetodoTEFAME();
             
         end % disp function

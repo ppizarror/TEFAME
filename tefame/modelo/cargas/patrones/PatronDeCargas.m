@@ -40,11 +40,11 @@
 %  Properties (Access=private):
 %
 %  Methods:
-%       patronDeCargasObj = PatronDeCargas(etiquetaPatronDeCargas,arregloCargas)
-%       aplicarCargas(patronDeCargasObj)
-%       patronDinamico(patronDeCargasObj)
-%       disp(patronDeCargasObj)
-%       cargas = obtenerCargas(patronDeCargasObj)
+%       obj = PatronDeCargas(etiquetaPatronDeCargas,arregloCargas)
+%       aplicarCargas(obj)
+%       patronDinamico(obj)
+%       disp(obj)
+%       cargas = obtenerCargas(obj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -65,10 +65,8 @@ classdef PatronDeCargas < ComponenteModelo
     
     methods
         
-        function patronDeCargasObj = PatronDeCargas(etiquetaPatronDeCargas)
+        function obj = PatronDeCargas(etiquetaPatronDeCargas)
             % PatronDeCargas: es el constructor de la clase PatronDeCargas
-            %
-            % patronDeCargasObj = PatronDeCargas(etiquetaPatronDeCargas)
             %
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
             % (etiquetaPatronDeCargas)
@@ -78,50 +76,43 @@ classdef PatronDeCargas < ComponenteModelo
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
-            patronDeCargasObj = patronDeCargasObj@ComponenteModelo(etiquetaPatronDeCargas);
-            patronDeCargasObj.cargas = {};
+            obj = obj@ComponenteModelo(etiquetaPatronDeCargas);
+            obj.cargas = {};
             
         end % PatronDeCargas constructor
         
-        function aplicarCargas(patronDeCargasObj) %#ok<MANU>
+        function aplicarCargas(obj) %#ok<MANU>
             % aplicarCargas: es un metodo de la clase PatronDeCargas que se usa
             % para aplicar las cargas guardadas en el Patron de Cargas
             %
-            % aplicarCargas(patronDeCargasObj)
-            % Aplica las cargas que estan guardadas en el PatronDeCargas (patronDeCargasObj),
+            % Aplica las cargas que estan guardadas en el PatronDeCargas (obj),
             % es decir, se aplican las cargas sobre los nodos y elementos
             
         end % aplicarCargas function
         
-        function y = patronDinamico(patronDeCargasObj)
+        function y = patronDinamico(obj)
             % patronDinamico: Indica si el patron es dinamico o no
-            %
-            % y = patronDinamico(patronDeCargasObj)
             
-            y = patronDeCargasObj.patronEsDinamico;
+            y = obj.patronEsDinamico;
             
         end % patronDinamico function
         
-        function disp(patronDeCargasObj)
+        function disp(obj)
             % disp: es un metodo de la clase PatronDeCargas que se usa para imprimir en
             % command Window la informacion del Patron de Cargas
             %
-            % disp(patronDeCargasObj)
-            %
-            % Imprime la informacion guardada en el Patron de Cargas (patronDeCargasObj)
+            % Imprime la informacion guardada en el Patron de Cargas (obj)
             % en pantalla
             
-            disp@ComponenteModelo(patronDeCargasObj);
+            disp@ComponenteModelo(obj);
             % No usar dispMetodoTEFAME()
             
         end % disp function
         
-        function cargas = obtenerCargas(patronDeCargasObj)
+        function cargas = obtenerCargas(obj)
             % obtenerCargas: Obtiene las cargas del patron
-            %
-            % cargas = obtenerCargas(patronDeCargasObj)
             
-            cargas = patronDeCargasObj.cargas;
+            cargas = obj.cargas;
             
         end % obtenerCargas function
         

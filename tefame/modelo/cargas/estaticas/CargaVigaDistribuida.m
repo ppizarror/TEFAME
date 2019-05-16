@@ -36,14 +36,14 @@
 %       carga2
 %       dist2
 %  Methods:
-%       cargaVigaDistribuidaObj = CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
-%       aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
-%       disp(cargaVigaDistribuidaObj)
+%       obj = CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
+%       aplicarCarga(obj,factorDeCarga)
+%       disp(obj)
 %  Methods SuperClass (Carga):
-%       masa = obtenerMasa(cargaVigaDistribuidaObj)
-%       definirFactorUnidadMasa(cargaVigaDistribuidaObj,factor)
-%       definirFactorCargaMasa(cargaVigaDistribuidaObj,factor)
-%       nodos = obtenerNodos(cargaVigaDistribuidaObj)
+%       masa = obtenerMasa(obj)
+%       definirFactorUnidadMasa(obj,factor)
+%       definirFactorCargaMasa(obj,factor)
+%       nodos = obtenerNodos(obj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -61,11 +61,9 @@ classdef CargaVigaDistribuida < CargaEstatica
     
     methods
         
-        function cargaVigaDistribuidaObj = CargaVigaDistribuida(etiquetaCarga, ...
+        function obj = CargaVigaDistribuida(etiquetaCarga, ...
                 elemObjeto, carga1, distancia1, carga2, distancia2)
             % CargaVigaDistribuida: es el constructor de la clase CargaVigaDistribuida
-            %
-            % cargaVigaDistribuidaObj=CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
             %
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas y las distancias de
@@ -81,7 +79,7 @@ classdef CargaVigaDistribuida < CargaEstatica
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
-            cargaVigaDistribuidaObj = cargaVigaDistribuidaObj@CargaEstatica(etiquetaCarga);
+            obj = obj@CargaEstatica(etiquetaCarga);
             
             % Aplica limites al minimo y maximo
             if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
@@ -94,28 +92,28 @@ classdef CargaVigaDistribuida < CargaEstatica
             distancia2 = min(1, max(distancia2, 0));
             
             % Guarda los valores
-            cargaVigaDistribuidaObj.elemObj = elemObjeto;
-            cargaVigaDistribuidaObj.carga1 = carga1;
-            cargaVigaDistribuidaObj.dist1 = distancia1 * elemObjeto.obtenerLargo();
-            cargaVigaDistribuidaObj.carga2 = carga2;
-            cargaVigaDistribuidaObj.dist2 = distancia2 * elemObjeto.obtenerLargo();
-            cargaVigaDistribuidaObj.nodosCarga = elemObjeto.obtenerNodos();
+            obj.elemObj = elemObjeto;
+            obj.carga1 = carga1;
+            obj.dist1 = distancia1 * elemObjeto.obtenerLargo();
+            obj.carga2 = carga2;
+            obj.dist2 = distancia2 * elemObjeto.obtenerLargo();
+            obj.nodosCarga = elemObjeto.obtenerNodos();
             
         end % CargaVigaDistribuida constructor
         
-        function [v1, v2, theta1, theta2] = calcularCarga(cargaVigaDistribuidaObj)
+        function [v1, v2, theta1, theta2] = calcularCarga(obj)
             % calcularCarga: Calcula la carga
             
             % Largo de la viga
-            L = cargaVigaDistribuidaObj.elemObj.obtenerLargo();
+            L = obj.elemObj.obtenerLargo();
             
             % Limites de las cargas
-            d1 = cargaVigaDistribuidaObj.dist1;
-            d2 = cargaVigaDistribuidaObj.dist2;
+            d1 = obj.dist1;
+            d2 = obj.dist2;
             
             % Cargas
-            P1 = cargaVigaDistribuidaObj.carga1;
-            P2 = cargaVigaDistribuidaObj.carga2;
+            P1 = obj.carga1;
+            P2 = obj.carga2;
             
             % Crea funcion de carga distribuida
             rho = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
@@ -134,60 +132,54 @@ classdef CargaVigaDistribuida < CargaEstatica
             
         end % calcularCarga function
         
-        function masa = obtenerMasa(cargaVigaDistribuidaObj)
+        function masa = obtenerMasa(obj)
             % obtenerMasa: Obtiene la masa asociada a la carga
-            %
-            % masa = obtenerMasa(cargaVigaDistribuidaObj)
             
-            [v1, v2, ~, ~] = cargaVigaDistribuidaObj.calcularCarga();
-            masa = abs(v1+v2) .* (cargaVigaDistribuidaObj.factorCargaMasa * cargaVigaDistribuidaObj.factorUnidadMasa);
+            [v1, v2, ~, ~] = obj.calcularCarga();
+            masa = abs(v1+v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         
-        function aplicarCarga(cargaVigaDistribuidaObj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase cargaVigaDistribuidaObj que se usa para aplicar
+        function aplicarCarga(obj, factorDeCarga)
+            % aplicarCarga: es un metodo de la clase obj que se usa para aplicar
             % la carga sobre los dos nodos del elemento
-            %
-            % aplicarCarga(cargaVigaDistribuidaObj,factorDeCarga)
             
             % Calcula la carga
-            [v1, v2, theta1, theta2] = cargaVigaDistribuidaObj.calcularCarga();
+            [v1, v2, theta1, theta2] = obj.calcularCarga();
             vectorCarga1 = factorDeCarga * [0, v1, theta1]';
             vectorCarga2 = factorDeCarga * [0, v2, theta2]';
-            cargaVigaDistribuidaObj.elemObj.sumarFuerzaEquivalente( ...
+            obj.elemObj.sumarFuerzaEquivalente( ...
                 [vectorCarga1(2), vectorCarga1(3), vectorCarga2(2), vectorCarga2(3)]');
             
             % Aplica vectores de carga
-            nodos = cargaVigaDistribuidaObj.elemObj.obtenerNodos();
+            nodos = obj.elemObj.obtenerNodos();
             nodos{1}.agregarCarga(vectorCarga1);
             nodos{2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
         
-        function disp(cargaVigaDistribuidaObj)
+        function disp(obj)
             % disp: es un metodo de la clase CargaVigaDistribuida que se usa para
             % imprimir en el command Window la informacion de la carga aplicada
             % sobre el elemento
             %
-            % disp(cargaVigaDistribuidaObj)
-            %
             % Imprime la informacion guardada en la carga distribuida de la
-            % Viga (cargaVigaDistribuidaObj) en pantalla
+            % Viga (obj) en pantalla
             
             fprintf('Propiedades carga viga distribuida:\n');
-            disp@CargaEstatica(cargaVigaDistribuidaObj);
+            disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento
-            etiqueta = cargaVigaDistribuidaObj.elemObj.obtenerEtiqueta();
+            etiqueta = obj.elemObj.obtenerEtiqueta();
             
             % Obtiene la etiqueta del primer nodo
-            nodosetiqueta = cargaVigaDistribuidaObj.elemObj.obtenerNodos();
+            nodosetiqueta = obj.elemObj.obtenerNodos();
             nodo1etiqueta = nodosetiqueta{1}.obtenerEtiqueta();
             nodo2etiqueta = nodosetiqueta{2}.obtenerEtiqueta();
             
             fprintf('\tCarga distribuida: %.3f en %.3f hasta %.3f en %.3f entre los Nodos: %s y %s del Elemento: %s\n', ...
-                cargaVigaDistribuidaObj.carga1, cargaVigaDistribuidaObj.dist1, cargaVigaDistribuidaObj.carga2, ...
-                cargaVigaDistribuidaObj.dist2, nodo1etiqueta, nodo2etiqueta, etiqueta);
+                obj.carga1, obj.dist1, obj.carga2, ...
+                obj.dist2, nodo1etiqueta, nodo2etiqueta, etiqueta);
             dispMetodoTEFAME();
             
         end % disp function

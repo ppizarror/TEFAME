@@ -46,36 +46,36 @@
 %       tInicio
 %       dt
 %  Methods:
-%       cargaDinamicaObj = Carga(etiquetaCarga)
-%       desactivarCarga(cargaDinamicaObj)
-%       p = calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)
-%       disp(cargaDinamicaObj)
-%       y = cargaActivada(cargaDinamicaObj)
-%       guardarCarga(cargaDinamicaObj,p)
-%       guardarDesplazamiento(cargaDinamicaObj,u)
-%       guardarVelocidad(cargaDinamicaObj,v)
-%       guardarAceleracion(cargaDinamicaObj,a)
-%       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
-%       usoDisipadores(cargaDinamicaObj,disipador)
-%       descomposicionModal(cargaDinamicaObj,desmodal)
-%       c = cargaSumaMasa(cargaDinamicaObj)
-%       t = obtenerVectorTiempo(cargaDinamicaObj)
-%       p = obtenerCarga(cargaDinamicaObj)
-%       u = obtenerDesplazamiento(cargaDinamicaObj)
-%       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
-%       v = obtenerVelocidad(cargaDinamicaObj)
-%       a = obtenerAceleracion(cargaDinamicaObj)
-%       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
-%       dm = usoDescomposicionModal(cargaDinamicaObj)
-%       disipador = usoDeDisipadores(cargaDinamicaObj)
-%       masa = obtenerMasa(cargaDinamicaObj)
-%       definirFactorUnidadMasa(cargaDinamicaObj,factor)
-%       definirFactorCargaMasa(cargaDinamicaObj,factor)
-%       nodos = obtenerNodos(cargaDinamicaObj)
-%       activarCarga(cargaDinamicaObj)
-%       establecerCargaCalculada(cargaDinamicaObj)
-%       c = cargaCalculada(cargaDinamicaObj)
-%       bloquearCargaMasa(cargaDinamicaObj)
+%       obj = Carga(etiquetaCarga)
+%       desactivarCarga(obj)
+%       p = calcularCarga(obj,factor,m,r,dispinfo)
+%       disp(obj)
+%       y = cargaActivada(obj)
+%       guardarCarga(obj,p)
+%       guardarDesplazamiento(obj,u)
+%       guardarVelocidad(obj,v)
+%       guardarAceleracion(obj,a)
+%       amortiguamientoRayleigh(obj,rayleigh)
+%       usoDisipadores(obj,disipador)
+%       descomposicionModal(obj,desmodal)
+%       c = cargaSumaMasa(obj)
+%       t = obtenerVectorTiempo(obj)
+%       p = obtenerCarga(obj)
+%       u = obtenerDesplazamiento(obj)
+%       u = obtenerDesplazamientoTiempo(obj,gdl,tiempo)
+%       v = obtenerVelocidad(obj)
+%       a = obtenerAceleracion(obj)
+%       r = usoAmortiguamientoRayleigh(obj)
+%       dm = usoDescomposicionModal(obj)
+%       disipador = usoDeDisipadores(obj)
+%       masa = obtenerMasa(obj)
+%       definirFactorUnidadMasa(obj,factor)
+%       definirFactorCargaMasa(obj,factor)
+%       nodos = obtenerNodos(obj)
+%       activarCarga(obj)
+%       establecerCargaCalculada(obj)
+%       c = cargaCalculada(obj)
+%       bloquearCargaMasa(obj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -110,10 +110,8 @@ classdef CargaDinamica < ComponenteModelo
     
     methods
         
-        function cargaDinamicaObj = CargaDinamica(etiquetaCarga)
+        function obj = CargaDinamica(etiquetaCarga)
             % CargaDinamica: es el constructor de la clase CargaDinamica
-            %
-            % cargaDinamicaObj = CargaDinamica(etiquetaCarga)
             %
             % Crea un objeto de la clase CargaDinamica, con un identificador unico
             % (etiquetaCarga)
@@ -123,295 +121,241 @@ classdef CargaDinamica < ComponenteModelo
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
-            cargaDinamicaObj = cargaDinamicaObj@ComponenteModelo(etiquetaCarga);
-            cargaDinamicaObj.cargaActiva = true;
-            cargaDinamicaObj.cRayleigh = false;
-            cargaDinamicaObj.usoDisipador = false;
-            cargaDinamicaObj.desModal = false;
-            cargaDinamicaObj.factorUnidadMasa = 1;
-            cargaDinamicaObj.factorCargaMasa = 0;
-            cargaDinamicaObj.cargaFueCalculada = false;
+            obj = obj@ComponenteModelo(etiquetaCarga);
+            obj.cargaActiva = true;
+            obj.cRayleigh = false;
+            obj.usoDisipador = false;
+            obj.desModal = false;
+            obj.factorUnidadMasa = 1;
+            obj.factorCargaMasa = 0;
+            obj.cargaFueCalculada = false;
             
             % Define algunos parametros iniciales
-            cargaDinamicaObj.tInicio = 0;
-            cargaDinamicaObj.dt = 1;
-            cargaDinamicaObj.tAnalisis = 0;
-            cargaDinamicaObj.cargaSumoMasa = false;
+            obj.tInicio = 0;
+            obj.dt = 1;
+            obj.tAnalisis = 0;
+            obj.cargaSumoMasa = false;
             
         end % CargaDinamica constructor
         
-        function bloquearCargaMasa(cargaDinamicaObj)
+        function bloquearCargaMasa(obj)
             % bloquearCargaMasa: La carga deja de sumar masa
-            %
-            % bloquearCargaMasa(cargaDinamicaObj)
            
-            cargaDinamicaObj.cargaSumoMasa = true;
+            obj.cargaSumoMasa = true;
             
         end % bloquearCargaMasa function
         
-        function c = cargaSumaMasa(cargaDinamicaObj)
+        function c = cargaSumaMasa(obj)
             % cargaSumaMasa: Indica que la carga suma masa al sistema
-            %
-            % c = cargaSumaMasa(cargaDinamicaObj)
-            
-            c = ~cargaDinamicaObj.cargaSumoMasa;
+
+            c = ~obj.cargaSumoMasa;
             
         end % cargaSumaMasa function
         
-        function t = obtenerVectorTiempo(cargaDinamicaObj)
+        function t = obtenerVectorTiempo(obj)
             % obtenerVectorTiempo: Obtiene el vector de tiempo que define
             % la carga
-            %
-            % t = obtenerVectorTiempo(cargaDinamicaObj)
             
-            nt = cargaDinamicaObj.tAnalisis / cargaDinamicaObj.dt;
-            t = linspace(cargaDinamicaObj.tInicio, cargaDinamicaObj.tInicio+cargaDinamicaObj.tAnalisis, nt);
+            nt = obj.tAnalisis / obj.dt;
+            t = linspace(obj.tInicio, obj.tInicio+obj.tAnalisis, nt);
             
         end % obtenerVectorTiempo function
         
-        function activarCarga(cargaDinamicaObj)
+        function activarCarga(obj)
             % activarCarga: Activa la carga para el analisis
-            %
-            % activarCarga(cargaDinamicaObj)
             
-            cargaDinamicaObj.cargaActiva = true;
+            obj.cargaActiva = true;
             
         end % activarCarga function
         
-        function desactivarCarga(cargaDinamicaObj)
+        function desactivarCarga(obj)
             % desactivarCarga: Desactiva la carga para el analisis
-            %
-            % desactivarCarga(cargaDinamicaObj)
             
-            cargaDinamicaObj.cargaActiva = false;
+            obj.cargaActiva = false;
             
         end % desactivarCarga function
         
-        function y = cargaActivada(cargaDinamicaObj)
+        function y = cargaActivada(obj)
             % cargaActivada: Indica si la carga esta activada para el
             % analisis
-            %
-            % y = cargaActivada(cargaDinamicaObj)
             
-            y = cargaDinamicaObj.cargaActiva;
+            y = obj.cargaActiva;
             
         end % cargaActivada function
         
-        function p = calcularCarga(cargaDinamicaObj, factor, m, r, dispinfo) %#ok<*STOUT,*VANUS,INUSD>
+        function p = calcularCarga(obj, factor, m, r, dispinfo) %#ok<*STOUT,*VANUS,INUSD>
             % calcularCarga: es un metodo de la clase CargaDinamica que se usa para
             % calcular la carga a aplicar
-            %
-            % calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)
             
         end % calcularCarga function
         
-        function guardarCarga(cargaDinamicaObj, p)
+        function guardarCarga(obj, p)
             % guardarCarga: Guarda la carga generada
-            %
-            % guardarCarga(cargaDinamicaObj,u)
             
-            cargaDinamicaObj.sol_p = p;
+            obj.sol_p = p;
             
         end % guardarCarga function
         
-        function guardarDesplazamiento(cargaDinamicaObj, u)
+        function guardarDesplazamiento(obj, u)
             % guardarDesplazamiento: Guarda el desplazamiento de la carga
-            %
-            % guardarDesplazamiento(cargaDinamicaObj,u)
             
-            cargaDinamicaObj.sol_u = u;
+            obj.sol_u = u;
             
         end % guardarDesplazamiento function
         
-        function guardarVelocidad(cargaDinamicaObj, v)
+        function guardarVelocidad(obj, v)
             % guardarVelocidad: Guarda la velocidad de la carga
-            %
-            % guardarVelocidad(cargaDinamicaObj,v)
             
-            cargaDinamicaObj.sol_v = v;
+            obj.sol_v = v;
             
         end % guardarVelocidad function
         
-        function guardarAceleracion(cargaDinamicaObj, a)
+        function guardarAceleracion(obj, a)
             % guardarAceleracion: Guarda la aceleracion de la carga
-            %
-            % guardarAceleracion(cargaDinamicaObj,a)
             
-            cargaDinamicaObj.sol_a = a;
+            obj.sol_a = a;
             
         end % guardarAceleracion function
         
-        function amortiguamientoRayleigh(cargaDinamicaObj, rayleigh)
+        function amortiguamientoRayleigh(obj, rayleigh)
             % amortiguamientoRayleigh: Indica el tipo de amortiguamiento usado en el
             % calculo
-            %
-            % amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
             
-            cargaDinamicaObj.cRayleigh = rayleigh;
+            obj.cRayleigh = rayleigh;
             
         end % disipasionRayleigh
         
-        function usoDisipadores(cargaDinamicaObj, disipador)
+        function usoDisipadores(obj, disipador)
             % usoDisipadores: Indica que se usaron disipadores en el calculo
-            %
-            % usoDisipadores(cargaDinamicaObj,disipador)
             
-            cargaDinamicaObj.usoDisipador = disipador;
+            obj.usoDisipador = disipador;
             
         end % usoDisipadores function
         
-        function descomposicionModal(cargaDinamicaObj, desmodal)
+        function descomposicionModal(obj, desmodal)
             % descomposicionModal: La carga se calculo usando
             % descomposicion modal
-            %
-            % descomposicionModal(cargaDinamicaObj,desmodal)
             
-            cargaDinamicaObj.desModal = desmodal;
+            obj.desModal = desmodal;
             
         end % descomposicionModal function
         
-        function p = obtenerCarga(cargaDinamicaObj)
+        function p = obtenerCarga(obj)
             % obtenerCarga: Obtiene la carga generada
-            %
-            % obtenerCarga(cargaDinamicaObj)
             
-            p = cargaDinamicaObj.sol_p;
+            p = obj.sol_p;
             
         end % obtenerCarga function
         
-        function u = obtenerDesplazamiento(cargaDinamicaObj)
+        function u = obtenerDesplazamiento(obj)
             % obtenerDesplazamiento: Obtiene el desplazamiento de la carga
-            %
-            % obtenerDesplazamiento(cargaDinamicaObj)
             
-            u = cargaDinamicaObj.sol_u;
+            u = obj.sol_u;
             
         end % obtenerDesplazamiento function
         
-        function u = obtenerDesplazamientoTiempo(cargaDinamicaObj, gdl, tiempo)
+        function u = obtenerDesplazamientoTiempo(obj, gdl, tiempo)
             % obtenerDesplazamientoTiempo obtiene el desplazamiento de un
             % grado de libertad en un determinado tiempo
-            %
-            % u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
             
             if tiempo < 0 % Retorna el maximo
-                u = max(cargaDinamicaObj.sol_u(gdl, :));
+                u = max(obj.sol_u(gdl, :));
             else
-                u = cargaDinamicaObj.sol_u(gdl, tiempo);
+                u = obj.sol_u(gdl, tiempo);
             end
             
         end % obtenerDesplazamientoTiempo function
         
-        function v = obtenerVelocidad(cargaDinamicaObj)
+        function v = obtenerVelocidad(obj)
             % obtenerVelocidad: Obtiene la velocidad de la carga
-            %
-            % obtenerVelocidad(cargaDinamicaObj)
             
-            v = cargaDinamicaObj.sol_v;
+            v = obj.sol_v;
             
         end % obtenerVelocidad function
         
-        function a = obtenerAceleracion(cargaDinamicaObj)
+        function a = obtenerAceleracion(obj)
             % obtenerAceleracion: Obtiene la aceleracion de la carga
-            %
-            % obtenerAceleracion(cargaDinamicaObj)
             
-            a = cargaDinamicaObj.sol_a;
+            a = obj.sol_a;
             
         end % obtenerAceleracion function
         
-        function r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
+        function r = usoAmortiguamientoRayleigh(obj)
             % usoAmortiguamientoRayleighh: Indica que los resultados se
             % guardaron o no con la disipasion de Rayleigh
-            %
-            % r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
             
-            r = cargaDinamicaObj.cRayleigh;
+            r = obj.cRayleigh;
             
         end % usoAmortiguamientoRayleigh function
         
-        function disipador = usoDeDisipadores(cargaDinamicaObj)
+        function disipador = usoDeDisipadores(obj)
             % usoDeDisipadores: Indica que la carga se calculo usando
             % disipadores
-            %
-            % disipador = usoDeDisipadores(cargaDinamicaObj)
             
-            disipador = cargaDinamicaObj.usoDisipador;
+            disipador = obj.usoDisipador;
             
         end % usoDeDisipadores function
         
-        function dm = usoDescomposicionModal(cargaDinamicaObj)
+        function dm = usoDescomposicionModal(obj)
             % usoDescomposicionModal: Indica que la carga se calculo usando
             % descomposicion modal
-            %
-            % dm = usoDescomposicionModal(cargaDinamicaObj)
             
-            dm = cargaDinamicaObj.desModal;
+            dm = obj.desModal;
             
         end % usoDescomposicionModal function
         
-        function disp(cargaDinamicaObj)
+        function disp(obj)
             % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en
             % command Window la informacion de la carga
             %
-            % disp(cargaDinamicaObj)
-            %
-            % Imprime la informacion guardada en la carga (cargaDinamicaObj) en pantalla
+            % Imprime la informacion guardada en la carga (obj) en pantalla
             
-            disp@ComponenteModelo(cargaDinamicaObj);
+            disp@ComponenteModelo(obj);
             % No usar dispMetodoTEFAME()
             
         end % disp function
         
-        function masa = obtenerMasa(cargaDinamicaObj)
+        function masa = obtenerMasa(obj)
             % obtenerMasa: Obtiene la masa de la carga
-            %
-            % masa = obtenerMasa(cargaDinamicaObj)
             
-            masa = [] .* (cargaDinamicaObj.factorCargaMasa * cargaDinamicaObj.factorUnidadMasa);
+            masa = [] .* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         
-        function definirFactorUnidadMasa(cargaDinamicaObj, factor)
+        function definirFactorUnidadMasa(obj, factor)
             % definirFactorUnidadMasa: Define el factor de conversion de
             % unidades de la carga a unidades de masa
             
-            cargaDinamicaObj.factorUnidadMasa = factor;
+            obj.factorUnidadMasa = factor;
             
         end % definirFactorUnidadMasa function
         
-        function definirFactorCargaMasa(cargaDinamicaObj, factor)
+        function definirFactorCargaMasa(obj, factor)
             % definirFactorCargaMasa: Define cuanto porcentaje de la carga
             % se convierte en masa
             
-            cargaDinamicaObj.factorCargaMasa = factor;
+            obj.factorCargaMasa = factor;
             
         end % definirFactorCargaMasa function
         
-        function nodos = obtenerNodos(cargaDinamicaObj)
+        function nodos = obtenerNodos(obj)
             % obtenerNodos: Retorna los nodos de la carga
-            %
-            % nodos = obtenerNodos(cargaDinamicaObj)
             
-            nodos = cargaDinamicaObj.nodosCarga;
+            nodos = obj.nodosCarga;
             
         end % obtenerNodos function
         
-        function establecerCargaCalculada(cargaDinamicaObj)
+        function establecerCargaCalculada(obj)
             % establecerCargaCalculada: Establece la carga como calculada
-            %
-            % establecerCargaCalculada(cargaDinamicaObj)
             
-            cargaDinamicaObj.cargaFueCalculada = true;
+            obj.cargaFueCalculada = true;
             
         end % establecerCargaCalculada function
         
-        function c = cargaCalculada(cargaDinamicaObj)
+        function c = cargaCalculada(obj)
             % cargaCalculada: Indica si la carga fue calculada o no
-            %
-            % c = cargaCalculada(cargaDinamicaObj)
             
-            c = cargaDinamicaObj.cargaFueCalculada && cargaDinamicaObj.cargaActiva;
+            c = obj.cargaFueCalculada && obj.cargaActiva;
             
         end % cargaCalculada function
         
