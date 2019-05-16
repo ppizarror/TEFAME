@@ -13,10 +13,10 @@ Ec = 2625051; % (tonf/m2)
 Ic = 1 / 12;
 
 % Propiedades de la Fundacion
-G = 150; % [GPa]
+G = 15295743; % [GPa]
 ro = 1; % [m]
 Kr = (32 * (1 - 0.3))/(7 - 8 * 0.3)* G * ro;
-Mr = 10*475.479;
+Mr = 10/9 *475.479;
 
 % Densidad del material hormigon
 Rhoh = 2.5 / 9.80665; % (ton/m3), se aplica factor carga masa
@@ -370,14 +370,15 @@ elementos{236} = VigaColumna2D('C262-272', nodos{141}, nodos{143}, Ic, Ec, Ac, R
 elementos{237} = VigaColumna2D('C263-273', nodos{142}, nodos{144}, Ic, Ec, Ac, Rhoh);
 
 %% Fundaciones
+elementos{238} = Fundacion2D('FN01-FN02', nodos{1}, nodos{2}, Mr, 10^-9);
+elementos{239} = Fundacion2D('FN02-FN03', nodos{2}, nodos{3}, Mr, 10^-9);
+elementos{240} = Fundacion2D('FN03-FN04', nodos{3}, nodos{4}, Mr, 10^-9);
+elementos{241} = Fundacion2D('FN04-FN05', nodos{4}, nodos{5}, Mr, 10^-9);
+elementos{242} = Fundacion2D('FN05-FN06', nodos{5}, nodos{6}, Mr, 10^-9);
+elementos{243} = Fundacion2D('FN06-FN07', nodos{6}, nodos{7}, Mr, 10^-9);
+elementos{244} = Fundacion2D('FN07-FN08', nodos{7}, nodos{8}, Mr, 10^-9);
+elementos{245} = Fundacion2D('FN08-FN09', nodos{8}, nodos{9}, Mr, 10^-9);
+elementos{246} = Fundacion2D('FN09-FN010', nodos{9}, nodos{10}, Mr, 10^-9);
 
-elementos{238} = Fundacion2D('FN01-FN02', nodos{1}, nodos{2},Mr,Kr);
-elementos{239} = Fundacion2D('FN02-FN03', nodos{2}, nodos{3},Mr,Kr);
-elementos{240} = Fundacion2D('FN03-FN04', nodos{3}, nodos{4},Mr,Kr);
-elementos{241} = Fundacion2D('FN04-FN05', nodos{4}, nodos{5},Mr,Kr);
-elementos{242} = Fundacion2D('FN05-FN06', nodos{5}, nodos{6},Mr,Kr);
-elementos{243} = Fundacion2D('FN06-FN07', nodos{6}, nodos{7},Mr,Kr);
-elementos{244} = Fundacion2D('FN07-FN08', nodos{7}, nodos{8},Mr,Kr);
-elementos{245} = Fundacion2D('FN08-FN09', nodos{8}, nodos{9},Mr,Kr);
-elementos{246} = Fundacion2D('FN09-FN010', nodos{9}, nodos{10},Mr,Kr);
+elementos{247} = Fundacion2D('aux', nodos{10}, nodos{145}, 0, Kr);
 
