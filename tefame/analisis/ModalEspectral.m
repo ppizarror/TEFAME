@@ -2305,7 +2305,11 @@ classdef ModalEspectral < Analisis
             elseif strcmp(valvecAlgoritmo, 'itSubesp')
                 fprintf('\t\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
-                [modalPhin, modalWn] = calculoEigItSubespacio(Meq, Keq, nModos, valvecTolerancia);                
+                [modalPhin, modalWn] = calculoEigItSubespacio(Meq, Keq, nModos, valvecTolerancia);
+%             elseif strcmp(valvecAlgoritmo, 'Ritz')
+%                 fprintf('\t\tCalculo valores y vectores propios con Vectores Ritz\n');
+%                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
+%                 [modalPhin, modalWn] = calculoVectorritz(Meq, Keq, nModos, valvecTolerancia);
             else
                 error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,itDir,matBarr,itInvDesp,itSubesp', ...
                     valvecAlgoritmo);

@@ -6,7 +6,7 @@ modeloObj.definirNombre('Modelo Dinamica Avanzada');
 
 %% Nodos modelo
 nodos = {};
-Modelo_DinamicaAvanzadaNodo();
+Modelo_DinamicaAvanzadaNodo;
 
 % Agregamos los nodos al modelo
 modeloObj.agregarNodos(nodos);
@@ -89,7 +89,7 @@ combinacionCargas{1} = CombinacionCargas('E', {cargaEstatica});
 combinacionCargas{2} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEstatica});
 
 %% Calcula y grafica las cargas dinamicas
-analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...
+analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', false, ...
     'cargaDisipador', cargasDinamicas{1}, 'betaObjetivo', 0.08, 'iterDisipador', 10, ...
     'betaGrafico', false, 'activado', false);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
