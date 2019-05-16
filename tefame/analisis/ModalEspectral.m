@@ -176,6 +176,7 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'toleranciamasa', 0.001);
             addOptional(p, 'valvecAlgoritmo', 'eigs');
             addOptional(p, 'valvecTolerancia', 0.001);
+            addOptional(p, 'nRitz', 1);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -223,6 +224,10 @@ classdef ModalEspectral < Analisis
                 error('Tolerancia calculo valores y vectores propios no puede ser inferior o igual a cero');
             end
             
+            if length(r.nRitz) > 1
+                error('Numero de Ritz no puede ser un vector');
+            end
+            
             fprintf('Ejecutando analisis modal espectral:\n');
             fprintf('\tParametros analisis:\n');
             fprintf('\t\tNumero de modos: %d\n', r.nModos);
@@ -261,7 +266,7 @@ classdef ModalEspectral < Analisis
             analisisObj.calcularModalEspectral(r.nModos, r.rayleighBeta, ...
                 r.rayleighModo, r.rayleighDir, r.cpenzienBeta, ...
                 maxcond, r.valvecAlgoritmo, r.valvecTolerancia, ...
-                r.muIterDespl);
+                r.muIterDespl, r.nRitz);
             
             % Termina el analisis
             dispMetodoTEFAME();
@@ -2133,7 +2138,7 @@ classdef ModalEspectral < Analisis
         
         function calcularModalEspectral(analisisObj, nModos, betacR, modocR, ...
                 direcR, betacP, maxcond, valvecAlgoritmo, valvecTolerancia, ...
-                muIterDesplazamiento)
+                muIterDesplazamiento , nRitz)
             % calcularModalEspectral: Calcula el metodo modal espectral
             %
             % calcularModalEspectral(analisisObj,nModos,betacR,modocR,direcR,
@@ -2306,10 +2311,12 @@ classdef ModalEspectral < Analisis
                 fprintf('\t\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
                 [modalPhin, modalWn] = calculoEigItSubespacio(Meq, Keq, nModos, valvecTolerancia);
-%             elseif strcmp(valvecAlgoritmo, 'Ritz')
-%                 fprintf('\t\tCalculo valores y vectores propios con Vectores Ritz\n');
-%                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
-%                 [modalPhin, modalWn] = calculoVectorritz(Meq, Keq, nModos, valvecTolerancia);
+            elseif strcmp(valvecAlgoritmo, 'Ritz')
+                fprintf('\t\tCalculo valores y vectores propios con Vectores Ritz\n');
+%                 Fritz = analisisObj.obtenerVectorInfluencia;
+                Fritz = diag(eye(length(Keq)));
+                [modalPhin, modalWn] = calculoLDV(Meq, Keq, Fritz, nRitz);
+                nModos = length(modalWn);
             else
                 error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,itDir,matBarr,itInvDesp,itSubesp', ...
                     valvecAlgoritmo);
@@ -2343,13 +2350,16 @@ classdef ModalEspectral < Analisis
             % Reordena los periodos
             Torder = zeros(nModos, 1);
             Tpos = 1;
+%             nModos
+%             size(modalTn) ERROR CON DIMENSION nRitz
+%             return
             for i = 1:nModos
                 maxt = 0; % Periodo
                 maxi = 0; % Indice
                 for j = 1:nModos % Se busca el elemento para etiquetar
                     if Torder(j) == 0 % Si aun no se ha etiquetado
                         if modalTn(j) > maxt
-                            maxt = modalTn(j);
+                            maxt = modalTn(j);                           
                             maxi = j;
                         end
                     end
