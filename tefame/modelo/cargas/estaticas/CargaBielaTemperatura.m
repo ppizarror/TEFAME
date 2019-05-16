@@ -1,6 +1,6 @@
 % ______________________________________________________________________
 %|                                                                      |
-%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+%|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
 %|                  Matricial de Estructuras en MATLAB                  |
 %|                                                                      |
 %|                   Area  de Estructuras y Geotecnia                   |
@@ -146,7 +146,7 @@ classdef CargaBielaTemperatura < CargaEstatica
             % en pantalla
             
             fprintf('Propiedades carga biela temperatura:\n');
-            disp@Carga(cargaBielaTemperaturaObj);
+            disp@CargaEstatica(cargaBielaTemperaturaObj);
             
             % Obtiene la etiqueta del elemento
             etiqueta = cargaBielaTemperaturaObj.elemObj.obtenerEtiqueta();

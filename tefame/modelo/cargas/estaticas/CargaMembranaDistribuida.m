@@ -1,6 +1,6 @@
 % ______________________________________________________________________
 %|                                                                      |
-%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+%|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
 %|                  Matricial de Estructuras en MATLAB                  |
 %|                                                                      |
 %|                   Area  de Estructuras y Geotecnia                   |
@@ -221,7 +221,7 @@ classdef CargaMembranaDistribuida < CargaEstatica
             % membrana (cargaMembranaDistribuidaObj) en pantalla
             
             fprintf('Propiedades carga membrana distribuida:\n');
-            disp@Carga(cargaMembranaDistribuidaObj);
+            disp@CargaEstatica(cargaMembranaDistribuidaObj);
             
             % Obtiene la etiqueta del elemento
             etiqueta = cargaMembranaDistribuidaObj.elemObj.obtenerEtiqueta();

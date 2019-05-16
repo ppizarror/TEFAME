@@ -1,6 +1,6 @@
 % ______________________________________________________________________
 %|                                                                      |
-%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+%|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
 %|                  Matricial de Estructuras en MATLAB                  |
 %|                                                                      |
 %|                   Area  de Estructuras y Geotecnia                   |
@@ -175,7 +175,7 @@ classdef CargaVigaDistribuida < CargaEstatica
             % Viga (cargaVigaDistribuidaObj) en pantalla
             
             fprintf('Propiedades carga viga distribuida:\n');
-            disp@Carga(cargaVigaDistribuidaObj);
+            disp@CargaEstatica(cargaVigaDistribuidaObj);
             
             % Obtiene la etiqueta del elemento
             etiqueta = cargaVigaDistribuidaObj.elemObj.obtenerEtiqueta();

@@ -1,6 +1,6 @@
 % ______________________________________________________________________
 %|                                                                      |
-%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+%|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
 %|                  Matricial de Estructuras en MATLAB                  |
 %|                                                                      |
 %|                   Area  de Estructuras y Geotecnia                   |
@@ -448,7 +448,7 @@ classdef Modelo < handle
             % Abre el archivo donde se guardara la informacion
             try
                 archivoSalida = fopen(nombreArchivo, 'w');
-                fprintf(archivoSalida, 'TEFAME - Toolbox para Elemento Finitos y Analisis\n');
+                fprintf(archivoSalida, 'TEFAME - Toolbox para Elementos Finitos y Analisis\n');
             catch %#ok<CTCH>
                 error('No se puede abrir el archivo %s', nombreArchivo);
             end

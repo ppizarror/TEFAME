@@ -1,6 +1,6 @@
 % ______________________________________________________________________
 %|                                                                      |
-%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+%|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
 %|                  Matricial de Estructuras en MATLAB                  |
 %|                                                                      |
 %|                   Area  de Estructuras y Geotecnia                   |
@@ -152,7 +152,7 @@ classdef CargaVigaPuntual < CargaEstatica
             % Viga (cargaVigaPuntualObj) en pantalla
             
             fprintf('Propiedades carga viga puntual:\n');
-            disp@Carga(cargaVigaPuntualObj);
+            disp@CargaEstatica(cargaVigaPuntualObj);
             
             % Obtiene la etiqueta del elemento
             etiqueta = cargaVigaPuntualObj.elemObj.obtenerEtiqueta();

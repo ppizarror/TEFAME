@@ -1,6 +1,6 @@
 % ______________________________________________________________________
 %|                                                                      |
-%|           TEFAME - Toolbox para Elemento Finitos y Analisis          |
+%|           TEFAME - Toolbox para Elementos Finitos y Analisis         |
 %|                  Matricial de Estructuras en MATLAB                  |
 %|                                                                      |
 %|                   Area  de Estructuras y Geotecnia                   |
@@ -120,7 +120,7 @@ classdef CargaNodo < CargaEstatica
             % Imprime la informacion guardada en la carga nodal (cargaNodoObj) en pantalla
             
             fprintf('Propiedades carga nodo:\n');
-            disp@Carga(cargaNodoObj);
+            disp@CargaEstatica(cargaNodoObj);
             
             numGDL = length(cargaNodoObj.cargas);
             cargaNodo = arrayNum2str(cargaNodoObj.cargas, numGDL);
