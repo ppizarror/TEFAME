@@ -6,7 +6,7 @@ modeloObj.definirNombre('Modelo Dinamica Avanzada');
 
 %% Nodos modelo
 nodos = {};
-Modelo_DinamicaAvanzadaNodo;
+Modelo_DinamicaAvanzadaNodo();
 
 % Agregamos los nodos al modelo
 modeloObj.agregarNodos(nodos);

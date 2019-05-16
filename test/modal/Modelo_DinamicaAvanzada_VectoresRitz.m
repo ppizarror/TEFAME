@@ -6,7 +6,7 @@ modeloObj.definirNombre('Modelo Dinamica Avanzada Vectores Ritz');
 
 %% Nodos modelo
 nodos = {};
-Modelo_DinamicaAvanzadaNodo_VectoresRitz;
+Modelo_DinamicaAvanzadaNodo_VectoresRitz();
 
 % Agregamos los nodos al modelo
 modeloObj.agregarNodos(nodos);
@@ -14,7 +14,7 @@ modeloObj.agregarNodos(nodos);
 %% Creamos los elementos
 elementos = {};
 disipadores = {};
-Modelo_DinamicaAvanzadaElementos_VectoresRitz;
+Modelo_DinamicaAvanzadaElementos_VectoresRitz();
 Modelo_DinamicaAvanzadaDisipadores();
 
 % Agregamos los elementos al modelo

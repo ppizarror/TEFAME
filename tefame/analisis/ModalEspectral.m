@@ -2310,6 +2310,7 @@ classdef ModalEspectral < Analisis
 %                 fprintf('\t\tCalculo valores y vectores propios con Vectores Ritz\n');
 %                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
 %                 [modalPhin, modalWn] = calculoVectorritz(Meq, Keq, nModos, valvecTolerancia);
+%                 nModos = length(modalWn);
             else
                 error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,itDir,matBarr,itInvDesp,itSubesp', ...
                     valvecAlgoritmo);
