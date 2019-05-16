@@ -8,6 +8,7 @@
 *.pdf
 .vscode/
 dev/
+*.eps
 
 # SAP2000
 *.sdb
