@@ -2311,7 +2311,7 @@ classdef ModalEspectral < Analisis
                 modalPhin = zeros(ngdl, nModos);
                 modalWn = zeros(ngdl, 1);
                 for i=1:nModos
-                    [modalPhini, modalWni] = calculoEigIterInvDesplazamiento(Meq, Keq, muIterDesplazamiento(i)^2, valvecTolerancia);
+                    [modalPhini, modalWni] = calculoEigIterInvDesplazamiento(Meq, Keq, muIterDesplazamiento(i), valvecTolerancia);
                     modalPhin(:, i) = modalPhini(:, end);
                     modalWn(i) = modalWni(end);
                 end           

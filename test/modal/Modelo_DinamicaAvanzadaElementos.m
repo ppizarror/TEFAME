@@ -401,5 +401,6 @@ wIterDespl = [2.55770213386969 7.16560268459290 12.4566599334486 ...
 
 % Suma un numero aleatorio
 for i=1:length(wIterDespl)
-    wIterDespl(i) = wIterDespl(i) + 0.1*rand();
+    wIterDespl(i) = wIterDespl(i) - 0.1*rand();
+    wIterDespl(i) = wIterDespl(i)^2; % Necesario para la convergencia
 end
