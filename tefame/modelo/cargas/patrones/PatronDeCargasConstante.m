@@ -94,7 +94,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
                 end
                 
                 obj.cargas{i}.aplicarCarga(factor);
-
+                
             end % for i
             
         end % aplicarCargas function
@@ -107,7 +107,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % en pantalla
             
             fprintf('Propiedades patron de cargas constante :\n');
-            disp@ComponenteModelo(obj);     
+            disp@ComponenteModelo(obj);
             dispMetodoTEFAME();
             
         end % disp function

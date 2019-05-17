@@ -37,10 +37,10 @@
 %       gdlRestringidos
 %       valoresRestriccion
 %  Methods:
-%       restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo)
-%       restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo,valoresRestrinccionNodo)
-%       aplicarRestriccion(restriccionNodoObj)
-%       disp(restriccionNodoObj)
+%       obj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo)
+%       obj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo,valoresRestrinccionNodo)
+%       aplicarRestriccion(obj)
+%       disp(obj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -56,13 +56,11 @@ classdef RestriccionNodo < ComponenteModelo
     
     methods
         
-        function restriccionNodoObj = RestriccionNodo(etiquetaRestriccion, nodoObjeto, gdlRestringidosNodo, varargin)
+        function obj = RestriccionNodo(etiquetaRestriccion, nodoObjeto, gdlRestringidosNodo, varargin)
             % RestriccionNodo: es el constructor de la clase RestriccionNodo
             % Crea un objeto de la clase RestriccionNodo, con un identificador
             % unico (etiquetaRestriccion), indicando a que nodo restringe (nodoObjeto)
             % y cuales son los grados de libertad que se restringen (gdlRestringidosNodo)
-            %
-            % restriccionNodoObj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo,varargin)
             %
             % Crea un objeto de la clase RestriccionNodo, con un identificador
             % unico (etiquetaRestriccion), indicando a que nodo restringe (nodoObjeto)
@@ -75,65 +73,61 @@ classdef RestriccionNodo < ComponenteModelo
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
-            restriccionNodoObj = restriccionNodoObj@ComponenteModelo(etiquetaRestriccion);
+            obj = obj@ComponenteModelo(etiquetaRestriccion);
             
             % Se guarda el nodo a restringir, y se  coloca como vector
             % columna
-            restriccionNodoObj.nodoObj = nodoObjeto;
+            obj.nodoObj = nodoObjeto;
             if size(gdlRestringidosNodo, 1) == 1
-                restriccionNodoObj.gdlRestringidos = gdlRestringidosNodo';
+                obj.gdlRestringidos = gdlRestringidosNodo';
             else
-                restriccionNodoObj.gdlRestringidos = gdlRestringidosNodo;
+                obj.gdlRestringidos = gdlRestringidosNodo;
             end % if
             
         end % RestriccionNodo constructor
         
-        function aplicarRestriccion(restriccionNodoObj)
+        function aplicarRestriccion(obj)
             % aplicarRestriccion: es un metodo de la clase RestriccionNodo que
             % se usa para aplicar la restriccion en los nodos
             %
-            % aplicarRestriccion(restriccionNodoObj)
-            %
-            % Aplica la restriccion especificada en RestriccionNodo (restriccionNodoObj)
+            % Aplica la restriccion especificada en RestriccionNodo (obj)
             % sobre el Nodo en los GDL indicados
             
             % Se extraen los ID del GDL
-            gdlID = restriccionNodoObj.nodoObj.obtenerGDLID();
+            gdlID = obj.nodoObj.obtenerGDLID();
             
             % Se coloca zero en los GDL que se indicaron en la restriccion
-            gdlID(restriccionNodoObj.gdlRestringidos, 1) = ...
-                zeros(length(restriccionNodoObj.gdlRestringidos), 1);
+            gdlID(obj.gdlRestringidos, 1) = ...
+                zeros(length(obj.gdlRestringidos), 1);
             
             % Se asigna el nuevo valor de GDLID al Nodo
-            restriccionNodoObj.nodoObj.definirGDLID(gdlID);
+            obj.nodoObj.definirGDLID(gdlID);
             
         end % aplicarRestriccion function
         
-        function disp(restriccionNodoObj)
+        function disp(obj)
             % disp: es un metodo de la clase RestriccionNodo que se usa para
             % imprimir en command Window la informacion del RestriccionNodo
             %
-            % disp(restriccionNodoObj)
-            %
-            % Imprime la informacion guardada en la restriccion (restriccionNodoObj)
+            % Imprime la informacion guardada en la restriccion (obj)
             % en pantalla
             
             fprintf('Propiedades restriccion nodo:\n');
             
-            disp@ComponenteModelo(restriccionNodoObj);
+            disp@ComponenteModelo(obj);
             
             % Se extrae la etiqueta del Nodo que tiene la restriccion
-            etiquetaStr = restriccionNodoObj.nodoObj.obtenerEtiqueta();
+            etiquetaStr = obj.nodoObj.obtenerEtiqueta();
             if (isnumeric(etiquetaStr) == 1)
                 etiquetaStr = num2str(etiquetaStr);
             end
             
             % Se imprime la etiqueta del Nodo que tiene la restriccion
-            fprintf('Etiqueta Nodo restringido: %s\n', etiquetaStr);
+            fprintf('Etiqueta nodo restringido: %s\n', etiquetaStr);
             
             % Se procede a imprimir los GDL que estan restringidos
-            numCrdRest = length(restriccionNodoObj.gdlRestringidos);
-            gdlID = arrayNum2str(restriccionNodoObj.gdlRestringidos, numCrdRest);
+            numCrdRest = length(obj.gdlRestringidos);
+            gdlID = arrayNum2str(obj.gdlRestringidos, numCrdRest);
             fprintf('GDL Restringidos: %s\n', [gdlID{:}]);
             dispMetodoTEFAME();
             

@@ -85,7 +85,7 @@ classdef CargaEstatica < ComponenteModelo
         
         function bloquearCargaMasa(obj)
             % bloquearCargaMasa: La carga deja de sumar masa
-           
+            
             obj.cargaSumoMasa = true;
             
         end % bloquearCargaMasa function

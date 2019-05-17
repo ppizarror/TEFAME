@@ -42,9 +42,9 @@
 %  Methods:
 %       obj = Fundacion2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(obj)
-%       nodosBiela = obtenerNodos(obj)
+%       nodosFundacion = obtenerNodos(obj)
 %       numeroGDL = obtenerNumeroGDL(obj)
-%       gdlIDBiela = obtenerGDLID(obj)
+%       gdlIDFundacion = obtenerGDLID(obj)
 %       k_global = obtenerMatrizRigidezCoordGlobal(obj)
 %       k_local = obtenerMatrizRigidezCoordLocal(obj)
 %       m_masa = obtenerVectorMasa(obj)
@@ -83,6 +83,8 @@ classdef Fundacion2D < Elemento
     methods
         
         function obj = Fundacion2D(etiquetaViga, nodo1Obj, nodo2Obj, Masaelemento, Kelemento)
+            % Fundacion2D: Constructor de la clase, instancia una fundacion
+            % 2D con masa y rigidez equivalente
             
             % Completa con ceros si no hay argumentos
             if nargin == 0
@@ -96,7 +98,7 @@ classdef Fundacion2D < Elemento
             obj.nodosObj = {nodo1Obj; nodo2Obj};
             obj.meq = Masaelemento;
             obj.keq = Kelemento;
-            obj.gdlID = [];           
+            obj.gdlID = [];
             
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
@@ -127,8 +129,6 @@ classdef Fundacion2D < Elemento
         
         function l = obtenerLargo(obj)
             % obtenerLargo: Retorna el largo del elemento
-            %
-            % l = obtenerLargo(obj)
             
             l = obj.L;
             
@@ -136,57 +136,45 @@ classdef Fundacion2D < Elemento
         
         function numeroNodos = obtenerNumeroNodos(obj) %#ok<MANU>
             % obtenerNumeroNodos: Retorna el numero de nodos del elemento
-            %
-            % numeroNodos = obtenerNumeroNodos(obj)
             
             numeroNodos = 2;
             
         end % obtenerNumeroNodos function
         
-        function nodosViga = obtenerNodos(obj)
+        function nodosFundacion = obtenerNodos(obj)
             % obtenerNodos: Retorna los nodos del elemento
-            %
-            % nodosViga = obtenerNodos(obj)
             
-            nodosViga = obj.nodosObj;
+            nodosFundacion = obj.nodosObj;
             
         end % obtenerNodos function
         
         function numeroGDL = obtenerNumeroGDL(obj) %#ok<MANU>
             % obtenerNumeroGDL: Obtiene el numero de grados de libertad del
             % elemento
-            %
-            % numeroGDL = obtenerNumeroGDL(obj)
             
             numeroGDL = 6;
             
         end % obtenerNumeroGDL function
         
-        function gdlIDViga = obtenerGDLID(obj)
+        function gdlIDFundacion = obtenerGDLID(obj)
             % obtenerGDLID: Obtiene los ID de los grados de libertad del
             % elemento
-            %
-            % gdlIDViga = obtenerGDLID(obj)
             
-            gdlIDViga = obj.gdlID;
+            gdlIDFundacion = obj.gdlID;
             
         end % obtenerGDLID function
         
         function T = obtenerMatrizTransformacion(obj)
             % obtenerMatrizTransformacion: Obtiene la matriz de
             % transformacion del elemento
-            %
-            % T = obtenerMatrizTransformacion(obj)
             
             T = obj.T;
             
         end % obtenerMatrizTransformacion function
-           
+        
         function k_global = obtenerMatrizRigidezCoordGlobal(obj)
             % obtenerMatrizRigidezCoordGlobal: Retorna la matriz de rigidez
             % en coordenadas globales
-            %
-            % k_global = obtenerMatrizRigidezCoordGlobal(obj)
             
             % Multiplica por la matriz de transformacion
             k_local = obj.obtenerMatrizRigidezCoordLocal();
@@ -198,8 +186,6 @@ classdef Fundacion2D < Elemento
         function k_local = obtenerMatrizRigidezCoordLocal(obj)
             % obtenerMatrizRigidezCoordLocal: Retorna la matriz de rigidez
             % en coordenadas locales
-            %
-            % k_local = obtenerMatrizRigidezCoordLocal(obj)
             
             k_local = obj.keq .* [1, 0, 0, -1, 0, 0; ...
                 0, 1, 1, 0, -1, 1; ...
@@ -212,8 +198,6 @@ classdef Fundacion2D < Elemento
         
         function m = obtenerMasa(obj)
             % obtenerMasa: Retorna la masa total del elemento
-            %
-            % m = obtenerMasa(obj)
             
             m = obj.meq;
             
@@ -221,8 +205,6 @@ classdef Fundacion2D < Elemento
         
         function m_masa = obtenerVectorMasa(obj)
             % obtenerVectorMasa: Obtiene el vector de masa del elemento
-            %
-            % m_masa = obtenerVectorMasa(vigaColumna2DObj)
             
             m_masa = zeros(6, 1);
             m = obj.obtenerMasa();
@@ -238,8 +220,6 @@ classdef Fundacion2D < Elemento
         function fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
             % obtenerFuerzaResistenteCoordGlobal: Retorna la fuerza
             % resistente en coordenadas globales
-            %
-            % fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
             
             % Obtiene fr local
             fr_local = obj.obtenerFuerzaResistenteCoordLocal();
@@ -252,8 +232,6 @@ classdef Fundacion2D < Elemento
         function fr_local = obtenerFuerzaResistenteCoordLocal(obj)
             % obtenerFuerzaResistenteCoordLocal: Retorna la fuerza
             % resistente en coordenadas locales
-            %
-            % fr_local = obtenerFuerzaResistenteCoordLocal(obj)
             
             % Obtiene los nodos
             nodo1 = obj.nodosObj{1};
@@ -280,8 +258,6 @@ classdef Fundacion2D < Elemento
         function definirGDLID(obj)
             % definirGDLID: Define los ID de los grados de libertad de la
             % viga columna
-            %
-            % definirGDLID(obj)
             
             % Se obtienen los nodos extremos
             nodo1 = obj.nodosObj{1};
@@ -305,8 +281,6 @@ classdef Fundacion2D < Elemento
         
         function sumarFuerzaEquivalente(obj, f)
             % sumarFuerzaEquivalente: Suma fuerza equivalente a vigas
-            %
-            % sumarFuerzaEquivalente(obj,f)
             
             for i = 1:length(f)
                 obj.Feq(i) = obj.Feq(i) + f(i);
@@ -317,8 +291,6 @@ classdef Fundacion2D < Elemento
         function f = obtenerFuerzaEquivalente(obj)
             % obtenerFuerzaEquivalente: Obtiene la fuerza equivalente de la
             % fundacion
-            %
-            % f = obtenerFuerzaEquivalente(obj)
             
             f = obj.Feq;
             
@@ -327,8 +299,6 @@ classdef Fundacion2D < Elemento
         function agregarFuerzaResistenteAReacciones(obj)
             % agregarFuerzaResistenteAReacciones: Agrega fuerza resistente
             % de la fundacion a las reacciones
-            %
-            % agregarFuerzaResistenteAReacciones(obj)
             
             % Se calcula la fuerza resistente global
             fr_global = obj.obtenerFuerzaResistenteCoordGlobal();
@@ -353,8 +323,6 @@ classdef Fundacion2D < Elemento
         function guardarPropiedades(obj, archivoSalidaHandle)
             % guardarPropiedades: Guarda las propiedades del elemento en un
             % archivo
-            %
-            % guardarPropiedades(obj,archivoSalidaHandle)
             
             fprintf(archivoSalidaHandle, '\tFundacion 2D %s:\n\tMasa:\t\t%s\n', ...
                 obj.obtenerEtiqueta(), num2str(obj.obtenerMasa()));
@@ -364,8 +332,6 @@ classdef Fundacion2D < Elemento
         function guardarEsfuerzosInternos(obj, archivoSalidaHandle)
             % guardarEsfuerzosInternos: Guarda los esfuerzos internos del
             % elemento
-            %
-            % guardarEsfuerzosInternos(obj,archivoSalidaHandle)
             
             fr = obj.obtenerFuerzaResistenteCoordGlobal();
             n1 = pad(num2str(fr(1), '%.04f'), 10);
@@ -382,8 +348,6 @@ classdef Fundacion2D < Elemento
         
         function plot(obj, ~, tipoLinea, grosorLinea, ~)
             % plot: Grafica un elemento
-            %
-            % plot(obj,deformadas,tipoLinea,grosorLinea,defElem)
             
             % Obtiene las coordenadas de los objetos
             coord1 = obj.nodosObj{1}.obtenerCoordenadas();
@@ -396,8 +360,6 @@ classdef Fundacion2D < Elemento
         
         function disp(obj)
             % disp: Imprime propiedades en pantalla del objeto
-            %
-            % disp(obj)
             
             % Imprime propiedades de la Viga-Columna-2D
             fprintf('Propiedades fundacion 2D:\n');

@@ -86,8 +86,6 @@ classdef Biela2D < Elemento
         
         function obj = Biela2D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial, densidad)
             % Biela2D: Constructor de clase, genera una biela en dos dimensiones
-            %
-            % obj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
             
             % Si no hay argumentos completa con ceros
             if nargin == 0
@@ -125,8 +123,6 @@ classdef Biela2D < Elemento
         
         function numeroNodos = obtenerNumeroNodos(obj) %#ok<MANU>
             % obtenerNumeroNodos: Obtiene el numero de nodos
-            %
-            % numeroNodos = obtenerNumeroNodos(obj)
             
             numeroNodos = 2;
             
@@ -134,8 +130,6 @@ classdef Biela2D < Elemento
         
         function nodosBiela = obtenerNodos(obj)
             % obtenerNodos: Obtiene los nodos de la biela
-            %
-            % nodosBiela = obtenerNodos(obj)
             
             nodosBiela = obj.nodosObj;
             
@@ -143,8 +137,6 @@ classdef Biela2D < Elemento
         
         function numeroGDL = obtenerNumeroGDL(obj) %#ok<MANU>
             % obtenerNumeroGDL: Obtiene el numero de GDL de la biela
-            %
-            % numeroGDL = obtenerNumeroGDL(obj)
             
             numeroGDL = 4;
             
@@ -152,8 +144,6 @@ classdef Biela2D < Elemento
         
         function gdlIDBiela = obtenerGDLID(obj)
             % obtenerGDLID: Obtiene los GDLID de la biela
-            %
-            % gdlIDBiela = obtenerGDLID(obj)
             
             gdlIDBiela = obj.gdlID;
             
@@ -161,8 +151,6 @@ classdef Biela2D < Elemento
         
         function ae = obtenerAE(obj)
             % obtenerAE: Obtiene el A*E de la biela
-            %
-            % ae = obtenerAE(obj)
             
             ae = obj.Ao * obj.Eo;
             
@@ -170,8 +158,6 @@ classdef Biela2D < Elemento
         
         function theta = obtenerAngulo(obj)
             % obtenerAngulo: Obtiene el angulo de inclinacion de la biela
-            %
-            % theta = obtenerAngulo(obj)
             
             theta = obj.theta;
             
@@ -179,8 +165,6 @@ classdef Biela2D < Elemento
         
         function m = obtenerMasa(obj)
             % obtenerMasa: Retorna la masa total del elemento
-            %
-            % m = obtenerMasa(obj)
             
             m = obj.rho * obj.L * obj.Ao;
             
@@ -188,8 +172,6 @@ classdef Biela2D < Elemento
         
         function m_masa = obtenerVectorMasa(obj)
             % obtenerVectorMasa: Obtiene el vector de masa del elemento
-            %
-            % m_masa = obtenerVectorMasa(obj)
             
             m_masa = zeros(4, 1);
             m = obj.obtenerMasa();
@@ -203,8 +185,6 @@ classdef Biela2D < Elemento
         function k_global = obtenerMatrizRigidezCoordGlobal(obj)
             % obtenerMatrizRigidezCoordGlobal: Obtiene la matriz de rigidez
             % en coordenadas globales de la biela
-            %
-            % k_global = obtenerMatrizRigidezCoordGlobal(obj)
             
             % Obtiene la matriz de coordenadas locales
             k_local = obj.obtenerMatrizRigidezCoordLocal();
@@ -226,8 +206,6 @@ classdef Biela2D < Elemento
         function k_local = obtenerMatrizRigidezCoordLocal(obj)
             % obtenerMatrizRigidezCoordLocal: Obtiene la matriz de rigidez
             % en coordenadas locales
-            %
-            % k_local = obtenerMatrizRigidezCoordLocal(obj)
             
             % Genera matriz
             k_local = [1, 0, -1, 0; 0, 0, 0, 0; -1, 0, 1, 0; 0, 0, 0, 0];
@@ -240,8 +218,6 @@ classdef Biela2D < Elemento
         function fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
             % obtenerFuerzaResistenteCoordGlobal: Obtiene la fuerza resistente en
             % coodenadas globales
-            %
-            % fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
             
             % Obtiene fr local
             fr_local = obj.obtenerFuerzaResistenteCoordLocal();
@@ -261,8 +237,6 @@ classdef Biela2D < Elemento
         function fr_local = obtenerFuerzaResistenteCoordLocal(obj)
             % obtenerFuerzaResistenteCoordLocal: Obtiene la fuerza resistente
             % en coordenadas locales
-            %
-            % fr_local = obtenerFuerzaResistenteCoordLocal(obj)
             
             % Obtiene los nodos
             nodo1 = obj.nodosObj{1};
@@ -295,8 +269,6 @@ classdef Biela2D < Elemento
         
         function definirGDLID(obj)
             % definirGDLID: Define los ID de los grados de libertad de la biela
-            %
-            % definirGDLID(obj)
             
             % Se obtienen los nodos extremos
             nodo1 = obj.nodosObj{1};
@@ -318,8 +290,6 @@ classdef Biela2D < Elemento
         
         function sumarCargaTemperaturaReaccion(obj, f)
             % sumarCargaTemperaturaReaccion: Suma temperatura a reacciones
-            %
-            % sumarCargaTemperaturaReaccion(obj, f)
             
             for i = 1:length(f)
                 if (obj.gdlID(i) == 0)
@@ -331,8 +301,6 @@ classdef Biela2D < Elemento
         
         function agregarFuerzaResistenteAReacciones(obj)
             % agregarFuerzaResistenteAReacciones: Agrega fuerza resistente a reacciones
-            %
-            % agregarFuerzaResistenteAReacciones(obj)
             
             % Se calcula la fuerza resistente
             fr_global = obj.obtenerFuerzaResistenteCoordGlobal();
@@ -353,8 +321,6 @@ classdef Biela2D < Elemento
         
         function guardarPropiedades(obj, archivoSalidaHandle)
             % guardarPropiedades: Guarda las propiedades de la biela
-            %
-            % guardarPropiedades(obj,archivoSalidaHandle)
             
             fprintf(archivoSalidaHandle, '\tBiela2D %s:\n\t\tLargo:\t%s\n\t\tArea:\t%s\n\t\tEo:\t\t%s\n\t\tMasa:\t%s\n', ...
                 obj.obtenerEtiqueta(), num2str(obj.L), ...
@@ -365,8 +331,6 @@ classdef Biela2D < Elemento
         
         function guardarEsfuerzosInternos(obj, archivoSalidaHandle)
             % guardarEsfuerzosInternos: Guarda los esfuerzos internos de la biela
-            %
-            % guardarEsfuerzosInternos(obj,archivoSalidaHandle)
             
             esf_int = obj.obtenerFuerzaResistenteCoordLocal();
             f = esf_int(1);
@@ -388,8 +352,6 @@ classdef Biela2D < Elemento
         
         function plot(obj, deformadas, tipoLinea, grosorLinea, ~)
             % plot: Grafica un elemento
-            %
-            % plot(obj,deformadas,tipoLinea,grosorLinea)
             
             % Obtiene las coordenadas de los objetos
             coord1 = obj.nodosObj{1}.obtenerCoordenadas();
@@ -408,8 +370,6 @@ classdef Biela2D < Elemento
         
         function disp(obj)
             % disp: Imprime propiedades en consola
-            %
-            % disp(obj)
             
             % Imprime propiedades
             fprintf('Propiedades biela 2D:\n\t');

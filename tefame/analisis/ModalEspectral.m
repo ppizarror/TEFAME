@@ -2222,6 +2222,9 @@ classdef ModalEspectral < Analisis
             
             fprintf('\t\tGrados de libertad totales: %d\n', ngdl);
             fprintf('\t\tNumero de direcciones de analisis: %d\n', ndg);
+            if nModos > ngdl
+                warning('El numero de modos de analisis excede los grados de libertad del sistema');
+            end
             nModos = min(nModos, ngdl);
             
             %------------- CALCULO VALORES Y VECTORES PROPIOS ---------------

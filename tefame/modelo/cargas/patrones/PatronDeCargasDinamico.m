@@ -152,7 +152,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 % carga
                 obj.calcularCargaGenerica(cpenzien, ...
                     false, indiceCargaObjetivo, true, 0, ...
-                    factor); % No uso disipadores
+                    factor);% No uso disipadores
                 
                 % Calcula w asociado al modo que mueve mas energia
                 w = obj.analisisObj.calcularModosEnergia(cargaDisipadorObj, false);

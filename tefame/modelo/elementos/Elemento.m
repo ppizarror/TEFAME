@@ -74,8 +74,6 @@ classdef Elemento < ComponenteModelo
         function obj = Elemento(etiquetaElemento)
             % Elemento: es el constructor de la clase Elemento
             %
-            % obj = Elemento(etiquetaElemento)
-            %
             % Crea un objeto de la clase Elemento, con un identificador unico
             % (etiquetaElemento)
             
@@ -94,8 +92,6 @@ classdef Elemento < ComponenteModelo
             % obtenerNumeroNodos: es un metodo de la clase Elemento que se usa para
             % obtener el numero de nodos que tiene el Elemento
             %
-            % numeroNodos = obtenerNumeroNodos(obj)
-            %
             % Entrega el numero de nodos (numeroNodos) que tiene el Elemento
             % (obj)
             
@@ -106,8 +102,6 @@ classdef Elemento < ComponenteModelo
         function nodosElemento = obtenerNodos(obj) %#ok<MANU>
             % obtenerNodos: es un metodo de la clase Elemento que se usa para
             % obtener un arreglo con los nodos que tiene el Elemento
-            %
-            % nodosElemento = obtenerNumeroNodos(obj)
             %
             % Entrega un arreglo con los Nodos (nodosElemento) que tiene el Elemento
             % (obj)
@@ -120,8 +114,6 @@ classdef Elemento < ComponenteModelo
             % obtenerNumeroGDL: es un metodo de la clase Elemento que se usa para
             % obtener el numero total de grados de libertad que tiene el Elemento
             %
-            % numeroGDL = obtenerNumeroGDL(obj)
-            %
             % Entrega el numero de GDL (numeroGDL) que tiene el Elemento (obj)
             
             numeroGDL = [];
@@ -132,8 +124,6 @@ classdef Elemento < ComponenteModelo
             % obtenerGDL: es un metodo de la clase Elemento que se usa para
             % obtener un arreglo con los ID de los grados de libertad que estan
             % asociados al Elemento
-            %
-            % gdlID = obtenerGDL(obj)
             %
             % Entrega un arreglo con los ID de los GDL (gdlID) que tiene el Elemento
             % (obj)
@@ -147,8 +137,6 @@ classdef Elemento < ComponenteModelo
             % que se usa para obtener la matriz de rigidez para el Elemento en el
             % sistema de coordenadas globales del sistema estructural o Modelo
             %
-            % k_global = obtenerMatrizRigidezCoordGlobal(obj)
-            %
             % Entrega la matriz de rigidez (k_global) que tiene el Elemento (obj)
             %  en el sistema de coordenadas globales
             
@@ -160,8 +148,6 @@ classdef Elemento < ComponenteModelo
             % obtenerMatrizRigidezCoordLocal: es un metodo de la clase Elemento
             % que se usa para obtener la matriz de rigidez para el Elemento en el
             % sistema de coordenadas locales del elemento
-            %
-            % k_local = obtenerMatrizRigidezCoordLocal(obj)
             %
             % Entrega la matriz de rigidez (k_local)  en el sistema de coordenadas
             % local que tiene el Elemento (obj)
@@ -176,8 +162,6 @@ classdef Elemento < ComponenteModelo
             % en el sistema de coordenadas globales del modelo o sistema
             % estructural
             %
-            % fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
-            %
             % Entrega el vector con las fuerzas resistentes (fr_global) que tiene
             % elemento (obj) en el sistema de coordenadas globales la
             % estructura
@@ -190,8 +174,6 @@ classdef Elemento < ComponenteModelo
             % obtenerFuerzaResistenteCoordLocal: es un metodo de la clase Elemento
             % que se usa para obtener el vector de fuerzas resitente del Elemento
             % en el sistema de coordenadas locales del elemento
-            %
-            % fr_local = obtenerFuerzaResistenteCoordLocal(obj)
             %
             % Entrega el vector con las fuerzas resistentes (fr_local) que tiene
             % elemento (obj) en el sistema de coordenadas locales del
@@ -206,8 +188,6 @@ classdef Elemento < ComponenteModelo
             % inicializar las diferentes componentes que sean necesario en los
             % elementos para realizar posteriormente el analisis
             %
-            % inicializar(obj)
-            %
             % Inicializa los diferentes componetes del Elemento (obj),
             % para poder preparar estos para realizar el analisis
             
@@ -216,8 +196,6 @@ classdef Elemento < ComponenteModelo
         function definirGDLID(obj) %#ok<MANU>
             % definirGDLID: es un metodo de la clase Elemento que se usa para
             % definir el vector con los ID de los GDL del elemento
-            %
-            % definirGDLID(obj)
             %
             % Define los ID de los grados de libertad del Elemento (obj)
             
@@ -240,7 +218,6 @@ classdef Elemento < ComponenteModelo
             % actualizar las diferentes componentes que sean necesario en los
             % elementos posterior a realizar el analisis
             %
-            % actualizar(obj)
             % Actualizar los diferentes componetes del Elemento (obj),
             % despues de realizar el analisis
             
@@ -249,8 +226,6 @@ classdef Elemento < ComponenteModelo
         function guardarPropiedades(obj, archivoSalidaHandle) %#ok<INUSD>
             % guardarPropiedades: es un metodo de la clase Elemento que se usa
             % para guardar en un archivo de salida las propiedades del Elemento
-            %
-            % guardarPropiedades(obj,archivoSalidaHandle)
             %
             % Guarda las propiedades de los Elemento (obj), en un archivo
             % de salida (archivoSalidaHandle)
@@ -262,8 +237,6 @@ classdef Elemento < ComponenteModelo
             % usa para guardar en un archivo de salida los esfuerzos internos del
             % Elemento
             %
-            % guardarEsfuerzosInternos(obj,archivoSalidaHandle)
-            %
             % Guarda los esfuerzos internos de los Elemento (obj), en un
             % archivo de salida (archivoSalidaHandle)
             
@@ -271,16 +244,12 @@ classdef Elemento < ComponenteModelo
         
         function plot(obj, deformadas, tipoLinea, grosorLinea, gdl) %#ok<INUSD>
             % plot: Grafica un elemento
-            %
-            % plot(obj,deformadas,tipoLinea,grosorLinea,gdl)
             
         end % plot function
         
         function activarGraficoDeformada(obj)
             % activarGraficoDeformada: Activa el grafico de la
             % deformada del elemento
-            %
-            % activarGraficoDeformada(obj)
             
             obj.graficaDeformadaElem = true;
             
@@ -289,8 +258,6 @@ classdef Elemento < ComponenteModelo
         function desactivarGraficoDeformada(obj)
             % desactivarGraficoDeformada: Desactiva el grafico de la
             % deformada del elemento
-            %
-            % desactivarGraficoDeformada(obj)
             
             obj.graficaDeformadaElem = false;
             
@@ -299,8 +266,6 @@ classdef Elemento < ComponenteModelo
         function def = graficaDeformada(obj)
             % graficaDeformada: Indica si el objeto grafica su deformada o
             % no
-            %
-            % def = graficaDeformada(obj)
             
             def = obj.graficaDeformadaElem;
             
@@ -308,8 +273,6 @@ classdef Elemento < ComponenteModelo
         
         function graficarLinea(obj, coord1, coord2, tipoLinea, grosorLinea) %#ok<INUSL>
             % graficarLinea: Grafica una linea para un elemento
-            %
-            % graficarLinea(obj,coord1,coord2,tipoLinea,grosorLinea)
             
             if length(coord1) == 2
                 plot([coord1(1), coord2(1)], [coord1(2), coord2(2)], tipoLinea, ...
@@ -325,8 +288,6 @@ classdef Elemento < ComponenteModelo
             % disp: es un metodo de la clase Elemento que se usa para impimir en
             % command Window la informacion del Elemento
             %
-            % disp(obj)
-            %
             % Imprime la informacion guardada en el Elemento (obj) en
             % pantalla
             
@@ -338,8 +299,6 @@ classdef Elemento < ComponenteModelo
         function definirFactorUnidadMasa(obj, factor)
             % definirFactorUnidadMasa: Funcion que define el cambio de
             % unidad para pasar masa carga a masa real
-            %
-            % definirFactorUnidadMasa(obj,factor)
             
             obj.factorMasa = factor;
             

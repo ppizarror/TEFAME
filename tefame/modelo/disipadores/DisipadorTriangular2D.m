@@ -40,21 +40,21 @@
 %       alpha
 %       Cd
 %  Methods:
-%       actualizarDisipador(disipadorTriangular2DObj,w,carga)
-%       definirGDLID(disipadorTriangular2DObj)
-%       disipadorTriangular2DObj = DisipadorTriangular2D(etiquetaDisipador,nodo1Obj,nodo2Obj,k1,k2)
-%       disp(disipadorTriangular2DObj)
-%       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorTriangular2DObj)
-%       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorTriangular2DObj)
-%       gdlIDBiela = obtenerGDLID(disipadorTriangular2DObj)
-%       k_global = obtenerMatrizRigidezCoordGlobal(disipadorTriangular2DObj)
-%       k_local = obtenerMatrizRigidezCoordLocal(disipadorTriangular2DObj)
-%       l = obtenerLargo(disipadorTriangular2DObj)
-%       nodosBiela = obtenerNodos(disipadorTriangular2DObj)
-%       numeroGDL = obtenerNumeroGDL(disipadorTriangular2DObj)
-%       numeroNodos = obtenerNumeroNodos(disipadorTriangular2DObj)
-%       plot(disipadorTriangular2DObj,tipoLinea,grosorLinea,colorLinea)
-%       T = obtenerMatrizTransformacion(disipadorTriangular2DObj)
+%       actualizarDisipador(obj,w,carga)
+%       definirGDLID(obj)
+%       obj = DisipadorTriangular2D(etiquetaDisipador,nodo1Obj,nodo2Obj,k1,k2)
+%       disp(obj)
+%       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+%       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
+%       gdlIDBiela = obtenerGDLID(obj)
+%       k_global = obtenerMatrizRigidezCoordGlobal(obj)
+%       k_local = obtenerMatrizRigidezCoordLocal(obj)
+%       l = obtenerLargo(obj)
+%       nodosBiela = obtenerNodos(obj)
+%       numeroGDL = obtenerNumeroGDL(obj)
+%       numeroNodos = obtenerNumeroNodos(obj)
+%       plot(obj,tipoLinea,grosorLinea,colorLinea)
+%       T = obtenerMatrizTransformacion(obj)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -79,11 +79,9 @@ classdef DisipadorTriangular2D < Disipador2D
     
     methods
         
-        function disipadorTriangular2DObj = DisipadorTriangular2D(etiquetaDisipador, nodo1Obj, nodo2Obj, k1, k2)
+        function obj = DisipadorTriangular2D(etiquetaDisipador, nodo1Obj, nodo2Obj, k1, k2)
             % DisipadorTriangular2D: Constructor de la clase, genera un
             % disipador triangular en 2D
-            %
-            % disipadorTriangular2DObj = DisipadorTriangular2D(etiquetaDisipador,nodo1Obj,nodo2Obj,k1,k2)
             
             % Completa con ceros si no hay argumentos
             if nargin == 0
@@ -91,72 +89,64 @@ classdef DisipadorTriangular2D < Disipador2D
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase Disipador2D
-            disipadorTriangular2DObj = disipadorTriangular2DObj@Disipador2D(etiquetaDisipador);
+            obj = obj@Disipador2D(etiquetaDisipador);
             
             % Guarda material
-            disipadorTriangular2DObj.nodosObj = {nodo1Obj; nodo2Obj};
-            disipadorTriangular2DObj.k1 = k1;
-            disipadorTriangular2DObj.k2 = k2;
-            disipadorTriangular2DObj.v0 = 1;
-            disipadorTriangular2DObj.w = 1;
+            obj.nodosObj = {nodo1Obj; nodo2Obj};
+            obj.k1 = k1;
+            obj.k2 = k2;
+            obj.v0 = 1;
+            obj.w = 1;
             
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
-            disipadorTriangular2DObj.dx = abs(coordNodo2(1)-coordNodo1(1));
-            disipadorTriangular2DObj.dy = abs(coordNodo2(2)-coordNodo1(2));
-            disipadorTriangular2DObj.L = sqrt(disipadorTriangular2DObj.dx^2+disipadorTriangular2DObj.dy^2);
-            theta = atan(disipadorTriangular2DObj.dy/disipadorTriangular2DObj.dx);
-            disipadorTriangular2DObj.theta = theta;
+            obj.dx = abs(coordNodo2(1)-coordNodo1(1));
+            obj.dy = abs(coordNodo2(2)-coordNodo1(2));
+            obj.L = sqrt(obj.dx^2+obj.dy^2);
+            theta = atan(obj.dy/obj.dx);
+            obj.theta = theta;
             
             % Calcula matriz de transformacion dado el angulo
-            cosx = disipadorTriangular2DObj.dx / disipadorTriangular2DObj.L;
-            cosy = disipadorTriangular2DObj.dy / disipadorTriangular2DObj.L;
-            disipadorTriangular2DObj.T = [cosx, cosy, 0, 0, 0, 0; 0, 0, 0, cosx, cosy, 0];
+            cosx = obj.dx / obj.L;
+            cosy = obj.dy / obj.L;
+            obj.T = [cosx, cosy, 0, 0, 0, 0; 0, 0, 0, cosx, cosy, 0];
             
         end % DisipadorTriangular2D constructor
         
-        function actualizarDisipador(disipadorTriangular2DObj, w, carga)
+        function actualizarDisipador(obj, w, carga)
             % actualizarDisipador: Actualiza el disipador con la carga y la
             % frecuencia
-            %
-            % actualizarDisipador(disipadorTriangular2DObj,w,carga)
             
-            disipadorTriangular2DObj.w = w;
-            disipadorTriangular2DObj.v0 = disipadorTriangular2DObj.calcularv0(disipadorTriangular2DObj.nodosObj, carga);
+            obj.w = w;
+            obj.v0 = obj.calcularv0(obj.nodosObj, carga);
             
         end % actualizarDisipador function
         
-        function k_local = obtenerMatrizRigidezCoordLocal(disipadorTriangular2DObj)
+        function k_local = obtenerMatrizRigidezCoordLocal(obj)
             % obtenerMatrizRigidezCoordLocal: Obtiene la matriz de rigidez
             % en coordenadas locales
-            %
-            % k_local = obtenerMatrizRigidezCoordLocal(disipadorTriangular2DObj)
             
-            disipadorTriangular2DObj.ke = (disipadorTriangular2DObj.k1 + disipadorTriangular2DObj.k2) / 2;
-            k_local = disipadorTriangular2DObj.ke .* [1, -1; -1, 1];
+            obj.ke = (obj.k1 + obj.k2) / 2;
+            k_local = obj.ke .* [1, -1; -1, 1];
             
         end % obtenerMatrizRigidezCoordLocal function
         
-        function c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorTriangular2DObj)
+        function c_local = obtenerMatrizAmortiguamientoCoordLocal(obj)
             % obtenerMatrizAmortiguamientoCoordLocal: Obtiene la matriz de
             % armortiguamiento en coordenadas locales
-            %
-            % c_local = obtenerMatrizAmortiguamientoCoordLocal(disipadorTriangular2DObj)
             
-            disipadorTriangular2DObj.Ce = (disipadorTriangular2DObj.k1 - disipadorTriangular2DObj.k2) / ...
-                (pi() * disipadorTriangular2DObj.w);
-            c_local = disipadorTriangular2DObj.Ce .* [1, -1; -1, 1];
+            obj.Ce = (obj.k1 - obj.k2) / ...
+                (pi() * obj.w);
+            c_local = obj.Ce .* [1, -1; -1, 1];
             
         end % obtenerMatrizAmortiguamientoCoordLocal function
         
-        function disp(disipadorTriangular2DObj)
+        function disp(obj)
             % disp: Imprime propiedades del disipador triangular
-            %
-            % disp(disipadorTriangular2DObj)
             
             fprintf('Propiedades disipador triangular 2D:\n\t');
-            disp@ComponenteModelo(disipadorTriangular2DObj);
+            disp@ComponenteModelo(obj);
             
             dispMetodoTEFAME();
             

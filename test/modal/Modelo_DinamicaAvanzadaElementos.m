@@ -15,8 +15,8 @@ Ic = 1 / 12;
 % Propiedades de la Fundacion
 G = 150; % [GPa]
 ro = 1; % [m]
-Kr = (32 * (1 - 0.3))/(7 - 8 * 0.3)* G * ro;
-Mr = 10*475.479;
+Kr = (32 * (1 - 0.3)) / (7 - 8 * 0.3) * G * ro;
+Mr = 10 * 475.479;
 
 % Densidad del material hormigon
 Rhoh = 2.5 / 9.80665; % (ton/m3), se aplica factor carga masa
@@ -370,14 +370,36 @@ elementos{236} = VigaColumna2D('C262-272', nodos{141}, nodos{143}, Ic, Ec, Ac, R
 elementos{237} = VigaColumna2D('C263-273', nodos{142}, nodos{144}, Ic, Ec, Ac, Rhoh);
 
 %% Fundaciones
+elementos{238} = Fundacion2D('FN01-FN02', nodos{1}, nodos{2}, Mr, Kr);
+elementos{239} = Fundacion2D('FN02-FN03', nodos{2}, nodos{3}, Mr, Kr);
+elementos{240} = Fundacion2D('FN03-FN04', nodos{3}, nodos{4}, Mr, Kr);
+elementos{241} = Fundacion2D('FN04-FN05', nodos{4}, nodos{5}, Mr, Kr);
+elementos{242} = Fundacion2D('FN05-FN06', nodos{5}, nodos{6}, Mr, Kr);
+elementos{243} = Fundacion2D('FN06-FN07', nodos{6}, nodos{7}, Mr, Kr);
+elementos{244} = Fundacion2D('FN07-FN08', nodos{7}, nodos{8}, Mr, Kr);
+elementos{245} = Fundacion2D('FN08-FN09', nodos{8}, nodos{9}, Mr, Kr);
+elementos{246} = Fundacion2D('FN09-FN010', nodos{9}, nodos{10}, Mr, Kr);
 
-elementos{238} = Fundacion2D('FN01-FN02', nodos{1}, nodos{2},Mr,Kr);
-elementos{239} = Fundacion2D('FN02-FN03', nodos{2}, nodos{3},Mr,Kr);
-elementos{240} = Fundacion2D('FN03-FN04', nodos{3}, nodos{4},Mr,Kr);
-elementos{241} = Fundacion2D('FN04-FN05', nodos{4}, nodos{5},Mr,Kr);
-elementos{242} = Fundacion2D('FN05-FN06', nodos{5}, nodos{6},Mr,Kr);
-elementos{243} = Fundacion2D('FN06-FN07', nodos{6}, nodos{7},Mr,Kr);
-elementos{244} = Fundacion2D('FN07-FN08', nodos{7}, nodos{8},Mr,Kr);
-elementos{245} = Fundacion2D('FN08-FN09', nodos{8}, nodos{9},Mr,Kr);
-elementos{246} = Fundacion2D('FN09-FN010', nodos{9}, nodos{10},Mr,Kr);
+%% Otros
+wIterDespl = [2.55770213386969 7.16560268459290 12.4566599334486 ...
+    18.5604127664363 25.2431954885662 30.9098179115540 ...
+    32.8021132019727 34.0128761482208 36.5858886493597 ...
+    42.8579427711730 44.8060940047270 53.3692296031510 ...
+    59.4652234520037 64.9028128188504 65.5624255868333 ...
+    77.1695523410056 82.4577492094391 84.8793197411019 ...
+    89.6129863044788 92.3722086828802 93.1081309515012 ...
+    102.542136220786 103.068669452994 104.539068890293 ...
+    106.510173143805 112.313797933399 127.510616892239 ...
+    128.129197535452 131.612438971985 134.014310629741 ...
+    135.588674689873 135.992096928713 137.114907475638 ...
+    138.924925485962 139.309707400221 145.303274192798 ...
+    145.986194753148 147.613919135851 149.583993370884 ...
+    150.872205488160 152.240535917133 156.063979833955 ...
+    162.265887158119 164.276468582795 171.105439346982 ...
+    176.184981651255 177.436993925946 184.742256236947 ...
+    186.171303816978 189.395804862162]';
 
+% Suma un numero aleatorio
+for i=1:length(wIterDespl)
+    wIterDespl(i) = wIterDespl(i) + rand();
+end

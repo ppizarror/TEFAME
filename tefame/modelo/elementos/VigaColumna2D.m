@@ -153,8 +153,6 @@ classdef VigaColumna2D < Elemento
         
         function l = obtenerLargo(obj)
             % obtenerLargo: Retorna el largo del elemento
-            %
-            % l = obtenerLargo(obj)
             
             l = obj.L;
             
@@ -162,8 +160,6 @@ classdef VigaColumna2D < Elemento
         
         function numeroNodos = obtenerNumeroNodos(obj) %#ok<MANU>
             % obtenerNumeroNodos: Retorna el numero de nodos del elemento
-            %
-            % numeroNodos = obtenerNumeroNodos(obj)
             
             numeroNodos = 2;
             
@@ -171,8 +167,6 @@ classdef VigaColumna2D < Elemento
         
         function nodosViga = obtenerNodos(obj)
             % obtenerNodos: Retorna los nodos del elemento
-            %
-            % nodosViga = obtenerNodos(obj)
             
             nodosViga = obj.nodosObj;
             
@@ -181,8 +175,6 @@ classdef VigaColumna2D < Elemento
         function numeroGDL = obtenerNumeroGDL(obj) %#ok<MANU>
             % obtenerNumeroGDL: Obtiene el numero de grados de libertad del
             % elemento
-            %
-            % numeroGDL = obtenerNumeroGDL(obj)
             
             numeroGDL = 6;
             
@@ -191,8 +183,6 @@ classdef VigaColumna2D < Elemento
         function gdlIDViga = obtenerGDLID(obj)
             % obtenerGDLID: Obtiene los ID de los grados de libertad del
             % elemento
-            %
-            % gdlIDViga = obtenerGDLID(obj)
             
             gdlIDViga = obj.gdlID;
             
@@ -201,8 +191,6 @@ classdef VigaColumna2D < Elemento
         function T = obtenerMatrizTransformacion(obj)
             % obtenerMatrizTransformacion: Obtiene la matriz de
             % transformacion del elemento
-            %
-            % T = obtenerMatrizTransformacion(obj)
             
             T = obj.T;
             
@@ -210,8 +198,6 @@ classdef VigaColumna2D < Elemento
         
         function theta = obtenerAngulo(obj)
             % obtenerAngulo: Retorna el angulo de inclinacion del elemento
-            %
-            % theta = obtenerAngulo(obj)
             
             theta = obj.theta;
             
@@ -220,8 +206,6 @@ classdef VigaColumna2D < Elemento
         function k_global = obtenerMatrizRigidezCoordGlobal(obj)
             % obtenerMatrizRigidezCoordGlobal: Retorna la matriz de rigidez
             % en coordenadas globales
-            %
-            % k_global = obtenerMatrizRigidezCoordGlobal(obj)
             
             % Multiplica por la matriz de transformacion
             k_local = obj.obtenerMatrizRigidezCoordLocal();
@@ -233,8 +217,6 @@ classdef VigaColumna2D < Elemento
         function k_local = obtenerMatrizRigidezCoordLocal(obj)
             % obtenerMatrizRigidezCoordLocal: Retorna la matriz de rigidez
             % en coordenadas locales
-            %
-            % k_local = obtenerMatrizRigidezCoordLocal(obj)
             
             k_local = obj.Klp;
             
@@ -242,8 +224,6 @@ classdef VigaColumna2D < Elemento
         
         function m = obtenerMasa(obj)
             % obtenerMasa: Retorna la masa total del elemento
-            %
-            % m = obtenerMasa(obj)
             
             m = obj.rho * obj.L * obj.Ao;
             
@@ -251,8 +231,6 @@ classdef VigaColumna2D < Elemento
         
         function m_masa = obtenerVectorMasa(obj)
             % obtenerVectorMasa: Obtiene el vector de masa del elemento
-            %
-            % m_masa = obtenerVectorMasa(obj)
             
             m_masa = zeros(6, 1);
             m = obj.obtenerMasa();
@@ -268,8 +246,6 @@ classdef VigaColumna2D < Elemento
         function fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
             % obtenerFuerzaResistenteCoordGlobal: Retorna la fuerza
             % resistente en coordenadas globales
-            %
-            % fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
             
             % Obtiene fr local
             fr_local = obj.obtenerFuerzaResistenteCoordLocal();
@@ -282,8 +258,6 @@ classdef VigaColumna2D < Elemento
         function fr_local = obtenerFuerzaResistenteCoordLocal(obj)
             % obtenerFuerzaResistenteCoordLocal: Retorna la fuerza
             % resistente en coordenadas locales
-            %
-            % fr_local = obtenerFuerzaResistenteCoordLocal(obj)
             
             % Obtiene los nodos
             nodo1 = obj.nodosObj{1};
@@ -310,8 +284,6 @@ classdef VigaColumna2D < Elemento
         function definirGDLID(obj)
             % definirGDLID: Define los ID de los grados de libertad de la
             % viga columna
-            %
-            % definirGDLID(obj)
             
             % Se obtienen los nodos extremos
             nodo1 = obj.nodosObj{1};
@@ -334,9 +306,7 @@ classdef VigaColumna2D < Elemento
         end % definirGDLID function
         
         function sumarFuerzaEquivalente(obj, f)
-            % sumarFuerzaEquivalente: Suma fuerza equivalente a vigas
-            %
-            % sumarFuerzaEquivalente(obj,f)
+            % sumarFuerzaEquivalente: Suma fuerza equivalente de la viga
             
             for i = 1:length(f)
                 obj.Feq(i) = obj.Feq(i) + f(i);
@@ -347,8 +317,6 @@ classdef VigaColumna2D < Elemento
         function f = obtenerFuerzaEquivalente(obj)
             % obtenerFuerzaEquivalente: Obtiene la fuerza equivalente de la
             % viga columna
-            %
-            % f = obtenerFuerzaEquivalente(obj)
             
             f = obj.Feq;
             
@@ -357,8 +325,6 @@ classdef VigaColumna2D < Elemento
         function agregarFuerzaResistenteAReacciones(obj)
             % agregarFuerzaResistenteAReacciones: Agrega fuerza resistente
             % de la viga a las reacciones
-            %
-            % agregarFuerzaResistenteAReacciones(obj)
             
             % Se calcula la fuerza resistente global
             fr_global = obj.obtenerFuerzaResistenteCoordGlobal();
@@ -383,8 +349,6 @@ classdef VigaColumna2D < Elemento
         function guardarPropiedades(obj, archivoSalidaHandle)
             % guardarPropiedades: Guarda las propiedades del elemento en un
             % archivo
-            %
-            % guardarPropiedades(obj,archivoSalidaHandle)
             
             fprintf(archivoSalidaHandle, '\tViga-Columna 2D %s:\n\t\tLargo:\t\t%s\n\t\tInercia:\t%s\n\t\tEo:\t\t\t%s\n\t\tEI:\t\t\t%s\n\t\tMasa:\t\t%s\n', ...
                 obj.obtenerEtiqueta(), num2str(obj.L), ...
@@ -397,8 +361,6 @@ classdef VigaColumna2D < Elemento
         function guardarEsfuerzosInternos(obj, archivoSalidaHandle)
             % guardarEsfuerzosInternos: Guarda los esfuerzos internos del
             % elemento
-            %
-            % guardarEsfuerzosInternos(obj,archivoSalidaHandle)
             
             fr = obj.obtenerFuerzaResistenteCoordGlobal();
             n1 = pad(num2str(fr(1), '%.04f'), 10);
@@ -416,8 +378,6 @@ classdef VigaColumna2D < Elemento
         function N = obtenerVectorN(obj, x, l) %#ok<INUSL>
             % obtenerVectorN: Obtiene el vector de transformada N a partir
             % de x como porcentaje del largo
-            %
-            % N = obtenerVectorN(obj,x,l)
             
             x = x * l;
             N = zeros(4, 1);
@@ -431,8 +391,6 @@ classdef VigaColumna2D < Elemento
         function y = plotVigaDeformar(obj, deformadas) %#ok<INUSL>
             % plotVigaDeformar: Evalua si se grafica una viga con
             % deformacion
-            %
-            % plotVigaDeformar(obj,deformadas)
             
             y = length(deformadas{1}) == 3;
             
@@ -440,8 +398,6 @@ classdef VigaColumna2D < Elemento
         
         function plot(obj, deformadas, tipoLinea, grosorLinea, defElem)
             % plot: Grafica un elemento
-            %
-            % plot(obj,deformadas,tipoLinea,grosorLinea,defElem)
             
             % Obtiene las coordenadas de los objetos
             coord1 = obj.nodosObj{1}.obtenerCoordenadas();
@@ -478,8 +434,6 @@ classdef VigaColumna2D < Elemento
         
         function disp(obj)
             % disp: Imprime propiedades en pantalla del objeto
-            %
-            % disp(obj)
             
             % Imprime propiedades de la Viga-Columna-2D
             fprintf('Propiedades viga columna 2D:\n');

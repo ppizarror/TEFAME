@@ -40,27 +40,27 @@
 %       cargas
 %       reacciones
 %  Methods:
-%       nodoObj = Nodo(etiquetaNodo,nGDLNodo,coordenadasNodo)
-%       nGDLNodo = obtenerNumeroGDL(nodoObj)
-%       coordenadasNodo = obtenerCoordenadas(nodoObj)
-%       gdlIDNodo = obtenerGDLID(nodoObj)
-%       gdlIDNodoCondensado = obtenerGDLIDCondensado(nodoObj)
-%       cargasResultantesNodo = obtenerCargasResultantes(nodoObj)
-%       desplazamientosNodo = obtenerDesplazamientos(nodoObj)
-%       reaccionesNodo = obtenerReacciones(nodoObj)
-%       definirGDLID(nodoObj,gdlIDNodo)
-%       definirGDLIDCondensado(nodoObj,gdlIDNodoCondensado)
-%       definirDesplazamientos(nodoObj,desplazamientosNodo)
-%       agregarCarga(nodoObj,cargaNodo)
-%       agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)
-%       inicializar(nodoObj)
-%       guardarPropiedades(nodoObj,archivoSalidaHandle)
-%       guardarDesplazamientos(nodoObj,archivoSalidaHandle)
-%       guardarReacciones(nodoObj,archivoSalidaHandle)
-%       Disp(nodoObj)
-%       agregarElementos(nodoObj, elemObj)
-%       obtenerElementos(nodoObj)
-%       tipoApoyoRestringido(nodoObj)
+%       obj = Nodo(etiquetaNodo,nGDLNodo,coordenadasNodo)
+%       nGDLNodo = obtenerNumeroGDL(obj)
+%       coordenadasNodo = obtenerCoordenadas(obj)
+%       gdlIDNodo = obtenerGDLID(obj)
+%       gdlIDNodoCondensado = obtenerGDLIDCondensado(obj)
+%       cargasResultantesNodo = obtenerCargasResultantes(obj)
+%       desplazamientosNodo = obtenerDesplazamientos(obj)
+%       reaccionesNodo = obtenerReacciones(obj)
+%       definirGDLID(obj,gdlIDNodo)
+%       definirGDLIDCondensado(obj,gdlIDNodoCondensado)
+%       definirDesplazamientos(obj,desplazamientosNodo)
+%       agregarCarga(obj,cargaNodo)
+%       agregarEsfuerzosElementoAReaccion(obj,esfuerzosElemento)
+%       inicializar(obj)
+%       guardarPropiedades(obj,archivoSalidaHandle)
+%       guardarDesplazamientos(obj,archivoSalidaHandle)
+%       guardarReacciones(obj,archivoSalidaHandle)
+%       Disp(obj)
+%       agregarElementos(obj, elemObj)
+%       obtenerElementos(obj)
+%       tipoApoyoRestringido(obj)
 %  Methods Suplerclass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -81,10 +81,8 @@ classdef Nodo < ComponenteModelo
     
     methods
         
-        function nodoObj = Nodo(etiquetaNodo, nGDLNodo, coordenadasNodo)
+        function obj = Nodo(etiquetaNodo, nGDLNodo, coordenadasNodo)
             % Nodo: es el constructor de la clase Nodo
-            %
-            % nodoObj = Nodo(etiquetaNodo,nGDLNodo,coordenadasNodo)
             %
             % Crea un objeto de la clase Nodo, con un identificador unico (etiquetaNodo),
             % con el el numero de GDL (nGDLNodo) y un vector que contine las
@@ -98,321 +96,280 @@ classdef Nodo < ComponenteModelo
             end % if
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
-            nodoObj = nodoObj@ComponenteModelo(etiquetaNodo);
+            obj = obj@ComponenteModelo(etiquetaNodo);
             
             % Guardamos el numero de grados de libertad (GDL) que tiene el nodo
-            nodoObj.nGDL = nGDLNodo;
+            obj.nGDL = nGDLNodo;
             
             % Revisamos la orientacion del vector de coordenadas, para dejarlo como columna
             if size(coordenadasNodo, 1) == 1
-                nodoObj.coords = coordenadasNodo';
+                obj.coords = coordenadasNodo';
             else
-                nodoObj.coords = coordenadasNodo;
+                obj.coords = coordenadasNodo;
             end % if
             
             % Creamos el vector que guardara los ID para los diferentes
             % GDL, que se usara en el analisis del modelo
-            nodoObj.gdlID = -ones(nGDLNodo, 1);
-            nodoObj.gdlIDCondensado = -ones(nGDLNodo, 1);
+            obj.gdlID = -ones(nGDLNodo, 1);
+            obj.gdlIDCondensado = -ones(nGDLNodo, 1);
             
             % Definimos en zero todos los componentes guardados en el Nodo
-            nodoObj.despl = zeros(nodoObj.nGDL, 1);
-            nodoObj.reacciones = zeros(nodoObj.nGDL, 1);
-            nodoObj.cargas = zeros(nodoObj.nGDL, 1);
+            obj.despl = zeros(obj.nGDL, 1);
+            obj.reacciones = zeros(obj.nGDL, 1);
+            obj.cargas = zeros(obj.nGDL, 1);
             
             % Crea el vector de eleentos
-            nodoObj.elementos = {};
+            obj.elementos = {};
             
         end % Nodo constructor
         
-        function nGDLNodo = obtenerNumeroGDL(nodoObj)
+        function nGDLNodo = obtenerNumeroGDL(obj)
             % obtenerNumeroGDL: es un metodo de la clase Nodo que se usa para
             % obtener el numero de GDL que tiene el nodo
             %
-            % nGDLNodo = obtenerNumeroGDL(nodoObj)
-            %
             % Entrega el numero de grados de libertad (nGDLNodo) que tiene el
-            % nodo (nodoObj)
+            % nodo (obj)
             
-            nGDLNodo = nodoObj.nGDL;
+            nGDLNodo = obj.nGDL;
             
         end % obtenerNumeroGDL function
         
-        function coordenadasNodo = obtenerCoordenadas(nodoObj)
+        function coordenadasNodo = obtenerCoordenadas(obj)
             % obtenerCoordenadas: es un metodo de la clase Nodo que se usa para
             % obtener las coordenadas que tiene el Nodo en esl sistema de
             % coordenadas global
             %
-            % coordenadasNodo = obtenerCoordenadas(nodoObj)
-            %
             % Entrega el vector con las coordenadas (coordenadasNodo) que tiene
-            % el Nodo (nodoObj) en el sistema de coordenadas global
+            % el Nodo (obj) en el sistema de coordenadas global
             
-            coordenadasNodo = nodoObj.coords;
+            coordenadasNodo = obj.coords;
             
         end % obtenerCoordenadas function
         
-        function gdlIDNodo = obtenerGDLID(nodoObj)
+        function gdlIDNodo = obtenerGDLID(obj)
             % obtenerGDLID: es un metodo de la clase Nodo que se usa para
             % obtener los ID de los GDL que tiene el Nodo
             %
-            % gdlIDNodo = obtenerGDLID(nodoObj)
-            %
             % Entrega el vector con los ID de los GDL (gdlIDNodo) que tiene el
-            % Nodo (nodoObj)
+            % Nodo (obj)
             
-            gdlIDNodo = nodoObj.gdlID;
+            gdlIDNodo = obj.gdlID;
             
         end % obtenerGDLID function
         
-        function gdlIDNodoCondensado = obtenerGDLIDCondensado(nodoObj)
+        function gdlIDNodoCondensado = obtenerGDLIDCondensado(obj)
             % obtenerGDLIDCondensado: es un metodo de la clase Nodo que se usa para
             % obtener los ID de los GDL que tiene el Nodo, una vez se
             % llevo a cabo el proceso de condensacion
             %
-            % gdlIDNodo = obtenerGDLID(nodoObj)
-            %
             % Entrega el vector con los ID de los GDL (gdlIDNodo) que tiene el
-            % Nodo (nodoObj)
+            % Nodo (obj)
             
-            gdlIDNodoCondensado = nodoObj.gdlIDCondensado;
+            gdlIDNodoCondensado = obj.gdlIDCondensado;
             
         end % obtenerGDLID function
         
-        function cargasResultantesNodo = obtenerCargasResultantes(nodoObj)
+        function cargasResultantesNodo = obtenerCargasResultantes(obj)
             % obtenerCargasResultantes: es un metodo de la clase Nodo que se usa
             % para obtener las cargas resultantes que son aplicadas finalmente en
             % el Nodo despues de aplicar todos los patrones de carga
             %
-            % cargasResultantesNodo = obtenerCargasResultantes(nodoObj)
-            %
             % Entrega el vector con las cargas resultantes (cargasResultantesNodo)
-            % que son finalmente aplicads sobre cada Nodo (nodoObj)
+            % que son finalmente aplicads sobre cada Nodo (obj)
             
-            cargasResultantesNodo = nodoObj.cargas;
+            cargasResultantesNodo = obj.cargas;
             
         end % obtenerCargasResultantes function
         
-        function desplazamientosNodo = obtenerDesplazamientos(nodoObj)
+        function desplazamientosNodo = obtenerDesplazamientos(obj)
             % obtenerDesplazamientos: es un metodo de la clase Nodo que se usa para
             % obtener los desplazamientos que son obtenidos en el Nodo despues
             % de realizar el analisis
             %
-            % desplazmientosNodo = obtenerDesplazamientos(nodoObj)
-            %
             % Entrega el vector con los desplazamientos o rotaciones (desplazmientosNodo)
-            % que sufrio el Nodo (nodoObj) debido a la aplicacion de los patrones
+            % que sufrio el Nodo (obj) debido a la aplicacion de los patrones
             % de carga
             
-            desplazamientosNodo = nodoObj.despl;
+            desplazamientosNodo = obj.despl;
             
         end % obtenerDesplazamientos function
         
-        function reaccionesNodo = obtenerReacciones(nodoObj)
+        function reaccionesNodo = obtenerReacciones(obj)
             % obtenerReacciones: es un metodo de la clase Nodo que se usa para
             % obtener las reacciones que son obtenidos en el Nodo despues de
             % realizar el analisis
             %
-            % reaccionesNodo = obtenerReacciones(nodoObj)
-            %
             % Entrega el vector con las reacciones (reaccionesNodo), fuerzas o
-            % momentos, que se obtinen el Nodo (nodoObj) debido a las
+            % momentos, que se obtinen el Nodo (obj) debido a las
             % restricciones del Modelo
             
-            reaccionesNodo = nodoObj.reacciones;
+            reaccionesNodo = obj.reacciones;
             
         end % obtenerReacciones function
         
-        function definirGDLID(nodoObj, gdlIDNodo)
+        function definirGDLID(obj, gdlIDNodo)
             % definirGDLID: es un metodo de la clase Nodo que se usa para definir
             % los ID de los GDL que tiene el Nodo asignados durante el proceso
             % de enumeracion de estos, por defecto los ID condensados
             % corresponden a los mismos que se enumeraron en un principio
             %
-            % definirGDLID(nodoObj,gdlIDNodo)
-            %
             % Guarda el ID que se fueron asignados a los grados de libertad (gdlIDNodo)
-            % que tiene el Nodo (nodoObj)
+            % que tiene el Nodo (obj)
             
-            nodoObj.gdlID = gdlIDNodo;
-            nodoObj.gdlIDCondensado = gdlIDNodo;
+            obj.gdlID = gdlIDNodo;
+            obj.gdlIDCondensado = gdlIDNodo;
             
         end % definirGDLID function
         
-        function definirGDLIDCondensado(nodoObj, gdlIDNodoCondensado)
+        function definirGDLIDCondensado(obj, gdlIDNodoCondensado)
             % definirGDLIDCondensado: es un metodo de la clase Nodo que se usa para definir
             % los ID de los GDL que tiene el Nodo asignados una vez se
             % condensa el modelo
             %
-            % definirGDLID(nodoObj,gdlIDNodoCondensado)
-            %
             % Guarda el ID que se fueron asignados a los grados de libertad (gdlIDNodo)
-            % que tiene el Nodo (nodoObj) una vez se aplica la condensacion
+            % que tiene el Nodo (obj) una vez se aplica la condensacion
             
-            nodoObj.gdlIDCondensado = gdlIDNodoCondensado;
+            obj.gdlIDCondensado = gdlIDNodoCondensado;
             
         end % definirGDLID function
         
-        function y = tipoApoyoRestringido(nodoObj)
+        function y = tipoApoyoRestringido(obj)
             % tipoApoyoRestringido: el nodo esta completamente restringido
             % al movimiento
-            %
-            % y = tipoApoyoRestringido(nodoObj)
             
-            y = isArrayEqual(nodoObj.gdlID, 0) || isArrayEqual(nodoObj.gdlID, -1);
+            y = isArrayEqual(obj.gdlID, 0) || isArrayEqual(obj.gdlID, -1);
             
         end % tipoApoyoRestringido function
         
-        function definirDesplazamientos(nodoObj, desplazamientosNodo)
+        function definirDesplazamientos(obj, desplazamientosNodo)
             % definirDesplazamientos: es un metodo de la clase Nodo que se usa
             % para informar sobre los desplazamientos que fueron obtenidos para
             % el Nodo durante el analisis de sistema
             %
-            % definirDesplazamientos(nodoObj,desplazamientosNodo)
-            %
             % Guarda el vector con los desplazamientos (desplazamientosNodo) que
-            % fueron obtenidos para el Nodo (nodoObj)
+            % fueron obtenidos para el Nodo (obj)
             
-            nodoObj.despl = desplazamientosNodo;
+            obj.despl = desplazamientosNodo;
             
         end % definirDesplazamiento function
         
-        function agregarCarga(nodoObj, cargaNodo)
+        function agregarCarga(obj, cargaNodo)
             % agregarCarga: es un metodo de la clase Nodo que se usa para agregar
             % un vector de fuerzas al nodo al aplicar el patron de cargas
-            %
-            % agregarCarga(nodoObj,cargaNodo)
-            % Agrega al vector de fuerzas del Nodo (nodoObj), el vector de fuerzas
+            % Agrega al vector de fuerzas del Nodo (obj), el vector de fuerzas
             % entregado (cargaNodo)
-            
             % Se procede a sumar la carga entregada al vector de cargas del nodo
-            %             nodoObj.cargas = nodoObj.cargas + cargaNodo;
+            %             obj.cargas = obj.cargas + cargaNodo;
             % Se resta la carga entregada al vector de reacciones para
             % obtener las reacciones posterior al analisis
             
-            nodoObj.reacciones = nodoObj.reacciones - cargaNodo;
+            obj.reacciones = obj.reacciones - cargaNodo;
             
         end % agregarCarga function
         
-        function agregarElementos(nodoObj, elemObj)
+        function agregarElementos(obj, elemObj)
             % agregarElementos: Agrega elementos al nodo
-            %
-            % agregarElementos(nodoObj, elemObj)
             
-            n = length(nodoObj.elementos);
-            nodoObj.elementos{n+1} = elemObj;
+            n = length(obj.elementos);
+            obj.elementos{n+1} = elemObj;
             
         end % agregarElementos function
         
-        function elem_nodos = obtenerElementos(nodoObj)
+        function elem_nodos = obtenerElementos(obj)
             % obtenerElementos: Obtiene los elementos que convergen en el nodo
-            %
-            % elem_nodos = obtenerElementos(nodoObj)
             
-            elem_nodos = nodoObj.elementos;
+            elem_nodos = obj.elementos;
             
         end % obtenerElementos function
         
-        function agregarEsfuerzosElementoAReaccion(nodoObj, esfuerzosElemento)
+        function agregarEsfuerzosElementoAReaccion(obj, esfuerzosElemento)
             % agregarEsfuerzosElementoAReaccion: es un metodo de la clase Nodo
             % que se usa para agregar el vector de fuerzas resistentes de un
             % elemento al nodo
             %
-            % agregarEsfuerzosElementoAReaccion(nodoObj,esfuerzosElemento)
-            %
-            % Agrega al vector de reacciones del Nodo (nodoObj), el vector de
+            % Agrega al vector de reacciones del Nodo (obj), el vector de
             % fuerzas resistente de un elemento entregados (cargaNodo)
             % Se procede a sumar el vector con las fuerzas resistente entregada
             % de un elemento al vector de reacciones del nodo
             
-            nodoObj.reacciones = nodoObj.reacciones + esfuerzosElemento;
+            obj.reacciones = obj.reacciones + esfuerzosElemento;
             
         end % agregarEsfuerzoAReaccion function
         
-        function inicializar(nodoObj)
+        function inicializar(obj)
             % inicializar: es un metodo de la clase Nodo que se usa para inicializar
             % las diferentes vectores que contienne los desplazamientos, cargas
             % y reacciones en el nodo
             %
-            % inicializar(nodoObj)
-            %
             % Inicializa los diferentes vectores del Nodo que estan guardados en
-            % este (nodoObj), para poder preparar estos para realizar el analisis
+            % este (obj), para poder preparar estos para realizar el analisis
             
             % Se inicializan en zero los vectores del tamano de los numero de GDL
-            nodoObj.despl = zeros(nodoObj.nGDL, 1);
-            nodoObj.reacciones = zeros(nodoObj.nGDL, 1);
-            nodoObj.cargas = zeros(nodoObj.nGDL, 1);
+            obj.despl = zeros(obj.nGDL, 1);
+            obj.reacciones = zeros(obj.nGDL, 1);
+            obj.cargas = zeros(obj.nGDL, 1);
             
         end % reiniciar function
         
-        function guardarPropiedades(nodoObj, archivoSalidaHandle)
+        function guardarPropiedades(obj, archivoSalidaHandle)
             % guardarPropiedades: es un metodo de la clase Nodo que se usa para
             % guardar en un archivo de salida las propiedades del Nodo
             % (Coordenadas)
             %
-            % guardarPropiedades(nodoObj,archivoSalidaHandle)
-            %
-            % Guarda las propiedades de los Nodos (nodoObj), en un archivo de
+            % Guarda las propiedades de los Nodos (obj), en un archivo de
             % salida (archivoSalidaHandle)
             
             % Se procede a imprimir en el archivo
-            fprintf(archivoSalidaHandle, ['\tNodo ', nodoObj.obtenerEtiqueta(), ': ']);
-            Crds = arrayNum2str(nodoObj.coords, length(nodoObj.coords));
+            fprintf(archivoSalidaHandle, ['\tNodo ', obj.obtenerEtiqueta(), ': ']);
+            Crds = arrayNum2str(obj.coords, length(obj.coords));
             fprintf(archivoSalidaHandle, '%s\n', [Crds{2:end-1}]);
             
         end % guardarPropiedades function
         
-        function guardarDesplazamientos(nodoObj, archivoSalidaHandle)
+        function guardarDesplazamientos(obj, archivoSalidaHandle)
             % guardarDesplazamientos: es un metodo de la clase Nodo que se usa
             % para guardar en un archivo de salida el vector de desplazamientos
             % del Nodo obtenido en el analisis
             %
-            % guardarDesplazamientos(nodoObj,archivoSalidaHandle)
-            %
-            % Guarda el vector de desplazamientos del Nodo (nodoObj), en un archivo
+            % Guarda el vector de desplazamientos del Nodo (obj), en un archivo
             % de salida (archivoSalidaHandle)
             
             % Se procede a imprimir en el archivo
-            fprintf(archivoSalidaHandle, ['\tNodo ', nodoObj.obtenerEtiqueta(), ': ']);
-            desplazamientos = arrayNum2str(round(nodoObj.despl, 5), length(nodoObj.despl));
+            fprintf(archivoSalidaHandle, ['\tNodo ', obj.obtenerEtiqueta(), ': ']);
+            desplazamientos = arrayNum2str(round(obj.despl, 5), length(obj.despl));
             fprintf(archivoSalidaHandle, '%s\n', [desplazamientos{2:end-1}]);
             
         end % guardarDesplazamientos function
         
-        function guardarReacciones(nodoObj, archivoSalidaHandle)
+        function guardarReacciones(obj, archivoSalidaHandle)
             % guardarReacciones: es un metodo de la clase Nodo que se usa para
             % guardar en un archivo de salida el vector de reacciones del Nodo
             % obtenido en el analisis
             %
-            % guardarReacciones(nodoObj,archivoSalidaHandle)
-            %
-            % Guarda el vector de reacciones del Nodo (nodoObj), en un archivo
+            % Guarda el vector de reacciones del Nodo (obj), en un archivo
             % de salida (archivoSalidaHandle)
             
             % Se procede a imprimir en el archivo
-            fprintf(archivoSalidaHandle, ['\tNodo ', nodoObj.obtenerEtiqueta(), ': ']);
-            reacc = arrayNum2str(nodoObj.reacciones, length(nodoObj.despl));
+            fprintf(archivoSalidaHandle, ['\tNodo ', obj.obtenerEtiqueta(), ': ']);
+            reacc = arrayNum2str(obj.reacciones, length(obj.despl));
             fprintf(archivoSalidaHandle, '%s\n', [reacc{2:end-1}]);
             
         end % guardarReacciones function
         
-        function plot(nodoObj, deformada, color, escala)
+        function plot(obj, deformada, color, escala)
             % plot: Grafica el nodo
-            %
-            % plot(nodoObj,deformada,estilo)
             
             if ~exist('escala', 'var')
                 escala = 20;
             end
             
-            coord = nodoObj.obtenerCoordenadas();
+            coord = obj.obtenerCoordenadas();
             if ~length(deformada) == 0
                 coord = coord + deformada;
             end
             
             % Determina el tipo de apoyo
-            if nodoObj.tipoApoyoRestringido()
+            if obj.tipoApoyoRestringido()
                 return
             else
                 color = strcat(color, '.');
@@ -428,33 +385,31 @@ classdef Nodo < ComponenteModelo
             
         end % plot function
         
-        function disp(nodoObj)
+        function disp(obj)
             % disp: es un metodo de la clase Nodo que se usa para imprimir en
             % command Window la informacion del Nodo
             %
-            % disp(nodoObj)
-            %
-            % Imprime la informacion guardada en el Nodo (nodoObj) en pantalla
+            % Imprime la informacion guardada en el Nodo (obj) en pantalla
             
             fprintf('Propiedades nodo:\n');
-            disp@ComponenteModelo(nodoObj);
+            disp@ComponenteModelo(obj);
             
-            numCrds = length(nodoObj.coords);
-            Crds = arrayNum2str(nodoObj.coords, numCrds);
+            numCrds = length(obj.coords);
+            Crds = arrayNum2str(obj.coords, numCrds);
             fprintf('\tCoordenadas: %s\n', [Crds{:}]);
             
-            nGDLNodo = nodoObj.nGDL;
+            nGDLNodo = obj.nGDL;
             fprintf('\tNumero de grados de libertad: %s\n', num2str(nGDLNodo));
             
-            GdlID = arrayIntNum2str(nodoObj.gdlID, nGDLNodo);
+            GdlID = arrayIntNum2str(obj.gdlID, nGDLNodo);
             fprintf('\tID global de los grados de libertad: %s\n', [GdlID{:}]);
-            GdlID = arrayIntNum2str(nodoObj.gdlIDCondensado, nGDLNodo);
+            GdlID = arrayIntNum2str(obj.gdlIDCondensado, nGDLNodo);
             fprintf('\tID condensados de los grados de libertad: %s\n', [GdlID{:}]);
-            desplazamientoNodo = arrayNum2str(nodoObj.despl, nGDLNodo);
+            desplazamientoNodo = arrayNum2str(obj.despl, nGDLNodo);
             fprintf('\tDesplazamientos: %s\n', [desplazamientoNodo{:}]);
-            reaccionesNodo = arrayNum2str(nodoObj.reacciones, nGDLNodo);
+            reaccionesNodo = arrayNum2str(obj.reacciones, nGDLNodo);
             fprintf('\tReacciones: %s\n', [reaccionesNodo{:}]);
-
+            
             dispMetodoTEFAME();
             
         end % disp function

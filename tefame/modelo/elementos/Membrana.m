@@ -40,7 +40,7 @@
 %       NPOINTS
 %       rho
 %  Methods:
-%       obj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,E,nu,t,densidad)
+%       obj = Membrana(etiquetaMembrana,nodo1Obj,nodo2Obj,nodo3Obj,nodo4Obj,E,nu,t,densidad)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       nodosMembrana = obtenerNodos(obj)
 %       numeroGDL = obtenerNumeroGDL(obj)
@@ -87,9 +87,6 @@ classdef Membrana < Elemento
         function obj = Membrana(etiquetaMembrana, nodo1Obj, nodo2Obj, nodo3Obj, nodo4Obj, E, nu, t, densidad)
             % Membrana: Constructor de clase, crea una membrana de 4
             % vertices planar
-            %
-            % obj = Membrana(etiquetaMembrana,nodo1Obj,nodo2Obj,
-            %   nodo3Obj,nodo4Obj,E,nu,t,densidad)
             
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
@@ -155,36 +152,44 @@ classdef Membrana < Elemento
         end % Membrana constructor
         
         function b = obtenerAncho(obj)
+            % obtenerAncho: Retorna el ancho de la membrana
             
             b = 2 * obj.b;
             
         end % obtenerAncho function
         
         function h = obtenerAlto(obj)
+            % obtenerAlto: Retorna el alto de la membrana
             
             h = 2 * obj.h;
             
         end % obtenerAlto function
         
         function numeroNodos = obtenerNumeroNodos(obj) %#ok<MANU>
+            % obtenerNumeroNodos: Retorna el numero de nodos de la membrana
             
-            numeroNodos = 2;
+            numeroNodos = 4;
             
         end % obtenerNumeroNodos function
         
         function nodosMembrana = obtenerNodos(obj)
+            % obtenerNodos: Retorna los nodos de la membrana
             
             nodosMembrana = obj.nodosObj;
             
         end % obtenerNodos function
         
         function numeroGDL = obtenerNumeroGDL(obj) %#ok<MANU>
+            % obtenerNumeroGDL: Retorna el numero de grados de libertad de
+            % la membrana
             
             numeroGDL = 8;
             
         end % obtenerNumeroGDL function
         
         function gdlIDMembrana = obtenerGDLID(obj)
+            % obtenerGDLID: Retorna el ID de los grados de libertad de la
+            % membrana
             
             gdlIDMembrana = obj.gdlID;
             
@@ -192,8 +197,6 @@ classdef Membrana < Elemento
         
         function m = obtenerMasa(obj)
             % obtenerMasa: Retorna la masa total del elemento
-            %
-            % m = obtenerMasa(obj)
             
             m = obj.rho * obj.b * obj.h * obj.t;
             
@@ -201,8 +204,6 @@ classdef Membrana < Elemento
         
         function m_masa = obtenerVectorMasa(obj)
             % obtenerVectorMasa: Obtiene el vector de masa del elemento
-            %
-            % m_masa = obtenerVectorMasa(obj)
             
             m_masa = zeros(8, 1);
             m = obj.obtenerMasa();
@@ -218,6 +219,8 @@ classdef Membrana < Elemento
         end % obtenerMatrizMasa function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(obj)
+            % obtenerMatrizRigidezCoordGlobal: Retorna la matriz de rigidez
+            % de la membrana en coordenadas globales
             
             % Matriz global igual a la local, no hay rotacion
             k_global = obj.obtenerMatrizRigidezCoordLocal();
@@ -225,6 +228,8 @@ classdef Membrana < Elemento
         end % obtenerMatrizRigidezCoordGlobal function
         
         function k_local = obtenerMatrizRigidezCoordLocal(obj)
+            % obtenerMatrizRigidezCoordLocal: Retorna la matriz de rigidez
+            % de la membrana en coordenadas locales
             
             % Crea la matriz vacia de 8x8
             k_local = zeros(8, 8);
@@ -300,6 +305,7 @@ classdef Membrana < Elemento
         end % obtenerMatrizRigidezCoordLocal function
         
         function validarXY(obj, x, y)
+            % validarXY: Valida que un punto (x,y) pertenezca a la membrana
             
             if (abs(x) > obj.b || abs(y) > obj.h)
                 error('Valores x e y exceden dimensiones permitidas');
@@ -308,7 +314,8 @@ classdef Membrana < Elemento
         end % validarXY function
         
         function u = obtenerDesplazamiento(obj, x, y)
-            % Calcula el desplazamiento en cualquier punto de la membrana
+            % obtenerDesplazamiento: Calcula el desplazamiento en cualquier
+            % punto de la membrana
             
             % Verifica que x e y sean validos
             obj.validarXY(x, y);
@@ -344,8 +351,8 @@ classdef Membrana < Elemento
         end % obtenerDesplazamiento function
         
         function e = obtenerDeformaciones(obj, x, y)
-            % Obtiene el vector de deformaciones [3x1] una vez se tiene el
-            % vector de desplazamientos
+            % obtenerDeformaciones: Obtiene el vector de deformaciones [3x1]
+            % una vez se tiene el vector de desplazamientos
             
             % Verifica que x e y sean validos
             obj.validarXY(x, y);
@@ -382,7 +389,7 @@ classdef Membrana < Elemento
         end % obtenerDeformaciones function
         
         function sigma = obtenerTensiones(obj, x, y)
-            % Retorna las tensiones una vez se corre el analisis
+            % obtenerTensiones: Retorna las tensiones una vez se corre el analisis
             
             % Obtiene las deformaciones
             e = obj.obtenerDeformaciones(x, y);
@@ -393,6 +400,8 @@ classdef Membrana < Elemento
         end % obtenerTensiones function
         
         function fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+            % obtenerFuerzaResistenteCoordGlobal: Retorna la fuerza
+            % resistente de la membrana en coordenadas globales
             
             % Obtiene fr local
             fr_local = obj.obtenerFuerzaResistenteCoordLocal();
@@ -403,6 +412,8 @@ classdef Membrana < Elemento
         end % obtenerFuerzaResistenteCoordGlobal function
         
         function fr_local = obtenerFuerzaResistenteCoordLocal(obj)
+            % obtenerFuerzaResistenteCoordLocal: Retorna la fuerza
+            % resistente de la membrana en coordenadas locales
             
             % Obtiene los nodos
             nodo1 = obj.nodosObj{1};
@@ -428,6 +439,8 @@ classdef Membrana < Elemento
         end % obtenerFuerzaResistenteCoordLocal function
         
         function definirGDLID(obj)
+            % definirGDLID: Define los ID de los grados de libertad de la
+            % membrana
             
             % Se obtienen los nodos extremos
             nodo1 = obj.nodosObj{1};
@@ -456,6 +469,8 @@ classdef Membrana < Elemento
         end % definirGDLID function
         
         function sumarFuerzaEquivalente(obj, nodo, f)
+            % sumarFuerzaEquivalente: Suma las fuerzas equivalentes de la
+            % membrana
             
             fnodo = length(f); % Largo del vector
             nodo = floor(nodo); % Se redondea
@@ -470,6 +485,8 @@ classdef Membrana < Elemento
         end % sumarFuerzaEquivalente function
         
         function agregarFuerzaResistenteAReacciones(obj)
+            % agregarFuerzaResistenteAReacciones: Agrega la fuerza
+            % equivalente de la membrana a las reacciones
             
             % Se calcula la fuerza resistente global
             fr_global = obj.obtenerFuerzaResistenteCoordGlobal();
@@ -495,6 +512,8 @@ classdef Membrana < Elemento
         end % agregarFuerzaResistenteAReacciones function
         
         function guardarPropiedades(obj, archivoSalidaHandle)
+            % guardarPropiedades: Guarda las propiedades de la membrana en
+            % un archivo
             
             % Carga los nodos
             nodo1 = obj.nodosObj{1};
@@ -512,7 +531,7 @@ classdef Membrana < Elemento
         end % guardarPropiedades function
         
         function lista = crearListaTensiones(obj)
-            % Itera segun x e y
+            % crearListaTensiones: Itera segun x e y
             
             % Elementos totales
             el = (obj.NPOINTS + 1)^2;
@@ -554,6 +573,8 @@ classdef Membrana < Elemento
         end % crearListaTensiones function
         
         function guardarEsfuerzosInternos(obj, archivoSalidaHandle)
+            % guardarEsfuerzosInternos: Guarda los esfuerzos internos de la
+            % membrana en un archivo
             
             fr = obj.obtenerFuerzaResistenteCoordGlobal();
             
@@ -600,8 +621,6 @@ classdef Membrana < Elemento
         
         function plot(obj, deformadas, tipoLinea, grosorLinea, ~)
             % plot: Grafica un elemento
-            %
-            % plot(obj,deformadas,tipoLinea,grosorLinea)
             
             % Obtiene las coordenadas de los objetos
             coord1 = obj.nodosObj{1}.obtenerCoordenadas();
@@ -626,8 +645,8 @@ classdef Membrana < Elemento
         end % plot function
         
         function disp(obj)
+            % disp: Imprime propiedades de la membrana en la consola
             
-            % Imprime propiedades de la membrana
             fprintf('Propiedades membrana:\n\t');
             disp@ComponenteModelo(obj);
             
