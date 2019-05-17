@@ -6,9 +6,9 @@
 
 - Método de rigidez, análisis estático
 - Método modal espectral, análisis estático
-  - Cálculo valores y vectores propios con múltiples metodologías (Vectores ritz, matriz de barrido, inversión por desplazamiento).
-  - Cálculo de energía y esfuerzos.
-  - Soporte a disipadores.
+  - Cálculo valores y vectores propios con múltiples metodologías (Vectores ritz, matriz de barrido, inversión por desplazamiento)
+  - Cálculo de energía y esfuerzos
+  - Soporte a disipadores
 
 ## Tipo de elementos
 
@@ -21,9 +21,9 @@
 
 ## Tipo de disipadores
 
-- Viscoso 2D
-- Triangular 2D
 - Friccional puro 2D
+- Triangular 2D
+- Viscoso 2D
 
 ## Patrones de carga
 
@@ -64,4 +64,4 @@ La documentación del proyecto se puede encontrar en [https://ppizarror.com/TEFA
 
 ## Licencia
 
-Este proyecto está licenciado bajo la licencia MIT [https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT)
+Este proyecto está licenciado bajo la licencia MIT [https://opensource.org/licenses/MIT](
