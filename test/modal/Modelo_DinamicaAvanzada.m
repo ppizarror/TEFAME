@@ -3,6 +3,7 @@ fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);
 modeloObj.definirNombre('Modelo Dinamica Avanzada');
+modelarFundacion = true;
 
 %% Nodos modelo
 nodos = {};
@@ -22,17 +23,26 @@ modeloObj.agregarElementos(elementos);
 modeloObj.agregarDisipadores(disipadores);
 
 %% Creamos las restricciones
-restricciones = cell(10, 1);
-restricciones{1} = RestriccionNodo('R1', nodos{1}, [1, 2, 3]');
-restricciones{2} = RestriccionNodo('R2', nodos{2}, [1, 2, 3]');
-restricciones{3} = RestriccionNodo('R3', nodos{3}, [1, 2, 3]');
-restricciones{4} = RestriccionNodo('R4', nodos{4}, [1, 2, 3]');
-restricciones{5} = RestriccionNodo('R5', nodos{5}, [1, 2, 3]');
-restricciones{6} = RestriccionNodo('R6', nodos{6}, [1, 2, 3]');
-restricciones{7} = RestriccionNodo('R7', nodos{7}, [1, 2, 3]');
-restricciones{8} = RestriccionNodo('R8', nodos{8}, [1, 2, 3]');
-restricciones{9} = RestriccionNodo('R9', nodos{9}, [1, 2, 3]');
-restricciones{10} = RestriccionNodo('R10', nodos{10}, [1, 2, 3]');
+
+if modelarFundacion
+    restricciones = cell(11, 1);
+    restricciones{11} = RestriccionNodo('R11', nodos{145}, [1, 2, 3]');
+    restHor = 0;
+else
+    restricciones = cell(10, 1);
+    restHor = 1;
+end
+restricciones{1} = RestriccionNodo('R1', nodos{1}, [restHor, 2, 3]');
+restricciones{2} = RestriccionNodo('R2', nodos{2}, [restHor, 2, 3]');
+restricciones{3} = RestriccionNodo('R3', nodos{3}, [restHor, 2, 3]');
+restricciones{4} = RestriccionNodo('R4', nodos{4}, [restHor, 2, 3]');
+restricciones{5} = RestriccionNodo('R5', nodos{5}, [restHor, 2, 3]');
+restricciones{6} = RestriccionNodo('R6', nodos{6}, [restHor, 2, 3]');
+restricciones{7} = RestriccionNodo('R7', nodos{7}, [restHor, 2, 3]');
+restricciones{8} = RestriccionNodo('R8', nodos{8}, [restHor, 2, 3]');
+restricciones{9} = RestriccionNodo('R9', nodos{9}, [restHor, 2, 3]');
+restricciones{10} = RestriccionNodo('R10', nodos{10}, [restHor, 2, 3]');
+
 
 % Agregamos las restricciones al modelo
 modeloObj.agregarRestricciones(restricciones);
@@ -74,10 +84,10 @@ patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
 %% Analiza el sistema y resuelve para cargas estaticas
-analisisObj.analizar('nModos', 50, 'rayleighBeta', [0.02, 0.02], 'rayleighModo', [1, 8], ...
+analisisObj.analizar('nModos', 276, 'rayleighBeta', [0.05, 0.02], 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
-    'valvecAlgoritmo', 'eigs', 'valvecTolerancia', 0.0001, ...
-    'muIterDespl', wIterDespl);
+    'valvecAlgoritmo', 'ritz', 'valvecTolerancia', 0.0001, ...
+    'muIterDespl', wIterDespl, 'nRitz', 270);
 analisisObj.disp();
 w = analisisObj.obtenerValoresPropios();
 cargaEstatica = analisisObj.obtenerCargaEstatica();

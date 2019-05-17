@@ -96,9 +96,12 @@ classdef RestriccionNodo < ComponenteModelo
             % Se extraen los ID del GDL
             gdlID = obj.nodoObj.obtenerGDLID();
             
-            % Se coloca zero en los GDL que se indicaron en la restriccion
-            gdlID(obj.gdlRestringidos, 1) = ...
-                zeros(length(obj.gdlRestringidos), 1);
+            % Se coloca cero en los GDL que se indicaron en la restriccion
+            for i=1:length(obj.gdlRestringidos)
+                if obj.gdlRestringidos(i) ~= 0
+                    gdlID(obj.gdlRestringidos(i)) = 0;
+                end
+            end % for i
             
             % Se asigna el nuevo valor de GDLID al Nodo
             obj.nodoObj.definirGDLID(gdlID);
