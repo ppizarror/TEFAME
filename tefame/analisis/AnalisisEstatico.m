@@ -282,6 +282,9 @@ classdef AnalisisEstatico < Analisis
             % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
             % en el Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             K_Modelo = obj.Kt;
             
         end % obtenerMatrizRigidez function
@@ -289,8 +292,6 @@ classdef AnalisisEstatico < Analisis
         function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(obj)
             % obtenerMatrizAmortiguamientoDisipadores: es un metodo de la
             % clase que retorna la matriz de amortiguamiento de los disipadores
-            %
-            % Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(obj)
             %
             % Obtiene la matriz de amortiguamiento de los disipadores del modelo
             
@@ -302,8 +303,6 @@ classdef AnalisisEstatico < Analisis
             % obtenerMatrizRigidezDisipadores: es un metodo de la clase ModalEspectral
             % que se usa para obtener la matriz de rigidez de los
             % disipadores
-            %
-            % Kdv_Modelo = obtenerMatrizRigidezDisipadores(obj)
             
             Kdv_Modelo = obj.ensamblarMatrizRigidezDisipadores();
             
@@ -313,11 +312,12 @@ classdef AnalisisEstatico < Analisis
             % obtenerVectorFuerzas: es un metodo de la clase AnalisisEstatico
             % que se usa para obtener el vector de fuerza del modelo
             %
-            % F_Modelo = obtenerVectorFuerzas(obj)
-            %
             % Obtiene el vector de fuerza (F_Modelo) del modelo que se genero
             % en el Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             F_Modelo = obj.F;
             
         end % obtenerVectorFuerzas function
@@ -327,19 +327,18 @@ classdef AnalisisEstatico < Analisis
             % que se usa para obtener el vector de desplazamiento del modelo
             % obtenido del analisis
             %
-            % u_Modelo = obtenerDesplazamientos(obj)
-            %
             % Obtiene el vector de desplazamiento (u_Modelo) del modelo que se
             % genero como resultado del Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             u_Modelo = obj.u;
             
         end % obtenerDesplazamientos function
         
         function [limx, limy, limz] = obtenerLimitesDeformada(obj, factor)
             % obtenerLimitesDeformada: Obtiene los limites de deformacion
-            %
-            % [limx,limy,limz] = obtenerLimitesDeformada(obj, factor)
             
             factor = 1.25 * factor;
             limx = [inf, -inf];
@@ -398,23 +397,21 @@ classdef AnalisisEstatico < Analisis
         function plt = plot(obj, varargin)
             % plt: Grafica el modelo
             %
-            % plt = plot(obj,varargin)
-            %
             % Parametros opcionales:
-            %   'angAzh'        Angulo grafico 3d azimutal
-            %   'angPol'        Angulo grafico 3d polar
-            %   'defElem'       Dibuja la deformada de cada elemento
-            %   'deformada'     Dibuja la deformada del problema
-            %   'factor'        Factor de la deformada
-            %   'lwElemD'       Ancho linea elemento deformado
-            %   'lwElemE'       Ancho linea elemento estatico
-            %   'sizeNodoD'     Porte nodo deformado
-            %   'sizeNodoE'     Porte nodo estatico
-            %   'styleElemD'    Estilo elemento deformado
-            %   'styleElemE'    Estilo elemento estatico
-            %   'styleNodoD'    Estilo nodo deformado
-            %   'styleNodoE'    Estilo nodos estaticos
-            %   'unidad'        Unidar longitud
+            %   angAzh          Angulo grafico 3d azimutal
+            %   angPol          Angulo grafico 3d polar
+            %   defElem         Dibuja la deformada de cada elemento
+            %   deformada       Dibuja la deformada del problema
+            %   factor          Factor de la deformada
+            %   lwElemD         Ancho linea elemento deformado
+            %   lwElemE         Ancho linea elemento estatico
+            %   sizeNodoD       Porte nodo deformado
+            %   sizeNodoE       Porte nodo estatico
+            %   styleElemD      Estilo elemento deformado
+            %   styleElemE      Estilo elemento estatico
+            %   styleNodoD      Estilo nodo deformado
+            %   styleNodoE      Estilo nodos estaticos
+            %   unidad          Unidad longitud
             
             p = inputParser;
             p.KeepUnmatched = true;
@@ -535,8 +532,6 @@ classdef AnalisisEstatico < Analisis
         function disp(obj)
             % disp: es un metodo de la clase AnalisisEstatico que se usa para imprimir en
             % command Window la informacion del Analisis Estatico realizado
-            %
-            % disp(obj)
             %
             % Imprime la informacion guardada en el AnalisisEstatico (obj) en
             % pantalla

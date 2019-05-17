@@ -76,6 +76,7 @@
 %       K_Modelo = obtenerMatrizRigidez(obj)
 %       Kdv_Modelo = obtenerMatrizRigidezDisipadores(obj)
 %       M_Modelo = obtenerMatrizMasa(obj)
+%       Mmeff = obtenerVectorParticipacionMasa(obj)
 %       numeroEcuaciones = obtenerNumeroEcuaciones(obj)
 %       phi_Modelo = obtenerMatrizPhi(obj)
 %       plot(obj,varargin)
@@ -359,6 +360,9 @@ classdef ModalEspectral < Analisis
             % Obtiene la matriz de masa (M_Modelo) del modelo que se genero
             % en el Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             M_Modelo = obj.Mteq;
             
         end % obtenerMatrizMasa function
@@ -370,6 +374,9 @@ classdef ModalEspectral < Analisis
             % Obtiene la matriz de amortiguamiento (C_Modelo) del modelo que se genero
             % en el Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             if rayleigh
                 C_Modelo = obj.cRayleigh;
             else
@@ -385,6 +392,9 @@ classdef ModalEspectral < Analisis
             % Obtiene la matriz de rigidez (K_Modelo) del modelo que se genero
             % en el Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             K_Modelo = obj.Kteq;
             
         end % obtenerMatrizRigidez function
@@ -396,6 +406,9 @@ classdef ModalEspectral < Analisis
             %
             % Obtiene la matriz de amortiguamiento del modelo
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             Cdv_Modelo = obj.ensamblarMatrizAmortiguamientoDisipadores();
             
         end % obtenerMatrizAmortiguamientoDisipadores function
@@ -405,6 +418,9 @@ classdef ModalEspectral < Analisis
             % que se usa para obtener la matriz de rigidez de los
             % disipadores
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             Kdv_Modelo = obj.ensamblarMatrizRigidezDisipadores();
             
         end % obtenerMatrizRigidezDisipadores function
@@ -416,6 +432,9 @@ classdef ModalEspectral < Analisis
             % Obtiene el vector de influencia (r) del modelo que se genero
             % en el Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             r_Modelo = obj.rm;
             
         end % obtenerVectorInfluencia function
@@ -427,6 +446,9 @@ classdef ModalEspectral < Analisis
             % Obtiene el vector de fuerza (F_Modelo) del modelo que se genero
             % en el Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             F_Modelo = obj.F;
             
         end % obtenerVectorFuerzas function
@@ -439,6 +461,9 @@ classdef ModalEspectral < Analisis
             % Obtiene el vector de desplazamiento (u_Modelo) del modelo que se
             % genero como resultado del Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             u_Modelo = obj.u;
             
         end % obtenerDesplazamientos function
@@ -451,9 +476,23 @@ classdef ModalEspectral < Analisis
             % Obtiene los valores propios (wn_Modelo) del modelo que se
             % genero como resultado del Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             wn_Modelo = obj.wn;
             
         end % obtenerValoresPropios function
+        
+        function Mmeff = obtenerVectorParticipacionMasa(obj)
+            % obtenerVectorParticipacion: Obtiene el vector de
+            % participacion modal de las masas
+            
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
+            Mmeff = obj.Mmeff(1:obj.numModos, :);
+            
+        end % obtenerVectorParticipacion function
         
         function phi_Modelo = obtenerMatrizPhi(obj)
             % obtenerMatrizPhi: es un metodo de la clase ModalEspectral
@@ -463,6 +502,9 @@ classdef ModalEspectral < Analisis
             % Obtiene los vectores propios (phi_Modelo) del modelo que se
             % genero como resultado del Analisis (obj)
             
+            if ~obj.analisisFinalizado
+                warning('El analisis no ha sido realizado aun');
+            end
             phi_Modelo = obj.phin;
             
         end % obtenerMatrizPhi function
@@ -1831,7 +1873,7 @@ classdef ModalEspectral < Analisis
             ctitle = obj.imprimirPropiedadesAnalisisCarga(carga);
             
             % Elige al nodo
-            [r, ~] = size(a_c);
+            [nr, ~] = size(a_c);
             ngd = nodo.obtenerGDLIDCondensado();
             ng = 0; % Numero grado analisis
             nd = 0; % Numero direccion analisis
@@ -1844,7 +1886,7 @@ classdef ModalEspectral < Analisis
             if ng == 0
                 error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
             end
-            if ng > r
+            if ng > nr
                 error('El GDLID excede al soporte del sistema');
             end
             
