@@ -66,21 +66,21 @@
        alpha
        Cd
   Methods:
-       actualizardDisipador(disipadorFriccionalPuro2DObj,w,carga)
-       definirGDLID(disipadorFriccionalPuro2DObj)
-       disipadorFriccionalPuro2DObj = DisipadorFriccionalPuro2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
-       disp(disipadorFriccionalPuro2DObj)
-       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorFriccionalPuro2DObj)
-       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorFriccionalPuro2DObj)
-       gdlIDBiela = obtenerGDLID(disipadorFriccionalPuro2DObj)
-       k_global = obtenerMatrizRigidezCoordGlobal(disipadorFriccionalPuro2DObj)
-       k_local = obtenerMatrizRigidezCoordLocal(disipadorFriccionalPuro2DObj)
-       l = obtenerLargo(disipadorFriccionalPuro2DObj)
-       nodosBiela = obtenerNodos(disipadorFriccionalPuro2DObj)
-       numeroGDL = obtenerNumeroGDL(disipadorFriccionalPuro2DObj)
-       numeroNodos = obtenerNumeroNodos(disipadorFriccionalPuro2DObj)
-       plot(disipadorFriccionalPuro2DObj,tipoLinea,grosorLinea,colorLinea)
-       T = obtenerMatrizTransformacion(disipadorFriccionalPuro2DObj)
+       actualizardDisipador(obj,w,carga)
+       definirGDLID(obj)
+       obj = DisipadorFriccionalPuro2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
+       disp(obj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
+       gdlIDBiela = obtenerGDLID(obj)
+       k_global = obtenerMatrizRigidezCoordGlobal(obj)
+       k_local = obtenerMatrizRigidezCoordLocal(obj)
+       l = obtenerLargo(obj)
+       nodosBiela = obtenerNodos(obj)
+       numeroGDL = obtenerNumeroGDL(obj)
+       numeroNodos = obtenerNumeroNodos(obj)
+       plot(obj,tipoLinea,grosorLinea,colorLinea)
+       T = obtenerMatrizTransformacion(obj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(obj)
        e = equals(obj,obj)
@@ -99,6 +99,6 @@ This function is called by:
 
 
 
-<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Thu 16-May-2019 20:55:39 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

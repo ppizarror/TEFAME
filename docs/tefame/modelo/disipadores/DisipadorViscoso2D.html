@@ -65,20 +65,20 @@
        alpha
        Cd
   Methods:
-       definirGDLID(disipadorViscoso2DObj)
-       disipadorViscoso2DObj = DisipadorViscoso2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
-       disp(disipadorViscoso2DObj)
-       fr_global = obtenerFuerzaResistenteCoordGlobal(disipadorViscoso2DObj)
-       fr_local = obtenerFuerzaResistenteCoordLocal(disipadorViscoso2DObj)
-       gdlIDBiela = obtenerGDLID(disipadorViscoso2DObj)
-       k_global = obtenerMatrizRigidezCoordGlobal(disipadorViscoso2DObj)
-       k_local = obtenerMatrizRigidezCoordLocal(disipadorViscoso2DObj)
-       l = obtenerLargo(disipadorViscoso2DObj)
-       nodosBiela = obtenerNodos(disipadorViscoso2DObj)
-       numeroGDL = obtenerNumeroGDL(disipadorViscoso2DObj)
-       numeroNodos = obtenerNumeroNodos(disipadorViscoso2DObj)
-       plot(disipadorViscoso2DObj,tipoLinea,grosorLinea,colorLinea)
-       T = obtenerMatrizTransformacion(disipadorViscoso2DObj)
+       definirGDLID(obj)
+       obj = DisipadorViscoso2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
+       disp(obj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
+       gdlIDBiela = obtenerGDLID(obj)
+       k_global = obtenerMatrizRigidezCoordGlobal(obj)
+       k_local = obtenerMatrizRigidezCoordLocal(obj)
+       l = obtenerLargo(obj)
+       nodosBiela = obtenerNodos(obj)
+       numeroGDL = obtenerNumeroGDL(obj)
+       numeroNodos = obtenerNumeroNodos(obj)
+       plot(obj,tipoLinea,grosorLinea,colorLinea)
+       T = obtenerMatrizTransformacion(obj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(obj)
        e = equals(obj,obj)
@@ -97,6 +97,6 @@ This function is called by:
 
 
 
-<hr><address>Generated on Thu 16-May-2019 19:34:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Thu 16-May-2019 20:55:39 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>
