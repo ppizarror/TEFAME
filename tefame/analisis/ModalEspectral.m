@@ -166,7 +166,7 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'condensar', true);
             addOptional(p, 'cpenzienBeta', []);
             addOptional(p, 'factorCargaE', 1);
-            addOptional(p, 'muIterDespl', 0.5);
+            addOptional(p, 'muIterDespl', []);
             addOptional(p, 'nModos', 0);
             addOptional(p, 'nRitz', 1);
             addOptional(p, 'rayleighBeta', []);
@@ -224,6 +224,18 @@ classdef ModalEspectral < Analisis
             
             if length(r.nRitz) > 1
                 error('Numero de Ritz no puede ser un vector');
+            end
+            
+            if strcmp(r.valvecAlgoritmo, 'itInvDesp') && isempty(r.muIterDespl)
+                error('El vector muIterDespl no puede ser nulo si se usa el algoritmo de iteracion inversa por desplazamiento');
+            end
+            [muc, muk] = size(r.muIterDespl);
+            if ~(muc == 1  || muk == 1)
+                error('muIterDespl debe ser un vector');
+            else
+                if muc == 1 % Convierte en vector columna
+                    r.muIterDespl = r.muIterDespl';
+                end
             end
             
             fprintf('Ejecutando analisis modal espectral:\n');
@@ -2242,14 +2254,25 @@ classdef ModalEspectral < Analisis
                 fprintf('\t\tCalculo valores y vectores propios con algoritmo matriz de barrido\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
                 [modalPhin, modalWn] = calculoEigDirectaBarrido(Meq, Keq, nModos, valvecTolerancia);
-                % elseif strcmp(valvecAlgoritmo, 'itInv')
-                %     fprintf('\t\tCalculo valores y vectores propios con metodo iteracion inversa\n');
             elseif strcmp(valvecAlgoritmo, 'itInvDesp')
                 fprintf('\t\tCalculo valores y vectores propios con metodo iteracion inversa con desplazamientos\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
-                fprintf('\t\t\tMu: %.4f\n', muIterDesplazamiento);
-                [modalPhin, modalWn] = calculoEigIterInvDesplazamiento(Meq, Keq, muIterDesplazamiento, valvecTolerancia);
-                nModos = length(modalWn);
+                
+                % Recorre cada mu y obtiene la forma modal
+                if length(muIterDesplazamiento) > ngdl
+                    warning('El largo del vector muIterDespl excede el numero de grados de libertad del sistema');
+                end
+                nModos = min(length(muIterDesplazamiento), ngdl);
+                
+                % Comienza con matrices vacias que luego se extienden para
+                % cada modo calculado
+                modalPhin = zeros(ngdl, nModos);
+                modalWn = zeros(ngdl, 1);
+                for i=1:nModos
+                    [modalPhini, modalWni] = calculoEigIterInvDesplazamiento(Meq, Keq, muIterDesplazamiento(i)^2, valvecTolerancia);
+                    modalPhin(:, i) = modalPhini(:, end);
+                    modalWn(i) = modalWni(end);
+                end           
             elseif strcmp(valvecAlgoritmo, 'itSubesp')
                 fprintf('\t\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
