@@ -17,11 +17,15 @@
 
 - Método de rigidez, análisis estático
 - Método modal espectral, análisis estático
+  - Cálculo valores y vectores propios con múltiples metodologías (Vectores ritz, matriz de barrido, inversión por desplazamiento).
+  - Cálculo de energía y esfuerzos.
+  - Soporte a disipadores.
 
 ## Tipo de elementos
 
 - Biela 2D
 - Biela 3D
+- Fundación 2D
 - Membrana (Shell 2D)
 - Viga 2D
 - Viga-columna 2D
