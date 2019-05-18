@@ -18,6 +18,7 @@ tipoDisipador = 'viscoso'; % viscoso, friccional, triangular
 
 %% IMPLEMENTA LOS DISIPADORES
 if strcmp(tipoDisipador, 'viscoso') % DISIPADOR VISCOSO 2D
+
     disipadores{1} = DisipadorViscoso2D('DV04-15', nodos{97}, nodos{102}, Cd, alpha); %#ok<SUSENS>
     disipadores{2} = DisipadorViscoso2D('DV14-25', nodos{101}, nodos{106}, Cd, alpha);
     disipadores{3} = DisipadorViscoso2D('DV24-35', nodos{105}, nodos{110}, Cd, alpha);
@@ -34,6 +35,7 @@ if strcmp(tipoDisipador, 'viscoso') % DISIPADOR VISCOSO 2D
     disipadores{14} = DisipadorViscoso2D('DV131-142', nodos{124}, nodos{127}, Cd, alpha);
     
 elseif strcmp(tipoDisipador, 'friccional') % DISIPADOR FRICCIONAL PURO 2D
+
     disipadores{1} = DisipadorFriccionalPuro2D('DF04-15', nodos{97}, nodos{102}, Fy);
     disipadores{2} = DisipadorFriccionalPuro2D('DF14-25', nodos{101}, nodos{106}, Fy);
     disipadores{3} = DisipadorFriccionalPuro2D('DF24-35', nodos{105}, nodos{110}, Fy);
@@ -48,8 +50,9 @@ elseif strcmp(tipoDisipador, 'friccional') % DISIPADOR FRICCIONAL PURO 2D
     disipadores{12} = DisipadorFriccionalPuro2D('DF111-122', nodos{116}, nodos{119}, Fy);
     disipadores{13} = DisipadorFriccionalPuro2D('DF121-132', nodos{120}, nodos{123}, Fy);
     disipadores{14} = DisipadorFriccionalPuro2D('DF131-142', nodos{124}, nodos{127}, Fy);
-    
+
 elseif strcmp(tipoDisipador, 'triangular') % DISIPADOR TRIANGULAR 2D
+
     disipadores{1} = DisipadorTriangular2D('DT04-15', nodos{97}, nodos{102}, k1, k2);
     disipadores{2} = DisipadorTriangular2D('DT14-25', nodos{101}, nodos{106}, k1, k2);
     disipadores{3} = DisipadorTriangular2D('DT24-35', nodos{105}, nodos{110}, k1, k2);

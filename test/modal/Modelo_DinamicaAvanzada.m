@@ -23,7 +23,6 @@ modeloObj.agregarElementos(elementos);
 modeloObj.agregarDisipadores(disipadores);
 
 %% Creamos las restricciones
-
 if modelarFundacion
     restricciones = cell(11, 1);
     restricciones{11} = RestriccionNodo('R11', nodos{145}, [1, 2, 3]');
@@ -42,7 +41,6 @@ restricciones{7} = RestriccionNodo('R7', nodos{7}, [restHor, 2, 3]');
 restricciones{8} = RestriccionNodo('R8', nodos{8}, [restHor, 2, 3]');
 restricciones{9} = RestriccionNodo('R9', nodos{9}, [restHor, 2, 3]');
 restricciones{10} = RestriccionNodo('R10', nodos{10}, [restHor, 2, 3]');
-
 
 % Agregamos las restricciones al modelo
 modeloObj.agregarRestricciones(restricciones);

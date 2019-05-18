@@ -1,7 +1,6 @@
 % Elementos Modelo
 
 %% DEFINICION DE PROPIEDADES
-
 % Propiedades de la viga
 Av = 0.65 * 0.4; % (m2)
 Ev = 2625051; % (tonf/m2)
@@ -382,7 +381,6 @@ if modelarFundacion
     elementos{245} = Fundacion2D('FN08-FN09', nodos{8}, nodos{9}, Mr, Kinf);
     elementos{246} = Fundacion2D('FN09-FN010', nodos{9}, nodos{10}, Mr, Kinf); 
     elementos{247} = Fundacion2D('aux', nodos{10}, nodos{145}, 1, Kr);
-else
 end
 
 %% Otros
