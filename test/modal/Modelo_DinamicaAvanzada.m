@@ -16,7 +16,7 @@ modeloObj.agregarNodos(nodos);
 elementos = {};
 disipadores = {};
 Modelo_DinamicaAvanzadaElementos();
-Modelo_DinamicaAvanzadaDisipadores();
+% Modelo_DinamicaAvanzadaDisipadores();
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
@@ -82,15 +82,15 @@ patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
 %% Analiza el sistema y resuelve para cargas estaticas
-analisisObj.analizar('nModos', 276, 'rayleighBeta', [0.05, 0.02], 'rayleighModo', [1, 8], ...
+analisisObj.analizar('nModos', 278, 'rayleighBeta', [0.05, 0.02], 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
     'valvecAlgoritmo', 'ritz', 'valvecTolerancia', 0.0001, ...
-    'muIterDespl', wIterDespl, 'nRitz', 270);
+    'muIterDespl', wIterDespl, 'nRitz', 278);
 analisisObj.disp();
 w = analisisObj.obtenerValoresPropios();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
-% plt = analisisObj.plot('modo', 8, 'factor', 20, 'cuadros', 25, 'gif', ...
-%   'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
+% plt = analisisObj.plot('modo', 0, 'factor', 20, 'cuadros', 25, 'gif', ...
+%    'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
 
 %% Genera combinaciones de cargas
 combinacionCargas = {};
@@ -98,7 +98,7 @@ combinacionCargas{1} = CombinacionCargas('E', {cargaEstatica});
 combinacionCargas{2} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEstatica});
 
 %% Calcula y grafica las cargas dinamicas
-analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', true, ...
+analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', false, ...
     'cargaDisipador', cargasDinamicas{1}, 'betaObjetivo', 0.08, 'iterDisipador', 10, ...
     'betaGrafico', false, 'activado', false);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');

@@ -206,5 +206,5 @@ nodos{144} = Nodo('N272', 3, [5*v, (h1+26*h)]');
 
 % Agrega nodo de fundacion
 if modelarFundacion
-    nodos{145} = Nodo('Aux', 3, [9 * v + 2, 0]); % 2 metros alejado del ultimo nodo 
+    nodos{145} = Nodo('Aux', 3, [9 * v + 8, 0]); % 2 metros alejado del ultimo nodo 
 end

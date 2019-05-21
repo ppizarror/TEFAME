@@ -12,10 +12,10 @@ Ec = 2625051; % (tonf/m2)
 Ic = 1 / 12;
 
 % Propiedades de la Fundacion
-G = 15295743; % [GPa]
+G = 15295.74; % [tonf/m2]
 ro = 1; % [m]
 Kr = (32 * (1 - 0.3)) / (7 - 8 * 0.3) * G * ro;
-Mr = 10 * 475.479 /9;
+Mr = 10 * 473.567 /9;
 
 % Densidad del material hormigon
 Rhoh = 2.5 / 9.80665; % (ton/m3), se aplica factor carga masa
@@ -380,7 +380,7 @@ if modelarFundacion
     elementos{244} = Fundacion2D('FN07-FN08', nodos{7}, nodos{8}, Mr, Kinf);
     elementos{245} = Fundacion2D('FN08-FN09', nodos{8}, nodos{9}, Mr, Kinf);
     elementos{246} = Fundacion2D('FN09-FN010', nodos{9}, nodos{10}, Mr, Kinf); 
-    elementos{247} = Fundacion2D('aux', nodos{10}, nodos{145}, 1, Kr);
+    elementos{247} = Fundacion2D('aux', nodos{10}, nodos{145}, 10^-10, Kr);
 end
 
 %% Otros
