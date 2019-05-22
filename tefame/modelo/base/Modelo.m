@@ -317,7 +317,7 @@ classdef Modelo < handle
             % (obj), es decir, aplica las cargas sobre los nodos y
             % elementos
             
-            fprintf('\tAplica patron de cargas estatico\n');
+            fprintf('\tAplica patron de cargas estatico:\n');
             fprintf('\t\tFactor: %f\n', factor);
             for i = 1:length(obj.patronesDeCargas)
                 if ~obj.patronesDeCargas{i}.patronDinamico()
@@ -339,7 +339,7 @@ classdef Modelo < handle
             % amortiguamiento de penzien, por defecto es falso, o sea usa
             % Rayleigh y si se usan disipadores o no en el calculo
             
-            fprintf('\tAplica patron de cargas dinamico\n');
+            fprintf('\tAplica patron de cargas dinamico:\n');
             fprintf('\t\tFactor: %f\n', factor);
             for i = 1:length(obj.patronesDeCargas)
                 if obj.patronesDeCargas{i}.patronDinamico()

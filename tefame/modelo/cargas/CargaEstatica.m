@@ -55,6 +55,7 @@ classdef CargaEstatica < ComponenteModelo
     
     properties(Access = private)
         cargaSumoMasa % Indica que la carga ya sumo masa
+        cargaActiva % La carga esta activa
     end % properties CargaEstatica
     
     properties(Access = protected)
@@ -80,6 +81,7 @@ classdef CargaEstatica < ComponenteModelo
             obj.factorCargaMasa = 0;
             obj.factorUnidadMasa = 1;
             obj.cargaSumoMasa = false;
+            obj.cargaActiva = true;
             
         end % Carga constructor
         
@@ -146,6 +148,21 @@ classdef CargaEstatica < ComponenteModelo
             nodos = obj.nodosCarga;
             
         end % obtenerNodos function
+        
+        function y = cargaActivada(obj)
+            % cargaActivada: Indica si la carga esta activada para el
+            % analisis
+            
+            y = obj.cargaActiva;
+            
+        end % cargaActivada function
+        
+        function desactivarCarga(obj)
+            % desactivarCarga: Desactiva la carga para el analisis
+            
+            obj.cargaActiva = false;
+            
+        end % desactivarCarga function
         
     end % methods CargaEstatica
     

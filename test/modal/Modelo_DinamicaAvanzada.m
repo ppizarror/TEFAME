@@ -3,7 +3,9 @@ fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);
 modeloObj.definirNombre('Modelo Dinamica Avanzada');
-modelarFundacion = true;
+modelarFundacion = false;
+usarDisipadores = false;
+resolverCargasDinamicas = false;
 
 %% Nodos modelo
 nodos = {};
@@ -22,13 +24,19 @@ Modelo_DinamicaAvanzadaDisipadores();
 modeloObj.agregarElementos(elementos);
 modeloObj.agregarDisipadores(disipadores);
 
+if usarDisipadores
+    rayBeta = [0.02, 0.02];
+else
+    rayBeta = [0.05, 0.02];
+end
+
 %% Creamos las restricciones
 if modelarFundacion
     restricciones = cell(11, 1);
     restricciones{11} = RestriccionNodo('R11', nodos{145}, [1, 2, 3]');
     restHor = 0;
 else
-    restricciones = cell(10, 1);
+    restricciones = cell(10, 1); %#ok<*UNRCH>
     restHor = 1;
 end
 restricciones{1} = RestriccionNodo('R1', nodos{1}, [restHor, 2, 3]');
@@ -64,9 +72,11 @@ if ~exist('regConstitucionL', 'var') % Carga el registro
     % plotRegistro(regConstitucionL, 'Registro Constitucion/Longitudinal', 'm/s^2');
 end
 cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 0, 200);
-% cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 0, 20); % Horizontal
-% cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 0, 100); % Horizontal
-% cargasDinamicas{1}.desactivarCarga();
+cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 0, 20); % Horizontal
+cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 0, 100); % Horizontal
+
+cargasDinamicas{2}.desactivarCarga();
+cargasDinamicas{3}.desactivarCarga();
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
@@ -82,7 +92,7 @@ patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
 %% Analiza el sistema y resuelve para cargas estaticas
-analisisObj.analizar('nModos', 278, 'rayleighBeta', [0.05, 0.02], 'rayleighModo', [1, 8], ...
+analisisObj.analizar('nModos', 50, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
     'valvecAlgoritmo', 'ritz', 'valvecTolerancia', 0.0001, ...
     'muIterDespl', wIterDespl, 'nRitz', 278);
@@ -98,9 +108,9 @@ combinacionCargas{1} = CombinacionCargas('E', {cargaEstatica});
 combinacionCargas{2} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEstatica});
 
 %% Calcula y grafica las cargas dinamicas
-analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', false, ...
+analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', usarDisipadores, ...
     'cargaDisipador', cargasDinamicas{1}, 'betaObjetivo', 0.08, 'iterDisipador', 10, ...
-    'betaGrafico', false, 'activado', false);
+    'betaGrafico', false, 'activado', resolverCargasDinamicas);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);

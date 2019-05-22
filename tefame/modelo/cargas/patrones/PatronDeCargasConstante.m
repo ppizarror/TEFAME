@@ -93,6 +93,12 @@ classdef PatronDeCargasConstante < PatronDeCargas
                     error('PatronDeCargasConstante solo puede resolver cargas estaticas');
                 end
                 
+                % Chequea que la carga este activa
+                if ~obj.cargas{i}.cargaActivada()
+                    continue;
+                end
+                
+                % Aplica la carga
                 obj.cargas{i}.aplicarCarga(factor);
                 
             end % for i

@@ -2324,7 +2324,7 @@ classdef ModalEspectral < Analisis
                 fprintf('\t\tCalculo valores y vectores propios con vectores ritz\n');
                 % Fritz = analisisObj.obtenerVectorInfluencia;
                 Fritz = diag(eye(length(Keq)));
-                [modalPhin, modalWn] = calculoLDV(Meq, Keq, Fritz, nRitz);
+                [modalPhin, modalWn] = calculoLDV(abs(Meq), Keq, Fritz, nRitz);
                 nModos = length(modalWn);
             else
                 error('Algoritmo valvec:%s incorrecto, valores posibles: eigs,itDir,matBarr,itInvDesp,itSubEsp,ritz', ...

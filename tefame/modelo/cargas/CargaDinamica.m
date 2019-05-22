@@ -315,10 +315,10 @@ classdef CargaDinamica < ComponenteModelo
             
         end % disp function
         
-        function masa = obtenerMasa(obj)
+        function masa = obtenerMasa(obj) %#ok<MANU>
             % obtenerMasa: Obtiene la masa de la carga
             
-            masa = [] .* (obj.factorCargaMasa * obj.factorUnidadMasa);
+            masa = 0;
             
         end % obtenerMasa function
         
