@@ -12,10 +12,10 @@ Ec = 2625051; % (tonf/m2)
 Ic = 1 / 12;
 
 % Propiedades de la Fundacion
-G = 15295.74; % [tonf/m2]
+G = 15295.743; % [tonf/m2]
 ro = 1; % [m]
 Kr = (32 * (1 - 0.3)) / (7 - 8 * 0.3) * G * ro;
-Mr = 10 * 473.567 /9;
+Mr = 10 * 473.567 /9 * 2;
 
 % Densidad del material hormigon
 Rhoh = 2.5 / 9.80665; % (ton/m3), se aplica factor carga masa
