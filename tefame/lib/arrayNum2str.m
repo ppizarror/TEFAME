@@ -13,12 +13,24 @@ textCell(1) = {'['};
 
 for i = 1:num  
     if abs(a(i)) < 1e-10
-        textCell(2*i) = {pad(num2str(0), 10)};
-    else
-        if abs(a(i)) < 1e-4
-            textCell(2*i) = {pad(num2str(a(i), '%.05f'), 10)};
+        if i < num
+            textCell(2*i) = {pad(num2str(0), 10)};
         else
-            textCell(2*i) = {pad(num2str(a(i), '%.04f'), 10)};
+            textCell(2*i) = {num2str(0)};
+        end
+    else
+        if i < num
+            if abs(a(i)) < 1e-4
+                textCell(2*i) = {pad(num2str(a(i), '%.05f'), 10)};
+            else
+                textCell(2*i) = {pad(num2str(a(i), '%.04f'), 10)};
+            end
+        else
+            if abs(a(i)) < 1e-4
+                textCell(2*i) = {num2str(a(i), '%.05f')};
+            else
+                textCell(2*i) = {num2str(a(i), '%.04f')};
+            end
         end
     end
     textCell(1+2*i) = {' '};    
