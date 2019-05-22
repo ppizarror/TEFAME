@@ -158,7 +158,7 @@ classdef ModalEspectral < Analisis
             %   rayleighDir         Direccion amortiguamiento Rayleigh
             %   rayleighModo        Vector modos de Rayleigh
             %   toleranciaMasa      Tolerancia de la masa para la condensacion
-            %   valvecAlgoritmo     'eigvc','itDir','matBarr','itInvDesp','itSubesp'
+            %   valvecAlgoritmo     eigs,itDir,matBarr,itInvDesp,itSubEsp,ritz
             %   valvecTolerancia    Tolerancia calculo valores y vectores propios
             
             % Define parametros
@@ -1618,11 +1618,12 @@ classdef ModalEspectral < Analisis
             % Energia elastica total
             e_v = zeros(obj.numModos, 5);
             for j = 1:obj.numModos % Recorre cada modo
+                modoJ = phi(:, j);
                 e_vsum = 0; % Suma la energia asociada a un modo para todo el tiempo
-                kj = phi(:, j)' * k;
+                kj = modoJ' * k;
                 for i = 1:s % Recorre el tiempo
                     vv = c_u(:, i); % Obtiene el vector de desplazamiento para el tiempo i
-                    e_vsum = e_vsum + 0.5 * vv' * phi(:, j) * kj * vv;
+                    e_vsum = e_vsum + 0.5 * vv' * modoJ * kj * vv;
                 end % for i
                 e_v(j, 1) = j;
                 e_v(j, 2) = obj.wn(j);
@@ -2315,18 +2316,18 @@ classdef ModalEspectral < Analisis
                     modalPhin(:, i) = modalPhini(:, end);
                     modalWn(i) = modalWni(end);
                 end           
-            elseif strcmp(valvecAlgoritmo, 'itSubesp')
+            elseif strcmp(valvecAlgoritmo, 'itSubEsp')
                 fprintf('\t\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
                 [modalPhin, modalWn] = calculoEigItSubespacio(Meq, Keq, nModos, valvecTolerancia);
             elseif strcmp(valvecAlgoritmo, 'ritz')
-                fprintf('\t\tCalculo valores y vectores propios con Vectores Ritz\n');
+                fprintf('\t\tCalculo valores y vectores propios con vectores ritz\n');
                 % Fritz = analisisObj.obtenerVectorInfluencia;
                 Fritz = diag(eye(length(Keq)));
                 [modalPhin, modalWn] = calculoLDV(Meq, Keq, Fritz, nRitz);
                 nModos = length(modalWn);
             else
-                error('Algoritmo valvec:%s incorrecto, valores posibles: eigvc,itDir,matBarr,itInvDesp,itSubesp,ritz', ...
+                error('Algoritmo valvec:%s incorrecto, valores posibles: eigs,itDir,matBarr,itInvDesp,itSubEsp,ritz', ...
                     valvecAlgoritmo);
             end
             fprintf('\t\t\tFinalizado en %.3f segundos\n', cputime-eigCalcT);
@@ -2545,7 +2546,7 @@ classdef ModalEspectral < Analisis
             % Ensambla la matriz de masa del modelo analizado usando el metodo
             % indicial
             
-            fprintf('\tEnsamblando matriz de masa\n');
+            fprintf('\tEnsamblando matriz de masa:\n');
             obj.Mt = zeros(obj.numeroGDL, obj.numeroGDL);
             
             % Extraemos los Elementos
@@ -2591,6 +2592,11 @@ classdef ModalEspectral < Analisis
                 cargas = pat{i}.obtenerCargas();
                 for j = 1:length(cargas)
                     
+                    % Si la carga esta desactivada
+                    if ~cargas{j}.cargaActivada()
+                        continue;
+                    end
+                    
                     % Si la carga ya sumo masa se bloquea
                     if ~cargas{j}.cargaSumaMasa()
                         continue;
@@ -2598,17 +2604,23 @@ classdef ModalEspectral < Analisis
                     
                     nodoCarga = cargas{j}.obtenerNodos();
                     m = cargas{j}.obtenerMasa();
+                    if length(m) ~= 1
+                        continue;
+                    end
                     
                     % Recorre los nodos
                     for k = 1:length(nodoCarga)
                         
-                        n = nodoCarga{i}.obtenerGDLID();
-                        obj.Mt(n(1), n(1)) = obj.Mt(n(1), n(1)) + 0.5 * m;
-                        obj.Mt(n(2), n(2)) = obj.Mt(n(2), n(2)) + 0.5 * m;
-                        if length(n) == 3
+                        n = nodoCarga{k}.obtenerGDLID();
+                        if length(n) >=2
+                            obj.Mt(n(1), n(1)) = obj.Mt(n(1), n(1)) + 0.5 * m;
+                        end
+                        if length(n) >=2
+                            obj.Mt(n(2), n(2)) = obj.Mt(n(2), n(2)) + 0.5 * m;
+                        end
+                        if length(n) >= 3
                             obj.Mt(n(3), n(3)) = obj.Mt(n(3), n(3)) + 1e-6;
                         end
-                        % u(3) no se agrega dado que es el giro
                         
                     end % for k
                     
@@ -2626,7 +2638,7 @@ classdef ModalEspectral < Analisis
             mCargas = mTotal - mElementos;
             
             % Despliega informacion
-            fprintf('\tDistribucion de masa\n');
+            fprintf('\tDistribucion de masa:\n');
             fprintf('\t\tMasa de elementos: %.1f (%.2f%%)\n', mElementos, ...
                 mElementos/mTotal*100);
             fprintf('\t\tMasa de cargas: %.1f (%.2f%%)\n', mCargas, ...
