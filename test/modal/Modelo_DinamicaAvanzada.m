@@ -82,10 +82,10 @@ patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
 %% Analiza el sistema y resuelve para cargas estaticas
-analisisObj.analizar('nModos', 278, 'rayleighBeta', [0.05, 0.02], 'rayleighModo', [1, 8], ...
+analisisObj.analizar('nModos', 20, 'rayleighBeta', [0.05, 0.02], 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
     'valvecAlgoritmo', 'ritz', 'valvecTolerancia', 0.0001, ...
-    'muIterDespl', wIterDespl, 'nRitz', 278);
+    'muIterDespl', wIterDespl, 'nRitz', 223);
 analisisObj.disp();
 w = analisisObj.obtenerValoresPropios();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
@@ -100,7 +100,7 @@ combinacionCargas{2} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEsta
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', false, ...
     'cargaDisipador', cargasDinamicas{1}, 'betaObjetivo', 0.08, 'iterDisipador', 10, ...
-    'betaGrafico', false, 'activado', false);
+    'betaGrafico', false, 'activado', true);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);

@@ -959,7 +959,7 @@ classdef ModalEspectral < Analisis
                 CoordNodo = nodos{i}.obtenerCoordenadas;
                 xNodo = CoordNodo(1);
                 yNodo = CoordNodo(2);
-                if yNodo ~= habs(j)
+                if yNodo > habs(j)
                     k = 1;
                     j = j + 1;
                     habs(j, 1) = yNodo;
@@ -1010,6 +1010,7 @@ classdef ModalEspectral < Analisis
             Driftplot = zeros(2*length(hgen)-1, 1);
             aux1 = 1;
             aux2 = 2;
+            length(hgen)
             for i = 1:length(hgen)
                 hplot(aux1, 1) = hgen(i);
                 hplot(aux1+1, 1) = hgen(i);
@@ -3032,9 +3033,13 @@ classdef ModalEspectral < Analisis
             for i = ini:nnodos
                 gdls = nodos{i}.obtenerGDLIDCondensado();
                 gdlx = gdls(1);
-                acelx(i-ini+1, :) = acel(gdlx, :);
-                m(i-ini+1, 1) = M(gdlx, gdlx);
-                Fnodos(i-ini+1, :) = M(gdlx, gdlx) .* acel(gdlx, :);
+                if gdlx ~= 0
+                    acelx(i-ini+1, :) = acel(gdlx, :);
+                    m(i-ini+1, 1) = M(gdlx, gdlx);
+                    Fnodos(i-ini+1, :) = M(gdlx, gdlx) .* acel(gdlx, :);
+                else 
+                    Fnodos(i-ini+1, :) = 0;
+                end
                 [fil, ~] = find(hNodos == i);
                 Fpisos(fil-1, :) = Fpisos(fil-1, :) + Fnodos(i-ini+1, :);
             end % for i
