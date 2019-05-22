@@ -16,7 +16,7 @@ modeloObj.agregarNodos(nodos);
 elementos = {};
 disipadores = {};
 Modelo_DinamicaAvanzadaElementos();
-% Modelo_DinamicaAvanzadaDisipadores();
+Modelo_DinamicaAvanzadaDisipadores();
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
@@ -89,7 +89,7 @@ analisisObj.analizar('nModos', 278, 'rayleighBeta', [0.05, 0.02], 'rayleighModo'
 analisisObj.disp();
 w = analisisObj.obtenerValoresPropios();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
-% plt = analisisObj.plot('modo', 0, 'factor', 20, 'cuadros', 25, 'gif', ...
+% plt = analisisObj.plot('modo', 1, 'factor', 20, 'cuadros', 25, 'gif', ...
 %    'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
 
 %% Genera combinaciones de cargas
