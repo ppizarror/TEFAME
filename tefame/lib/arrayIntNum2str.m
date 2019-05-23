@@ -12,7 +12,11 @@ textCell = cell(1, 2*num+1);
 textCell(1) = {'['};
 
 for i = 1:num
-    textCell(2*i) = {pad(num2str(a(i), '%d'), 10*(i < num))};
+    if i < num
+        textCell(2*i) = {pad(num2str(a(i), '%d'), 10*(i < num))};
+    else
+        textCell(2*i) = {num2str(a(i), '%d')};
+    end
     textCell(1+2*i) = {' '};
 end % for i
 

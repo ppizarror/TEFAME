@@ -22,10 +22,10 @@ Modelo_DinamicaAvanzadaDisipadores();
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
-modeloObj.agregarDisipadores(disipadores);
 
 if usarDisipadores
     rayBeta = [0.02, 0.02];
+    modeloObj.agregarDisipadores(disipadores);
 else
     rayBeta = [0.02, 0.05];
 end
@@ -95,12 +95,21 @@ modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 analisisObj.analizar('nModos', 278, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
     'valvecAlgoritmo', 'eigs', 'valvecTolerancia', 0.0001, ...
+<<<<<<< HEAD
     'muIterDespl', wIterDespl, 'nRitz', 192);
 analisisObj.disp();
 w = analisisObj.obtenerValoresPropios();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
 plt = analisisObj.plot('modo', 275, 'factor', 20, 'cuadros', 25, 'gif', ...
    'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', true);
+=======
+    'muIterDespl', wIterDespl, 'nRitz', 223);
+analisisObj.disp();
+w = analisisObj.obtenerValoresPropios();
+cargaEstatica = analisisObj.obtenerCargaEstatica();
+% plt = analisisObj.plot('modo', 1, 'factor', 20, 'cuadros', 25, 'gif', ...
+%    'test/modal/out/Modelo_DinamicaAvanzada_%d.gif');
+>>>>>>> 22d127dc728f0c34b59e70a83e82a2ba51be77bd
 
 %% Genera combinaciones de cargas
 combinacionCargas = {};
