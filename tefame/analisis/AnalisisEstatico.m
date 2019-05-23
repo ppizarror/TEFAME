@@ -136,7 +136,7 @@ classdef AnalisisEstatico < Analisis
             % Parametros opcionales:
             %   factorCargaE        Factor de cargas estaticas
             
-            fprintf('Ejecuntando analisis estatico\n');
+            fprintf('Ejecutando analisis estatico\n');
             
             % Define parametros
             p = inputParser;
@@ -447,7 +447,11 @@ classdef AnalisisEstatico < Analisis
             plt = figure('Name', sprintf('Plot %s', obj.modeloObj.obtenerNombre()), ...
                 'NumberTitle', 'off');
             if ~deformada
-                title('Analisis Estatico');
+                title(obj.modeloObj.obtenerNombre());
+                r.lwElemE = r.lwElemD;
+                r.sizeNodoE = r.sizeNodoD;
+                r.styleElemE = r.styleElemD;
+                r.styleNodoE = r.styleNodoD;
             else
                 title(sprintf('Analisis Estatico / Escala deformacion: %.2f', factor));
             end
