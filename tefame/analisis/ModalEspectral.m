@@ -3017,7 +3017,7 @@ classdef ModalEspectral < Analisis
             for i = 1:nnodos
                 CoordNodo = nodos{i}.obtenerCoordenadas;
                 yNodo = CoordNodo(2);
-                if yNodo ~= habs(j)
+                if yNodo > habs(j)
                     k = 1;
                     j = j + 1;
                     habs(j, 1) = yNodo;

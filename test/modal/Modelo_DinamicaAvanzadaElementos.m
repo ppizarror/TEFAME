@@ -370,7 +370,7 @@ elementos{237} = VigaColumna2D('C263-273', nodos{142}, nodos{144}, Ic, Ec, Ac, R
 
 %% Fundaciones
 if modelarFundacion
-    Kinf = 10^10;
+    Kinf = 10^12;
     elementos{238} = Fundacion2D('FN01-FN02', nodos{1}, nodos{2}, Mr, Kinf);
     elementos{239} = Fundacion2D('FN02-FN03', nodos{2}, nodos{3}, Mr, Kinf);
     elementos{240} = Fundacion2D('FN03-FN04', nodos{3}, nodos{4}, Mr, Kinf);

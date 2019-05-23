@@ -3,7 +3,7 @@ fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);
 modeloObj.definirNombre('Modelo Dinamica Avanzada');
-modelarFundacion = false;
+modelarFundacion = true;
 usarDisipadores = false;
 resolverCargasDinamicas = false;
 
@@ -27,7 +27,7 @@ modeloObj.agregarDisipadores(disipadores);
 if usarDisipadores
     rayBeta = [0.02, 0.02];
 else
-    rayBeta = [0.05, 0.02];
+    rayBeta = [0.02, 0.05];
 end
 
 %% Creamos las restricciones
@@ -92,15 +92,15 @@ patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
 %% Analiza el sistema y resuelve para cargas estaticas
-analisisObj.analizar('nModos', 50, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 8], ...
+analisisObj.analizar('nModos', 278, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
-    'valvecAlgoritmo', 'ritz', 'valvecTolerancia', 0.0001, ...
-    'muIterDespl', wIterDespl, 'nRitz', 223);
+    'valvecAlgoritmo', 'eigs', 'valvecTolerancia', 0.0001, ...
+    'muIterDespl', wIterDespl, 'nRitz', 192);
 analisisObj.disp();
 w = analisisObj.obtenerValoresPropios();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
-% plt = analisisObj.plot('modo', 1, 'factor', 20, 'cuadros', 25, 'gif', ...
-%    'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
+plt = analisisObj.plot('modo', 275, 'factor', 20, 'cuadros', 25, 'gif', ...
+   'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', true);
 
 %% Genera combinaciones de cargas
 combinacionCargas = {};
