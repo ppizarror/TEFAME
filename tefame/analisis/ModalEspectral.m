@@ -689,6 +689,12 @@ classdef ModalEspectral < Analisis
                 
             end
             
+            if mostrarEstatico
+                fprintf('\tSe graficara el caso estatico del modelo\n');
+            else
+                fprintf('\tNo se graficara el caso estatico del modelo\n');
+            end
+            
             % Chequea deformada
             deformada = false;
             modo = ceil(modo);
@@ -757,6 +763,8 @@ classdef ModalEspectral < Analisis
             % Imprime mensajes en consola
             if defElem
                 fprintf('\tSe ha activado la deformada de los elementos\n');
+            else
+                fprintf('\tNo se graficara la deformada de los elementos\n');
             end
             if guardarGif && numCuadros ~= 0
                 fprintf('\tEl proceso generara un archivo gif\n');
@@ -2340,7 +2348,7 @@ classdef ModalEspectral < Analisis
                     [modalPhini, modalWni] = calculoEigIterInvDesplazamiento(Meq, Keq, muIterDesplazamiento(i), valvecTolerancia);
                     modalPhin(:, i) = modalPhini(:, end);
                     modalWn(i) = modalWni(end);
-                end
+                end % for i
             elseif strcmp(valvecAlgoritmo, 'itSubEsp')
                 fprintf('\t\tCalculo valores y vectores propios con metodo iteracion del subespacio\n');
                 fprintf('\t\t\tTolerancia: %.4f\n', valvecTolerancia);
