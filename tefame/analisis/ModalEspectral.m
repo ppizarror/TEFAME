@@ -188,19 +188,26 @@ classdef ModalEspectral < Analisis
             if r.nModos <= 0
                 error('Numero de modos invalido');
             end
-            r.nModos = floor(r.nModos);
+            r.nModos = ceil(r.nModos);
             
             if isempty(r.rayleighBeta)
                 error('Vector amortiguamiento de Rayleigh no puede ser nulo');
             end
+            
+            for i = 1:length(r.rayleighBeta)
+                if r.rayleighBeta(i) <= 0
+                    error('No pueden haber amortiguamientos de Rayleigh negativos o cero');
+                end
+            end % for i
             
             if isempty(r.rayleighModo)
                 error('Vector modo Rayleigh no puede ser nulo');
             end
             
             for i = 1:length(r.rayleighModo)
+                r.rayleighModo(i) = ceil(r.rayleighModo(i));
                 if r.rayleighModo(i) <= 0
-                    error('Vector Rayleigh modo mal definido');
+                    error('Vector Rayleigh modo mal definido, no pueden ser modos negativos o ceros');
                 end
             end % for i
             
@@ -219,6 +226,12 @@ classdef ModalEspectral < Analisis
                 error('Vector amortiguamiento cpenzien no puede ser nulo');
             end
             
+            for i = 1:length(r.cpenzienBeta)
+                if r.cpenzienBeta(i) < 0
+                    error('No pueden haber amortiguamientos de cpenzien negativos');
+                end
+            end % for i
+            
             if r.valvecTolerancia <= 0
                 error('Tolerancia calculo valores y vectores propios no puede ser inferior o igual a cero');
             end
@@ -229,7 +242,7 @@ classdef ModalEspectral < Analisis
             
             r.nRitz = ceil(r.nRitz);
             if r.nRitz <= 0
-                error('El numero de Ritz no puede ser inferior o igual a cero');
+                error('El numero de vectores Ritz no puede ser inferior o igual a cero');
             end
             
             if strcmp(r.valvecAlgoritmo, 'itInvDesp') && isempty(r.muIterDespl)
@@ -243,8 +256,14 @@ classdef ModalEspectral < Analisis
                     r.muIterDespl = r.muIterDespl';
                 end
             end
+            for i = 1:length(r.muIterDespl)
+                if r.muIterDespl(i) <= 0
+                    error('No puede haber un elemento cero o negativo en el vector de desplazamientos');
+                end
+            end % for i
             
             fprintf('Ejecutando analisis modal espectral:\n');
+            fprintf('\tModelo %s:\n', obj.modeloObj.obtenerNombre());
             fprintf('\tParametros analisis:\n');
             fprintf('\t\tNumero de modos: %d\n', r.nModos);
             
@@ -1989,6 +2008,7 @@ classdef ModalEspectral < Analisis
             end
             
             fprintf('Propiedades analisis modal espectral:\n');
+            fprintf('\tModelo: %s\n', obj.modeloObj.obtenerNombre());
             
             % Muestra los grados de libertad
             fprintf('\tNumero de grados de libertad: %d\n', ...
@@ -2879,7 +2899,7 @@ classdef ModalEspectral < Analisis
             % Setea el titulo
             if ~defCarga % Se grafica los modos
                 if ~deformada
-                    title('Analisis modal espectral');
+                    title(obj.modeloObj.obtenerNombre());
                 else
                     a = sprintf('Analisis modal espectral - Modo %d (T: %.3fs)', modo, per);
                     if totCuadros > 1

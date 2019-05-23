@@ -22,12 +22,12 @@ Modelo_DinamicaAvanzadaDisipadores();
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
-modeloObj.agregarDisipadores(disipadores);
 
 if usarDisipadores
     rayBeta = [0.02, 0.02];
+    modeloObj.agregarDisipadores(disipadores);
 else
-    rayBeta = [0.05, 0.02];
+    rayBeta = [0.02, 0.05];
 end
 
 %% Creamos las restricciones
@@ -100,7 +100,7 @@ analisisObj.disp();
 w = analisisObj.obtenerValoresPropios();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
 % plt = analisisObj.plot('modo', 1, 'factor', 20, 'cuadros', 25, 'gif', ...
-%    'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'defElem', false);
+%    'test/modal/out/Modelo_DinamicaAvanzada_%d.gif');
 
 %% Genera combinaciones de cargas
 combinacionCargas = {};
