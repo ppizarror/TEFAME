@@ -3,7 +3,7 @@ fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);
 modeloObj.definirNombre('Modelo Dinamica Avanzada');
-modelarFundacion = true ;
+modelarFundacion = true;
 usarDisipadores = false;
 resolverCargasDinamicas = false;
 
