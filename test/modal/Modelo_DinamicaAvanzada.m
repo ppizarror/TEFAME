@@ -3,8 +3,7 @@ fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);
 modeloObj.definirNombre('Modelo Dinamica Avanzada');
-modelarFundacion = false ;
-modelarFundacion = true;
+modelarFundacion = false;
 usarDisipadores = false;
 resolverCargasDinamicas = true;
 
@@ -87,14 +86,14 @@ analisisObj.activarCargaAnimacion();
 %% Creamos el patron de cargas
 patronesDeCargas = cell(2, 1);
 patronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
-patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj,...
-    'desmodal', true, 'Newmark', false);
+patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, ...
+    'desmodal', true, 'newmark', false);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
 %% Analiza el sistema y resuelve para cargas estaticas
-analisisObj.analizar('nModos', 20, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 8], ...
+analisisObj.analizar('nModos', 50, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
     'valvecAlgoritmo', 'eigs', 'valvecTolerancia', 0.0001, ...
     'muIterDespl', wIterDespl, 'nRitz', 192);

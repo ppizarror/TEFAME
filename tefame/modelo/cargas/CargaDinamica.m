@@ -210,7 +210,7 @@ classdef CargaDinamica < ComponenteModelo
             
         end % guardarVelocidad function
         
-        function guardarAceleracion(obj, a)
+        function guardarAceleracion(obj, a, ~)
             % guardarAceleracion: Guarda la aceleracion de la carga
             
             obj.sol_a = a;

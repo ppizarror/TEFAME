@@ -171,20 +171,14 @@ classdef CargaRegistroSismico < CargaDinamica
             
             % Registro sismico suma la aceleracion del registro para cada
             % tiempo en cada columna de <a>
-            if Newmark
-                if cargaRegistroSismicoObj.dispinfo
-                fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por Newmark');
-                end
-            else
-                if cargaRegistroSismicoObj.dispinfo
-                fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por Espacio Estado');
+            
+            if cargaRegistroSismicoObj.dispinfo
+                if Newmark
+                    fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por Newmark');
+                else
+                    fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por Espacio Estado');
                 end
             end
-            
-           
-%             if cargaRegistroSismicoObj.dispinfo
-%                 fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por', );
-%             end
             nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
             nd = length(cargaRegistroSismicoObj.direccion);
             

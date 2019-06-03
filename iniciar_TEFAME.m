@@ -31,3 +31,4 @@ addpath('tefame/utils');
 addpath('test');
 addpath('test/estatico');
 addpath('test/modal');
+addpath('test/modal/fourier');

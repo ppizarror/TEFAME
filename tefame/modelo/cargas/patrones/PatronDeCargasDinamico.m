@@ -13,11 +13,6 @@
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
 %| La plataforma es desarrollada en  propagacion orientada a objetos en |
 %| MATLAB.                                                              |
-%|                                                                      |
-%| Desarrollado por:                                                    |
-%|       Fabian Rojas, PhD (frojas@ing.uchile.cl)                       |
-%|       Prof. Asistente, Departamento de Ingenieria Civil              |
-%|       Universidad de Chile                                           |
 %|______________________________________________________________________|
 % ______________________________________________________________________
 %|                                                                      |
@@ -85,7 +80,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'desmodal', true);
-            addOptional(p, 'Newmark', true);
+            addOptional(p, 'newmark', true);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -102,7 +97,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             obj.desModal = r.desmodal;
             
             % Espacio Estado o Newmark
-            obj.Newmark = r.Newmark;
+            obj.Newmark = r.newmark;
             
         end % PatronDeCargasDinamico constructor
         
@@ -448,14 +443,14 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     pmodal = p;
                 end
                 
-                if ~obj.Newmark
-                    % Resuelve Espacio Estado
-                    [u, du, ddu] = obj.EspacioEstado(mmodal, k, c, pmodal,...
-                        obj.cargas{i}.dt);
-                else
+                if obj.Newmark
                     % Resuelve newmark
                     [u, du, ddu] = obj.newmark(k, mmodal, minv, ...
                         c, pmodal, obj.cargas{i}.dt, 0, 0);
+                else
+                    % Resuelve Espacio Estado
+                    [u, du, ddu] = obj.espacioEstado(mmodal, k, c, pmodal, ...
+                        obj.cargas{i}.dt);
                 end
                 
                 % Aplica descomposicion si aplica
@@ -542,39 +537,40 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % newmark function
         
-        function [x, v, a] = EspacioEstado(obj, M, K, C, P, dt)
+        function [x, v, a] = espacioEstado(obj, M, K, C, P, dt)
             % Ecuacion de movimiento de la forma z(t) = [A]{z(t)} + {F(t)}
+            
             nm = length(M);
             aux0 = zeros(nm, nm);
             aux1 = eye(nm);
             x = zeros(nm, length(P));
             v = zeros(nm, length(P));
             a = zeros(nm, length(P));
+            
             % Matriz [A]
-
-            A = [aux0 aux1; -M\K -M\C];
+            A = [aux0, aux1; -M \ K, -M \ C];
+            
             % Excitacion [A]
-            F = [zeros(nm ,length(P)); -M\P];
-
+            F = [zeros(nm, length(P)); -M \ P];
+            
             % Exitacion considerada como Delta Dirac
             Ad = exp(A*dt);
-            BdD = Ad.*dt;
+            BdD = Ad .* dt;
             n = length(F);
             reverse_porcent = '';
             for i = 1:(n - 1)
                 zaux = ltitr(Ad, BdD, F(:, i)')';
-                x(:,i + 1) = zaux(1:nm);
-                v(:,i + 1) = zaux(nm+1:end);
-                a(:,i + 1) = M\P(:,i) - M\C*v(:,i + 1) + M\K*x(:,i + 1); % M\K = inv(M)*K
+                x(:, i+1) = zaux(1:nm);
+                v(:, i+1) = zaux(nm+1:end);
+                a(:, i+1) = M \ P(:, i) - M \ C * v(:, i+1) + M \ K * x(:, i+1); % M\K = inv(M)*K
                 
                 % Imprime estado
                 msg = sprintf('\t\t\tCalculando ... %.1f/100', i/(n - 1)*100);
                 fprintf([reverse_porcent, msg]);
                 reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
-            end
-                     
-            
-        end
+            end % for i
+         
+        end % espacioEstado function
         
     end % methods PatronDeCargasDinamico
     
