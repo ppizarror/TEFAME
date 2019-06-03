@@ -19,7 +19,7 @@ for i = 1:ngdl
     invM(i, i) = 1 / M(i, i);
 end % for i
 sysMat = invM * K;
-[w, v] = eigs(sysMat, nModos, 'smallestabs');
+[w, v] = eigs(sysMat, nModos, 'sm');
 v = sqrt(diag(v));
 
 end

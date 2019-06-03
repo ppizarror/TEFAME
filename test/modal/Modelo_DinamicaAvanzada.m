@@ -3,9 +3,9 @@ fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);
 modeloObj.definirNombre('Modelo Dinamica Avanzada');
-modelarFundacion = true ;
+modelarFundacion = false ;
 usarDisipadores = false;
-resolverCargasDinamicas = false;
+resolverCargasDinamicas = true;
 
 %% Nodos modelo
 nodos = {};
@@ -86,21 +86,22 @@ analisisObj.activarCargaAnimacion();
 %% Creamos el patron de cargas
 patronesDeCargas = cell(2, 1);
 patronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
-patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, 'desmodal', true);
+patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj,...
+    'desmodal', true, 'Newmark', false);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
 %% Analiza el sistema y resuelve para cargas estaticas
-analisisObj.analizar('nModos', 278, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 8], ...
+analisisObj.analizar('nModos', 20, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
     'valvecAlgoritmo', 'eigs', 'valvecTolerancia', 0.0001, ...
     'muIterDespl', wIterDespl, 'nRitz', 192);
 analisisObj.disp();
 w = analisisObj.obtenerValoresPropios();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
-plt = analisisObj.plot('modo', 1, 'factor', 20, 'cuadros', 25, 'defElem', true, 'gif', ...
-   'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'mostrarEstatico', false);
+% plt = analisisObj.plot('modo', 1, 'factor', 20, 'cuadros', 25, 'defElem', true, 'gif', ...
+%    'test/modal/out/Modelo_DinamicaAvanzada_%d.gif', 'mostrarEstatico', false);
 
 %% Genera combinaciones de cargas
 combinacionCargas = {};
@@ -112,7 +113,7 @@ analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', usarDisipa
     'cargaDisipador', cargasDinamicas{1}, 'betaObjetivo', 0.08, 'iterDisipador', 10, ...
     'betaGrafico', false, 'activado', resolverCargasDinamicas);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
-% analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
+analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
 % analisisObj.plotEsfuerzosElemento(cargasDinamicas{1}, elementos{104}, [1, 0, 0]);
 % analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);

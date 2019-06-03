@@ -57,6 +57,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
     properties(Access = private)
         analisisObj % Guarda el objeto de analisis con tal de obtener M, K, C y el vector de influencia
         desModal % Realiza descomposicion modal
+        Newmark % Realiza Newmark
     end % properties PatronDeCargasDinamico
     
     methods(Access = public)
@@ -84,6 +85,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'desmodal', true);
+            addOptional(p, 'Newmark', true);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -98,6 +100,9 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
             % Descomposicion modal
             obj.desModal = r.desmodal;
+            
+            % Espacio Estado o Newmark
+            obj.Newmark = r.Newmark;
             
         end % PatronDeCargasDinamico constructor
         
@@ -443,9 +448,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     pmodal = p;
                 end
                 
-                % Resuelve newmark
-                [u, du, ddu] = obj.newmark(k, mmodal, minv, ...
-                    c, pmodal, obj.cargas{i}.dt, 0, 0);
+                if ~obj.Newmark
+                    % Resuelve Espacio Estado
+                    [u, du, ddu] = obj.EspacioEstado(mmodal, k, c, pmodal,...
+                        obj.cargas{i}.dt);
+                else
+                    % Resuelve newmark
+                    [u, du, ddu] = obj.newmark(k, mmodal, minv, ...
+                        c, pmodal, obj.cargas{i}.dt, 0, 0);
+                end
                 
                 % Aplica descomposicion si aplica
                 if obj.desModal
@@ -458,7 +469,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 obj.cargas{i}.guardarCarga(p);
                 obj.cargas{i}.guardarDesplazamiento(u);
                 obj.cargas{i}.guardarVelocidad(du);
-                obj.cargas{i}.guardarAceleracion(ddu);
+                obj.cargas{i}.guardarAceleracion(ddu, obj.Newmark);
                 obj.cargas{i}.amortiguamientoRayleigh(~cpenzien);
                 obj.cargas{i}.usoDisipadores(disipadores);
                 obj.cargas{i}.descomposicionModal(obj.desModal);
@@ -530,6 +541,40 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             end % for i
             
         end % newmark function
+        
+        function [x, v, a] = EspacioEstado(obj, M, K, C, P, dt)
+            % Ecuacion de movimiento de la forma z(t) = [A]{z(t)} + {F(t)}
+            nm = length(M);
+            aux0 = zeros(nm, nm);
+            aux1 = eye(nm);
+            x = zeros(nm, length(P));
+            v = zeros(nm, length(P));
+            a = zeros(nm, length(P));
+            % Matriz [A]
+
+            A = [aux0 aux1; -M\K -M\C];
+            % Excitacion [A]
+            F = [zeros(nm ,length(P)); -M\P];
+
+            % Exitacion considerada como Delta Dirac
+            Ad = exp(A*dt);
+            BdD = Ad.*dt;
+            n = length(F);
+            reverse_porcent = '';
+            for i = 1:(n - 1)
+                zaux = ltitr(Ad, BdD, F(:, i)')';
+                x(:,i + 1) = zaux(1:nm);
+                v(:,i + 1) = zaux(nm+1:end);
+                a(:,i + 1) = M\P(:,i) - M\C*v(:,i + 1) + M\K*x(:,i + 1); % M\K = inv(M)*K
+                
+                % Imprime estado
+                msg = sprintf('\t\t\tCalculando ... %.1f/100', i/(n - 1)*100);
+                fprintf([reverse_porcent, msg]);
+                reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
+            end
+                     
+            
+        end
         
     end % methods PatronDeCargasDinamico
     

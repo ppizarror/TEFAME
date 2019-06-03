@@ -166,14 +166,25 @@ classdef CargaRegistroSismico < CargaDinamica
             
         end % calcularCarga function
         
-        function guardarAceleracion(cargaRegistroSismicoObj, a)
+        function guardarAceleracion(cargaRegistroSismicoObj, a, Newmark)
             % guardarAceleracion: Guarda la aceleracion de la carga
             
             % Registro sismico suma la aceleracion del registro para cada
             % tiempo en cada columna de <a>
-            if cargaRegistroSismicoObj.dispinfo
+            if Newmark
+                if cargaRegistroSismicoObj.dispinfo
                 fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por Newmark');
+                end
+            else
+                if cargaRegistroSismicoObj.dispinfo
+                fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por Espacio Estado');
+                end
             end
+            
+           
+%             if cargaRegistroSismicoObj.dispinfo
+%                 fprintf('\n\t\t\tSumando aceleracion del registro a la calculada por', );
+%             end
             nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
             nd = length(cargaRegistroSismicoObj.direccion);
             
