@@ -1,5 +1,5 @@
 close all; clc; clear all; %#ok<*CLALL>
-ug = load('Constitucion.txt');
+ug = load('Constitucion.sis');
 beta = [0, 0.01, 0.05, 0.2]';
 ug0 = [ug; zeros(length(ug), 1)];
 T = 0.9;

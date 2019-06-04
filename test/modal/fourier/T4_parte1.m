@@ -1,5 +1,5 @@
 close all; clc;
-ug = load('Constitucion.txt');
+ug = load('Constitucion.sis');
 [frec, ff, ts] = DFT(200, ug);
 ff = fftshift(ff);
 a = length(ug);
