@@ -378,13 +378,19 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 mmodal = m;
             end
             
-            if cpenzien
-                if ~calculaDisipadores
+            if ~calculaDisipadores
+                if cpenzien
                     fprintf('\tPatron de cargas dinamico usa amortiguamiento de Wilson-Penzien\n');
-                end
-            else
-                if ~calculaDisipadores
+                else
                     fprintf('\tPatron de cargas dinamico usa amortiguamiento de Rayleigh\n');
+                end
+            end
+            
+            if ~calculaDisipadores
+                if obj.Newmark
+                    fprintf('\tEl calculo se realiza usando el metodo de Newmark\n');
+                else
+                    fprintf('\tEl calculo se realiza usando el metodo de Espacio Estado\n');
                 end
             end
             
@@ -445,7 +451,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 if obj.Newmark
                     % Resuelve newmark
-                    [u, du, ddu] = obj.newmark(k, mmodal, minv, ...
+                    [u, du, ddu] = obj.newmark(mmodal, minv, k, ...
                         c, pmodal, obj.cargas{i}.dt, 0, 0);
                 else
                     % Resuelve Espacio Estado
@@ -490,7 +496,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % calcularCargaGenerica function
         
-        function [x, v, z] = newmark(obj, k, m, minv, c, p, dt, xo, vo) %#ok<*INUSL>
+        function [x, v, z] = newmark(obj, m, minv, k, c, p, dt, xo, vo) %#ok<*INUSL>
             % Newmark: es un metodo de la clase ModalEspectral que se
             % usa para obtener los valores de aceleracion, velociadad y desplazamiento
             % de los grados de libertad a partir del metodo de Newmark
@@ -514,7 +520,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             c4 = 1 - gamma / beta;
             c5 = 1 - gamma / (2 * beta);
             c6 = 1 / (2 * beta) - 1;
-            ks = c1 * m + (1 + alpha) * c3 * c + (1 + alpha) * k; %hht
+            ks = c1 * m + (1 + alpha) * c3 * c + (1 + alpha) * k; % HHT
             ks_inv = ks^(-1);
             ps = zeros(ngl, length(p));
             reverse_porcent = '';
@@ -569,7 +575,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 fprintf([reverse_porcent, msg]);
                 reverse_porcent = repmat(sprintf('\b'), 1, length(msg));
             end % for i
-         
+            
         end % espacioEstado function
         
     end % methods PatronDeCargasDinamico
