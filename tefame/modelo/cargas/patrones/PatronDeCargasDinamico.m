@@ -545,7 +545,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         
         function [x, v, a] = espacioEstado(obj, M, K, C, P, dt)
             % Ecuacion de movimiento de la forma z(t) = [A]{z(t)} + {F(t)}
-            
+
             nm = length(M);
             aux0 = zeros(nm, nm);
             aux1 = eye(nm);
@@ -553,14 +553,17 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             v = zeros(nm, length(P));
             a = zeros(nm, length(P));
             
+            mk = M \ K; % M\K = inv(M)*K
+            mc = M \ C;
+            
             % Matriz [A]
-            A = [aux0, aux1; -M \ K, -M \ C];
+            A = [aux0, aux1; -mk, -mc];
             
             % Excitacion [A]
             F = [zeros(nm, length(P)); -M \ P];
             
             % Exitacion considerada como Delta Dirac
-            Ad = exp(A*dt);
+            Ad = exp(A.*dt);
             BdD = Ad .* dt;
             n = length(F);
             reverse_porcent = '';
@@ -568,7 +571,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 zaux = ltitr(Ad, BdD, F(:, i)')';
                 x(:, i+1) = zaux(1:nm);
                 v(:, i+1) = zaux(nm+1:end);
-                a(:, i+1) = M \ P(:, i) - M \ C * v(:, i+1) + M \ K * x(:, i+1); % M\K = inv(M)*K
+                a(:, i+1) = M \ P(:, i) - mc * v(:, i+1) - mk * x(:, i+1);
                 
                 % Imprime estado
                 msg = sprintf('\t\t\tCalculando ... %.1f/100', i/(n - 1)*100);
