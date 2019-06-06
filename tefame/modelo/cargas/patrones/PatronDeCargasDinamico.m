@@ -314,7 +314,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % disp function
         
-    end % methods PatronDeCargasDinamico
+    end % public methods PatronDeCargasDinamico
     
     methods(Access = private)
         
@@ -449,12 +449,13 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                     pmodal = p;
                 end
                 
+                % Resuelve la ecuacion dinamica
                 if obj.Newmark
-                    % Resuelve newmark
+                    % Metodo de newmark
                     [u, du, ddu] = obj.newmark(mmodal, minv, k, ...
                         c, pmodal, obj.cargas{i}.dt, 0, 0);
                 else
-                    % Resuelve Espacio Estado
+                    % Metodo de espacio estado
                     [u, du, ddu] = obj.espacioEstado(mmodal, k, c, pmodal, ...
                         obj.cargas{i}.dt);
                 end
@@ -562,13 +563,17 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Excitacion [A]
             F = [zeros(nm, length(P)); -M \ P];
             
-            % Exitacion considerada como Delta Dirac
-            Ad = exp(A.*dt);
+            % Excitacion considerada como Delta Dirac
+            Ad = expm(A.*dt);
             BdD = Ad .* dt;
             n = length(F);
+            
+            % Resuelve el sistema
+            zsys = ltitr(Ad, BdD, F')';
+            
             reverse_porcent = '';
             for i = 1:(n - 1)
-                zaux = ltitr(Ad, BdD, F(:, i)')';
+                zaux = zsys(:, i);
                 x(:, i+1) = zaux(1:nm);
                 v(:, i+1) = zaux(nm+1:end);
                 a(:, i+1) = M \ P(:, i) - mc * v(:, i+1) - mk * x(:, i+1);
@@ -581,6 +586,6 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             
         end % espacioEstado function
         
-    end % methods PatronDeCargasDinamico
+    end % private methods PatronDeCargasDinamico
     
 end % class PatronDeCargasDinamico
