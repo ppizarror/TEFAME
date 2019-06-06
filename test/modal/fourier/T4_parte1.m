@@ -26,14 +26,15 @@ t1 = 0:dt(1):30 - dt(1);
 t2 = 0:dt(2):30 - dt(2);
 t3 = 0:dt(3):30 - dt(3);
 t = {t1, t2, t3}';
-% Tipo de señales
+
+% Tipo de senales
 sen = cell(length(t), 1);
 coss = cell(length(t), 1);
 diracc = cell(length(t), 1);
 const = cell(length(t), 1);
 
 %% Plot de Funciones
-figure('name', 'Fourier, función seno');
+figure('name', 'Fourier, funcion seno');
 for i = 1:length(t) % Funcion sen
     sen{i} = 5 .* sin(20.*pi.*t{i})';
     [senfrec{i}, senff{i}, ~] = DFT(FS(i), sen{i}); %#ok<*SAGROW>
@@ -50,9 +51,9 @@ for i = 1:length(t) % Funcion sen
     xlabel('f [Hz]');
     hold off;
     title(['FS = ', num2str(FS(i)), ' [Hz]']);
-end
+end % for i
 
-figure('name', 'Fourier, función coseno');
+figure('name', 'Fourier, funcion coseno');
 for i = 1:length(t) % Funcion cos
     coss{i} = 5 .* cos(20.*pi.*t{i})';
     [cossfrec{i}, cossff{i}, ~] = DFT(FS(i), coss{i});
@@ -69,9 +70,9 @@ for i = 1:length(t) % Funcion cos
     xlabel('f [Hz]');
     hold off;
     title(['FS = ', num2str(FS(i)), ' [Hz]']);
-end
+end % for i
 
-figure('name', 'Fourier, función dirac');
+figure('name', 'Fourier, funcion dirac');
 for i = 1:length(t) % Funcion dirac
     for j = 1:length(t{i})
         tj = t{i};
@@ -80,7 +81,7 @@ for i = 1:length(t) % Funcion dirac
         else
             dir(j) = 0;
         end
-    end
+    end % for j
     diracc{i} = dir';
     [diraccfrec{i}, diraccff{i}, ~] = DFT(FS(i), diracc{i});
     diraccff{i} = fftshift(diraccff{i});
@@ -97,9 +98,9 @@ for i = 1:length(t) % Funcion dirac
     hold off;
     title(['FS = ', num2str(FS(i)), ' [Hz]']);
     clear dir tj;
-end
+end % for i
 
-figure('name', 'Fourier, función constante');
+figure('name', 'Fourier, funcion constante');
 for i = 1:length(t) % Funcion constante
     const{i} = 5 .* (diag(eye(length(t{i}))))';
     [constfrec{i}, constff{i}, ~] = DFT(FS(i), const{i});
@@ -116,7 +117,7 @@ for i = 1:length(t) % Funcion constante
     xlabel('f [Hz]');
     hold off;
     title(['FS = ', num2str(FS(i)), ' [Hz]']);
-end
+end % for i
 
 figure('name', 'Fourier, Cajon ancho To = 5[s]');
 for i = 1:length(t) % Funcion constante
@@ -127,7 +128,7 @@ for i = 1:length(t) % Funcion constante
         else
             Ca05aux(j) = 0;
         end
-    end
+    end % for j
     Ca05{i} = Ca05aux';
     [Ca05frec{i}, Ca05ff{i}, ~] = DFT(FS(i), Ca05{i});
     Ca05ff{i} = fftshift(Ca05ff{i});
@@ -144,7 +145,7 @@ for i = 1:length(t) % Funcion constante
     hold off;
     title(['FS = ', num2str(FS(i)), ' [Hz]']);
     clear tj Ca05aux;
-end
+end % for i
 
 figure('name', 'Fourier, Cajon ancho To = 10[s]');
 for i = 1:length(t) % Funcion constante
@@ -155,7 +156,7 @@ for i = 1:length(t) % Funcion constante
         else
             Ca10aux(j) = 0;
         end
-    end
+    end % for j
     Ca10{i} = Ca10aux';
     [Ca10frec{i}, Ca10ff{i}, ~] = DFT(FS(i), Ca10{i});
     Ca10ff{i} = fftshift(Ca10ff{i});
@@ -172,7 +173,7 @@ for i = 1:length(t) % Funcion constante
     hold off;
     title(['FS = ', num2str(FS(i)), ' [Hz]']);
     clear tj Ca10aux;
-end
+end % for i
 
 figure('name', 'Fourier, Cajon ancho To = 20[s]');
 for i = 1:length(t) % Funcion constante
@@ -200,4 +201,4 @@ for i = 1:length(t) % Funcion constante
     hold off;
     title(['FS = ', num2str(FS(i)), ' [Hz]']);
     clear tj Ca20aux;
-end
+end % for i

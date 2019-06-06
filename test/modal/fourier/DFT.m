@@ -1,21 +1,22 @@
 function [f, fftt, ts] = DFT(FS, senal)
-% DISCRET FOURIER TRANSFORM
+% DISCRETE FOURIER TRANSFORM
 % -------------------------------------------------------------------
-% DFT: Determina la Transformada discreta de Fourier de una señal
-%       discreta
-%       f = Vector de frecuencias
-%       fftt = Fast Fourier Transform de la señal
-%       ts = vector de tiempo de la señal
+% DFT: Determina la Transformada discreta de Fourier de una senal
+%      discreta
+%
+%   f = Vector de frecuencias
+%   fftt = Fast Fourier Transform de la senal
+% 	ts = Vector de tiempo de la senal
 % -------------------------------------------------------------------
 
 % Intervalo de tiempo
 dt = 1 / FS;
 
-% Tamaño de la señal
+% Tamano de la senal
 N = length(senal);
 L = dt * N;
 
-% Numero de elementos de la señal
+% Numero de elementos de la senal
 Nfft = 2^nextpow2(N);
 
 % Vector de frecuencia

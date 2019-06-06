@@ -11,16 +11,17 @@ C = 2 .* beta .* w .* m;
 n = length(ug0);
 dt = 1 / FS;
 ts0 = linspace(0, dt*n, n);
+
 for i = 1:length(beta)
     % Solucion en el espacio de la frecuencia
     [d{i}, v{i}, a{i}, f{i}, Pw{i}, FRF{i}] = respfrec(m, T, beta(i), -ug, FS); %#ok<*SAGROW>
     
-    % Efecto de añadir 0 al registro
+    % Efecto de anadir 0 al registro
     [d0{i}, v0{i}, a0{i}, f0{i}, Pw0{i}, FRF0{i}] = respfrec(m, T, beta(i), ug0, FS);
     
     % Newmark
     [depl{i}, vell{i}, accl{i}, ts{i}] = Newmark(m, K, C(i), -m.*ug, FS, 'Average', 0, 0);
-end
+end % for i
 
 %% Plots
 tmax = max(ts{1});
@@ -60,8 +61,8 @@ plot(ts{1}, accl{4}, '--');
 legend({'Dominio de frecuencia', 'Newmark'});
 xlabel('Tiempo [s]');
 
-%% Efecto de añadir ceros
-figure('name', 'Comparacion de respuesta espacio de las frecuencias c/s ceros añadidos');
+%% Efecto de anadir ceros
+figure('name', 'Comparacion de respuesta espacio de las frecuencias c/s ceros anadidos');
 subplot(2, 1, 1);
 plot(ts{1}, a{1}), hold on, plot(ts{1}, a{2}), plot(ts{1}, a{3}), plot(ts{1}, a{4});
 legend({'\beta = 0%', '\beta = 1%', '\beta = 5%', '\beta = 20%'}, 'Location', 'eastoutside');
@@ -73,7 +74,7 @@ legend({'\beta = 0%', '\beta = 1%', '\beta = 5%', '\beta = 20%'}, 'Location', 'e
 xlim([0, tmax]);
 title('Respuesta en el espacio de frecuencias añadiendo ceros al registro');
 
-figure('name', 'Registro con y sin ceros añadidos');
+figure('name', 'Registro con y sin ceros anadidos');
 subplot(2, 1, 1);
 plot(ts{1}, ug);
 xlim([0, tmax]);

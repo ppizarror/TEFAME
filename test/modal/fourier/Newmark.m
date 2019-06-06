@@ -42,7 +42,7 @@ a4 = gamma / beta;
 a5 = 1 / (2 * beta);
 a6 = dt * (gamma / (2 * beta) - 1);
 
-% Cálculos Iniciales
+% Calculos Iniciales
 depl = zeros(n, 1);
 depl(1) = do;
 vel = zeros(n, 1);
@@ -59,6 +59,7 @@ b = a5 * M + a6 * C;
 % Condicion de estabilidad
 % T = e(K/M) ;
 % if dt/T<1/sqrt(gamma-2*beta)*1/(pi*sqrt(2))
+
 % Tme step starts
 for i = 1:n - 1
     delP = P(i+1) - P(i) + a * vel(i) + b * accl(i);
@@ -70,9 +71,6 @@ for i = 1:n - 1
     depl(i+1) = depl(i) + delDepl;
     vel(i+1) = vel(i) + delVel;
     accl(i+1) = accl(i) + delAccl;
-end
-% else
-%     disp('No se cumple la condicion de estabilidad.')
-% end
+end % for i
 
 end

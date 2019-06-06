@@ -1,15 +1,16 @@
 function [d, v, a, f, Pw, FRF] = respfrec(m, T, beta, P, FS)
+% respfrec: Genera respuesta de oscilador en el espacio de la frecuencia
+%
 % [d, v , a, P, Pw, FRF] = respfrec(m, T, beta, P, FS)
-% Genera respuesta de oscilador en el espacio de la frecuencia
-%   Parametros de entrada:
-%         beta: amortiguamiento critico
-%         T: periodo del oscilador en segundos
-%         P: señal de entrada
-%         m: masa del oscilador
-%         FS: frecuencia de muestreo de la señal
-%         d: respuesta de desplazamiento
-%         Pw: fft de P
-% ------------------------------------------------------------------
+%
+% Parametros de entrada:
+% 	beta    Amortiguamiento critico
+% 	T       Periodo del oscilador en segundos
+% 	P       Senal de entrada
+% 	m       Masa del oscilador
+% 	FS      Frecuencia de muestreo de la señal
+%  	d       Respuesta de desplazamiento
+%  	Pw      FFT de P
 
 %% Datos de entrada
 % Longitud vector de entrada
@@ -39,20 +40,19 @@ FRF = zeros(nP, 1);
 fratio = f / fo;
 unos = ones(length(f), 1);
 
-% Para una señal compleja
+% Para una senal compleja
 FRF(select) = (unos / k) ./ (unos - (fratio).^2 + ...
     (1i * 2 * beta) .* (fratio));
 %% Correccion para doble sidedspectra
-% Si no es necesario corregir para el otro lado
-if ~any(any(imag(P) ~= 0))
-    % correccion de frecuencia
+if ~any(any(imag(P) ~= 0)) % Si no es necesario corregir para el otro lado
+    % Correccion de frecuencia
     f = [f; zeros(nP-length(f), 1)];
     if rem(nP, 2)
         FRF(select(end)+1:end) = conj(FRF(((nP + 1) / 2):-1:2));
         % Simetria completa
         f(select(end)+1:end) = -f(((nP + 1) / 2):-1:2);
     else
-        FRF(select(end)+1:end) = conj(FRF(nP/2:-1:2)); %Par
+        FRF(select(end)+1:end) = conj(FRF(nP/2:-1:2)); % Par
         f(select(end)+1:end) = f((nP / 2):-1:2);
     end
 end
