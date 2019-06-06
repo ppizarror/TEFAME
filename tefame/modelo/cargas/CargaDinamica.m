@@ -108,7 +108,7 @@ classdef CargaDinamica < ComponenteModelo
         dt % Delta de tiempo
     end % properties CargaDinamica
     
-    methods
+    methods(Access = public)
         
         function obj = CargaDinamica(etiquetaCarga)
             % CargaDinamica: es el constructor de la clase CargaDinamica

@@ -59,7 +59,7 @@ classdef AnalisisEstatico < Analisis
         u % Vector con los desplazamientos de los grados de libertad del modelo
     end % properties AnalisisEstatico
     
-    methods
+    methods(Access = public)
         
         function obj = AnalisisEstatico(modeloObjeto)
             % AnalisisEstatico: es el constructor de la clase AnalisisEstatico

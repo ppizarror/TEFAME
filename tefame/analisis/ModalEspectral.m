@@ -2111,7 +2111,7 @@ classdef ModalEspectral < Analisis
             
         end % obtenerCargaEstatica function
         
-    end % methods(public) ModalEspectral
+    end % public methods ModalEspectral
     
     methods(Access = private)
         
@@ -3171,6 +3171,6 @@ classdef ModalEspectral < Analisis
             
         end % imprimirPropiedadesAnalisisCarga function
         
-    end % methods(private) ModalEspectral
+    end % private methods ModalEspectral
     
 end % class ModalEspectral
