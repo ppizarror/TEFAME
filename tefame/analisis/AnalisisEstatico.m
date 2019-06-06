@@ -53,13 +53,13 @@
 
 classdef AnalisisEstatico < Analisis
     
-    properties (Access = private)
+    properties(Access = private)
         Kt % Matriz de rigidez del modelo
         F % Vector de fuerzas aplicadas sobre el modelo
         u % Vector con los desplazamientos de los grados de libertad del modelo
     end % private properties AnalisisEstatico
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = AnalisisEstatico(modeloObjeto)
             % AnalisisEstatico: es el constructor de la clase AnalisisEstatico

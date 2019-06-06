@@ -54,7 +54,7 @@
 
 classdef CargaVigaColumnaDistribuida < CargaEstatica
     
-    properties (Access = private)
+    properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga1 % Valor de la carga 1
         carga2 % Valor de la carga 2
@@ -63,7 +63,7 @@ classdef CargaVigaColumnaDistribuida < CargaEstatica
         theta % Angulo de la carga
     end % private properties CargaVigaColumnaDistribuida
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = CargaVigaColumnaDistribuida(etiquetaCarga, ...
                 elemObjeto, carga1, distancia1, carga2, distancia2, theta)
@@ -157,7 +157,7 @@ classdef CargaVigaColumnaDistribuida < CargaEstatica
             % obtenerMasa: Obtiene la masa asociada a la carga
             
             [u1, u2, v1, v2, ~, ~] = obj.calcularCarga();
-            masa = abs(u1 + u2 + v1 + v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
+            masa = abs(u1+u2+v1+v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         

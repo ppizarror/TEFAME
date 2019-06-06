@@ -53,18 +53,18 @@
 
 classdef CargaEstatica < ComponenteModelo
     
-    properties (Access = private)
+    properties(Access = private)
         cargaSumoMasa % Indica que la carga ya sumo masa
         cargaActiva % La carga esta activa
     end % private properties CargaEstatica
     
-    properties (Access = protected)
+    properties(Access = protected)
         factorCargaMasa % Factor de masa de la carga
         factorUnidadMasa % Factor unidad de la masa
         nodosCarga % Nodos que comparten la carga
     end % protected properties CargaEstatica
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = CargaEstatica(etiquetaCarga)
             % CargaEstatica: es el constructor de la clase CargaEstatica

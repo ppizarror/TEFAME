@@ -49,13 +49,13 @@
 
 classdef PatronDeCargasDinamico < PatronDeCargas
     
-    properties (Access = private)
+    properties(Access = private)
         analisisObj % Guarda el objeto de analisis con tal de obtener M, K, C y el vector de influencia
         desModal % Realiza descomposicion modal
         Newmark % Realiza Newmark
     end % private properties PatronDeCargasDinamico
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = PatronDeCargasDinamico(etiquetaPatronDeCargas, ...
                 arregloCargas, analisisObj, varargin)
@@ -546,7 +546,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         
         function [x, v, a] = espacioEstado(obj, M, K, C, P, dt)
             % Ecuacion de movimiento de la forma z(t) = [A]{z(t)} + {F(t)}
-
+            
             nm = length(M);
             aux0 = zeros(nm, nm);
             aux1 = eye(nm);

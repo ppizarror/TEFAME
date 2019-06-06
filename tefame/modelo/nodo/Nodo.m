@@ -68,7 +68,7 @@
 
 classdef Nodo < ComponenteModelo
     
-    properties (Access = private)
+    properties(Access = private)
         nGDL % Numbero de grados de libertad (GDL)
         coords % Coordenadas del nodo
         gdlID % Vector que guarda el ID de los grados de libertad
@@ -79,7 +79,7 @@ classdef Nodo < ComponenteModelo
         elementos % Cell que guarda los elementos que conectan el nodo
     end % private properties Nodo
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = Nodo(etiquetaNodo, nGDLNodo, coordenadasNodo)
             % Nodo: es el constructor de la clase Nodo

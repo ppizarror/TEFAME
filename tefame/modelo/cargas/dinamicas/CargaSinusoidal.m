@@ -78,7 +78,7 @@
 
 classdef CargaSinusoidal < CargaDinamica
     
-    properties (Access = private)
+    properties(Access = private)
         amplitud % Amplitud de la carga
         direccion % Vector de direcciones
         nodo % Nodo al que se aplica la carga
@@ -87,7 +87,7 @@ classdef CargaSinusoidal < CargaDinamica
         w % Frecuencia de la carga
     end % private properties CargaSinusoidal
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tInicio, tAnalisis)
             % CargaSinusoidal: es el constructor de la clase CargaSinusoidal

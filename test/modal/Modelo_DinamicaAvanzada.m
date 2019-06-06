@@ -3,9 +3,11 @@ fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);
 modeloObj.definirNombre('Modelo Dinamica Avanzada');
+
+% Configuraciones del modelamiento
 modelarFundacion = false;
-usarDisipadores = false;
 resolverCargasDinamicas = true;
+usarDisipadores = false;
 
 %% Nodos modelo
 nodos = {};

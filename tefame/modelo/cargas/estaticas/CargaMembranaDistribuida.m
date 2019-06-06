@@ -56,7 +56,7 @@
 
 classdef CargaMembranaDistribuida < CargaEstatica
     
-    properties (Access = private)
+    properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga1 % Valor de la carga 1
         carga2 % Valor de la carga 2
@@ -68,7 +68,7 @@ classdef CargaMembranaDistribuida < CargaEstatica
         theta % Angulo de aplicacion
     end % private properties CargaMembranaDistribuida
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = CargaMembranaDistribuida(etiquetaCarga, elemObjeto, ...
                 nodo1, nodo2, carga1, distancia1, carga2, distancia2)
@@ -175,7 +175,7 @@ classdef CargaMembranaDistribuida < CargaEstatica
             % obtenerMasa: Obtiene la masa asociada a la carga
             
             [v1, v2] = obj.calcularCarga();
-            masa = abs(v1 + v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
+            masa = abs(v1+v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         

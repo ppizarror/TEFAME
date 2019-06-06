@@ -78,7 +78,7 @@
 
 classdef CargaPulso < CargaDinamica
     
-    properties (Access = private)
+    properties(Access = private)
         amplitud % Ampitud de la carga
         direccion % Vector de direcciones
         intervalos % Intervalos
@@ -87,7 +87,7 @@ classdef CargaPulso < CargaDinamica
         tpulso % Tiempo de aplicacion del pulso
     end % private properties CargaPulso
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = CargaPulso(etiquetaCargaPulso, nodo, direccion, amplitud, tpulso, dt, tInicio, tAnalisis)
             % CargaPulso: es el constructor de la clase CargaPulso

@@ -58,7 +58,7 @@
 
 classdef DisipadorViscoso2D < Disipador2D
     
-    properties (Access = private)
+    properties(Access = private)
         Keq % Modulo de elasticidad
         Ce % Parametro
         Ceq % Inercia de la seccion
@@ -74,7 +74,7 @@ classdef DisipadorViscoso2D < Disipador2D
         v0 % Desp
     end % private properties DisipadorViscoso2D
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = DisipadorViscoso2D(etiquetaDisipador, nodo1Obj, nodo2Obj, Cd, alpha)
             % DisipadorViscoso2D: Constructor de la clase, genera un

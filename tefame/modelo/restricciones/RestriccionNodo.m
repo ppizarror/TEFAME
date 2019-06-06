@@ -48,13 +48,13 @@
 
 classdef RestriccionNodo < ComponenteModelo
     
-    properties (Access = private)
+    properties(Access = private)
         nodoObj
         gdlRestringidos
         valoresRestriccion
     end % private properties RestriccionNodo
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = RestriccionNodo(etiquetaRestriccion, nodoObjeto, gdlRestringidosNodo, varargin)
             % RestriccionNodo: es el constructor de la clase RestriccionNodo
@@ -97,7 +97,7 @@ classdef RestriccionNodo < ComponenteModelo
             gdlID = obj.nodoObj.obtenerGDLID();
             
             % Se coloca cero en los GDL que se indicaron en la restriccion
-            for i=1:length(obj.gdlRestringidos)
+            for i = 1:length(obj.gdlRestringidos)
                 if obj.gdlRestringidos(i) ~= 0
                     gdlID(obj.gdlRestringidos(i)) = 0;
                 end

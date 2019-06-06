@@ -88,7 +88,7 @@
 
 classdef ModalEspectral < Analisis
     
-    properties (Access = private)
+    properties(Access = private)
         cargarAnimacion % Carga la animacion del grafico una vez renderizado
         condMatRot % Matriz de condensacion rotacion
         condMatT % Matriz de condensacion T
@@ -118,7 +118,7 @@ classdef ModalEspectral < Analisis
         wn % Frecuencias del sistema
     end % private properties ModalEspectral
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = ModalEspectral(modeloObjeto)
             % ModalEspectral: es el constructor de la clase ModalEspectral

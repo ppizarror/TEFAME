@@ -52,18 +52,18 @@
 
 classdef PatronDeCargas < ComponenteModelo
     
-    properties (Access = private)
+    properties(Access = private)
     end % private properties PatronDeCargas
     
-    properties (Access = protected)
+    properties(Access = protected)
         cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
     end % protected properties PatronDeCargas
     
-    properties (Access = public)
+    properties(Access = public)
         patronEsDinamico
     end % public properties PatronDeCargas
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = PatronDeCargas(etiquetaPatronDeCargas)
             % PatronDeCargas: es el constructor de la clase PatronDeCargas

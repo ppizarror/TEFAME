@@ -83,17 +83,17 @@
 
 classdef CargaDinamica < ComponenteModelo
     
-    properties (Access = public)
-        tAnalisis% Tiempo de analisis
-        tInicio% Tiempo de inicio
-        dt% Delta de tiempo
+    properties(Access = public)
+        tAnalisis % Tiempo de analisis
+        tInicio % Tiempo de inicio
+        dt % Delta de tiempo
     end % public properties CargaDinamica
-
-    properties (Access = private)
+    
+    properties(Access = private)
         cargaSumoMasa % Indica que la carga ya sumo masa
     end % private properties CargaDinamica
     
-    properties (Access = protected)
+    properties(Access = protected)
         cargaActiva % Indica si la carga esta activada o no
         cargaFueCalculada % La carga fue calculada o no
         cRayleigh % Indica que la carga se calculo con C de Rayleigh
@@ -108,7 +108,7 @@ classdef CargaDinamica < ComponenteModelo
         usoDisipador % Indica que se usaron disipadores
     end % protected properties CargaDinamica
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = CargaDinamica(etiquetaCarga)
             % CargaDinamica: es el constructor de la clase CargaDinamica

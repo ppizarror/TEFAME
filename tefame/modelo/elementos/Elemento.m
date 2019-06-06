@@ -61,15 +61,15 @@
 
 classdef Elemento < ComponenteModelo
     
-    properties (Access = private)
+    properties(Access = private)
         graficaDeformadaElem % Grafica la deformada del elemento
     end % private properties Elemento
     
-    properties (Access = protected)
+    properties(Access = protected)
         factorMasa % Indica el factor en que convierte densidad en masa
     end % protected properties Elemento
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = Elemento(etiquetaElemento)
             % Elemento: es el constructor de la clase Elemento

@@ -62,7 +62,7 @@
 
 classdef Viga2D < Elemento
     
-    properties (Access = private)
+    properties(Access = private)
         nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
         Eo % Modulo de elasticidad
@@ -76,7 +76,7 @@ classdef Viga2D < Elemento
         rho % Densidad de la viga
     end % private properties Viga2D
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = Viga2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, densidad)
             % Viga2D: Constructor de clase

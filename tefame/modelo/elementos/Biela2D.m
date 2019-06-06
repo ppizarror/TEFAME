@@ -67,7 +67,7 @@
 
 classdef Biela2D < Elemento
     
-    properties (Access = private)
+    properties(Access = private)
         nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
         Ao % Area de la seccion transversal
@@ -82,7 +82,7 @@ classdef Biela2D < Elemento
         rho % Densidad de la biela
     end % private properties Biela2D
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = Biela2D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial, densidad)
             % Biela2D: Constructor de clase, genera una biela en dos dimensiones

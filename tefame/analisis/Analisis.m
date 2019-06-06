@@ -58,13 +58,13 @@
 
 classdef Analisis < handle
     
-    properties (Access = protected)
+    properties(Access = protected)
         modeloObj % Objeto del modelo
         analisisFinalizado % Analisis termino
         numeroGDL % Numero GDL del sistema
     end % protected properties Analisis
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = Analisis(modeloObjeto)
             % Analisis: es el constructor de la clase Analisis
@@ -82,13 +82,13 @@ classdef Analisis < handle
             
         end % Analisis constructor
         
-%         function definirNumeracionGDL(obj)
-%             % definirNumeracionGDL: es un metodo de la clase Analisis que
-%             % se usa para definir como se enumeran los GDL en el modelo
-%             %
-%             % Define y asigna la enumeracion de los GDL en el modelo
-%             
-%         end % definirNumeracionGDL function
+        %         function definirNumeracionGDL(obj)
+        %             % definirNumeracionGDL: es un metodo de la clase Analisis que
+        %             % se usa para definir como se enumeran los GDL en el modelo
+        %             %
+        %             % Define y asigna la enumeracion de los GDL en el modelo
+        %
+        %         end % definirNumeracionGDL function
         
         function analizar(obj, varargin)
             % analizar: es un metodo de la clase Analisis que se usa para
@@ -118,41 +118,41 @@ classdef Analisis < handle
             
         end % obtenerMatrizAmortiguamiento function
         
-%         function ensamblarMatrizRigidez(obj)
-%             % ensamblarMatrizRigidez: es un metodo de la clase Analisis que
-%             % se usa para realizar el armado de la matriz de rigidez del
-%             % modelo analizado
-%             %
-%             % Ensambla la matriz de Rigidez del modelo analizado usando el metodo
-%             % indicial
-%             
-%         end % ensamblarMatrizRigidez function
+        %         function ensamblarMatrizRigidez(obj)
+        %             % ensamblarMatrizRigidez: es un metodo de la clase Analisis que
+        %             % se usa para realizar el armado de la matriz de rigidez del
+        %             % modelo analizado
+        %             %
+        %             % Ensambla la matriz de Rigidez del modelo analizado usando el metodo
+        %             % indicial
+        %
+        %         end % ensamblarMatrizRigidez function
         
-%         function Cd = ensamblarMatrizAmortiguamientoDisipadores(obj) %#ok<*MANU>
-%             % ensamblarMatrizAmortiguamientoDisipadores: Ensambla la matriz
-%             % de amortiguamiento de los disipadores
-%             
-%             Cd = [];
-%             
-%         end % ensamblarMatrizAmortiguamientoDisipadores function
+        %         function Cd = ensamblarMatrizAmortiguamientoDisipadores(obj) %#ok<*MANU>
+        %             % ensamblarMatrizAmortiguamientoDisipadores: Ensambla la matriz
+        %             % de amortiguamiento de los disipadores
+        %
+        %             Cd = [];
+        %
+        %         end % ensamblarMatrizAmortiguamientoDisipadores function
         
-%         function Kdv = ensamblarMatrizRigidezDisipadores(obj)
-%             % ensamblarMatrizRigidezDisipadores: Ensambla matriz de rigidez
-%             % de los disipadores
-%             
-%             Kdv = [];
-%             
-%         end % ensamblarMatrizRigidezDisipadores function
+        %         function Kdv = ensamblarMatrizRigidezDisipadores(obj)
+        %             % ensamblarMatrizRigidezDisipadores: Ensambla matriz de rigidez
+        %             % de los disipadores
+        %
+        %             Kdv = [];
+        %
+        %         end % ensamblarMatrizRigidezDisipadores function
         
-%         function ensamblarVectorFuerzas(obj)
-%             % ensamblarVectorFuerzas: es un metodo de la clase Analisis que
-%             % se usa para realizar el armado del vector de fuerzas del
-%             % modelo analizado
-%             %
-%             % Ensambla el vector de fuerzas del modelo analizado usando el metodo
-%             % indicial
-%             
-%         end % ensamblarVectorFuerzas function
+        %         function ensamblarVectorFuerzas(obj)
+        %             % ensamblarVectorFuerzas: es un metodo de la clase Analisis que
+        %             % se usa para realizar el armado del vector de fuerzas del
+        %             % modelo analizado
+        %             %
+        %             % Ensambla el vector de fuerzas del modelo analizado usando el metodo
+        %             % indicial
+        %
+        %         end % ensamblarVectorFuerzas function
         
         function numeroEcuaciones = obtenerNumeroEcuaciones(obj)
             % obtenerNumeroEcuaciones: es un metodo de la clase Analisis
@@ -177,14 +177,14 @@ classdef Analisis < handle
             
         end % obtenerMatrizRigidez function
         
-%         function ensamblarMatrizMasa(obj)
-%             % ensamblarMatrizMasa: es un metodo de la clase Analisis que se usa para
-%             % realizar el armado de la matriz de masa del modelo
-%             %
-%             % Ensambla la matriz de masa del modelo analizado usando el metodo
-%             % indicial
-%             
-%         end % ensamblarMatrizMasa function
+        %         function ensamblarMatrizMasa(obj)
+        %             % ensamblarMatrizMasa: es un metodo de la clase Analisis que se usa para
+        %             % realizar el armado de la matriz de masa del modelo
+        %             %
+        %             % Ensambla la matriz de masa del modelo analizado usando el metodo
+        %             % indicial
+        %
+        %         end % ensamblarMatrizMasa function
         
         function Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(obj)
             % obtenerMatrizRigidez: es un metodo de la clase que retorna la matriz
@@ -228,14 +228,14 @@ classdef Analisis < handle
             
         end % obtenerDesplazamientos function
         
-%         function [limx, limy, limz] = obtenerLimitesDeformada(obj, factor)
-%             % obtenerLimitesDeformada: Obtiene los limites de deformacion
-%             
-%             limx = 0;
-%             limy = 0;
-%             limz = 0;
-%             
-%         end % obtenerLimitesDeformada function
+        %         function [limx, limy, limz] = obtenerLimitesDeformada(obj, factor)
+        %             % obtenerLimitesDeformada: Obtiene los limites de deformacion
+        %
+        %             limx = 0;
+        %             limy = 0;
+        %             limz = 0;
+        %
+        %         end % obtenerLimitesDeformada function
         
         function plt = plot(obj, varargin) %#ok<*VANUS,*INUSD>
             % plt: Grafica el modelo

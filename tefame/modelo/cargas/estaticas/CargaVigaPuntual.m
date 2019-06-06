@@ -50,13 +50,13 @@
 
 classdef CargaVigaPuntual < CargaEstatica
     
-    properties (Access = private)
+    properties(Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga % Valor de la carga
         dist % Distancia de la carga al primer nodo del elemento
     end % private properties CargaVigaPuntual
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = CargaVigaPuntual(etiquetaCarga, elemObjeto, carga, distancia)
             % CargaVigaPuntual: es el constructor de la clase CargaVigaPuntual
@@ -113,7 +113,7 @@ classdef CargaVigaPuntual < CargaEstatica
             % obtenerMasa: Obtiene la masa asociada a la carga
             
             [v1, v2, ~, ~] = obj.calcularCarga();
-            masa = abs(v1 + v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
+            masa = abs(v1+v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         

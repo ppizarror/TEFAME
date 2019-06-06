@@ -72,14 +72,14 @@
 
 classdef CargaRegistroSismico < CargaDinamica
     
-    properties (Access = private)
+    properties(Access = private)
         registro % Cell con matrices de registro
         direccion % Vector de direcciones
         rf % Vector de influencia
         dispinfo % Indica si se despliega la informacion
     end % private properties CargaNodo
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tInicio, tAnalisis)
             % CargaRegistroSismico: es el constructor de la clase CargaNodo

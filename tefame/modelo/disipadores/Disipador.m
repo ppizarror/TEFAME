@@ -48,13 +48,13 @@ classdef Disipador < ComponenteModelo
     properties(Access = private)
     end % private properties Disipador
     
-    properties (Access = protected)
+    properties(Access = protected)
         nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
         T % Matriz de transformacion
     end % protected properties Disipador
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = Disipador(etiquetaDisipador)
             % Disipador: es el constructor de la clase Disipador

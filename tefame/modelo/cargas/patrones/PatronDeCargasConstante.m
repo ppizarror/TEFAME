@@ -49,10 +49,10 @@
 
 classdef PatronDeCargasConstante < PatronDeCargas
     
-    properties (Access = private)
+    properties(Access = private)
     end % private properties PatronDeCargasConstante
     
-    methods (Access = public)
+    methods(Access = public)
         
         function obj = PatronDeCargasConstante(etiquetaPatronDeCargas, arregloCargas)
             % PatronDeCargasConstante: es el constructor de la clase PatronDeCargas
