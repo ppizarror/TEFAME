@@ -68,7 +68,7 @@
 
 classdef Membrana < Elemento
     
-    properties(Access = private)
+    properties (Access = private)
         nodosObj % Lista de nodos de la membrana
         gdlID % ID de los grados de libertad
         E % Constante elastica del material
@@ -80,9 +80,9 @@ classdef Membrana < Elemento
         Feq % Vector de fuerzas equivalentes en nodos
         NPOINTS % Numero de interpolaciones
         rho % Densidad de la membrana
-    end % properties Membrana
+    end % private properties Membrana
     
-    methods
+    methods (Access = public)
         
         function obj = Membrana(etiquetaMembrana, nodo1Obj, nodo2Obj, nodo3Obj, nodo4Obj, E, nu, t, densidad)
             % Membrana: Constructor de clase, crea una membrana de 4
@@ -665,6 +665,6 @@ classdef Membrana < Elemento
             
         end % disp function
         
-    end % methods Membrana
+    end % public methods Membrana
     
 end % class Membrana

@@ -40,15 +40,15 @@
 
 classdef ComponenteModelo < handle
     
-    properties(Access = private)
+    properties (Access = private)
         etiquetaID % Variable que guarda el valor de la etiqueta usada para identificar el componente del modelo
-    end % properties ComponenteModelo
+    end % private properties ComponenteModelo
     
-    properties(Access = protected)
+    properties (Access = protected)
         objectID % ID del objeto
-    end % properties ComponenteModelo
+    end % protected properties ComponenteModelo
     
-    methods
+    methods (Access = public)
         
         function obj = ComponenteModelo(etiqueta)
             % ComponenteModelo: es el constructor de la clase ComponenteModelo
@@ -112,6 +112,6 @@ classdef ComponenteModelo < handle
             
         end % obtenerIDObjeto function
         
-    end % methods ComponenteModelo
+    end % public methods ComponenteModelo
     
 end % classdef ComponenteModelo

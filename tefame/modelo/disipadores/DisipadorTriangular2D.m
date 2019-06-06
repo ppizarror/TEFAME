@@ -62,7 +62,7 @@
 
 classdef DisipadorTriangular2D < Disipador2D
     
-    properties(Access = private)
+    properties (Access = private)
         Keq % Modulo de elasticidad
         Ceq % Inercia de la seccion
         Ce % Ponderacion matriz de amortiguamiento
@@ -75,9 +75,9 @@ classdef DisipadorTriangular2D < Disipador2D
         ke % Parametro del disipador
         w % Frecuencia que mas mueve energia en la estructura
         v0 % Desplazamiento relativo del disipador
-    end % properties DisipadorTriangular2D
+    end % private properties DisipadorTriangular2D
     
-    methods
+    methods (Access = public)
         
         function obj = DisipadorTriangular2D(etiquetaDisipador, nodo1Obj, nodo2Obj, k1, k2)
             % DisipadorTriangular2D: Constructor de la clase, genera un
@@ -152,6 +152,6 @@ classdef DisipadorTriangular2D < Disipador2D
             
         end % disp function
         
-    end % methods DisipadorTriangular2D
+    end % public methods DisipadorTriangular2D
     
 end % class DisipadorTriangular2D

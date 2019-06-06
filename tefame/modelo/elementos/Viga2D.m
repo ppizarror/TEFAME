@@ -62,7 +62,7 @@
 
 classdef Viga2D < Elemento
     
-    properties(Access = private)
+    properties (Access = private)
         nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
         Eo % Modulo de elasticidad
@@ -74,9 +74,9 @@ classdef Viga2D < Elemento
         Feq % Fuerza equivalente
         PLOTNELEM % Numero de elementos en los que se discretiza para el grafico
         rho % Densidad de la viga
-    end % properties Viga2D
+    end % private properties Viga2D
     
-    methods
+    methods (Access = public)
         
         function obj = Viga2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, densidad)
             % Viga2D: Constructor de clase
@@ -380,6 +380,6 @@ classdef Viga2D < Elemento
             
         end % disp function
         
-    end % methods Viga2D
+    end % public methods Viga2D
     
 end % class Viga2D

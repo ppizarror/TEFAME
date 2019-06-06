@@ -47,10 +47,10 @@
 
 classdef Disipador2D < Disipador
     
-    properties(Access = private)
-    end % properties Disipador2D
+    properties (Access = private)
+    end % private properties Disipador2D
     
-    methods
+    methods (Access = public)
         
         function obj = Disipador2D(etiquetaDisipador)
             % Disipador2D: es el constructor de la clase Disipador2D
@@ -181,6 +181,6 @@ classdef Disipador2D < Disipador
             
         end % plot function
         
-    end % methods Disipador2D
+    end % public methods Disipador2D
     
 end % class Disipador2D

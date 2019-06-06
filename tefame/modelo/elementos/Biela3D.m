@@ -59,7 +59,7 @@
 
 classdef Biela3D < Elemento
     
-    properties(Access = private)
+    properties (Access = private)
         nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
         Ao % Area de la seccion transversal
@@ -71,9 +71,9 @@ classdef Biela3D < Elemento
         theta % Angulo de inclinacion de la viga
         T % Matriz de transformacion
         rho % Densidad de la biela
-    end % properties Biela3D
+    end % private properties Biela3D
     
-    methods
+    methods (Access = public)
         
         function obj = Biela3D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial, densidad)
             % Biela3D: Constructor de clase, genera una biela en tres dimensiones
@@ -359,6 +359,6 @@ classdef Biela3D < Elemento
             
         end % disp function
         
-    end % methods Biela3D
+    end % public methods Biela3D
     
 end % class Biela3D

@@ -52,14 +52,14 @@
 
 classdef CargaVigaColumnaPuntual < CargaEstatica
     
-    properties(Access = private)
+    properties (Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga % Valor de la carga
         dist % Distancia de la carga al primer nodo del elemento
         theta % Angulo de aplicacion de la carga
-    end % properties CargaVigaColumnaPuntual
+    end % private properties CargaVigaColumnaPuntual
     
-    methods
+    methods (Access = public)
         
         function obj = CargaVigaColumnaPuntual(etiquetaCarga, ...
                 elemObjeto, carga, distancia, theta)
@@ -178,6 +178,6 @@ classdef CargaVigaColumnaPuntual < CargaEstatica
             
         end % disp function
         
-    end % methods CargaVigaColumnaPuntual
+    end % public methods CargaVigaColumnaPuntual
     
 end % class CargaVigaColumnaPuntual

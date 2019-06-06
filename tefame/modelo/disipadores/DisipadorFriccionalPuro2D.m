@@ -60,7 +60,7 @@
 
 classdef DisipadorFriccionalPuro2D < Disipador2D
     
-    properties(Access = private)
+    properties (Access = private)
         Keq % Modulo de elasticidad
         Ceq % Inercia de la seccion
         Ce % Ponderacion matriz de amortiguamiento
@@ -72,9 +72,9 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
         v0 % Parametro del disipador
         Vo % Parametro del disipador
         w % Parametro del disipador
-    end % properties DisipadorFriccionalPuro2D
+    end % private properties DisipadorFriccionalPuro2D
     
-    methods
+    methods (Access = public)
         
         function obj = DisipadorFriccionalPuro2D(etiquetaDisipador, nodo1Obj, nodo2Obj, Fy)
             % DisipadorFriccionalPuro2D: Constructor de la clase, genera un
@@ -148,6 +148,6 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
             
         end % disp function
         
-    end % methods DisipadorFriccionalPuro2D
+    end % public methods DisipadorFriccionalPuro2D
     
 end % class DisipadorFriccionalPuro2D

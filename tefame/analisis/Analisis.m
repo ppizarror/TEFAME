@@ -58,13 +58,13 @@
 
 classdef Analisis < handle
     
-    properties(Access = protected)
+    properties (Access = protected)
         modeloObj % Objeto del modelo
         analisisFinalizado % Analisis termino
         numeroGDL % Numero GDL del sistema
-    end % properties Analisis
+    end % protected properties Analisis
     
-    methods(Access = public)
+    methods (Access = public)
         
         function obj = Analisis(modeloObjeto)
             % Analisis: es el constructor de la clase Analisis
@@ -258,6 +258,6 @@ classdef Analisis < handle
             
         end % disp function
         
-    end % methods Analisis
+    end % public methods Analisis
     
 end % class Analisis

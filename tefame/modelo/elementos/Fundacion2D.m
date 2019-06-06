@@ -66,7 +66,7 @@
 
 classdef Fundacion2D < Elemento
     
-    properties(Access = private)
+    properties (Access = private)
         nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
         meq % Masa del elemento
@@ -78,9 +78,9 @@ classdef Fundacion2D < Elemento
         Feq % Fuerza equivalente
         T % Matriz de transformacion
         Klp % Matriz de rigidez local del elemento
-    end % properties Fundacion2D
+    end % private properties Fundacion2D
     
-    methods
+    methods (Access = public)
         
         function obj = Fundacion2D(etiquetaViga, nodo1Obj, nodo2Obj, Masaelemento, Kelemento)
             % Fundacion2D: Constructor de la clase, instancia una fundacion
@@ -383,6 +383,6 @@ classdef Fundacion2D < Elemento
             
         end % disp function
         
-    end % methods Fundacion2D
+    end % public methods Fundacion2D
     
 end % class Fundacion2D

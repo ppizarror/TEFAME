@@ -56,7 +56,7 @@
 
 classdef CargaMembranaDistribuida < CargaEstatica
     
-    properties(Access = private)
+    properties (Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga1 % Valor de la carga 1
         carga2 % Valor de la carga 2
@@ -66,9 +66,9 @@ classdef CargaMembranaDistribuida < CargaEstatica
         nodo2 % Nodo 2 de aplicacion
         L % Largo de aplicacion de las cargas
         theta % Angulo de aplicacion
-    end % properties CargaMembranaDistribuida
+    end % private properties CargaMembranaDistribuida
     
-    methods
+    methods (Access = public)
         
         function obj = CargaMembranaDistribuida(etiquetaCarga, elemObjeto, ...
                 nodo1, nodo2, carga1, distancia1, carga2, distancia2)
@@ -244,6 +244,6 @@ classdef CargaMembranaDistribuida < CargaEstatica
             
         end % disp function
         
-    end % methods CargaMembranaDistribuida
+    end % public methods CargaMembranaDistribuida
     
 end % class CargaMembranaDistribuida

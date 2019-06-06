@@ -47,12 +47,12 @@
 
 classdef CombinacionCargas < ComponenteModelo
     
-    properties(Access = private)
+    properties (Access = private)
         cargas % Arreglo de cargas
         uGuardado % Guarda el arreglo
-    end % properties CombinacionCargas
+    end % private properties CombinacionCargas
     
-    methods(Access = public)
+    methods (Access = public)
         
         function obj = CombinacionCargas(etiquetaCombinacion, cargas)
             % CombinacionCargas: Es el constructor de la clase, requiere el
@@ -333,9 +333,9 @@ classdef CombinacionCargas < ComponenteModelo
             
         end % disp function
         
-    end % methods CombinacionCargas public
+    end % public methods CombinacionCargas
     
-    methods(Access = private)
+    methods (Access = private)
         
         function [dt, t] = obtenerDtMinimo(obj)
             % obj: Obtiene el arreglo de tiempo comun a
@@ -399,6 +399,6 @@ classdef CombinacionCargas < ComponenteModelo
             
         end % reshapeMatrix function
         
-    end % methods CombinacionCargas private
+    end % private methods CombinacionCargas
     
 end % class CombinacionCargas

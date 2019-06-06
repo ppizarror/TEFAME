@@ -67,7 +67,7 @@
 
 classdef VigaColumna2D < Elemento
     
-    properties(Access = private)
+    properties (Access = private)
         nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
         Ao % Area de la seccion transversal
@@ -82,9 +82,9 @@ classdef VigaColumna2D < Elemento
         T % Matriz de transformacion
         Klp % Matriz de rigidez local del elemento
         PLOTNELEM % Numero de elementos en los que se discretiza para el grafico
-    end % properties VigaColumna2D
+    end % private properties VigaColumna2D
     
-    methods
+    methods (Access = public)
         
         function obj = VigaColumna2D(etiquetaViga, nodo1Obj, nodo2Obj, Imaterial, Ematerial, Amaterial, densidad)
             
@@ -458,6 +458,6 @@ classdef VigaColumna2D < Elemento
             
         end % disp function
         
-    end % methods VigaColumna2D
+    end % public methods VigaColumna2D
     
 end % class VigaColumna2D

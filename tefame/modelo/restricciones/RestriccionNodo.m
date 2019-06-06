@@ -48,13 +48,13 @@
 
 classdef RestriccionNodo < ComponenteModelo
     
-    properties(Access = private)
+    properties (Access = private)
         nodoObj
         gdlRestringidos
         valoresRestriccion
-    end % properties RestriccionNodo
+    end % private properties RestriccionNodo
     
-    methods
+    methods (Access = public)
         
         function obj = RestriccionNodo(etiquetaRestriccion, nodoObjeto, gdlRestringidosNodo, varargin)
             % RestriccionNodo: es el constructor de la clase RestriccionNodo
@@ -136,6 +136,6 @@ classdef RestriccionNodo < ComponenteModelo
             
         end % disp function
         
-    end % methods RestriccionNodo
+    end % public methods RestriccionNodo
     
 end % class RestriccionNodo

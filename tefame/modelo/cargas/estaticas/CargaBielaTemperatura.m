@@ -52,14 +52,14 @@
 
 classdef CargaBielaTemperatura < CargaEstatica
     
-    properties(Access = private)
+    properties (Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         deltaTemperatura % Diferencia de temperatura aplicada al material
         alpha % Coeficiente de dilatacion termica de la biela
         carga % Carga generada por la temperatura
-    end % properties CargaBielaTemperatura
+    end % private properties CargaBielaTemperatura
     
-    methods
+    methods (Access = public)
         
         function obj = CargaBielaTemperatura(etiquetaCarga, elemObjeto, deltaTemperatura, alpha)
             % CargaBielaTemperatura: es el constructor de la clase CargaBielaTemperatura
@@ -149,6 +149,6 @@ classdef CargaBielaTemperatura < CargaEstatica
             
         end % disp function
         
-    end % methods CargaBielaTemperatura
+    end % public methods CargaBielaTemperatura
     
 end % class CargaBielaTemperatura

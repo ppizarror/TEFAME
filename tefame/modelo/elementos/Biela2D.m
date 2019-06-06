@@ -67,7 +67,7 @@
 
 classdef Biela2D < Elemento
     
-    properties(Access = private)
+    properties (Access = private)
         nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
         Ao % Area de la seccion transversal
@@ -80,9 +80,9 @@ classdef Biela2D < Elemento
         T % Matriz de transformacion
         TcargaReacc % Reaccion de la biela guardada como un vector
         rho % Densidad de la biela
-    end % properties Biela2D
+    end % private properties Biela2D
     
-    methods
+    methods (Access = public)
         
         function obj = Biela2D(etiquetaBiela, nodo1Obj, nodo2Obj, AreaSeccion, Ematerial, densidad)
             % Biela2D: Constructor de clase, genera una biela en dos dimensiones
@@ -390,6 +390,6 @@ classdef Biela2D < Elemento
             
         end % disp function
         
-    end % methods Biela2D
+    end % public methods Biela2D
     
 end % class Biela2D

@@ -51,12 +51,12 @@
 
 classdef CargaNodo < CargaEstatica
     
-    properties(Access = private)
+    properties (Access = private)
         nodoObj % Variable que guarda el Nodo que se le va a aplicar la carga
         vectorCarga % Variable que guarda el vector de cargas a aplicar
-    end % properties CargaNodo
+    end % private properties CargaNodo
     
-    methods
+    methods (Access = public)
         
         function obj = CargaNodo(etiquetaCargaNodo, nodoObjeto, cargaNodo)
             % CargaNodo: es el constructor de la clase CargaNodo
@@ -121,6 +121,6 @@ classdef CargaNodo < CargaEstatica
             
         end % disp function
         
-    end % methods CargaNodo
+    end % public methods CargaNodo
     
 end % class CargaNodo

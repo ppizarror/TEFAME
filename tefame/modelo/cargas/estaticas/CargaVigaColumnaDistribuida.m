@@ -54,16 +54,16 @@
 
 classdef CargaVigaColumnaDistribuida < CargaEstatica
     
-    properties(Access = private)
+    properties (Access = private)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga1 % Valor de la carga 1
         carga2 % Valor de la carga 2
         dist1 % Distancia de la carga 1 al primer nodo del elemento (porcentaje del largo)
         dist2 % Distancia de la carga 2 al primer nodo del elemento (porcentaje del largo)
         theta % Angulo de la carga
-    end % properties CargaVigaColumnaDistribuida
+    end % private properties CargaVigaColumnaDistribuida
     
-    methods
+    methods (Access = public)
         
         function obj = CargaVigaColumnaDistribuida(etiquetaCarga, ...
                 elemObjeto, carga1, distancia1, carga2, distancia2, theta)
@@ -214,6 +214,6 @@ classdef CargaVigaColumnaDistribuida < CargaEstatica
             
         end % disp function
         
-    end % methods CargaVigaColumnaDistribuida
+    end % public methods CargaVigaColumnaDistribuida
     
 end % class CargaVigaColumnaDistribuida

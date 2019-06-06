@@ -61,7 +61,7 @@
 
 classdef Modelo < handle
     
-    properties(Access = private)
+    properties (Access = private)
         disipadores % Variable que guarda en un arreglo de celdas todos los disipadores del modelo
         elementos % Variable que guarda en un arreglo de celdas todos los elementos del modelo
         nDimensiones % Variable que guarda las dimensiones del sistema de coordenadas del modelo
@@ -70,9 +70,9 @@ classdef Modelo < handle
         nombreModelo % Nombre del modelo
         patronesDeCargas % Variable que guarda en un arreglo de celdas todos los patrones de cargas aplicadas sobre el modelo
         restricciones % Variable que guarda en un arreglo de celdas todos las restricciones del modelo
-    end % properties Modelo
+    end % private properties Modelo
     
-    methods
+    methods (Access = public)
         
         function obj = Modelo(numeroDimensiones, numerosGDL)
             % Modelo: es el constructor de la clase Modelo
@@ -477,6 +477,6 @@ classdef Modelo < handle
             
         end % disp function
         
-    end % methods Modelo
+    end % public methods Modelo
     
 end % class Modelo
