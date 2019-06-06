@@ -26,7 +26,7 @@
 %| estructuras.                                                         |
 %| La clase PatronDeCargasDinamico  es una clase contenedor que guarda  |
 %| y controla las cargas que son de caracter dinamico, los que se calcu |
-%| lan usando el metodo de newmark.                                     |
+%| lan usando el metodo de newmark o el metodo de espacio estado.       |
 %|                                                                      |
 %| Programado: Pablo Pizarro @ppizarror.com                             |
 %| Fecha: 10/04/2019                                                    |
