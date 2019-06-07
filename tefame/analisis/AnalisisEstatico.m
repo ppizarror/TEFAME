@@ -137,6 +137,7 @@ classdef AnalisisEstatico < Analisis
             %   factorCargaE        Factor de cargas estaticas
             
             fprintf('Ejecutando analisis estatico\n');
+            tInicio = clock;
             
             % Define parametros
             p = inputParser;
@@ -162,6 +163,7 @@ classdef AnalisisEstatico < Analisis
             
             % Termina el analisis
             obj.analisisFinalizado = true;
+            fprintf('\tSe completo el analisis en %.3f segundos\n', etime(clock, tInicio));
             dispMetodoTEFAME();
             
         end % analizar function

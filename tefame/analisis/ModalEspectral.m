@@ -1097,7 +1097,7 @@ classdef ModalEspectral < Analisis
             
             % Finaliza proceso
             drawnow();
-            fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial);
+            fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
             dispMetodoTEFAME();
             
         end % calcularDesplazamientoDrift function
