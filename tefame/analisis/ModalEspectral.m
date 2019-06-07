@@ -604,7 +604,7 @@ classdef ModalEspectral < Analisis
             % Tiempos
             tmin = max(0, r.tmin);
             tmax = r.tmax;
-            tinicial = cputime;
+            tinicial = clock;
             
             % Verificaciones si se grafica una carga
             if carga ~= false
@@ -780,7 +780,7 @@ classdef ModalEspectral < Analisis
                     r.lwElemE, r.styleElemD, r.lwElemD, r.styleDisipador, ...
                     r.colorDisipador, r.lwDisipador, r.unidad, ...
                     r.angAzh, r.angPol);
-                fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+                fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
             else
                 plotAnimado(obj, deformada, modo, factor, 0, ...
                     limx, limy, limz, tn, 1, 1, defElem, defCarga, ...
@@ -845,7 +845,7 @@ classdef ModalEspectral < Analisis
                 end
                 
                 % Imprime en consola el tiempo que se demoro el proceso
-                fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+                fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
                 
                 % Reproduce la pelicula y cierra el grafico anterior
                 close(fig_num);
@@ -953,7 +953,7 @@ classdef ModalEspectral < Analisis
             %   unidad          Unidad de largo
             
             % Inicia proceso
-            tinicial = cputime;
+            tinicial = clock;
             
             % Define variables opcionales
             p = inputParser;
@@ -1097,7 +1097,7 @@ classdef ModalEspectral < Analisis
             
             % Finaliza proceso
             drawnow();
-            fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial);
             dispMetodoTEFAME();
             
         end % calcularDesplazamientoDrift function
@@ -1114,7 +1114,7 @@ classdef ModalEspectral < Analisis
             %   unidadM     Unidad momento del modelo
             
             % Inicia proceso
-            tinicial = cputime;
+            tinicial = clock;
             fprintf('Calculando grafico momento corte basal:\n');
             
             % Rescata parametros
@@ -1241,7 +1241,7 @@ classdef ModalEspectral < Analisis
             
             % Finaliza proceso
             drawnow();
-            fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
             dispMetodoTEFAME();
             
         end % calcularMomentoCorteBasal function
@@ -1259,7 +1259,7 @@ classdef ModalEspectral < Analisis
             %   plot            'all','ek','ev','ekev','ebe','et','ed'
             
             % Inicia el proceso
-            tinicial = cputime;
+            tinicial = clock;
             
             % Recorre parametros opcionales
             p = inputParser;
@@ -1627,7 +1627,7 @@ classdef ModalEspectral < Analisis
             
             % Finaliza proceso
             drawnow();
-            fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
             dispMetodoTEFAME();
             
         end % calcularCurvasEnergia function
@@ -1800,7 +1800,7 @@ classdef ModalEspectral < Analisis
             %   unidadM     Unidad momento
             
             % Inicia el proceso
-            tinicial = cputime;
+            tinicial = clock;
             
             % Recorre parametros opcionales
             p = inputParser;
@@ -1868,7 +1868,7 @@ classdef ModalEspectral < Analisis
                 'location', 'southeast');
             
             % Finaliza proceso
-            fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
             dispMetodoTEFAME();
             
         end % plotEsfuerzosElemento function
@@ -1883,7 +1883,7 @@ classdef ModalEspectral < Analisis
             %   unidadL     Unidad longitud
             
             % Inicia proceso
-            tinicial = cputime;
+            tinicial = clock;
             
             % Verifica que la direccion sea correcta
             if sum(direccion) ~= 1
@@ -1988,7 +1988,7 @@ classdef ModalEspectral < Analisis
             grid on;
             
             % Finaliza proceso
-            fprintf('\tProceso finalizado en %.2f segundos\n', cputime-tinicial);
+            fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
             dispMetodoTEFAME();
             
         end % plotTrayectoriaNodo function
@@ -2192,7 +2192,7 @@ classdef ModalEspectral < Analisis
             
             % Calcula tiempo inicio
             fprintf('\tCalculando metodo modal espectral:\n');
-            tInicio = cputime;
+            tInicio = clock;
             
             % Obtiene matriz de masa
             diagMt = diag(obj.Mt);
@@ -2334,7 +2334,7 @@ classdef ModalEspectral < Analisis
             nModos = min(nModos, ngdl);
             
             %------------- CALCULO VALORES Y VECTORES PROPIOS ---------------
-            eigCalcT = cputime;
+            eigCalcT = clock;
             
             if strcmp(valvecAlgoritmo, 'eigs')
                 fprintf('\t\tCalculo valores y vectores propios con metodo eigs\n');
@@ -2385,7 +2385,7 @@ classdef ModalEspectral < Analisis
                 error('Algoritmo valvec:%s incorrecto, valores posibles: eigs,itDir,matBarr,itInvDesp,itSubEsp,ritz', ...
                     valvecAlgoritmo);
             end
-            fprintf('\t\t\tFinalizado en %.3f segundos\n', cputime-eigCalcT);
+            fprintf('\t\t\tFinalizado en %.3f segundos\n', etime(clock, eigCalcT));
             obj.numModos = nModos;
             
             % Se recuperan los grados de libertad condensados y se
@@ -2545,7 +2545,7 @@ classdef ModalEspectral < Analisis
             obj.analisisFinalizado = true;
             obj.numDG = ndg;
             obj.numDGReal = obj.modeloObj.obtenerNumerosGDL();
-            fprintf('\tSe completo el analisis en %.3f segundos\n', cputime-tInicio);
+            fprintf('\tSe completo el analisis en %.3f segundos\n', etime(clock, tInicio));
             
         end % calcularModalEspectral function
         

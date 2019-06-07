@@ -121,7 +121,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             if disipadores
                 
                 % Inicio del proceso de iteracion
-                tinicio = cputime;
+                tinicio = clock;
                 tcalculo = 0;
                 
                 % Genera lista de disipadores del modelo
@@ -255,7 +255,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         % betaAnt = beta;
                         
                     end % for j
-                    tcalculo = cputime - tinicio;
+                    tcalculo = etime(clock, tinicio);
                     fprintf('\t\tProceso calculo disipador finalizado en %.3f segundos\n', tcalculo);
                     
                     % Con los disipadores calcula todas las cargas
@@ -405,7 +405,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             minv = mmodal^(-1);
             
             % Se calcula carga una de las cargas dinamicas
-            tInicioProceso = cputime;
+            tInicioProceso = clock;
             totalCargas = length(obj.cargas);
             usaCargaIndice = false; % Indica si se usa una carga especifica para el calculo de v0 del disipador
             for i = 1:totalCargas
@@ -423,7 +423,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 end
                 
                 % Obtiene la carga
-                tInicio = cputime;
+                tInicio = clock;
                 if ~calculaDisipadores
                     fprintf('\t\tAplicando carga %s (%d/%d)\n', ...
                         obj.cargas{i}.obtenerEtiqueta(), i, totalCargas);
@@ -485,7 +485,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 if ~calculaDisipadores
                     obj.cargas{i}.establecerCargaCalculada();
-                    fprintf('\n\t\t\tSe completo calculo en %.3f segundos\n', cputime-tInicio);
+                    fprintf('\n\t\t\tSe completo calculo en %.3f segundos\n', etime(clock, tInicio));
                 end
                 
                 % Si ya se calculo la carga objetivo para el disipador
@@ -498,7 +498,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             end % for i
             
             if ~calculaDisipadores
-                fprintf('\tProceso finalizado en %.3f segundos\n', cputime-tInicioProceso+tcalculoAnterior);
+                fprintf('\tProceso finalizado en %.3f segundos\n', etime(clock, tInicioProceso+tcalculoAnterior));
                 dispMetodoTEFAME();
             end
             

@@ -2,7 +2,7 @@ function s = processTimeStr(tini)
 % processTimeStr: Retorna un string con el tiempo parseado en segundos o
 % minutos segun corresponda
 
-tot = cputime - tini;
+tot = etime(clock, tini);
 min = floor(tot/60);
 seg = floor(tot - 60*min);
 mil = tot - 60*min - seg;
