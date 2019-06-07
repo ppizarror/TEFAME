@@ -967,6 +967,7 @@ classdef ModalEspectral < Analisis
                 error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
             end
             desp = carga.obtenerDesplazamiento();
+            acel = carga.obtenerAceleracion();
             if ~carga.cargaCalculada()
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
@@ -1019,6 +1020,7 @@ classdef ModalEspectral < Analisis
             end
             
             despx = zeros(nndrift, s);
+            acelx = zeros(nndrift, s);
             driftx = zeros(nndrift-1, s);
             
             % Calculo de drift y desplazamiento en linea de analisis
@@ -1027,18 +1029,22 @@ classdef ModalEspectral < Analisis
                 gdls = nodos{nodosup}.obtenerGDLIDCondensado();
                 gdlx = gdls(1);
                 despx(i, :) = desp(gdlx, :);
+                acelx(i, :) = acel(gdlx, :);
                 driftx(i-1, :) = abs(despx(i, :)-despx(i-1, :)) ./ (habs(i) - habs(i-1));
                 
             end % for i
             
             % Determinacion de envolvente maxima de desplazamiento y drift
             despxmax = max(abs(despx'))';
+            acelxmax = max(abs(acelx'))';
             driftxmax = max(abs(driftx'))';
             VecDesp = flipud(despxmax);
+            VecAcel = flipud(acelxmax);
             VecDrift = flipud(driftxmax);
             hgen = flipud(habs);
             hplot = zeros(2*length(hgen), 1);
             Despplot = zeros(2*length(hgen)-1, 1);
+            Acelplot = zeros(2*length(hgen)-1, 1);
             Driftplot = zeros(2*length(hgen)-1, 1);
             aux1 = 1;
             aux2 = 2;
@@ -1048,6 +1054,8 @@ classdef ModalEspectral < Analisis
                 if aux2 <= 2 * length(hgen) - 1
                     Driftplot(aux2, 1) = VecDrift(i);
                     Driftplot(aux2+1, 1) = VecDrift(i);
+                    Acelplot(aux2, 1) = VecAcel(i);
+                    Acelplot(aux2+1, 1) = VecAcel(i);
                     Despplot(aux2, 1) = VecDesp(i);
                     Despplot(aux2+1, 1) = VecDesp(i);
                 end
@@ -1074,6 +1082,16 @@ classdef ModalEspectral < Analisis
             grid on;
             grid minor;
             xlabel(sprintf('Desplazamiento (%s)', r.unidad));
+            ylabel(sprintf('Altura (%s)', r.unidad));
+            title(fig_title);
+            
+            fig_title = sprintf('Envolvente de Aceleracion - %s %s', ctitle, carga.obtenerEtiqueta());
+            plt = figure('Name', fig_title, 'NumberTitle', 'off');
+            movegui(plt, 'center');
+            plot(Acelplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
+            grid on;
+            grid minor;
+            xlabel(sprintf('Aceleracion (%s/s^2)', r.unidad));
             ylabel(sprintf('Altura (%s)', r.unidad));
             title(fig_title);
             
