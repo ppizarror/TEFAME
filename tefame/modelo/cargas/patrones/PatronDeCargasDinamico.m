@@ -80,7 +80,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'desmodal', true);
-            addOptional(p, 'newmark', true);
+            addOptional(p, 'metodo', 'newmark');
             parse(p, varargin{:});
             r = p.Results;
             
@@ -96,8 +96,15 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             % Descomposicion modal
             obj.desModal = r.desmodal;
             
-            % Espacio Estado o Newmark
-            obj.Newmark = r.newmark;
+            % Tipo de metodo
+            r.metodo = lower(r.metodo);
+            if strcmp(r.metodo, 'newmark')
+                obj.Newmark = true;
+            elseif strcmp(r.metodo, 'espacioestado')
+                obj.Newmark = false;
+            else
+                error('Metodo de calculo desconocido, valores posibles: newmark,espacioEstado');
+            end
             
         end % PatronDeCargasDinamico constructor
         
