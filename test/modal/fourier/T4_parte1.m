@@ -1,5 +1,5 @@
 close all; clc;
-ug = load('Constitucion.sis');
+ug = load('Constitucion.sis').*9.81;
 [frec, ff, ts] = DFT(200, ug);
 ff = fftshift(ff);
 a = length(ug);
@@ -8,16 +8,24 @@ ug = [ug; zeros(b-a, 1)];
 figure('name', 'Registro Sismico');
 subplot(2, 1, 1);
 plot(ts, ug);
-xlabel('t [s]');
+xlabel('t (s)');
+ylabel('Aceleracion (m/s^2)')
+title(['Registro Sismico']);
+grid on
+grid minor
 subplot(2, 1, 2);
 stem(frec, abs(ff), 'r');
 hold on;
 plot(frec, imag(ff), 'b');
 plot(frec, real(ff), 'y');
+title(['Tranformada de Fourier de Registro Sismico FS = ', num2str(200), ' (Hz)']);
 legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'best');
-xlabel('f [Hz]');
+xlabel('f (Hz)');
+ylabel('Amplitud (-)')
+grid on
+grid minor
 hold off;
-title(['FS = ', num2str(200), ' [Hz]']);
+
 
 % Para una ventana de 30 seg
 FS = [200, 50, 10]'; % Hz
@@ -41,18 +49,25 @@ for i = 1:length(t) % Funcion sen
     senff{i} = fftshift(senff{i});
     subplot(3, 2, 2*(i)-1);
     stem(t{i}, sen{i});
-    xlabel('t [s]');
+    xlabel('t (s)');
+    ylabel('Amplitud (-)')
+    title(['Funcion Seno FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     subplot(3, 2, 2*i);
     stem(senfrec{i}, abs(senff{i}), 'r');
     hold on;
     plot(senfrec{i}, imag(senff{i}), 'b');
     plot(senfrec{i}, real(senff{i}), 'y');
-    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeastoutside');
-    xlabel('f [Hz]');
+    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeast');
+    xlabel('f (Hz)');
+    ylabel('Amplitud (-)')
+    grid on
+    grid minor
     hold off;
-    title(['FS = ', num2str(FS(i)), ' [Hz]']);
+    title(['Transformada de Fourier Funcion Seno FS = ', num2str(FS(i)), ' (Hz)']);
 end % for i
-
+%%
 figure('name', 'Fourier, funcion coseno');
 for i = 1:length(t) % Funcion cos
     coss{i} = 5 .* cos(20.*pi.*t{i})';
@@ -60,18 +75,27 @@ for i = 1:length(t) % Funcion cos
     cossff{i} = fftshift(cossff{i});
     subplot(3, 2, 2*(i)-1);
     plot(t{i}, coss{i});
-    xlabel('t [s]');
+    xlabel('t (s)');
+    ylabel('Amplitud (-)')
+    title(['Funcion Coseno FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     subplot(3, 2, 2*i);
     stem(cossfrec{i}, abs(cossff{i}), 'r');
     hold on;
     plot(cossfrec{i}, imag(cossff{i}), 'b');
     plot(cossfrec{i}, real(cossff{i}), 'y');
-    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeastoutside');
-    xlabel('f [Hz]');
+    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeast');
+    xlabel('f (Hz)');
+    ylabel('Amplitud (-)')
+    title(['Transformada de Fourier Funcion Coseno FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     hold off;
-    title(['FS = ', num2str(FS(i)), ' [Hz]']);
+    title(['FS = ', num2str(FS(i)), ' (Hz)']);
 end % for i
 
+%%
 figure('name', 'Fourier, funcion dirac');
 for i = 1:length(t) % Funcion dirac
     for j = 1:length(t{i})
@@ -87,18 +111,27 @@ for i = 1:length(t) % Funcion dirac
     diraccff{i} = fftshift(diraccff{i});
     subplot(3, 2, 2*(i)-1);
     stem(t{i}, diracc{i});
-    xlabel('t [s]');
+    xlabel('t (s)');
+    ylabel('Amplitud (-)')
+    title(['Funcion Dirac FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     subplot(3, 2, 2*i);
     stem(diraccfrec{i}, abs(diraccff{i}), 'r');
     hold on;
     plot(diraccfrec{i}, imag(diraccff{i}), 'b');
     plot(diraccfrec{i}, real(diraccff{i}), 'y');
-    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeastoutside');
-    xlabel('f [Hz]');
+    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeast');
+    xlabel('f (Hz)');
+    ylabel('Amplitud (-)')
+    title(['Transformada de Fourier Funcion Dirac FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     hold off;
-    title(['FS = ', num2str(FS(i)), ' [Hz]']);
+    title(['FS = ', num2str(FS(i)), ' (Hz)']);
     clear dir tj;
 end % for i
+%%
 
 figure('name', 'Fourier, funcion constante');
 for i = 1:length(t) % Funcion constante
@@ -107,18 +140,26 @@ for i = 1:length(t) % Funcion constante
     constff{i} = fftshift(constff{i});
     subplot(3, 2, 2*(i)-1);
     plot(t{i}, const{i});
-    xlabel('t [s]');
+    xlabel('t (s)');
+    ylabel('Amplitud (-)')
+    title(['Funcion Constante FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     subplot(3, 2, 2*i);
     stem(constfrec{i}, abs(constff{i}), 'r');
     hold on;
     plot(constfrec{i}, imag(constff{i}), 'b');
     plot(constfrec{i}, real(constff{i}), 'y');
-    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeastoutside');
-    xlabel('f [Hz]');
+    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeast');
+    xlabel('f (Hz)');
+    ylabel('Amplitud (-)')
+    title(['Transformada de Funcion Constante FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     hold off;
-    title(['FS = ', num2str(FS(i)), ' [Hz]']);
 end % for i
 
+%%
 figure('name', 'Fourier, Cajon ancho To = 5[s]');
 for i = 1:length(t) % Funcion constante
     for j = 1:length(t{i})
@@ -134,19 +175,27 @@ for i = 1:length(t) % Funcion constante
     Ca05ff{i} = fftshift(Ca05ff{i});
     subplot(3, 2, 2*(i)-1);
     plot(t{i}, Ca05{i});
-    xlabel('t [s]');
+    xlabel('t (s)');
+    ylabel('Amplitud (-)')
+    title(['Funcion Cajon To = 5 (s) FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     subplot(3, 2, 2*i);
     stem(Ca05frec{i}, abs(Ca05ff{i}), 'r');
     hold on;
     plot(Ca05frec{i}, imag(Ca05ff{i}), 'b');
     plot(Ca05frec{i}, real(Ca05ff{i}), 'y');
-    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeastoutside');
-    xlabel('f [Hz]');
+    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeast');
+    xlabel('f (Hz)');
+    ylabel('Amplitud (-)')
     hold off;
-    title(['FS = ', num2str(FS(i)), ' [Hz]']);
+    title(['Transformada de Fourier Funcion Cajon To = 5 (s) FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     clear tj Ca05aux;
 end % for i
 
+%%
 figure('name', 'Fourier, Cajon ancho To = 10[s]');
 for i = 1:length(t) % Funcion constante
     for j = 1:length(t{i})
@@ -162,19 +211,27 @@ for i = 1:length(t) % Funcion constante
     Ca10ff{i} = fftshift(Ca10ff{i});
     subplot(3, 2, 2*(i)-1);
     plot(t{i}, Ca10{i});
-    xlabel('t [s]');
+    xlabel('t (s)');
+    ylabel('Amplitud (-)')
+    title(['Funcion Cajon To = 10 (s) FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     subplot(3, 2, 2*i);
     stem(Ca10frec{i}, abs(Ca10ff{i}), 'r');
     hold on;
     plot(Ca10frec{i}, imag(Ca10ff{i}), 'b');
     plot(Ca10frec{i}, real(Ca10ff{i}), 'y');
-    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeastoutside');
-    xlabel('f [Hz]');
+    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeast');
+    xlabel('f (Hz)');
+    ylabel('Amplitud (-)')
+    title(['Transformada de Fourier Funcion Cajon To = 10 (s) FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     hold off;
-    title(['FS = ', num2str(FS(i)), ' [Hz]']);
     clear tj Ca10aux;
 end % for i
 
+%%
 figure('name', 'Fourier, Cajon ancho To = 20[s]');
 for i = 1:length(t) % Funcion constante
     for j = 1:length(t{i})
@@ -190,15 +247,22 @@ for i = 1:length(t) % Funcion constante
     Ca20ff{i} = fftshift(Ca20ff{i});
     subplot(3, 2, 2*(i)-1);
     plot(t{i}, Ca20{i});
-    xlabel('t [s]');
+    xlabel('t (s)');
+    ylabel('Amplitud (-)')
+    title(['Transformada de Fourier Funcion Cajon To = 20 (s) FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     subplot(3, 2, 2*i);
     stem(Ca20frec{i}, abs(Ca20ff{i}), 'r');
     hold on;
     plot(Ca20frec{i}, imag(Ca20ff{i}), 'b');
     plot(Ca20frec{i}, real(Ca20ff{i}), 'y');
-    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeastoutside');
-    xlabel('f [Hz]');
+    legend({'|X|', 'Im(X)', 'Re(X)'}, 'Location', 'northeast');
+    xlabel('f (Hz)');
+    ylabel('Amplitud (-)')
+    title(['Transformada de Fourier Funcion Cajon To = 20 (s) FS = ', num2str(FS(i)), ' (Hz)']);
+    grid on
+    grid minor
     hold off;
-    title(['FS = ', num2str(FS(i)), ' [Hz]']);
     clear tj Ca20aux;
 end % for i
