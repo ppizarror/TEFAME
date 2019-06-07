@@ -73,9 +73,9 @@ if ~exist('regConstitucionL', 'var') % Carga el registro
     regConstitucionV = cargaRegistroSimple('test/modal/constitucion_ch2.sis', 0.005, 'factor', 0.01);
     % plotRegistro(regConstitucionL, 'Registro Constitucion/Longitudinal', 'm/s^2');
 end
-cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 0, 200);
+cargasDinamicas{3} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 0, 200);
 cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 0, 20); % Horizontal
-cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 0, 100); % Horizontal
+cargasDinamicas{1} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 0, 100); % Horizontal
 
 cargasDinamicas{2}.desactivarCarga();
 cargasDinamicas{3}.desactivarCarga();
@@ -89,13 +89,13 @@ analisisObj.activarCargaAnimacion();
 patronesDeCargas = cell(2, 1);
 patronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
 patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, ...
-    'desmodal', true, 'newmark', false);
+    'desmodal', true, 'newmark', true);
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
 
 %% Analiza el sistema y resuelve para cargas estaticas
-analisisObj.analizar('nModos', 50, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 8], ...
+analisisObj.analizar('nModos', 200, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true, ...
     'valvecAlgoritmo', 'eigs', 'valvecTolerancia', 0.0001, ...
     'muIterDespl', wIterDespl, 'nRitz', 192);
@@ -116,7 +116,7 @@ analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', usarDisipa
     'betaGrafico', false, 'activado', resolverCargasDinamicas);
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
 analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
-% analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
+analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
 % analisisObj.plotEsfuerzosElemento(cargasDinamicas{1}, elementos{104}, [1, 0, 0]);
 % analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 % plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, ...
@@ -126,3 +126,72 @@ analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
 % modeloObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt');
 % analisisObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt', cargasDinamicas);
 clear h h1 i v;
+
+%% Guarda las figuras
+
+for i = 1:6
+     cd('C:\Users\JaimeR\Documents\MATLAB\TEFAME')
+     aux = get(gca,'title');
+     title = get(aux,'string');
+     % Detalles del analisis
+     caso = {'/EspacioEstado','/Newmark'};
+     carpeta = 'test/modal/out';
+     Ubicacion = strcat(carpeta, caso{2});
+     Nombre = strrep(title,' ','');
+     format = 'fig';
+     cd(Ubicacion)
+     saveas(gca,Nombre,format)
+     cd('C:\Users\JaimeR\Documents\MATLAB\TEFAME')
+     close
+     i = i + 1;
+end
+return
+%% Unir Figuras
+for i = 1:6
+     close all
+     cd('C:/Users/JaimeR/Documents/MATLAB/TEFAME')
+     caso = {'EspacioEstado','Newmark'};
+     carpeta = 'test/modal/out';
+     Ubicacion = strcat(carpeta);
+     cd(Ubicacion)
+     listing = dir(caso{1});
+     name = listing(i+2).name;
+     cd(strcat('C:/Users/JaimeR/Documents/MATLAB/TEFAME/test/modal/out/',caso{1}))
+     h1 = openfig(name,'invisible'); % open figure
+     ax1 = gca; % get handle to axes of figure
+     t1 = get(gca,'title');
+     Titre = get(t1,'string');
+     t1 = get(gca,'xlabel');
+     xlab = get(t1,'string');
+     t1 = get(gca,'ylabel');
+     ylab = get(t1,'string');
+     x1 = findobj(ax1,'-property','XData');
+%      y1 = findobj(ax1,'-property','XData');
+     cd(strcat('C:/Users/JaimeR/Documents/MATLAB/TEFAME/test/modal/out/',caso{2}))
+     h2 = openfig(name,'invisible');
+     ax2 = gcf;
+     x2 = findobj(ax2,'-property','XData');
+%      y2 = findobj(ax2,'-property','XData');
+     clear title xlabel ylabel
+     cd('C:/Users/JaimeR/Documents/MATLAB/TEFAME')
+     
+
+     figure
+     plot(x1.XData, x1.YData)
+     hold on
+     if i == 2 && i == 3
+         plot(x2.XData, x2.YData, '*-')
+     else
+         plot(x2.XData, x2.YData, '--')
+     end
+     legend({caso{1}, caso{2}})
+     title(Titre)
+     xlabel(xlab)
+     ylabel(ylab)
+     cd(strcat('C:/Users/JaimeR/Documents/MATLAB/TEFAME/test/modal/out/Comparacion'))
+     nombre = strsplit(Titre,'-');
+     Nombre = strrep(nombre{1},' ','');
+     saveas(gca,Nombre,'epsc2')
+     saveas(gca,Nombre,'fig')
+     i = i + 1;
+end
