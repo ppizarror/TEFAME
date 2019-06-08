@@ -1102,7 +1102,7 @@ classdef ModalEspectral < Analisis
             
         end % calcularDesplazamientoDrift function
         
-        function calcularMomentoCorteBasal(obj, carga, varargin)
+        function [x, y] = calcularMomentoCorteBasal(obj, carga, varargin)
             % calcularMomentoCorteBasal: Funcion que calcula el momento y
             % corte basal a partir de una carga
             %
@@ -1166,7 +1166,9 @@ classdef ModalEspectral < Analisis
                 fig_title = sprintf('Historial de Cortante Basal - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
-                plot(t, Cortante(end, :), 'k-', 'LineWidth', 1);
+                x = t;
+                y = Cortante(end, :);
+                plot(x, y, 'k-', 'LineWidth', 1);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
@@ -1179,7 +1181,9 @@ classdef ModalEspectral < Analisis
                 fig_title = sprintf('Historial de Momento Basal - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
-                plot(t, Momento(end, :), 'k-', 'LineWidth', 1);
+                x = t;
+                y = Momento(end, :);
+                plot(x, y, 'k-', 'LineWidth', 1);
                 grid on;
                 grid minor;
                 xlabel('Tiempo (s)');
@@ -1192,7 +1196,9 @@ classdef ModalEspectral < Analisis
                 fig_title = sprintf('Envolvente de Cortante Basal - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
-                plot(CBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
+                x = CBplot;
+                y = hplot;
+                plot(x, y, '*-', 'LineWidth', 1, 'Color', 'black');
                 hold on;
                 grid on;
                 grid minor;
@@ -1224,7 +1230,9 @@ classdef ModalEspectral < Analisis
                 fig_title = sprintf('Envolvente de Momento Basal - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
-                plot(MBplot, hplot, '*-', 'LineWidth', 1, 'Color', 'black');
+                x = MBplot;
+                y = hplot;
+                plot(x, y, '*-', 'LineWidth', 1, 'Color', 'black');
                 grid on;
                 grid minor;
                 xlabel(sprintf('Momento (%s)', r.unidadM));
