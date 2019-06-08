@@ -478,7 +478,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 obj.cargas{i}.guardarCarga(p);
                 obj.cargas{i}.guardarDesplazamiento(u);
                 obj.cargas{i}.guardarVelocidad(du);
-                obj.cargas{i}.guardarAceleracion(ddu, obj.Newmark);
+                obj.cargas{i}.guardarAceleracion(ddu);
                 obj.cargas{i}.amortiguamientoRayleigh(~cpenzien);
                 obj.cargas{i}.usoDisipadores(disipadores);
                 obj.cargas{i}.descomposicionModal(obj.desModal);
