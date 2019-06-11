@@ -1913,6 +1913,7 @@ classdef ModalEspectral < Analisis
             % (desplazamiento, velocidad y aceleracion) para todo el tiempo
             %
             % Parametros opcionales:
+            %   fftacc      Aplica la FFT a la aceleracion
             %   plot        'all','carga','despl','vel','acel'
             %   tlim        Tiempo de analisis limite
             %   unidadC     Unidad carga
@@ -1937,6 +1938,7 @@ classdef ModalEspectral < Analisis
             % Recorre parametros opcionales
             p = inputParser;
             p.KeepUnmatched = true;
+            addOptional(p, 'fftacc', false);
             addOptional(p, 'plot', 'all');
             addOptional(p, 'tlim', 0);
             addOptional(p, 'unidadC', 'tonf');
@@ -1974,6 +1976,25 @@ classdef ModalEspectral < Analisis
             else
                 tlim = [max(min(tlim), min(t)), min(max(tlim), max(t))];
             end
+            [nr, ~] = size(a_c);
+            
+            % Verifica que la direccion sea correcta
+            for k = 1:length(nodos)
+                % Elige al nodo
+                ngd = nodos{k}.obtenerGDLIDCondensado();
+                ng = 0; % Numero grado analisis
+                for i = 1:length(direccion)
+                    if direccion(i) == 1
+                        ng = ngd(i);
+                    end
+                end % for i
+                if ng == 0
+                    error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
+                end
+                if ng > nr
+                    error('El GDLID excede al soporte del sistema');
+                end
+            end % for k
             
             % Crea la leyenda de los nodos
             legnodos = cell(length(nodos), 1);
@@ -1993,9 +2014,8 @@ classdef ModalEspectral < Analisis
                 movegui(plt, 'center');
                 hold on;
                 
+                % Grafica los nodos
                 for k = 1:length(nodos)
-                    % Elige al nodo
-                    [nr, ~] = size(a_c);
                     ngd = nodos{k}.obtenerGDLIDCondensado();
                     ng = 0; % Numero grado analisis
                     for i = 1:length(direccion)
@@ -2003,14 +2023,9 @@ classdef ModalEspectral < Analisis
                             ng = ngd(i);
                         end
                     end % for i
-                    if ng == 0
-                        error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
-                    end
-                    if ng > nr
-                        error('El GDLID excede al soporte del sistema');
-                    end
                     plot(t, p_c(ng, :), '-', 'LineWidth', 1);
                 end % for k
+                
                 ylabel(sprintf('carga (%s)', r.unidadC));
                 xlabel('t (s)');
                 xlim(tlim);
@@ -2028,9 +2043,8 @@ classdef ModalEspectral < Analisis
                 movegui(plt, 'center');
                 hold on;
                 
+                % Grafica los nodos
                 for k = 1:length(nodos)
-                    % Elige al nodo
-                    [nr, ~] = size(a_c);
                     ngd = nodos{k}.obtenerGDLIDCondensado();
                     ng = 0; % Numero grado analisis
                     for i = 1:length(direccion)
@@ -2038,14 +2052,9 @@ classdef ModalEspectral < Analisis
                             ng = ngd(i);
                         end
                     end % for i
-                    if ng == 0
-                        error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
-                    end
-                    if ng > nr
-                        error('El GDLID excede al soporte del sistema');
-                    end
                     plot(t, u_c(ng, :), '-', 'LineWidth', 1);
                 end % for k
+                
                 ylabel(sprintf('u (%s)', r.unidadL));
                 xlabel('t (s)');
                 xlim(tlim);
@@ -2063,9 +2072,8 @@ classdef ModalEspectral < Analisis
                 movegui(plt, 'center');
                 hold on;
                 
+                % Grafica los nodos
                 for k = 1:length(nodos)
-                    % Elige al nodo
-                    [nr, ~] = size(a_c);
                     ngd = nodos{k}.obtenerGDLIDCondensado();
                     ng = 0; % Numero grado analisis
                     for i = 1:length(direccion)
@@ -2073,14 +2081,9 @@ classdef ModalEspectral < Analisis
                             ng = ngd(i);
                         end
                     end % for i
-                    if ng == 0
-                        error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
-                    end
-                    if ng > nr
-                        error('El GDLID excede al soporte del sistema');
-                    end
                     plot(t, v_c(ng, :), '-', 'LineWidth', 1);
                 end % for k
+                
                 ylabel(sprintf('v (%s/s)', r.unidadL));
                 xlabel('t (s)');
                 xlim(tlim);
@@ -2098,9 +2101,8 @@ classdef ModalEspectral < Analisis
                 movegui(plt, 'center');
                 hold on;
                 
+                % Grafica los nodos
                 for k = 1:length(nodos)
-                    % Elige al nodo
-                    [nr, ~] = size(a_c);
                     ngd = nodos{k}.obtenerGDLIDCondensado();
                     ng = 0; % Numero grado analisis
                     for i = 1:length(direccion)
@@ -2108,20 +2110,31 @@ classdef ModalEspectral < Analisis
                             ng = ngd(i);
                         end
                     end % for i
-                    if ng == 0
-                        error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
+                    
+                    if ~r.fftacc % Grafica la aceleracion
+                        plot(t, a_c(ng, :), '-', 'LineWidth', 1);
+                    else % Grafica la FFT
+                        tuck = tukeywin(length(a_c(ng, :)), 0.01)';
+                        acc = a_c(ng, :) .* tuck;
+                        [f, fftt, ~] = DFT(200, acc);
+                        plot(f, abs(fftt), '-');
                     end
-                    if ng > nr
-                        error('El GDLID excede al soporte del sistema');
-                    end
-                    plot(t, a_c(ng, :), '-', 'LineWidth', 1);
+                    
                 end % for k
-                ylabel(sprintf('a (%s/s^s)', r.unidadL));
-                xlabel('t (s)');
-                xlim(tlim);
+                
+                if ~r.fftacc
+                    ylabel(sprintf('a (%s/s^s)', r.unidadL));
+                    xlabel('t (s)');
+                    title(fig_title);
+                else
+                    ylabel('FFT');
+                    xlabel('f (Hz)');
+                    title(fig_title);
+                end
+                xlim([0, max(f)]);
                 grid on;
                 legend(legnodos, 'location', 'best');
-                title(fig_title);
+
             end
             
             % Si el grafico no se realizo

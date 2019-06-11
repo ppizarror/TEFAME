@@ -37,7 +37,7 @@
 %       registro
 %       tpulso
 %  Methods:
-%       CargaPulso(etiquetaCargaPulso,registro,direccion,dt,tAnalisis)
+%       CargaPulso(etiquetaCargaPulso,nodos,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)
 %  Methods SuperClass (CargaDinamica):
@@ -184,8 +184,6 @@ classdef CargaPulso < CargaDinamica
                     break;
                 end
             end % for i
-            
-            p
             
             if dispinfo
                 fprintf('\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...

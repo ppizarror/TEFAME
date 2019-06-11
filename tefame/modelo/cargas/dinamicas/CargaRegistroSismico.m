@@ -134,26 +134,26 @@ classdef CargaRegistroSismico < CargaDinamica
             
         end % CargaRegistroSismico constructor
         
-        function p = calcularCarga(cargaRegistroSismicoObj, ~, m, r, dispinfo)
+        function p = calcularCarga(obj, ~, m, r, dispinfo)
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
             
             % Guarda datos
-            cargaRegistroSismicoObj.rf = r;
-            cargaRegistroSismicoObj.dispinfo = dispinfo;
+            obj.rf = r;
+            obj.dispinfo = dispinfo;
             
             % Crea la matriz de carga
             ng = length(m);
-            nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
-            nd = length(cargaRegistroSismicoObj.direccion);
+            nt = obj.tAnalisis / obj.dt;
+            nd = length(obj.direccion);
             p = zeros(ng, nt);
             
             % Para cada aceleracion calcula la carga como -m*a
             for k = 1:nd % Recorre direccion
-                if cargaRegistroSismicoObj.direccion(k) == 0 % Salta direcciones nulas
+                if obj.direccion(k) == 0 % Salta direcciones nulas
                     continue;
                 end
-                reg = cargaRegistroSismicoObj.registro{k}; % Registro direccion de estudio
+                reg = obj.registro{k}; % Registro direccion de estudio
                 nct = min(length(reg), nt); % Numero de tiempos en los que se aplica la carga
                 for i = 1:nct
                     p(:, i) = p(:, i) - m * r(:, k) .* reg(i, 2);
@@ -166,41 +166,41 @@ classdef CargaRegistroSismico < CargaDinamica
             
         end % calcularCarga function
         
-        function guardarAceleracion(cargaRegistroSismicoObj, a)
+        function guardarAceleracion(obj, a)
             % guardarAceleracion: Guarda la aceleracion de la carga
             
             % Registro sismico suma la aceleracion del registro para cada
             % tiempo en cada columna de <a>
             
-            if cargaRegistroSismicoObj.dispinfo
+            if obj.dispinfo
                 fprintf('\n\t\t\tSumando aceleracion del registro sismico a la calculada');
             end
-            nt = cargaRegistroSismicoObj.tAnalisis / cargaRegistroSismicoObj.dt;
-            nd = length(cargaRegistroSismicoObj.direccion);
+            nt = obj.tAnalisis / obj.dt;
+            nd = length(obj.direccion);
             
             for k = 1:nd % Recorre direccion
-                if cargaRegistroSismicoObj.direccion(k) == 0 % Salta direcciones nulas
+                if obj.direccion(k) == 0 % Salta direcciones nulas
                     continue;
                 end
-                reg = cargaRegistroSismicoObj.registro{k}; % Registro direccion de estudio
+                reg = obj.registro{k}; % Registro direccion de estudio
                 nct = min(length(reg), nt); % Numero de tiempos en los que se aplica la carga
                 for i = 1:nct
-                    a(:, i) = a(:, i) + cargaRegistroSismicoObj.rf(:, k) .* reg(i, 2);
+                    a(:, i) = a(:, i) + obj.rf(:, k) .* reg(i, 2);
                 end % for i
             end % for k
-            cargaRegistroSismicoObj.sol_a = a;
+            obj.sol_a = a;
             
         end % guardarAceleracion function
         
-        function disp(cargaRegistroSismicoObj)
+        function disp(obj)
             % disp: es un metodo de la clase CargaRegistroSismico que se usa para imprimir en
             % command Window la informacion de la carga del tipo registro
             % sismico
             %
-            % Imprime la informacion guardada en la carga (cargaRegistroSismicoObj) en pantalla
+            % Imprime la informacion guardada en la carga (obj) en pantalla
             
             fprintf('Propiedades carga registro sismico:\n');
-            disp@CargaDinamica(cargaRegistroSismicoObj);
+            disp@CargaDinamica(obj);
             dispMetodoTEFAME();
             
         end % disp function

@@ -77,9 +77,6 @@ cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConst
 cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 0, 20); % Horizontal
 cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 0, 100); % Horizontal
 
-cargasDinamicas{2}.desactivarCarga();
-cargasDinamicas{3}.desactivarCarga();
-
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
 analisisObj.activarPlotDeformadaInicial();

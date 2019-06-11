@@ -122,4 +122,5 @@ analisisObj.resolverCargasDinamicas();
 
 %% Grafica
 % analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, 'factor', 10);
-analisisObj.plotTrayectoriaNodos(cargasDinamicas{1}, cargaNodos, [1, 0, 0], 'plot', 'acel');
+analisisObj.plotTrayectoriaNodos(cargasDinamicas{1}, cargaNodos, [1, 0, 0], ...
+    'plot', 'acel', 'fftacc', true);

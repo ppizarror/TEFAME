@@ -30,5 +30,5 @@ ts = ts';
 
 % FAST FOURIER TRANSFORM
 fftt = fft(senal, Nfft) ./ Nfft;
-
+fftt = fftshift(fftt);
 end

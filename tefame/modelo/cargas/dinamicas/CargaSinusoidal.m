@@ -37,9 +37,9 @@
 %       tOscilacion
 %       w
 %  Methods:
-%       CargaSinusoidal(etiquetaCargaSinusoidal,registro,direccion,dt,tAnalisis)
-%       aplicarCarga(CargaSinusoidalObj,factorDeCarga)
-%       disp(CargaSinusoidalObj)
+%       CargaSinusoidal(etiquetaCargaSinusoidal,nodos,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)
+%       aplicarCarga(obj,factorDeCarga)
+%       disp(obj)
 %  Methods SuperClass (CargaDinamica):
 %       cargaDinamicaObj = Carga(etiquetaCarga)
 %       desactivarCarga(cargaDinamicaObj)
@@ -81,7 +81,7 @@ classdef CargaSinusoidal < CargaDinamica
     properties(Access = private)
         amplitud % Amplitud de la carga
         direccion % Vector de direcciones
-        nodo % Nodo al que se aplica la carga
+        nodos % Nodo al que se aplica la carga
         registro % Matriz del registro
         tOscilacion % Tiempo de oscilacion
         w % Frecuencia de la carga
@@ -89,7 +89,7 @@ classdef CargaSinusoidal < CargaDinamica
     
     methods(Access = public)
         
-        function obj = CargaSinusoidal(etiquetaCargaSinusoidal, nodo, direccion, amplitud, w, tOscilacion, dt, tInicio, tAnalisis)
+        function obj = CargaSinusoidal(etiquetaCargaSinusoidal, nodos, direccion, amplitud, w, tOscilacion, dt, tInicio, tAnalisis)
             % CargaSinusoidal: es el constructor de la clase CargaSinusoidal
             %
             % Crea una carga del tipo sinusoidal
@@ -101,8 +101,13 @@ classdef CargaSinusoidal < CargaDinamica
             % Llamamos al constructor de la SuperClass que es la clase Carga
             obj = obj@CargaDinamica(etiquetaCargaSinusoidal);
             
+            % Verifica que nodos sea un cell
+            if ~iscell(nodos)
+                nodos = {nodos};
+            end
+            
             % Verifica que tenga sentido la direccion
-            if ~verificarVectorDireccion(direccion, nodo.obtenerNumeroGDL())
+            if ~verificarVectorDireccion(direccion, nodos{1}.obtenerNumeroGDL())
                 error('Vector direccion mal definido');
             end
             
@@ -119,59 +124,67 @@ classdef CargaSinusoidal < CargaDinamica
             obj.tAnalisis = tAnalisis;
             obj.tInicio = tInicio;
             obj.dt = dt;
-            obj.nodo = nodo; % Nodo al que se le aplica la carga
-            obj.nodosCarga = {nodo};
+            obj.nodos = nodos; % Nodo al que se le aplica la carga
             
         end % CargaSinusoidal constructor
         
-        function p = calcularCarga(CargaSinusoidalObj, ~, m, ~, dispinfo)
+        function p = calcularCarga(obj, ~, m, ~, dispinfo)
             % calcularCarga: es un metodo de la clase Carga que se usa para
             % calcular la carga a aplicar
             
             % Crea la matriz de carga
             ng = length(m);
-            nint = CargaSinusoidalObj.tOscilacion / CargaSinusoidalObj.dt;
-            nt = CargaSinusoidalObj.tAnalisis / CargaSinusoidalObj.dt; % Nro de intervalos
+            nint = obj.tOscilacion / obj.dt;
+            nt = obj.tAnalisis / obj.dt; % Nro de intervalos
             p = zeros(ng, nt);
-            if dispinfo
-                fprintf('\t\t\t\tAplicando carga a nodo %s\n', CargaSinusoidalObj.nodo.obtenerEtiqueta());
-            end
             
             % Crea el vector de influencia
             rf = zeros(ng, 1);
-            nodoGDL = CargaSinusoidalObj.nodo.obtenerGDLIDCondensado();
             
-            % Verifica que la direccion no sea mayor que el numero de nodos
-            if length(nodoGDL) < length(CargaSinusoidalObj.direccion)
-                error('Las direcciones de analisis superan el numero de direcciones del nodo %s', ...
-                    CargaSinusoidalObj.nodo.obtenerEtiqueta());
-            end
-            
-            gdl = 0;
-            for i = 1:length(CargaSinusoidalObj.direccion)
-                if CargaSinusoidalObj.direccion(i) > 0
-                    gdl = nodoGDL(i); % Obtiene el GDL asociado
-                    if gdl > 0
-                        rf(gdl) = 1;
-                        if dispinfo
-                            fprintf('\t\t\t\tSe aplica la carga en el grado condensado %d\n', gdl);
+            % Recorre cada carga
+            for k = 1:length(obj.nodos)
+                
+                nodo = obj.nodos{k};
+                if dispinfo
+                    fprintf('\t\t\t\tAplicando carga a nodo %s\n', nodo.obtenerEtiqueta());
+                end
+                nodoGDL = nodo.obtenerGDLIDCondensado();
+
+                % Verifica que la direccion no sea mayor que el numero de nodos
+                if length(nodoGDL) < length(obj.direccion)
+                    error('Las direcciones de analisis superan el numero de direcciones del nodo %s', ...
+                        obj.nodo.obtenerEtiqueta());
+                end
+
+                gdl = 0;
+                for i = 1:length(obj.direccion)
+                    if obj.direccion(i) > 0
+                        gdl = nodoGDL(i); % Obtiene el GDL asociado
+                        if gdl > 0
+                            rf(gdl) = 1;
+                            if dispinfo
+                                fprintf('\t\t\t\tSe aplica la carga en el grado condensado %d\n', gdl);
+                            end
                         end
                     end
+                end % for i
+
+                % Verifica que el grado sea valido
+                if gdl == 0
+                    error('No es posible aplicar la carga en un grado condensado del nodo %s', ...
+                        nodo.obtenerEtiqueta());
                 end
-            end % for i
-            
-            % Verifica que el grado sea valido
-            if gdl == 0
-                error('No es posible aplicar la carga en un grado condensado del nodo %s', ...
-                    CargaPulsoObj.nodo.obtenerEtiqueta());
-            end
+                
+            end % for k
             
             % Carga sinusoidal
-            t = linspace(0, CargaSinusoidalObj.tOscilacion, nint);
+            t = linspace(0, obj.tOscilacion, nint);
             carga = zeros(1, length(t));
+            
             for i = 1:length(t)
-                carga(i) = CargaSinusoidalObj.amplitud * sin(CargaSinusoidalObj.w*t(i));
+                carga(i) = obj.amplitud * sin(obj.w*t(i));
             end % for i
+            
             for i = 1:nt
                 if i < length(t)
                     p(:, i) = rf .* carga(i);
@@ -187,14 +200,14 @@ classdef CargaSinusoidal < CargaDinamica
             
         end % calcularCarga function
         
-        function disp(CargaSinusoidalObj)
+        function disp(obj)
             % disp: es un metodo de la clase CargaDinamica que se usa para imprimir en
             % command Window la informacion de la carga del tipo sinusoidal
             %
-            % Imprime la informacion guardada en la carga (CargaSinusoidalObj) en pantalla
+            % Imprime la informacion guardada en la carga (obj) en pantalla
             
             fprintf('Propiedades carga sinusoidal:\n');
-            disp@CargaDinamica(CargaSinusoidalObj);
+            disp@CargaDinamica(obj);
             dispMetodoTEFAME();
             
         end % disp function
