@@ -57,7 +57,7 @@
 %       guardarPropiedades(obj,archivoSalidaHandle)
 %       guardarDesplazamientos(obj,archivoSalidaHandle)
 %       guardarReacciones(obj,archivoSalidaHandle)
-%       Disp(obj)
+%       disp(obj)
 %       agregarElementos(obj, elemObj)
 %       obtenerElementos(obj)
 %       tipoApoyoRestringido(obj)

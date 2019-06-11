@@ -56,7 +56,7 @@ classdef RestriccionNodo < ComponenteModelo
     
     methods(Access = public)
         
-        function obj = RestriccionNodo(etiquetaRestriccion, nodoObjeto, gdlRestringidosNodo, varargin)
+        function obj = RestriccionNodo(etiquetaRestriccion, nodoObjeto, gdlRestringidosNodo, ~)
             % RestriccionNodo: es el constructor de la clase RestriccionNodo
             % Crea un objeto de la clase RestriccionNodo, con un identificador
             % unico (etiquetaRestriccion), indicando a que nodo restringe (nodoObjeto)

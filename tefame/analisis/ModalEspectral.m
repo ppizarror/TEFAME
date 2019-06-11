@@ -370,7 +370,7 @@ classdef ModalEspectral < Analisis
             
             % Chequea inconsistencias
             if ~r.activado
-                return;
+                error('El analisis no se ha activado');
             end
             if r.disipadores
                 if ~isa(r.cargaDisipador, 'CargaDinamica')

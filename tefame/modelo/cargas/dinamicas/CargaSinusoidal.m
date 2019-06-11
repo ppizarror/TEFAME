@@ -149,13 +149,13 @@ classdef CargaSinusoidal < CargaDinamica
                     fprintf('\t\t\t\tAplicando carga a nodo %s\n', nodo.obtenerEtiqueta());
                 end
                 nodoGDL = nodo.obtenerGDLIDCondensado();
-
+                
                 % Verifica que la direccion no sea mayor que el numero de nodos
                 if length(nodoGDL) < length(obj.direccion)
                     error('Las direcciones de analisis superan el numero de direcciones del nodo %s', ...
                         obj.nodo.obtenerEtiqueta());
                 end
-
+                
                 gdl = 0;
                 for i = 1:length(obj.direccion)
                     if obj.direccion(i) > 0
@@ -168,7 +168,7 @@ classdef CargaSinusoidal < CargaDinamica
                         end
                     end
                 end % for i
-
+                
                 % Verifica que el grado sea valido
                 if gdl == 0
                     error('No es posible aplicar la carga en un grado condensado del nodo %s', ...
@@ -195,7 +195,7 @@ classdef CargaSinusoidal < CargaDinamica
             
             if dispinfo
                 fprintf('\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
-                    i, nt, (i / nt)*100);
+                    i-1, nt, ((i - 1) / nt)*100);
             end
             
         end % calcularCarga function

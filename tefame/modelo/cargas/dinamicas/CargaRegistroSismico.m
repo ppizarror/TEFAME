@@ -160,7 +160,7 @@ classdef CargaRegistroSismico < CargaDinamica
                 end % for i
                 if dispinfo
                     fprintf('\t\t\t\tLa carga de la direccion %d es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
-                        k, i, nct, (i / nct)*100);
+                        k, i-1, nct, ((i - 1) / nct)*100);
                 end
             end % for k
             

@@ -124,7 +124,7 @@ classdef CombinacionCargas < ComponenteModelo
                     end
                 end % for k
                 
-            end
+            end % for i
             
         end % obtenerCarga function
         
@@ -165,7 +165,7 @@ classdef CombinacionCargas < ComponenteModelo
                     end
                 end % for k
                 
-            end
+            end % for i
             
         end % obtenerDesplazamiento function
         
@@ -222,7 +222,7 @@ classdef CombinacionCargas < ComponenteModelo
                     end
                 end % for k
                 
-            end
+            end % for i
             
         end % obtenerVelocidad function
         
@@ -263,7 +263,7 @@ classdef CombinacionCargas < ComponenteModelo
                     end
                 end % for k
                 
-            end
+            end % for i
             
         end % obtenerAceleracion function
         
