@@ -353,6 +353,11 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             r = obj.analisisObj.obtenerVectorInfluencia();
             phi = obj.analisisObj.obtenerMatrizPhi();
             
+            % Chequea que el amortiguamiento haya sido calculado
+            if isempty(c)
+                error('Matriz de amortiguamiento invalida, no ha sido calculada por el analisis');
+            end
+            
             % Chequea que las dimensiones sean apropiadas
             if ~equalMatrixSize(k, m) || ~equalMatrixSize(m, c) || length(r) ~= length(m)
                 error('Tamano incorrecto de matrices K, M, C, r');

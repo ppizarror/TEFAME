@@ -150,6 +150,7 @@ classdef ModalEspectral < Analisis
             % analisis y de los modos conocidos con sus beta
             %
             % Parametros opcionales:
+            %   amortiguamiento     Algoritmo, all,rayleigh,cpenzien
             %   condensar           Aplica condensacion (true por defecto)
             %   cpenzienBeta        Vector amortiguamiento Cpenzien
             %   factorCargaE        Factor de cargas estaticas
@@ -164,6 +165,7 @@ classdef ModalEspectral < Analisis
             % Define parametros
             p = inputParser;
             p.KeepUnmatched = true;
+            addOptional(p, 'amortiguamiento', 'all');
             addOptional(p, 'condensar', true);
             addOptional(p, 'cpenzienBeta', []);
             addOptional(p, 'factorCargaE', 1);
@@ -184,53 +186,78 @@ classdef ModalEspectral < Analisis
                 maxcond = -1;
             end
             
+            % Mensaje inicial
+            fprintf('Ejecutando analisis modal espectral:\n');
+            fprintf('\tModelo %s:\n', obj.modeloObj.obtenerNombre());
+            
             % Verifica que parametros obligatorios sean proporcionados
             if r.nModos <= 0
                 error('Numero de modos invalido');
             end
             r.nModos = ceil(r.nModos);
             
-            if isempty(r.rayleighBeta)
-                error('Vector amortiguamiento de Rayleigh no puede ser nulo');
+            % Tipo de amortiguamiento
+            betaAlgoritmo = lower(r.amortiguamiento());
+            betaAlg = 0;
+            if strcmp(betaAlgoritmo, 'all')
+                fprintf('\tSe calcularan todos los tipos de amortiguamientos\n');
+            elseif strcmp(betaAlgoritmo, 'rayleigh')
+                betaAlg = 1;
+                fprintf('\tSe calculara amortiguamiento de Rayleigh\n');
+            elseif strcmp(betaAlgoritmo, 'cpenzien')
+                betaAlg = 2;
+                fprintf('\tSe calculara amortiguamiento de Cpenzien\n');
+            else
+                error('Tipo de amortiguamiento desconocido, valores posibles: all,rayleigh,cpenzien');
             end
             
-            for i = 1:length(r.rayleighBeta)
-                if r.rayleighBeta(i) <= 0
-                    error('No pueden haber amortiguamientos de Rayleigh negativos o cero');
+            % Amortiguamiento Rayleigh
+            if (betaAlg == 0 || betaAlg == 1)
+                if isempty(r.rayleighBeta)
+                    error('Vector amortiguamiento de Rayleigh no puede ser nulo');
                 end
-            end % for i
-            
-            if isempty(r.rayleighModo)
-                error('Vector modo Rayleigh no puede ser nulo');
+                
+                for i = 1:length(r.rayleighBeta)
+                    if r.rayleighBeta(i) <= 0
+                        error('No pueden haber amortiguamientos de Rayleigh negativos o cero');
+                    end
+                end % for i
+                
+                if isempty(r.rayleighModo)
+                    error('Vector modo Rayleigh no puede ser nulo');
+                end
+                
+                for i = 1:length(r.rayleighModo)
+                    r.rayleighModo(i) = ceil(r.rayleighModo(i));
+                    if r.rayleighModo(i) <= 0
+                        error('Vector Rayleigh modo mal definido, no pueden ser modos negativos o ceros');
+                    end
+                end % for i
+                
+                if length(r.rayleighBeta) ~= length(r.rayleighModo) || ...
+                        length(r.rayleighBeta) ~= length(r.rayleighDir)
+                    error('Vectores parametros Rayleigh deben tener igual dimension');
+                end
+                
+                for i = 1:length(r.rayleighDir)
+                    if ~(r.rayleighDir(i) == 'h' || r.rayleighDir(i) == 'v')
+                        error('Direccion amortiguamiento Rayleigh solo puede ser (h) horizonal o (v) vertical');
+                    end
+                end % for i
             end
             
-            for i = 1:length(r.rayleighModo)
-                r.rayleighModo(i) = ceil(r.rayleighModo(i));
-                if r.rayleighModo(i) <= 0
-                    error('Vector Rayleigh modo mal definido, no pueden ser modos negativos o ceros');
+            % Amortiguamiento Cpenzien
+            if (betaAlg == 0 || betaAlg == 2)
+                if isempty(r.cpenzienBeta)
+                    error('Vector amortiguamiento cpenzien no puede ser nulo');
                 end
-            end % for i
-            
-            if length(r.rayleighBeta) ~= length(r.rayleighModo) || ...
-                    length(r.rayleighBeta) ~= length(r.rayleighDir)
-                error('Vectores parametros Rayleigh deben tener igual dimension');
+                
+                for i = 1:length(r.cpenzienBeta)
+                    if r.cpenzienBeta(i) < 0
+                        error('No pueden haber amortiguamientos de cpenzien negativos');
+                    end
+                end % for i
             end
-            
-            for i = 1:length(r.rayleighDir)
-                if ~(r.rayleighDir(i) == 'h' || r.rayleighDir(i) == 'v')
-                    error('Direccion amortiguamiento Rayleigh solo puede ser (h) horizonal o (v) vertical');
-                end
-            end % for i
-            
-            if isempty(r.cpenzienBeta)
-                error('Vector amortiguamiento cpenzien no puede ser nulo');
-            end
-            
-            for i = 1:length(r.cpenzienBeta)
-                if r.cpenzienBeta(i) < 0
-                    error('No pueden haber amortiguamientos de cpenzien negativos');
-                end
-            end % for i
             
             if r.valvecTolerancia <= 0
                 error('Tolerancia calculo valores y vectores propios no puede ser inferior o igual a cero');
@@ -245,25 +272,25 @@ classdef ModalEspectral < Analisis
                 error('El numero de vectores Ritz no puede ser inferior o igual a cero');
             end
             
-            if strcmp(r.valvecAlgoritmo, 'itInvDesp') && isempty(r.muIterDespl)
-                error('El vector muIterDespl no puede ser nulo si se usa el algoritmo de iteracion inversa por desplazamiento');
-            end
-            [muc, muk] = size(r.muIterDespl);
-            if ~(muc == 1 || muk == 1)
-                error('muIterDespl debe ser un vector');
-            else
-                if muc == 1 % Convierte en vector columna
-                    r.muIterDespl = r.muIterDespl';
+            if strcmp(r.valvecAlgoritmo, 'itInvDesp')
+                if isempty(r.muIterDespl)
+                    error('El vector muIterDespl no puede ser nulo si se usa el algoritmo de iteracion inversa por desplazamiento');
                 end
-            end
-            for i = 1:length(r.muIterDespl)
-                if r.muIterDespl(i) <= 0
-                    error('No puede haber un elemento cero o negativo en el vector de desplazamientos');
+                [muc, muk] = size(r.muIterDespl);
+                if ~(muc == 1 || muk == 1)
+                    error('muIterDespl debe ser un vector');
+                else
+                    if muc == 1 % Convierte en vector columna
+                        r.muIterDespl = r.muIterDespl';
+                    end
                 end
-            end % for i
+                for i = 1:length(r.muIterDespl)
+                    if r.muIterDespl(i) <= 0
+                        error('No puede haber un elemento cero o negativo en el vector de desplazamientos');
+                    end
+                end % for i
+            end
             
-            fprintf('Ejecutando analisis modal espectral:\n');
-            fprintf('\tModelo %s:\n', obj.modeloObj.obtenerNombre());
             fprintf('\tParametros analisis:\n');
             fprintf('\t\tNumero de modos: %d\n', r.nModos);
             
@@ -301,7 +328,7 @@ classdef ModalEspectral < Analisis
             obj.calcularModalEspectral(r.nModos, r.rayleighBeta, ...
                 r.rayleighModo, r.rayleighDir, r.cpenzienBeta, ...
                 maxcond, r.valvecAlgoritmo, r.valvecTolerancia, ...
-                r.muIterDespl, r.nRitz);
+                r.muIterDespl, r.nRitz, betaAlg);
             
             % Termina el analisis
             dispMetodoTEFAME();
@@ -334,7 +361,7 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'betaObjetivo', 0);
             addOptional(p, 'cargaDisipador', false);
             addOptional(p, 'cpenzien', false);
-            addOptional(p, 'disipadores', true);
+            addOptional(p, 'disipadores', false);
             addOptional(p, 'factorCargasD', 1);
             addOptional(p, 'iterDisipador', 10);
             addOptional(p, 'tolIterDisipador', 0.001);
@@ -1881,6 +1908,233 @@ classdef ModalEspectral < Analisis
             
         end % plotEsfuerzosElemento function
         
+        function plotTrayectoriaNodos(obj, carga, nodos, direccion, varargin)
+            % plotTrayectoriaNodos: Grafica la trayectoria de varios nodos
+            % (desplazamiento, velocidad y aceleracion) para todo el tiempo
+            %
+            % Parametros opcionales:
+            %   plot        'all','carga','despl','vel','acel'
+            %   tlim        Tiempo de analisis limite
+            %   unidadC     Unidad carga
+            %   unidadL     Unidad longitud
+            
+            % Inicia proceso
+            tinicial = clock;
+            
+            % Verifica que el vector de nodos sea un cell
+            if ~iscell(nodos)
+                error('Nodos debe ser un cell de nodos');
+            end
+            
+            % Verifica que la direccion sea correcta
+            if sum(direccion) ~= 1
+                error('Direccion invalida');
+            end
+            if ~verificarVectorDireccion(direccion, nodos{1}.obtenerNumeroGDL())
+                error('Vector direccion mal definido');
+            end
+            
+            % Recorre parametros opcionales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'plot', 'all');
+            addOptional(p, 'tlim', 0);
+            addOptional(p, 'unidadC', 'tonf');
+            addOptional(p, 'unidadL', 'm');
+            parse(p, varargin{:});
+            r = p.Results;
+            
+            % Obtiene las variables
+            tlim = r.tlim;
+            
+            % Obtiene resultados de la carga
+            p_c = carga.obtenerCarga();
+            u_c = carga.obtenerDesplazamiento();
+            v_c = carga.obtenerVelocidad();
+            a_c = carga.obtenerAceleracion();
+            
+            % Verifica que la carga se haya calculado
+            if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
+                error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
+            end
+            if ~carga.cargaCalculada()
+                error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
+            end
+            
+            fprintf('Calculando trayectoria nodos:\n');
+            for k = 1:length(nodos)
+                fprintf('\tNodo %s\n', nodos{k}.obtenerEtiqueta());
+            end % for k
+            ctitle = obj.imprimirPropiedadesAnalisisCarga(carga);
+            
+            % Genera el vector de tiempo
+            t = carga.obtenerVectorTiempo(); % Vector de tiempo
+            if tlim == 0
+                tlim = [min(t), max(t)];
+            else
+                tlim = [max(min(tlim), min(t)), min(max(tlim), max(t))];
+            end
+            
+            % Crea la leyenda de los nodos
+            legnodos = cell(length(nodos), 1);
+            for k = 1:length(nodos)
+                legnodos{k} = nodos{k}.obtenerEtiqueta();
+            end % for k
+            
+            % Indica si el grafico se realizo o no
+            doPlot = false;
+            
+            % Grafico de carga
+            if strcmp(r.plot, 'all') || strcmp(r.plot, 'carga')
+                doPlot = true;
+                fig_title = sprintf('%s %s - Carga', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                
+                for k = 1:length(nodos)
+                    % Elige al nodo
+                    [nr, ~] = size(a_c);
+                    ngd = nodos{k}.obtenerGDLIDCondensado();
+                    ng = 0; % Numero grado analisis
+                    for i = 1:length(direccion)
+                        if direccion(i) == 1
+                            ng = ngd(i);
+                        end
+                    end % for i
+                    if ng == 0
+                        error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
+                    end
+                    if ng > nr
+                        error('El GDLID excede al soporte del sistema');
+                    end
+                    plot(t, p_c(ng, :), '-', 'LineWidth', 1);
+                end % for k
+                ylabel(sprintf('carga (%s)', r.unidadC));
+                xlabel('t (s)');
+                xlim(tlim);
+                grid on;
+                legend(legnodos, 'location', 'best');
+                title(fig_title);
+            end
+            
+            % Grafico de desplazamiento
+            if strcmp(r.plot, 'all') || strcmp(r.plot, 'despl')
+                doPlot = true;
+                fig_title = sprintf('%s %s - Desplazamiento', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                
+                for k = 1:length(nodos)
+                    % Elige al nodo
+                    [nr, ~] = size(a_c);
+                    ngd = nodos{k}.obtenerGDLIDCondensado();
+                    ng = 0; % Numero grado analisis
+                    for i = 1:length(direccion)
+                        if direccion(i) == 1
+                            ng = ngd(i);
+                        end
+                    end % for i
+                    if ng == 0
+                        error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
+                    end
+                    if ng > nr
+                        error('El GDLID excede al soporte del sistema');
+                    end
+                    plot(t, u_c(ng, :), '-', 'LineWidth', 1);
+                end % for k
+                ylabel(sprintf('u (%s)', r.unidadL));
+                xlabel('t (s)');
+                xlim(tlim);
+                grid on;
+                legend(legnodos, 'location', 'best');
+                title(fig_title);
+            end
+            
+            % Grafico de velocidad
+            if strcmp(r.plot, 'all') || strcmp(r.plot, 'vel')
+                doPlot = true;
+                fig_title = sprintf('%s %s - Velocidad', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                
+                for k = 1:length(nodos)
+                    % Elige al nodo
+                    [nr, ~] = size(a_c);
+                    ngd = nodos{k}.obtenerGDLIDCondensado();
+                    ng = 0; % Numero grado analisis
+                    for i = 1:length(direccion)
+                        if direccion(i) == 1
+                            ng = ngd(i);
+                        end
+                    end % for i
+                    if ng == 0
+                        error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
+                    end
+                    if ng > nr
+                        error('El GDLID excede al soporte del sistema');
+                    end
+                    plot(t, v_c(ng, :), '-', 'LineWidth', 1);
+                end % for k
+                ylabel(sprintf('v (%s/s)', r.unidadL));
+                xlabel('t (s)');
+                xlim(tlim);
+                grid on;
+                legend(legnodos, 'location', 'best');
+                title(fig_title);
+            end
+            
+            % Grafico de aceleracion
+            if strcmp(r.plot, 'all') || strcmp(r.plot, 'acel')
+                doPlot = true;
+                fig_title = sprintf('%s %s - Aceleracion', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                
+                for k = 1:length(nodos)
+                    % Elige al nodo
+                    [nr, ~] = size(a_c);
+                    ngd = nodos{k}.obtenerGDLIDCondensado();
+                    ng = 0; % Numero grado analisis
+                    for i = 1:length(direccion)
+                        if direccion(i) == 1
+                            ng = ngd(i);
+                        end
+                    end % for i
+                    if ng == 0
+                        error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
+                    end
+                    if ng > nr
+                        error('El GDLID excede al soporte del sistema');
+                    end
+                    plot(t, a_c(ng, :), '-', 'LineWidth', 1);
+                end % for k
+                ylabel(sprintf('a (%s/s^s)', r.unidadL));
+                xlabel('t (s)');
+                xlim(tlim);
+                grid on;
+                legend(legnodos, 'location', 'best');
+                title(fig_title);
+            end
+            
+            % Si el grafico no se realizo
+            if ~doPlot
+                error('Tipo de grafico incorrecto, valores posibles: all,carga,despl,vel,acel');
+            end
+            
+            % Finaliza proceso
+            fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
+            dispMetodoTEFAME();
+            
+        end % plotTrayectoriaNodos function
+        
         function plotTrayectoriaNodo(obj, carga, nodo, direccion, varargin)
             % plotTrayectoriaNodo: Grafica la trayectoria de un nodo
             % (desplazamiento, velocidad y aceleracion) para todo el tiempo
@@ -2195,7 +2449,7 @@ classdef ModalEspectral < Analisis
         
         function calcularModalEspectral(obj, nModos, betacR, modocR, ...
                 direcR, betacP, maxcond, valvecAlgoritmo, valvecTolerancia, ...
-                muIterDesplazamiento, nRitz)
+                muIterDesplazamiento, nRitz, betaAlg)
             % calcularModalEspectral: Calcula el metodo modal espectral
             
             % Calcula tiempo inicio
@@ -2485,69 +2739,80 @@ classdef ModalEspectral < Analisis
             end % for j
             
             % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
-            
-            % Se recorren los numero de modos, si alguno es mayor a los
-            % modos de analisis se reajusta y lanza warning
-            for i = 1:length(modocR)
-                if modocR(i) > nModos
-                    warning('Modo de Rayleigh %d excede al numero de modos de analisis %d, se ha reajustado este ultimo', ...
-                        modocR(i), nModos);
-                    modocR(i) = nModos;
-                end
-            end % for i
-            
-            countcR = [0, 0];
-            m = 0;
-            n = 0;
-            for i = 1:min(length(obj.Mmeff), nModos)
-                if obj.Mmeff(i, 1) > max(obj.Mmeff(i, 2:ndg))
-                    countcR(1) = countcR(1) + 1;
-                    if direcR(1) == 'h' && modocR(1) == countcR(1)
-                        m = i;
-                    elseif direcR(2) == 'h' && modocR(2) == countcR(1)
-                        n = i;
+            if (betaAlg == 0 || betaAlg == 1)
+                
+                % Se recorren los numero de modos, si alguno es mayor a los
+                % modos de analisis se reajusta y lanza warning
+                for i = 1:length(modocR)
+                    if modocR(i) > nModos
+                        warning('Modo de Rayleigh %d excede al numero de modos de analisis %d, se ha reajustado este ultimo', ...
+                            modocR(i), nModos);
+                        modocR(i) = nModos;
                     end
-                elseif obj.Mmeff(i, 2) > ...
-                        max(obj.Mmeff(i, 1), obj.Mmeff(i, max(1, ndg)))
-                    countcR(2) = countcR(2) + 1;
-                    if direcR(1) == 'v' && modocR(1) == countcR(2)
-                        m = i;
-                    elseif direcR(2) == 'h' && modocR(2) == countcR(2)
-                        n = i;
+                end % for i
+                
+                countcR = [0, 0];
+                m = 0;
+                n = 0;
+                for i = 1:min(length(obj.Mmeff), nModos)
+                    if obj.Mmeff(i, 1) > max(obj.Mmeff(i, 2:ndg))
+                        countcR(1) = countcR(1) + 1;
+                        if direcR(1) == 'h' && modocR(1) == countcR(1)
+                            m = i;
+                        elseif direcR(2) == 'h' && modocR(2) == countcR(1)
+                            n = i;
+                        end
+                    elseif obj.Mmeff(i, 2) > ...
+                            max(obj.Mmeff(i, 1), obj.Mmeff(i, max(1, ndg)))
+                        countcR(2) = countcR(2) + 1;
+                        if direcR(1) == 'v' && modocR(1) == countcR(2)
+                            m = i;
+                        elseif direcR(2) == 'h' && modocR(2) == countcR(2)
+                            n = i;
+                        end
                     end
+                end % for i
+                
+                if m == 0 || n == 0
+                    warning('Se requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh');
+                    m = 1;
+                    n = 1;
                 end
-            end % for i
-            
-            if m == 0 || n == 0
-                warning('Se requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh');
-                m = 1;
-                n = 1;
+                w = obj.wn;
+                a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
+                    -1 / w(n), 1 / w(m)] * betacR';
+                obj.cRayleigh = a(1) .* Meq + a(2) .* Keq;
+                
+            else
+                obj.cRayleigh = [];
             end
-            w = obj.wn;
-            a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
-                -1 / w(n), 1 / w(m)] * betacR';
-            obj.cRayleigh = a(1) .* Meq + a(2) .* Keq;
             
             % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------
-            % Se declaran todos los amortiguamientos criticos del sistema,
-            % (horizontal, vertical y rotacional)
-            d = zeros(length(obj.Mmeff), length(obj.Mmeff));
-            w = obj.wn;
-            Mn = modalMmt;
-            obj.cPenzien = 0;
-            
-            for i = 1:length(Mn)
-                if obj.Mmeff(i, 1) > max(obj.Mmeff(i, 2:ndg))
-                    d(i, i) = 2 * betacP(1) * w(i) / Mn(i, i);
-                elseif obj.Mmeff(i, 2) > ...
-                        max(obj.Mmeff(i, 1), obj.Mmeff(i, max(1, ndg)))
-                    d(i, i) = 2 * betacP(2) * w(i) / Mn(i, i);
-                else
-                    d(i, i) = 2 * betacP(3) * w(i) / Mn(i, i);
-                end
-                obj.cPenzien = obj.cPenzien + ...
-                    Meq * (d(i, i) * modalPhin(:, i) * modalPhin(:, i)') * Meq;
-            end % for i
+            if (betaAlg == 0 || betaAlg == 2)
+                
+                % Se declaran todos los amortiguamientos criticos del sistema,
+                % (horizontal, vertical y rotacional)
+                d = zeros(length(obj.Mmeff), length(obj.Mmeff));
+                w = obj.wn;
+                Mn = modalMmt;
+                obj.cPenzien = 0;
+                
+                for i = 1:length(Mn)
+                    if obj.Mmeff(i, 1) > max(obj.Mmeff(i, 2:ndg))
+                        d(i, i) = 2 * betacP(1) * w(i) / Mn(i, i);
+                    elseif obj.Mmeff(i, 2) > ...
+                            max(obj.Mmeff(i, 1), obj.Mmeff(i, max(1, ndg)))
+                        d(i, i) = 2 * betacP(2) * w(i) / Mn(i, i);
+                    else
+                        d(i, i) = 2 * betacP(3) * w(i) / Mn(i, i);
+                    end
+                    obj.cPenzien = obj.cPenzien + ...
+                        Meq * (d(i, i) * modalPhin(:, i) * modalPhin(:, i)') * Meq;
+                end % for i
+                
+            else
+                obj.cPenzien = [];
+            end
             
             % Termina el analisis
             obj.analisisFinalizado = true;
