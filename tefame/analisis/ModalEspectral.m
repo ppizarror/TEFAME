@@ -1910,12 +1910,18 @@ classdef ModalEspectral < Analisis
         
         function plotTrayectoriaNodos(obj, carga, nodos, direccion, varargin)
             % plotTrayectoriaNodos: Grafica la trayectoria de varios nodos
-            % (desplazamiento, velocidad y aceleracion) para todo el tiempo
+            % (carga, desplazamiento, velocidad y aceleracion) para todo el
+            % tiempo. Adicionalmente permite el calculo del FFT de la
+            % aceleracion
             %
             % Parametros opcionales:
             %   fftacc      Aplica la FFT a la aceleracion
+            %   flim        Limite de frecuencia en grafico FFT
             %   plot        'all','carga','despl','vel','acel'
+            %   legend      Muestra la leyenda
+            %   legendloc   Ubicacion de la leyenda
             %   tlim        Tiempo de analisis limite
+            %   tukeywinr   Factor de tukey
             %   unidadC     Unidad carga
             %   unidadL     Unidad longitud
             
@@ -1939,8 +1945,12 @@ classdef ModalEspectral < Analisis
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'fftacc', false);
+            addOptional(p, 'flim', 0);
             addOptional(p, 'plot', 'all');
+            addOptional(p, 'legend', false);
+            addOptional(p, 'legendloc', 'best');
             addOptional(p, 'tlim', 0);
+            addOptional(p, 'tukeywinr', 0.01);
             addOptional(p, 'unidadC', 'tonf');
             addOptional(p, 'unidadL', 'm');
             parse(p, varargin{:});
@@ -1962,11 +1972,19 @@ classdef ModalEspectral < Analisis
             if ~carga.cargaCalculada()
                 error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
             end
+            cargaFS = floor(1/carga.dt);
             
             fprintf('Calculando trayectoria nodos:\n');
+            fprintf('\tNodos: ');
+            s = '';
             for k = 1:length(nodos)
-                fprintf('\tNodo %s\n', nodos{k}.obtenerEtiqueta());
+                s = strcat(s, strcat(' ', nodos{k}.obtenerEtiqueta()));
+                if k < length(nodos)
+                    s = strcat(s, ', ');
+                end
             end % for k
+            s = strcat(s, '\n');
+            fprintf(s);
             ctitle = obj.imprimirPropiedadesAnalisisCarga(carga);
             
             % Genera el vector de tiempo
@@ -1977,6 +1995,11 @@ classdef ModalEspectral < Analisis
                 tlim = [max(min(tlim), min(t)), min(max(tlim), max(t))];
             end
             [nr, ~] = size(a_c);
+            
+            % Verifica frecuencia
+            if r.fftacc && r.flim < 0
+                error('El limite de frecuencia no puede ser negativo');
+            end
             
             % Verifica que la direccion sea correcta
             for k = 1:length(nodos)
@@ -2030,7 +2053,9 @@ classdef ModalEspectral < Analisis
                 xlabel('t (s)');
                 xlim(tlim);
                 grid on;
-                legend(legnodos, 'location', 'best');
+                if r.legend
+                    legend(legnodos, 'location', r.legendloc);
+                end
                 title(fig_title);
             end
             
@@ -2059,7 +2084,9 @@ classdef ModalEspectral < Analisis
                 xlabel('t (s)');
                 xlim(tlim);
                 grid on;
-                legend(legnodos, 'location', 'best');
+                if r.legend
+                    legend(legnodos, 'location', r.legendloc);
+                end
                 title(fig_title);
             end
             
@@ -2088,7 +2115,9 @@ classdef ModalEspectral < Analisis
                 xlabel('t (s)');
                 xlim(tlim);
                 grid on;
-                legend(legnodos, 'location', 'best');
+                if r.legend
+                    legend(legnodos, 'location', r.legendloc);
+                end
                 title(fig_title);
             end
             
@@ -2114,9 +2143,9 @@ classdef ModalEspectral < Analisis
                     if ~r.fftacc % Grafica la aceleracion
                         plot(t, a_c(ng, :), '-', 'LineWidth', 1);
                     else % Grafica la FFT
-                        tuck = tukeywin(length(a_c(ng, :)), 0.01)';
+                        tuck = tukeywin(length(a_c(ng, :)), r.tukeywinr)';
                         acc = a_c(ng, :) .* tuck;
-                        [f, fftt, ~] = DFT(200, acc);
+                        [f, fftt, ~] = DFT(cargaFS, acc);
                         plot(f, abs(fftt), '-');
                     end
                     
@@ -2126,14 +2155,21 @@ classdef ModalEspectral < Analisis
                     ylabel(sprintf('a (%s/s^s)', r.unidadL));
                     xlabel('t (s)');
                     title(fig_title);
+                    xlim(tlim);
                 else
                     ylabel('FFT');
                     xlabel('f (Hz)');
                     title(fig_title);
+                    if r.flim == 0
+                        xlim([0, max(f)]);
+                    else
+                        xlim([0, r.flim]);
+                    end
                 end
-                xlim([0, max(f)]);
                 grid on;
-                legend(legnodos, 'location', 'best');
+                if r.legend
+                    legend(legnodos, 'location', r.legendloc);
+                end
 
             end
             
@@ -3459,7 +3495,7 @@ classdef ModalEspectral < Analisis
             if isa(carga, 'CombinacionCargas')
                 ctitle = 'Combinacion';
             end
-            fprintf('\t%s %s\n', ctitle, carga.obtenerEtiqueta());
+            fprintf('\t%s %s:\n', ctitle, carga.obtenerEtiqueta());
             
             if carga.usoAmortiguamientoRayleigh()
                 fprintf('\t\tLa %s se calculo con amortiguamiento Rayleigh\n', lower(ctitle));
