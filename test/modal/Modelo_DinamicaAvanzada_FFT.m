@@ -86,7 +86,7 @@ analisisObj.disp();
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas();
 analisisObj.plotTrayectoriaNodos(cargasDinamicas{1}, pulsoNodos, [1, 0, 0], ...
-    'plot', 'acel', 'fftacc', true, 'flim', 20, 'tukeywinr', 0.05);
+    'plot', 'fft', 'flim', 20, 'tukeywinr', 0.05);
 
 %% Finaliza el analisis
 clear h h1 i v pulsoNodo;

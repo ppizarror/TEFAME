@@ -1915,9 +1915,8 @@ classdef ModalEspectral < Analisis
             % aceleracion
             %
             % Parametros opcionales:
-            %   fftacc      Aplica la FFT a la aceleracion
             %   flim        Limite de frecuencia en grafico FFT
-            %   plot        'all','carga','despl','vel','acel'
+            %   plot        'all','carga','despl','vel','acel','fft'
             %   legend      Muestra la leyenda
             %   legendloc   Ubicacion de la leyenda
             %   tlim        Tiempo de analisis limite
@@ -2139,32 +2138,51 @@ classdef ModalEspectral < Analisis
                             ng = ngd(i);
                         end
                     end % for i
-                    
-                    if ~r.fftacc % Grafica la aceleracion
-                        plot(t, a_c(ng, :), '-', 'LineWidth', 1);
-                    else % Grafica la FFT
-                        tuck = tukeywin(length(a_c(ng, :)), r.tukeywinr)';
-                        acc = a_c(ng, :) .* tuck;
-                        [f, fftt, ~] = DFT(cargaFS, acc);
-                        plot(f, abs(fftt), '-');
-                    end
-                    
+                    plot(t, a_c(ng, :), '-', 'LineWidth', 1);
                 end % for k
                 
-                if ~r.fftacc
-                    ylabel(sprintf('a (%s/s^s)', r.unidadL));
-                    xlabel('t (s)');
-                    title(fig_title);
-                    xlim(tlim);
+                ylabel(sprintf('a (%s/s^s)', r.unidadL));
+                xlabel('t (s)');
+                title(fig_title);
+                xlim(tlim);
+                grid on;
+                if r.legend
+                    legend(legnodos, 'location', r.legendloc);
+                end
+
+            end
+            
+            % Grafico de fft
+            if strcmp(r.plot, 'all') || strcmp(r.plot, 'fft')
+                doPlot = true;
+                fig_title = sprintf('%s %s - Analisis FFT', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                
+                % Grafica los nodos
+                for k = 1:length(nodos)
+                    ngd = nodos{k}.obtenerGDLIDCondensado();
+                    ng = 0; % Numero grado analisis
+                    for i = 1:length(direccion)
+                        if direccion(i) == 1
+                            ng = ngd(i);
+                        end
+                    end % for i
+                    tuck = tukeywin(length(a_c(ng, :)), r.tukeywinr)';
+                    acc = a_c(ng, :) .* tuck;
+                    [f, fftt, ~] = DFT(cargaFS, acc);
+                    plot(f, abs(fftt), '-');
+                end % for k
+                
+                ylabel('FFT');
+                xlabel('f (Hz)');
+                title(fig_title);
+                if r.flim == 0
+                    xlim([0, max(f)]);
                 else
-                    ylabel('FFT');
-                    xlabel('f (Hz)');
-                    title(fig_title);
-                    if r.flim == 0
-                        xlim([0, max(f)]);
-                    else
-                        xlim([0, r.flim]);
-                    end
+                    xlim([0, r.flim]);
                 end
                 grid on;
                 if r.legend
@@ -2175,7 +2193,7 @@ classdef ModalEspectral < Analisis
             
             % Si el grafico no se realizo
             if ~doPlot
-                error('Tipo de grafico incorrecto, valores posibles: all,carga,despl,vel,acel');
+                error('Tipo de grafico incorrecto, valores posibles: all,carga,despl,vel,acel,fft');
             end
             
             % Finaliza proceso
