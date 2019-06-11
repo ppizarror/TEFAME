@@ -69,6 +69,15 @@ cargasDinamicas{1} = CargaPulso('Pulso', pulsoNodos, [1, 0], 1, 0.1, 0.005, 0, 2
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
 
+%% Creamos el patron de cargas
+patronesDeCargas = cell(2, 1);
+patronesDeCargas{1} = PatronDeCargasConstante('CargaConstante', cargasEstaticas);
+patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, analisisObj, ...
+    'desmodal', true, 'metodo', 'newmark');
+
+% Agregamos las cargas al modelo
+modeloObj.agregarPatronesDeCargas(patronesDeCargas);
+
 %% Analiza el sistema y resuelve para cargas estaticas
 analisisObj.analizar('nModos', 50, 'rayleighBeta', [0.02, 0.05], 'rayleighModo', [1, 8], ...
     'rayleighDir', ['h', 'h'], 'cpenzienBeta', [0.02, 0.02, 0], 'condensar', true);
