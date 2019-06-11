@@ -319,11 +319,18 @@ classdef Modelo < handle
             
             fprintf('\tAplica patron de cargas estatico:\n');
             fprintf('\t\tFactor: %f\n', factor);
+            
+            k = 0; % Numero de patrones estaticos
             for i = 1:length(obj.patronesDeCargas)
                 if ~obj.patronesDeCargas{i}.patronDinamico()
                     obj.patronesDeCargas{i}.aplicarCargas(factor);
+                    k = k + 1;
                 end
             end % for i
+            
+            if k == 0
+                warning('No existen patrones de cargas estaticos en el modelo');
+            end
             
         end % aplicarPatronesDeCargasEstatico function
         
@@ -341,14 +348,21 @@ classdef Modelo < handle
             
             fprintf('\tAplica patron de cargas dinamico:\n');
             fprintf('\t\tFactor: %f\n', factor);
+            
+            k = 0; % Numero de patrones dinamicos
             for i = 1:length(obj.patronesDeCargas)
                 if obj.patronesDeCargas{i}.patronDinamico()
                     obj.patronesDeCargas{i}.aplicarCargas(cpenzien, ...
                         disipadores, cargaDisipador, betaObjetivo, ...
                         arregloDisipadores, iterDisipador, tolIterDisipador, ...
                         betaGrafico, factor);
+                    k = k + 1;
                 end
             end % for i
+            
+            if k == 0
+                warning('No existen patrones de cargas dinamicos en el modelo');
+            end
             
         end % aplicarPatronesDeCargasDinamico function
         
