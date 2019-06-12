@@ -1912,17 +1912,30 @@ classdef ModalEspectral < Analisis
             % plotTrayectoriaNodos: Grafica la trayectoria de varios nodos
             % (carga, desplazamiento, velocidad y aceleracion) para todo el
             % tiempo. Adicionalmente permite el calculo del FFT de la
-            % aceleracion
+            % aceleracion, obteniendo los periodos de la estructura. El
+            % metodo se entiende como una aproximacion al calculo
+            % experimental y no pretende reemplazar a los periodos
+            % obtenidos del calculo modal espectral
+            %
+            % Si se desea obtener los periodos a partir del analisis de
+            % senales de un registro de aceleracion para distintos grados
+            % de libertad se recomienda seguir la metodologia planteada por
+            % este metodo para el caso fft
             %
             % Parametros opcionales:
-            %   flim        Limite de frecuencia en grafico FFT
-            %   plot        'all','carga','despl','vel','acel','fft'
-            %   legend      Muestra la leyenda
-            %   legendloc   Ubicacion de la leyenda
-            %   tlim        Tiempo de analisis limite
-            %   tukeywinr   Factor de tukey
-            %   unidadC     Unidad carga
-            %   unidadL     Unidad longitud
+            %   fftlim          Limite de frecuencia en grafico FFT
+            %   fftmeanstd      Grafica el promedio y desviacion estandar para FFT
+            %   fftpeaks        Grafica los peaks
+            %   legend          Muestra la leyenda
+            %   legendloc       Ubicacion de la leyenda
+            %   maxpeaks        Numero de peaks maximos calculados
+            %   peakMinDistance Distancia minima entre peaks requerida
+            %   plot            'all','carga','despl','vel','acel','fft'
+            %   tlim            Tiempo de analisis limite
+            %   tukeywinr       Factor de tukey
+            %   unidadC         Unidad carga
+            %   unidadL         Unidad longitud
+            %   zerofill        Indica relleno de ceros para FFT
             
             % Inicia proceso
             tinicial = clock;
@@ -1930,6 +1943,9 @@ classdef ModalEspectral < Analisis
             % Verifica que el vector de nodos sea un cell
             if ~iscell(nodos)
                 error('Nodos debe ser un cell de nodos');
+            end
+            if length(nodos) == 1
+                warning('Para un solo nodo se recomienda plotTrayectoriaNodo(carga,nodo,direccion,varargin)');
             end
             
             % Verifica que la direccion sea correcta
@@ -1943,15 +1959,19 @@ classdef ModalEspectral < Analisis
             % Recorre parametros opcionales
             p = inputParser;
             p.KeepUnmatched = true;
-            addOptional(p, 'fftacc', false);
-            addOptional(p, 'flim', 0);
-            addOptional(p, 'plot', 'all');
+            addOptional(p, 'fftlim', 0);
+            addOptional(p, 'fftmeanstd', false);
+            addOptional(p, 'fftpeaks', false);
             addOptional(p, 'legend', false);
             addOptional(p, 'legendloc', 'best');
+            addOptional(p, 'maxpeaks', -1); % El maximo se ajusta al dato
+            addOptional(p, 'peakMinDistance', 0.5); % Requerido para el calculo
+            addOptional(p, 'plot', 'all');
             addOptional(p, 'tlim', 0);
             addOptional(p, 'tukeywinr', 0.01);
             addOptional(p, 'unidadC', 'tonf');
             addOptional(p, 'unidadL', 'm');
+            addOptional(p, 'zerofill', 0);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -1994,11 +2014,6 @@ classdef ModalEspectral < Analisis
                 tlim = [max(min(tlim), min(t)), min(max(tlim), max(t))];
             end
             [nr, ~] = size(a_c);
-            
-            % Verifica frecuencia
-            if r.fftacc && r.flim < 0
-                error('El limite de frecuencia no puede ser negativo');
-            end
             
             % Verifica que la direccion sea correcta
             for k = 1:length(nodos)
@@ -2149,7 +2164,7 @@ classdef ModalEspectral < Analisis
                 if r.legend
                     legend(legnodos, 'location', r.legendloc);
                 end
-
+                
             end
             
             % Grafico de fft
@@ -2161,7 +2176,21 @@ classdef ModalEspectral < Analisis
                 movegui(plt, 'center');
                 hold on;
                 
+                if r.fftlim < 0 % Verifica frecuencia
+                    error('El limite de frecuencia no puede ser negativo');
+                end
+                
+                if r.maxpeaks == 0
+                    error('No puede haber un numero de peaks negativo o nulo');
+                end
+                r.maxpeaks = floor(r.maxpeaks);
+                
+                if r.peakMinDistance <= 0
+                    error('Distancia no puede ser menor o igual a cero');
+                end
+                
                 % Grafica los nodos
+                ft = cell(1, length(nodos));
                 for k = 1:length(nodos)
                     ngd = nodos{k}.obtenerGDLIDCondensado();
                     ng = 0; % Numero grado analisis
@@ -2170,25 +2199,150 @@ classdef ModalEspectral < Analisis
                             ng = ngd(i);
                         end
                     end % for i
-                    tuck = tukeywin(length(a_c(ng, :)), r.tukeywinr)';
-                    acc = a_c(ng, :) .* tuck;
-                    [f, fftt, ~] = DFT(cargaFS, acc);
-                    plot(f, abs(fftt), '-');
+                    acc = a_c(ng, :);
+                    
+                    % Rellena con ceros
+                    acc = [acc, zeros(1, ceil(r.zerofill*length(acc)))]; %#ok<AGROW>
+                    tuck = tukeywin(length(acc), r.tukeywinr)';
+                    [f, fftt, ~] = DFT(cargaFS, acc.*tuck);
+                    
+                    % Solo conservo la mitad
+                    tf = find(f == 0);
+                    f = f(tf:end);
+                    fftt = fftt(tf:end);
+                    
+                    fftt = abs(fftt);
+                    plot(f, fftt, '-');
+                    ft{k} = fftt; % Guarda el registro
                 end % for k
+                
+                % Calcula el promedio y la desviacion estandar
+                ftmean = zeros(1, length(f));
+                ftstd = zeros(1, length(f));
+                ftdata = zeros(1, length(nodos));
+                ftmax = zeros(1, length(nodos));
+                for i = 1:length(f)
+                    for j = 1:length(nodos)
+                        ftdata(j) = ft{j}(i);
+                    end % for j
+                    ftmean(i) = mean(ftdata);
+                    ftstd(i) = std(ftdata);
+                    ftmax(i) = max(ftdata);
+                end % for i
+                
+                % Grafica el promedio y desviacion estandar
+                if r.fftmeanstd
+                    plot(f, ftmean, 'k-', 'lineWidth', 3);
+                    plot(f, ftmean+ftstd, 'k--', 'lineWidth', 1.5);
+                    plot(f, ftmean-ftstd, 'k--', 'lineWidth', 1.5);
+                end
                 
                 ylabel('FFT');
                 xlabel('f (Hz)');
                 title(fig_title);
-                if r.flim == 0
+                if r.fftlim == 0
                     xlim([0, max(f)]);
                 else
-                    xlim([0, r.flim]);
+                    xlim([0, r.fftlim]);
                 end
+                ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
                 if r.legend
                     legend(legnodos, 'location', r.legendloc);
                 end
-
+                
+                % Calcula los peaks
+                fprintf('\tSe buscan peaks por cada curva:\n');
+                locs = cell(1, length(nodos));
+                maxlocs = 0;
+                for i = 1:length(nodos)
+                    [~, ploc] = findpeaks(ft{i}, f, 'MinPeakDistance', r.peakMinDistance);
+                    locs{i} = ploc;
+                    maxlocs = max(length(ploc), maxlocs);
+                end % for i
+                if r.maxpeaks > 0
+                    maxlocs = min(maxlocs, r.maxpeaks);
+                end
+                
+                % Calcula el promedio y la desviacion estandar
+                locMean = zeros(1, maxlocs);
+                locStd = zeros(1, maxlocs);
+                locFreq = zeros(1, maxlocs); % Frecuencias (posicion)
+                
+                % Calcula datos pero en periodos
+                tlocMean = zeros(1, maxlocs);
+                tlocStd = zeros(1, maxlocs);
+                for i = 1:maxlocs
+                    locData = []; % Datos para la posicion i
+                    tlocData = [];
+                    for k = 1:length(nodos)
+                        if i <= length(locs{k})
+                            locData = [locData, locs{k}(i)]; %#ok<AGROW>
+                            tlocData = [tlocData, 1 / locs{k}(i)]; %#ok<AGROW>
+                        end
+                    end % for k
+                    
+                    locMean(i) = mean(locData);
+                    locStd(i) = std(locData);
+                    
+                    % Estadistica para los periodos
+                    tlocMean(i) = mean(tlocData);
+                    tlocStd(i) = std(tlocData);
+                end % for i
+                
+                % Busca las posiciones de ftmean+std para locMean
+                j = 1; % Indice a locMean
+                for i = 1:length(f)
+                    if f(i) >= locMean(j)
+                        locFreq(j) = i;
+                        j = j + 1; % Avanza
+                        if j > maxlocs
+                            break;
+                        end
+                    end
+                end % for i
+                pks = ftmax(locFreq);
+                
+                % Imprime en consola la tabla
+                fprintf('\t\tN\t|\tT peak\t\t\t|\tT modal\t|\tError\t|\n');
+                fprintf('\t\t-------------------------------------------------\n');
+                for i = 1:maxlocs
+                    err = 100 * (tlocMean(i) - obj.Tn(i)) / obj.Tn(i);
+                    if err > 0
+                        s = '+';
+                    else
+                        s = '';
+                    end
+                    fprintf('\t\t%d\t|\t%.3f +- %.3f\t|\t%.3f\t|\t%s%.2f\t|\n', ...
+                        i, tlocMean(i), tlocStd(i), obj.Tn(i), s, err);
+                end
+                fprintf('\t\t-------------------------------------------------\n');
+                
+                % Grafica los peaks
+                if r.fftpeaks
+                    fig_title = sprintf('%s %s - Analisis FFT peaks', ...
+                        ctitle, carga.obtenerEtiqueta());
+                    plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                    movegui(plt, 'center');
+                    hold on;
+                    
+                    for i = 1:length(nodos)
+                        plot(f, ft{i}, '-');
+                    end % for i
+                    text(locMean+.02, pks, num2str((1:numel(pks))'));
+                    plot(locMean, pks, 'r^', 'markerfacecolor', [1, 0, 0])
+                    ylabel('FFT (\mu + \sigma)');
+                    xlabel('f (Hz)');
+                    title(fig_title);
+                    if r.fftlim == 0
+                        xlim([0, max(f)]);
+                    else
+                        xlim([0, r.fftlim]);
+                    end
+                    ylim([0, max(get(gca, 'ylim'))]);
+                    grid on;
+                end
+                
             end
             
             % Si el grafico no se realizo
@@ -2213,6 +2367,11 @@ classdef ModalEspectral < Analisis
             
             % Inicia proceso
             tinicial = clock;
+            
+            % Verifica que no sea un cell de nodos
+            if iscell(nodo)
+                error('Nodo no puede ser un cell, se recomienda plotTrayectoriaNodos(carga,nodos,direccion,varargin)');
+            end
             
             % Verifica que la direccion sea correcta
             if sum(direccion) ~= 1
