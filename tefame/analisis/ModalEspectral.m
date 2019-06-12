@@ -1910,6 +1910,13 @@ classdef ModalEspectral < Analisis
             
         end % plotEsfuerzosElemento function
         
+        function beta = calcularAmortiguamientoModo(obj, modo)
+            % calcularAmortiguamientoModo: Calcula el amortiguamiento de un
+            % modo
+            
+            
+        end % calcularAmortiguamientoModo function
+        
         function calcularFFTCarga(obj, carga, nodos, direccionCarga, direccionFormaModal, varargin)
             % calcularFFTCarga: permite el calculo del FFT de la
             % aceleracion, obteniendo los periodos de la estructura. El
@@ -1923,6 +1930,7 @@ classdef ModalEspectral < Analisis
             % este metodo para el caso fft
             %
             % Parametros opcionales:
+            %   betaPlot        Grafica el calculo del amortiguamiento de cada modo
             %   fftlim          Limite de frecuencia en grafico FFT
             %   fftmeanstd      Grafica el promedio y desviacion estandar para FFT
             %   fftpeaks        Grafica los peaks
@@ -1964,6 +1972,7 @@ classdef ModalEspectral < Analisis
             % Recorre parametros opcionales
             p = inputParser;
             p.KeepUnmatched = true;
+            addOptional(p, 'betaPlot', false);
             addOptional(p, 'fftlim', 0);
             addOptional(p, 'fftmeanstd', false);
             addOptional(p, 'fftpeaks', false);
@@ -2076,7 +2085,8 @@ classdef ModalEspectral < Analisis
             % Calcula el PSD del registro, ello incluye la FFT, los peaks
             % asociados a cada periodo y las formas modales y los
             % amortiguamientos
-            [f, fft, envFormaModal, tlocMean, tlocStd, locMean, ~, ~, maxlocs, pks] = ...
+            [f, fft, envFormaModal, tlocMean, tlocStd, locMean, ~, ~, ...
+                maxlocs, pks, beta, betaFreq] = ...
                 PSD(a_c, cargaFS, gdl, 'peakMinDistance', r.peakMinDistance, ...
                 'tukeywinr', r.tukeywinr, 'zerofill', r.zerofill);
             
@@ -2212,6 +2222,56 @@ classdef ModalEspectral < Analisis
                 ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
                 legend(formaModalLeg, 'location', 'southeast');
+            end
+            
+            % Grafica los limites de las frecuencias
+            if r.betaPlot
+                
+                % Imprime en consola la tabla
+                fprintf('\tAmortiguamiento por periodos:\n');
+                fprintf('\t\tN\t|\tAmortiguamiento\t|\n');
+                fprintf('\t\t-------------------------\n');
+                betaEstructura = obj.obtenerMatrizAmortiguamiento(true);
+                
+                for i = 1:maxlocsDisp
+                    obj.phin(:, i)' * betaEstructura * obj.phin(:, i)
+                    % Calcula el amortiguamiento del modo
+                    
+                    fprintf('\t\t%d\t|\t\t%.3f\t\t|\n', ...
+                        i, beta(i));
+                end % for i
+                fprintf('\t\t-------------------------\n');
+                
+                % Grafico de peaks
+                fig_title = sprintf('%s %s - Calculo de amortiguamientos', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                
+                for i = 1:ng % Recorre cada nodo
+                    plot(f, fft{i}, '-');
+                end % for i
+                
+                for i = 1:maxlocsDisp
+                    plot([betaFreq{i}(1), betaFreq{i}(1)], [0, betaFreq{i}(4)], 'k--', 'lineWidth', 1);
+                    plot([betaFreq{i}(2), betaFreq{i}(2)], [0, betaFreq{i}(4)], 'k--', 'lineWidth', 1);
+                    plot([betaFreq{i}(1), betaFreq{i}(2)], [betaFreq{i}(4), betaFreq{i}(4)], 'k--', 'lineWidth', 1);
+                    plot(betaFreq{i}(3), betaFreq{i}(4), 'r^', 'markerSize', 5, 'markerfacecolor', [1,0,0]);
+                    text(betaFreq{i}(3).*1.05, betaFreq{i}(4).*1.0, num2str(i));
+                end % for i
+                
+                ylabel('FFT');
+                xlabel('f (Hz)');
+                title(fig_title);
+                if r.fftlim == 0
+                    xlim([0, max(f)]);
+                else
+                    xlim([0, r.fftlim]);
+                end
+                ylim([0, max(get(gca, 'ylim'))]);
+                grid on;
+                
             end
             
             % Finaliza proceso
