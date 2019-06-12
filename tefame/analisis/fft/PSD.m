@@ -64,7 +64,7 @@ for k = 1:ng
     
 end % for k
 
-% Calcula el promedio y la desviacion estandar de los fft
+%% Calcula el promedio y la desviacion estandar de los fft
 ftmean = zeros(1, length(f));
 ftstd = zeros(1, length(f));
 ftdata = zeros(1, ng);
@@ -78,17 +78,18 @@ for i = 1:length(f)
     ftmax(i) = max(ftdata);
 end % for i
 
-% Calcula los peaks
+%% Calcula los peaks
 locs = cell(1, ng);
 maxlocs = 0;
 for i = 1:ng
     [~, ploc] = findpeaks(fft{i}, f, ...
         'MinPeakDistance', r.peakMinDistance);
+    % [maxtab, mintab] = peakdet(fft{i}, r.peakMinDistance, f);
     locs{i} = ploc;
     maxlocs = max(length(ploc), maxlocs);
 end % for i
 
-% Calcula el promedio y la desviacion estandar
+%% Calcula el promedio y la desviacion estandar
 locMean = zeros(1, maxlocs);
 locStd = zeros(1, maxlocs);
 locFreq = zeros(1, maxlocs); % Frecuencias (posicion)
@@ -114,7 +115,7 @@ for i = 1:maxlocs
     tlocStd(i) = std(tlocData);
 end % for i
 
-% Busca las posiciones de la frecuencia para locMean
+%% Busca las posiciones de la frecuencia para locMean
 j = 1; % Indice a locMean
 for i = 1:length(f)
     if f(i) >= locMean(j)
@@ -127,14 +128,14 @@ for i = 1:length(f)
 end % for i
 pks = ftmax(locFreq);
 
-% Calcula los amortiguamientos por cada periodo
-beta = zeros(1, length(pks));
-betaFreq = cell(1, length(pks));
+%% Calcula los amortiguamientos por cada periodo
+beta = zeros(1, maxlocs);
+betaFreq = cell(1, maxlocs);
 pksObj = pks ./ sqrt(2);
 lastj = 1;
-for i=1:length(pks) % Recorre cada peak
-    for j=lastj:length(f)-1 % Al comenzar desde el punto anterior asegura que no se repitan frecuencias
-        if (ftmax(j) - pksObj(i))*(ftmax(j+1) - pksObj(i)) < 0 % Cruzo el objetivo en i
+for i = 1:length(pks) % Recorre cada peak
+    for j = lastj:length(f) - 1 % Al comenzar desde el punto anterior asegura que no se repitan frecuencias
+        if (ftmax(j) - pksObj(i)) * (ftmax(j+1) - pksObj(i)) < 0 % Cruzo el objetivo en i
             
             % Si el ultimo que cruzo fue superior a la frecuencia del peak
             % objetivo entonces este corresponde a la frecuencia derecha, y
@@ -152,13 +153,13 @@ for i=1:length(pks) % Recorre cada peak
     end % for j
 end % for i
 
-% Calcula la envolvente de los peaks por cada una de las formas
-% modales
+%% Calcula la envolvente de los peaks por cada una de las formas modales
 envFormaModal = cell(1, maxlocs);
 for k = 1:maxlocs
     envModo = zeros(1, ng);
     for i = 1:ng % Recorre cada nodo
-        envModo(i) = fft{i}(locFreq(k)); % Obtiene la fft asociada al periodo k del registro i
+        % Obtiene la fft asociada al periodo k del registro i
+        envModo(i) = fft{i}(locFreq(k));
     end % for i
     envModo = envModo ./ max(envModo);
     envFormaModal{k} = envModo;

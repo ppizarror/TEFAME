@@ -1910,10 +1910,21 @@ classdef ModalEspectral < Analisis
             
         end % plotEsfuerzosElemento function
         
-        function beta = calcularAmortiguamientoModo(obj, modo)
+        function beta = calcularAmortiguamientoModo(obj, modo, rayleigh)
             % calcularAmortiguamientoModo: Calcula el amortiguamiento de un
             % modo
             
+            modo = floor(modo);
+            if modo <= 0 || modo > obj.numModos
+                error('El modo no puede ser cero o superior al numero de modos del sistema');
+            end
+            
+            c = obj.obtenerMatrizAmortiguamiento(rayleigh);
+            cd = obj.obtenerMatrizAmortiguamientoDisipadores();
+            phi1 = obj.phin(:, modo);
+            w1 = obj.wn(modo);
+            
+            beta = (phi1' * (c + cd) * phi1) / (2 * w1 * phi1' * obj.Mteq * phi1);
             
         end % calcularAmortiguamientoModo function
         
@@ -1931,6 +1942,7 @@ classdef ModalEspectral < Analisis
             %
             % Parametros opcionales:
             %   betaPlot        Grafica el calculo del amortiguamiento de cada modo
+            %   betaRayleigh    Los amortiguamientos los calcula con Rayleigh
             %   fftlim          Limite de frecuencia en grafico FFT
             %   fftmeanstd      Grafica el promedio y desviacion estandar para FFT
             %   fftpeaks        Grafica los peaks
@@ -1973,6 +1985,7 @@ classdef ModalEspectral < Analisis
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'betaPlot', false);
+            addOptional(p, 'betaRayleigh', true);
             addOptional(p, 'fftlim', 0);
             addOptional(p, 'fftmeanstd', false);
             addOptional(p, 'fftpeaks', false);
@@ -2229,18 +2242,24 @@ classdef ModalEspectral < Analisis
                 
                 % Imprime en consola la tabla
                 fprintf('\tAmortiguamiento por periodos:\n');
-                fprintf('\t\tN\t|\tAmortiguamiento\t|\n');
-                fprintf('\t\t-------------------------\n');
-                betaEstructura = obj.obtenerMatrizAmortiguamiento(true);
-                
+                fprintf('\t\tN\t|\tBeta\t|\tBeta modal\t|\tError\t|\n');
+                fprintf('\t\t---------------------------------------------\n');
                 for i = 1:maxlocsDisp
-                    obj.phin(:, i)' * betaEstructura * obj.phin(:, i)
+                    if isempty(betaFreq{i}) % Si no se encontro el modo retorna
+                        continue;
+                    end
                     % Calcula el amortiguamiento del modo
-                    
-                    fprintf('\t\t%d\t|\t\t%.3f\t\t|\n', ...
-                        i, beta(i));
+                    betaModo = obj.calcularAmortiguamientoModo(i, r.betaRayleigh);
+                    err = 100 * (betaModo - beta(i)) / betaModo;
+                    if err > 0
+                        s = '+';
+                    else
+                        s = '';
+                    end
+                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t\t|\t%s%.2f\t|\n', ...
+                        i, beta(i), betaModo, s, err);
                 end % for i
-                fprintf('\t\t-------------------------\n');
+                fprintf('\t\t---------------------------------------------\n');
                 
                 % Grafico de peaks
                 fig_title = sprintf('%s %s - Calculo de amortiguamientos', ...
@@ -2254,10 +2273,18 @@ classdef ModalEspectral < Analisis
                 end % for i
                 
                 for i = 1:maxlocsDisp
-                    plot([betaFreq{i}(1), betaFreq{i}(1)], [0, betaFreq{i}(4)], 'k--', 'lineWidth', 1);
-                    plot([betaFreq{i}(2), betaFreq{i}(2)], [0, betaFreq{i}(4)], 'k--', 'lineWidth', 1);
-                    plot([betaFreq{i}(1), betaFreq{i}(2)], [betaFreq{i}(4), betaFreq{i}(4)], 'k--', 'lineWidth', 1);
-                    plot(betaFreq{i}(3), betaFreq{i}(4), 'r^', 'markerSize', 5, 'markerfacecolor', [1,0,0]);
+                    if isempty(betaFreq{i})
+                        continue;
+                    end
+                    gc = plot([betaFreq{i}(1), betaFreq{i}(1)], [0, betaFreq{i}(4)], ...
+                        '-', 'lineWidth', 1.25);
+                    c = get(gc, 'Color');
+                    plot([betaFreq{i}(2), betaFreq{i}(2)], [0, betaFreq{i}(4)], ...
+                        '-', 'lineWidth', 1.25, 'color', c);
+                    plot([betaFreq{i}(1), betaFreq{i}(2)], [betaFreq{i}(4), betaFreq{i}(4)], ...
+                        '-', 'lineWidth', 1.25, 'color', c);
+                    plot(betaFreq{i}(3), betaFreq{i}(4), '^', 'markerSize', 5, ...
+                        'markerfacecolor', c, 'color', c);
                     text(betaFreq{i}(3).*1.05, betaFreq{i}(4).*1.0, num2str(i));
                 end % for i
                 
@@ -3125,7 +3152,7 @@ classdef ModalEspectral < Analisis
                 for k = 1:nModos
                     obj.Lm(k, j) = obj.phin(:, k)' * Meq * obj.rm(:, j);
                     obj.Mmeff(k, j) = obj.Lm(k, j).^2 ./ modalMm(k, k);
-                end % for k              
+                end % for k
                 obj.Mmeff(:, j) = obj.Mmeff(:, j) ./ Mtotr(j);
                 obj.Mmeffacum(1, j) = obj.Mmeff(1, j);
                 for i = 2:nModos
@@ -3176,7 +3203,7 @@ classdef ModalEspectral < Analisis
                 w = obj.wn;
                 a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
                     -1 / w(n), 1 / w(m)] * betacR';
-                obj.cRayleigh = a(1) .* Meq + a(2) .* Keq;               
+                obj.cRayleigh = a(1) .* Meq + a(2) .* Keq;
             else
                 obj.cRayleigh = [];
             end
