@@ -85,9 +85,10 @@ analisisObj.disp();
 
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas();
-analisisObj.plotTrayectoriaNodos(cargasDinamicas{1}, pulsoNodos, [1, 0, 0], ...
-    'plot', 'fft', 'fftlim', 10, 'tukeywinr', 0.01, 'zerofill', 10, ...
-    'fftpeaks', true, 'maxpeaks', 5, 'peakMinDistance', 0.7, 'fftenv', true);
+analisisObj.calcularFFTCarga(cargasDinamicas{1}, pulsoNodos, [1, 0, 0], [0, 1, 0], ...
+    'fftlim', 10, 'tukeywinr', 0.01, 'zerofill', 10, 'fftpeaks', true, ...
+    'maxpeaks', 5, 'peakMinDistance', 0.7, 'formaModal', [1, 2, 3]);
+% analisisObj.plotTrayectoriaNodos(cargasDinamicas{1}, pulsoNodos, [1, 0, 0]);
 
 %% Finaliza el analisis
 clear h h1 i v pulsoNodo;
