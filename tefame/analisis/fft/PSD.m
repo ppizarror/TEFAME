@@ -1,5 +1,5 @@
 function [f, fft, envFormaModal, tlocMean, tlocStd, locMean, locStd, locFreq, ...
-    maxlocs, pks] = PSD(a, fs, gdl, varargin)
+    maxlocs, pks, beta, betaFreq] = PSD(a, fs, gdl, varargin)
 % PSD: Power Spectral Density. Calcula la FFT de un registro sismico
 % analizado para varios nodos con distintos grados de libertad. La funcion
 % permite calcular distintos tipos de periodos naturales, arrojando un
@@ -27,6 +27,8 @@ function [f, fft, envFormaModal, tlocMean, tlocStd, locMean, locStd, locFreq, ..
 %   locFreq         Posicion en el vector de frecuencias de cada modo
 %   maxlocs         Numero de modos encontrados en los peaks
 %   pks             Vector de peaks
+%   beta            Vector de amortiguamientos por cada modo
+%   betaFreq        Valor del FFT objetivo por cada amortiguamiento modal
 
 %% Parametros opcionales
 p = inputParser;
@@ -124,6 +126,31 @@ for i = 1:length(f)
     end
 end % for i
 pks = ftmax(locFreq);
+
+% Calcula los amortiguamientos por cada periodo
+beta = zeros(1, length(pks));
+betaFreq = cell(1, length(pks));
+pksObj = pks ./ sqrt(2);
+lastj = 1;
+for i=1:length(pks) % Recorre cada peak
+    for j=lastj:length(f)-1 % Al comenzar desde el punto anterior asegura que no se repitan frecuencias
+        if (ftmax(j) - pksObj(i))*(ftmax(j+1) - pksObj(i)) < 0 % Cruzo el objetivo en i
+            
+            % Si el ultimo que cruzo fue superior a la frecuencia del peak
+            % objetivo entonces este corresponde a la frecuencia derecha, y
+            % el anterior a la izquierda
+            if j > locFreq(i)
+                izq = f(lastj);
+                der = f(j);
+                lastj = j;
+                beta(i) = (der - izq) / (der + izq);
+                betaFreq{i} = [izq, der, f(locFreq(i)), pksObj(i)];
+                break;
+            end
+            lastj = j; % Ultimo en atravezar
+        end
+    end % for j
+end % for i
 
 % Calcula la envolvente de los peaks por cada una de las formas
 % modales
