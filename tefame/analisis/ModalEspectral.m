@@ -1926,6 +1926,7 @@ classdef ModalEspectral < Analisis
             %   fftlim          Limite de frecuencia en grafico FFT
             %   fftmeanstd      Grafica el promedio y desviacion estandar para FFT
             %   fftpeaks        Grafica los peaks
+            %   fftplot         Muestra el grafico de la FFT simple
             %   formaModal      Vector con periodos a graficar de las formas modales
             %   legend          Muestra la leyenda
             %   legendloc       Ubicacion de la leyenda
@@ -1966,6 +1967,7 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'fftlim', 0);
             addOptional(p, 'fftmeanstd', false);
             addOptional(p, 'fftpeaks', false);
+            addOptional(p, 'fftplot', false);
             addOptional(p, 'formaModal', []);
             addOptional(p, 'legend', false);
             addOptional(p, 'legendloc', 'best');
@@ -2001,9 +2003,10 @@ classdef ModalEspectral < Analisis
             fprintf('\tMaximos peaks a mostrar: %d\n', r.maxpeaks');
             
             s = '';
-            for k = 1:length(nodos)
+            ng = length(nodos);
+            for k = 1:ng
                 s = strcat(s, strcat(' ', nodos{k}.obtenerEtiqueta()));
-                if k < length(nodos)
+                if k < ng
                     s = strcat(s, ', ');
                 end
             end % for k
@@ -2014,14 +2017,14 @@ classdef ModalEspectral < Analisis
             
             % Verifica que la direccion sea correcta, crea tambien el
             % vector de la direccion de la forma modal
-            xModal = zeros(1, length(nodos));
-            for k = 1:length(nodos)
+            xModal = zeros(1, ng);
+            gdl = zeros(1, ng);
+            for k = 1:ng
                 % Elige al nodo
                 ngd = nodos{k}.obtenerGDLIDCondensado();
-                ng = 0; % Numero grado analisis
                 for i = 1:length(direccionCarga)
                     if direccionCarga(i) == 1
-                        ng = ngd(i);
+                        gdl(k) = ngd(i);
                     end
                 end % for i
                 for i = 1:length(direccionFormaModal)
@@ -2030,10 +2033,10 @@ classdef ModalEspectral < Analisis
                         xModal(k) = coords(i);
                     end
                 end % for i
-                if ng == 0
+                if gdl(k) == 0
                     error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
                 end
-                if ng > nr
+                if gdl(k) > nr
                     error('El GDLID excede al soporte del sistema');
                 end
             end % for k
@@ -2052,16 +2055,10 @@ classdef ModalEspectral < Analisis
             end
             
             % Crea la leyenda de los nodos
-            legnodos = cell(length(nodos), 1);
-            for k = 1:length(nodos)
+            legnodos = cell(1, ng);
+            for k = 1:ng
                 legnodos{k} = nodos{k}.obtenerEtiqueta();
             end % for k
-            
-            fig_title = sprintf('%s %s - Analisis FFT', ...
-                ctitle, carga.obtenerEtiqueta());
-            plt = figure('Name', fig_title, 'NumberTitle', 'off');
-            movegui(plt, 'center');
-            hold on;
             
             if r.fftlim < 0 % Verifica frecuencia
                 error('El limite de frecuencia no puede ser negativo');
@@ -2076,147 +2073,80 @@ classdef ModalEspectral < Analisis
                 error('Distancia no puede ser menor o igual a cero');
             end
             
-            % Grafica los nodos
-            ft = cell(1, length(nodos));
-            for k = 1:length(nodos)
-                ngd = nodos{k}.obtenerGDLIDCondensado();
-                ng = 0; % Numero grado analisis
-                for i = 1:length(direccionCarga)
-                    if direccionCarga(i) == 1
-                        ng = ngd(i);
-                    end
+            % Calcula el PSD del registro, ello incluye la FFT, los peaks
+            % asociados a cada periodo y las formas modales y los
+            % amortiguamientos
+            [f, fft, envFormaModal, tlocMean, tlocStd, locMean, ~, ~, maxlocs, pks] = ...
+                PSD(a_c, cargaFS, gdl, 'peakMinDistance', r.peakMinDistance, ...
+                'tukeywinr', r.tukeywinr, 'zerofill', r.zerofill);
+            
+            % Grafica la fft de cada nodo
+            if r.fftplot
+                fig_title = sprintf('%s %s - Analisis FFT', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                for i = 1:ng
+                    plot(f, fft{i}, '-');
                 end % for i
-                acc = a_c(ng, :);
                 
-                % Rellena con ceros
-                acc = [acc, zeros(1, ceil(r.zerofill*length(acc)))]; %#ok<AGROW>
-                tuck = tukeywin(length(acc), r.tukeywinr)';
-                [f, fftt, ~] = DFT(cargaFS, acc.*tuck);
-                
-                % Solo conservo la mitad
-                tf = find(f == 0);
-                f = f(tf:end);
-                fftt = fftt(tf:end);
-                
-                fftt = abs(fftt); % O si no plot reclama
-                plot(f, fftt, '-');
-                ft{k} = fftt; % Guarda el registro
-            end % for k
-            
-            % Calcula el promedio y la desviacion estandar de los fft
-            ftmean = zeros(1, length(f));
-            ftstd = zeros(1, length(f));
-            ftdata = zeros(1, length(nodos));
-            ftmax = zeros(1, length(nodos));
-            for i = 1:length(f)
-                for j = 1:length(nodos)
-                    ftdata(j) = ft{j}(i);
-                end % for j
-                ftmean(i) = mean(ftdata);
-                ftstd(i) = std(ftdata);
-                ftmax(i) = max(ftdata);
-            end % for i
-            
-            % Grafica el promedio y desviacion estandar
-            if r.fftmeanstd
-                plot(f, ftmean, 'k-', 'lineWidth', 3);
-                plot(f, ftmean+ftstd, 'k--', 'lineWidth', 1.5);
-                plot(f, ftmean-ftstd, 'k--', 'lineWidth', 1.5);
-            end
-            
-            ylabel('FFT');
-            xlabel('f (Hz)');
-            title(fig_title);
-            if r.fftlim == 0
-                xlim([0, max(f)]);
-            else
-                xlim([0, r.fftlim]);
-            end
-            ylim([0, max(get(gca, 'ylim'))]);
-            grid on;
-            if r.legend
-                legend(legnodos, 'location', r.legendloc);
-            end
-            
-            % Calcula los peaks
-            fprintf('\tSe buscan peaks por cada curva:\n');
-            locs = cell(1, length(nodos));
-            maxlocs = 0;
-            for i = 1:length(nodos)
-                [~, ploc] = findpeaks(ft{i}, f, ...
-                    'MinPeakDistance', r.peakMinDistance);
-                locs{i} = ploc;
-                maxlocs = max(length(ploc), maxlocs);
-            end % for i
-            maxlocsDisp = maxlocs; % Puntos a mostrar
-            if r.maxpeaks > 0
-                maxlocsDisp = min(maxlocs, r.maxpeaks);
-            end
-            
-            % Calcula el promedio y la desviacion estandar
-            locMean = zeros(1, maxlocs);
-            locStd = zeros(1, maxlocs);
-            locFreq = zeros(1, maxlocs); % Frecuencias (posicion)
-            
-            % Calcula datos pero en periodos
-            tlocMean = zeros(1, maxlocs);
-            tlocStd = zeros(1, maxlocs);
-            for i = 1:maxlocs
-                locData = []; % Datos para la posicion i
-                tlocData = [];
-                for k = 1:length(nodos)
-                    if i <= length(locs{k})
-                        locData = [locData, locs{k}(i)]; %#ok<AGROW>
-                        tlocData = [tlocData, 1 / locs{k}(i)]; %#ok<AGROW>
-                    end
-                end % for k
-                
-                locMean(i) = mean(locData);
-                locStd(i) = std(locData);
-                
-                % Estadistica para los periodos
-                tlocMean(i) = mean(tlocData);
-                tlocStd(i) = std(tlocData);
-            end % for i
-            
-            % Busca las posiciones de la frecuencia para locMean
-            j = 1; % Indice a locMean
-            for i = 1:length(f)
-                if f(i) >= locMean(j)
-                    locFreq(j) = i;
-                    j = j + 1; % Avanza
-                    if j > maxlocs
-                        break;
-                    end
+                % Grafica el promedio y desviacion estandar
+                if r.fftmeanstd
+                    plot(f, ftmean, 'k-', 'lineWidth', 3);
+                    plot(f, ftmean+ftstd, 'k--', 'lineWidth', 1.5);
+                    plot(f, ftmean-ftstd, 'k--', 'lineWidth', 1.5);
                 end
-            end % for i
-            pks = ftmax(locFreq);
-            
-            % Imprime en consola la tabla
-            fprintf('\t\tN\t|\tT peak\t\t\t|\tT modal\t|\tError\t|\n');
-            fprintf('\t\t-------------------------------------------------\n');
-            for i = 1:maxlocsDisp
-                err = 100 * (tlocMean(i) - obj.Tn(i)) / obj.Tn(i);
-                if err > 0
-                    s = '+';
+                
+                ylabel('FFT');
+                xlabel('f (Hz)');
+                title(fig_title);
+                if r.fftlim == 0
+                    xlim([0, max(f)]);
                 else
-                    s = '';
+                    xlim([0, r.fftlim]);
                 end
-                fprintf('\t\t%d\t|\t%.3f +- %.3f\t|\t%.3f\t|\t%s%.2f\t|\n', ...
-                    i, tlocMean(i), tlocStd(i), obj.Tn(i), s, err);
-            end % for i
-            fprintf('\t\t-------------------------------------------------\n');
+                ylim([0, max(get(gca, 'ylim'))]);
+                grid on;
+                if r.legend
+                    legend(legnodos, 'location', r.legendloc);
+                end
+            end
             
             % Grafica los peaks
             if r.fftpeaks
+                
+                % Tabla de periodos
+                maxlocsDisp = maxlocs; % Puntos a mostrar
+                if r.maxpeaks > 0
+                    maxlocsDisp = min(maxlocs, r.maxpeaks);
+                end
+                
+                % Imprime en consola la tabla
+                fprintf('\tAnalisis de peaks, periodos formas modales:\n');
+                fprintf('\t\tN\t|\tT peak\t\t\t|\tT modal\t|\tError\t|\n');
+                fprintf('\t\t-------------------------------------------------\n');
+                for i = 1:maxlocsDisp
+                    err = 100 * (tlocMean(i) - obj.Tn(i)) / obj.Tn(i);
+                    if err > 0
+                        s = '+';
+                    else
+                        s = '';
+                    end
+                    fprintf('\t\t%d\t|\t%.3f +- %.3f\t|\t%.3f\t|\t%s%.2f\t|\n', ...
+                        i, tlocMean(i), tlocStd(i), obj.Tn(i), s, err);
+                end % for i
+                fprintf('\t\t-------------------------------------------------\n');
+                
+                % Grafico de peaks
                 fig_title = sprintf('%s %s - Analisis FFT peaks', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 hold on;
                 
-                for i = 1:length(nodos)
-                    plot(f, ft{i}, '-');
+                for i = 1:ng % Recorre cada nodo
+                    plot(f, fft{i}, '-');
                 end % for i
                 
                 % Limita los peaks
@@ -2236,20 +2166,8 @@ classdef ModalEspectral < Analisis
                 grid on;
             end
             
-            % Calcula la envolvente de los peaks por cada una de las formas
-            % modales
-            envFormaModal = cell(1, length(maxlocs));
-            for k = 1:maxlocs
-                envModo = zeros(1, length(nodos));
-                for i = 1:length(nodos)
-                    envModo(i) = ft{i}(locFreq(k)); % Obtiene la fft asociada al periodo k del registro i
-                end % for i
-                envModo = envModo ./ max(envModo);
-                envFormaModal{k} = envModo;
-            end % for k
-            
             % Vector de modos a graficar
-            formaModalLeg = cell(1, length(r.formaModal));
+            formaModalLeg = cell(1, length(r.formaModal)); % Contiene las leyendas de los modos elegidos
             for i = 1:length(r.formaModal)
                 r.formaModal(i) = floor(r.formaModal(i));
                 if r.formaModal(i) <= 0
@@ -2264,8 +2182,7 @@ classdef ModalEspectral < Analisis
             
             % Grafica la envolvente de la forma modal
             if plotFormaModal
-                
-                fig_title = sprintf('%s %s - Envolvente peaks FFT', ...
+                fig_title = sprintf('%s %s - Formas modales FFT', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
@@ -3148,8 +3065,7 @@ classdef ModalEspectral < Analisis
                 for k = 1:nModos
                     obj.Lm(k, j) = obj.phin(:, k)' * Meq * obj.rm(:, j);
                     obj.Mmeff(k, j) = obj.Lm(k, j).^2 ./ modalMm(k, k);
-                end % for k
-                
+                end % for k              
                 obj.Mmeff(:, j) = obj.Mmeff(:, j) ./ Mtotr(j);
                 obj.Mmeffacum(1, j) = obj.Mmeff(1, j);
                 for i = 2:nModos
@@ -3200,8 +3116,7 @@ classdef ModalEspectral < Analisis
                 w = obj.wn;
                 a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
                     -1 / w(n), 1 / w(m)] * betacR';
-                obj.cRayleigh = a(1) .* Meq + a(2) .* Keq;
-                
+                obj.cRayleigh = a(1) .* Meq + a(2) .* Keq;               
             else
                 obj.cRayleigh = [];
             end
