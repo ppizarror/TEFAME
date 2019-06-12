@@ -2007,7 +2007,7 @@ classdef ModalEspectral < Analisis
                     s = strcat(s, ', ');
                 end
             end % for k
-            s = strcat(s, '\n');
+            % s = strcat(s, '\n');
             % fprintf(s);
             ctitle = obj.imprimirPropiedadesAnalisisCarga(carga);
             [nr, ~] = size(a_c);
@@ -2364,7 +2364,7 @@ classdef ModalEspectral < Analisis
             end
             
             fprintf('Calculando trayectoria nodos:\n');
-            fprintf('\tNodos: ');
+            % fprintf('\tNodos: ');
             s = '';
             for k = 1:length(nodos)
                 s = strcat(s, strcat(' ', nodos{k}.obtenerEtiqueta()));
@@ -2372,8 +2372,8 @@ classdef ModalEspectral < Analisis
                     s = strcat(s, ', ');
                 end
             end % for k
-            s = strcat(s, '\n');
-            fprintf(s);
+            % s = strcat(s, '\n');
+            % fprintf(s);
             ctitle = obj.imprimirPropiedadesAnalisisCarga(carga);
             
             % Genera el vector de tiempo
