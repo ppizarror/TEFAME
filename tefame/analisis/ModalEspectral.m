@@ -1923,6 +1923,7 @@ classdef ModalEspectral < Analisis
             % este metodo para el caso fft
             %
             % Parametros opcionales:
+            %   fftenv          Grafica la envolvente del modulo de la FFT
             %   fftlim          Limite de frecuencia en grafico FFT
             %   fftmeanstd      Grafica el promedio y desviacion estandar para FFT
             %   fftpeaks        Grafica los peaks
@@ -1959,6 +1960,7 @@ classdef ModalEspectral < Analisis
             % Recorre parametros opcionales
             p = inputParser;
             p.KeepUnmatched = true;
+            addOptional(p, 'fftenv', false);
             addOptional(p, 'fftlim', 0);
             addOptional(p, 'fftmeanstd', false);
             addOptional(p, 'fftpeaks', false);
@@ -2211,12 +2213,12 @@ classdef ModalEspectral < Analisis
                     f = f(tf:end);
                     fftt = fftt(tf:end);
                     
-                    fftt = abs(fftt);
+                    fftt = abs(fftt); % O si no plot reclama
                     plot(f, fftt, '-');
                     ft{k} = fftt; % Guarda el registro
                 end % for k
                 
-                % Calcula el promedio y la desviacion estandar
+                % Calcula el promedio y la desviacion estandar de los fft
                 ftmean = zeros(1, length(f));
                 ftstd = zeros(1, length(f));
                 ftdata = zeros(1, length(nodos));
@@ -2256,12 +2258,14 @@ classdef ModalEspectral < Analisis
                 locs = cell(1, length(nodos));
                 maxlocs = 0;
                 for i = 1:length(nodos)
-                    [~, ploc] = findpeaks(ft{i}, f, 'MinPeakDistance', r.peakMinDistance);
+                    [~, ploc] = findpeaks(ft{i}, f, ...
+                        'MinPeakDistance', r.peakMinDistance);
                     locs{i} = ploc;
                     maxlocs = max(length(ploc), maxlocs);
                 end % for i
+                maxlocsDisp = maxlocs; % Puntos a mostrar
                 if r.maxpeaks > 0
-                    maxlocs = min(maxlocs, r.maxpeaks);
+                    maxlocsDisp = min(maxlocs, r.maxpeaks);
                 end
                 
                 % Calcula el promedio y la desviacion estandar
@@ -2290,7 +2294,7 @@ classdef ModalEspectral < Analisis
                     tlocStd(i) = std(tlocData);
                 end % for i
                 
-                % Busca las posiciones de ftmean+std para locMean
+                % Busca las posiciones de la frecuencia para locMean
                 j = 1; % Indice a locMean
                 for i = 1:length(f)
                     if f(i) >= locMean(j)
@@ -2306,7 +2310,7 @@ classdef ModalEspectral < Analisis
                 % Imprime en consola la tabla
                 fprintf('\t\tN\t|\tT peak\t\t\t|\tT modal\t|\tError\t|\n');
                 fprintf('\t\t-------------------------------------------------\n');
-                for i = 1:maxlocs
+                for i = 1:maxlocsDisp
                     err = 100 * (tlocMean(i) - obj.Tn(i)) / obj.Tn(i);
                     if err > 0
                         s = '+';
@@ -2317,6 +2321,10 @@ classdef ModalEspectral < Analisis
                         i, tlocMean(i), tlocStd(i), obj.Tn(i), s, err);
                 end
                 fprintf('\t\t-------------------------------------------------\n');
+                
+                % Calcula la envolvente de los peaks (periodos)
+                pksEnv = pks;
+                pksEnv = pksEnv ./ max(pks);
                 
                 % Grafica los peaks
                 if r.fftpeaks
@@ -2329,9 +2337,34 @@ classdef ModalEspectral < Analisis
                     for i = 1:length(nodos)
                         plot(f, ft{i}, '-');
                     end % for i
-                    text(locMean+.02, pks, num2str((1:numel(pks))'));
-                    plot(locMean, pks, 'r^', 'markerfacecolor', [1, 0, 0])
+                    
+                    % Limita los peaks
+                    locMeanL = locMean(1:maxlocsDisp);
+                    pksL = pks(1:maxlocsDisp);
+                    text(locMeanL+.02, pksL, num2str((1:numel(pksL))'));
+                    plot(locMeanL, pksL, 'r^', 'markerfacecolor', [1, 0, 0]);
                     ylabel('FFT (\mu + \sigma)');
+                    xlabel('f (Hz)');
+                    title(fig_title);
+                    if r.fftlim == 0
+                        xlim([0, max(f)]);
+                    else
+                        xlim([0, r.fftlim]);
+                    end
+                    ylim([0, max(get(gca, 'ylim'))]);
+                    grid on;
+                end
+                
+                % Grafica la envolvente de la forma modal
+                if r.fftenv
+                    fig_title = sprintf('%s %s - Envolvente peaks FFT', ...
+                        ctitle, carga.obtenerEtiqueta());
+                    plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                    movegui(plt, 'center');
+                    hold on;                    
+                    plot(locMean, pksEnv, 'k.-', 'lineWidth', 1.5);
+                    plot(locMean, pksEnv, 'k^', 'markerfacecolor', [0, 0, 0]);
+                    ylabel('Envolvente normalizada');
                     xlabel('f (Hz)');
                     title(fig_title);
                     if r.fftlim == 0
