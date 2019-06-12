@@ -2,9 +2,9 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of allDivMod</title>
-  <meta name="keywords" content="allDivMod">
-  <meta name="description" content="allDivMod: Retorna verdadero si todos los elementos de y son divisibles">
+  <title>Description of Newmark</title>
+  <meta name="keywords" content="Newmark">
+  <meta name="description" content="NEWMARK'S METHOD : LINEAR SYSTEM">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -16,18 +16,37 @@
 <body>
 <a name="_top"></a>
 <!-- # tefame --><!-- menu.html lib -->
-<h1>allDivMod
+<h1>Newmark
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>allDivMod: Retorna verdadero si todos los elementos de y son divisibles</strong></div>
+<div class="box"><strong>NEWMARK'S METHOD : LINEAR SYSTEM</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>function t = allDivMod(y, r) </strong></div>
+<div class="box"><strong>function [depl, vel, accl, t] = Newmark(M, K, C, P, Fs, acceleration, do, vo) </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"> allDivMod: Retorna verdadero si todos los elementos de y son divisibles
- por r</pre></div>
+<div class="fragment"><pre class="comment"> NEWMARK'S METHOD : LINEAR SYSTEM
+ Reference : Dynamics of Structures - Anil K. Chopra
+-------------------------------------------------------------------------
+ Purpose : Dynamic Response of a system using linear Newmark's Method
+ Synopsis :
+       [depl,vel,accl,t] = Newmark(M,K,C,P,acceleration)
+
+ Variable Description :
+ INPUT :
+       M - Mass Matrix (in modal coordinates)
+       K - Stiffness Matrix (in modal coordinates)
+       C - Damping Matrix (in modal coordinates)
+       P - Force Matrix (in modal coordinates)
+       acceleration - Type of Newmark's Method to be used
+
+ OUTPUT :
+        depl - modal displacement's
+        vel - modal velocities
+        accl - modal accelerations
+        t - time values at which integration is done
+--------------------------------------------------------------------------</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
@@ -36,7 +55,7 @@ This function calls:
 </ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li></ul>
+<li><a href="../../tefame/modelo/cargas/patrones/PatronDeCargasDinamico.html" class="code" title="">PatronDeCargasDinamico</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
 

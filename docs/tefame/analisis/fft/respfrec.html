@@ -2,9 +2,9 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of calculoEigIterInvDesplazamiento</title>
-  <meta name="keywords" content="calculoEigIterInvDesplazamiento">
-  <meta name="description" content="calculoEigIterDirecta: Calcula los valores y vectores propios del sistema">
+  <title>Description of respfrec</title>
+  <meta name="keywords" content="respfrec">
+  <meta name="description" content="respfrec: Genera respuesta de oscilador en el espacio de">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -15,38 +15,45 @@
 </head>
 <body>
 <a name="_top"></a>
-<!-- # tefame --><!-- ../menu.html analisis --><!-- menu.html eig -->
-<h1>calculoEigIterInvDesplazamiento
+<!-- # tefame --><!-- ../menu.html analisis --><!-- menu.html fft -->
+<h1>respfrec
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="box"><strong>calculoEigIterDirecta: Calcula los valores y vectores propios del sistema</strong></div>
+<div class="box"><strong>respfrec: Genera respuesta de oscilador en el espacio de</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="box"><strong>function [v, w, error] = calculoEigIterInvDesplazamiento(M, K, mu, tol) </strong></div>
+<div class="box"><strong>function [d, v, a, f, Pw, FRF] = respfrec(m, T, beta, P, FS) </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"> calculoEigIterDirecta: Calcula los valores y vectores propios del sistema
- usando el algoritmo de iteracion directo
+<div class="fragment"><pre class="comment"> respfrec: Genera respuesta de oscilador en el espacio de
+ la frecuencia
 
- [v,w,error] = calculoEigIterInvDesplazamiento(M,K,mu,tol)
+ [d, v , a, P, Pw, FRF] = respfrec(m, T, beta, P, FS)
 
- Parametros:
-   M, K        Matriz masa y rigidez
-   mu          Parametro externo que multiplica a K
+ Input:
+     m       Masa del oscilador
+     T       Periodo del oscilador en segundos
+     beta    Amortiguamiento critico
+     P       Senal de entrada
+     FS      Frecuencia de muestreo de la senal
 
- Salida:
-   v           Matriz vectores propios
-   w           Valores propios</pre></div>
+ Output:
+      d       Respuesta de desplazamiento
+    v         Respuesta de velocidad
+    a         Respuesta de aceleracion
+    f         Vector de frecuencias
+      Pw      FFT de P
+    FRF     Funcion de respuesta</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="modonorm.html" class="code" title="function [phi] = modonorm(phi, M, opt)">modonorm</a>	modonorm: Normaliza formas modales</li></ul>
+</ul>
 This function is called by:
 <ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="../../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li></ul>
+</ul>
 <!-- crossreference -->
 
 

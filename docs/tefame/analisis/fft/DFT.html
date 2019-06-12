@@ -2,9 +2,9 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of calculoEigIterInvDesplazamiento</title>
-  <meta name="keywords" content="calculoEigIterInvDesplazamiento">
-  <meta name="description" content="calculoEigIterDirecta: Calcula los valores y vectores propios del sistema">
+  <title>Description of DFT</title>
+  <meta name="keywords" content="DFT">
+  <meta name="description" content="DFT: Determina la Transformada discreta de Fourier de una senal">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -15,38 +15,38 @@
 </head>
 <body>
 <a name="_top"></a>
-<!-- # tefame --><!-- ../menu.html analisis --><!-- menu.html eig -->
-<h1>calculoEigIterInvDesplazamiento
+<!-- # tefame --><!-- ../menu.html analisis --><!-- menu.html fft -->
+<h1>DFT
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="box"><strong>calculoEigIterDirecta: Calcula los valores y vectores propios del sistema</strong></div>
+<div class="box"><strong>DFT: Determina la Transformada discreta de Fourier de una senal</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="box"><strong>function [v, w, error] = calculoEigIterInvDesplazamiento(M, K, mu, tol) </strong></div>
+<div class="box"><strong>function [f, fftt, ts] = DFT(FS, senal) </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"> calculoEigIterDirecta: Calcula los valores y vectores propios del sistema
- usando el algoritmo de iteracion directo
+<div class="fragment"><pre class="comment"> DFT: Determina la Transformada discreta de Fourier de una senal
+      discreta
 
- [v,w,error] = calculoEigIterInvDesplazamiento(M,K,mu,tol)
+ Input:
+    FS         Frecuencia de muestreo
+    senal     Vector de la senal
 
- Parametros:
-   M, K        Matriz masa y rigidez
-   mu          Parametro externo que multiplica a K
-
- Salida:
-   v           Matriz vectores propios
-   w           Valores propios</pre></div>
+ Output:
+   f         Vector de frecuencias
+   fftt     Fast Fourier Transform de la senal
+     ts         Vector de tiempo de la senal
+ -------------------------------------------------------------------</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="modonorm.html" class="code" title="function [phi] = modonorm(phi, M, opt)">modonorm</a>	modonorm: Normaliza formas modales</li></ul>
+</ul>
 This function is called by:
 <ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="../../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li></ul>
+<li><a href="PSD.html" class="code" title="function [f, fft, envFormaModal, tlocMean, tlocStd, locMean, locStd, locFreq,maxlocs, pks] = PSD(a, fs, gdl, varargin)">PSD</a>	PSD: Power Spectral Density. Calcula la FFT de un registro sismico</li></ul>
 <!-- crossreference -->
 
 

@@ -2,9 +2,9 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of cargaRegistroArchivoGeneral</title>
-  <meta name="keywords" content="cargaRegistroArchivoGeneral">
-  <meta name="description" content="cargaRegistroArchivoGeneral: Carga un archivo sismico y retorna una matriz del">
+  <title>Description of check_order</title>
+  <meta name="keywords" content="check_order">
+  <meta name="description" content="check_order: Checks the order passed to the window functions.">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -15,21 +15,22 @@
 </head>
 <body>
 <a name="_top"></a>
-<!-- # tefame --><!-- menu.html utils -->
-<h1>cargaRegistroArchivoGeneral
+<!-- # tefame --><!-- menu.html lib -->
+<h1>check_order
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>cargaRegistroArchivoGeneral: Carga un archivo sismico y retorna una matriz del</strong></div>
+<div class="box"><strong>check_order: Checks the order passed to the window functions.</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>function reg = cargaRegistroArchivoGeneral(archivo, linedelim, coldelim, header, footer, ncol, dt, factor) </strong></div>
+<div class="box"><strong>function [n_out, w, trivalwin] = check_order(n_in) </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"> cargaRegistroArchivoGeneral: Carga un archivo sismico y retorna una matriz del
- tipo [t1, a1; t2, a2; ...]
+<div class="fragment"><pre class="comment"> check_order: Checks the order passed to the window functions.
 
- reg = cargaRegistroSismico(archivo,linedelim,coldelim,header,ncol,dt,factor)</pre></div>
+ [N,W,TRIVALWIN] = CHECK_ORDER(N_ESTIMATE) will round N_ESTIMATE to the
+ nearest integer if it is not already an integer. In special cases (N is
+ [], 0, or 1), TRIVALWIN will be set to flag that W has been modified.</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
@@ -38,7 +39,7 @@ This function calls:
 </ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="cargaRegistroSimple.html" class="code" title="function reg = cargaRegistroSimple(archivo, dt, varargin)">cargaRegistroSimple</a>	cargaRegistroSimple: Carga un registro simple de un archivo sin encabezado</li></ul>
+<li><a href="tukeywin.html" class="code" title="function w = tukeywin(n, r)">tukeywin</a>	tukeywin: Tukey window.</li></ul>
 <!-- crossreference -->
 
 

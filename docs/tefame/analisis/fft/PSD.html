@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of PSD</title>
+  <meta name="keywords" content="PSD">
+  <meta name="description" content="PSD: Power Spectral Density. Calcula la FFT de un registro sismico">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- ../menu.html analisis --><!-- menu.html fft -->
+<h1>PSD
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>PSD: Power Spectral Density. Calcula la FFT de un registro sismico</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [f, fft, envFormaModal, tlocMean, tlocStd, locMean, locStd, locFreq,maxlocs, pks] = PSD(a, fs, gdl, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> PSD: Power Spectral Density. Calcula la FFT de un registro sismico
+ analizado para varios nodos con distintos grados de libertad. La funcion
+ permite calcular distintos tipos de periodos naturales, arrojando un
+ vector. Adicionalmente se calcula una razon de amortiguamiento con cada
+ modo.
+
+ Input:
+   a               Registro de aceleracion
+   fs              Factor de muestreo del registro
+   gdl             Vector con los grados de libertad de los nodos en el analisis
+
+ Parametros opcionales:
+   peakMinDistance Distancia minima entre peaks requerida
+   tukeywinr       Factor de la ventana de tukey
+   zerofill        Indica relleno de ceros para FFT
+
+ Output:
+   f               Vector de frecuencias
+   fft             Cell FFT de cada registro de los nodos
+   envFormaModal   Cell con formas modales para cada periodo
+   tlocMean        Periodos medios de cada modo obtenidos de los peaks
+   tlocStd         Desviacion estandar de cada modo obtenido de los peaks
+   locMean         Frecuencia media de cada modo obtenido en los peaks
+   locStd          Desviacion estandar de la frecuencia de cada modo
+   locFreq         Posicion en el vector de frecuencias de cada modo
+   maxlocs         Numero de modos encontrados en los peaks
+   pks             Vector de peaks</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="DFT.html" class="code" title="function [f, fftt, ts] = DFT(FS, senal)">DFT</a>	DFT: Determina la Transformada discreta de Fourier de una senal</li><li><a href="../../../tefame/lib/tukeywin.html" class="code" title="function w = tukeywin(n, r)">tukeywin</a>	tukeywin: Tukey window.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	______________________________________________________________________</li></ul>
+<!-- crossreference -->
+
+
+
+
+<hr><address>Generated on Wed 12-Jun-2019 11:10:42 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>
