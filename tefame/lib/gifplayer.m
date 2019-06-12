@@ -1,5 +1,5 @@
 function gifplayer(gif_image, delay_length)
-% The function displays any animated GIF's in a figure window
+% gifplayer: The function displays any animated GIF's in a figure window
 % Demo : gifplayer; %plays the animated crystal.gif file
 %
 % Usage:
@@ -11,7 +11,7 @@ function gifplayer(gif_image, delay_length)
 % Email: vihang_patil@yahoo.com
 % Created: 17th Oct 2006
 %
-%% Revision:
+% Revision:
 % Date: 19th Oct 2006. Removed the setappdata and getappdata and used
 % functions handling property. Multiple Gif's can be called upon which can
 % be opened in new figure window.
@@ -31,8 +31,8 @@ elseif nargin < 2
 end
 
 try %\\ r11a
-    [pathstr, name, ext, versn] = fileparts(gif_image);
-catch %\\ r11b
+    [pathstr, name, ext, versn] = fileparts(gif_image); %#ok<*ASGLU>
+catch %#ok<*CTCH> %\\ r11b
     [pathstr, name, ext] = fileparts(gif_image);
 end
 
@@ -51,8 +51,10 @@ else
 end
 set(gcf, 'CloseRequestFcn', {@CloseFigure, handles});
 
-function TmrFcn(src, event, handles)
-% Timer Function to animate the GIF
+end % gifplayer function
+
+function TmrFcn(src, event, handles) %#ok<*INUSL>
+% TmrFcn: Timer Function to animate the GIF
 
 handles = guidata(handles);
 set(handles.h1, 'CData', handles.im(:, :, :, handles.count)); % update the frame in the axis
@@ -62,8 +64,13 @@ if handles.count > handles.len %if the last frame is achieved intialise to first
 end
 guidata(handles.guifig, handles);
 
+end % TmrFcn function
+
 function CloseFigure(src, event, handles)
-% Function CloseFigure(varargin)
+% CloseFigure: Function CloseFigure(varargin)
+
 stop(handles.tmr);
 delete(handles.tmr); % removes the timer from memory
 closereq;
+
+end % CloseFigure function

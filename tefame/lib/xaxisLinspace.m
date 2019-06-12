@@ -1,6 +1,5 @@
 function xaxisLinspace(nticks)
-% XAXIS LINSPACE
-% This function sets xticks as linspace of nticks total points.
+% xaxisLinspace: This function sets xticks as linspace of nticks total points.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -21,4 +20,4 @@ function xaxisLinspace(nticks)
 lims = get(gca, 'xlim');
 xticks(round(linspace(lims(1), lims(2), nticks), 1));
 
-end
+end % xaxisLinspace function

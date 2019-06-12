@@ -1,6 +1,5 @@
 function [n_out, w, trivalwin] = check_order(n_in)
-% CHECK_ORDER
-% Checks the order passed to the window functions.
+% check_order: Checks the order passed to the window functions.
 %
 % [N,W,TRIVALWIN] = CHECK_ORDER(N_ESTIMATE) will round N_ESTIMATE to the
 % nearest integer if it is not already an integer. In special cases (N is
@@ -35,3 +34,5 @@ elseif n_out == 1
     w = 1;
     trivalwin = 1;
 end
+
+end % check_order function

@@ -1,5 +1,5 @@
 function w = tukeywin(n, r)
-%TUKEYWIN Tukey window.
+% tukeywin: Tukey window.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -38,5 +38,9 @@ else
     tl = floor(per*(n - 1)) + 1;
     th = n - tl + 1;
     % Window is defined in three sections: taper, constant, taper
-    w = [((1 + cos(pi/per*(t(1:tl) - per))) / 2); ones(th-tl-1, 1); ((1 + cos(pi/per*(t(th:end) - 1 + per))) / 2)];
+    w = [((1 + cos(pi/per*(t(1:tl) - per))) / 2); ...
+        ones(th-tl-1, 1); ...
+        ((1 + cos(pi/per*(t(th:end) - 1 + per))) / 2)];
 end
+
+end % tukeywin function

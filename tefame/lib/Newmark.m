@@ -20,6 +20,7 @@ function [depl, vel, accl, t] = Newmark(M, K, C, P, Fs, acceleration, do, vo)
 %        accl - modal accelerations
 %        t - time values at which integration is done
 %--------------------------------------------------------------------------
+
 switch acceleration
     case 'Average'
         gamma = 1 / 2;
@@ -73,4 +74,4 @@ for i = 1:n - 1
     accl(i+1) = accl(i) + delAccl;
 end % for i
 
-end
+end % Newmark function

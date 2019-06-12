@@ -1,4 +1,4 @@
-fprintf('>\tMODELO_DINAMICA_AVANZADA\n');
+fprintf('>\tMODELO_TALLER\n');
 
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);

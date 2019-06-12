@@ -32,4 +32,4 @@ for i=1:length(a)
         
 end % for i
 
-end
+end % getClassnameCell function

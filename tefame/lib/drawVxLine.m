@@ -1,6 +1,5 @@
 function obj = drawVxLine(x, style, lw)
-% DRAW VX LINE
-% This function draw a vertical line on x value.
+% drawVxLine: This function draw a vertical line on x value.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -23,4 +22,4 @@ if ~exist('lw', 'var')
 end
 obj = plot([x, x], get(gca, 'ylim'), style, 'Linewidth', lw);
 
-end
+end % drawVxLine function

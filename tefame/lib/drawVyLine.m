@@ -1,6 +1,5 @@
 function obj = drawVyLine(y, style, lw)
-% DRAW VX LINE
-% This function draw a horizontal line on y value.
+% drawVyLine: This function draw a horizontal line on y value.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -23,4 +22,4 @@ if ~exist('lw', 'var')
 end
 obj = plot(get(gca, 'xlim'), [y, y], style, 'Linewidth', lw);
 
-end
+end % drawVyLine function

@@ -14,6 +14,7 @@ TEFAME_ver = 'v1.70';
 addpath('tefame');
 addpath('tefame/analisis');
 addpath('tefame/analisis/eig');
+addpath('tefame/analisis/fft');
 addpath('tefame/lib');
 addpath('tefame/modelo');
 addpath('tefame/modelo/base');

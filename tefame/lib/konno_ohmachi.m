@@ -1,6 +1,5 @@
 function ff = konno_ohmachi(f, fc, b, normalize)
-% KONNO OHMACHI
-% Konno and Ohmachi (1998) [1] smoothing.
+% konno_ohmachi: Konno and Ohmachi (1998) [1] smoothing.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -27,4 +26,4 @@ if normalize
     ff = ff ./ sum(ff);
 end
 
-end
+end % konno_ohmachi function

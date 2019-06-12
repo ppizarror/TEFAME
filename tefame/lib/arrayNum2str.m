@@ -37,4 +37,5 @@ for i = 1:num
 end % for i
 
 textCell(2*num+1) = {']'};
-end
+
+end % arrayNum2str function

@@ -4,8 +4,8 @@ function s = processTimeStr(tini)
 
 tot = etime(clock, tini);
 min = floor(tot/60);
-seg = floor(tot - 60*min);
-mil = tot - 60*min - seg;
+seg = floor(tot-60*min);
+mil = tot - 60 * min - seg;
 
 s = '';
 if min ~= 0
@@ -17,8 +17,8 @@ if seg ~= 0
     else
         s = strcat(s, sprintf('%d segundos', seg));
     end
-if mil ~= 0
-end
+    if mil ~= 0
+    end
 end
 
-end
+end % processTimeStr function
