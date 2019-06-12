@@ -62,6 +62,7 @@
 %       activarCargaAnimacion(obj)
 %       activarPlotDeformadaInicial(obj)
 %       analizar(obj,varargin)
+%       beta = calcularAmortiguamientoModo(modo,rayleigh)
 %       c = obtenerCargaEstatica(obj,varargin)
 %       C_Modelo = obtenerMatrizAmortiguamiento(obj,rayleigh)
 %       calcularCurvasEnergia(obj,carga)

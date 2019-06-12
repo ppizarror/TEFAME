@@ -2,9 +2,9 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of isArrayEqual</title>
-  <meta name="keywords" content="isArrayEqual">
-  <meta name="description" content="isArrayEqual: Check if array x is equal to number a">
+  <title>Description of peakdet</title>
+  <meta name="keywords" content="peakdet">
+  <meta name="description" content="PEAKDET Detect peaks in a vector">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -16,17 +16,29 @@
 <body>
 <a name="_top"></a>
 <!-- # tefame --><!-- menu.html lib -->
-<h1>isArrayEqual
+<h1>peakdet
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>isArrayEqual: Check if array x is equal to number a</strong></div>
+<div class="box"><strong>PEAKDET Detect peaks in a vector</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>function y = isArrayEqual(x, a) </strong></div>
+<div class="box"><strong>function [maxtab, mintab] = peakdet(v, delta, x) </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"> isArrayEqual: Check if array x is equal to number a</pre></div>
+<div class="fragment"><pre class="comment">PEAKDET Detect peaks in a vector
+        [MAXTAB, MINTAB] = PEAKDET(V, DELTA) finds the local
+        maxima and minima (&quot;peaks&quot;) in the vector V.
+        MAXTAB and MINTAB consists of two columns. Column 1
+        contains indices in V, and column 2 the found values.
+
+        With [MAXTAB, MINTAB] = PEAKDET(V, DELTA, X) the indices
+        in MAXTAB and MINTAB are replaced with the corresponding
+        X-values.
+
+        A point is considered a maximum peak if it has the maximal
+        value, and was preceded (to the left) by a value lower by
+        DELTA.</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
@@ -35,7 +47,7 @@ This function calls:
 </ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="../../tefame/modelo/nodo/Nodo.html" class="code" title="">Nodo</a>	______________________________________________________________________</li></ul>
+</ul>
 <!-- crossreference -->
 
 
