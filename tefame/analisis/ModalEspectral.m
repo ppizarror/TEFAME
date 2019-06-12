@@ -2204,7 +2204,7 @@ classdef ModalEspectral < Analisis
                 end
                 fprintf('\t\t%d\t|\t%.3f +- %.3f\t|\t%.3f\t|\t%s%.2f\t|\n', ...
                     i, tlocMean(i), tlocStd(i), obj.Tn(i), s, err);
-            end
+            end % for i
             fprintf('\t\t-------------------------------------------------\n');
             
             % Grafica los peaks
@@ -2270,22 +2270,23 @@ classdef ModalEspectral < Analisis
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 hold on;
-                for i = 1:4
+                for j = 1:length(r.formaModal)
+                    i = r.formaModal(j);
                     if strcmp(dirForma, 'X')
                         gc = plot(xModal, envFormaModal{i}, '-', 'lineWidth', 1.5);
                         c = get(gc, 'Color');
                         pl = plot(xModal, envFormaModal{i}, '^', ...
                             'color', c, 'markerfacecolor', c, 'markerSize', 3);
                         ylabel(dirForma);
-                        xlabel('Forma modal');
+                        xlabel('Forma modal normalizada');
                         set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
                     else
                         gc = plot(envFormaModal{i}, xModal, '-', 'lineWidth', 1.5);
                         c = get(gc, 'Color');
                         pl = plot(envFormaModal{i}, xModal, '^', ...
-                            'color', c, 'markerfacecolor', c, 'markerSize', 5);
+                            'color', c, 'markerfacecolor', c, 'markerSize', 3);
                         ylabel(dirForma);
-                        xlabel('Forma modal');
+                        xlabel('Forma modal normalizada');
                         set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
                     end
                 end
