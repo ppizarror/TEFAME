@@ -2399,6 +2399,7 @@ classdef ModalEspectral < Analisis
             
             % Verifica que la direccion sea correcta
             for k = 1:length(nodos)
+                
                 % Elige al nodo
                 ngd = nodos{k}.obtenerGDLIDCondensado();
                 ng = 0; % Numero grado analisis
@@ -2407,12 +2408,14 @@ classdef ModalEspectral < Analisis
                         ng = ngd(i);
                     end
                 end % for i
+                
                 if ng == 0
                     error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
                 end
                 if ng > nr
                     error('El GDLID excede al soporte del sistema');
                 end
+                
             end % for k
             
             % Crea la leyenda de los nodos
@@ -3211,6 +3214,7 @@ classdef ModalEspectral < Analisis
                 a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
                     -1 / w(n), 1 / w(m)] * betacR';
                 obj.cRayleigh = a(1) .* Meq + a(2) .* Keq;
+                
             else
                 obj.cRayleigh = [];
             end
@@ -3850,6 +3854,7 @@ classdef ModalEspectral < Analisis
             MBplot = zeros(2*length(hgen)-1, 1);
             aux1 = 1;
             aux2 = 2;
+            
             for i = 1:length(hgen)
                 hplot(aux1, 1) = hgen(i);
                 hplot(aux1+1, 1) = hgen(i);
