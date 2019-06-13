@@ -148,7 +148,7 @@ for i = 1:length(pks) % Recorre cada peak
                 betaFreq{i} = [izq, der, f(locFreq(i)), pksObj(i)];
                 break;
             end
-            lastj = j; % Ultimo en atravezar
+            lastj = j+1; % Ultimo en atravezar
         end
     end % for j
 end % for i

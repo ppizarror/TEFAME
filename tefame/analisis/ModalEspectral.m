@@ -1939,15 +1939,16 @@ classdef ModalEspectral < Analisis
             % Si se desea obtener los periodos a partir del analisis de
             % senales de un registro de aceleracion para distintos grados
             % de libertad se recomienda seguir la metodologia planteada por
-            % este metodo para el caso fft
+            % este metodo para el caso FFT
             %
             % Parametros opcionales:
             %   betaPlot        Grafica el calculo del amortiguamiento de cada modo
+            %   betaLineWidth   Ancho de linea de los graficos de amortiguamiento
             %   betaRayleigh    Los amortiguamientos los calcula con Rayleigh
-            %   fftlim          Limite de frecuencia en grafico FFT
-            %   fftmeanstd      Grafica el promedio y desviacion estandar para FFT
-            %   fftpeaks        Grafica los peaks
-            %   fftplot         Muestra el grafico de la FFT simple
+            %   fftLim          Limite de frecuencia en grafico FFT
+            %   fftMeanStd      Grafica el promedio y desviacion estandar para FFT
+            %   fftPeaks        Grafica los peaks
+            %   fftPlot         Muestra el grafico de la FFT simple
             %   formaModal      Vector con periodos a graficar de las formas modales
             %   legend          Muestra la leyenda
             %   legendloc       Ubicacion de la leyenda
@@ -1986,11 +1987,12 @@ classdef ModalEspectral < Analisis
             p = inputParser;
             p.KeepUnmatched = true;
             addOptional(p, 'betaPlot', false);
+            addOptional(p, 'betaLineWidth', 1.75);
             addOptional(p, 'betaRayleigh', true);
-            addOptional(p, 'fftlim', 0);
-            addOptional(p, 'fftmeanstd', false);
-            addOptional(p, 'fftpeaks', false);
-            addOptional(p, 'fftplot', false);
+            addOptional(p, 'fftLim', 0);
+            addOptional(p, 'fftMeanStd', false);
+            addOptional(p, 'fftPeaks', false);
+            addOptional(p, 'fftPlot', false);
             addOptional(p, 'formaModal', []);
             addOptional(p, 'legend', false);
             addOptional(p, 'legendloc', 'best');
@@ -2021,8 +2023,12 @@ classdef ModalEspectral < Analisis
             fprintf('\tDireccion carga:\t\t%s\n', [s{:}]);
             s = arrayIntNum2str(direccionFormaModal);
             fprintf('\tDireccion forma modal:\t%s\n', [s{:}]);
-            s = arrayIntNum2str(r.formaModal);
-            fprintf('\tFormas modales:\t\t\t%s\n', [s{:}]);
+            if ~isempty(r.formaModal)
+                s = arrayIntNum2str(r.formaModal);
+                fprintf('\tFormas modales:\t\t\t%s\n', [s{:}]);
+            else
+                fprintf('\tNo se graficaran formas modales\n');
+            end
             fprintf('\tMaximos peaks a mostrar: %d\n', r.maxpeaks');
             
             s = '';
@@ -2083,7 +2089,7 @@ classdef ModalEspectral < Analisis
                 legnodos{k} = nodos{k}.obtenerEtiqueta();
             end % for k
             
-            if r.fftlim < 0 % Verifica frecuencia
+            if r.fftLim < 0 % Verifica frecuencia
                 error('El limite de frecuencia no puede ser negativo');
             end
             
@@ -2105,7 +2111,7 @@ classdef ModalEspectral < Analisis
                 'tukeywinr', r.tukeywinr, 'zerofill', r.zerofill);
             
             % Grafica la fft de cada nodo
-            if r.fftplot
+            if r.fftPlot
                 fig_title = sprintf('%s %s - Analisis FFT', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
@@ -2116,7 +2122,7 @@ classdef ModalEspectral < Analisis
                 end % for i
                 
                 % Grafica el promedio y desviacion estandar
-                if r.fftmeanstd
+                if r.fftMeanStd
                     plot(f, ftmean, 'k-', 'lineWidth', 3);
                     plot(f, ftmean+ftstd, 'k--', 'lineWidth', 1.5);
                     plot(f, ftmean-ftstd, 'k--', 'lineWidth', 1.5);
@@ -2125,10 +2131,10 @@ classdef ModalEspectral < Analisis
                 ylabel('FFT');
                 xlabel('f (Hz)');
                 title(fig_title);
-                if r.fftlim == 0
+                if r.fftLim == 0
                     xlim([0, max(f)]);
                 else
-                    xlim([0, r.fftlim]);
+                    xlim([0, r.fftLim]);
                 end
                 ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
@@ -2138,7 +2144,7 @@ classdef ModalEspectral < Analisis
             end
             
             % Grafica los peaks
-            if r.fftpeaks
+            if r.fftPeaks
                 
                 % Tabla de periodos
                 maxlocsDisp = maxlocs; % Puntos a mostrar
@@ -2148,7 +2154,7 @@ classdef ModalEspectral < Analisis
                 
                 % Imprime en consola la tabla
                 fprintf('\tAnalisis de peaks, periodos formas modales:\n');
-                fprintf('\t\tN\t|\tT peak\t\t\t|\tT modal\t|\tError\t|\n');
+                fprintf('\t\tN\t|\tT peak\t\t\t|\tT modal\t|\t%%Error\t|\n');
                 fprintf('\t\t-------------------------------------------------\n');
                 for i = 1:maxlocsDisp
                     err = 100 * (tlocMean(i) - obj.Tn(i)) / obj.Tn(i);
@@ -2181,10 +2187,10 @@ classdef ModalEspectral < Analisis
                 ylabel('FFT');
                 xlabel('f (Hz)');
                 title(fig_title);
-                if r.fftlim == 0
+                if r.fftLim == 0
                     xlim([0, max(f)]);
                 else
-                    xlim([0, r.fftlim]);
+                    xlim([0, r.fftLim]);
                 end
                 ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
@@ -2243,8 +2249,8 @@ classdef ModalEspectral < Analisis
                 
                 % Imprime en consola la tabla
                 fprintf('\tAmortiguamiento por periodos:\n');
-                fprintf('\t\tN\t|\tBeta\t|\tBeta modal\t|\tError\t|\n');
-                fprintf('\t\t---------------------------------------------\n');
+                fprintf('\t\tN\t|\tBeta\t|\tBeta modal\t|\t%% Error\t\t|\n');
+                fprintf('\t\t-------------------------------------------------\n');
                 for i = 1:maxlocsDisp
                     if isempty(betaFreq{i}) % Si no se encontro el modo retorna
                         continue;
@@ -2257,12 +2263,12 @@ classdef ModalEspectral < Analisis
                     else
                         s = '';
                     end
-                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t\t|\t%s%.2f\t|\n', ...
+                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t\t|\t%s%.2f\t\t|\n', ...
                         i, beta(i), betaModo, s, err);
                 end % for i
-                fprintf('\t\t---------------------------------------------\n');
+                fprintf('\t\t-------------------------------------------------\n');
                 
-                % Grafico de peaks
+                % Crea la figura
                 fig_title = sprintf('%s %s - Calculo de amortiguamientos', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
@@ -2278,12 +2284,12 @@ classdef ModalEspectral < Analisis
                         continue;
                     end
                     gc = plot([betaFreq{i}(1), betaFreq{i}(1)], [0, betaFreq{i}(4)], ...
-                        '-', 'lineWidth', 1.25);
+                        '-', 'lineWidth', r.betaLineWidth);
                     c = get(gc, 'Color');
                     plot([betaFreq{i}(2), betaFreq{i}(2)], [0, betaFreq{i}(4)], ...
-                        '-', 'lineWidth', 1.25, 'color', c);
+                        '-', 'lineWidth', r.betaLineWidth, 'color', c);
                     plot([betaFreq{i}(1), betaFreq{i}(2)], [betaFreq{i}(4), betaFreq{i}(4)], ...
-                        '-', 'lineWidth', 1.25, 'color', c);
+                        '-', 'lineWidth', r.betaLineWidth, 'color', c);
                     plot(betaFreq{i}(3), betaFreq{i}(4), '^', 'markerSize', 5, ...
                         'markerfacecolor', c, 'color', c);
                     text(betaFreq{i}(3).*1.05, betaFreq{i}(4).*1.0, num2str(i));
@@ -2292,10 +2298,10 @@ classdef ModalEspectral < Analisis
                 ylabel('FFT');
                 xlabel('f (Hz)');
                 title(fig_title);
-                if r.fftlim == 0
+                if r.fftLim == 0
                     xlim([0, max(f)]);
                 else
-                    xlim([0, r.fftlim]);
+                    xlim([0, r.fftLim]);
                 end
                 ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
