@@ -1,6 +1,6 @@
 clear all; clc ;close all;
 tic
-system(['OpenSees.exe<','00.Start.tcl']);
+system(['OpenSees.exe<', '00.Start.tcl']);
 toc
 
 %% Cosas útiles: Resúmenes, Lugares de Estudio, relacion de archivos txt respecto a NodeID Posición de los Disipadores
