@@ -1,5 +1,5 @@
 function [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, locStd, locFreq, ...
-    maxlocs, pks, beta, betaFreq, acctuck] = PSD(a, fs, gdl, varargin)
+    maxlocs, pks, betaNodo, betaFreqNodo] = PSD(a, fs, gdl, varargin)
 % PSD: Power Spectral Density. Calcula la FFT de un registro sismico
 % analizado para varios nodos con distintos grados de libertad. La funcion
 % permite calcular distintos tipos de periodos naturales, arrojando un
@@ -12,6 +12,7 @@ function [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, locStd, lo
 %   gdl             Vector con los grados de libertad de los nodos en el analisis
 %
 % Parametros opcionales:
+%   betaFFTMax      El amortiguamiento se calcula con el maximo FFT de todos los nodos
 %   peakMinDistance Distancia minima entre peaks requerida
 %   tukeywinr       Factor de la ventana de tukey
 %   zerofill        Indica relleno de ceros para FFT
@@ -27,12 +28,13 @@ function [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, locStd, lo
 %   locFreq         Posicion en el vector de frecuencias de cada modo
 %   maxlocs         Numero de modos encontrados en los peaks
 %   pks             Vector de peaks
-%   beta            Vector de amortiguamientos por cada modo
-%   betaFreq        Valor del FFT objetivo por cada amortiguamiento modal
+%   betaNodo        Vector de amortiguamientos por cada modo
+%   betaFreqNodo    Valor del FFT objetivo por cada amortiguamiento modal
 
 %% Parametros opcionales
 p = inputParser;
 p.KeepUnmatched = true;
+addOptional(p, 'betaFFTMax', false); % Calcula el amortiguamiento con el maximo
 addOptional(p, 'peakMinDistance', 0.5); % Requerido para el calculo
 addOptional(p, 'tukeywinr', 0.01);
 addOptional(p, 'zerofill', 0);
@@ -66,17 +68,17 @@ for k = 1:ng
 end % for k
 
 %% Calcula el promedio y la desviacion estandar de los fft
-ftmean = zeros(1, length(f));
-ftstd = zeros(1, length(f));
-ftdata = zeros(1, ng);
-ftmax = zeros(1, ng);
+fftmean = zeros(1, length(f));
+fftstd = zeros(1, length(f));
+fftdata = zeros(1, ng);
+fftmax = zeros(1, ng);
 for i = 1:length(f)
     for j = 1:ng % Recorre cada grado de libertad
-        ftdata(j) = fft{j}(i);
+        fftdata(j) = fft{j}(i);
     end % for j
-    ftmean(i) = mean(ftdata);
-    ftstd(i) = std(ftdata);
-    ftmax(i) = max(ftdata);
+    fftmean(i) = mean(fftdata);
+    fftstd(i) = std(fftdata);
+    fftmax(i) = max(fftdata);
 end % for i
 
 %% Calcula los peaks
@@ -127,33 +129,81 @@ for i = 1:length(f)
         end
     end
 end % for i
-pks = ftmax(locFreq);
+pks = fftmax(locFreq);
 
-%% Calcula los amortiguamientos por cada periodo
-beta = zeros(1, maxlocs);
-betaFreq = cell(1, maxlocs);
-pksObj = pks ./ sqrt(2);
-lastj = 1;
-for i = 1:length(pks) % Recorre cada peak
-    for j = lastj:length(f) - 1 % Al comenzar desde el punto anterior asegura que no se repitan frecuencias
-        if (ftmax(j) - pksObj(i)) * (ftmax(j+1) - pksObj(i)) < 0 % Cruzo el objetivo en i
-            
-            % Si el ultimo que cruzo fue superior a la frecuencia del peak
-            % objetivo entonces este corresponde a la frecuencia derecha, y
-            % el anterior a la izquierda
-            if j > locFreq(i)
-                izq = f(lastj);
-                der = f(j);
-                lastj = j;
-                beta(i) = (der - izq) / (der + izq);
-                betaFreq{i} = [izq, der, f(locFreq(i)), pksObj(i)];
-                break;
+%% Calcula los amortiguamientos por cada periodo de cada nodo registrado
+if ~r.betaFFTMax % Usa cada FFT de manera separada
+    
+    betaNodo = cell(1, ng);
+    betaFreqNodo = cell(1, ng);
+    for k=1:ng
+        ftNodo = fft{k};
+        pksNodo = ftNodo(locFreq);
+        beta = zeros(1, maxlocs);
+        betaFreq = cell(1, maxlocs);
+        pksObj = pksNodo ./ sqrt(2);
+        lastj = 1;
+
+        % Recorre cada peak del nodo registrado
+        for i = 1:length(pks)
+            for j = lastj:length(f) - 1 % Al comenzar desde el punto anterior asegura que no se repitan frecuencias
+                if (ftNodo(j) - pksObj(i)) * (ftNodo(j+1) - pksObj(i)) < 0 % Cruzo el objetivo en i
+
+                    % Si el ultimo que cruzo fue superior a la frecuencia del peak
+                    % objetivo entonces este corresponde a la frecuencia derecha, y
+                    % el anterior a la izquierda
+                    if j > locFreq(i)
+                        izq = f(lastj);
+                        der = f(j);
+                        lastj = j;
+                        beta(i) = (der - izq) / (der + izq);
+                        betaFreq{i} = [izq, der, f(locFreq(i)), pksObj(i)];
+                        break;
+                    end
+                    lastj = j+1; % Ultimo en atravezar
+                end
+            end % for j
+        end % for i
+
+        % Guarda el resultado
+        betaNodo{k} = beta;
+        betaFreqNodo{k} = betaFreq;
+
+    end % for k
+
+else % Se usa solo el maximo
+    
+    beta = zeros(1, maxlocs);
+    betaFreq = cell(1, maxlocs);
+    pksObj = pks ./ sqrt(2);
+    lastj = 1;
+
+    % Recorre cada peak del nodo registrado
+    for i = 1:length(pks)
+        for j = lastj:length(f) - 1 % Al comenzar desde el punto anterior asegura que no se repitan frecuencias
+            if (fftmax(j) - pksObj(i)) * (fftmax(j+1) - pksObj(i)) < 0 % Cruzo el objetivo en i
+
+                % Si el ultimo que cruzo fue superior a la frecuencia del peak
+                % objetivo entonces este corresponde a la frecuencia derecha, y
+                % el anterior a la izquierda
+                if j > locFreq(i)
+                    izq = f(lastj);
+                    der = f(j);
+                    lastj = j;
+                    beta(i) = (der - izq) / (der + izq);
+                    betaFreq{i} = [izq, der, f(locFreq(i)), pksObj(i)];
+                    break;
+                end
+                lastj = j+1; % Ultimo en atravezar
             end
-            lastj = j+1; % Ultimo en atravezar
-        end
-    end % for j
-end % for i
-
+        end % for j
+    end % for i
+    
+    betaNodo = beta;
+    betaFreqNodo = betaFreq;
+    
+end
+    
 %% Calcula la envolvente de los peaks por cada una de las formas modales
 envFormaModal = cell(1, maxlocs);
 for k = 1:maxlocs

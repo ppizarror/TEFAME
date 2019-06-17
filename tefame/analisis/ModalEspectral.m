@@ -2106,12 +2106,25 @@ classdef ModalEspectral < Analisis
             % Calcula el PSD del registro, ello incluye la FFT, los peaks
             % asociados a cada periodo y las formas modales y los
             % amortiguamientos
-            [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, ~, ~, ...
-                maxlocs, pks, beta, betaFreq, acctuck] = ...
+            fprintf('\tCalculando PSD del registro\n');
+            [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, locStd, locFreq,...
+                maxlocs, pks, betaNodo, betaFreqNodo] = ...
                 PSD(a_c, cargaFS, gdl, 'peakMinDistance', r.peakMinDistance, ...
-                'tukeywinr', r.tukeywinr, 'zerofill', r.zerofill);
+                'tukeywinr', r.tukeywinr, 'zerofill', r.zerofill, ...
+                'betaFFTMax', true);
+            
+            % Actualiza por el numero de modos del sistema
+            maxlocs = min(maxlocs, obj.numModos);
+            
+            % Tabla de periodos
+            maxlocsDisp = maxlocs; % Puntos a mostrar
+            if r.maxpeaks > 0
+                maxlocsDisp = min(maxlocs, r.maxpeaks);
+            end
+            
             % Grafica la fft de cada nodo
             if r.fftPlot
+                
                 fig_title = sprintf('%s %s - Analisis FFT', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
@@ -2141,16 +2154,11 @@ classdef ModalEspectral < Analisis
                 if r.legend
                     legend(legnodos, 'location', r.legendloc);
                 end
-            end
+                
+            end % fftPlot
             
             % Grafica los peaks
             if r.fftPeaks
-                
-                % Tabla de periodos
-                maxlocsDisp = maxlocs; % Puntos a mostrar
-                if r.maxpeaks > 0
-                    maxlocsDisp = min(maxlocs, r.maxpeaks);
-                end
                 
                 % Imprime en consola la tabla
                 fprintf('\tAnalisis de peaks, periodos formas modales:\n');
@@ -2194,7 +2202,8 @@ classdef ModalEspectral < Analisis
                 end
                 ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
-            end
+                
+            end % fftPeaks
             
             % Vector de modos a graficar
             formaModalLeg = cell(1, length(r.formaModal)); % Contiene las leyendas de los modos elegidos
@@ -2212,11 +2221,13 @@ classdef ModalEspectral < Analisis
             
             % Grafica la envolvente de la forma modal
             if plotFormaModal
+                
                 fig_title = sprintf('%s %s - Formas modales FFT', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 hold on;
+                
                 for j = 1:length(r.formaModal)
                     i = r.formaModal(j);
                     if strcmp(dirForma, 'X')
@@ -2237,15 +2248,24 @@ classdef ModalEspectral < Analisis
                         set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
                     end
                 end
+                
                 title(fig_title);
                 xlim([0, 1]);
                 ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
                 legend(formaModalLeg, 'location', 'southeast');
-            end
+                
+            end % plotFormaModal
             
             % Grafica los limites de las frecuencias
             if r.betaPlot
+                
+                % Calcula el amortiguamiento del modo
+                lbeta = min(min(length(beta), obj.numModos), maxlocsDisp);
+                betaModo = zeros(1, lbeta);
+                for i = 1:lbeta
+                    betaModo(i) = obj.calcularAmortiguamientoModo(i, r.betaRayleigh);
+                end
                 
                 % Imprime en consola la tabla
                 fprintf('\tAmortiguamiento por periodos:\n');
@@ -2255,20 +2275,18 @@ classdef ModalEspectral < Analisis
                     if isempty(betaFreq{i}) % Si no se encontro el modo retorna
                         continue;
                     end
-                    % Calcula el amortiguamiento del modo
-                    betaModo = obj.calcularAmortiguamientoModo(i, r.betaRayleigh);
-                    err = 100 * (betaModo - beta(i)) / betaModo;
+                    err = 100 * (betaModo(i) - beta(i)) / betaModo(i);
                     if err > 0
                         s = '+';
                     else
                         s = '';
                     end
                     fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t\t|\t%s%.2f\t\t|\n', ...
-                        i, beta(i), betaModo, s, err);
+                        i, beta(i), betaModo(i), s, err);
                 end % for i
                 fprintf('\t\t-------------------------------------------------\n');
                 
-                % Crea la figura
+                % Crea la figura del amortiguamiento en cada FFT
                 fig_title = sprintf('%s %s - Calculo de amortiguamientos', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
@@ -2306,13 +2324,29 @@ classdef ModalEspectral < Analisis
                 ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
                 
-            end
+                % Crea la curva de variaciï¿½n del amortiguamiento por cada
+                % modo
+                fig_title = sprintf('%s %s - Grï¿½fico de amortiguamiento modal', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                plot(1:lbeta, beta(1:lbeta), '*-', 'lineWidth', 1.5);
+                plot(1:lbeta, betaModo(1:lbeta), '*-', 'lineWidth', 1.5);
+                xlabel('Modo');
+                ylabel('Amortiguamiento (%)');
+                title('Amortiguamiento \beta modal');
+                legend({'\beta Teorico', '\beta PSD'}, 'location', 'northeast');
+                set(gca, 'XTick', 1:lbeta);
+                grid on;
+                
+            end % betaPlot
             
             if ~isempty(r.filtmod)
                 % Imprime en consola la tabla
                 fprintf('\tFiltrando modos:\n');
                 fprintf('\t\t-------------------------------------------------\n');
-                
+                l_ac = length(a_c);
                 for k = 1:length(r.nodo)
                     ngd = nodos{k}.obtenerGDLIDCondensado();
                     ng = 0; % Numero grado analisis
@@ -2323,21 +2357,19 @@ classdef ModalEspectral < Analisis
                     end % for i
                     acc(:, k) = a_c(ng, :)'; %#ok<AGROW>
                 end % for k
-                
                 acc = [acc; zeros(ceil(r.zerofill*length(acc)), 1)];
                 tuck = tukeywin(length(acc), r.tukeywinr);
                 acc = acc.*tuck;
-                
                 % Crea la figura
                 fig_title = sprintf('%s %s - Filtro de modos', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 hold on;
-                plot(acc(1:1000, 1), '-', 'lineWidth', 2);
-                sumFiltmod = zeros(1000,1);
+                plot(acc(1:l_ac, 1), '-', 'lineWidth', 2);
+                sumFiltmod = zeros(l_ac, 1);
                 legmod{1} = 'All modes';
-
+                
                 % Aplica el filtro
                 for i = 1:length(r.filtmod)
                     rangeinf(i) = floor(locMean(i)); %#ok<AGROW>
@@ -2348,19 +2380,19 @@ classdef ModalEspectral < Analisis
                         Wn = [rangesup(i-1) rangesup(i)]./(cargaFS/2);
                     end
                     [B, A] = butter(4, Wn);
-                    Filtmod(:, i) = filtfilt(B, A, acc(1:1000, 1)); %#ok<AGROW>
+                    Filtmod(:, i) = filtfilt(B, A, acc(1:l_ac, 1)); %#ok<AGROW>
                     sumFiltmod = sumFiltmod + Filtmod(:, i);
-                    legmod{i+1} = strcat('Modo ',num2str(i)); %#ok<AGROW>
+                    legmod{i + 1} = strcat('Modo ',num2str(i)); %#ok<AGROW>
                     plot(Filtmod(:, i), '-', 'lineWidth', 1);  
                 end
                 legmod{end+1} = 'Sum modes';
 
                 % Plot respuesta filtrada          
-                ylabel('Aceleración (g)');
+                ylabel('Aceleracion (g)');
                 xlabel('t (s)');
                 title(fig_title);
                 plot(sumFiltmod, 'k-', 'lineWidth', 2);
-                xlim([0, 1000]);
+                xlim([0 l_ac]);
                 ylim([-max(get(gca, 'ylim')), max(get(gca, 'ylim'))]);
                 grid on;
                 zoom on;
@@ -2488,6 +2520,7 @@ classdef ModalEspectral < Analisis
             
             % Grafico de carga
             if strcmp(r.plot, 'all') || strcmp(r.plot, 'carga')
+                
                 doPlot = true;
                 fig_title = sprintf('%s %s - Carga', ...
                     ctitle, carga.obtenerEtiqueta());
@@ -2515,10 +2548,12 @@ classdef ModalEspectral < Analisis
                     legend(legnodos, 'location', r.legendloc);
                 end
                 title(fig_title);
-            end
+                
+            end % carga
             
             % Grafico de desplazamiento
             if strcmp(r.plot, 'all') || strcmp(r.plot, 'despl')
+                
                 doPlot = true;
                 fig_title = sprintf('%s %s - Desplazamiento', ...
                     ctitle, carga.obtenerEtiqueta());
@@ -2546,10 +2581,12 @@ classdef ModalEspectral < Analisis
                     legend(legnodos, 'location', r.legendloc);
                 end
                 title(fig_title);
-            end
+                
+            end % despl
             
             % Grafico de velocidad
             if strcmp(r.plot, 'all') || strcmp(r.plot, 'vel')
+                
                 doPlot = true;
                 fig_title = sprintf('%s %s - Velocidad', ...
                     ctitle, carga.obtenerEtiqueta());
@@ -2577,10 +2614,12 @@ classdef ModalEspectral < Analisis
                     legend(legnodos, 'location', r.legendloc);
                 end
                 title(fig_title);
-            end
+                
+            end % vel
             
             % Grafico de aceleracion
             if strcmp(r.plot, 'all') || strcmp(r.plot, 'acel')
+                
                 doPlot = true;
                 fig_title = sprintf('%s %s - Aceleracion', ...
                     ctitle, carga.obtenerEtiqueta());
@@ -2609,7 +2648,7 @@ classdef ModalEspectral < Analisis
                     legend(legnodos, 'location', r.legendloc);
                 end
                 
-            end
+            end % acel
             
             % Si el grafico no se realizo
             if ~doPlot
