@@ -88,7 +88,7 @@ analisisObj.resolverCargasDinamicas();
 
 analisisObj.calcularFFTCarga(cargasDinamicas{1}, pulsoNodos, [1, 0, 0], [0, 1, 0], ...
     'fftlim', 10, 'tukeywinr', 0.01, 'zerofill', 100, 'fftpeaks', true, ...
-    'maxpeaks', 5, 'peakMinDistance', 0.7, 'betaPlot', false, 'filtmod', [1:5], 'nodo', nodos{11});
+    'maxpeaks', 5, 'peakMinDistance', 0.7, 'betaPlot', false, 'filtmod', 1:20, 'nodo', nodos{11});
 % analisisObj.plotTrayectoriaNodos(cargasDinamicas{1}, pulsoNodos, [1, 0, 0]);
 
 %% Finaliza el analisis

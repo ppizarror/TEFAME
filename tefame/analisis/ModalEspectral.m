@@ -2355,11 +2355,14 @@ classdef ModalEspectral < Analisis
                             ng = ngd(i);
                         end
                     end % for i
-                    acc(:, k) = a_c(ng, :)'; %#ok<AGROW>
+                    accresp(:, k) = a_c(ng, :)'; %#ok<AGROW>
                 end % for k
-                acc = [acc; zeros(ceil(r.zerofill*length(acc)), 1)];
-                tuck = tukeywin(length(acc), r.tukeywinr);
-                acc = acc.*tuck;
+                
+                
+                acczeros = [accresp; zeros(ceil(r.zerofill*length(accresp)), 1)];
+                tuck = tukeywin(length(acczeros), r.tukeywinr);
+                acc = acczeros.*tuck;
+                
                 % Crea la figura
                 fig_title = sprintf('%s %s - Filtro de modos', ...
                     ctitle, carga.obtenerEtiqueta());
@@ -2372,12 +2375,12 @@ classdef ModalEspectral < Analisis
                 
                 % Aplica el filtro
                 for i = 1:length(r.filtmod)
-                    rangeinf(i) = floor(locMean(i)); %#ok<AGROW>
-                    rangesup(i) = ceil(locMean(i)); %#ok<AGROW>
-                    if rangeinf == 0
+                    rangeinf = locMean(i)-0.2; 
+                    rangesup = locMean(i)+0.2; 
+                    if i == 1
                         Wn = rangesup(i)/(cargaFS/2);
                     elseif i > 1
-                        Wn = [rangesup(i-1) rangesup(i)]./(cargaFS/2);
+                        Wn = [rangeinf rangesup]./(cargaFS/2);
                     end
                     [B, A] = butter(4, Wn);
                     Filtmod(:, i) = filtfilt(B, A, acc(1:l_ac, 1)); %#ok<AGROW>
