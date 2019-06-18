@@ -80,6 +80,7 @@ cargasDinamicas{4} = CargaGenerica('Generica Random', {nodos{101}, nodos{105}}, 
 
 cargasDinamicas{2}.desactivarCarga();
 cargasDinamicas{3}.desactivarCarga();
+cargasDinamicas{4}.desactivarCarga();
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
