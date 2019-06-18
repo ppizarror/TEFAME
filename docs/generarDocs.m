@@ -2,7 +2,7 @@
 % usuario
 % https://www.artefact.tk/software/matlab/m2html
 addpath(sprintf('%s/m2html', userpath));
-addpath('C:/Program Files (x86)/Graphviz2.38/bin');
+% addpath('C:/Program Files (x86)/Graphviz2.38/bin');
 
 % Genera la documentacion
 m2html('mfiles', 'tefame', 'htmldir', 'docs', 'recursive', 'on', ...

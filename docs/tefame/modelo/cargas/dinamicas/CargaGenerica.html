@@ -2,8 +2,8 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of CargaPulso</title>
-  <meta name="keywords" content="CargaPulso">
+  <title>Description of CargaGenerica</title>
+  <meta name="keywords" content="CargaGenerica">
   <meta name="description" content="______________________________________________________________________">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
@@ -16,7 +16,7 @@
 <body>
 <a name="_top"></a>
 <!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html dinamicas -->
-<h1>CargaPulso
+<h1>CargaGenerica
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
@@ -44,21 +44,19 @@
 |______________________________________________________________________|
  ______________________________________________________________________
 |                                                                      |
-| Clase CargaPulso                                                     |
+| Clase CargaGenerica                                                  |
 |                                                                      |
-| Este archivo contiene la definicion de la Clase CargaPulso           |
-| CargaPulso es una subclase de la clase CargaDinamica y corresponde a |
-| la representacion de una carga nodal en el metodo de elementos       |
-| finitos o analisis matricial de estructuras.                         |
-| La clase CargaPulso es una clase que contiene el nodo al que se le   |
-| va aplicar la carga y el valor de esta carga.                        |
+| Este archivo contiene la definicion de la Clase CargaGenerica        |
+| CargaGenerica es una subclase de la clase CargaDinamica  y permite   |
+| definir una carga general en un vector que se puede aplicar a varios |
+| nodos simultaneamente en algun grado de libertad.                    |
 |                                                                      |
 | Programado: Pablo Pizarro @ppizarror                                 |
-| Fecha: 10/04/2019                                                    |
+| Fecha: 18/06/2019                                                    |
 |______________________________________________________________________|
 
   Methods(Access=public):
-       CargaPulso(etiquetaCargaPulso,nodos,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)
+       CargaGenerica(etiquetaCargaGenerica,nodos,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)
        aplicarCarga(obj,factorDeCarga)
        disp(obj)
   Methods SuperClass (CargaDinamica):
@@ -101,10 +99,10 @@
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>	______________________________________________________________________</li><li><a href="CargaPulso.html" class="code" title="">CargaPulso</a>	______________________________________________________________________</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li><li><a href="../../../../tefame/utils/verificarVectorDireccion.html" class="code" title="function y = verificarVectorDireccion(vec, ndg)">verificarVectorDireccion</a>	verificarVectorDireccion: Verifica que un vector direccion tenga sentido y</li></ul>
+<li><a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>	______________________________________________________________________</li><li><a href="CargaGenerica.html" class="code" title="">CargaGenerica</a>	______________________________________________________________________</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li><li><a href="../../../../tefame/utils/verificarVectorDireccion.html" class="code" title="function y = verificarVectorDireccion(vec, ndg)">verificarVectorDireccion</a>	verificarVectorDireccion: Verifica que un vector direccion tenga sentido y</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="CargaPulso.html" class="code" title="">CargaPulso</a>	______________________________________________________________________</li></ul>
+<li><a href="CargaGenerica.html" class="code" title="">CargaGenerica</a>	______________________________________________________________________</li></ul>
 <!-- crossreference -->
 
 
