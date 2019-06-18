@@ -54,8 +54,8 @@
 classdef CargaEstatica < ComponenteModelo
     
     properties(Access = private)
-        cargaSumoMasa % Indica que la carga ya sumo masa
         cargaActiva % La carga esta activa
+        cargaSumoMasa % Indica que la carga ya sumo masa
     end % private properties CargaEstatica
     
     properties(Access = protected)
@@ -74,14 +74,14 @@ classdef CargaEstatica < ComponenteModelo
             
             if nargin == 0
                 etiquetaCarga = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@ComponenteModelo(etiquetaCarga);
+            obj.cargaActiva = true;
+            obj.cargaSumoMasa = false;
             obj.factorCargaMasa = 0;
             obj.factorUnidadMasa = 1;
-            obj.cargaSumoMasa = false;
-            obj.cargaActiva = true;
             
         end % Carga constructor
         

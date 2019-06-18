@@ -66,10 +66,10 @@ classdef CargaNodo < CargaEstatica
             % con los valores de la carga a aplicar
             
             if nargin == 0
+                cargaNodo = [];
                 etiquetaCargaNodo = '';
                 nodoObjeto = [];
-                cargaNodo = [];
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase
             % CargaEstatica
@@ -83,7 +83,7 @@ classdef CargaNodo < CargaEstatica
                 obj.vectorCarga = cargaNodo';
             else
                 obj.vectorCarga = cargaNodo;
-            end % if
+            end
             
         end % CargaNodo constructor
         

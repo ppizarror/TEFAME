@@ -26,18 +26,7 @@
 %| Fecha: 29/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       Keq
-%       Ceq
-%       dx
-%       dy
-%       L
-%       theta
-%       T
-%       Klp
-%       alpha
-%       Cd
-%  Methods:
+%  Methods(Access=public):
 %       actualizardDisipador(obj,w,carga)
 %       definirGDLID(obj)
 %       obj = DisipadorFriccionalPuro2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
@@ -61,14 +50,14 @@
 classdef DisipadorFriccionalPuro2D < Disipador2D
     
     properties(Access = private)
-        Keq % Modulo de elasticidad
-        Ceq % Inercia de la seccion
         Ce % Ponderacion matriz de amortiguamiento
+        Ceq % Inercia de la seccion
         dx % Distancia en el eje x entre los nodos
         dy % Distancia en el eje y entre los nodos
+        Fy % Paramatro de entrada del disipador
+        Keq % Modulo de elasticidad
         L % Largo del elemento
         theta % Angulo de inclinacion del disipador
-        Fy % Paramatro de entrada del disipador
         v0 % Parametro del disipador
         Vo % Parametro del disipador
         w % Parametro del disipador
@@ -83,17 +72,17 @@ classdef DisipadorFriccionalPuro2D < Disipador2D
             % Completa con ceros si no hay argumentos
             if nargin == 0
                 etiquetaDisipador = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Disipador2D
             obj = obj@Disipador2D(etiquetaDisipador);
             
             % Guarda material
-            obj.nodosObj = {nodo1Obj; nodo2Obj};
             obj.Ce = [];
             obj.Fy = Fy;
-            obj.w = 1;
+            obj.nodosObj = {nodo1Obj; nodo2Obj};
             obj.v0 = 1;
+            obj.w = 1;
             
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();

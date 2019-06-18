@@ -33,8 +33,7 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%  Methods:
+%  Methods(Access=public):
 %       obj = Elemento(etiquetaElemento)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       nodosElemento = obtenerNodos(obj)
@@ -80,7 +79,7 @@ classdef Elemento < ComponenteModelo
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaElemento = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@ComponenteModelo(etiquetaElemento);

@@ -27,19 +27,7 @@
 %| Fecha: 27/08/2018                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       nodosObj
-%       gdlID
-%       E
-%       nu
-%       D
-%       t
-%       h
-%       b
-%       Feq
-%       NPOINTS
-%       rho
-%  Methods:
+%  Methods(Access=public):
 %       obj = Membrana(etiquetaMembrana,nodo1Obj,nodo2Obj,nodo3Obj,nodo4Obj,E,nu,t,densidad)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       nodosMembrana = obtenerNodos(obj)
@@ -69,17 +57,17 @@
 classdef Membrana < Elemento
     
     properties(Access = private)
-        nodosObj % Lista de nodos de la membrana
-        gdlID % ID de los grados de libertad
-        E % Constante elastica del material
-        nu % Modulo de Poisson
-        D % Matriz de constantes elasticas
-        t % Ancho de la membrana
-        h % Alto de la membrana desde el eje (r,s)
         b % Largo de la membrana desde el eje (r,s)
+        D % Matriz de constantes elasticas
+        E % Constante elastica del material
         Feq % Vector de fuerzas equivalentes en nodos
+        gdlID % ID de los grados de libertad
+        h % Alto de la membrana desde el eje (r,s)
+        nodosObj % Lista de nodos de la membrana
         NPOINTS % Numero de interpolaciones
+        nu % Modulo de Poisson
         rho % Densidad de la membrana
+        t % Ancho de la membrana
     end % private properties Membrana
     
     methods(Access = public)
@@ -91,7 +79,7 @@ classdef Membrana < Elemento
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaMembrana = '';
-            end % if
+            end
             if ~exist('densidad', 'var')
                 densidad = 0;
             end

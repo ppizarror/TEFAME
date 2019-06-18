@@ -27,35 +27,6 @@
 %| Fecha: 18/03/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       analisisFinalizado
-%       cargarAnimacion
-%       condMatRot
-%       condMatT
-%       cPenzien
-%       cRayleigh
-%       F
-%       gdlCond
-%       Km
-%       Kt
-%       Lm
-%       Mm
-%       Mmeff
-%       Mmeffacum
-%       modeloObj
-%       mostrarDeformada
-%       Mt
-%       Mtotal
-%       numDG
-%       numDGReal
-%       numeroGDL
-%       numModos
-%       phiExt
-%       phin
-%       rm
-%       Tn
-%       u
-%       wn
 %  Methods:
 %       obj = ModalEspectral(modeloObjeto)
 %       [esfmax,esf,maxp,dirk] = calcularEsfuerzosElemento(obj,carga,elemento,direccion)
@@ -133,15 +104,17 @@ classdef ModalEspectral < Analisis
             
             if nargin == 0
                 modeloObjeto = [];
-            end % if
+            end
             
             obj = obj@Analisis(modeloObjeto);
+
+            % Guarda valores iniciales
+            obj.cargarAnimacion = true;
+            obj.F = [];
             obj.Kt = [];
+            obj.mostrarDeformada = false;
             obj.Mt = [];
             obj.u = [];
-            obj.F = [];
-            obj.mostrarDeformada = false;
-            obj.cargarAnimacion = true;
             
         end % ModalEspectral constructor
         
@@ -3031,7 +3004,7 @@ classdef ModalEspectral < Analisis
                     if (gdlidNodo(j) == -1)
                         contadorGDL = contadorGDL + 1;
                         gdlidNodo(j) = contadorGDL;
-                    end % if
+                    end
                 end % for j
                 nodoObjetos{i}.definirGDLID(gdlidNodo);
                 

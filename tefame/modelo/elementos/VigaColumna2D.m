@@ -27,20 +27,7 @@
 %| Fecha: 10/06/2018                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       nodosObj
-%       gdlID
-%       Eo
-%       Ao
-%       Io
-%       dx
-%       dy
-%       L
-%       Feq
-%       T
-%       Klp
-%       PLOTNELEM
-%  Methods:
+%  Methods(Access=public):
 %       obj = VigaColumna2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       nodosBiela = obtenerNodos(obj)
@@ -68,20 +55,20 @@
 classdef VigaColumna2D < Elemento
     
     properties(Access = private)
-        nodosObj % Cell con los nodos
-        gdlID % Lista con los ID de los grados de libertad
         Ao % Area de la seccion transversal
-        rho % Densidad
-        Eo % Modulo de elasticidad
-        Io % Inercia de la seccion
         dx % Distancia en el eje x entre los nodos
         dy % Distancia en el eje y entre los nodos
-        L % Largo del elemento
-        theta % Angulo de inclinacion de la viga
+        Eo % Modulo de elasticidad
         Feq % Fuerza equivalente
-        T % Matriz de transformacion
+        gdlID % Lista con los ID de los grados de libertad
+        Io % Inercia de la seccion
         Klp % Matriz de rigidez local del elemento
+        L % Largo del elemento
+        nodosObj % Cell con los nodos
         PLOTNELEM % Numero de elementos en los que se discretiza para el grafico
+        rho % Densidad
+        T % Matriz de transformacion
+        theta % Angulo de inclinacion de la viga
     end % private properties VigaColumna2D
     
     methods(Access = public)
@@ -91,7 +78,7 @@ classdef VigaColumna2D < Elemento
             % Completa con ceros si no hay argumentos
             if nargin == 0
                 etiquetaViga = '';
-            end % if
+            end
             if ~exist('densidad', 'var')
                 densidad = 0;
             end

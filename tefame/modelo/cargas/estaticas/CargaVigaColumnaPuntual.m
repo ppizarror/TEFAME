@@ -32,9 +32,9 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       elemObj
 %       carga
 %       dist
+%       elemObj
 %       theta
 %  Methods:
 %       obj = CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
@@ -53,9 +53,9 @@
 classdef CargaVigaColumnaPuntual < CargaEstatica
     
     properties(Access = private)
-        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga % Valor de la carga
         dist % Distancia de la carga al primer nodo del elemento
+        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         theta % Angulo de aplicacion de la carga
     end % private properties CargaVigaColumnaPuntual
     
@@ -71,22 +71,22 @@ classdef CargaVigaColumnaPuntual < CargaEstatica
             % elemento tipo viga y el angulo de aplicacion de la carga con respecto a la normal
             
             if nargin == 0
-                etiquetaCarga = '';
-                elemObjeto = [];
                 carga = 0;
                 distancia = 0;
+                elemObjeto = [];
+                etiquetaCarga = '';
                 theta = 0;
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
             obj = obj@CargaEstatica(etiquetaCarga);
             
             % Guarda los valores
-            obj.elemObj = elemObjeto;
             obj.carga = carga;
             obj.dist = distancia * elemObjeto.obtenerLargo();
-            obj.theta = theta;
+            obj.elemObj = elemObjeto;
             obj.nodosCarga = elemObjeto.obtenerNodos();
+            obj.theta = theta;
             
         end % CargaVigaColumnaPuntual constructor
         

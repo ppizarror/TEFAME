@@ -37,8 +37,6 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%
 %  Methods:
 %       obj = PatronDeCargas(etiquetaPatronDeCargas,arregloCargas)
 %       aplicarCargas(obj)
@@ -73,7 +71,7 @@ classdef PatronDeCargas < ComponenteModelo
             
             if nargin == 0
                 etiquetaPatronDeCargas = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@ComponenteModelo(etiquetaPatronDeCargas);

@@ -32,14 +32,7 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       nGDL
-%       coords
-%       gdlID
-%       despl
-%       cargas
-%       reacciones
-%  Methods:
+%  Methods(Access=public):
 %       obj = Nodo(etiquetaNodo,nGDLNodo,coordenadasNodo)
 %       nGDLNodo = obtenerNumeroGDL(obj)
 %       coordenadasNodo = obtenerCoordenadas(obj)
@@ -69,14 +62,14 @@
 classdef Nodo < ComponenteModelo
     
     properties(Access = private)
-        nGDL % Numbero de grados de libertad (GDL)
+        cargas % Vector que guarda las cargas aplicadas sobre el nodo
         coords % Coordenadas del nodo
+        despl % Vector que guarda los desplazamientos del nodo
+        elementos % Cell que guarda los elementos que conectan el nodo
         gdlID % Vector que guarda el ID de los grados de libertad
         gdlIDCondensado % Vector que guarda el ID de los grados de libertad despues de la condensacion
-        despl % Vector que guarda los desplazamientos del nodo
-        cargas % Vector que guarda las cargas aplicadas sobre el nodo
+        nGDL % Numbero de grados de libertad (GDL)
         reacciones % Vector que guarda las reacciones del nodo
-        elementos % Cell que guarda los elementos que conectan el nodo
     end % private properties Nodo
     
     methods(Access = public)
@@ -93,7 +86,7 @@ classdef Nodo < ComponenteModelo
                 etiquetaNodo = '';
                 nGDLNodo = 0;
                 coordenadasNodo = [];
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@ComponenteModelo(etiquetaNodo);
@@ -106,7 +99,7 @@ classdef Nodo < ComponenteModelo
                 obj.coords = coordenadasNodo';
             else
                 obj.coords = coordenadasNodo;
-            end % if
+            end
             
             % Creamos el vector que guardara los ID para los diferentes
             % GDL, que se usara en el analisis del modelo

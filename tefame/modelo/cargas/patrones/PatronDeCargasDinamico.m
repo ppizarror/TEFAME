@@ -32,10 +32,7 @@
 %| Fecha: 10/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       analisisObj
-%       desModal
-%  Methods:
+%  Methods(Access=public):
 %       obj = PatronDeCargasDinamico(etiquetaPatronDeCargas,arregloCargas,analisisObj)
 %       aplicarCargas(obj,cpenzien,disipadores,cargaDisipador,betaObjetivo,
 %           arregloDisipadores,iterDisipador,tolIterDisipador,betaGrafico)
@@ -60,18 +57,17 @@ classdef PatronDeCargasDinamico < PatronDeCargas
         function obj = PatronDeCargasDinamico(etiquetaPatronDeCargas, ...
                 arregloCargas, analisisObj, varargin)
             % PatronDeCargasDinamico: es el constructor de la clase PatronDeCargas
-            %
-            % Parametros opcionales:
-            %   desmodal    Ejecuta la condensacion modal
-            %
             % Crea un objeto de la clase PatronDeCargas, con un identificador unico
             % (etiquetaPatronDeCargas) y guarda el arreglo con las cargas (arregloCargas)
             % a aplicar en el modelo
+            %
+            % Parametros opcionales:
+            %   desmodal    Ejecuta la condensacion modal
             
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaPatronDeCargas = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@PatronDeCargas(etiquetaPatronDeCargas);

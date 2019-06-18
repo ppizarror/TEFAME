@@ -30,6 +30,10 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
+%       direccion
+%       dispinfo
+%       registro
+%       rf
 %  Methods:
 %       CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(obj,factorDeCarga)
@@ -73,10 +77,10 @@
 classdef CargaRegistroSismico < CargaDinamica
     
     properties(Access = private)
-        registro % Cell con matrices de registro
         direccion % Vector de direcciones
-        rf % Vector de influencia
         dispinfo % Indica si se despliega la informacion
+        registro % Cell con matrices de registro
+        rf % Vector de influencia
     end % private properties CargaNodo
     
     methods(Access = public)
@@ -90,7 +94,7 @@ classdef CargaRegistroSismico < CargaDinamica
             
             if nargin == 0
                 etiquetaCargaRegistroSismico = '';
-            end % if
+            end
             
             if length(registro) ~= length(direccion)
                 error('Cell registro no tiene igual dimension a las direcciones de analisis');
@@ -125,12 +129,12 @@ classdef CargaRegistroSismico < CargaDinamica
             end
             
             % Guarda el registro
-            obj.registro = registro;
             obj.direccion = direccion;
-            obj.tAnalisis = tAnalisis;
-            obj.tInicio = tInicio;
             obj.dt = dt;
             obj.nodosCarga = {};
+            obj.registro = registro;
+            obj.tAnalisis = tAnalisis;
+            obj.tInicio = tInicio;
             
         end % CargaRegistroSismico constructor
         

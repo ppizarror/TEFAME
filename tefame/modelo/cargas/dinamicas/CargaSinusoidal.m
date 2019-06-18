@@ -32,7 +32,7 @@
 %  Properties (Access=private):
 %       amplitud
 %       direccion
-%       nodo
+%       nodos
 %       tOscilacion
 %       w
 %  Methods:
@@ -94,7 +94,7 @@ classdef CargaSinusoidal < CargaDinamica
             
             if nargin == 0
                 etiquetaCargaSinusoidal = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
             obj = obj@CargaDinamica(etiquetaCargaSinusoidal);
@@ -115,14 +115,14 @@ classdef CargaSinusoidal < CargaDinamica
             end
             
             % Guarda los parametros de la carga
-            obj.w = w;
             obj.amplitud = amplitud;
             obj.direccion = direccion;
-            obj.tOscilacion = tOscilacion;
-            obj.tAnalisis = tAnalisis;
-            obj.tInicio = tInicio;
             obj.dt = dt;
             obj.nodos = nodos; % Nodo al que se le aplica la carga
+            obj.tAnalisis = tAnalisis;
+            obj.tInicio = tInicio;
+            obj.tOscilacion = tOscilacion;
+            obj.w = w;
             
         end % CargaSinusoidal constructor
         

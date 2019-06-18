@@ -85,7 +85,7 @@ classdef Modelo < handle
             if nargin == 0
                 numeroDimensiones = 0;
                 numerosGDL = 0;
-            end % if
+            end
             
             % Definimos las propiedades en el modelo
             obj.nDimensiones = numeroDimensiones;

@@ -31,11 +31,11 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       elemObj
 %       carga1
 %       carga2
 %       dist1
 %       dist2
+%       elemObj
 %       theta
 %  Methods:
 %       obj = CargaVigaColumnaDistribuida(etiquetaCarga,elemObjeto,carga1,
@@ -55,11 +55,11 @@
 classdef CargaVigaColumnaDistribuida < CargaEstatica
     
     properties(Access = private)
-        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga1 % Valor de la carga 1
         carga2 % Valor de la carga 2
         dist1 % Distancia de la carga 1 al primer nodo del elemento (porcentaje del largo)
         dist2 % Distancia de la carga 2 al primer nodo del elemento (porcentaje del largo)
+        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         theta % Angulo de la carga
     end % private properties CargaVigaColumnaDistribuida
     
@@ -76,14 +76,14 @@ classdef CargaVigaColumnaDistribuida < CargaEstatica
             
             % Si no se pasan argumentos se crea una carga vacia
             if nargin == 0
-                etiquetaCarga = '';
-                elemObjeto = [];
                 carga1 = 0;
-                distancia1 = 0;
                 carga2 = 0;
+                distancia1 = 0;
                 distancia2 = 0;
+                elemObjeto = [];
+                etiquetaCarga = '';
                 theta = 0;
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase
             % CargaEstatica
@@ -100,13 +100,13 @@ classdef CargaVigaColumnaDistribuida < CargaEstatica
             distancia2 = min(1, max(distancia2, 0));
             
             % Guarda los valores
-            obj.elemObj = elemObjeto;
             obj.carga1 = carga1;
-            obj.dist1 = distancia1 * elemObjeto.obtenerLargo();
             obj.carga2 = carga2;
+            obj.dist1 = distancia1 * elemObjeto.obtenerLargo();
             obj.dist2 = distancia2 * elemObjeto.obtenerLargo();
-            obj.theta = theta;
+            obj.elemObj = elemObjeto;
             obj.nodosCarga = elemObjeto.obtenerNodos();
+            obj.theta = theta;
             
         end % CargaVigaColumnaDistribuida constructor
         

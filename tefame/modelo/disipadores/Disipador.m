@@ -24,8 +24,7 @@
 %| Fecha: 29/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%  Methods:
+%  Methods(Access=public):
 %       definirGDLID(obj)
 %       obj = Disipador(etiquetaDisipador)
 %       disp(obj)
@@ -49,8 +48,8 @@ classdef Disipador < ComponenteModelo
     end % private properties Disipador
     
     properties(Access = protected)
-        nodosObj % Cell con los nodos
         gdlID % Lista con los ID de los grados de libertad
+        nodosObj % Cell con los nodos
         T % Matriz de transformacion
     end % protected properties Disipador
     
@@ -65,7 +64,7 @@ classdef Disipador < ComponenteModelo
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaDisipador = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@ComponenteModelo(etiquetaDisipador);

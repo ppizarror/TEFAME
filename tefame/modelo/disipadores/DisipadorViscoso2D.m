@@ -26,17 +26,7 @@
 %| Fecha: 29/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       Keq
-%       Ceq
-%       dx
-%       dy
-%       L
-%       theta
-%       Klp
-%       alpha
-%       Cd
-%  Methods:
+%  Methods(Access=public):
 %       definirGDLID(obj)
 %       obj = DisipadorViscoso2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
 %       disp(obj)
@@ -59,19 +49,19 @@
 classdef DisipadorViscoso2D < Disipador2D
     
     properties(Access = private)
-        Keq % Modulo de elasticidad
+        alpha % Paramatro del disipador
+        Cd % Parametro del disipador
         Ce % Parametro
         Ceq % Inercia de la seccion
         dx % Distancia en el eje x entre los nodos
         dy % Distancia en el eje y entre los nodos
+        Keq % Modulo de elasticidad
+        Klp % Matriz de rigidez local del elemento
         L % Largo del elemento
         theta % Angulo de inclinacion del disipador
-        Klp % Matriz de rigidez local del elemento
-        alpha % Paramatro del disipador
-        Cd % Parametro del disipador
-        w % Frecuencia del modo que controla la estructura
-        Vo % Desp
         v0 % Desp
+        Vo % Desp
+        w % Frecuencia del modo que controla la estructura
     end % private properties DisipadorViscoso2D
     
     methods(Access = public)
@@ -83,18 +73,18 @@ classdef DisipadorViscoso2D < Disipador2D
             % Completa con ceros si no hay argumentos
             if nargin == 0
                 etiquetaDisipador = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Disipador2D
             obj = obj@Disipador2D(etiquetaDisipador);
             
             % Guarda material
-            obj.nodosObj = {nodo1Obj; nodo2Obj};
             obj.alpha = alpha;
-            obj.Ce = [];
             obj.Cd = Cd;
-            obj.w = 1;
+            obj.Ce = [];
+            obj.nodosObj = {nodo1Obj; nodo2Obj};
             obj.v0 = 1;
+            obj.w = 1;
             
             % Calcula componentes geometricas
             coordNodo1 = nodo1Obj.obtenerCoordenadas();

@@ -30,19 +30,7 @@
 %|                 Pablo Pizarro @ppizarror - 14/05/2018                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       nodosObj
-%       gdlID
-%       Eo
-%       Ao
-%       dx
-%       dy
-%       L
-%       theta
-%       T
-%       TcargaReacc
-%       rho
-%  Methods:
+%  Methods(Access=public):
 %       obj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       nodosBiela = obtenerNodos(obj)
@@ -68,18 +56,18 @@
 classdef Biela2D < Elemento
     
     properties(Access = private)
-        nodosObj % Cell con los nodos
-        gdlID % Lista con los ID de los grados de libertad
         Ao % Area de la seccion transversal
-        Eo % Modulo de elasticidad
         dx % Distancia en el eje x entre los nodos
         dy % Distancia en el eje y entre los nodos
         dz % Distancia en el eje z entre los nodos
+        Eo % Modulo de elasticidad
+        gdlID % Lista con los ID de los grados de libertad
         L % Largo del elemento
-        theta % Angulo de inclinacion de la viga
+        nodosObj % Cell con los nodos
+        rho % Densidad de la biela
         T % Matriz de transformacion
         TcargaReacc % Reaccion de la biela guardada como un vector
-        rho % Densidad de la biela
+        theta % Angulo de inclinacion de la viga
     end % private properties Biela2D
     
     methods(Access = public)
@@ -90,7 +78,7 @@ classdef Biela2D < Elemento
             % Si no hay argumentos completa con ceros
             if nargin == 0
                 etiquetaBiela = '';
-            end % if
+            end
             if ~exist('densidad', 'var')
                 densidad = 0;
             end

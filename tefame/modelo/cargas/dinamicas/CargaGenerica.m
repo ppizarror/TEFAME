@@ -28,11 +28,9 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       amplitud
+%       carga
 %       direccion
-%       nodo
-%       tOscilacion
-%       w
+%       nodos
 %  Methods:
 %       CargaGenerica(etiquetaCargaGenerica,nodos,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)
 %       aplicarCarga(obj,factorDeCarga)
@@ -90,7 +88,7 @@ classdef CargaGenerica < CargaDinamica
             
             if nargin == 0
                 etiquetaCargaGenerica = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
             obj = obj@CargaDinamica(etiquetaCargaGenerica);
@@ -112,12 +110,12 @@ classdef CargaGenerica < CargaDinamica
             
             % Guarda los parametros de la carga
             obj.amplitud = amplitud;
+            obj.carga = carga; % Guarda la carga
             obj.direccion = direccion;
-            obj.tAnalisis = tAnalisis;
-            obj.tInicio = tInicio;
             obj.dt = dt;
             obj.nodos = nodos; % Nodo al que se le aplica la carga
-            obj.carga = carga; % Guarda la carga
+            obj.tAnalisis = tAnalisis;
+            obj.tInicio = tInicio;
             
         end % CargaGenerica constructor
         

@@ -59,8 +59,8 @@
 classdef Analisis < handle
     
     properties(Access = protected)
-        modeloObj % Objeto del modelo
         analisisFinalizado % Analisis termino
+        modeloObj % Objeto del modelo
         numeroGDL % Numero GDL del sistema
     end % protected properties Analisis
     
@@ -74,10 +74,10 @@ classdef Analisis < handle
             
             if nargin == 0
                 modeloObjeto = [];
-            end % if
+            end
             
-            obj.modeloObj = modeloObjeto;
             obj.analisisFinalizado = false;
+            obj.modeloObj = modeloObjeto;
             obj.numeroGDL = 0;
             
         end % Analisis constructor

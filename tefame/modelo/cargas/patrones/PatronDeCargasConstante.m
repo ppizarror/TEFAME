@@ -64,7 +64,7 @@ classdef PatronDeCargasConstante < PatronDeCargas
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaPatronDeCargas = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@PatronDeCargas(etiquetaPatronDeCargas);

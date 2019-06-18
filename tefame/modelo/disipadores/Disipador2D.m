@@ -26,8 +26,7 @@
 %| Fecha: 30/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%  Methods:
+%  Methods(Access=public):
 %       definirGDLID(obj)
 %       obj = Disipador2D(etiquetaDisipador)
 %       disp(obj)
@@ -61,7 +60,7 @@ classdef Disipador2D < Disipador
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaDisipador = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@Disipador(etiquetaDisipador);

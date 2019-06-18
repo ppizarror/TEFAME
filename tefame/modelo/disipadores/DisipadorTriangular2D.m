@@ -26,20 +26,7 @@
 %| Fecha: 29/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       nodosObj
-%       gdlID
-%       Keq
-%       Ceq
-%       dx
-%       dy
-%       L
-%       theta
-%       T
-%       Klp
-%       alpha
-%       Cd
-%  Methods:
+%  Methods(Access=public):
 %       actualizarDisipador(obj,w,carga)
 %       definirGDLID(obj)
 %       obj = DisipadorTriangular2D(etiquetaDisipador,nodo1Obj,nodo2Obj,k1,k2)
@@ -63,18 +50,18 @@
 classdef DisipadorTriangular2D < Disipador2D
     
     properties(Access = private)
-        Keq % Modulo de elasticidad
-        Ceq % Inercia de la seccion
         Ce % Ponderacion matriz de amortiguamiento
+        Ceq % Inercia de la seccion
         dx % Distancia en el eje x entre los nodos
         dy % Distancia en el eje y entre los nodos
-        L % Largo del elemento
-        theta % Angulo de inclinacion del disipador
         k1 % Paramatro de rigidez del disipador
         k2 % Paramatro de rigidez del disipador
         ke % Parametro del disipador
-        w % Frecuencia que mas mueve energia en la estructura
+        Keq % Modulo de elasticidad
+        L % Largo del elemento
+        theta % Angulo de inclinacion del disipador
         v0 % Desplazamiento relativo del disipador
+        w % Frecuencia que mas mueve energia en la estructura
     end % private properties DisipadorTriangular2D
     
     methods(Access = public)
@@ -86,15 +73,15 @@ classdef DisipadorTriangular2D < Disipador2D
             % Completa con ceros si no hay argumentos
             if nargin == 0
                 etiquetaDisipador = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Disipador2D
             obj = obj@Disipador2D(etiquetaDisipador);
             
             % Guarda material
-            obj.nodosObj = {nodo1Obj; nodo2Obj};
             obj.k1 = k1;
             obj.k2 = k2;
+            obj.nodosObj = {nodo1Obj; nodo2Obj};
             obj.v0 = 1;
             obj.w = 1;
             

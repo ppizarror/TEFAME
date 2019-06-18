@@ -54,8 +54,8 @@
 classdef AnalisisEstatico < Analisis
     
     properties(Access = private)
-        Kt % Matriz de rigidez del modelo
         F % Vector de fuerzas aplicadas sobre el modelo
+        Kt % Matriz de rigidez del modelo
         u % Vector con los desplazamientos de los grados de libertad del modelo
     end % private properties AnalisisEstatico
     
@@ -69,13 +69,14 @@ classdef AnalisisEstatico < Analisis
             
             if nargin == 0
                 modeloObjeto = [];
-            end % if
+            end
             
             obj = obj@Analisis(modeloObjeto);
-            obj.numeroGDL = 0;
-            obj.Kt = [];
-            obj.u = [];
+
             obj.F = [];
+            obj.Kt = [];
+            obj.numeroGDL = 0;
+            obj.u = [];
             
         end % AnalisisEstatico constructor
         
@@ -106,7 +107,7 @@ classdef AnalisisEstatico < Analisis
                     if (gdlidNodo(j) == -1)
                         contadorGDL = contadorGDL + 1;
                         gdlidNodo(j) = contadorGDL;
-                    end % if
+                    end
                 end % for j
                 nodoObjetos{i}.definirGDLID(gdlidNodo);
                 

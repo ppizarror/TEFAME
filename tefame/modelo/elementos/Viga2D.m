@@ -27,19 +27,7 @@
 %| Fecha: 14/05/2018                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       nodosObj
-%       gdlID
-%       Io
-%       Eo
-%       dx
-%       dy
-%       L
-%       theta
-%       Feq
-%       PLOTNELEM
-%       rho
-%  Methods:
+%  Methods(Access=public):
 %       obj = Viga2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       nodosViga = obtenerNodos(obj)
@@ -63,17 +51,17 @@
 classdef Viga2D < Elemento
     
     properties(Access = private)
-        nodosObj % Cell con los nodos
-        gdlID % Lista con los ID de los grados de libertad
-        Eo % Modulo de elasticidad
-        Io % Inercia de la seccion
         dx % Distancia en el eje x entre los nodos
         dy % Distancia en el eje y entre los nodos
-        L % Largo del elemento
-        theta % Angulo de inclinacion de la viga
+        Eo % Modulo de elasticidad
         Feq % Fuerza equivalente
+        gdlID % Lista con los ID de los grados de libertad
+        Io % Inercia de la seccion
+        L % Largo del elemento
+        nodosObj % Cell con los nodos
         PLOTNELEM % Numero de elementos en los que se discretiza para el grafico
         rho % Densidad de la viga
+        theta % Angulo de inclinacion de la viga
     end % private properties Viga2D
     
     methods(Access = public)
@@ -84,7 +72,7 @@ classdef Viga2D < Elemento
             % Si no se pasan argumentos se crean vacios
             if nargin == 0
                 etiquetaViga = '';
-            end % if
+            end
             if ~exist('densidad', 'var')
                 densidad = 0;
             end

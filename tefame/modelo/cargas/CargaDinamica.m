@@ -84,9 +84,9 @@
 classdef CargaDinamica < ComponenteModelo
     
     properties(Access = public)
+        dt % Delta de tiempo
         tAnalisis % Tiempo de analisis
         tInicio % Tiempo de inicio
-        dt % Delta de tiempo
     end % public properties CargaDinamica
     
     properties(Access = private)
@@ -118,23 +118,24 @@ classdef CargaDinamica < ComponenteModelo
             
             if nargin == 0
                 etiquetaCarga = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@ComponenteModelo(etiquetaCarga);
+
             obj.cargaActiva = true;
-            obj.cRayleigh = false;
-            obj.usoDisipador = false;
-            obj.desModal = false;
-            obj.factorUnidadMasa = 1;
-            obj.factorCargaMasa = 0;
             obj.cargaFueCalculada = false;
+            obj.cRayleigh = false;
+            obj.desModal = false;
+            obj.factorCargaMasa = 0;
+            obj.factorUnidadMasa = 1;
+            obj.usoDisipador = false;
             
             % Define algunos parametros iniciales
-            obj.tInicio = 0;
+            obj.cargaSumoMasa = false;
             obj.dt = 1;
             obj.tAnalisis = 0;
-            obj.cargaSumoMasa = false;
+            obj.tInicio = 0;
             
         end % CargaDinamica constructor
         

@@ -30,11 +30,11 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       elemObj
 %       carga1
-%       dist1
 %       carga2
+%       dist1
 %       dist2
+%       elemObj
 %  Methods:
 %       obj = CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
 %       aplicarCarga(obj,factorDeCarga)
@@ -52,11 +52,11 @@
 classdef CargaVigaDistribuida < CargaEstatica
     
     properties(Access = private)
-        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga1 % Valor de la carga 1
         carga2 % Valor de la carga 2
         dist1 % Distancia de la carga 1 al primer nodo del elemento
         dist2 % Distancia de la carga 2 al primer nodo del elemento
+        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
     end % private properties CargaVigaDistribuida
     
     methods(Access = public)
@@ -76,7 +76,7 @@ classdef CargaVigaDistribuida < CargaEstatica
                 distancia1 = 0;
                 carga2 = 0;
                 distancia2 = 0;
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
             obj = obj@CargaEstatica(etiquetaCarga);
@@ -92,11 +92,11 @@ classdef CargaVigaDistribuida < CargaEstatica
             distancia2 = min(1, max(distancia2, 0));
             
             % Guarda los valores
-            obj.elemObj = elemObjeto;
             obj.carga1 = carga1;
-            obj.dist1 = distancia1 * elemObjeto.obtenerLargo();
             obj.carga2 = carga2;
+            obj.dist1 = distancia1 * elemObjeto.obtenerLargo();
             obj.dist2 = distancia2 * elemObjeto.obtenerLargo();
+            obj.elemObj = elemObjeto;
             obj.nodosCarga = elemObjeto.obtenerNodos();
             
         end % CargaVigaDistribuida constructor

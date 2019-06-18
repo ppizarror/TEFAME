@@ -33,7 +33,7 @@
 %       amplitud
 %       direccion
 %       intervalos
-%       nodo
+%       nodos
 %       tpulso
 %  Methods:
 %       CargaPulso(etiquetaCargaPulso,nodos,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)
@@ -94,7 +94,7 @@ classdef CargaPulso < CargaDinamica
             
             if nargin == 0
                 etiquetaCargaPulso = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
             obj = obj@CargaDinamica(etiquetaCargaPulso);
@@ -115,12 +115,12 @@ classdef CargaPulso < CargaDinamica
             end
             
             % Guarda el registro
-            obj.tpulso = tpulso;
             obj.amplitud = amplitud;
             obj.direccion = direccion;
-            obj.tAnalisis = tAnalisis;
             obj.dt = dt;
             obj.nodos = nodos; % Objeto del nodo donde se aplica la carga
+            obj.tAnalisis = tAnalisis;
+            obj.tpulso = tpulso;
             
         end % CargaPulso constructor
         

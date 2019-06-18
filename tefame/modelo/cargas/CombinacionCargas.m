@@ -60,7 +60,7 @@ classdef CombinacionCargas < ComponenteModelo
             
             if nargin == 0
                 etiquetaCombinacion = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@ComponenteModelo(etiquetaCombinacion);

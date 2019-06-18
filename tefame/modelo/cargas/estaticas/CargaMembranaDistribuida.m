@@ -31,14 +31,14 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       elemObj
 %       carga1
 %       carga2
 %       dist1
 %       dist2
+%       elemObj
+%       L
 %       nodo1
 %       nodo2
-%       L
 %       theta
 %  Methods:
 %       obj = CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
@@ -57,14 +57,14 @@
 classdef CargaMembranaDistribuida < CargaEstatica
     
     properties(Access = private)
-        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
         carga1 % Valor de la carga 1
         carga2 % Valor de la carga 2
         dist1 % Distancia de la carga 1 al primer nodo del elemento
         dist2 % Distancia de la carga 2 al primer nodo del elemento
+        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
+        L % Largo de aplicacion de las cargas
         nodo1 % Nodo 1 de aplicacion
         nodo2 % Nodo 2 de aplicacion
-        L % Largo de aplicacion de las cargas
         theta % Angulo de aplicacion
     end % private properties CargaMembranaDistribuida
     
@@ -90,13 +90,13 @@ classdef CargaMembranaDistribuida < CargaEstatica
             % combinaciones 1-2, 2-3, 3-4 o 1-4
             
             if nargin == 0
-                etiquetaCarga = '';
-                elemObjeto = [];
                 carga1 = 0;
-                distancia1 = 0;
                 carga2 = 0;
+                distancia1 = 0;
                 distancia2 = 0;
-            end % if
+                elemObjeto = [];
+                etiquetaCarga = '';
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase
             % CargaEstatica

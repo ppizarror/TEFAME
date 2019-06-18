@@ -32,10 +32,10 @@
 %|______________________________________________________________________|
 %
 %  Properties (Access=private):
-%       elemObj
-%       deltaTemepratura
 %       alpha
 %       carga
+%       deltaTemepratura
+%       elemObj
 %  Methods:
 %       obj = CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
 %       aplicarCarga(obj,factorDeCarga)
@@ -53,10 +53,10 @@
 classdef CargaBielaTemperatura < CargaEstatica
     
     properties(Access = private)
-        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-        deltaTemperatura % Diferencia de temperatura aplicada al material
         alpha % Coeficiente de dilatacion termica de la biela
         carga % Carga generada por la temperatura
+        deltaTemperatura % Diferencia de temperatura aplicada al material
+        elemObj % Variable que guarda el elemento que se le va a aplicar la carga
     end % private properties CargaBielaTemperatura
     
     methods(Access = public)
@@ -72,7 +72,7 @@ classdef CargaBielaTemperatura < CargaEstatica
                 etiquetaCarga = '';
                 deltaTemperatura = 0;
                 alpha = 0;
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase
             % CargaEstatica

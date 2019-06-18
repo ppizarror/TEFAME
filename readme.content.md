@@ -39,18 +39,19 @@
 ### Estáticas
 
 - Carga biela temperatura
-- Carga membrana distribuída
-- Carga en nodo
-- Carga distribuida en viga-columna
-- Carga puntual en viga-columna
 - Carga distribuída en viga
+- Carga distribuida en viga-columna
+- Carga en nodo
+- Carga membrana distribuída
 - Carga puntual en viga
+- Carga puntual en viga-columna
 
 ### Dinámicas
 
 - Carga de pulso
-- Registro sísmico
+- Carga genérica
 - Carga sinusoidal
+- Registro sísmico
 
 ## Documentacion
 

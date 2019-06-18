@@ -32,11 +32,10 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       nodoObj
 %       gdlRestringidos
+%       nodoObj
 %       valoresRestriccion
-%  Methods:
+%  Methods(Access=public):
 %       obj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo)
 %       obj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo,valoresRestrinccionNodo)
 %       aplicarRestriccion(obj)
@@ -49,9 +48,9 @@
 classdef RestriccionNodo < ComponenteModelo
     
     properties(Access = private)
-        nodoObj
-        gdlRestringidos
-        valoresRestriccion
+        gdlRestringidos % Grados de libertad restringidos
+        nodoObj % Nodos
+        valoresRestriccion % Restriccion de los nodos
     end % private properties RestriccionNodo
     
     methods(Access = public)
@@ -68,9 +67,9 @@ classdef RestriccionNodo < ComponenteModelo
             
             if nargin == 0
                 etiquetaRestriccion = '';
-                nodoObjeto = [];
                 gdlRestringidosNodo = [];
-            end % if
+                nodoObjeto = [];
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@ComponenteModelo(etiquetaRestriccion);
@@ -82,7 +81,7 @@ classdef RestriccionNodo < ComponenteModelo
                 obj.gdlRestringidos = gdlRestringidosNodo';
             else
                 obj.gdlRestringidos = gdlRestringidosNodo;
-            end % if
+            end
             
         end % RestriccionNodo constructor
         

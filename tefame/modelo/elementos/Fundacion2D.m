@@ -26,19 +26,6 @@
 %| Fecha: 10/06/2018                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       nodosObj
-%       gdlID
-%       Eo
-%       Ao
-%       Io
-%       dx
-%       dy
-%       L
-%       Feq
-%       T
-%       Klp
-%       PLOTNELEM
 %  Methods:
 %       obj = Fundacion2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(obj)
@@ -67,17 +54,17 @@
 classdef Fundacion2D < Elemento
     
     properties(Access = private)
-        nodosObj % Cell con los nodos
-        gdlID % Lista con los ID de los grados de libertad
-        meq % Masa del elemento
-        keq % Rigidez de la fundacion
         dx % Distancia en el eje x entre los nodos
         dy % Distancia en el eje y entre los nodos
-        L % Largo del elemento
-        theta % Angulo de inclinacion de la fundacion
         Feq % Fuerza equivalente
-        T % Matriz de transformacion
+        gdlID % Lista con los ID de los grados de libertad
+        keq % Rigidez de la fundacion
         Klp % Matriz de rigidez local del elemento
+        L % Largo del elemento
+        meq % Masa del elemento
+        nodosObj % Cell con los nodos
+        T % Matriz de transformacion
+        theta % Angulo de inclinacion de la fundacion
     end % private properties Fundacion2D
     
     methods(Access = public)
@@ -89,7 +76,7 @@ classdef Fundacion2D < Elemento
             % Completa con ceros si no hay argumentos
             if nargin == 0
                 etiquetaViga = '';
-            end % if
+            end
             
             % Llamamos al constructor de la SuperClass que es la clase Elemento
             obj = obj@Elemento(etiquetaViga);
