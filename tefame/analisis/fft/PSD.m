@@ -36,6 +36,8 @@ p = inputParser;
 p.KeepUnmatched = true;
 addOptional(p, 'betaFFTMax', false); % Calcula el amortiguamiento con el maximo
 addOptional(p, 'peakMinDistance', 0.5); % Requerido para el calculo
+addOptional(p, 'tmax', -1);
+addOptional(p, 'tmin', 0);
 addOptional(p, 'tukeywinr', 0.01);
 addOptional(p, 'zerofill', 0);
 parse(p, varargin{:});
@@ -44,12 +46,43 @@ r = p.Results;
 % Numero de grados de libertad
 ng = length(gdl);
 
+% Se obtiene la ventana de tiempo
+c1 = 1;
+if r.tmin ~= 0
+    if r.tmin < 0
+        error('El tiempo inferior no puede ser cero');
+    end
+    c1 = fix(r.tmin*fs) + 1;
+end
+cend = false;
+if r.tmax ~= -1
+    if r.tmin >= r.tmax
+        error('El tiempo inferior tmin no puede ser mayor a tmax');
+    end
+    c2 = fix(r.tmax*fs) + 1;
+else
+    c2 = -1;
+    cend = true;
+end
+
 %% Calcula la FFT
 fft = cell(1, ng);
 for k = 1:ng
     
     % Obtiene la aceleracion del grado de libertad analizado
     acc = a(gdl(k), :);
+    
+    % Limita la ventana
+    if cend
+        c2 = length(acc);
+    end
+    if c1 > length(acc)
+        error('El tiempo inferior excede el largo del vector de aceleracion');
+    end
+    if c2 > length(acc)
+        error('El tiempo superior excede el largo del vector de aceleracion');
+    end
+    acc = acc(c1:c2);
     
     % Rellena con ceros
     acc = [acc, zeros(1, ceil(r.zerofill*length(acc)))]; %#ok<AGROW>
@@ -135,19 +168,19 @@ if ~r.betaFFTMax % Usa cada FFT de manera separada
     
     betaNodo = cell(1, ng);
     betaFreqNodo = cell(1, ng);
-    for k=1:ng
+    for k = 1:ng
         ftNodo = fft{k};
         pksNodo = ftNodo(locFreq);
         beta = zeros(1, maxlocs);
         betaFreq = cell(1, maxlocs);
         pksObj = pksNodo ./ sqrt(2);
         lastj = 1;
-
+        
         % Recorre cada peak del nodo registrado
         for i = 1:length(pks)
             for j = lastj:length(f) - 1 % Al comenzar desde el punto anterior asegura que no se repitan frecuencias
                 if (ftNodo(j) - pksObj(i)) * (ftNodo(j+1) - pksObj(i)) < 0 % Cruzo el objetivo en i
-
+                    
                     % Si el ultimo que cruzo fue superior a la frecuencia del peak
                     % objetivo entonces este corresponde a la frecuencia derecha, y
                     % el anterior a la izquierda
@@ -159,29 +192,29 @@ if ~r.betaFFTMax % Usa cada FFT de manera separada
                         betaFreq{i} = [izq, der, f(locFreq(i)), pksObj(i)];
                         break;
                     end
-                    lastj = j+1; % Ultimo en atravezar
+                    lastj = j + 1; % Ultimo en atravezar
                 end
             end % for j
         end % for i
-
+        
         % Guarda el resultado
         betaNodo{k} = beta;
         betaFreqNodo{k} = betaFreq;
-
+        
     end % for k
-
+    
 else % Se usa solo el maximo
     
     beta = zeros(1, maxlocs);
     betaFreq = cell(1, maxlocs);
     pksObj = pks ./ sqrt(2);
     lastj = 1;
-
+    
     % Recorre cada peak del nodo registrado
     for i = 1:length(pks)
         for j = lastj:length(f) - 1 % Al comenzar desde el punto anterior asegura que no se repitan frecuencias
             if (fftmax(j) - pksObj(i)) * (fftmax(j+1) - pksObj(i)) < 0 % Cruzo el objetivo en i
-
+                
                 % Si el ultimo que cruzo fue superior a la frecuencia del peak
                 % objetivo entonces este corresponde a la frecuencia derecha, y
                 % el anterior a la izquierda
@@ -193,7 +226,7 @@ else % Se usa solo el maximo
                     betaFreq{i} = [izq, der, f(locFreq(i)), pksObj(i)];
                     break;
                 end
-                lastj = j+1; % Ultimo en atravezar
+                lastj = j + 1; % Ultimo en atravezar
             end
         end % for j
     end % for i
@@ -202,7 +235,7 @@ else % Se usa solo el maximo
     betaFreqNodo = betaFreq;
     
 end
-    
+
 %% Calcula la envolvente de los peaks por cada una de las formas modales
 envFormaModal = cell(1, maxlocs);
 for k = 1:maxlocs

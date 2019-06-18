@@ -64,7 +64,7 @@ pulsoNodos = cell(length(pulsoNodo), 1);
 for i = 1:length(pulsoNodo)
     pulsoNodos{i} = nodos{pulsoNodo(i)};
 end % for i
-cargasDinamicas{1} = CargaPulso('Pulso', pulsoNodos, [1, 0], 1, 0.1, 0.005, 0, 20);
+cargasDinamicas{1} = CargaPulso('Pulso', pulsoNodos, [1, 0], 1, 0.1, 0.005, 0, 100);
 
 %% Creamos el analisis
 analisisObj = ModalEspectral(modeloObj);
@@ -88,7 +88,7 @@ analisisObj.resolverCargasDinamicas();
 
 analisisObj.calcularFFTCarga(cargasDinamicas{1}, pulsoNodos, [1, 0, 0], [0, 1, 0], ...
     'fftlim', 10, 'tukeywinr', 0.01, 'zerofill', 10, 'fftpeaks', true, ...
-    'maxpeaks', 5, 'peakMinDistance', 0.7, 'betaPlot', true);
+    'maxpeaks', 5, 'peakMinDistance', 0.7, 'betaPlot', true, 'tmin', 0.15, 'tmax', 55);
 % analisisObj.plotTrayectoriaNodos(cargasDinamicas{1}, pulsoNodos, [1, 0, 0]);
 
 %% Finaliza el analisis

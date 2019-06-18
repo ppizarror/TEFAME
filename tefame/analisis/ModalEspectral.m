@@ -1954,6 +1954,8 @@ classdef ModalEspectral < Analisis
             %   legendloc       Ubicacion de la leyenda
             %   maxpeaks        Numero de peaks maximos calculados
             %   peakMinDistance Distancia minima entre peaks requerida
+            %   tmax            Tiempo maximo de analisis
+            %   tmin            Tiempo minimo de analisis
             %   tukeywinr       Factor de la ventana de tukey
             %   unidadL         Unidad longitud
             %   zerofill        Indica relleno de ceros para FFT
@@ -1998,6 +2000,8 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'legendloc', 'best');
             addOptional(p, 'maxpeaks', -1); % El maximo se ajusta al dato
             addOptional(p, 'peakMinDistance', 0.5); % Requerido para el calculo
+            addOptional(p, 'tmax', -1);
+            addOptional(p, 'tmin', 0);
             addOptional(p, 'tukeywinr', 0.01);
             addOptional(p, 'unidadL', 'm');
             addOptional(p, 'zerofill', 0);
@@ -2110,7 +2114,7 @@ classdef ModalEspectral < Analisis
                 maxlocs, pks, beta, betaFreq] = ...
                 PSD(a_c, cargaFS, gdl, 'peakMinDistance', r.peakMinDistance, ...
                 'tukeywinr', r.tukeywinr, 'zerofill', r.zerofill, ...
-                'betaFFTMax', true);
+                'betaFFTMax', true, 'tmax', r.tmax, 'tmin', r.tmin);
             
             % Actualiza por el numero de modos del sistema
             maxlocs = min(maxlocs, obj.numModos);
