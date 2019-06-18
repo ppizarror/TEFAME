@@ -1,4 +1,4 @@
-function [f, fft, envFormaModal, tlocMean, tlocStd, locMean, locStd, locFreq, ...
+function [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, locStd, locFreq, ...
     maxlocs, pks, betaNodo, betaFreqNodo] = PSD(a, fs, gdl, varargin)
 % PSD: Power Spectral Density. Calcula la FFT de un registro sismico
 % analizado para varios nodos con distintos grados de libertad. La funcion
@@ -87,16 +87,17 @@ for k = 1:ng
     % Rellena con ceros
     acc = [acc, zeros(1, ceil(r.zerofill*length(acc)))]; %#ok<AGROW>
     tuck = tukeywin(length(acc), r.tukeywinr)';
-    [f, fftt, ~] = DFT(fs, acc.*tuck);
+    acctuck = acc.*tuck;
+    [f, fftt, ~] = DFT(fs, acctuck);
     
     % Solo conservo la mitad
     tf = find(f == 0);
     f = f(tf:end);
     fftt = fftt(tf:end);
-    
+    fftcomp{k} = fftt; %#ok<AGROW> % Guarda el registro complejo
     fftt = abs(fftt); % O si no plot reclama
     fft{k} = fftt; % Guarda el registro
-    
+
 end % for k
 
 %% Calcula el promedio y la desviacion estandar de los fft

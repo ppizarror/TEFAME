@@ -2005,6 +2005,10 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'tukeywinr', 0.01);
             addOptional(p, 'unidadL', 'm');
             addOptional(p, 'zerofill', 0);
+            addOptional(p, 'filtmod', []);
+            addOptional(p, 'nodo', {});
+            addOptional(p, 'fase', false);
+            addOptional(p, 'fasenodos', []);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -2105,17 +2109,16 @@ classdef ModalEspectral < Analisis
             if r.peakMinDistance <= 0
                 error('Distancia no puede ser menor o igual a cero');
             end
-            
             % Calcula el PSD del registro, ello incluye la FFT, los peaks
             % asociados a cada periodo y las formas modales y los
             % amortiguamientos
             fprintf('\tCalculando PSD del registro\n');
-            [f, fft, envFormaModal, tlocMean, tlocStd, locMean, ~, ~, ...
-                maxlocs, pks, beta, betaFreq] = ...
+            [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, locStd, locFreq,...
+                maxlocs, pks, betaNodo, betaFreqNodo] = ...
                 PSD(a_c, cargaFS, gdl, 'peakMinDistance', r.peakMinDistance, ...
                 'tukeywinr', r.tukeywinr, 'zerofill', r.zerofill, ...
                 'betaFFTMax', true, 'tmax', r.tmax, 'tmin', r.tmin);
-            
+
             % Actualiza por el numero de modos del sistema
             maxlocs = min(maxlocs, obj.numModos);
             
@@ -2327,9 +2330,9 @@ classdef ModalEspectral < Analisis
                 ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
                 
-                % Crea la curva de variación del amortiguamiento por cada
+                % Crea la curva de variaciï¿½n del amortiguamiento por cada
                 % modo
-                fig_title = sprintf('%s %s - Gráfico de amortiguamiento modal', ...
+                fig_title = sprintf('%s %s - Grï¿½fico de amortiguamiento modal', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
@@ -2345,9 +2348,124 @@ classdef ModalEspectral < Analisis
                 
             end % betaPlot
             
+            % Realiza el filtrado de modos de la respuesta de aceleracion
+            if ~isempty(r.filtmod)
+                % Imprime en consola la tabla
+                fprintf('\tFiltrando modos:\n');
+                fprintf('\t\t-------------------------------------------------\n');
+                l_ac = length(a_c);
+                
+                % Vector de aceleracion del nodo i
+                for k = 1:length(r.nodo)
+                    ngd = nodos{k}.obtenerGDLIDCondensado();
+                    ng = 0; % Numero grado analisis
+                    for i = 1:length(direccionCarga)
+                        if direccionCarga(i) == 1
+                            ng = ngd(i);
+                        end
+                    end % for i
+                    accresp(:, k) = a_c(ng, :)'; %#ok<AGROW>
+                end % for k
+
+                tuck = tukeywin(length(accresp), r.tukeywinr);
+                acc = accresp.*tuck;
+                dt = cargaFS^-1;
+                t = 0:dt:dt*(length(acc) - 1);
+
+                % Crea la figura
+                fig_title = sprintf('%s %s - Filtro de modos', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                plot(t, acc(1:l_ac, 1), '-', 'lineWidth', 1.5);
+                sumFiltmod = zeros(l_ac, 1);
+                legmod{1} = 'All modes';
+                
+                % Aplica el filtro
+                for i = 1:length(r.filtmod)
+                    rangeinf = locMean(i)-0.2; 
+                    rangesup = locMean(i)+0.2; 
+                    if i == 1
+                        Wn = rangesup(i)/(cargaFS/2);
+                    elseif i > 1
+                        Wn = [rangeinf rangesup]./(cargaFS/2);
+                    end
+                    [B, A] = butter(4, Wn);
+                    Filtmod(:, i) = filtfilt(B, A, acc(1:l_ac, 1)); %#ok<AGROW>
+                    sumFiltmod = sumFiltmod + Filtmod(:, i);
+                    legmod{i + 1} = strcat('Modo ',num2str(i)); %#ok<AGROW>
+                    plot(t, Filtmod(:, i), '-', 'lineWidth', 1);  
+                end
+                legmod{end+1} = 'Sum modes';
+
+                % Plot respuesta filtrada          
+                ylabel('Aceleracion (g)');
+                xlabel('t (s)');
+                title(fig_title);
+                plot(t, sumFiltmod, 'k--', 'lineWidth', 1.5);
+                xlim([0 6]);
+                ylim([-max(get(gca, 'ylim')), max(get(gca, 'ylim'))]);
+                grid on;
+                zoom on;
+                legend(legmod)
+            end
+            
+            if r.fase
+                % Extrae los fft de los nodos
+                Nodos = sort(r.fasenodos);
+                for i = 1:length(fftcomp) - 1
+                    division(:, i) = fftcomp{i}./fftcomp{end}; %#ok<AGROW>
+                end
+                
+                Fftcomp(:, 1) = fftcomp{Nodos(1)};
+                Fftcomp(:, 2) = fftcomp{Nodos(2)};
+                
+                % Crea la figura
+                fig_title = sprintf('%s %s - Fase de la Transformada', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on
+                ax1 = subplot(311);
+                plot(f, abs(division(:, Nodos(1))))
+                title('Division FFT - Parte Real')
+                xlabel('Frecuencia (Hz)')
+                ylabel('FFT')
+                grid on
+                grid minor
+                xlim([0 10])
+                
+                ax2 = subplot(312);
+                plot(f, angle(division(:, Nodos(1))))
+                title('Fase')
+                xlabel('Frecuencia (Hz)')
+                ylabel('Angle')
+                grid on
+                grid minor
+                xlim([0 10])
+                
+                ax3 = subplot(313);
+                plot(f, abs(Fftcomp'));
+                xlabel('Frecuencia (Hz)')
+                ylabel('FFT')
+                grid on
+                grid minor
+                zoom on
+                legend({strcat('Piso',' ', num2str(Nodos(1))),...
+                    strcat('Piso',' ', num2str(Nodos(2)))})
+                xlim([0 10]) 
+            end
+            
+            
+            
+            
             % Finaliza proceso
             fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
             dispMetodoTEFAME();
+            
+            
+            
             
         end % calcularFFTCarga function
         
