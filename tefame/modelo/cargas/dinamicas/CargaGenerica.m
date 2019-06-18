@@ -77,7 +77,7 @@ classdef CargaGenerica < CargaDinamica
     
     methods(Access = public)
         
-        function obj = CargaGenerica(etiquetaCargaGenerica, nodos, direccion, carga, dt, tInicio, tAnalisis)
+        function obj = CargaGenerica(etiquetaCargaGenerica, nodos, direccion, carga, dt)
             % CargaGenerica: es el constructor de la clase CargaGenerica
             %
             % Crea una carga generica
@@ -93,19 +93,31 @@ classdef CargaGenerica < CargaDinamica
             if ~iscell(nodos)
                 nodos = {nodos};
             end
+            for k=1:length(nodos)
+                if ~isa(nodos{k}, 'Nodo')
+                    error('Elemento %d del cell de nodos no es de clase Nodo', k);
+                end
+            end % for k
             
             % Verifica que tenga sentido la direccion
             if ~verificarVectorDireccion(direccion, nodos{1}.obtenerNumeroGDL())
                 error('Vector direccion mal definido');
             end
             
-            % Chequea que los tiempos esten bien definidos
-            if tAnalisis < 0 || tInicio < 0 || dt <= 0
-                error('Tiempo de carga mal definido');
+            % Verifica que la carga no sea nula
+            nc = length(carga);
+            if nc == 0
+                error('La carga no puede ser nula');
             end
             
+            % Chequea que los tiempos esten bien definidos
+            if dt <= 0
+                error('dt de carga mal definido');
+            end
+            tInicio = 0;
+            tAnalisis = nc * dt;
+            
             % Guarda los parametros de la carga
-            obj.amplitud = amplitud;
             obj.carga = carga; % Guarda la carga
             obj.direccion = direccion;
             obj.dt = dt;
@@ -121,8 +133,7 @@ classdef CargaGenerica < CargaDinamica
             
             % Crea la matriz de carga
             ng = length(m);
-            nint = obj.tOscilacion / obj.dt;
-            nt = obj.tAnalisis / obj.dt; % Nro de intervalos
+            nt = length(obj.carga); % Nro de intervalos
             p = zeros(ng, nt);
             
             % Crea el vector de influencia
@@ -164,26 +175,10 @@ classdef CargaGenerica < CargaDinamica
                 
             end % for k
             
-            % Carga sinusoidal
-            t = linspace(0, obj.tOscilacion, nint);
-            carga = zeros(1, length(t));
-            
-            for i = 1:length(t)
-                carga(i) = obj.amplitud * sin(obj.w*t(i));
-            end % for i
-            
+            % Carga generica
             for i = 1:nt
-                if i < length(t)
-                    p(:, i) = rf .* carga(i);
-                else
-                    break;
-                end
+                p(:, i) = rf .* obj.carga(i);
             end % for i
-            
-            if dispinfo
-                fprintf('\t\t\t\tLa carga es aplicada en %d/%d (%.2f%%) de la matriz de cargas totales\n', ...
-                    i-1, nt, ((i - 1) / nt)*100);
-            end
             
         end % calcularCarga function
         
