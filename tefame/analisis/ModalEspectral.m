@@ -2136,8 +2136,8 @@ classdef ModalEspectral < Analisis
                 end
                 
                 ylabel('FFT');
-                xlabel('f (Hz)');
-                title(fig_title);
+                xlabel('Frecuencia (Hz)');
+                title({fig_title, ''});
                 if r.fftLim == 0
                     xlim([0, max(f)]);
                 else
@@ -2187,8 +2187,8 @@ classdef ModalEspectral < Analisis
                 text(locMeanL.*1.05, pksL.*1.0, num2str((1:numel(pksL))'));
                 plot(locMeanL, pksL, 'r^', 'markerfacecolor', [1, 0, 0]);
                 ylabel('FFT');
-                xlabel('f (Hz)');
-                title(fig_title);
+                xlabel('Frecuencia (Hz)');
+                title({fig_title, ''});
                 if r.fftLim == 0
                     xlim([0, max(f)]);
                 else
@@ -2243,10 +2243,11 @@ classdef ModalEspectral < Analisis
                     end
                 end
                 
-                title(fig_title);
+                title({fig_title, ''});
                 xlim([0, 1]);
                 ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
+                grid minor;
                 legend(formaModalLeg, 'location', 'southeast');
                 
             end % plotFormaModal
@@ -2308,8 +2309,8 @@ classdef ModalEspectral < Analisis
                 end % for i
                 
                 ylabel('FFT');
-                xlabel('f (Hz)');
-                title(fig_title);
+                xlabel('Frecuencia (Hz)');
+                title({fig_title, ''});
                 if r.fftLim == 0
                     xlim([0, max(f)]);
                 else
@@ -2317,6 +2318,7 @@ classdef ModalEspectral < Analisis
                 end
                 ylim([0, max(get(gca, 'ylim'))]);
                 grid on;
+                grid minor;
                 
                 % Crea la curva de variacion del amortiguamiento por cada modo
                 fig_title = sprintf('%s %s - Grafico de amortiguamiento modal', ...
@@ -2328,10 +2330,11 @@ classdef ModalEspectral < Analisis
                 plot(1:lbeta, betaModo(1:lbeta), '*-', 'lineWidth', 1.5);
                 xlabel('Modo');
                 ylabel('Amortiguamiento (%)');
-                title('Amortiguamiento \beta modal');
+                title({'Amortiguamiento \beta modal', ''});
                 legend({'\beta Teorico', '\beta PSD'}, 'location', 'northeast');
                 set(gca, 'XTick', 1:lbeta);
                 grid on;
+                grid minor;
                 
             end % betaPlot
             
@@ -2342,7 +2345,7 @@ classdef ModalEspectral < Analisis
                 fprintf('\tRealiza filtrado de modos\n');
                 l_ac = length(a_c);
                 
-                if iscell(r.filtNodo)
+                if ~iscell(r.filtNodo)
                     r.filtNodo = {r.filtNodo};
                 end
                 for k = 1:length(r.filtNodo)
@@ -2353,7 +2356,7 @@ classdef ModalEspectral < Analisis
                 
                 % Vector de aceleracion del nodo i
                 for k = 1:length(r.filtNodo)
-                    ngd = r.filtNodo(k).obtenerGDLIDCondensado();
+                    ngd = r.filtNodo{k}.obtenerGDLIDCondensado();
                     ng = 0; % Numero grado analisis
                     for i = 1:length(direccionCarga)
                         if direccionCarga(i) == 1
@@ -2401,12 +2404,13 @@ classdef ModalEspectral < Analisis
                 
                 % Plot respuesta filtrada
                 ylabel(sprintf('Aceleracion (%s/s^2)', r.unidadL));
-                xlabel('T (s)');
-                title(fig_title);
+                xlabel('Periodo (s)');
+                title({fig_title, ''});
                 plot(t, sumFiltmod, 'k--', 'lineWidth', 1.5);
                 xlim(r.filtTlim);
                 ylim([-max(get(gca, 'ylim')), max(get(gca, 'ylim'))]);
                 grid on;
+                grid minor;
                 zoom on;
                 legend(legmod);
                 
