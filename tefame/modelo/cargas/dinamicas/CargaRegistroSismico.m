@@ -113,6 +113,10 @@ classdef CargaRegistroSismico < CargaDinamica
             for k = 1:length(direccion)
                 if direccion(k) ~= 0
                     reg = registro{k};
+                    [~, ncol] = size(reg);
+                    if ncol ~= 2
+                        error('El registro sismico debe ser una matriz de dos columnas, en la primera debe ir el tiempo, en la segunda la aceleracion');
+                    end
                     dt = reg(2, 1) - reg(1, 1);
                     break;
                 end

@@ -97,6 +97,11 @@ classdef CargaPulso < CargaDinamica
             if ~iscell(nodos)
                 nodos = {nodos};
             end
+            for k=1:length(nodos)
+                if ~isa(nodos{k}, 'Nodo')
+                    error('Elemento %d del cell de nodos no es de clase Nodo', k);
+                end
+            end % for k
             
             % Verifica que tenga sentido la direccion
             if ~verificarVectorDireccion(direccion, nodos{1}.obtenerNumeroGDL())

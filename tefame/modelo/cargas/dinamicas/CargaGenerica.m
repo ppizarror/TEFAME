@@ -93,7 +93,7 @@ classdef CargaGenerica < CargaDinamica
             if ~iscell(nodos)
                 nodos = {nodos};
             end
-            for k=1:length(nodos)
+            for k = 1:length(nodos)
                 if ~isa(nodos{k}, 'Nodo')
                     error('Elemento %d del cell de nodos no es de clase Nodo', k);
                 end

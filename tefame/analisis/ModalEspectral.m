@@ -107,7 +107,7 @@ classdef ModalEspectral < Analisis
             end
             
             obj = obj@Analisis(modeloObjeto);
-
+            
             % Guarda valores iniciales
             obj.cargarAnimacion = true;
             obj.F = [];
@@ -1076,7 +1076,7 @@ classdef ModalEspectral < Analisis
             grid minor;
             xlabel('Drift (%)');
             ylabel(sprintf('Altura (%s)', r.unidad));
-            title(fig_title);
+            title({fig_title, ''});
             
             fig_title = sprintf('Envolvente de Desplazamiento - %s %s', ctitle, carga.obtenerEtiqueta());
             plt = figure('Name', fig_title, 'NumberTitle', 'off');
@@ -1086,7 +1086,7 @@ classdef ModalEspectral < Analisis
             grid minor;
             xlabel(sprintf('Desplazamiento (%s)', r.unidad));
             ylabel(sprintf('Altura (%s)', r.unidad));
-            title(fig_title);
+            title({fig_title, ''});
             
             fig_title = sprintf('Envolvente de Aceleracion - %s %s', ctitle, carga.obtenerEtiqueta());
             plt = figure('Name', fig_title, 'NumberTitle', 'off');
@@ -1096,7 +1096,7 @@ classdef ModalEspectral < Analisis
             grid minor;
             xlabel(sprintf('Aceleracion (%s/s^2)', r.unidad));
             ylabel(sprintf('Altura (%s)', r.unidad));
-            title(fig_title);
+            title({fig_title, ''});
             
             % Finaliza proceso
             drawnow();
@@ -1176,9 +1176,9 @@ classdef ModalEspectral < Analisis
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel(sprintf('Corte (%s)', r.unidadC));
-                title(fig_title);
+                title({fig_title, ''});
                 dplot = true;
-            end
+            end % corte
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'momento')
                 fig_title = sprintf('Historial de Momento Basal - %s %s', ctitle, carga.obtenerEtiqueta());
@@ -1191,9 +1191,9 @@ classdef ModalEspectral < Analisis
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel(sprintf('Momento (%s)', r.unidadM));
-                title(fig_title);
+                title({fig_title, ''});
                 dplot = true;
-            end
+            end % momento
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envcorte')
                 fig_title = sprintf('Envolvente de Cortante Basal - %s %s', ctitle, carga.obtenerEtiqueta());
@@ -1207,7 +1207,7 @@ classdef ModalEspectral < Analisis
                 grid minor;
                 xlabel(sprintf('Corte (%s)', r.unidadC));
                 ylabel('Altura (m)');
-                title(fig_title);
+                title({fig_title, ''});
                 
                 % Realiza los analisis por modo
                 CBLegend = cell(1, 1+lenvmodo);
@@ -1227,7 +1227,7 @@ classdef ModalEspectral < Analisis
                     legend(CBLegend);
                 end
                 dplot = true;
-            end
+            end % envcorte
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'envmomento')
                 fig_title = sprintf('Envolvente de Momento Basal - %s %s', ctitle, carga.obtenerEtiqueta());
@@ -1240,9 +1240,9 @@ classdef ModalEspectral < Analisis
                 grid minor;
                 xlabel(sprintf('Momento (%s)', r.unidadM));
                 ylabel('Altura (m)');
-                title(fig_title);
+                title({fig_title, ''});
                 dplot = true;
-            end
+            end % envmomento
             
             % Si no se realizo ningun grafico
             if ~dplot
@@ -1463,17 +1463,17 @@ classdef ModalEspectral < Analisis
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia cinetica');
-                title(fig_title);
+                title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
-                    axes('Position', [.59, .70, .29, .20]);
+                    axes('Position', [.59, .65, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
                 end
                 dplot = true;
-            end
+            end % ek
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ev')
                 fig_title = sprintf('E_V Energia Elastica - %s %s', ...
@@ -1485,17 +1485,17 @@ classdef ModalEspectral < Analisis
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia elastica');
-                title(fig_title);
+                title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
-                    axes('Position', [.59, .70, .29, .20]);
+                    axes('Position', [.59, .65, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
                 end
                 dplot = true;
-            end
+            end % ev
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ebe')
                 fig_title = sprintf('Balance Energetico Normalizado - %s %s', ...
@@ -1507,17 +1507,17 @@ classdef ModalEspectral < Analisis
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('EBE (%)');
-                title(fig_title);
+                title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
-                    axes('Position', [.59, .70, .29, .20]);
+                    axes('Position', [.59, .66, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
                 end
                 dplot = true;
-            end
+            end % ebe
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'evek') || strcmp(tipoplot, 'ekev')
                 fig_title = sprintf('Energia Potencial - Cinetica - %s %s', ...
@@ -1533,17 +1533,17 @@ classdef ModalEspectral < Analisis
                 ylabel('Energia');
                 legend({'E_K Energia cinetica', 'E_V Energia elastica'}, ...
                     'location', 'northeast');
-                title(fig_title);
+                title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
-                    axes('Position', [.59, .55, .29, .20]);
+                    axes('Position', [.59, .53, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
                 end
                 dplot = true;
-            end
+            end % evek
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'et')
                 fig_title = sprintf('Energia Total - Disipada - Ingresada - %s %s', ...
@@ -1560,17 +1560,17 @@ classdef ModalEspectral < Analisis
                 ylabel('Energia');
                 legend({'E_t Energia total', 'E_D Energia disipada total', ...
                     'W_E Trabajo externo'}, 'location', 'southeast');
-                title(fig_title);
+                title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
                 if plotcarga % Grafica la carga
-                    axes('Position', [.59, .36, .29, .20]);
+                    axes('Position', [.17, .66, .29, .20]);
                     box on;
                     plot(t, c_p, 'k-', 'Linewidth', 0.8);
                     grid on;
                 end
                 dplot = true;
-            end
+            end % et
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ed')
                 
@@ -1594,7 +1594,7 @@ classdef ModalEspectral < Analisis
                 grid minor;
                 xlabel('Tiempo (s)');
                 ylabel('Energia');
-                title(fig_title);
+                title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
                 % if plotcarga % Grafica la carga
@@ -1617,18 +1617,18 @@ classdef ModalEspectral < Analisis
                     grid minor;
                     xlabel('Tiempo (s)');
                     ylabel('Razon estructura/disipador');
-                    title(fig_title);
+                    title({fig_title, ''});
                     ylims = get(gca, 'YLim');
                     ylim([0, max(ylims)]);
                     if plotcarga % Grafica la carga
-                        axes('Position', [.59, .68, .29, .20]);
+                        axes('Position', [.59, .63, .29, .20]);
                         box on;
                         plot(t, c_p, 'k-', 'Linewidth', 0.8);
                         grid on;
                     end
                 end
                 
-            end
+            end % ed
             
             % Si no se realizo ningun grafico
             if ~dplot
@@ -1872,7 +1872,7 @@ classdef ModalEspectral < Analisis
             drawVyLine(esf(dirk, maxp), 'k--', 1.25);
             xlim(tlim);
             grid on;
-            title(fig_title);
+            title({fig_title, ''});
             
             legend({sprintf('Esfuerzo elemento: %s', carga.obtenerEtiqueta()), ...
                 sprintf('Esfuerzo maximo: %.2f (%s)', esf(dirk, maxp), diru)}, ...
@@ -1950,6 +1950,11 @@ classdef ModalEspectral < Analisis
             if length(nodos) == 1
                 warning('Para un solo nodo se recomienda plotTrayectoriaNodo(carga,nodo,direccion,varargin)');
             end
+            for k = 1:length(nodos)
+                if ~isa(nodos{k}, 'Nodo')
+                    error('Elemento %d del cell de nodos no es de clase Nodo', k);
+                end
+            end % for k
             
             % Verifica que la direccion sea correcta
             if sum(direccionCarga) ~= 1
@@ -2340,6 +2345,11 @@ classdef ModalEspectral < Analisis
                 if iscell(r.filtNodo)
                     r.filtNodo = {r.filtNodo};
                 end
+                for k = 1:length(r.filtNodo)
+                    if ~isa(r.filtNodo{k}, 'Nodo')
+                        error('Elemento %d del cell de filtNodo no es de clase Nodo', k);
+                    end
+                end % for k
                 
                 % Vector de aceleracion del nodo i
                 for k = 1:length(r.filtNodo)
@@ -2407,6 +2417,14 @@ classdef ModalEspectral < Analisis
                 
                 % Extrae los fft de los nodos
                 faseNodos = sort(r.faseNodos);
+                for k = 1:length(faseNodos)
+                    if r.faseNodos(k) > length(fftcomp)
+                        error('faseNodos %d excede el numero de nodos analizados por la funcion', k);
+                    end
+                end
+                if length(r.faseNodos) ~= 2
+                    error('faseNodos debe contener dos elementos');
+                end
                 for i = 1:length(fftcomp) - 1
                     division(:, i) = fftcomp{i} ./ fftcomp{end}; %#ok<AGROW>
                 end % for i
@@ -2802,11 +2820,11 @@ classdef ModalEspectral < Analisis
             
             subplot(4, 1, 1);
             plot(t, p_c(ng, :), 'k-', 'LineWidth', 1);
-            ylabel(sprintf('carga (%s)', r.unidadC));
+            ylabel(sprintf('Carga (%s)', r.unidadC));
             xlabel('t (s)');
             xlim(tlim);
             grid on;
-            title(fig_title);
+            title({fig_title, ''});
             
             subplot(4, 1, 2);
             plot(t, u_c(ng, :), 'k-', 'LineWidth', 1);
