@@ -34,7 +34,6 @@
 %       direccion
 %       intervalos
 %       nodo
-%       registro
 %       tpulso
 %  Methods:
 %       CargaPulso(etiquetaCargaPulso,nodos,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)
@@ -83,7 +82,6 @@ classdef CargaPulso < CargaDinamica
         direccion % Vector de direcciones
         intervalos % Intervalos
         nodos % Nodo al que se aplica la carga
-        registro % Matriz del registro
         tpulso % Tiempo de aplicacion del pulso
     end % private properties CargaPulso
     

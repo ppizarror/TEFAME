@@ -33,7 +33,6 @@
 %       amplitud
 %       direccion
 %       nodo
-%       registro
 %       tOscilacion
 %       w
 %  Methods:
@@ -82,7 +81,6 @@ classdef CargaSinusoidal < CargaDinamica
         amplitud % Amplitud de la carga
         direccion % Vector de direcciones
         nodos % Nodo al que se aplica la carga
-        registro % Matriz del registro
         tOscilacion % Tiempo de oscilacion
         w % Frecuencia de la carga
     end % private properties CargaSinusoidal

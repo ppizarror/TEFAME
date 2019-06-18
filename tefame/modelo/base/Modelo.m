@@ -93,11 +93,11 @@ classdef Modelo < handle
             
             % Generamos el modelo con todos las variables que guardan las
             % componentes del modelo vacio
-            obj.nodos = [];
-            obj.elementos = [];
             obj.disipadores = [];
-            obj.restricciones = [];
+            obj.elementos = [];
+            obj.nodos = [];
             obj.patronesDeCargas = [];
+            obj.restricciones = [];
             
             % Nombre del modelo
             obj.nombreModelo = 'Sin nombre';

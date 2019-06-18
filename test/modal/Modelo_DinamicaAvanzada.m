@@ -76,6 +76,7 @@ end
 cargasDinamicas{1} = CargaRegistroSismico('Registro Constitucion L+V', {regConstitucionL, regConstitucionV}, [1, 1], 0, 200);
 cargasDinamicas{2} = CargaPulso('Pulso', nodos{102}, [1, 0], 1000, 0.2, 0.005, 0, 20); % Horizontal
 cargasDinamicas{3} = CargaSinusoidal('Sinusoidal', nodos{102}, [1, 0], 300, 7, 30, 0.01, 0, 100); % Horizontal
+cargasDinamicas{4} = CargaGenerica('Generica Random', {nodos{101}, {nodos{105}}}, [1, 1], rand(1, 100), 0.005); %#ok<*CCAT1>
 
 cargasDinamicas{2}.desactivarCarga();
 cargasDinamicas{3}.desactivarCarga();
