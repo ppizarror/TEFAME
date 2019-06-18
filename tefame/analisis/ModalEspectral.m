@@ -1942,13 +1942,17 @@ classdef ModalEspectral < Analisis
             % este metodo para el caso FFT
             %
             % Parametros opcionales:
-            %   betaPlot        Grafica el calculo del amortiguamiento de cada modo
             %   betaLineWidth   Ancho de linea de los graficos de amortiguamiento
+            %   betaPlot        Grafica el calculo del amortiguamiento de cada modo
             %   betaRayleigh    Los amortiguamientos los calcula con Rayleigh
+            %   fase            Realiza analisis de fases
+            %   faseNodos       Nodos en los que se realiza la fase
             %   fftLim          Limite de frecuencia en grafico FFT
             %   fftMeanStd      Grafica el promedio y desviacion estandar para FFT
             %   fftPeaks        Grafica los peaks
             %   fftPlot         Muestra el grafico de la FFT simple
+            %   filtmod         Realiza analisis de filtros
+            %   filtNodo        Nodos de analisis de filtros
             %   formaModal      Vector con periodos a graficar de las formas modales
             %   legend          Muestra la leyenda
             %   legendloc       Ubicacion de la leyenda
@@ -1988,13 +1992,17 @@ classdef ModalEspectral < Analisis
             % Recorre parametros opcionales
             p = inputParser;
             p.KeepUnmatched = true;
-            addOptional(p, 'betaPlot', false);
             addOptional(p, 'betaLineWidth', 1.75);
+            addOptional(p, 'betaPlot', false);
             addOptional(p, 'betaRayleigh', true);
+            addOptional(p, 'fase', false);
+            addOptional(p, 'faseNodos', []);
             addOptional(p, 'fftLim', 0);
             addOptional(p, 'fftMeanStd', false);
             addOptional(p, 'fftPeaks', false);
             addOptional(p, 'fftPlot', false);
+            addOptional(p, 'filtmod', []);
+            addOptional(p, 'filtNodo', {});
             addOptional(p, 'formaModal', []);
             addOptional(p, 'legend', false);
             addOptional(p, 'legendloc', 'best');
@@ -2005,10 +2013,6 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'tukeywinr', 0.01);
             addOptional(p, 'unidadL', 'm');
             addOptional(p, 'zerofill', 0);
-            addOptional(p, 'filtmod', []);
-            addOptional(p, 'nodo', {});
-            addOptional(p, 'fase', false);
-            addOptional(p, 'fasenodos', []);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -2113,8 +2117,8 @@ classdef ModalEspectral < Analisis
             % asociados a cada periodo y las formas modales y los
             % amortiguamientos
             fprintf('\tCalculando PSD del registro\n');
-            [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, locStd, locFreq,...
-                maxlocs, pks, betaNodo, betaFreqNodo] = ...
+            [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, ~, ~,...
+                maxlocs, pks, beta, betaFreq] = ...
                 PSD(a_c, cargaFS, gdl, 'peakMinDistance', r.peakMinDistance, ...
                 'tukeywinr', r.tukeywinr, 'zerofill', r.zerofill, ...
                 'betaFFTMax', true, 'tmax', r.tmax, 'tmin', r.tmin);
@@ -2350,14 +2354,18 @@ classdef ModalEspectral < Analisis
             
             % Realiza el filtrado de modos de la respuesta de aceleracion
             if ~isempty(r.filtmod)
+
                 % Imprime en consola la tabla
-                fprintf('\tFiltrando modos:\n');
-                fprintf('\t\t-------------------------------------------------\n');
+                fprintf('\tRealiza filtrado de modos\n');
                 l_ac = length(a_c);
                 
+                if iscell(r.filtNodo)
+                    r.filtNodo = {r.filtNodo};
+                end
+                
                 % Vector de aceleracion del nodo i
-                for k = 1:length(r.nodo)
-                    ngd = nodos{k}.obtenerGDLIDCondensado();
+                for k = 1:length(r.filtNodo)
+                    ngd = r.filtNodo(k).obtenerGDLIDCondensado();
                     ng = 0; % Numero grado analisis
                     for i = 1:length(direccionCarga)
                         if direccionCarga(i) == 1
@@ -2408,65 +2416,63 @@ classdef ModalEspectral < Analisis
                 ylim([-max(get(gca, 'ylim')), max(get(gca, 'ylim'))]);
                 grid on;
                 zoom on;
-                legend(legmod)
-            end
+                legend(legmod);
+
+            end % filtmod
             
+            % Grafica la fase
             if r.fase
+
                 % Extrae los fft de los nodos
-                Nodos = sort(r.fasenodos);
+                faseNodos = sort(r.faseNodos);
                 for i = 1:length(fftcomp) - 1
                     division(:, i) = fftcomp{i}./fftcomp{end}; %#ok<AGROW>
-                end
+                end % for i
                 
-                Fftcomp(:, 1) = fftcomp{Nodos(1)};
-                Fftcomp(:, 2) = fftcomp{Nodos(2)};
+                Fftcomp(:, 1) = fftcomp{faseNodos(1)};
+                Fftcomp(:, 2) = fftcomp{faseNodos(2)};
                 
                 % Crea la figura
                 fig_title = sprintf('%s %s - Fase de la Transformada', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
-                hold on
-                ax1 = subplot(311);
-                plot(f, abs(division(:, Nodos(1))))
-                title('Division FFT - Parte Real')
-                xlabel('Frecuencia (Hz)')
-                ylabel('FFT')
-                grid on
-                grid minor
-                xlim([0 10])
+                hold on;
+                subplot(311);
+                plot(f, abs(division(:, faseNodos(1))));
+                title('Division FFT - Parte Real');
+                xlabel('Frecuencia (Hz)');
+                ylabel('FFT');
+                grid on;
+                grid minor;
+                xlim([0 10]);
                 
-                ax2 = subplot(312);
-                plot(f, angle(division(:, Nodos(1))))
-                title('Fase')
-                xlabel('Frecuencia (Hz)')
-                ylabel('Angle')
-                grid on
-                grid minor
-                xlim([0 10])
+                subplot(312);
+                plot(f, angle(division(:, faseNodos(1))));
+                title('Fase');
+                xlabel('Frecuencia (Hz)');
+                ylabel('Angle');
+                grid on;
+                grid minor;
+                xlim([0 10]);
                 
-                ax3 = subplot(313);
+                subplot(313);
                 plot(f, abs(Fftcomp'));
-                xlabel('Frecuencia (Hz)')
-                ylabel('FFT')
-                grid on
-                grid minor
-                zoom on
-                legend({strcat('Piso',' ', num2str(Nodos(1))),...
-                    strcat('Piso',' ', num2str(Nodos(2)))})
-                xlim([0 10]) 
-            end
-            
-            
-            
+                xlabel('Frecuencia (Hz)');
+                ylabel('FFT');
+                grid on;
+                grid minor;
+                zoom on;
+                legend({strcat('Piso', ' ', num2str(faseNodos(1))), ...
+                    strcat('Piso', ' ', num2str(faseNodos(2)))});
+                xlim([0 10]);
+
+            end % fase
             
             % Finaliza proceso
             fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
             dispMetodoTEFAME();
-            
-            
-            
-            
+                     
         end % calcularFFTCarga function
         
         function plotTrayectoriaNodos(obj, carga, nodos, direccion, varargin)
