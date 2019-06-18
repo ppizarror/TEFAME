@@ -125,7 +125,7 @@ for i = 1:ng
     maxlocs = max(length(ploc), maxlocs);
 end % for i
 
-%% Calcula el promedio y la desviacion estandar
+%% Calcula el promedio y la desviacion estandar de las frecuencias
 locMean = zeros(1, maxlocs);
 locStd = zeros(1, maxlocs);
 locFreq = zeros(1, maxlocs); % Frecuencias (posicion)
