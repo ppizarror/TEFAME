@@ -61,10 +61,10 @@ for k = 1:ng
     tf = find(f == 0);
     f = f(tf:end);
     fftt = fftt(tf:end);
-    
+    fftcomp{k} = fftt; %#ok<AGROW> % Guarda el registro complejo
     fftt = abs(fftt); % O si no plot reclama
     fft{k} = fftt; % Guarda el registro
-    fftcomp = fftt;
+
 end % for k
 
 %% Calcula el promedio y la desviacion estandar de los fft
