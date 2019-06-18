@@ -31,12 +31,7 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       numeroGDL
-%       Kt
-%       F
-%       u
-%  Methods:
+%  Methods(Access=public):
 %       obj = AnalisisEstatico(modeloObjeto)
 %       analizar(obj)
 %       Cd = ensamblarMatrizAmortiguamientoDisipadores(obj)

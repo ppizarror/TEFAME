@@ -31,12 +31,7 @@
 %| Fecha: 11/06/2018                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       carga
-%       dist
-%       elemObj
-%       theta
-%  Methods:
+%  Methods(Access=public):
 %       obj = CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)

@@ -29,9 +29,7 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       etiquetaID
-%  Methods:
+%  Methods(Access=public):
 %       obj = ComponenteModelo(etiqueta)
 %       etiqueta = obtenerEtiqueta(obj)
 %       objID = obtenerIDObjeto(obj)

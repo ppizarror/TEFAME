@@ -27,9 +27,7 @@
 %| Fecha: 08/05/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       cargas
-%  Methods:
+%  Methods(Access=public):
 %       a = obtenerAceleracion(obj)
 %       obj = CombinacionCargas(etiquetaCombinacion,cargas)
 %       disp(obj)

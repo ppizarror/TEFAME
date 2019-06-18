@@ -24,12 +24,7 @@
 %| Fecha: 12/05/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%  Properties (Access=protected):
-%       analisisFinalizado
-%       modeloObj
-%       numeroGDL
-%  Methods:
+%  Methods(Access=public):
 %       obj = Analisis(modeloObjeto)
 %       activarCargaAnimacion(obj)
 %       activarPlotDeformadaInicial(obj)

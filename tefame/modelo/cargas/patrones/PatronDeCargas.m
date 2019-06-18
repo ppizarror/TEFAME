@@ -37,7 +37,7 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Methods:
+%  Methods(Access=public):
 %       obj = PatronDeCargas(etiquetaPatronDeCargas,arregloCargas)
 %       aplicarCargas(obj)
 %       patronDinamico(obj)

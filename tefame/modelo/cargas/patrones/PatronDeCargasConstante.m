@@ -35,8 +35,7 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%  Methods:
+%  Methods(Access=public):
 %       obj = PatronDeCargasConstante(etiquetaPatronDeCargas,arregloCargas)
 %       aplicarCargas(obj)
 %       disp(obj)

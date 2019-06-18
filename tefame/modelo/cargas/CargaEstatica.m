@@ -32,13 +32,7 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       cargaSumoMasa
-%  Properties (Access=protected)
-%       factorCargaMasa
-%       factorUnidadMasa
-%       nodosCarga
-%  Methods:
+%  Methods(Access=public):
 %       aplicarCarga(obj)
 %       obj = Carga(etiquetaCarga)
 %       definirFactorCargaMasa(obj,factor)

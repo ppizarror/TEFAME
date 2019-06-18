@@ -29,13 +29,7 @@
 %| Fecha: 10/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       amplitud
-%       direccion
-%       intervalos
-%       nodos
-%       tpulso
-%  Methods:
+%  Methods(Access=public):
 %       CargaPulso(etiquetaCargaPulso,nodos,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)

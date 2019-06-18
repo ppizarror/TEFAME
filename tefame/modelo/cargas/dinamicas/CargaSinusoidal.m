@@ -29,13 +29,7 @@
 %| Fecha: 10/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       amplitud
-%       direccion
-%       nodos
-%       tOscilacion
-%       w
-%  Methods:
+%  Methods(Access=public):
 %       CargaSinusoidal(etiquetaCargaSinusoidal,nodos,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)

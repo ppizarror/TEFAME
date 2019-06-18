@@ -26,7 +26,7 @@
 %| Fecha: 10/06/2018                                                    |
 %|______________________________________________________________________|
 %
-%  Methods:
+%  Methods(Access=public):
 %       obj = Fundacion2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       nodosFundacion = obtenerNodos(obj)

@@ -29,13 +29,7 @@
 %| Fecha: 14/05/2018                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       carga1
-%       carga2
-%       dist1
-%       dist2
-%       elemObj
-%  Methods:
+%  Methods(Access=public):
 %       obj = CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)

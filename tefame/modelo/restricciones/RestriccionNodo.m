@@ -32,9 +32,6 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%       gdlRestringidos
-%       nodoObj
-%       valoresRestriccion
 %  Methods(Access=public):
 %       obj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo)
 %       obj = RestriccionNodo(etiquetaRestriccion,nodoObjeto,gdlRestringidosNodo,valoresRestrinccionNodo)

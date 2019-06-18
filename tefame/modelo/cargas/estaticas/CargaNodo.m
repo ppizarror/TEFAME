@@ -32,10 +32,7 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       nodoObj
-%       vectorCarga
-%  Methods:
+%  Methods(Access=public):
 %       obj = Carga(etiquetaCarga,nodoObjeto,cargaNodo)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)

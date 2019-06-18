@@ -30,17 +30,7 @@
 %| Fecha: 28/08/2018                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       carga1
-%       carga2
-%       dist1
-%       dist2
-%       elemObj
-%       L
-%       nodo1
-%       nodo2
-%       theta
-%  Methods:
+%  Methods(Access=public):
 %       obj = CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)

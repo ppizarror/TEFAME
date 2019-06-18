@@ -29,23 +29,7 @@
 %| Fecha: 10/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties(Access=private):
-%       cargaActiva
-%       cargaFueCalculada
-%       cRayleigh
-%       desModal
-%       factorCargaMasa
-%       factorUnidadMasa
-%       nodosCarga
-%       sol_a
-%       sol_u
-%       sol_v
-%       usoDisipador
-%  Properties(Access=public):
-%       tAnalisis
-%       tInicio
-%       dt
-%  Methods:
+%  Methods(Access=public):
 %       obj = Carga(etiquetaCarga)
 %       desactivarCarga(obj)
 %       p = calcularCarga(obj,factor,m,r,dispinfo)

@@ -31,12 +31,7 @@
 %| Fecha: 12/06/2018                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       alpha
-%       carga
-%       deltaTemepratura
-%       elemObj
-%  Methods:
+%  Methods(Access=public):
 %       obj = CargaBielaTemperatura(etiquetaCarga,elemObjeto,deltaTemperatura,alpha)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)

@@ -29,12 +29,7 @@
 %| Fecha: 10/04/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       direccion
-%       dispinfo
-%       registro
-%       rf
-%  Methods:
+%  Methods(Access=public):
 %       CargaRegistroSismico(etiquetaCargaRegistroSismico,registro,direccion,dt,tAnalisis)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)

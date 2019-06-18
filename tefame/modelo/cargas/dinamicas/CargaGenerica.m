@@ -24,14 +24,10 @@
 %| nodos simultaneamente en algun grado de libertad.                    |
 %|                                                                      |
 %| Programado: Pablo Pizarro @ppizarror                                 |
-%| Fecha: 10/04/2019                                                    |
+%| Fecha: 18/06/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       carga
-%       direccion
-%       nodos
-%  Methods:
+%  Methods(Access=public):
 %       CargaGenerica(etiquetaCargaGenerica,nodos,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)

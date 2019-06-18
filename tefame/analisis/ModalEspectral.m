@@ -27,7 +27,7 @@
 %| Fecha: 18/03/2019                                                    |
 %|______________________________________________________________________|
 %
-%  Methods:
+%  Methods(Access=public):
 %       obj = ModalEspectral(modeloObjeto)
 %       [esfmax,esf,maxp,dirk] = calcularEsfuerzosElemento(obj,carga,elemento,direccion)
 %       activarCargaAnimacion(obj)

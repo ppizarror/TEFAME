@@ -30,14 +30,7 @@
 %|                 Pablo Pizarro @ppizarror - 10/04/2019                |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       elementos
-%       nDimensiones
-%       nGDL
-%       nodos
-%       patronesDeCargas
-%       restricciones
-%  Methods:
+%  Methods(Access=public):
 %       actualizar(obj,u)
 %       agregarDisipadores(obj,arregloDisipadores)
 %       agregarElementos(obj,arregloElementos)

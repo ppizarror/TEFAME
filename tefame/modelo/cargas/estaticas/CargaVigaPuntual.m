@@ -30,11 +30,7 @@
 %| Fecha: 14/05/2018                                                    |
 %|______________________________________________________________________|
 %
-%  Properties (Access=private):
-%       carga
-%       dist
-%       elemObj
-%  Methods:
+%  Methods(Access=public):
 %       obj = CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)
