@@ -43,7 +43,7 @@ if strcmp(ext, '.gif')
     handles.guifig = gcf;
     handles.count = 1; % initialise counter to update the next frame
     handles.tmr = timer('TimerFcn', {@TmrFcn, handles.guifig}, 'BusyMode', 'Queue', ...
-        'ExecutionMode', 'FixedRate', 'Period', delay_length);% form a Timer Object
+        'ExecutionMode', 'FixedRate', 'Period', delay_length); % form a Timer Object
     guidata(handles.guifig, handles);
     start(handles.tmr); % starts Timer
 else

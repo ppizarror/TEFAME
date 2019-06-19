@@ -153,9 +153,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Al realizar esto el nuevo desplazamiento se guarda en la
                 % carga
-                obj.calcularCargaGenerica(cpenzien, ...
-                    false, indiceCargaObjetivo, true, 0, ...
-                    factor);% No uso disipadores
+                obj.calcularCargaGenerica(cpenzien, false, indiceCargaObjetivo, ...
+                    true, 0, factor); % No uso disipadores
                 
                 % Calcula w asociado al modo que mueve mas energia
                 w = obj.analisisObj.calcularModosEnergia(cargaDisipadorObj, false);
@@ -265,7 +264,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                         movegui(plt, 'center');
                         betaxticks = 0:1:(betagr_i - 1);
                         plot(betaxticks, betagr_b, '-', 'LineWidth', 1.4, 'Color', 'black');
-                        % grid on;
+                        grid on;
+                        grid minor;
                         xlabel('Numero iteracion');
                         ylabel('Amortiguamiento');
                         title(fig_title);
@@ -291,14 +291,12 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 end
                 
                 % Calcula todas las cargas con los disipadores actualizados
-                obj.calcularCargaGenerica(cpenzien, true, 0, ...
-                    false, tcalculo, factor);
+                obj.calcularCargaGenerica(cpenzien, true, 0, false, tcalculo, factor);
                 
             else
                 
                 % Calcula todas las cargas sin usar disipadores
-                obj.calcularCargaGenerica(cpenzien, false, 0, ...
-                    false, 0, factor);
+                obj.calcularCargaGenerica(cpenzien, false, 0, false, 0, factor);
                 
             end
             
@@ -499,7 +497,8 @@ classdef PatronDeCargasDinamico < PatronDeCargas
             end % for i
             
             if ~calculaDisipadores
-                fprintf('\tProceso finalizado en %.3f segundos\n', etime(clock, tInicioProceso+tcalculoAnterior));
+                fprintf('\tProceso finalizado en %.3f segundos\n', ...
+                    etime(clock, tInicioProceso)+tcalculoAnterior);
                 dispMetodoTEFAME();
             end
             
@@ -538,7 +537,7 @@ classdef PatronDeCargasDinamico < PatronDeCargas
                 
                 % Calcula
                 ps(:, i+1) = p(:, i+1) + k * alpha * x(:, i) + m * (c1 * x(:, i) + c2 * v(:, i) + c6 * z(:, i)) ...
-                    +c * ((1 + alpha) * c3 * x(:, i) + (alpha - (1 + alpha) * c4) * v(:, i) - (1 + alpha) * c5 * dt * z(:, i));% HHT
+                    +c * ((1 + alpha) * c3 * x(:, i) + (alpha - (1 + alpha) * c4) * v(:, i) - (1 + alpha) * c5 * dt * z(:, i)); % HHT
                 x(:, i+1) = ks_inv * ps(:, i+1);
                 v(:, i+1) = (gamma / (beta * dt)) * (x(:, i+1) - x(:, i)) + (1 - gamma / beta) * v(:, i) + dt * (1 - gamma / (2 * beta)) * z(:, i);
                 z(:, i+1) = (1 / (beta * dt^2)) * (x(:, i+1) - x(:, i)) - (1 / (beta * dt)) * v(:, i) - (1 / (2 * beta) - 1) * z(:, i);

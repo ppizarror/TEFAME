@@ -115,7 +115,7 @@ combinacionCargas{2} = CombinacionCargas('E+SIS', {cargasDinamicas{1}, cargaEsta
 %% Calcula y grafica las cargas dinamicas
 analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', usarDisipadores, ...
     'cargaDisipador', cargasDinamicas{1}, 'betaObjetivo', 0.08, 'iterDisipador', 10, ...
-    'betaGrafico', false, 'activado', resolverCargasDinamicas);
+    'betaGrafico', true, 'activado', resolverCargasDinamicas);
 
 % analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
 % analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
