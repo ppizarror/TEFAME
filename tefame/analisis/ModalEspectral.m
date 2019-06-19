@@ -1902,7 +1902,7 @@ classdef ModalEspectral < Analisis
             
         end % calcularAmortiguamientoModo function
         
-        function calcularFFTCarga(obj, carga, nodos, direccionCarga, direccionFormaModal, varargin)
+        function calcularFFTCarga(obj, carga, nodos, direccionCarga, varargin)
             % calcularFFTCarga: permite el calculo del FFT de la
             % aceleracion, obteniendo los periodos de la estructura. El
             % metodo se entiende como una aproximacion al calculo
@@ -1925,20 +1925,21 @@ classdef ModalEspectral < Analisis
             %   fftMeanStd      Grafica el promedio y desviacion estandar para FFT
             %   fftPeaks        Grafica los peaks
             %   fftPlot         Muestra el grafico de la FFT simple
-            %   filtmod         Realiza analisis de filtros
+            %   filtMod         Realiza analisis de filtros
             %   filtNodo        Nodos de analisis de filtros
             %   filtstd         Numero de desviacion estandar que se considera en el filtro
             %   filtTlim        Limite periodo grafico filtros
             %   formaModal      Vector con periodos a graficar de las formas modales
+            %   formaModalDir   Vector direccion de analisis formas modales (x,y,z)
             %   legend          Muestra la leyenda
             %   legendloc       Ubicacion de la leyenda
-            %   maxpeaks        Numero de peaks maximos calculados
+            %   maxPeaks        Numero de peaks maximos calculados
             %   peakMinDistance Distancia minima entre peaks requerida
             %   tmax            Tiempo maximo de analisis
             %   tmin            Tiempo minimo de analisis
             %   tukeywinr       Factor de la ventana de tukey
             %   unidadL         Unidad longitud
-            %   zerofill        Indica relleno de ceros para FFT
+            %   zeroFill        Indica relleno de ceros para FFT
             
             % Inicia proceso
             tinicial = clock;
@@ -1963,12 +1964,6 @@ classdef ModalEspectral < Analisis
             if ~verificarVectorDireccion(direccionCarga, nodos{1}.obtenerNumeroGDL())
                 error('Vector direccion carga mal definido');
             end
-            if sum(direccionFormaModal) ~= 1
-                error('Direccion forma modal invalida');
-            end
-            if ~verificarVectorDireccion(direccionFormaModal, nodos{1}.obtenerNumeroGDL())
-                error('Vector direccion carga mal definido');
-            end
             
             % Recorre parametros opcionales
             p = inputParser;
@@ -1983,20 +1978,21 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'fftMeanStd', false);
             addOptional(p, 'fftPeaks', false);
             addOptional(p, 'fftPlot', false);
-            addOptional(p, 'filtmod', []);
+            addOptional(p, 'filtMod', []);
             addOptional(p, 'filtNodo', {});
             addOptional(p, 'filtstd', 0.2);
             addOptional(p, 'filtTlim', [0, 1]);
             addOptional(p, 'formaModal', []);
+            addOptional(p, 'formaModalDir', [0, 0, 0]); % Puede ser [0, 1, 0] (y)
             addOptional(p, 'legend', false);
             addOptional(p, 'legendloc', 'best');
-            addOptional(p, 'maxpeaks', -1); % El maximo se ajusta al dato
+            addOptional(p, 'maxPeaks', -1); % El maximo se ajusta al dato
             addOptional(p, 'peakMinDistance', 0.5); % Requerido para el calculo
             addOptional(p, 'tmax', -1);
             addOptional(p, 'tmin', 0);
             addOptional(p, 'tukeywinr', 0.01);
             addOptional(p, 'unidadL', 'm');
-            addOptional(p, 'zerofill', 0);
+            addOptional(p, 'zeroFill', 0);
             parse(p, varargin{:});
             r = p.Results;
             
@@ -2015,17 +2011,21 @@ classdef ModalEspectral < Analisis
             fprintf('Calculando trayectoria nodos:\n');
             % fprintf('\tNodos: ');
             
-            s = arrayIntNum2str(direccionCarga);
-            fprintf('\tDireccion carga:\t\t%s\n', [s{:}]);
-            s = arrayIntNum2str(direccionFormaModal);
-            fprintf('\tDireccion forma modal:\t%s\n', [s{:}]);
+            if ~isempty(direccionCarga)
+                s = arrayIntNum2str(direccionCarga);
+                fprintf('\tDireccion carga:\t\t%s\n', [s{:}]);
+            end
+            if ~isempty(r.formaModalDir)
+                s = arrayIntNum2str(r.formaModalDir);
+                fprintf('\tDireccion forma modal:\t%s\n', [s{:}]);
+            end
             if ~isempty(r.formaModal)
                 s = arrayIntNum2str(r.formaModal);
                 fprintf('\tFormas modales:\t\t\t%s\n', [s{:}]);
             else
                 fprintf('\tNo se graficaran formas modales\n');
             end
-            fprintf('\tMaximos peaks a mostrar: %d\n', r.maxpeaks');
+            fprintf('\tMaximos peaks a mostrar: %d\n', r.maxPeaks');
             
             s = '';
             ng = length(nodos);
@@ -2040,9 +2040,7 @@ classdef ModalEspectral < Analisis
             ctitle = obj.imprimirPropiedadesAnalisisCarga(carga);
             [nr, ~] = size(a_c);
             
-            % Verifica que la direccion sea correcta, crea tambien el
-            % vector de la direccion de la forma modal
-            xModal = zeros(1, ng);
+            % Verifica que la direccion sea correcta
             gdl = zeros(1, ng);
             for k = 1:ng
                 % Elige al nodo
@@ -2052,12 +2050,6 @@ classdef ModalEspectral < Analisis
                         gdl(k) = ngd(i);
                     end
                 end % for i
-                for i = 1:length(direccionFormaModal)
-                    if direccionFormaModal(i) == 1
-                        coords = nodos{k}.obtenerCoordenadas();
-                        xModal(k) = coords(i);
-                    end
-                end % for i
                 if gdl(k) == 0
                     error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
                 end
@@ -2065,19 +2057,6 @@ classdef ModalEspectral < Analisis
                     error('El GDLID excede al soporte del sistema');
                 end
             end % for k
-            if direccionFormaModal(1) == 1
-                dirForma = 'X';
-            elseif direccionFormaModal(2) == 1
-                dirForma = 'Y';
-            else
-                dirForma = 'Z';
-            end
-            dirForma = sprintf('%s (%s)', dirForma, r.unidadL);
-            
-            % Si hay elementos repetidos
-            if length(xModal) ~= length(unique(xModal))
-                error('El vector de distancias modal posee elementos repetidos, es posible que la direccion de analisis no sea la apropiada');
-            end
             
             % Crea la leyenda de los nodos
             legnodos = cell(1, ng);
@@ -2089,10 +2068,10 @@ classdef ModalEspectral < Analisis
                 error('El limite de frecuencia no puede ser negativo');
             end
             
-            if r.maxpeaks == 0
+            if r.maxPeaks == 0
                 error('No puede haber un numero de peaks negativo o nulo');
             end
-            r.maxpeaks = floor(r.maxpeaks);
+            r.maxPeaks = floor(r.maxPeaks);
             
             if r.peakMinDistance <= 0
                 error('Distancia no puede ser menor o igual a cero');
@@ -2104,7 +2083,7 @@ classdef ModalEspectral < Analisis
             [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, ~, ~, ...
                 maxlocs, pks, beta, betaFreq] = ...
                 PSD(a_c, cargaFS, gdl, 'peakMinDistance', r.peakMinDistance, ...
-                'tukeywinr', r.tukeywinr, 'zerofill', r.zerofill, ...
+                'tukeywinr', r.tukeywinr, 'zeroFill', r.zeroFill, ...
                 'betaFFTMax', true, 'tmax', r.tmax, 'tmin', r.tmin);
             
             % Actualiza por el numero de modos del sistema
@@ -2112,8 +2091,8 @@ classdef ModalEspectral < Analisis
             
             % Tabla de periodos
             maxlocsDisp = maxlocs; % Puntos a mostrar
-            if r.maxpeaks > 0
-                maxlocsDisp = min(maxlocs, r.maxpeaks);
+            if r.maxPeaks > 0
+                maxlocsDisp = min(maxlocs, r.maxPeaks);
             end
             
             % Grafica la fft de cada nodo
@@ -2151,24 +2130,24 @@ classdef ModalEspectral < Analisis
                 
             end % fftPlot
             
+            % Imprime en consola la tabla de los peaks
+            fprintf('\tAnalisis de peaks, periodos formas modales:\n');
+            fprintf('\t\tN\t|\tT peak\t\t\t|\tT modal\t|\t%%Error\t|\n');
+            fprintf('\t\t-------------------------------------------------\n');
+            for i = 1:maxlocsDisp
+                err = 100 * (tlocMean(i) - obj.Tn(i)) / obj.Tn(i);
+                if err > 0
+                    s = '+';
+                else
+                    s = '';
+                end
+                fprintf('\t\t%d\t|\t%.3f +- %.3f\t|\t%.3f\t|\t%s%.2f\t|\n', ...
+                    i, tlocMean(i), tlocStd(i), obj.Tn(i), s, err);
+            end % for i
+            fprintf('\t\t-------------------------------------------------\n');
+            
             % Grafica los peaks
             if r.fftPeaks
-                
-                % Imprime en consola la tabla
-                fprintf('\tAnalisis de peaks, periodos formas modales:\n');
-                fprintf('\t\tN\t|\tT peak\t\t\t|\tT modal\t|\t%%Error\t|\n');
-                fprintf('\t\t-------------------------------------------------\n');
-                for i = 1:maxlocsDisp
-                    err = 100 * (tlocMean(i) - obj.Tn(i)) / obj.Tn(i);
-                    if err > 0
-                        s = '+';
-                    else
-                        s = '';
-                    end
-                    fprintf('\t\t%d\t|\t%.3f +- %.3f\t|\t%.3f\t|\t%s%.2f\t|\n', ...
-                        i, tlocMean(i), tlocStd(i), obj.Tn(i), s, err);
-                end % for i
-                fprintf('\t\t-------------------------------------------------\n');
                 
                 % Grafico de peaks
                 fig_title = sprintf('%s %s - Analisis FFT peaks', ...
@@ -2199,87 +2178,34 @@ classdef ModalEspectral < Analisis
                 
             end % fftPeaks
             
-            % Vector de modos a graficar
-            formaModalLeg = cell(1, length(r.formaModal)); % Contiene las leyendas de los modos elegidos
-            for i = 1:length(r.formaModal)
-                r.formaModal(i) = floor(r.formaModal(i));
-                if r.formaModal(i) <= 0
-                    error('Forma modal %d no puede ser inferior o igual a cero', r.formaModal(i));
-                end
-                if r.formaModal(i) > maxlocs
-                    error('Forma modal %d excede las obtenidas del analisis (%d)', r.formaModal(i), maxlocs);
-                end
-                formaModalLeg{i} = sprintf('Modo %d', r.formaModal(i));
-            end % for i
-            plotFormaModal = ~isempty(r.formaModal);
+            % Calcula el amortiguamiento del modo
+            lbeta = min(min(length(beta), obj.numModos), maxlocsDisp);
+            betaModo = zeros(1, lbeta);
+            for i = 1:lbeta
+                betaModo(i) = obj.calcularAmortiguamientoModo(i, r.betaRayleigh);
+            end
             
-            % Grafica la envolvente de la forma modal
-            if plotFormaModal
-                
-                fig_title = sprintf('%s %s - Formas modales FFT', ...
-                    ctitle, carga.obtenerEtiqueta());
-                plt = figure('Name', fig_title, 'NumberTitle', 'off');
-                movegui(plt, 'center');
-                hold on;
-                
-                for j = 1:length(r.formaModal)
-                    i = r.formaModal(j);
-                    if strcmp(dirForma, 'X')
-                        gc = plot(xModal, envFormaModal{i}, '-', 'lineWidth', 1.5);
-                        c = get(gc, 'Color');
-                        pl = plot(xModal, envFormaModal{i}, '^', ...
-                            'color', c, 'markerfacecolor', c, 'markerSize', 3);
-                        ylabel(dirForma);
-                        xlabel('Forma modal normalizada');
-                        set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
-                    else
-                        gc = plot(envFormaModal{i}, xModal, '-', 'lineWidth', 1.5);
-                        c = get(gc, 'Color');
-                        pl = plot(envFormaModal{i}, xModal, '^', ...
-                            'color', c, 'markerfacecolor', c, 'markerSize', 3);
-                        ylabel(dirForma);
-                        xlabel('Forma modal normalizada');
-                        set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
-                    end
+            % Imprime en consola la tabla
+            fprintf('\tAmortiguamiento por periodos:\n');
+            fprintf('\t\tN\t|\tBeta\t|\tBeta modal\t|\t%% Error\t\t|\n');
+            fprintf('\t\t-------------------------------------------------\n');
+            for i = 1:maxlocsDisp
+                if isempty(betaFreq{i}) % Si no se encontro el modo retorna
+                    continue;
                 end
-                
-                title({fig_title, ''});
-                xlim([0, 1]);
-                ylim([0, max(get(gca, 'ylim'))]);
-                grid on;
-                grid minor;
-                legend(formaModalLeg, 'location', 'southeast');
-                
-            end % plotFormaModal
+                err = 100 * (betaModo(i) - beta(i)) / betaModo(i);
+                if err > 0
+                    s = '+';
+                else
+                    s = '';
+                end
+                fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t\t|\t%s%.2f\t\t|\n', ...
+                    i, beta(i), betaModo(i), s, err);
+            end % for i
+            fprintf('\t\t-------------------------------------------------\n');
             
             % Grafica los limites de las frecuencias
             if r.betaPlot
-                
-                % Calcula el amortiguamiento del modo
-                lbeta = min(min(length(beta), obj.numModos), maxlocsDisp);
-                betaModo = zeros(1, lbeta);
-                for i = 1:lbeta
-                    betaModo(i) = obj.calcularAmortiguamientoModo(i, r.betaRayleigh);
-                end
-                
-                % Imprime en consola la tabla
-                fprintf('\tAmortiguamiento por periodos:\n');
-                fprintf('\t\tN\t|\tBeta\t|\tBeta modal\t|\t%% Error\t\t|\n');
-                fprintf('\t\t-------------------------------------------------\n');
-                for i = 1:maxlocsDisp
-                    if isempty(betaFreq{i}) % Si no se encontro el modo retorna
-                        continue;
-                    end
-                    err = 100 * (betaModo(i) - beta(i)) / betaModo(i);
-                    if err > 0
-                        s = '+';
-                    else
-                        s = '';
-                    end
-                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t\t|\t%s%.2f\t\t|\n', ...
-                        i, beta(i), betaModo(i), s, err);
-                end % for i
-                fprintf('\t\t-------------------------------------------------\n');
                 
                 % Crea la figura del amortiguamiento en cada FFT
                 fig_title = sprintf('%s %s - Calculo de amortiguamientos', ...
@@ -2338,8 +2264,94 @@ classdef ModalEspectral < Analisis
                 
             end % betaPlot
             
+            % Vector de modos a graficar
+            formaModalLeg = cell(1, length(r.formaModal)); % Contiene las leyendas de los modos elegidos
+            for i = 1:length(r.formaModal)
+                r.formaModal(i) = floor(r.formaModal(i));
+                if r.formaModal(i) <= 0
+                    error('Forma modal %d no puede ser inferior o igual a cero', r.formaModal(i));
+                end
+                if r.formaModal(i) > maxlocs
+                    error('Forma modal %d excede las obtenidas del analisis (%d)', r.formaModal(i), maxlocs);
+                end
+                formaModalLeg{i} = sprintf('Modo %d', r.formaModal(i));
+            end % for i
+            plotFormaModal = ~isempty(r.formaModal);
+            
+            % Grafica la envolvente de la forma modal
+            if plotFormaModal
+                
+                % Verifica que la direccion sea correcta
+                if sum(r.formaModalDir) ~= 1
+                    error('Direccion forma modal invalida');
+                end
+                if ~verificarVectorDireccion(r.formaModalDir, nodos{1}.obtenerNumeroGDL())
+                    error('Vector direccion carga mal definido');
+                end
+                
+                % Verifica que la direccion sea correcta, crea tambien el
+                % vector de la direccion de la forma modal
+                xModal = zeros(1, ng);
+                for k = 1:ng
+                    for i = 1:length(r.formaModalDir)
+                        if r.formaModalDir(i) == 1
+                            coords = nodos{k}.obtenerCoordenadas();
+                            xModal(k) = coords(i);
+                        end
+                    end % for i
+                end % for k
+                if r.formaModalDir(1) == 1
+                    dirForma = 'X';
+                elseif r.formaModalDir(2) == 1
+                    dirForma = 'Y';
+                else
+                    dirForma = 'Z';
+                end
+                dirForma = sprintf('%s (%s)', dirForma, r.unidadL);
+                
+                % Si hay elementos repetidos
+                if length(xModal) ~= length(unique(xModal))
+                    error('El vector de distancias modal posee elementos repetidos, es posible que la direccion de analisis no sea la apropiada');
+                end
+                
+                fig_title = sprintf('%s %s - Formas modales FFT', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                
+                for j = 1:length(r.formaModal)
+                    i = r.formaModal(j);
+                    if strcmp(dirForma, 'X')
+                        gc = plot(xModal, envFormaModal{i}, '-', 'lineWidth', 1.5);
+                        c = get(gc, 'Color');
+                        pl = plot(xModal, envFormaModal{i}, '^', ...
+                            'color', c, 'markerfacecolor', c, 'markerSize', 3);
+                        ylabel(dirForma);
+                        xlabel('Forma modal normalizada');
+                        set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                    else
+                        gc = plot(envFormaModal{i}, xModal, '-', 'lineWidth', 1.5);
+                        c = get(gc, 'Color');
+                        pl = plot(envFormaModal{i}, xModal, '^', ...
+                            'color', c, 'markerfacecolor', c, 'markerSize', 3);
+                        ylabel(dirForma);
+                        xlabel('Forma modal normalizada');
+                        set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                    end
+                end
+                
+                title({fig_title, ''});
+                xlim([0, 1]);
+                ylim([0, max(get(gca, 'ylim'))]);
+                grid on;
+                grid minor;
+                legend(formaModalLeg, 'location', 'southeast');
+                
+            end % plotFormaModal
+            
             % Realiza el filtrado de modos de la respuesta de aceleracion
-            if ~isempty(r.filtmod)
+            if ~isempty(r.filtMod)
                 
                 % Imprime en consola la tabla
                 fprintf('\tRealiza filtrado de modos\n');
@@ -2382,7 +2394,7 @@ classdef ModalEspectral < Analisis
                 legmod{1} = 'All modes';
                 
                 % Aplica el filtro
-                for i = 1:length(r.filtmod)
+                for i = 1:length(r.filtMod)
                     
                     % Rango en frecuencias
                     rangeinf = locMean(i) - r.filtstd; % -0.2
@@ -2414,7 +2426,7 @@ classdef ModalEspectral < Analisis
                 zoom on;
                 legend(legmod);
                 
-            end % filtmod
+            end % filtMod
             
             % Grafica la fase
             if r.fase
