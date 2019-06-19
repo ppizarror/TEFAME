@@ -1,4 +1,4 @@
-% ______________________________________________________________________
+%|______________________________________________________________________|
 %|                                                                      |
 %|          TEFAME - Toolbox para Elementos Finitos y Analisis          |
 %|                  Matricial de Estructuras en MATLAB                  |
@@ -11,22 +11,41 @@
 %| TEFAME es una  plataforma en base a objetos para modelar, analizar y |
 %| visualizar  la respuesta de sistemas  estructurales usando el metodo |
 %| de elementos finitos y analisis matricial de estructuras en MATLAB.  |
-%| La plataforma es desarrollada en  propagacion orientada a objetos en |
-%| MATLAB.                                                              |
+%| Repositorio: https://github.com/ppizarror/TEFAME                     |
 %|______________________________________________________________________|
-% ______________________________________________________________________
 %|                                                                      |
 %| Clase CargaVigaDistribuida                                           |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase CargaVigaDistribuida |
 %| CargaVigaDistribuida es una subclase de la clase Carga y corresponde |
 %| a la representacion de una carga distribuida en un elemento tipo Viga|
+%|                                                                      |
 %| La clase CargaVigaDistribuida es una clase que contiene el elemento  |
 %| al que se le va a aplicar la carga, las cargas en cada punto y las   |
 %| distancias de las dos cargas.                                        |
+%|______________________________________________________________________|
 %|                                                                      |
-%| Programado: Pablo Pizarro @ppizarror.com                             |
-%| Fecha: 14/05/2018                                                    |
+%| MIT License                                                          |
+%| Copyright (c) 2018-2019 Pablo Pizarro R @ppizarror.com.              |
+%|                                                                      |
+%| Permission is hereby granted, free of charge, to any person obtai-   |
+%| ning a copy of this software and associated documentation files (the |
+%| "Software"), to deal in the Software without restriction, including  |
+%| without limitation the rights to use, copy, modify, merge, publish,  |
+%| distribute, sublicense, and/or sell copies of the Software, and to   |
+%| permit persons to whom the Software is furnished to do so, subject   |
+%| to the following conditions:                                         |
+%|                                                                      |
+%| The above copyright notice and this permission notice shall be       |
+%| included in all copies or substantial portions of the Software.      |
+%|                                                                      |
+%| THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,      |
+%| EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF   |
+%| MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.|
+%| IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY |
+%| CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, |
+%| TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE    |
+%| SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.               |
 %|______________________________________________________________________|
 %
 %  Methods(Access=public):
