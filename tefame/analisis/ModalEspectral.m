@@ -2415,8 +2415,8 @@ classdef ModalEspectral < Analisis
                 for i = 1:length(r.filtMod)
                     
                     % Rango en frecuencias
-                    rangeinf = locMean(i) - r.filtstd; % -0.2
-                    rangesup = locMean(i) + r.filtstd;
+                    rangeinf = locMean(i) - 3*r.filtstd; % -0.2
+                    rangesup = locMean(i) + 3*r.filtstd;
                     if i == 1
                         Wn = rangesup(i) / (cargaFS / 2);
                     elseif i > 1
