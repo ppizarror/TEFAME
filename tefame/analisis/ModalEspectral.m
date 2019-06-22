@@ -1935,6 +1935,7 @@ classdef ModalEspectral < Analisis
             % Parametros opcionales:
             %   betaLineWidth   Ancho de linea de los graficos de amortiguamiento
             %   betaPlot        Grafica el calculo del amortiguamiento de cada modo
+            %   betaPlotModal   Grafico amortiguamiento modal comparado con el real
             %   betaRayleigh    Los amortiguamientos los calcula con Rayleigh
             %   fase            Realiza analisis de fases
             %   faseNodos       Nodos en los que se realiza la fase
@@ -1988,6 +1989,7 @@ classdef ModalEspectral < Analisis
             p.KeepUnmatched = true;
             addOptional(p, 'betaLineWidth', 1.75);
             addOptional(p, 'betaPlot', false);
+            addOptional(p, 'betaPlotModal', false);
             addOptional(p, 'betaRayleigh', true);
             addOptional(p, 'fase', false);
             addOptional(p, 'faseNodos', []);
@@ -1998,7 +2000,7 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'fftPlot', false);
             addOptional(p, 'filtMod', []);
             addOptional(p, 'filtNodo', {});
-            addOptional(p, 'filtRange', 0.3);
+            addOptional(p, 'filtRange', 0.2);
             addOptional(p, 'filtTlim', [0, 1]);
             addOptional(p, 'formaModal', []);
             addOptional(p, 'formaModalDir', [0, 0, 0]); % Puede ser [0, 1, 0] (y)
@@ -2029,6 +2031,7 @@ classdef ModalEspectral < Analisis
             fprintf('Calculando trayectoria nodos:\n');
             % fprintf('\tNodos: ');
             
+            % Imprime en consola los principales valores del analisis
             if ~isempty(direccionCarga)
                 s = arrayIntNum2str(direccionCarga);
                 fprintf('\tDireccion carga:\t\t%s\n', [s{:}]);
@@ -2053,8 +2056,6 @@ classdef ModalEspectral < Analisis
                     s = strcat(s, ', ');
                 end
             end % for k
-            % s = strcat(s, '\n');
-            % fprintf(s);
             ctitle = obj.imprimirPropiedadesAnalisisCarga(carga);
             [nr, ~] = size(a_c);
             
@@ -2082,21 +2083,30 @@ classdef ModalEspectral < Analisis
                 legnodos{k} = nodos{k}.obtenerEtiqueta();
             end % for k
             
-            if r.fftLim < 0 % Verifica frecuencia
-                error('El limite de frecuencia no puede ser negativo');
+            % Verifica frecuencia de analisis
+            if r.fftLim <= 0
+                error('El limite de frecuencia no puede ser negativo o nulo');
             end
             
+            % Verifica que el numero de peaks sea adecuado
             if r.maxPeaks == 0
                 error('No puede haber un numero de peaks negativo o nulo');
             end
             r.maxPeaks = floor(r.maxPeaks);
-            
             if r.peakMinDistance <= 0
                 error('Distancia no puede ser menor o igual a cero');
             end
+            
+            % Verifica que el tiempo de analisis sea adecuado
+            if r.tmax > carga.tAnalisis
+                error('El tiempo de analisis no puede exceder el tiempo de la carga (%.1f)', carga.tAnalisis);
+            elseif r.tmax < carga.tAnalisis
+                fprintf('\tEl analisis se realizara con un tiempo menor al de la carga (%.1f%% menor)\n', ...
+                    100*(carga.tAnalisis - r.tmax)/carga.tAnalisis);
+            end
+            
             % Calcula el PSD del registro, ello incluye la FFT, los peaks
-            % asociados a cada periodo y las formas modales y los
-            % amortiguamientos
+            % asociados a cada periodo y las formas modales y los amortiguamientos
             fprintf('\tCalculando PSD del registro\n');
             [f, fft, fftcomp, envFormaModal, tlocMean, tlocStd, locMean, ~, ~, ...
                 maxlocs, pks, beta, betaFreq] = ...
@@ -2264,7 +2274,25 @@ classdef ModalEspectral < Analisis
                 grid on;
                 grid minor;
                 
-                % Crea la curva de variacion del amortiguamiento por cada modo
+            end % betaPlot
+            
+            % Crea la curva de variacion del amortiguamiento por cada modo
+            if r.betaPlotModal
+                
+                fig_title = sprintf('%s %s - Error en amortiguamiento modal', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                plot(1:lbeta, betaModo(1:lbeta)-beta(1:lbeta), '*-', 'lineWidth', 1.5);
+                xlabel('Modo');
+                ylabel('Error amortiguamiento (%)');
+                title({'Error amortiguamiento \beta modal', ''});
+                drawVyLine(0, 'k--', 1);
+                set(gca, 'XTick', 1:lbeta);
+                grid on;
+                grid minor;
+                
                 fig_title = sprintf('%s %s - Grafico de amortiguamiento modal', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
@@ -2280,7 +2308,7 @@ classdef ModalEspectral < Analisis
                 grid on;
                 grid minor;
                 
-            end % betaPlot
+            end % betaPlotModal
             
             % Vector de modos a graficar
             formaModalLeg = cell(1, length(r.formaModal)); % Contiene las leyendas de los modos elegidos
@@ -2489,7 +2517,7 @@ classdef ModalEspectral < Analisis
                 plot(f, angle(division(:, faseNodos(1))));
                 title('Fase');
                 xlabel('Frecuencia (Hz)');
-                ylabel('Angle');
+                ylabel('Angulo');
                 grid on;
                 grid minor;
                 xlim(r.faseTlim);

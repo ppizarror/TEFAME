@@ -52,14 +52,14 @@ if r.tmin ~= 0
     if r.tmin < 0
         error('El tiempo inferior no puede ser cero');
     end
-    c1 = fix(r.tmin*fs) + 1;
+    c1 = fix(r.tmin*fs);
 end
 cend = false;
 if r.tmax ~= -1
     if r.tmin >= r.tmax
         error('El tiempo inferior tmin no puede ser mayor a tmax');
     end
-    c2 = fix(r.tmax*fs) + 1;
+    c2 = fix(r.tmax*fs);
 else
     c2 = -1;
     cend = true;
