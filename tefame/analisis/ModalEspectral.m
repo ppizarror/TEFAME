@@ -2209,8 +2209,10 @@ classdef ModalEspectral < Analisis
             % Calcula el amortiguamiento del modo
             lbeta = min(min(length(beta), obj.numModos), maxlocsDisp);
             betaModo = zeros(1, lbeta);
+            betaError = zeros(1, lbeta);
             for i = 1:lbeta
                 betaModo(i) = obj.calcularAmortiguamientoModo(i, r.betaRayleigh);
+                betaError(i) = 100 * (betaModo(i) - beta(i)) / betaModo(i);
             end
             
             % Imprime en consola la tabla
@@ -2221,14 +2223,13 @@ classdef ModalEspectral < Analisis
                 if isempty(betaFreq{i}) % Si no se encontro el modo retorna
                     continue;
                 end
-                err = 100 * (betaModo(i) - beta(i)) / betaModo(i);
-                if err > 0
+                if betaError(i) > 0
                     s = '+';
                 else
                     s = '';
                 end
                 fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t\t|\t%s%.2f\t\t|\n', ...
-                    i, beta(i), betaModo(i), s, err);
+                    i, beta(i), betaModo(i), s, betaError(i));
             end % for i
             fprintf('\t\t-------------------------------------------------\n');
             
@@ -2284,11 +2285,13 @@ classdef ModalEspectral < Analisis
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 hold on;
-                plot(1:lbeta, betaModo(1:lbeta)-beta(1:lbeta), '*-', 'lineWidth', 1.5);
+                plot(1:lbeta, betaError(1:lbeta), '*-', 'lineWidth', 1.5);
                 xlabel('Modo');
                 ylabel('Error amortiguamiento (%)');
                 title({'Error amortiguamiento \beta modal', ''});
-                drawVyLine(0, 'k--', 1);
+                if min(betaError) < 0
+                    drawVyLine(0, 'k--', 1);
+                end
                 set(gca, 'XTick', 1:lbeta);
                 grid on;
                 grid minor;
