@@ -1945,7 +1945,7 @@ classdef ModalEspectral < Analisis
             %   fftPlot         Muestra el grafico de la FFT simple
             %   filtMod         Realiza analisis de filtros
             %   filtNodo        Nodos de analisis de filtros
-            %   filtstd         Numero de desviacion estandar que se considera en el filtro
+            %   filtRange       Rango de cada peak considerado en el analisis del filtro
             %   filtTlim        Limite periodo grafico filtros
             %   formaModal      Vector con periodos a graficar de las formas modales
             %   formaModalDir   Vector direccion de analisis formas modales (x,y,z)
@@ -1998,7 +1998,7 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'fftPlot', false);
             addOptional(p, 'filtMod', []);
             addOptional(p, 'filtNodo', {});
-            addOptional(p, 'filtstd', 0.2);
+            addOptional(p, 'filtRange', 0.3);
             addOptional(p, 'filtTlim', [0, 1]);
             addOptional(p, 'formaModal', []);
             addOptional(p, 'formaModalDir', [0, 0, 0]); % Puede ser [0, 1, 0] (y)
@@ -2375,6 +2375,10 @@ classdef ModalEspectral < Analisis
                 fprintf('\tRealiza filtrado de modos\n');
                 l_ac = length(a_c);
                 
+                if r.filtRange <= 0
+                    error('Rango del filtro no puede ser nulo o menor a cero');
+                end
+                
                 if ~iscell(r.filtNodo)
                     r.filtNodo = {r.filtNodo};
                 end
@@ -2415,8 +2419,8 @@ classdef ModalEspectral < Analisis
                 for i = 1:length(r.filtMod)
                     
                     % Rango en frecuencias
-                    rangeinf = locMean(i) - 3*r.filtstd; % -0.2
-                    rangesup = locMean(i) + 3*r.filtstd;
+                    rangeinf = locMean(i) - r.filtRange;
+                    rangesup = locMean(i) + r.filtRange;
                     if i == 1
                         Wn = rangesup(i) / (cargaFS / 2);
                     elseif i > 1
