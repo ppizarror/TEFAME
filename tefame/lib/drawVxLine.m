@@ -20,6 +20,10 @@ function obj = drawVxLine(x, style, lw)
 if ~exist('lw', 'var')
     lw = 1;
 end
-obj = plot([x, x], get(gca, 'ylim'), style, 'Linewidth', lw);
+y = get(gca, 'ylim');
+if isempty(y) || length(y) == 1
+    error('No hay limite en y');
+end
+obj = plot([x, x], y, style, 'Linewidth', lw);
 
 end % drawVxLine function

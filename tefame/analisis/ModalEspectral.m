@@ -1937,12 +1937,15 @@ classdef ModalEspectral < Analisis
             %   betaPlot        Grafica el calculo del amortiguamiento de cada modo
             %   betaPlotComp    Grafico amortiguamiento modal comparado con el real
             %   betaRayleigh    Los amortiguamientos los calcula con Rayleigh
+            %   closeAll        Cierra todos los graficos antes del analisis
             %   fase            Realiza analisis de fases
             %   faseNodos       Nodos en los que se realiza la fase
             %   faseTlim        Limites periodo grafico fase
             %   fftLim          Limite de frecuencia en grafico FFT
             %   fftMeanStd      Grafica el promedio y desviacion estandar para FFT
             %   fftPeaks        Grafica los peaks
+            %   fftPeaksComp    Grafico comparacion peaks teorico y FFT
+            %   fftPeaksError   Error peaks periodos con respecto al teorico
             %   fftPlot         Muestra el grafico de la FFT simple
             %   filtMod         Realiza analisis de filtros
             %   filtNodo        Nodos de analisis de filtros
@@ -1950,13 +1953,13 @@ classdef ModalEspectral < Analisis
             %   filtTlim        Limite periodo grafico filtros
             %   formaModal      Vector con periodos a graficar de las formas modales
             %   formaModalComp  Comparacion formas modales con las teoricas
-            %   formaModalError Grafico error forma modal con la teorica
             %   formaModalDir   Vector direccion de analisis formas modales (x,y,z)
+            %   formaModalError Grafico error forma modal con la teorica
+            %   formaModalLeg   Muestra la leyenda de las formas modales
+            %   formaModalLw    Ancho de linea formas modales
             %   formaModalMark  Muestra un marcador en cada nodo de las formas modales
             %   formaModalMz    Tamano marcador nodo en formas modales
             %   formaModalPlot  Grafico de las formas modales
-            %   formaModalLeg   Muestra la leyenda de las formas modales
-            %   formaModalLw    Ancho de linea formas modales
             %   legend          Muestra la leyenda
             %   legendloc       Ubicacion de la leyenda
             %   maxPeaks        Numero de peaks maximos calculados
@@ -1998,26 +2001,34 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'betaPlot', false);
             addOptional(p, 'betaPlotComp', false);
             addOptional(p, 'betaRayleigh', true);
+            addOptional(p, 'closeAll', false);
             addOptional(p, 'fase', false);
             addOptional(p, 'faseNodos', []);
             addOptional(p, 'faseTlim', [0, 1]);
             addOptional(p, 'fftLim', 0);
             addOptional(p, 'fftMeanStd', false);
             addOptional(p, 'fftPeaks', false);
+            addOptional(p, 'fftPeaksComp', false);
+            addOptional(p, 'fftPeaksCompErrorBar', true); % Nucleo, no se busca que se use en produccion
+            addOptional(p, 'fftPeaksError', false);
             addOptional(p, 'fftPlot', false);
             addOptional(p, 'filtMod', []);
             addOptional(p, 'filtNodo', {});
             addOptional(p, 'filtRange', 0.2);
             addOptional(p, 'filtTlim', [0, 1]);
             addOptional(p, 'formaModal', []);
+            addOptional(p, 'formaModalColorFactor', 2.5);
             addOptional(p, 'formaModalComp', false);
-            addOptional(p, 'formaModalError', false);
             addOptional(p, 'formaModalDir', [0, 0, 0]); % Puede ser [0, 1, 0] (y)
+            addOptional(p, 'formaModalError', false);
+            addOptional(p, 'formaModalErrorLegPos', 'best');
+            addOptional(p, 'formaModalErrorStdLegPos', 'best');
+            addOptional(p, 'formaModalLeg', true);
+            addOptional(p, 'formaModalLegPos', 'best');
+            addOptional(p, 'formaModalLw', 1.5);
             addOptional(p, 'formaModalMark', true);
             addOptional(p, 'formaModalMz', 5);
             addOptional(p, 'formaModalPlot', true);
-            addOptional(p, 'formaModalLeg', true);
-            addOptional(p, 'formaModalLw', 1.5);
             addOptional(p, 'legend', false);
             addOptional(p, 'legendloc', 'best');
             addOptional(p, 'maxPeaks', -1); % El maximo se ajusta al dato
@@ -2029,6 +2040,11 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'zeroFill', 0);
             parse(p, varargin{:});
             r = p.Results;
+            
+            % Cierra los graficos
+            if r.closeAll
+                close all;
+            end
             
             % Obtiene las variables
             a_c = carga.obtenerAceleracion();
@@ -2114,6 +2130,9 @@ classdef ModalEspectral < Analisis
             end
             
             % Verifica que el tiempo de analisis sea adecuado
+            if r.tmax < 0
+                r.tmax = carga.tAnalisis;
+            end
             if r.tmax > carga.tAnalisis
                 error('El tiempo de analisis no puede exceder el tiempo de la carga (%.1f)', carga.tAnalisis);
             elseif r.tmax < carga.tAnalisis
@@ -2178,6 +2197,7 @@ classdef ModalEspectral < Analisis
             fprintf('\tAnalisis de peaks, periodos formas modales:\n');
             fprintf('\t\tN\t|\tT peak\t\t\t|\tT modal\t|\t%%Error\t|\n');
             fprintf('\t\t-------------------------------------------------\n');
+            errorPeriodoPeaks = zeros(1, maxlocsDisp);
             for i = 1:maxlocsDisp
                 err = 100 * (tlocMean(i) - obj.Tn(i)) / obj.Tn(i);
                 if err > 0
@@ -2187,8 +2207,79 @@ classdef ModalEspectral < Analisis
                 end
                 fprintf('\t\t%d\t|\t%.3f +- %.3f\t|\t%.3f\t|\t%s%.2f\t|\n', ...
                     i, tlocMean(i), tlocStd(i), obj.Tn(i), s, err);
+                errorPeriodoPeaks(i) = err;
             end % for i
             fprintf('\t\t-------------------------------------------------\n');
+            
+            % Grafica periodo obtenido con analisis modal y analisis de
+            % peaks de la FFT
+            if r.fftPeaksComp
+                
+                fig_title = sprintf('%s %s - Comparacion periodo FFT y analisis modal espectral', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                
+                % Grafica periodos PSD
+                gc = plot(1:maxlocsDisp, tlocMean(1:maxlocsDisp), '-', 'lineWidth', 1.5);
+                c = get(gc, 'Color');
+                if r.fftPeaksCompErrorBar
+                    pl = errorbar(1:maxlocsDisp, tlocMean(1:maxlocsDisp), ...
+                        tlocStd(1:maxlocsDisp).*3, '-', 'color', c);
+                    set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                else
+                    pl = plot(1:maxlocsDisp, tlocMean(1:maxlocsDisp)+tlocStd(1:maxlocsDisp).*3, ...
+                        '--', 'color', c, 'lineWidth', 1);
+                    set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                    pl = plot(1:maxlocsDisp, tlocMean(1:maxlocsDisp)-tlocStd(1:maxlocsDisp).*3, ...
+                        '--', 'color', c, 'lineWidth', 1);
+                    set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                end
+                pl = plot(1:maxlocsDisp, tlocMean(1:maxlocsDisp), '^', 'markerSize', 2.5, ...
+                    'color', c, 'markerfacecolor', c);
+                set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                
+                % Grafica periodos modal espectral
+                gc = plot(1:maxlocsDisp, obj.Tn(1:maxlocsDisp), '-', 'lineWidth', 1.5);
+                c = get(gc, 'Color');
+                pl = plot(1:maxlocsDisp, obj.Tn(1:maxlocsDisp), '^', 'markerSize', 2.5, ...
+                    'color', c, 'markerfacecolor', c);
+                set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                
+                xlabel('Modo');
+                ylabel('Periodo (s)');
+                title({'Comparacion periodo peaks FFT y analisis modal espectral', ''});
+                xlim([1, maxlocsDisp]);
+                legend({'Periodo analisis FFT (\pm3\sigma)', 'Periodo modal espectral'}, ...
+                    'location', 'northeast');
+                grid on;
+                grid minor;
+                
+            end % fftPeaksComp
+            
+            % Grafica la diferencia de los peaks con el modelo teorico
+            if r.fftPeaksError
+                
+                fig_title = sprintf('%s %s - Error periodos FFT por cada modo', ...
+                    ctitle, carga.obtenerEtiqueta());
+                plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                movegui(plt, 'center');
+                hold on;
+                gc = plot(1:maxlocsDisp, errorPeriodoPeaks, '-', 'lineWidth', 1.5);
+                c = get(gc, 'Color');
+                pl = plot(1:maxlocsDisp, errorPeriodoPeaks, '^', 'markerSize', 4, ...
+                    'color', c, 'markerfacecolor', c);
+                set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                drawVyLine(0, 'k--', 0.5);
+                grid on;
+                grid minor;
+                xlim([1, maxlocsDisp]);
+                title({'Error periodos FFT por cada modo', ''});
+                xlabel('Modo');
+                ylabel('Error entre periodos (%)');
+                
+            end % fftPeaksError
             
             % Grafica los peaks
             if r.fftPeaks
@@ -2296,40 +2387,65 @@ classdef ModalEspectral < Analisis
             % Crea la curva de variacion del amortiguamiento por cada modo
             if r.betaPlotComp
                 
+                % Grafico error amortiguamiento modal
                 fig_title = sprintf('%s %s - Error en amortiguamiento modal', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 hold on;
-                plot(1:lbeta, betaError(1:lbeta), '*-', 'lineWidth', 1.5);
+                gc = plot(1:lbeta, betaError(1:lbeta), '-', 'lineWidth', 1.5);
+                c = get(gc, 'Color');
+                pl = plot(1:lbeta, betaError(1:lbeta), '^', 'markerSize', 2.5, ...
+                    'color', c, 'markerfacecolor', c);
+                set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
                 xlabel('Modo');
                 ylabel('Error amortiguamiento (%)');
                 title({'Error amortiguamiento \beta modal', ''});
                 if min(betaError) < 0
-                    drawVyLine(0, 'k--', 1);
+                    drawVyLine(0, 'k--', 0.5);
                 end
-                set(gca, 'XTick', 1:lbeta);
+                % set(gca, 'XTick', 1:lbeta);
+                xlim([1, lbeta]);
                 grid on;
                 grid minor;
+                xTickInteger();
                 
+                % Grafico amortiguamiento por cada modo, compara tanto el
+                % teorico como el obtenido con psd
                 fig_title = sprintf('%s %s - Grafico de amortiguamiento modal', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 hold on;
-                plot(1:lbeta, beta(1:lbeta), '*-', 'lineWidth', 1.5);
-                plot(1:lbeta, betaModo(1:lbeta), '*-', 'lineWidth', 1.5);
+                
+                % Grafico obtenido por el metodo psd
+                gc = plot(1:lbeta, beta(1:lbeta), '-', 'lineWidth', 1.5);
+                c = get(gc, 'Color');
+                pl = plot(1:lbeta, beta(1:lbeta), '^', 'markerSize', 4, ...
+                    'color', c, 'markerfacecolor', c);
+                set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                
+                % Grafico real del modelo teorico
+                gc = plot(1:lbeta, betaModo(1:lbeta), '-', 'lineWidth', 1.5);
+                c = get(gc, 'Color');
+                pl = plot(1:lbeta, betaModo(1:lbeta), '^', 'markerSize', 2, ...
+                    'color', c, 'markerfacecolor', c);
+                set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                
                 xlabel('Modo');
                 ylabel('Amortiguamiento (%)');
                 title({'Amortiguamiento \beta modal', ''});
-                legend({'\beta Teorico', '\beta PSD'}, 'location', 'northeast');
-                set(gca, 'XTick', 1:lbeta);
+                legend({'\beta Teorico', '\beta PSD'}, 'location', 'northwest');
+                % set(gca, 'XTick', 1:lbeta);
+                xlim([1, lbeta]);
                 grid on;
                 grid minor;
+                xTickInteger();
                 
             end % betaPlotComp
             
             % Vector de modos a graficar
+            r.formaModal = sort(r.formaModal);
             formaModalLeg = cell(1, length(r.formaModal)); % Contiene las leyendas de los modos elegidos
             for i = 1:length(r.formaModal)
                 r.formaModal(i) = floor(r.formaModal(i));
@@ -2386,7 +2502,6 @@ classdef ModalEspectral < Analisis
                 envFormaModalError = cell(1, length(r.formaModal));
                 formaModalMaxError = 0;
                 
-                % Parametros estadisticos error
                 if r.formaModalComp
                     for i = 1:length(r.formaModal)
                         envFormaModalTeorica{i} = obj.phin(:, r.formaModal(i));
@@ -2402,7 +2517,11 @@ classdef ModalEspectral < Analisis
                         envFormaModalError{i} = zeros(1, ng);
                         for j = 1:ng
                             envFormaModalError{i}(j) = envFormaModalTeorica{i}(j) - envFormaModal{i}(j);
-                            envFormaModalError{i}(j) = 100 * envFormaModalError{i}(j) / envFormaModal{i}(j);
+                            
+                            % Calcula el largo de la forma modal, que es el
+                            % la distancia maxima entre 0 y 1
+                            formaModalLargo = max(envFormaModal{i}(j), 1-envFormaModal{i}(j));
+                            envFormaModalError{i}(j) = 100 * envFormaModalError{i}(j) / formaModalLargo;
                         end % for j
                         formaModalLegError{i} = sprintf('Error forma modal %d', r.formaModal(i));
                         formaModalMaxError = max(formaModalMaxError, max(abs(envFormaModalError{i})));
@@ -2412,6 +2531,26 @@ classdef ModalEspectral < Analisis
                         formaModalLegComp{2*i} = sprintf('Forma modal %d teorica', r.formaModal(i));
                     end
                     formaModalLeg = formaModalLegComp; % Cambia la leyenda
+                end
+                
+                % Calcula el error estadistico por todos los modos
+                formaModalErrorMean = zeros(1, ng);
+                formaModalErrorStd = zeros(1, ng);
+                for i = 1:ng
+                    ngdata = zeros(1, length(r.formaModal));
+                    for j = 1:length(r.formaModal)
+                        ngdata(j) = envFormaModalError{j}(i); % Error del modo j en el gdl i
+                    end
+                    formaModalErrorMean(i) = mean(ngdata);
+                    formaModalErrorStd(i) = std(ngdata);
+                end
+                
+                % Calcula el error por cada modo
+                formaModalErrorModoMean = zeros(1, length(r.formaModal));
+                formaModalErrorModoStd = zeros(1, length(r.formaModal));
+                for i = 1:length(r.formaModal)
+                    formaModalErrorModoMean(i) = mean(envFormaModalError{i});
+                    formaModalErrorModoStd(i) = std(envFormaModalError{i});
                 end
                 
                 if r.formaModalMz <= 0
@@ -2452,7 +2591,7 @@ classdef ModalEspectral < Analisis
                         
                         % Grafica la forma modal teorica si corresponde
                         if r.formaModalComp
-                            ct = colorFactor(c, 2);
+                            ct = colorFactor(c, r.formaModalColorFactor);
                             plot(xt, yt, '--', 'color', ct, 'lineWidth', 0.5*r.formaModalLw);
                             if r.formaModalMark
                                 pl = plot(xt, yt, '^', 'color', ct, ...
@@ -2473,7 +2612,7 @@ classdef ModalEspectral < Analisis
                     xlabel('Forma modal normalizada');
                     
                     if r.formaModalLeg
-                        legend(formaModalLeg, 'location', 'best', 'FontSize', 6);
+                        legend(formaModalLeg, 'location', r.formaModalLegPos, 'FontSize', 6);
                     end
                 end % formaModalPlot
                 
@@ -2488,13 +2627,8 @@ classdef ModalEspectral < Analisis
                     for j = 1:length(r.formaModal)
                         
                         i = r.formaModal(j);
-                        if strcmp(dirForma, 'X')
-                            y = xModal;
-                            x = envFormaModalError{i};
-                        else
-                            y = envFormaModalError{i};
-                            x = xModal;
-                        end
+                        x = xModal;
+                        y = envFormaModalError{i};
                         
                         % Grafica la forma modal calculada
                         gc = plot(x, y, '-', 'lineWidth', r.formaModalLw);
@@ -2510,17 +2644,75 @@ classdef ModalEspectral < Analisis
                     % Agrega un eje en cero
                     drawVyLine(0, 'k--', 0.5);
                     
-                    title({fig_title, ''});
+                    title({'Error porcentual formas modales FFT', ''});
                     xlim([min(xModal), max(xModal)]);
                     % ylim([-formaModalMaxError, formaModalMaxError]);
                     grid on;
                     grid minor;
                     xlabel(dirForma);
                     ylabel('Error forma modal (%)');
+                    xTickInteger();
                     
                     if r.formaModalLeg
-                        legend(formaModalLegError, 'location', 'southwest', 'fontSize', 8);
+                        legend(formaModalLegError, 'location', r.formaModalErrorLegPos, 'fontSize', 8);
                     end
+                    
+                    % Genera grafico con promedio y desviacion estandar en
+                    % funcion del largo
+                    fig_title = sprintf('%s %s - Error porcentual formas modales FFT', ...
+                        ctitle, carga.obtenerEtiqueta());
+                    plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                    movegui(plt, 'center');
+                    hold on;
+                    
+                    gc = plot(xModal, formaModalErrorMean, '-', 'lineWidth', 2);
+                    c = get(gc, 'Color');
+                    pl = drawVyLine(0, 'k--', 0.5);
+                    set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                    plot(xModal, formaModalErrorMean+formaModalErrorStd, ...
+                        'k--', 'lineWidth', 1, 'color', c);
+                    pl = plot(xModal, formaModalErrorMean-formaModalErrorStd, ...
+                        'k--', 'lineWidth', 1, 'color', c);
+                    set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                    
+                    xlim([min(xModal), max(xModal)]);
+                    % ylim([-formaModalMaxError, formaModalMaxError]);
+                    grid on;
+                    grid minor;
+                    xlabel(dirForma);
+                    ylabel('Error forma modal (%)');
+                    legend({'\mu', '\mu+\sigma'}, 'location', r.formaModalErrorLegPos);
+                    title({'Error porcentual formas modales FFT', ''});
+                    
+                    % Grafico del error promedio en funcion del modo
+                    fig_title = sprintf('%s %s - Error porcentual formas modales FFT', ...
+                        ctitle, carga.obtenerEtiqueta());
+                    plt = figure('Name', fig_title, 'NumberTitle', 'off');
+                    movegui(plt, 'center');
+                    hold on;
+                    
+                    gc = plot(r.formaModal, formaModalErrorModoMean, '-', ...
+                        'lineWidth', 2);
+                    c = get(gc, 'Color');
+                    pl = drawVyLine(0, 'k--', 0.5);
+                    set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                    plot(r.formaModal, formaModalErrorModoMean+formaModalErrorModoStd, ...
+                        '--', 'lineWidth', 1, 'color', c);
+                    pl = plot(r.formaModal, formaModalErrorModoMean-formaModalErrorModoStd, ...
+                        'k--', 'lineWidth', 1, 'color', c);
+                    set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
+                    xlim([min(r.formaModal), max(r.formaModal)]);
+                    
+                    % ax = gca;
+                    % ax.YGrid = true;
+                    % ax.YMinorGrid = true;
+                    grid on;
+                    grid minor;
+                    xlabel('Modo');
+                    ylabel('Error forma modal (%)');
+                    legend({'\mu', '\mu+\sigma'}, 'location', r.formaModalErrorStdLegPos);
+                    title({fig_title, ''});
+                    xTickInteger();
                     
                 end % formaModalError
                 
@@ -2571,7 +2763,7 @@ classdef ModalEspectral < Analisis
                 hold on;
                 plot(t, acc(1:l_ac, 1), '-', 'lineWidth', 1.5);
                 sumFiltmod = zeros(l_ac, 1);
-                legmod{1} = 'All modes';
+                legmod{1} = 'Todos los modos';
                 
                 % Aplica el filtro
                 for i = 1:length(r.filtMod)
@@ -2588,11 +2780,11 @@ classdef ModalEspectral < Analisis
                     [B, A] = butter(4, Wn);
                     Filtmod(:, i) = filtfilt(B, A, acc(1:l_ac, 1)); %#ok<AGROW>
                     sumFiltmod = sumFiltmod + Filtmod(:, i);
-                    legmod{i + 1} = strcat('Modo ', num2str(i)); %#ok<AGROW>
+                    legmod{i + 1} = sprintf('Modo %s ', num2str(i)); %#ok<AGROW>
                     plot(t, Filtmod(:, i), '-', 'lineWidth', 1);
                     
                 end % for i
-                legmod{end+1} = 'Sum modes';
+                legmod{end+1} = 'Suma modos';
                 
                 % Plot respuesta filtrada
                 ylabel(sprintf('Aceleracion (%s/s^2)', r.unidadL));
@@ -2635,7 +2827,7 @@ classdef ModalEspectral < Analisis
                 movegui(plt, 'center');
                 hold on;
                 subplot(311);
-                plot(f, abs(division(:, faseNodos(1))));
+                plot(f, abs(division(:, faseNodos(1))), 'lineWidth', 1.5);
                 title('Division FFT - Parte Real');
                 xlabel('Frecuencia (Hz)');
                 ylabel('FFT');
@@ -2644,7 +2836,7 @@ classdef ModalEspectral < Analisis
                 xlim(r.faseTlim);
                 
                 subplot(312);
-                plot(f, angle(division(:, faseNodos(1))));
+                plot(f, angle(division(:, faseNodos(1))), 'lineWidth', 1.5);
                 title('Fase');
                 xlabel('Frecuencia (Hz)');
                 ylabel('Angulo');
@@ -2659,8 +2851,9 @@ classdef ModalEspectral < Analisis
                 grid on;
                 grid minor;
                 zoom on;
-                legend({strcat('Piso', ' ', num2str(faseNodos(1))), ...
-                    strcat('Piso', ' ', num2str(faseNodos(2)))});
+                title('FFT Nodos');
+                legend({sprintf('Nodo %s', num2str(faseNodos(1))), ...
+                    sprintf('Nodo %s', num2str(faseNodos(2)))});
                 xlim(r.faseTlim);
                 
             end % fase

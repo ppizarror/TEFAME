@@ -20,6 +20,10 @@ function obj = drawVyLine(y, style, lw)
 if ~exist('lw', 'var')
     lw = 1;
 end
-obj = plot(get(gca, 'xlim'), [y, y], style, 'Linewidth', lw);
+x = get(gca, 'xlim');
+if isempty(x) || length(x) == 1
+    error('No hay limite en x');
+end
+obj = plot(x, [y, y], style, 'Linewidth', lw);
 
 end % drawVyLine function
