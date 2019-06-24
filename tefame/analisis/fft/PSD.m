@@ -85,7 +85,7 @@ for k = 1:ng
     acc = acc(c1:c2);
     
     % Rellena con ceros
-    acc = [acc, zeros(1, ceil(r.zerofill*length(acc)))]; %#ok<AGROW>
+    acc = [acc, zeros(1, floor(r.zerofill*length(acc)))]; %#ok<AGROW>
     tuck = tukeywin(length(acc), r.tukeywinr)';
     acctuck = acc.*tuck;
     [f, fftt, ~] = DFT(fs, acctuck);
@@ -193,7 +193,7 @@ if ~r.betaFFTMax % Usa cada FFT de manera separada
                         betaFreq{i} = [izq, der, f(locFreq(i)), pksObj(i)];
                         break;
                     end
-                    lastj = j + 1; % Ultimo en atravezar
+                    lastj = j + 1; % Ultimo en atravesar
                 end
             end % for j
         end % for i
@@ -227,7 +227,7 @@ else % Se usa solo el maximo
                     betaFreq{i} = [izq, der, f(locFreq(i)), pksObj(i)];
                     break;
                 end
-                lastj = j + 1; % Ultimo en atravezar
+                lastj = j + 1; % Ultimo en atravesar
             end
         end % for j
     end % for i
