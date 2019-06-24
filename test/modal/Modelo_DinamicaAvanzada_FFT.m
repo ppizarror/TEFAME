@@ -147,6 +147,7 @@ analisisObj.calcularFFTCarga(cargasDinamicas{1}, pulsoNodos, [1, 0, 0], ...
 analisisObj.plotEspectrogramaNormalizado(cargasDinamicas{1}, pulsoNodos, [1, 0, 0], ...
     'windowTime', 25, 'windowTimeMovement', 2.5, 'contour', []);
 % analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{143}, [1, 0, 0]);
+analisisObj.plotTrayectoriaNodos(cargasDinamicas{1}, pulsoNodos, [1, 0, 0], 'tlim', [0, 20]);
 
 %% Finaliza el analisis
 clear h h1 i v pulsoNodo;

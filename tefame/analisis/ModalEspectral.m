@@ -72,6 +72,7 @@
 %       phi_Modelo = obtenerMatrizPhi(obj)
 %       plot(obj,varargin)
 %       plotEsfuerzosElemento(obj,carga)
+%       plotEspectrogramaNormalizado(obj,carga,nodos,direccionCarga,varargin)
 %       plotTrayectoriaNodo(obj,carga,nodo,direccion)
 %       plotTrayectoriaNodos(obj,carga,nodos,direccion,varargin)
 %       r_Modelo = obtenerVectorInfluencia(obj)

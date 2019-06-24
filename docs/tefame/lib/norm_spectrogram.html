@@ -2,9 +2,9 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of drawVyLine</title>
-  <meta name="keywords" content="drawVyLine">
-  <meta name="description" content="drawVyLine: This function draw a horizontal line on y value.">
+  <title>Description of norm_spectrogram</title>
+  <meta name="keywords" content="norm_spectrogram">
+  <meta name="description" content="NORMSPECTROGRAM This function create a normalized spectrogram matrix by">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -16,19 +16,37 @@
 <body>
 <a name="_top"></a>
 <!-- # tefame --><!-- menu.html lib -->
-<h1>drawVyLine
+<h1>norm_spectrogram
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>drawVyLine: This function draw a horizontal line on y value.</strong></div>
+<div class="box"><strong>NORMSPECTROGRAM This function create a normalized spectrogram matrix by</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>function obj = drawVyLine(y, style, lw) </strong></div>
+<div class="box"><strong>function [matrix, varargout] = norm_spectrogram(t, acc, MAX_FREQ, NORMALIZE, WINDOW_TIME, WINDOW_TIME_MOVEMENT) </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"> drawVyLine: This function draw a horizontal line on y value.
+<div class="fragment"><pre class="comment"> NORMSPECTROGRAM This function create a normalized spectrogram matrix by
+ doing the following algorithm:
 
- Author: Pablo Pizarro @ppizarror.com, 2017.
+   Each spectrum is divided on 5-second windows overlapped by 2.5 seconds
+   (50%), on each window is applied:
+       1. Baseline correction
+       2. Tuckey window is applied with r=5%.
+       3. FFT on window signal.
+       4. Spectrum is smoothed by 5 points halfwidth moving average.
+       5. Each element of spectrum is normalized by maximum epsectral
+          amplitude.
+
+ Usage:
+   matrix = normspectrogram(t, acc)
+   [matrix, matrix_t, matrix_f] = normspectrogram(t, acc)
+
+ Where:
+   t:       Time array
+   acc:     Acceleration array (g)
+
+ Author: Pablo Pizarro @ppizarror.com, 2017-2019.
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -48,10 +66,10 @@
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-</ul>
+<li><a href="tukeywin.html" class="code" title="function w = tukeywin(n, r)">tukeywin</a>	tukeywin: Tukey window.</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	|______________________________________________________________________|</li><li><a href="../../tefame/modelo/cargas/patrones/PatronDeCargasDinamico.html" class="code" title="">PatronDeCargasDinamico</a>	|______________________________________________________________________|</li></ul>
+<li><a href="../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	|______________________________________________________________________|</li></ul>
 <!-- crossreference -->
 
 
