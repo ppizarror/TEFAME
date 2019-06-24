@@ -130,7 +130,7 @@ classdef ModalEspectral < Analisis
             obj.cargarAnimacion = true;
             obj.F = [];
             obj.Kt = [];
-            obj.mostrarDeformada = false;
+            obj.mostrarDeformada = true;
             obj.Mt = [];
             obj.u = [];
             
@@ -1920,6 +1920,160 @@ classdef ModalEspectral < Analisis
             
         end % calcularAmortiguamientoModo function
         
+        function plotEspectrogramaNormalizado(obj, carga, nodos, direccionCarga, varargin)
+            % plotEspectrogramaNormalizado: Grafica el espectrograma
+            % normalizado de un registro de aceleracion de varios nodos
+            %
+            % Parametros opcionales:
+            %   maxFreq             Frecuencia maxima de analisis
+            %   normalize           Normaliza el calculo
+            %   windowTime          Tiempo de cada ventana, si no se define se usa todo el registro
+            %   windowTimeMovement  Movimiento de la ventana
+            
+            % Inicia proceso
+            tinicial = clock;
+            
+            % Verifica que el vector de nodos sea un cell
+            if ~iscell(nodos)
+                error('Nodos debe ser un cell de nodos');
+            end
+            for k = 1:length(nodos)
+                if ~isa(nodos{k}, 'Nodo')
+                    error('Elemento %d del cell de nodos no es de clase Nodo', k);
+                end
+            end % for k
+            
+            % Verifica que la direccion sea correcta
+            if sum(direccionCarga) ~= 1
+                error('Direccion carga invalida');
+            end
+            if ~verificarVectorDireccion(direccionCarga, nodos{1}.obtenerNumeroGDL())
+                error('Vector direccion carga mal definido');
+            end
+            
+            % Recorre parametros opcionales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'contour', []);
+            addOptional(p, 'maxFreq', 10);
+            addOptional(p, 'normalize', true);
+            addOptional(p, 'windowTime', 0);
+            addOptional(p, 'windowTimeMovement', 2.5); % s
+            parse(p, varargin{:});
+            r = p.Results;
+            
+            % Obtiene las variables
+            a_c = carga.obtenerAceleracion();
+            
+            % Otros
+            r.contour = sort(r.contour);
+            
+            % Verifica que la carga se haya calculado
+            if ~(isa(carga, 'CargaDinamica') || isa(carga, 'CombinacionCargas'))
+                error('Solo se pueden graficar cargas dinamicas o combinaciones de cargas');
+            end
+            if ~carga.cargaCalculada()
+                error('La carga %s no se ha calculado', carga.obtenerEtiqueta());
+            end
+            
+            % Crea el titulo de la carga
+            ctitle = obj.imprimirPropiedadesAnalisisCarga(carga);
+            ng = length(nodos);
+            [nr, ~] = size(a_c);
+            
+            % Verifica que la direccion sea correcta
+            gdl = zeros(1, ng);
+            for k = 1:ng
+                % Elige al nodo
+                ngd = nodos{k}.obtenerGDLIDCondensado();
+                for i = 1:length(direccionCarga)
+                    if direccionCarga(i) == 1
+                        gdl(k) = ngd(i);
+                    end
+                end % for i
+                if gdl(k) == 0
+                    error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
+                end
+                if gdl(k) > nr
+                    error('El GDLID excede al soporte del sistema');
+                end
+            end % for k
+            
+            % Crea la leyenda de los nodos
+            legnodos = cell(1, ng);
+            for k = 1:ng
+                legnodos{k} = nodos{k}.obtenerEtiqueta();
+            end % for k
+            
+            % Verifica frecuencia de analisis
+            if r.maxFreq <= 0
+                error('El limite de frecuencia no puede ser negativo o nulo');
+            end
+            
+            % Verifica que el tiempo de analisis sea adecuado
+            if r.windowTimeMovement <= 0
+                error('El tiempo de movimiento de la ventana no puede ser inferior o igual a cero');
+            end
+            if r.windowTime <= 0
+                r.windowTime = carga.tAnalisis - r.windowTimeMovement;
+            else
+                if r.windowTime > carga.tAnalisis - r.windowTimeMovement
+                    error('El tamano de la ventana no puede superar el tiempo de la carga + el tiempo de movimiento de la ventana (%.1fs)', ...
+                        carga.tAnalisis-r.windowTimeMovement);
+                end
+            end
+            fprintf('\tTiempo de la ventana: %.1fs\n', r.windowTime);
+            fprintf('\tTiempo de movimiento de la ventana: %.1fs\n', r.windowTimeMovement);
+            
+            % Crea vector temporal
+            lt = length(a_c(1, :));
+            t = linspace(0, carga.tAnalisis, lt);
+            
+            % Recorre cada grado de libertad
+            m_prev = false; % Ya se sumo
+            for i = 1:ng
+                [m, mt, mf] = norm_spectrogram(t, a_c(gdl(i), :), r.maxFreq, r.normalize, ...
+                    r.windowTime, r.windowTimeMovement);
+                if ~m_prev % No se ha ejecutado el analisis
+                    mSum = m;
+                    m_prev = true;
+                else
+                    mSum = mSum + m;
+                end
+            end
+            mSum = mSum ./ ng;
+            
+            fig_title = sprintf('%s %s - Espectrograma normalizado', ...
+                ctitle, carga.obtenerEtiqueta());
+            plt = figure('Name', fig_title, 'NumberTitle', 'off');
+            movegui(plt, 'center');
+            hold on;
+            
+            % Dibuja el fondo
+            pcolor(mt, mf, mSum);
+            shading flat; % flat, interp
+            colorbar;
+            
+            % Agrega contorno
+            if ~isempty(r.contour)
+                [~, h] = contour(mt, mf, mSum, r.contour);
+                h.LineWidth = 0.5;
+                h.LineColor = 'red';
+            end
+            
+            hold off;
+            ylabel('Frecuencia (Hz)');
+            xlabel('Tiempo (s)');
+            xlim([0, mt(end)]);
+            ylim([0, mf(end)]);
+            title({fig_title, ''});
+            
+            % Finaliza proceso
+            fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
+            dispMetodoTEFAME();
+            
+        end % plotEspectrogramaNormalizado function
+        
         function calcularFFTCarga(obj, carga, nodos, direccionCarga, varargin)
             % calcularFFTCarga: permite el calculo del FFT de la
             % aceleracion, obteniendo los periodos de la estructura. El
@@ -1976,9 +2130,6 @@ classdef ModalEspectral < Analisis
             % Verifica que el vector de nodos sea un cell
             if ~iscell(nodos)
                 error('Nodos debe ser un cell de nodos');
-            end
-            if length(nodos) == 1
-                warning('Para un solo nodo se recomienda plotTrayectoriaNodo(carga,nodo,direccion,varargin)');
             end
             for k = 1:length(nodos)
                 if ~isa(nodos{k}, 'Nodo')
@@ -2836,7 +2987,7 @@ classdef ModalEspectral < Analisis
                 xlim(r.faseTlim);
                 
                 subplot(312);
-                plot(f, angle(division(:, faseNodos(1))) ./ pi, 'lineWidth', 1.5);
+                plot(f, angle(division(:, faseNodos(1)))./pi, 'lineWidth', 1.5);
                 title('Fase');
                 xlabel('Frecuencia (Hz)');
                 ylabel('Angulo');
