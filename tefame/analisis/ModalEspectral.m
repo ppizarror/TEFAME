@@ -2395,7 +2395,7 @@ classdef ModalEspectral < Analisis
                 hold on;
                 gc = plot(1:lbeta, betaError(1:lbeta), '-', 'lineWidth', 1.5);
                 c = get(gc, 'Color');
-                pl = plot(1:lbeta, betaError(1:lbeta), '^', 'markerSize', 2.5, ...
+                pl = plot(1:lbeta, betaError(1:lbeta), '^', 'markerSize', 4, ...
                     'color', c, 'markerfacecolor', c);
                 set(get(get(pl, 'Annotation'), 'LegendInformation'), 'IconDisplayStyle', 'off');
                 xlabel('Modo');
@@ -2836,13 +2836,21 @@ classdef ModalEspectral < Analisis
                 xlim(r.faseTlim);
                 
                 subplot(312);
-                plot(f, angle(division(:, faseNodos(1))), 'lineWidth', 1.5);
+                plot(f, angle(division(:, faseNodos(1))) ./ pi, 'lineWidth', 1.5);
                 title('Fase');
                 xlabel('Frecuencia (Hz)');
                 ylabel('Angulo');
                 grid on;
                 grid minor;
                 xlim(r.faseTlim);
+                
+                % Modifica los ticks del grafico del angulo
+                yTickInteger();
+                ytickp = get(gca, 'YTick');
+                if length(ytickp) == 3
+                    ytick = {'-\pi', '', '\pi'};
+                    set(gca, 'YTick', ytickp, 'yticklabel', ytick);
+                end
                 
                 subplot(313);
                 plot(f, abs(Fftcomp'));
