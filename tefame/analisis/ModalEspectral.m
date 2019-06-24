@@ -56,8 +56,8 @@
 %       C_Modelo = obtenerMatrizAmortiguamiento(obj,rayleigh)
 %       calcularCurvasEnergia(obj,carga)
 %       calcularDesplazamientoDrift(obj,xanalisis)
-%       calcularFFTCarga(obj,carga,nodos,direccionCarga,direccionFormaModal,varargin)
 %       calcularMomentoCorteBasal(obj,carga)
+%       calcularPSDCarga(obj,carga,nodos,direccionCarga,direccionFormaModal,varargin)
 %       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(obj)
 %       definirNumeracionGDL(obj)
 %       desactivarCargaAnimacion(obj)
@@ -2075,8 +2075,8 @@ classdef ModalEspectral < Analisis
             
         end % plotEspectrogramaNormalizado function
         
-        function calcularFFTCarga(obj, carga, nodos, direccionCarga, varargin)
-            % calcularFFTCarga: permite el calculo del FFT de la
+        function calcularPSDCarga(obj, carga, nodos, direccionCarga, varargin)
+            % calcularPSDCarga: permite el calculo del PSD de la
             % aceleracion, obteniendo los periodos de la estructura. El
             % metodo se entiende como una aproximacion al calculo
             % experimental y no pretende reemplazar a los periodos
@@ -2186,7 +2186,7 @@ classdef ModalEspectral < Analisis
             addOptional(p, 'legendloc', 'best');
             addOptional(p, 'maxPeaks', -1); % El maximo se ajusta al dato
             addOptional(p, 'peakMinDistance', 0.5); % Requerido para el calculo
-            addOptional(p, 'peaksFFT', true); % El calculo de peaks es con FFT
+            addOptional(p, 'peaksFFT', false); % El calculo de peaks es con FFT o PSD
             addOptional(p, 'peaksT', false);
             addOptional(p, 'peaksTComp', false);
             addOptional(p, 'peaksTCompErrorBar', true); % Nucleo, no se busca que se use en produccion
@@ -3084,7 +3084,7 @@ classdef ModalEspectral < Analisis
             fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
             dispMetodoTEFAME();
             
-        end % calcularFFTCarga function
+        end % calcularPSDCarga function
         
         function plotTrayectoriaNodos(obj, carga, nodos, direccion, varargin)
             % plotTrayectoriaNodos: Grafica la trayectoria de varios nodos
