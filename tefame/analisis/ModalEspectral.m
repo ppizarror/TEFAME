@@ -2311,7 +2311,7 @@ classdef ModalEspectral < Analisis
                 'tukeywinr', r.tukeywinr, 'zeroFill', r.zeroFill, ...
                 'betaFFTMax', true, 'tmax', r.tmax, 'tmin', r.tmin, ...
                 'peakFFT', r.peaksFFT, 'betaFFT', r.betaFFT);
-
+            
             % Actualiza por el numero de modos del sistema
             maxlocs = min(maxlocs, obj.numModos);
             
@@ -2488,7 +2488,7 @@ classdef ModalEspectral < Analisis
                 
                 % Grafico de peaks
                 fig_title = sprintf('%s %s - Analisis %s peaks', ...
-                        ctitle, carga.obtenerEtiqueta(), peakMethod);
+                    ctitle, carga.obtenerEtiqueta(), peakMethod);
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
                 hold on;
