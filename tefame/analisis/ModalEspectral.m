@@ -3159,7 +3159,7 @@ classdef ModalEspectral < Analisis
                     plot(t, p_c(ng, :), '-', 'LineWidth', 1);
                 end % for k
                 
-                ylabel(sprintf('carga (%s)', r.unidadC));
+                ylabel(sprintf('Carga (%s)', r.unidadC));
                 xlabel('t (s)');
                 xlim(tlim);
                 grid on;
