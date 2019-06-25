@@ -2051,7 +2051,8 @@ classdef ModalEspectral < Analisis
             hold on;
             
             % Dibuja el fondo
-            pcolor(mt, mf, mSum);
+            % pcolor(mt, mf, mSum);
+            surf(mt, mf, mSum); % Usamos surf mejor ya que es en 3D
             shading flat; % flat, interp
             colorbar;
             
