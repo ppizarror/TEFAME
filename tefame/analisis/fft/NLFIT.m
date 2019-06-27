@@ -54,8 +54,10 @@ ub(:, 4) = rholim(2);
 
 %% Generacion de matriz de limite superior e inferior
 
-d2 = d(1:4000);
-t2 = t(1:4000);
+% d2 = d(1:4000);
+% t2 = t(1:4000);
+d2 = d;
+t2 = t;
 options = optimoptions(@lsqnonlin, 'MaxFunctionEvaluations', 3000, 'FunctionTolerance', 10^-9);
 f = @(x) FDESPL1M(d2, t2, nmodos, x);
 

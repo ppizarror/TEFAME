@@ -7,7 +7,7 @@ beta = x(:, 2);
 theta = x(:, 3);
 rho = x(:, 4);
 for i=1:N
-    v = v + real(rho(i)*exp(-beta(i)*omega(i)*t') .* sin(omega(i)*sqrt(1+2*beta(i)*1i)*t' - theta(i)));
+    v = v + real(rho(i)*exp(-beta(i)*omega(i)*t') .* sin(omega(i)*sqrt(1+beta(i).^2)*t' - theta(i)));
 end
 v = v' - d;
 
