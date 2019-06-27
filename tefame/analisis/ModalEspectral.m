@@ -2076,6 +2076,96 @@ classdef ModalEspectral < Analisis
             
         end % plotEspectrogramaNormalizado function
         
+        function calcularIdentificacionNL(obj, carga, nodo, direccionCarga, varargin)
+            % calcularIdentificacionNL: calcula identificacion no lineal
+            %
+            % Parametros opcionales:
+            %   nmodos          Numero de modos de analisis
+            %   rholim          Limite inferior/superior amplitud modo (2x1)
+            %   thetalim        Limite inferior/superior fase (2x1)
+            %   betalim         Limite inferior/superior amortiguamiento (2x1)
+            %   wlim            Limite inferior/superior frecuencia (2x1)
+            %   betaRayleigh    Los amortiguamientos los calcula con Rayleigh
+            
+            % Inicia proceso
+            tinicial = clock;
+            
+            % Verifica que el vector de nodos sea un cell
+            if ~isa(nodo, 'Nodo')
+                error('El objeto nodo no es de clase Nodo');
+            end
+                
+            % Verifica que la direccion sea correcta
+            if sum(direccionCarga) ~= 1
+                error('Direccion carga invalida');
+            end
+            if ~verificarVectorDireccion(direccionCarga, nodo.obtenerNumeroGDL())
+                error('Vector direccion carga mal definido');
+            end
+            
+            % Recorre parametros opcionales
+            p = inputParser;
+            p.KeepUnmatched = true;
+            addOptional(p, 'betaRayleigh', true);
+            addOptional(p, 'nmodos', 4);
+            addOptional(p, 'rholim', [-Inf, Inf]);
+            addOptional(p, 'thetalim', [-Inf, Inf]);
+            addOptional(p, 'betalim', [0, Inf]);
+            addOptional(p, 'wlim', [0, Inf]);
+            parse(p, varargin{:});
+            r = p.Results;
+            
+            % Verifica variables
+            r.nmodos = floor(r.nmodos);
+            if r.nmodos > obj.numModos
+                error('Numero modos excede el analisis');
+            end
+            if length(r.rholim) ~= 2 || length(r.thetalim) ~= 2 || length(r.betalim) ~= 2 || length(r.wlim) ~= 2
+                error('Parametros opcionales deben ser vectores de dos componentes');
+            end
+            
+            % Obtiene desplazamiento de la carga
+            despl = carga.obtenerDesplazamiento();
+            [nr, ~] = size(despl);
+            
+            % Obtiene el gdl de analisis del nodo
+            ngd = nodo.obtenerGDLIDCondensado();
+            gdl = 0;
+            for i = 1:length(direccionCarga)
+                if direccionCarga(i) == 1
+                    gdl = ngd(i);
+                end
+            end % for i
+            if gdl == 0
+                error('No se ha obtenido el GDLID del nodo, es posible que corresponda a un apoyo o bien que el grado de libertad fue condensado');
+            end
+            if gdl > nr
+                error('El GDLID excede al soporte del sistema');
+            end
+            
+            % Obtiene el desplazamiento de grado de libertad obtenido
+            despl = despl(gdl, :)';
+            t = linspace(0, carga.tAnalisis, length(despl))';
+            
+            % Obtengo el amortiguamiento y las frecuencias de los modos
+            % requeridos
+            beta = zeros(r.nmodos, 1);
+            omega = obj.wn(1:r.nmodos);
+            
+            for i=1:r.nmodos
+                 beta(i) = obj.calcularAmortiguamientoModo(i, r.betaRayleigh);
+            end % for i
+            
+            % Llamamos a la funcion
+            [xajuste] = NLFIT(despl, t, omega, beta, r.nmodos, r.rholim, r.thetalim, ...
+                r.betalim, r.wlim);
+            
+            % Finaliza proceso
+            fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
+            dispMetodoTEFAME();
+            
+        end % calcularIdentificacionNL function
+        
         function calcularPSDCarga(obj, carga, nodos, direccionCarga, varargin)
             % calcularPSDCarga: permite el calculo del PSD de la
             % aceleracion, obteniendo los periodos de la estructura. El
