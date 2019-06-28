@@ -56,6 +56,7 @@
 %       C_Modelo = obtenerMatrizAmortiguamiento(obj,rayleigh)
 %       calcularCurvasEnergia(obj,carga)
 %       calcularDesplazamientoDrift(obj,xanalisis)
+%       calcularIdentificacionNL(obj,carga,nodo,direccionCarga,varargin)
 %       calcularMomentoCorteBasal(obj,carga)
 %       calcularPSDCarga(obj,carga,nodos,direccionCarga,direccionFormaModal,varargin)
 %       Cdv_Modelo = obtenerMatrizAmortiguamientoDisipadores(obj)
@@ -1474,9 +1475,11 @@ classdef ModalEspectral < Analisis
             dplot = false; % Indica que un grafico se realizo
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ek')
+                
                 fig_title = sprintf('E_K Energia Cinetica - %s %s', ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
+                
                 plot(t, e_k, '-', 'LineWidth', lw);
                 grid on;
                 grid minor;
@@ -1485,6 +1488,7 @@ classdef ModalEspectral < Analisis
                 title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
+                
                 if plotcarga % Grafica la carga
                     axes('Position', [.59, .65, .29, .20]);
                     box on;
@@ -1492,13 +1496,16 @@ classdef ModalEspectral < Analisis
                     grid on;
                 end
                 dplot = true;
+                
             end % ek
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ev')
+                
                 fig_title = sprintf('E_V Energia Elastica - %s %s', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
+                
                 plot(t, e_v+e_vamor, '-', 'LineWidth', lw);
                 grid on;
                 grid minor;
@@ -1507,6 +1514,7 @@ classdef ModalEspectral < Analisis
                 title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
+                
                 if plotcarga % Grafica la carga
                     axes('Position', [.59, .65, .29, .20]);
                     box on;
@@ -1514,13 +1522,16 @@ classdef ModalEspectral < Analisis
                     grid on;
                 end
                 dplot = true;
+                
             end % ev
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ebe')
+                
                 fig_title = sprintf('Balance Energetico Normalizado - %s %s', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
+                
                 plot(t, ebe, '-', 'LineWidth', lw);
                 grid on;
                 grid minor;
@@ -1529,6 +1540,7 @@ classdef ModalEspectral < Analisis
                 title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
+                
                 if plotcarga % Grafica la carga
                     axes('Position', [.59, .66, .29, .20]);
                     box on;
@@ -1536,13 +1548,16 @@ classdef ModalEspectral < Analisis
                     grid on;
                 end
                 dplot = true;
+                
             end % ebe
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'evek') || strcmp(tipoplot, 'ekev')
+                
                 fig_title = sprintf('Energia Potencial - Cinetica - %s %s', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
+                
                 plot(t, e_k, '-', 'LineWidth', lw);
                 hold on;
                 plot(t, e_v+e_vamor, '-', 'LineWidth', lw);
@@ -1555,6 +1570,7 @@ classdef ModalEspectral < Analisis
                 title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
+                
                 if plotcarga % Grafica la carga
                     axes('Position', [.59, .53, .29, .20]);
                     box on;
@@ -1562,13 +1578,16 @@ classdef ModalEspectral < Analisis
                     grid on;
                 end
                 dplot = true;
+                
             end % evek
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'et')
+                
                 fig_title = sprintf('Energia Total - Disipada - Ingresada - %s %s', ...
                     ctitle, carga.obtenerEtiqueta());
                 plt = figure('Name', fig_title, 'NumberTitle', 'off');
                 movegui(plt, 'center');
+                
                 plot(t, e_t, '-', 'LineWidth', lw);
                 hold on;
                 plot(t, e_d+e_damor, '-', 'LineWidth', lw);
@@ -1582,6 +1601,7 @@ classdef ModalEspectral < Analisis
                 title({fig_title, ''});
                 ylims = get(gca, 'YLim');
                 ylim([0, max(ylims)]);
+                
                 if plotcarga % Grafica la carga
                     axes('Position', [.17, .66, .29, .20]);
                     box on;
@@ -1589,6 +1609,7 @@ classdef ModalEspectral < Analisis
                     grid on;
                 end
                 dplot = true;
+                
             end % et
             
             if strcmp(tipoplot, 'all') || strcmp(tipoplot, 'ed')
@@ -2080,21 +2101,25 @@ classdef ModalEspectral < Analisis
             % calcularIdentificacionNL: calcula identificacion no lineal
             %
             % Parametros opcionales:
-            %   nmodos          Numero de modos de analisis
-            %   rholim          Limite inferior/superior amplitud modo (2x1)
-            %   thetalim        Limite inferior/superior fase (2x1)
-            %   betalim         Limite inferior/superior amortiguamiento (2x1)
-            %   wlim            Limite inferior/superior frecuencia (2x1)
-            %   betaRayleigh    Los amortiguamientos los calcula con Rayleigh
+            %   betalim                 Limite inferior/superior amortiguamiento (2x1)
+            %   betaRayleigh            Los amortiguamientos los calcula con Rayleigh
+            %   functionTolerance       Tolerancia maxima (lsqnonlin)
+            %   maxFunctionEvaluations  Numero maximo de evaluaciones (lsqnonlin)
+            %   nmodos                  Numero de modos de analisis
+            %   rholim                  Limite inferior/superior amplitud modo (2x1)
+            %   thetalim                Limite inferior/superior fase (2x1)
+            %   unidadL                 Unidad longitud
+            %   wlim                    Limite inferior/superior frecuencia (2x1)
             
             % Inicia proceso
             tinicial = clock;
+            fprintf('Identificacion no lineal:\n');
             
             % Verifica que el vector de nodos sea un cell
             if ~isa(nodo, 'Nodo')
                 error('El objeto nodo no es de clase Nodo');
             end
-                
+            
             % Verifica que la direccion sea correcta
             if sum(direccionCarga) ~= 1
                 error('Direccion carga invalida');
@@ -2106,11 +2131,14 @@ classdef ModalEspectral < Analisis
             % Recorre parametros opcionales
             p = inputParser;
             p.KeepUnmatched = true;
+            addOptional(p, 'betalim', [0, Inf]);
             addOptional(p, 'betaRayleigh', true);
+            addOptional(p, 'functionTolerance', 1e-9);
+            addOptional(p, 'maxFunctionEvaluations', 3000);
             addOptional(p, 'nmodos', 4);
             addOptional(p, 'rholim', [-Inf, Inf]);
             addOptional(p, 'thetalim', [-Inf, Inf]);
-            addOptional(p, 'betalim', [0, Inf]);
+            addOptional(p, 'unidadL', 'm');
             addOptional(p, 'wlim', [0, Inf]);
             parse(p, varargin{:});
             r = p.Results;
@@ -2120,9 +2148,16 @@ classdef ModalEspectral < Analisis
             if r.nmodos > obj.numModos
                 error('Numero modos excede el analisis');
             end
-            if length(r.rholim) ~= 2 || length(r.thetalim) ~= 2 || length(r.betalim) ~= 2 || length(r.wlim) ~= 2
+            if length(r.rholim) ~= 2 || length(r.thetalim) ~= 2 || ...
+                    length(r.betalim) ~= 2 || length(r.wlim) ~= 2
                 error('Parametros opcionales deben ser vectores de dos componentes');
             end
+            
+            % Ordena los limites
+            r.rholim = sort(r.rholim);
+            r.thetalim = sort(r.thetalim);
+            r.betalim = sort(r.betalim);
+            r.wlim = sort(r.wlim);
             
             % Obtiene desplazamiento de la carga
             despl = carga.obtenerDesplazamiento();
@@ -2152,13 +2187,69 @@ classdef ModalEspectral < Analisis
             beta = zeros(r.nmodos, 1);
             omega = obj.wn(1:r.nmodos);
             
-            for i=1:r.nmodos
-                 beta(i) = obj.calcularAmortiguamientoModo(i, r.betaRayleigh);
+            for i = 1:r.nmodos
+                beta(i) = obj.calcularAmortiguamientoModo(i, r.betaRayleigh);
             end % for i
             
             % Llamamos a la funcion
-            [xajuste] = NLFIT(despl, t, omega, beta, r.nmodos, r.rholim, r.thetalim, ...
-                r.betalim, r.wlim);
+            fprintf('\tOptimizando funcion\n');
+            [xo, xf, dfit, J] = NLFIT(despl, t, omega, beta, r.nmodos, r.rholim, r.thetalim, ...
+                r.betalim, r.wlim, 'maxFunctionEvaluations', r.maxFunctionEvaluations, ...
+                'functionTolerance', r.functionTolerance);
+            
+            % Tabula los valores iniciales y finales de las iteraciones
+            fprintf('\tValores iniciales de la optimizacion:\n');
+            obj.tabularAnalisisIdentificacionNL(xo);
+            
+            fprintf('\tValores finales de la optimizacion:\n');
+            obj.tabularAnalisisIdentificacionNL(xf);
+            
+            % Genera graficos
+            fig_title = 'Respuesta de Desplazamiento Real';
+            plt = figure('Name', fig_title, 'NumberTitle', 'off');
+            movegui(plt, 'center');
+            hold on;
+            plot(t, despl, 'b');
+            title({fig_title, ''});
+            xlabel('Tiempo (s)');
+            ylabel(sprintf('Desplazamiento (%s)', r.unidadL));
+            grid on;
+            grid minor;
+            
+            fig_title = 'Respuesta de Desplazamiento Ajustada';
+            plt = figure('Name', fig_title, 'NumberTitle', 'off');
+            movegui(plt, 'center');
+            hold on;
+            plot(t, dfit, 'r');
+            title({fig_title, ''});
+            xlabel('Tiempo (s)');
+            ylabel(sprintf('Desplazamiento (%s)', r.unidadL));
+            grid on;
+            grid minor;
+            
+            fig_title = 'Respuesta de Desplazamiento';
+            plt = figure('Name', fig_title, 'NumberTitle', 'off');
+            movegui(plt, 'center');
+            hold on;
+            plot(t, despl, 'b');
+            plot(t, dfit, 'r--');
+            title({fig_title, ''});
+            xlabel('Tiempo (s)');
+            ylabel(sprintf('Desplazamiento (%s)', r.unidadL));
+            legend('Real', 'Ajustada');
+            grid on;
+            grid minor;
+            
+            fig_title = 'Historial de Error';
+            plt = figure('Name', fig_title, 'NumberTitle', 'off');
+            movegui(plt, 'center');
+            hold on;
+            plot(t, J, 'b');
+            title({fig_title, ''});
+            xlabel('Tiempo (s)');
+            ylabel(sprintf('Funcion de error J (%s)', r.unidadL));
+            grid on;
+            grid minor;
             
             % Finaliza proceso
             fprintf('\tProceso finalizado en %.2f segundos\n', etime(clock, tinicial));
@@ -2488,8 +2579,8 @@ classdef ModalEspectral < Analisis
                 peakMethod = 'PSD';
             end
             fprintf('\tAnalisis de peaks (%s), periodos formas modales:\n', peakMethod);
-            fprintf('\t\tN\t|\tT peak\t\t\t|\tT modal\t|\t%%Error\t|\n');
-            fprintf('\t\t-------------------------------------------------\n');
+            fprintf('\t\t|\tN\t|\tT peak\t\t\t|\tT modal\t|\t%%Error\t|\n');
+            fprintf('\t\t-----------------------------------------------------\n');
             errorPeriodoPeaks = zeros(1, maxlocsDisp);
             for i = 1:maxlocsDisp
                 err = 100 * (tlocMean(i) - obj.Tn(i)) / obj.Tn(i);
@@ -2498,11 +2589,11 @@ classdef ModalEspectral < Analisis
                 else
                     s = '';
                 end
-                fprintf('\t\t%d\t|\t%.3f +- %.3f\t|\t%.3f\t|\t%s%.2f\t|\n', ...
+                fprintf('\t\t|\t%d\t|\t%.3f +- %.3f\t|\t%.3f\t|\t%s%.2f\t|\n', ...
                     i, tlocMean(i), tlocStd(i), obj.Tn(i), s, err);
                 errorPeriodoPeaks(i) = err;
             end % for i
-            fprintf('\t\t-------------------------------------------------\n');
+            fprintf('\t\t-----------------------------------------------------\n');
             
             % Grafica periodo obtenido con analisis modal y analisis de
             % peaks de la FFT
@@ -2625,8 +2716,8 @@ classdef ModalEspectral < Analisis
                 betaMethod = 'PSD';
             end
             fprintf('\tAmortiguamiento por periodos (%s):\n', betaMethod);
-            fprintf('\t\tN\t|\tBeta\t|\tBeta modal\t|\t%% Error\t\t|\n');
-            fprintf('\t\t-------------------------------------------------\n');
+            fprintf('\t\t|\tN\t|\tBeta\t|\tBeta modal\t|\t%% Error\t\t|\n');
+            fprintf('\t\t-----------------------------------------------------\n');
             for i = 1:maxlocsDisp
                 if isempty(betaFreq{i}) % Si no se encontro el modo retorna
                     continue;
@@ -2636,10 +2727,10 @@ classdef ModalEspectral < Analisis
                 else
                     s = '';
                 end
-                fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t\t|\t%s%.2f\t\t|\n', ...
+                fprintf('\t\t|\t%d\t|\t%.3f\t|\t%.3f\t\t|\t%s%.2f\t\t|\n', ...
                     i, beta(i), betaModo(i), s, betaError(i));
             end % for i
-            fprintf('\t\t-------------------------------------------------\n');
+            fprintf('\t\t-----------------------------------------------------\n');
             
             % Grafica los limites de las frecuencias
             if r.betaPlot
@@ -3623,25 +3714,31 @@ classdef ModalEspectral < Analisis
             
             fprintf('\tPeriodos y participacion modal:\n');
             if obj.numDG == 2
-                fprintf('\t\tN\t|\tT (s)\t| w (rad/s)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
-                fprintf('\t\t-----------------------------------------------------------------------------\n');
+                fprintf('\t\t|\tN\t|\tT (s)\t| w (rad/s)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
+                fprintf('\t\t---------------------------------------------------------------------------------\n');
             elseif obj.numDG == 3
-                fprintf('\t\tN\t|\tT (s)\t| w (rad/s)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
-                fprintf('\t\t----------------------------------------------------------------------------------------------------\n');
+                fprintf('\t\t|\tN\t|\tT (s)\t| w (rad/s)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
+                fprintf('\t\t--------------------------------------------------------------------------------------------------------\n');
             end
             
             for i = 1:obj.numModos
                 if obj.numDG == 2
-                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, obj.Tn(i), ...
+                    fprintf('\t\t|\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, obj.Tn(i), ...
                         obj.wn(i), obj.Mmeff(i, 1), obj.Mmeff(i, 2), ...
                         obj.Mmeffacum(i, 1), obj.Mmeffacum(i, 2));
                 elseif obj.numDG == 3
-                    fprintf('\t\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, obj.Tn(i), ...
+                    fprintf('\t\t|\t%d\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\t|\t%.3f\n', i, obj.Tn(i), ...
                         obj.wn(i), obj.Mmeff(i, 1), obj.Mmeff(i, 2), obj.Mmeff(i, 3), ...
                         obj.Mmeffacum(i, 1), obj.Mmeffacum(i, 2), obj.Mmeffacum(i, 3));
                 end
                 fprintf('\n');
             end % for i
+            
+            if obj.numDG == 2
+                fprintf('\t\t---------------------------------------------------------------------------------\n');
+            elseif obj.numDG == 3
+                fprintf('\t\t--------------------------------------------------------------------------------------------------------\n');
+            end
             
             % Busca los periodos para los cuales se logra el 90%
             mt90p = zeros(obj.numDG, 1);
@@ -4305,6 +4402,7 @@ classdef ModalEspectral < Analisis
                 
                 % Se calcula el metodo indicial
                 for r = 1:ngdl
+                    
                     for s = 1:ngdl
                         i_ = gdl(r);
                         j_ = gdl(s);
@@ -4316,6 +4414,7 @@ classdef ModalEspectral < Analisis
                         end
                         
                     end % for s
+                    
                 end % for r
                 
             end % for i
@@ -4427,14 +4526,17 @@ classdef ModalEspectral < Analisis
                 ngdlid = length(coords);
                 gdl = max(gdl, ngdlid);
                 if ~deformada && mostrarEstatico
+                    
                     if modo ~= 0 || defCarga
                         nodoObjetos{i}.plot([], styleNodoE, sizeNodoE);
                     else
                         nodoObjetos{i}.plot([], styleNodoD, sizeNodoD);
                     end
+                    
                     if j == 1
                         hold on;
                     end
+                    
                     j = j + 1;
                 end
             end % for i
@@ -4646,6 +4748,7 @@ classdef ModalEspectral < Analisis
             for i = 1:nnodos
                 CoordNodo = nodos{i}.obtenerCoordenadas;
                 yNodo = CoordNodo(2);
+                
                 if yNodo > habs(j)
                     k = 1;
                     j = j + 1;
@@ -4657,6 +4760,7 @@ classdef ModalEspectral < Analisis
                     k = k + 1;
                     hNodos(j, k) = i;
                 end
+                
                 if yNodo == 0
                     ini = ini + 1;
                 end
@@ -4764,6 +4868,22 @@ classdef ModalEspectral < Analisis
             end
             
         end % imprimirPropiedadesAnalisisCarga function
+        
+        function tabularAnalisisIdentificacionNL(obj, tabla) %#ok<INUSL>
+            % tabularAnalisisIdentificacionNL: Imprime en consola la
+            % tabla de resultados de la identificacion no lineal
+            
+            % Obtiene numero de modos
+            [n, ~] = size(tabla);
+            fprintf('\t\t|\tN\t|\tOmega\t|\tBeta\t|\tTheta\t|\tRho\t\t|\n');
+            fprintf('\t\t---------------------------------------------------------\n');
+            for i = 1:n
+                fprintf('\t\t|\t%d\t|\t%.4f\t|\t%.4f\t|\t%.4f\t|\t%.4f\t|\n', ...
+                    i, tabla(i, 1), tabla(i, 2), tabla(i, 3), tabla(i, 4));
+            end % for i
+            fprintf('\t\t---------------------------------------------------------\n');
+            
+        end % tabularAnalisisIdentificacionNL function
         
     end % private methods ModalEspectral
     
