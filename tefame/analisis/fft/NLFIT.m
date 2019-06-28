@@ -54,12 +54,8 @@ ub(:, 4) = rholim(2);
 
 %% Generacion de matriz de limite superior e inferior
 
-% d2 = d(1:4000);
-% t2 = t(1:4000);
-d2 = d;
-t2 = t;
 options = optimoptions(@lsqnonlin, 'MaxFunctionEvaluations', 3000, 'FunctionTolerance', 10^-9);
-f = @(x) FDESPL1M(d2, t2, nmodos, x);
+f = @(x) FDESPL1M(d, t, nmodos, x);
 
 x = lsqnonlin(f, xo, lb, ub, options);
 
@@ -68,14 +64,33 @@ x
 %%
 dfit = FDESPL1M(0, t, nmodos, x);
 J = sqrt(abs(d.^2 - dfit.^2));
+
 figure()
 hold on
 plot(t, d, 'b')
-plot(t, dfit, 'r')
-title('Historial de Desplazamiento')
+title('Respuesta de Desplazamiento Real')
 xlabel('Tiempo (s)')
 ylabel('Desplazamiento (m)')
-legend('Real', 'Ajustado')
+grid on
+grid minor
+
+figure()
+hold on
+plot(t, dfit, 'r')
+title('Respuesta de Desplazamiento Ajustada')
+xlabel('Tiempo (s)')
+ylabel('Desplazamiento (m)')
+grid on
+grid minor
+
+figure()
+hold on
+plot(t, d, 'b')
+plot(t, dfit, 'r--')
+title('Respuesta de Desplazamiento')
+xlabel('Tiempo (s)')
+ylabel('Desplazamiento (m)')
+legend('Real', 'Ajustada')
 grid on
 grid minor
 
@@ -84,7 +99,7 @@ hold on
 plot(t, J, 'b')
 title('Historial de Error')
 xlabel('Tiempo (s)')
-ylabel('Función de Error (m)')
+ylabel('Función de Error J (m)')
 grid on
 grid minor
 
