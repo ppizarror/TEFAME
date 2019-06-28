@@ -2062,7 +2062,7 @@ classdef ModalEspectral < Analisis
                 else
                     mSum = mSum + m;
                 end
-            end
+            end % for i
             mSum = mSum ./ ng;
             
             fig_title = sprintf('%s %s - Espectrograma normalizado', ...
@@ -2182,8 +2182,7 @@ classdef ModalEspectral < Analisis
             despl = despl(gdl, :)';
             t = linspace(0, carga.tAnalisis, length(despl))';
             
-            % Obtengo el amortiguamiento y las frecuencias de los modos
-            % requeridos
+            % Obtengo el amortiguamiento y las frecuencias de los modos requeridos
             beta = zeros(r.nmodos, 1);
             omega = obj.wn(1:r.nmodos);
             
