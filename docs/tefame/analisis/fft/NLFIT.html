@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of NLFIT</title>
+  <meta name="keywords" content="NLFIT">
+  <meta name="description" content="NLFIT: Non Linear Fit. Realiza un ajuste no lineal por el metodo de los">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # tefame --><!-- ../menu.html analisis --><!-- menu.html fft -->
+<h1>NLFIT
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>NLFIT: Non Linear Fit. Realiza un ajuste no lineal por el metodo de los</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [xo, x, dfit, J] = NLFIT(d, t, wo, betao, nmodos, rholim, thetalim, betalim, wlim, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> NLFIT: Non Linear Fit. Realiza un ajuste no lineal por el metodo de los
+ minimos cuadrados para obtener las propiedades modales de una estructura
+
+ Input:
+   d           Registro de desplazamientos, size(m,1)
+   wo          Vector de frecuencias angulares obtenidas con modal espectral, size(n,1)
+   betao       Vector de razones de amortiguamiento crítico obtenidas con Rayleigh, size(n,1)
+   nmodos      Numero de modos a considerar para ajuste no lineal
+   rholim      Valores limites de rho
+   thetalim    Valores limites de theta
+   betalim     Valores limites de beta
+   wlim        Valores limites de omega
+
+ Parametros opcionales:
+   functionTolerance       Tolerancia maxima (lsqnonlin)
+   maxFunctionEvaluations  Numero maximo de evaluaciones (lsqnonlin)
+
+ Output:
+   xo          Valores iniciales de (omga, beta, theta y rho) por cada modo
+   x           Valores iterados de (omga, beta, theta y rho) por cada modo
+   dfit        Registro de desplazamiento obtenido con ajuste no lineal
+   J           Error en el tiempo</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="FDESPL1M.html" class="code" title="function v = FDESPL1M(d, t, N, x)">FDESPL1M</a>	FDESPL1M: Respuesta de un modo</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../tefame/analisis/ModalEspectral.html" class="code" title="">ModalEspectral</a>	|______________________________________________________________________|</li></ul>
+<!-- crossreference -->
+
+
+
+
+<hr><address>Generated on Fri 28-Jun-2019 14:03:12 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>
