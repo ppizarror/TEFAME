@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ppizarror/ppizarror.github.io/master/resources/images/tefame/ej1.gif" alt="Informe" width="70%" />
+  <img src="https://res.ppizarror.com/images/tefame/ej1.gif" alt="Informe" width="70%" />
 </p>
 
 ## Métodos de análisis
@@ -55,7 +55,7 @@
 
 ## Documentacion
 
-La documentación del proyecto se puede encontrar en [https://ppizarror.com/TEFAME/docs/](https://ppizarror.com/TEFAME/docs/)
+La documentación del proyecto se puede encontrar en [https://github.ppizarror.com/TEFAME/docs/](https://github.ppizarror.com/TEFAME/docs/)
 
 ## Autor
 

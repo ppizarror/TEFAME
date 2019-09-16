@@ -1,16 +1,16 @@
 <h1 align="center">
-  <a href="https://ppizarror.com/TEFAME/" title="TEFAME">
-    <img alt="TEFAME" src="https://ppizarror.com/resources/other/matlab.png" width="200px" height="200px" />
+  <a href="https://github.ppizarror.com/TEFAME/" title="TEFAME">
+    <img alt="TEFAME" src="https://res.ppizarror.com/other/matlab.png" width="200px" height="200px" />
   </a>
   <br /><br />
   TEFAME</h1>
 <p align="center">Resuelve estructuras de varios grados de libertad utilizando métodos numéricos matriciales</p>
-<div align="center"><a href="https://ppizarror.com"><img alt="@ppizarror" src="https://ppizarror.com/badges/autor.svg" /></a>
-<a href="https://opensource.org/licenses/MIT"><img alt="MIT" src="https://ppizarror.com/badges/licenciamit.svg" /></a>
+<div align="center"><a href="https://ppizarror.com"><img alt="@ppizarror" src="https://res.ppizarror.com/badges/autor.svg" /></a>
+<a href="https://opensource.org/licenses/MIT"><img alt="MIT" src="https://res.ppizarror.com/badges/licenciamit.svg" /></a>
 </div><br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ppizarror/ppizarror.github.io/master/resources/images/tefame/ej1.gif" alt="Informe" width="70%" />
+  <img src="https://res.ppizarror.com/images/tefame/ej1.gif" alt="Informe" width="70%" />
 </p>
 
 ## Métodos de análisis
@@ -66,7 +66,7 @@
 
 ## Documentacion
 
-La documentación del proyecto se puede encontrar en [https://ppizarror.com/TEFAME/docs/](https://ppizarror.com/TEFAME/docs/)
+La documentación del proyecto se puede encontrar en [https://github.ppizarror.com/TEFAME/docs/](https://github.ppizarror.com/TEFAME/docs/)
 
 ## Autor
 
