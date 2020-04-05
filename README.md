@@ -70,7 +70,7 @@ La documentación del proyecto se puede encontrar en [https://github.ppizarror.c
 
 ## Autor
 
-- Pablo Pizarro (pablo.pizarro@ing.uchile.cl)
+- Pablo Pizarro (pablo@ppizarror.com)
 - Carlos López
 - Jaime Reveco
 
