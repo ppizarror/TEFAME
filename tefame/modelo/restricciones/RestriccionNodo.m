@@ -86,7 +86,7 @@ classdef RestriccionNodo < ComponenteModelo
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@ComponenteModelo(etiquetaRestriccion);
             
-            % Se guarda el nodo a restringir, y se  coloca como vector
+            % Se guarda el nodo a restringir, y se coloca como vector
             % columna
             obj.nodoObj = nodoObjeto;
             if size(gdlRestringidosNodo, 1) == 1

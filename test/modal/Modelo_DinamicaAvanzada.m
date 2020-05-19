@@ -156,15 +156,15 @@ analisisObj.resolverCargasDinamicas('cpenzien', false, 'disipadores', usarDisipa
     'cargaDisipador', cargasDinamicas{1}, 'betaObjetivo', 0.08, 'iterDisipador', 10, ...
     'betaGrafico', true, 'activado', resolverCargasDinamicas);
 
-% analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
-% analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
-% analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
-% analisisObj.plotEsfuerzosElemento(cargasDinamicas{1}, elementos{104}, [1, 0, 0]);
-% analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
-% plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, ...
-%   'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_sis.gif');
+analisisObj.calcularCurvasEnergia(cargasDinamicas{1}, 'plotcarga', true, 'plot', 'all');
+analisisObj.calcularMomentoCorteBasal(cargasDinamicas{1});
+analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
+analisisObj.plotEsfuerzosElemento(cargasDinamicas{1}, elementos{104}, [1, 0, 0]);
+analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
+plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, ...
+	'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_sis.gif');
 
 %% Finaliza el analisis
-% modeloObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt');
-% analisisObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt', cargasDinamicas);
+modeloObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt');
+analisisObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt', cargasDinamicas);
 clear h h1 i v;

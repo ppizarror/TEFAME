@@ -4671,11 +4671,12 @@ classdef ModalEspectral < Analisis
                 numNodo = length(nodoElemento);
                 for j = 1:numNodo
                     coord = nodoElemento{j}.obtenerCoordenadas();
+                    coordi = coord;
                     if (obj.analisisFinalizado && modo > 0) || defcarga
                         def = obj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl, defcarga, carga, -1);
-                        coordi = coord + def .* factor;
-                    else
-                        coordi = coord;
+                        for k=1:length(coord)
+                            coordi(k) = coord(k) + def(k) .* factor;
+                        end
                     end
                     limx(1) = min(limx(1), coordi(1));
                     limy(1) = min(limy(1), coordi(2));

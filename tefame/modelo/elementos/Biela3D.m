@@ -335,8 +335,10 @@ classdef Biela3D < Elemento
             
             % Si hay deformadas
             if ~isempty(deformadas)
-                coord1 = coord1 + deformadas{1};
-                coord2 = coord2 + deformadas{2};
+                for i=1:length(coord1)
+                    coord1(i) = coord1(i) + deformadas{1}(i);
+                    coord2(i) = coord2(i) + deformadas{2}(i);
+                end
             end
             
             % Grafica el elemento

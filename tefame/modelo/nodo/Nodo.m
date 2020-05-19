@@ -374,7 +374,9 @@ classdef Nodo < ComponenteModelo
             
             coord = obj.obtenerCoordenadas();
             if ~length(deformada) == 0
-                coord = coord + deformada;
+                for i=1:length(coord)
+                    coord(i) = coord(i) + deformada(i);
+                end
             end
             
             % Determina el tipo de apoyo

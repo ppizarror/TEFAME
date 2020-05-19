@@ -362,8 +362,10 @@ classdef Biela2D < Elemento
             
             % Si hay deformadas
             if ~isempty(deformadas)
-                coord1 = coord1 + deformadas{1};
-                coord2 = coord2 + deformadas{2};
+                for i=1:length(coord1)
+                    coord1(i) = coord1(i) + deformadas{1}(i);
+                    coord2(i) = coord2(i) + deformadas{2}(i);
+                end
             end
             
             % Grafica el elemento
@@ -375,11 +377,15 @@ classdef Biela2D < Elemento
             % disp: Imprime propiedades en consola
             
             % Imprime propiedades
-            fprintf('Propiedades biela 2D:\n\t');
+            fprintf('Propiedades biela 2D:\n');
+            fprintf('\tPropiedades basicas:\n\t');
             disp@ComponenteModelo(obj);
             
             fprintf('\t\tLargo: %s\tArea: %s\tE: %s\n', pad(num2str(obj.L), 12), ...
                 pad(num2str(obj.Ao), 10), pad(num2str(obj.Eo), 10));
+            
+            fprintf('\t\tConecta: Nodo %s - Nodo %s\n', obj.nodosObj{1}.obtenerEtiqueta(), ...
+                obj.nodosObj{2}.obtenerEtiqueta());
             
             % Se imprime matriz de rigidez local
             fprintf('\tMatriz de rigidez coordenadas locales:\n');
