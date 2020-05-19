@@ -376,10 +376,11 @@ classdef AnalisisEstatico < Analisis
                 for j = 1:numNodo
                     coord = nodoElemento{j}.obtenerCoordenadas();
                     def = nodoElemento{j}.obtenerDesplazamientos();
+                    coordi = coord;
                     if obj.analisisFinalizado
-                        coordi = coord + def .* factor;
-                    else
-                        coordi = coord;
+                        for k=1:length(coord)
+                            coordi(k) = coord(k) + def(k) .* factor;
+                        end
                     end
                     limx(1) = min(limx(1), coordi(1));
                     limy(1) = min(limy(1), coordi(2));
