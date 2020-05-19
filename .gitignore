@@ -24,6 +24,7 @@ dev/
 # Salidas
 test/**/out/*
 test/**/*.gif
+test/personal/*
 
 # Codigo opensees
 test/modal/opensees/Data/*.fig
