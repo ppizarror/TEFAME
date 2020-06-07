@@ -55,7 +55,7 @@ modeloObj.agregarNodos(nodos);
 
 % Creamos los elementos
 Ao = 20; % [cm2]
-Eo = 200000; % [tonf/cm2]
+Eo = 2248.089; % [tonf/cm2]
 elementos = cell(6, 1);
 elementos{1} = Biela2D('E1', nodos{1}, nodos{2}, Ao, Eo);
 elementos{2} = Biela2D('E2', nodos{1}, nodos{3}, Ao, Eo);
@@ -77,7 +77,7 @@ modeloObj.agregarRestricciones(restricciones);
 
 % Creamos la carga
 cargas = cell(1, 1);
-cargas{1} = CargaNodo('C1', nodos{4}, [80, -120]');
+cargas{1} = CargaNodo('C1', nodos{4}, [8.158, -12.237]');
 
 % Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
@@ -89,5 +89,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-analisisObj.plot('deformada', true);
+analisisObj.plot('deformada', true, 'factor', 100);
 modeloObj.guardarResultados('test/estatico/out/Modelo_Tarea2.txt');

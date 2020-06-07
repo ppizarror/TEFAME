@@ -108,9 +108,9 @@ classdef Biela3D < Elemento
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             
             % Calcula propiedades geometricas
-            obj.dx = abs(coordNodo2(1)-coordNodo1(1));
-            obj.dy = abs(coordNodo2(2)-coordNodo1(2));
-            obj.dz = abs(coordNodo2(3)-coordNodo1(3));
+            obj.dx = coordNodo2(1)-coordNodo1(1);
+            obj.dy = coordNodo2(2)-coordNodo1(2);
+            obj.dz = coordNodo2(3)-coordNodo1(3);
             obj.theta = atan(obj.dy/obj.dx);
             obj.rho = densidad;
             

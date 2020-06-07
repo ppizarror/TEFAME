@@ -110,8 +110,8 @@ classdef Biela2D < Elemento
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             
-            obj.dx = abs(coordNodo2(1)-coordNodo1(1));
-            obj.dy = abs(coordNodo2(2)-coordNodo1(2));
+            obj.dx = coordNodo2(1)-coordNodo1(1);
+            obj.dy = coordNodo2(2)-coordNodo1(2);
             obj.theta = atan(obj.dy/obj.dx);
             
             obj.L = sqrt(obj.dx^2+obj.dy^2);

@@ -88,5 +88,5 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 % Creamos el analisis
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
-analisisObj.plot('deformada', true, 'factor', 10);
+analisisObj.plot('deformada', true, 'factor', 100);
 modeloObj.guardarResultados('test/estatico/out/Modelo_Tarea4.txt');
