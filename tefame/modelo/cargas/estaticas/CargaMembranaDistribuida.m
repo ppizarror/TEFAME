@@ -111,6 +111,10 @@ classdef CargaMembranaDistribuida < CargaEstatica
             % CargaEstatica
             obj = obj@CargaEstatica(etiquetaCarga);
             
+            if ~isa(elemObjeto, 'Membrana')
+                error('Objeto de la carga no es una Membrana @CargaMembranaDistribuida %s', etiquetaCarga);
+            end
+            
             % Verifica que se cumplan los nodos
             if abs(nodo1-nodo2) == 2
                 error('Nodo no puede ser cruzado @CargaMembranaDistribuida %s', etiquetaCarga);

@@ -84,6 +84,10 @@ classdef CargaNodo < CargaEstatica
                 nodoObjeto = [];
             end
             
+            if ~isa(nodoObjeto, 'Nodo')
+                error('Objeto de la carga no es un Nodo @CargaNodo %s', etiquetaCarga);
+            end
+            
             % Llamamos al constructor de la SuperClass que es la clase
             % CargaEstatica
             obj = obj@CargaEstatica(etiquetaCargaNodo);

@@ -87,6 +87,10 @@ classdef CargaBielaTemperatura < CargaEstatica
                 alpha = 0;
             end
             
+            if ~(isa(elemObjeto, 'Biela2D') || isa(elemObjeto, 'Biela3D'))
+                error('Objeto de la carga no es una Biela2D o una Biela3D @CargaBielaTemperatura %s', etiquetaCarga);
+            end
+            
             % Llamamos al constructor de la SuperClass que es la clase
             % CargaEstatica
             obj = obj@CargaEstatica(etiquetaCarga);
