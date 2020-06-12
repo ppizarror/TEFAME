@@ -504,10 +504,10 @@ classdef Membrana < Elemento
             nodo4 = obj.nodosObj{4};
             
             % Agrega fuerzas equivalentes como cargas
-            nodo1.agregarCarga(-[obj.Feq(1), obj.Feq(2)]');
-            nodo2.agregarCarga(-[obj.Feq(3), obj.Feq(4)]');
-            nodo3.agregarCarga(-[obj.Feq(5), obj.Feq(6)]');
-            nodo4.agregarCarga(-[obj.Feq(7), obj.Feq(8)]');
+            nodo1.agregarEsfuerzosElementoAReaccion([obj.Feq(1), obj.Feq(2)]');
+            nodo2.agregarEsfuerzosElementoAReaccion([obj.Feq(3), obj.Feq(4)]');
+            nodo3.agregarEsfuerzosElementoAReaccion([obj.Feq(5), obj.Feq(6)]');
+            nodo4.agregarEsfuerzosElementoAReaccion([obj.Feq(7), obj.Feq(8)]');
             
             % Agrega fuerzas resistentes como cargas
             nodo1.agregarEsfuerzosElementoAReaccion([fr_global(1), fr_global(2)]');

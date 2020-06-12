@@ -313,12 +313,12 @@ classdef Biela2D < Elemento
             nodo2 = obj.nodosObj{2};
             
             % Suma fuerza de temperatura en reacciones
-            nodo1.agregarCarga([obj.TcargaReacc(1); obj.TcargaReacc(2)]);
-            nodo2.agregarCarga([obj.TcargaReacc(3); obj.TcargaReacc(4)]);
+            nodo1.agregarEsfuerzosElementoAReaccion(-[obj.TcargaReacc(1); obj.TcargaReacc(2)]);
+            nodo2.agregarEsfuerzosElementoAReaccion(-[obj.TcargaReacc(3); obj.TcargaReacc(4)]);
             
             % Agrega fuerzas resistentes como cargas
-            nodo1.agregarCarga(-[fr_global(1); fr_global(2)]);
-            nodo2.agregarCarga(-[fr_global(3); fr_global(4)]);
+            nodo1.agregarEsfuerzosElementoAReaccion([fr_global(1); fr_global(2)]);
+            nodo2.agregarEsfuerzosElementoAReaccion([fr_global(3); fr_global(4)]);
             
         end % agregarFuerzaResistenteAReacciones function
         

@@ -288,8 +288,8 @@ classdef Biela3D < Elemento
             nodo2 = obj.nodosObj{2};
             
             % Agrega fuerzas resistentes como cargas
-            nodo1.agregarCarga(-[fr_global(1); fr_global(2); fr_global(3)]);
-            nodo2.agregarCarga(-[fr_global(4); fr_global(5); fr_global(6)]);
+            nodo1.agregarEsfuerzosElementoAReaccion([fr_global(1); fr_global(2); fr_global(3)]);
+            nodo2.agregarEsfuerzosElementoAReaccion([fr_global(4); fr_global(5); fr_global(6)]);
             
         end % agregarFuerzaResistenteAReacciones function
         

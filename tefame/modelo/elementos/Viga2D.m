@@ -281,8 +281,8 @@ classdef Viga2D < Elemento
             nodo2 = obj.nodosObj{2};
             
             % Agrega fuerzas equivalentes como cargas
-            nodo1.agregarCarga([0, -obj.Feq(1), -obj.Feq(2)]');
-            nodo2.agregarCarga([0, -obj.Feq(3), -obj.Feq(4)]');
+            nodo1.agregarEsfuerzosElementoAReaccion([0, obj.Feq(1), obj.Feq(2)]');
+            nodo2.agregarEsfuerzosElementoAReaccion([0, obj.Feq(3), obj.Feq(4)]');
             
             % Agrega fuerzas resistentes como cargas
             nodo1.agregarEsfuerzosElementoAReaccion([0, fr_global(1), fr_global(2)]');

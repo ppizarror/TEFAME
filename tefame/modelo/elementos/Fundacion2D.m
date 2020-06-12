@@ -316,8 +316,8 @@ classdef Fundacion2D < Elemento
             F_eq = obj.T' * obj.Feq;
             
             % Agrega fuerzas equivalentes como cargas
-            nodo1.agregarCarga([-F_eq(1), -F_eq(2), -F_eq(3)]')
-            nodo2.agregarCarga([-F_eq(4), -F_eq(5), -F_eq(6)]')
+            nodo1.agregarEsfuerzosElementoAReaccion([F_eq(1), F_eq(2), F_eq(3)]')
+            nodo2.agregarEsfuerzosElementoAReaccion([F_eq(4), F_eq(5), F_eq(6)]')
             
             % Agrega fuerzas resistentes como cargas
             nodo1.agregarEsfuerzosElementoAReaccion([fr_global(1), fr_global(2), fr_global(3)]');
