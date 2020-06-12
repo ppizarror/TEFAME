@@ -82,7 +82,7 @@ classdef AnalisisEstatico < Analisis
             end
             
             obj = obj@Analisis(modeloObjeto);
-
+            
             obj.F = [];
             obj.Kt = [];
             obj.numeroGDL = 0;
@@ -378,7 +378,7 @@ classdef AnalisisEstatico < Analisis
                     def = nodoElemento{j}.obtenerDesplazamientos();
                     coordi = coord;
                     if obj.analisisFinalizado
-                        for k=1:length(coord)
+                        for k = 1:length(coord)
                             coordi(k) = coord(k) + def(k) .* factor;
                         end
                     end
@@ -431,7 +431,7 @@ classdef AnalisisEstatico < Analisis
             p.KeepUnmatched = true;
             addOptional(p, 'angAzh', 45);
             addOptional(p, 'angPol', 45);
-            addOptional(p, 'defElem', true);
+            addOptional(p, 'defElem', false); % Tiene muchos errores aun
             addOptional(p, 'deformada', false);
             addOptional(p, 'factor', 1);
             addOptional(p, 'lwElemD', 1.25);
@@ -526,14 +526,16 @@ classdef AnalisisEstatico < Analisis
             end
             
             % Actualiza los ejes
-            if limx(1) < limx(2)
-                xlim(limx);
-            end
-            if limy(1) < limy(2)
-                ylim(limy);
-            end
-            if gdl == 3 && limz(1) < limz(2)
-                zlim(limz);
+            if deformada
+                if limx(1) < limx(2)
+                    xlim(limx);
+                end
+                if limy(1) < limy(2)
+                    ylim(limy);
+                end
+                if gdl == 3 && limz(1) < limz(2)
+                    zlim(limz);
+                end
             end
             if ngdl == 2
                 xlabel(sprintf('X (%s)', r.unidad));
