@@ -70,7 +70,7 @@ classdef CargaVigaColumnaPuntual < CargaEstatica
         carga % Valor de la carga
         dist % Distancia de la carga al primer nodo del elemento
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-        theta % Angulo de aplicacion de la carga
+        theta % Angulo de aplicacion de la carga con respecto a la normal
     end % private properties CargaVigaColumnaPuntual
     
     methods(Access = public)
@@ -90,6 +90,18 @@ classdef CargaVigaColumnaPuntual < CargaEstatica
                 elemObjeto = [];
                 etiquetaCarga = '';
                 theta = 0;
+            end
+            
+            if ~exist('theta', 'var')
+                theta = 0;
+            end
+            
+            if ~isa(elemObjeto, 'VigaColumna2D')
+                error('Objeto de la carga no es una VigaColumna2D @CargaVigaColumnaPuntual %s', etiquetaCarga);
+            end
+            
+            if distancia<0 || distancia>1
+                error('Distancia de la carga debe estar dentro del rango [0, 1] @CargaVigaColumnaPuntual %s', etiquetaCarga);
             end
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
@@ -188,6 +200,9 @@ classdef CargaVigaColumnaPuntual < CargaEstatica
                 etiqueta, obj.dist, nodo1etiqueta);
             fprintf('\t\tComponente NORMAL:\t%.3f\n', P);
             fprintf('\t\tComponente AXIAL:\t%.3f\n', H);
+            [u1, u2, v1, v2, t1, t2] = obj.calcularCarga();
+            fprintf('\tCarga (u1,v1,t1,u2,v2,t2):\t[%.3f, %.3f, %.3f, %.3f, %.3f, %.3f]\n', ...
+                u1, v1, t1, u2, v2, t2);
             dispMetodoTEFAME();
             
         end % disp function

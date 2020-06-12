@@ -79,13 +79,23 @@ classdef CargaVigaPuntual < CargaEstatica
             % Crea un objeto de la clase CargaVigaPuntual, en donde toma como atributo
             % el objeto a aplicar la carga, la distancia como porcentaje
             % del largo del elemento con respecto al primer nodo y el
-            % elemento tipo viga
+            % elemento tipo viga. En este caso no tiene sentido aplicar un
+            % angulo debido a que el elemento en particular no admite
+            % cargas horizontales
             
             if nargin == 0
                 carga = 0;
                 distancia = 0;
                 elemObjeto = [];
                 etiquetaCarga = '';
+            end
+            
+            if ~isa(elemObjeto, 'Viga2D')
+                error('Objeto de la carga no es una Viga2D @CargaVigaPuntual %s', etiquetaCarga);
+            end
+            
+            if distancia<0 || distancia>1
+                error('Distancia de la carga debe estar dentro del rango [0, 1] @CargaVigaPuntual %s', etiquetaCarga);
             end
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
@@ -170,6 +180,9 @@ classdef CargaVigaPuntual < CargaEstatica
             
             fprintf('\tCarga: %.3f aplicada en Elemento: %s a %.3f del Nodo: %s\n', ...
                 obj.carga, etiqueta, obj.dist, nodo1etiqueta);
+            [v1, v2, t1, t2] = obj.calcularCarga();
+            fprintf('\tCarga (v1, t1, v2, t2):\t[%.3f, %.3f, %.3f, %.3f]\n', ...
+                v1, t1, v2, t2);
             dispMetodoTEFAME();
             
         end % disp function

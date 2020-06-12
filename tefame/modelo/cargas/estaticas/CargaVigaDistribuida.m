@@ -94,12 +94,16 @@ classdef CargaVigaDistribuida < CargaEstatica
             % Llamamos al constructor de la SuperClass que es la clase Carga
             obj = obj@CargaEstatica(etiquetaCarga);
             
+            if ~isa(elemObjeto, 'Viga2D')
+                error('Objeto de la carga no es una Viga2D @CargaVigaDistribuida %s', etiquetaCarga);
+            end
+            
             % Aplica limites al minimo y maximo
             if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
-                warning('Distancias deben estar dentro del rango [0, 1] @CargaVigaDistribuida %s', etiquetaCarga);
+                error('Distancias deben estar dentro del rango [0, 1] @CargaVigaDistribuida %s', etiquetaCarga);
             end
             if (distancia1 == distancia2)
-                warning('Distancias son iguales @CargaVigaDistribuida %s', etiquetaCarga);
+                error('Distancias son iguales @CargaVigaDistribuida %s', etiquetaCarga);
             end
             distancia1 = max(0, min(distancia1, 1));
             distancia2 = min(1, max(distancia2, 0));
@@ -193,6 +197,9 @@ classdef CargaVigaDistribuida < CargaEstatica
             fprintf('\tCarga distribuida: %.3f en %.3f hasta %.3f en %.3f entre los Nodos: %s y %s del Elemento: %s\n', ...
                 obj.carga1, obj.dist1, obj.carga2, ...
                 obj.dist2, nodo1etiqueta, nodo2etiqueta, etiqueta);
+            [v1, v2, t1, t2] = obj.calcularCarga();
+            fprintf('\tCarga (v1, t1, v2, t2):\t[%.3f, %.3f, %.3f, %.3f]\n', ...
+                v1, t1, v2, t2);
             dispMetodoTEFAME();
             
         end % disp function
