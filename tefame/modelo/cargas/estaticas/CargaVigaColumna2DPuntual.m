@@ -14,14 +14,14 @@
 %| Repositorio: https://github.com/ppizarror/TEFAME                     |
 %|______________________________________________________________________|
 %|                                                                      |
-%| Clase CargaVigaColumna2DPuntual                                        |
+%| Clase CargaVigaColumna2DPuntual                                      |
 %|                                                                      |
-%| Este archivo contiene la definicion de CargaVigaColumna2DPuntual       |
-%| CargaVigaColumna2DPuntual es una subclase de la clase Carga y          |
+%| Este archivo contiene la definicion de CargaVigaColumna2DPuntual     |
+%| CargaVigaColumna2DPuntual es una subclase de la clase Carga y        |
 %| corresponde a la representacion de una carga puntual en un elemento  |
 %| tipo Viga-Columna.                                                   |
 %|                                                                      |
-%| La clase CargaVigaColumna2DPuntual es una clase que contiene el        |
+%| La clase CargaVigaColumna2DPuntual es una clase que contiene el      |
 %| elemento al al que se le va a aplicar la carga, el valor de esta     |
 %| carga, la distancia a uno de los nodos como porcentaje del largo y   |
 %| el angulo de aplicacion.                                             |

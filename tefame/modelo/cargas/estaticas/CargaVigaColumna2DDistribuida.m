@@ -14,12 +14,12 @@
 %| Repositorio: https://github.com/ppizarror/TEFAME                     |
 %|______________________________________________________________________|
 %|                                                                      |
-%| Clase CargaVigaColumna2DDistribuida                                    |
+%| Clase CargaVigaColumna2DDistribuida                                  |
 %|                                                                      |
 %| Este archivo contiene la definicion de la Clase CargaVigaColumnaDist |
-%| ribuida, CargaViga2DDistribuida es una subclase de la clase Carga y    |
+%| ribuida, CargaViga2DDistribuida es una subclase de la clase Carga y  |
 %| corresponde a la representacion de una carga distribuida en un       |
-%| elemento tipo Viga. La clase CargaViga2DDistribuida es una clase que   |
+%| elemento tipo Viga. La clase CargaViga2DDistribuida es una clase que |
 %| contiene el elemento, al que se le va a aplicar la carga, las cargas |
 %| en cada punto, las distancias de las dos cargas y el angulo con      |
 %| respecto a la normal.                                                |

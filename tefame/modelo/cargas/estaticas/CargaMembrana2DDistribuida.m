@@ -14,14 +14,14 @@
 %| Repositorio: https://github.com/ppizarror/TEFAME                     |
 %|______________________________________________________________________|
 %|                                                                      |
-%| Clase CargaMembrana2DDistribuida                                       |
+%| Clase CargaMembrana2DDistribuida                                     |
 %|                                                                      |
-%| Este archivo contiene la definicion de CargaMembrana2DDistribuida      |
-%| CargaMembrana2DDistribuida es una subclase de la clase Carga y         |
+%| Este archivo contiene la definicion de CargaMembrana2DDistribuida    |
+%| CargaMembrana2DDistribuida es una subclase de la clase Carga y       |
 %| corresponde a la representacion de una carga distribuida en un       |
-%| elemento tipo Membrana2D.                                              |
+%| elemento tipo Membrana2D.                                            |
 %|                                                                      |
-%| La clase CargaMembrana2DDistribuida es una clase que contiene el       |
+%| La clase CargaMembrana2DDistribuida es una clase que contiene el     |
 %| elemento al que se le va a aplicar la carga, los nodos al que se     |
 %| aplica las cargas y las distancias de las dos cargas.                |
 %|______________________________________________________________________|

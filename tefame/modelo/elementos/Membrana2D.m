@@ -14,10 +14,10 @@
 %| Repositorio: https://github.com/ppizarror/TEFAME                     |
 %|______________________________________________________________________|
 %|                                                                      |
-%| Clase Membrana2D                                                       |
+%| Clase Membrana2D                                                     |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase Membrana2D             |
-%| Membrana2D es una subclase de la clase Elemento y  corresponde a  la   |
+%| Este archivo contiene la definicion de la Clase Membrana2D           |
+%| Membrana2D es una subclase de la clase Elemento y  corresponde a  la |
 %| representacion del elemento membrana bidimensional sencilla de secc- |
 %| ion rectangular de cuatro nodos sometida a un estado de fuerzas.     |
 %|______________________________________________________________________|

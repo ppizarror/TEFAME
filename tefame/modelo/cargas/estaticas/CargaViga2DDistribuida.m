@@ -14,13 +14,13 @@
 %| Repositorio: https://github.com/ppizarror/TEFAME                     |
 %|______________________________________________________________________|
 %|                                                                      |
-%| Clase CargaViga2DDistribuida                                           |
+%| Clase CargaViga2DDistribuida                                         |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase CargaViga2DDistribuida |
-%| CargaViga2DDistribuida es una subclase de la clase Carga y corresponde |
+%| Este archivo contiene la definicion de la ClaseCargaViga2DDistribuida|
+%| CargaViga2DDistribuida es una subclase de la clase Carga ycorresponde|
 %| a la representacion de una carga distribuida en un elemento tipo Viga|
 %|                                                                      |
-%| La clase CargaViga2DDistribuida es una clase que contiene el elemento  |
+%| La clase CargaViga2DDistribuida es una clase que contiene el elemento|
 %| al que se le va a aplicar la carga, las cargas en cada punto y las   |
 %| distancias de las dos cargas.                                        |
 %|______________________________________________________________________|
