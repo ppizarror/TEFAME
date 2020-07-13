@@ -154,7 +154,7 @@ classdef CargaBielaTemperatura < CargaEstatica
             % diferencia de temperatura de la Biela (obj)
             % en pantalla
             
-            fprintf('Propiedades carga biela temperatura:\n');
+            fprintf('Propiedades carga biela 2D/3D temperatura:\n');
             disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento

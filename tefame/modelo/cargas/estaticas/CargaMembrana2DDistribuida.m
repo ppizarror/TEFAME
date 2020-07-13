@@ -228,7 +228,7 @@ classdef CargaMembrana2DDistribuida < CargaEstatica
             % Imprime la informacion guardada en la carga distribuida de la
             % membrana (obj) en pantalla
             
-            fprintf('Propiedades carga membrana distribuida:\n');
+            fprintf('Propiedades carga membrana distribuida 2D:\n');
             disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento

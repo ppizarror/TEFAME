@@ -168,7 +168,7 @@ classdef CargaViga2DPuntual < CargaEstatica
             % Imprime la informacion guardada en la carga puntual de la
             % Viga (obj) en pantalla
             
-            fprintf('Propiedades carga viga puntual:\n');
+            fprintf('Propiedades carga viga puntual 2D:\n');
             disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento

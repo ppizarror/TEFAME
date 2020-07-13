@@ -46,24 +46,24 @@
 %
 %  Methods(Access=public):
 %       obj = Fundacion2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
-%       numeroNodos = obtenerNumeroNodos(obj)
-%       nodosFundacion = obtenerNodos(obj)
-%       numeroGDL = obtenerNumeroGDL(obj)
+%       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+%       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
 %       gdlIDFundacion = obtenerGDLID(obj)
 %       k_global = obtenerMatrizRigidezCoordGlobal(obj)
 %       k_local = obtenerMatrizRigidezCoordLocal(obj)
-%       m_masa = obtenerVectorMasa(obj)
-%       m = obtenerMasa(obj)
-%       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
-%       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
 %       l = obtenerLargo(obj)
+%       m = obtenerMasa(obj)
+%       m_masa = obtenerVectorMasa(obj)
+%       nodosFundacion = obtenerNodos(obj)
+%       numeroGDL = obtenerNumeroGDL(obj)
+%       numeroNodos = obtenerNumeroNodos(obj)
 %       T = obtenerMatrizTransformacion(obj)
 %       theta = obtenerAngulo(obj)
-%       definirGDLID(obj)
 %       agregarFuerzaResistenteAReacciones(obj)
-%       guardarPropiedades(obj,archivoSalidaHandle)
-%       guardarEsfuerzosInternos(obj,archivoSalidaHandle)
+%       definirGDLID(obj)
 %       disp(obj)
+%       guardarEsfuerzosInternos(obj,archivoSalidaHandle)
+%       guardarPropiedades(obj,archivoSalidaHandle)
 %  Methods SuperClass (ComponenteModelo):
 %       etiqueta = obtenerEtiqueta(obj)
 %       e = equals(obj,obj)
@@ -383,6 +383,10 @@ classdef Fundacion2D < Elemento
             % Imprime vector de masa
             fprintf('\tVector de masa:\n');
             disp(obj.obtenerVectorMasa());
+            
+            % Imprime matriz de transformacion
+            fprintf('\tMatriz de transformacion geometrica:\n');
+            disp(obj.obtenerMatrizTransformacion());
             
             dispMetodoTEFAME();
             

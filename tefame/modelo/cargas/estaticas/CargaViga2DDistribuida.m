@@ -183,7 +183,7 @@ classdef CargaViga2DDistribuida < CargaEstatica
             % Imprime la informacion guardada en la carga distribuida de la
             % Viga (obj) en pantalla
             
-            fprintf('Propiedades carga viga distribuida:\n');
+            fprintf('Propiedades carga viga distribuida 2D:\n');
             disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento

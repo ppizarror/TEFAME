@@ -131,8 +131,8 @@ classdef CargaNodo < CargaEstatica
             fprintf('Propiedades carga nodo:\n');
             disp@CargaEstatica(obj);
             
-            numGDL = length(obj.cargas);
-            cargaNodo = arrayNum2str(obj.cargas, numGDL);
+            numGDL = length(obj.vectorCarga);
+            cargaNodo = arrayNum2str(obj.vectorCarga, numGDL);
             fprintf('Cargas: %s\n', [cargaNodo{:}]);
             dispMetodoTEFAME();
             

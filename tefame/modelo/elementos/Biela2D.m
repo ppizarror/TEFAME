@@ -47,15 +47,18 @@
 %
 %  Methods(Access=public):
 %       obj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
-%       numeroNodos = obtenerNumeroNodos(obj)
-%       nodosBiela = obtenerNodos(obj)
-%       numeroGDL = obtenerNumeroGDL(obj)
+%       ae = obtenerAE(obj)
+%       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+%       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
 %       gdlIDBiela = obtenerGDLID(obj)
 %       k_global = obtenerMatrizRigidezCoordGlobal(obj)
 %       k_local = obtenerMatrizRigidezCoordLocal(obj)
-%       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
-%       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
-%       ae = obtenerAE(obj)
+%       l = obtenerLargo(obj)
+%       nodosBiela = obtenerNodos(obj)
+%       numeroGDL = obtenerNumeroGDL(obj)
+%       numeroNodos = obtenerNumeroNodos(obj)
+%       T = obtenerMatrizTransformacion(obj)
+%       theta = obtenerAngulo(obj)
 %       theta = obtenerAngulo(obj)
 %       definirGDLID(obj)
 %       sumarCargaTemperaturaReaccion(obj,f)
@@ -165,6 +168,21 @@ classdef Biela2D < Elemento
             theta = obj.theta;
             
         end % obtenerAngulo function
+        
+        function T = obtenerMatrizTransformacion(obj)
+            % obtenerMatrizTransformacion: Obtiene la matriz de
+            % transformacion del elemento
+            
+            T = obj.T;
+            
+        end % obtenerMatrizTransformacion function
+        
+        function l = obtenerLargo(obj)
+            % obtenerLargo: Retorna el largo del elemento
+            
+            l = obj.L;
+            
+        end % obtenerLargo function
         
         function m = obtenerMasa(obj)
             % obtenerMasa: Retorna la masa total del elemento
@@ -394,6 +412,10 @@ classdef Biela2D < Elemento
             % Se imprime matriz de rigidez global
             fprintf('\tMatriz de rigidez coordenadas globales:\n');
             disp(obj.obtenerMatrizRigidezCoordGlobal());
+            
+            % Imprime matriz de transformacion
+            fprintf('\tMatriz de transformacion geometrica:\n');
+            disp(obj.obtenerMatrizTransformacion());
             
             dispMetodoTEFAME();
             
