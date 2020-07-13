@@ -2,30 +2,30 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of DisipadorViscoso2D</title>
-  <meta name="keywords" content="DisipadorViscoso2D">
+  <title>Description of CargaVigaColumna3DDistribuida</title>
+  <meta name="keywords" content="CargaVigaColumna3DDistribuida">
   <meta name="description" content="|______________________________________________________________________|">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
-  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
   <script type="text/javascript">
-    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+    if (top.frames.length == 0) { top.location = "../../../../index.html"; };
   </script>
 </head>
 <body>
 <a name="_top"></a>
-<!-- # tefame --><!-- # modelo --><!-- menu.html disipadores -->
-<h1>DisipadorViscoso2D
+<!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html estaticas -->
+<h1>CargaVigaColumna3DDistribuida
 </h1>
 
-<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="box"><strong>|______________________________________________________________________|</strong></div>
 
-<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="box"><strong>This is a script file. </strong></div>
 
-<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment">|______________________________________________________________________|
 |                                                                      |
 |          TEFAME - Toolbox para Elementos Finitos y Analisis          |
@@ -42,11 +42,15 @@
 | Repositorio: https://github.com/ppizarror/TEFAME                     |
 |______________________________________________________________________|
 |                                                                      |
-| Clase DisipadorViscoso2D                                             |
+| Clase CargaVigaColumna3DDistribuida                                    |
 |                                                                      |
-| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |
-|  es una  subclase de la clase Disipador2D y  corresponde a           |
-| la representacion de un disipador viscoso en 2D.                     |
+| Este archivo contiene la definicion de la Clase CargaVigaColumnaDist |
+| ribuida, CargaViga2DDistribuida es una subclase de la clase Carga y    |
+| corresponde a la representacion de una carga distribuida en un       |
+| elemento tipo Viga. La clase CargaViga2DDistribuida es una clase que   |
+| contiene el elemento, al que se le va a aplicar la carga, las cargas |
+| en cada punto, las distancias de las dos cargas y el angulo con      |
+| respecto a la normal.                                                |
 |______________________________________________________________________|
 |                                                                      |
 | MIT License                                                          |
@@ -73,33 +77,28 @@
 |______________________________________________________________________|
 
   Methods(Access=public):
-       definirGDLID(obj)
-       obj = DisipadorViscoso2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
+       obj = CargaVigaColumna3DDistribuida(etiquetaCarga,elemObjeto,carga1,
+                                        distancia1,carga2,distancia2,theta)
+       aplicarCarga(obj,factorDeCarga)
        disp(obj)
-       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
-       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
-       gdlIDBiela = obtenerGDLID(obj)
-       k_global = obtenerMatrizRigidezCoordGlobal(obj)
-       k_local = obtenerMatrizRigidezCoordLocal(obj)
-       l = obtenerLargo(obj)
-       nodosBiela = obtenerNodos(obj)
-       numeroGDL = obtenerNumeroGDL(obj)
-       numeroNodos = obtenerNumeroNodos(obj)
-       plot(obj,tipoLinea,grosorLinea,colorLinea)
-       T = obtenerMatrizTransformacion(obj)
+  Methods SuperClass (CargaEstatica):
+       masa = obtenerMasa(obj)
+       definirFactorUnidadMasa(obj,factor)
+       definirFactorCargaMasa(obj,factor)
+       nodos = obtenerNodos(obj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(obj)
        e = equals(obj,obj)
        objID = obtenerIDObjeto(obj)</pre></div>
 
 <!-- crossreference -->
-<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 This function calls:
-<ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	|______________________________________________________________________|</li><li><a href="Disipador2D.html" class="code" title="">Disipador2D</a>	|______________________________________________________________________|</li><li><a href="DisipadorViscoso2D.html" class="code" title="">DisipadorViscoso2D</a>	|______________________________________________________________________|</li><li><a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	|______________________________________________________________________|</li><li><a href="CargaVigaColumna3DDistribuida.html" class="code" title="">CargaVigaColumna3DDistribuida</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
 This function is called by:
-<ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="DisipadorViscoso2D.html" class="code" title="">DisipadorViscoso2D</a>	|______________________________________________________________________|</li></ul>
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="CargaVigaColumna3DDistribuida.html" class="code" title="">CargaVigaColumna3DDistribuida</a>	|______________________________________________________________________|</li></ul>
 <!-- crossreference -->
 
 

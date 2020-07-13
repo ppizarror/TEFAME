@@ -75,15 +75,18 @@
 
   Methods(Access=public):
        obj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
-       numeroNodos = obtenerNumeroNodos(obj)
-       nodosBiela = obtenerNodos(obj)
-       numeroGDL = obtenerNumeroGDL(obj)
+       ae = obtenerAE(obj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
        gdlIDBiela = obtenerGDLID(obj)
        k_global = obtenerMatrizRigidezCoordGlobal(obj)
        k_local = obtenerMatrizRigidezCoordLocal(obj)
-       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
-       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
-       ae = obtenerAE(obj)
+       l = obtenerLargo(obj)
+       nodosBiela = obtenerNodos(obj)
+       numeroGDL = obtenerNumeroGDL(obj)
+       numeroNodos = obtenerNumeroNodos(obj)
+       T = obtenerMatrizTransformacion(obj)
+       theta = obtenerAngulo(obj)
        theta = obtenerAngulo(obj)
        definirGDLID(obj)
        sumarCargaTemperaturaReaccion(obj,f)
@@ -109,6 +112,6 @@ This function is called by:
 
 
 
-<hr><address>Generated on Mon 13-Jul-2020 00:58:02 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Mon 13-Jul-2020 17:09:53 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

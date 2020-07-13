@@ -75,26 +75,26 @@
 
   Methods(Access=public):
        obj = Membrana2D(etiquetaMembrana,nodo1Obj,nodo2Obj,nodo3Obj,nodo4Obj,E,nu,t,densidad)
-       numeroNodos = obtenerNumeroNodos(obj)
-       nodosMembrana = obtenerNodos(obj)
-       numeroGDL = obtenerNumeroGDL(obj)
-       gdlIDMembrana = obtenerGDLID(obj)
-       k_global = obtenerMatrizRigidezCoordGlobal(obj)
-       k_local = obtenerMatrizRigidezCoordLocal(obj)
+       b = obtenerAncho(obj)
+       e = obtenerDeformaciones(obj, x, y)
        fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
        fr_local = obtenerFuerzaResistenteCoordLocal(obj)
-       b = obtenerAncho(obj)
+       gdlIDMembrana = obtenerGDLID(obj)
        h = obtenerAlto(obj)
-       u = obtenerDesplazamiento(obj, x, y)
-       e = obtenerDeformaciones(obj, x, y)
-       sigma = obtenerTensiones(obj, x, y)
+       k_global = obtenerMatrizRigidezCoordGlobal(obj)
+       k_local = obtenerMatrizRigidezCoordLocal(obj)
        lista = crearListaTensiones(obj)
-       validarXY(obj, x, y)
-       definirGDLID(obj)
+       nodosMembrana = obtenerNodos(obj)
+       numeroGDL = obtenerNumeroGDL(obj)
+       numeroNodos = obtenerNumeroNodos(obj)
+       sigma = obtenerTensiones(obj, x, y)
+       u = obtenerDesplazamiento(obj, x, y)
        agregarFuerzaResistenteAReacciones(obj)
-       guardarPropiedades(obj,archivoSalidaHandle)
-       guardarEsfuerzosInternos(obj,archivoSalidaHandle)
+       definirGDLID(obj)
        disp(obj)
+       guardarEsfuerzosInternos(obj,archivoSalidaHandle)
+       guardarPropiedades(obj,archivoSalidaHandle)
+       validarXY(obj, x, y)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(obj)
        e = equals(obj,obj)
@@ -113,6 +113,6 @@ This function is called by:
 
 
 
-<hr><address>Generated on Mon 13-Jul-2020 00:58:02 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Mon 13-Jul-2020 17:09:53 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>
