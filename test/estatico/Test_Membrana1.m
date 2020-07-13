@@ -39,7 +39,7 @@
 
 fprintf('>\tTEST_MEMBRANA1\n');
 
-% Test Membrana Sencillo
+% Test Membrana2D Sencillo
 % Corresponde al ejemplo 4.4 del libro
 %   INTRODUCCION AL ANALISIS ESTRUCTURAL POR ELEMENTOS FINITOS
 %   Autor: JORGE EDUARDO HURTADO GOMEZ
@@ -66,7 +66,7 @@ nu = 0.2; % Modulo de Poisson
 
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
-modeloObj.definirNombre('Membrana 1');
+modeloObj.definirNombre('Membrana2D 1');
 
 % Creamos los nodos
 nodos = cell(6, 1);
@@ -82,8 +82,8 @@ modeloObj.agregarNodos(nodos);
 
 % Creamos los elementos
 elementos = cell(2, 1);
-elementos{1} = Membrana('MEM1', nodos{1}, nodos{3}, nodos{4}, nodos{2}, E, nu, t); % OBS: Respetar orden CCW en nodo 1
-elementos{2} = Membrana('MEM2', nodos{3}, nodos{5}, nodos{6}, nodos{4}, E, nu, t);
+elementos{1} = Membrana2D('MEM1', nodos{1}, nodos{3}, nodos{4}, nodos{2}, E, nu, t); % OBS: Respetar orden CCW en nodo 1
+elementos{2} = Membrana2D('MEM2', nodos{3}, nodos{5}, nodos{6}, nodos{4}, E, nu, t);
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);

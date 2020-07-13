@@ -2,8 +2,8 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of CargaVigaPuntual</title>
-  <meta name="keywords" content="CargaVigaPuntual">
+  <title>Description of CargaVigaColumna2DPuntual</title>
+  <meta name="keywords" content="CargaVigaColumna2DPuntual">
   <meta name="description" content="|______________________________________________________________________|">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
@@ -16,7 +16,7 @@
 <body>
 <a name="_top"></a>
 <!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html estaticas -->
-<h1>CargaVigaPuntual
+<h1>CargaVigaColumna2DPuntual
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
@@ -42,16 +42,17 @@
 | Repositorio: https://github.com/ppizarror/TEFAME                     |
 |______________________________________________________________________|
 |                                                                      |
-| Clase CargaVigaPuntual                                               |
+| Clase CargaVigaColumna2DPuntual                                        |
 |                                                                      |
-| Este archivo contiene la definicion de la Clase CargaVigaPuntual     |
-| CargaVigaPuntual es una subclase de la clase CargaEstatica y         |
+| Este archivo contiene la definicion de CargaVigaColumna2DPuntual       |
+| CargaVigaColumna2DPuntual es una subclase de la clase Carga y          |
 | corresponde a la representacion de una carga puntual en un elemento  |
-| tipo Viga.                                                           |
+| tipo Viga-Columna.                                                   |
 |                                                                      |
-| La clase CargaVigaPuntual es una clase que contiene el elemento al   |
-| al que se le va a aplicar la carga, el valor de esta carga y la      |
-| distancia a uno de los nodos como porcentaje del largo.              |
+| La clase CargaVigaColumna2DPuntual es una clase que contiene el        |
+| elemento al al que se le va a aplicar la carga, el valor de esta     |
+| carga, la distancia a uno de los nodos como porcentaje del largo y   |
+| el angulo de aplicacion.                                             |
 |______________________________________________________________________|
 |                                                                      |
 | MIT License                                                          |
@@ -78,10 +79,10 @@
 |______________________________________________________________________|
 
   Methods(Access=public):
-       obj = CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
+       obj = CargaVigaColumna2DPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
        aplicarCarga(obj,factorDeCarga)
        disp(obj)
-  Methods SuperClass (CargaEsatica):
+  Methods SuperClass (CargaEstatica):
        masa = obtenerMasa(obj)
        definirFactorUnidadMasa(obj,factor)
        definirFactorCargaMasa(obj,factor)
@@ -95,15 +96,15 @@
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	|______________________________________________________________________|</li><li><a href="CargaVigaPuntual.html" class="code" title="">CargaVigaPuntual</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+<li><a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	|______________________________________________________________________|</li><li><a href="CargaVigaColumna2DPuntual.html" class="code" title="">CargaVigaColumna2DPuntual</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="CargaVigaPuntual.html" class="code" title="">CargaVigaPuntual</a>	|______________________________________________________________________|</li></ul>
+<li><a href="CargaVigaColumna2DPuntual.html" class="code" title="">CargaVigaColumna2DPuntual</a>	|______________________________________________________________________|</li></ul>
 <!-- crossreference -->
 
 
 
 
-<hr><address>Generated on Fri 28-Jun-2019 14:03:12 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Mon 13-Jul-2020 00:58:02 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

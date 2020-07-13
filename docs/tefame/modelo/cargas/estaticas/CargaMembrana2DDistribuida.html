@@ -2,8 +2,8 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of CargaVigaDistribuida</title>
-  <meta name="keywords" content="CargaVigaDistribuida">
+  <title>Description of CargaMembrana2DDistribuida</title>
+  <meta name="keywords" content="CargaMembrana2DDistribuida">
   <meta name="description" content="|______________________________________________________________________|">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
@@ -16,7 +16,7 @@
 <body>
 <a name="_top"></a>
 <!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html estaticas -->
-<h1>CargaVigaDistribuida
+<h1>CargaMembrana2DDistribuida
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
@@ -42,15 +42,16 @@
 | Repositorio: https://github.com/ppizarror/TEFAME                     |
 |______________________________________________________________________|
 |                                                                      |
-| Clase CargaVigaDistribuida                                           |
+| Clase CargaMembrana2DDistribuida                                       |
 |                                                                      |
-| Este archivo contiene la definicion de la Clase CargaVigaDistribuida |
-| CargaVigaDistribuida es una subclase de la clase Carga y corresponde |
-| a la representacion de una carga distribuida en un elemento tipo Viga|
+| Este archivo contiene la definicion de CargaMembrana2DDistribuida      |
+| CargaMembrana2DDistribuida es una subclase de la clase Carga y         |
+| corresponde a la representacion de una carga distribuida en un       |
+| elemento tipo Membrana2D.                                              |
 |                                                                      |
-| La clase CargaVigaDistribuida es una clase que contiene el elemento  |
-| al que se le va a aplicar la carga, las cargas en cada punto y las   |
-| distancias de las dos cargas.                                        |
+| La clase CargaMembrana2DDistribuida es una clase que contiene el       |
+| elemento al que se le va a aplicar la carga, los nodos al que se     |
+| aplica las cargas y las distancias de las dos cargas.                |
 |______________________________________________________________________|
 |                                                                      |
 | MIT License                                                          |
@@ -77,10 +78,10 @@
 |______________________________________________________________________|
 
   Methods(Access=public):
-       obj = CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
+       obj = CargaMembrana2DDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
        aplicarCarga(obj,factorDeCarga)
        disp(obj)
-  Methods SuperClass (Carga):
+  Methods SuperClass (CargaEstatica):
        masa = obtenerMasa(obj)
        definirFactorUnidadMasa(obj,factor)
        definirFactorCargaMasa(obj,factor)
@@ -94,15 +95,15 @@
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	|______________________________________________________________________|</li><li><a href="CargaVigaDistribuida.html" class="code" title="">CargaVigaDistribuida</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+<li><a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	|______________________________________________________________________|</li><li><a href="CargaMembrana2DDistribuida.html" class="code" title="">CargaMembrana2DDistribuida</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="CargaVigaDistribuida.html" class="code" title="">CargaVigaDistribuida</a>	|______________________________________________________________________|</li></ul>
+<li><a href="CargaMembrana2DDistribuida.html" class="code" title="">CargaMembrana2DDistribuida</a>	|______________________________________________________________________|</li></ul>
 <!-- crossreference -->
 
 
 
 
-<hr><address>Generated on Fri 28-Jun-2019 14:03:12 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Mon 13-Jul-2020 00:58:02 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

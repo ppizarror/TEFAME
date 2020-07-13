@@ -26,7 +26,7 @@
 - Biela 2D
 - Biela 3D
 - Fundación 2D
-- Membrana (Shell 2D)
+- Membrana2D (Shell 2D)
 - Viga 2D
 - Viga-columna 2D
 

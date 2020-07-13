@@ -2,8 +2,8 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of CargaPulso</title>
-  <meta name="keywords" content="CargaPulso">
+  <title>Description of CargaViga2DPuntual</title>
+  <meta name="keywords" content="CargaViga2DPuntual">
   <meta name="description" content="|______________________________________________________________________|">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
@@ -15,8 +15,8 @@
 </head>
 <body>
 <a name="_top"></a>
-<!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html dinamicas -->
-<h1>CargaPulso
+<!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html estaticas -->
+<h1>CargaViga2DPuntual
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
@@ -42,14 +42,16 @@
 | Repositorio: https://github.com/ppizarror/TEFAME                     |
 |______________________________________________________________________|
 |                                                                      |
-| Clase CargaPulso                                                     |
+| Clase CargaViga2DPuntual                                               |
 |                                                                      |
-| Este archivo contiene la definicion de la Clase CargaPulso           |
-| CargaPulso es una subclase de la clase CargaDinamica y corresponde a |
-| la representacion de una carga nodal en el metodo de elementos       |
-| finitos o analisis matricial de estructuras.                         |
-| La clase CargaPulso es una clase que contiene el nodo al que se le   |
-| va aplicar la carga y el valor de esta carga.                        |
+| Este archivo contiene la definicion de la Clase CargaViga2DPuntual     |
+| CargaViga2DPuntual es una subclase de la clase CargaEstatica y         |
+| corresponde a la representacion de una carga puntual en un elemento  |
+| tipo Viga.                                                           |
+|                                                                      |
+| La clase CargaViga2DPuntual es una clase que contiene el elemento al   |
+| al que se le va a aplicar la carga, el valor de esta carga y la      |
+| distancia a uno de los nodos como porcentaje del largo.              |
 |______________________________________________________________________|
 |                                                                      |
 | MIT License                                                          |
@@ -76,40 +78,14 @@
 |______________________________________________________________________|
 
   Methods(Access=public):
-       CargaPulso(etiquetaCargaPulso,nodos,direccion,amplitud,tpulso,dt,tInicio,tAnalisis)
+       obj = CargaViga2DPuntual(etiquetaCarga,elemObjeto,carga,distancia)
        aplicarCarga(obj,factorDeCarga)
        disp(obj)
-  Methods SuperClass (CargaDinamica):
-       cargaDinamicaObj = Carga(etiquetaCarga)
-       desactivarCarga(cargaDinamicaObj)
-       p = calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)
-       disp(cargaDinamicaObj)
-       y = cargaActivada(cargaDinamicaObj)
-       guardarCarga(cargaDinamicaObj,p)
-       guardarDesplazamiento(cargaDinamicaObj,u)
-       guardarVelocidad(cargaDinamicaObj,v)
-       guardarAceleracion(cargaDinamicaObj,a)
-       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
-       usoDisipadores(cargaDinamicaObj,disipador)
-       descomposicionModal(cargaDinamicaObj,desmodal)
-       c = cargaSumaMasa(cargaDinamicaObj)
-       t = obtenerVectorTiempo(cargaDinamicaObj)
-       p = obtenerCarga(cargaDinamicaObj)
-       u = obtenerDesplazamiento(cargaDinamicaObj)
-       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
-       v = obtenerVelocidad(cargaDinamicaObj)
-       a = obtenerAceleracion(cargaDinamicaObj)
-       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
-       dm = usoDescomposicionModal(cargaDinamicaObj)
-       disipador = usoDeDisipadores(cargaDinamicaObj)
-       masa = obtenerMasa(cargaDinamicaObj)
-       definirFactorUnidadMasa(cargaDinamicaObj,factor)
-       definirFactorCargaMasa(cargaDinamicaObj,factor)
-       nodos = obtenerNodos(cargaDinamicaObj)
-       activarCarga(cargaDinamicaObj)
-       establecerCargaCalculada(cargaDinamicaObj)
-       c = cargaCalculada(cargaDinamicaObj)
-       bloquearCargaMasa(cargaDinamicaObj)
+  Methods SuperClass (CargaEsatica):
+       masa = obtenerMasa(obj)
+       definirFactorUnidadMasa(obj,factor)
+       definirFactorCargaMasa(obj,factor)
+       nodos = obtenerNodos(obj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(obj)
        e = equals(obj,obj)
@@ -119,10 +95,10 @@
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>	|______________________________________________________________________|</li><li><a href="CargaPulso.html" class="code" title="">CargaPulso</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li><li><a href="../../../../tefame/utils/verificarVectorDireccion.html" class="code" title="function y = verificarVectorDireccion(vec, ndg)">verificarVectorDireccion</a>	verificarVectorDireccion: Verifica que un vector direccion tenga sentido y</li></ul>
+<li><a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	|______________________________________________________________________|</li><li><a href="CargaViga2DPuntual.html" class="code" title="">CargaViga2DPuntual</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="CargaPulso.html" class="code" title="">CargaPulso</a>	|______________________________________________________________________|</li></ul>
+<li><a href="CargaViga2DPuntual.html" class="code" title="">CargaViga2DPuntual</a>	|______________________________________________________________________|</li></ul>
 <!-- crossreference -->
 
 

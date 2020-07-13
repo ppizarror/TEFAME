@@ -14,10 +14,10 @@
 %| Repositorio: https://github.com/ppizarror/TEFAME                     |
 %|______________________________________________________________________|
 %|                                                                      |
-%| Clase Membrana                                                       |
+%| Clase Membrana2D                                                       |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase Membrana             |
-%| Membrana es una subclase de la clase Elemento y  corresponde a  la   |
+%| Este archivo contiene la definicion de la Clase Membrana2D             |
+%| Membrana2D es una subclase de la clase Elemento y  corresponde a  la   |
 %| representacion del elemento membrana bidimensional sencilla de secc- |
 %| ion rectangular de cuatro nodos sometida a un estado de fuerzas.     |
 %|______________________________________________________________________|
@@ -46,7 +46,7 @@
 %|______________________________________________________________________|
 %
 %  Methods(Access=public):
-%       obj = Membrana(etiquetaMembrana,nodo1Obj,nodo2Obj,nodo3Obj,nodo4Obj,E,nu,t,densidad)
+%       obj = Membrana2D(etiquetaMembrana,nodo1Obj,nodo2Obj,nodo3Obj,nodo4Obj,E,nu,t,densidad)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       nodosMembrana = obtenerNodos(obj)
 %       numeroGDL = obtenerNumeroGDL(obj)
@@ -72,7 +72,7 @@
 %       e = equals(obj,obj)
 %       objID = obtenerIDObjeto(obj)
 
-classdef Membrana < Elemento
+classdef Membrana2D < Elemento
     
     properties(Access = private)
         b % Largo de la membrana desde el eje (r,s)
@@ -86,12 +86,12 @@ classdef Membrana < Elemento
         nu % Modulo de Poisson
         rho % Densidad de la membrana
         t % Ancho de la membrana
-    end % private properties Membrana
+    end % private properties Membrana2D
     
     methods(Access = public)
         
-        function obj = Membrana(etiquetaMembrana, nodo1Obj, nodo2Obj, nodo3Obj, nodo4Obj, E, nu, t, densidad)
-            % Membrana: Constructor de clase, crea una membrana de 4
+        function obj = Membrana2D(etiquetaMembrana, nodo1Obj, nodo2Obj, nodo3Obj, nodo4Obj, E, nu, t, densidad)
+            % Membrana2D: Constructor de clase, crea una membrana de 4
             % vertices planar
             
             % Si no se pasan argumentos se crean vacios
@@ -139,10 +139,10 @@ classdef Membrana < Elemento
             dh1 = abs(coordNodo1(2)-coordNodo4(2)) / 2;
             dh2 = abs(coordNodo2(2)-coordNodo3(2)) / 2;
             if (db1 ~= db2)
-                error('Dimensiones no correctas en @x Membrana ID %s', etiquetaMembrana);
+                error('Dimensiones no correctas en @x Membrana2D ID %s', etiquetaMembrana);
             end
             if (dh1 ~= dh2)
-                error('Dimensiones no correctas en @y Membrana ID %s', etiquetaMembrana);
+                error('Dimensiones no correctas en @y Membrana2D ID %s', etiquetaMembrana);
             end
             
             obj.b = db1;
@@ -155,7 +155,7 @@ classdef Membrana < Elemento
             % Numero de puntos de la malla, itera segun alto y largo
             obj.NPOINTS = 15; % (NPOINTS+1)^2 puntos totales
             
-        end % Membrana constructor
+        end % Membrana2D constructor
         
         function b = obtenerAncho(obj)
             % obtenerAncho: Retorna el ancho de la membrana
@@ -671,6 +671,6 @@ classdef Membrana < Elemento
             
         end % disp function
         
-    end % public methods Membrana
+    end % public methods Membrana2D
     
-end % class Membrana
+end % class Membrana2D

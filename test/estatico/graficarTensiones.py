@@ -71,7 +71,7 @@ for i in f:
         dx = 0
         dy = 0
         continue
-    if 'Membrana' in i:
+    if 'Membrana2D' in i:
         obt = False
         continue
 

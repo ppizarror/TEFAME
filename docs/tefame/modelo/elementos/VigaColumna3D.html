@@ -2,30 +2,30 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of CargaMembranaDistribuida</title>
-  <meta name="keywords" content="CargaMembranaDistribuida">
+  <title>Description of VigaColumna3D</title>
+  <meta name="keywords" content="VigaColumna3D">
   <meta name="description" content="|______________________________________________________________________|">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
-  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
   <script type="text/javascript">
-    if (top.frames.length == 0) { top.location = "../../../../index.html"; };
+    if (top.frames.length == 0) { top.location = "../../../index.html"; };
   </script>
 </head>
 <body>
 <a name="_top"></a>
-<!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html estaticas -->
-<h1>CargaMembranaDistribuida
+<!-- # tefame --><!-- # modelo --><!-- menu.html elementos -->
+<h1>VigaColumna3D
 </h1>
 
-<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 <div class="box"><strong>|______________________________________________________________________|</strong></div>
 
-<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 <div class="box"><strong>This is a script file. </strong></div>
 
-<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment">|______________________________________________________________________|
 |                                                                      |
 |          TEFAME - Toolbox para Elementos Finitos y Analisis          |
@@ -42,20 +42,16 @@
 | Repositorio: https://github.com/ppizarror/TEFAME                     |
 |______________________________________________________________________|
 |                                                                      |
-| Clase CargaMembranaDistribuida                                       |
+| Clase VigaColumna3D                                                  |
 |                                                                      |
-| Este archivo contiene la definicion de CargaMembranaDistribuida      |
-| CargaMembranaDistribuida es una subclase de la clase Carga y         |
-| corresponde a la representacion de una carga distribuida en un       |
-| elemento tipo Membrana.                                              |
-|                                                                      |
-| La clase CargaMembranaDistribuida es una clase que contiene el       |
-| elemento al que se le va a aplicar la carga, los nodos al que se     |
-| aplica las cargas y las distancias de las dos cargas.                |
+| Este archivo contiene la definicion de la Clase VigaColumna 3D       |
+| ColumnaViga3D es una  subclase de la clase Elemento y  corresponde a |
+| la representacion del elemento viga-columna que transmite esfuerzos  |
+| axiales y de corte en tres dimensiones                               |
 |______________________________________________________________________|
 |                                                                      |
 | MIT License                                                          |
-| Copyright (c) 2018-2019 Pablo Pizarro R @ppizarror.com.              |
+| Copyright (c) 2018-2020 Pablo Pizarro R @ppizarror.com.              |
 |                                                                      |
 | Permission is hereby granted, free of charge, to any person obtai-   |
 | ning a copy of this software and associated documentation files (the |
@@ -78,32 +74,43 @@
 |______________________________________________________________________|
 
   Methods(Access=public):
-       obj = CargaMembranaDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
-       aplicarCarga(obj,factorDeCarga)
+       obj = VigaColumna3D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
+       numeroNodos = obtenerNumeroNodos(obj)
+       nodosBiela = obtenerNodos(obj)
+       numeroGDL = obtenerNumeroGDL(obj)
+       gdlIDBiela = obtenerGDLID(obj)
+       k_global = obtenerMatrizRigidezCoordGlobal(obj)
+       k_local = obtenerMatrizRigidezCoordLocal(obj)
+       m_masa = obtenerVectorMasa(obj)
+       m = obtenerMasa(obj)
+       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
+       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
+       l = obtenerLargo(obj)
+       T = obtenerMatrizTransformacion(obj)
+       theta = obtenerAngulo(obj)
+       definirGDLID(obj)
+       agregarFuerzaResistenteAReacciones(obj)
+       guardarPropiedades(obj,archivoSalidaHandle)
+       guardarEsfuerzosInternos(obj,archivoSalidaHandle)
        disp(obj)
-  Methods SuperClass (CargaEstatica):
-       masa = obtenerMasa(obj)
-       definirFactorUnidadMasa(obj,factor)
-       definirFactorCargaMasa(obj,factor)
-       nodos = obtenerNodos(obj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(obj)
        e = equals(obj,obj)
        objID = obtenerIDObjeto(obj)</pre></div>
 
 <!-- crossreference -->
-<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
 This function calls:
-<ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="../../../../tefame/modelo/cargas/CargaEstatica.html" class="code" title="">CargaEstatica</a>	|______________________________________________________________________|</li><li><a href="CargaMembranaDistribuida.html" class="code" title="">CargaMembranaDistribuida</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	|______________________________________________________________________|</li><li><a href="Elemento.html" class="code" title="">Elemento</a>	|______________________________________________________________________|</li><li><a href="VigaColumna3D.html" class="code" title="">VigaColumna3D</a>	|______________________________________________________________________|</li><li><a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
 This function is called by:
-<ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="CargaMembranaDistribuida.html" class="code" title="">CargaMembranaDistribuida</a>	|______________________________________________________________________|</li></ul>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="VigaColumna3D.html" class="code" title="">VigaColumna3D</a>	|______________________________________________________________________|</li></ul>
 <!-- crossreference -->
 
 
 
 
-<hr><address>Generated on Fri 28-Jun-2019 14:03:12 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Mon 13-Jul-2020 00:58:02 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

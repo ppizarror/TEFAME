@@ -39,7 +39,7 @@
 
 fprintf('>\tTEST_MEMBRANA_CARGADISTRIBUIDA_HOR\n');
 
-% Test Membrana Sencillo
+% Test Membrana2D Sencillo
 % Corresponde al ejemplo 4.4 del libro modificado con carga distribuida
 % rectangular vertical
 %   INTRODUCCION AL ANALISIS ESTRUCTURAL POR ELEMENTOS FINITOS
@@ -63,7 +63,7 @@ nu = 0.2; % Modulo de Poisson
 
 % Creamos el modelo
 modeloObj = Modelo(2, 6);
-modeloObj.definirNombre('Membrana carga distribuida horizontal');
+modeloObj.definirNombre('Membrana2D carga distribuida horizontal');
 
 % Creamos los nodos
 nodos = cell(6, 1);
@@ -79,8 +79,8 @@ modeloObj.agregarNodos(nodos);
 
 % Creamos los elementos
 elementos = cell(2, 1);
-elementos{1} = Membrana('MEM1', nodos{1}, nodos{3}, nodos{4}, nodos{2}, E, nu, t); % OBS: Respetar orden CCW en nodo 1
-elementos{2} = Membrana('MEM2', nodos{3}, nodos{5}, nodos{6}, nodos{4}, E, nu, t);
+elementos{1} = Membrana2D('MEM1', nodos{1}, nodos{3}, nodos{4}, nodos{2}, E, nu, t); % OBS: Respetar orden CCW en nodo 1
+elementos{2} = Membrana2D('MEM2', nodos{3}, nodos{5}, nodos{6}, nodos{4}, E, nu, t);
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
@@ -95,7 +95,7 @@ modeloObj.agregarRestricciones(restricciones);
 
 % Creamos la carga
 cargas = cell(1, 1);
-cargas{1} = CargaMembranaDistribuida('D100KN H', elementos{1}, 1, 4, 0, 0, 100, 1);
+cargas{1} = CargaMembrana2DDistribuida('D100KN H', elementos{1}, 1, 4, 0, 0, 100, 1);
 
 % Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);

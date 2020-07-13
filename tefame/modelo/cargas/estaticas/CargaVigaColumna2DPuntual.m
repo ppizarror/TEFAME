@@ -14,16 +14,17 @@
 %| Repositorio: https://github.com/ppizarror/TEFAME                     |
 %|______________________________________________________________________|
 %|                                                                      |
-%| Clase CargaVigaPuntual                                               |
+%| Clase CargaVigaColumna2DPuntual                                        |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase CargaVigaPuntual     |
-%| CargaVigaPuntual es una subclase de la clase CargaEstatica y         |
+%| Este archivo contiene la definicion de CargaVigaColumna2DPuntual       |
+%| CargaVigaColumna2DPuntual es una subclase de la clase Carga y          |
 %| corresponde a la representacion de una carga puntual en un elemento  |
-%| tipo Viga.                                                           |
+%| tipo Viga-Columna.                                                   |
 %|                                                                      |
-%| La clase CargaVigaPuntual es una clase que contiene el elemento al   |
-%| al que se le va a aplicar la carga, el valor de esta carga y la      |
-%| distancia a uno de los nodos como porcentaje del largo.              |
+%| La clase CargaVigaColumna2DPuntual es una clase que contiene el        |
+%| elemento al al que se le va a aplicar la carga, el valor de esta     |
+%| carga, la distancia a uno de los nodos como porcentaje del largo y   |
+%| el angulo de aplicacion.                                             |
 %|______________________________________________________________________|
 %|                                                                      |
 %| MIT License                                                          |
@@ -50,10 +51,10 @@
 %|______________________________________________________________________|
 %
 %  Methods(Access=public):
-%       obj = CargaVigaPuntual(etiquetaCarga,elemObjeto,carga,distancia)
+%       obj = CargaVigaColumna2DPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)
-%  Methods SuperClass (CargaEsatica):
+%  Methods SuperClass (CargaEstatica):
 %       masa = obtenerMasa(obj)
 %       definirFactorUnidadMasa(obj,factor)
 %       definirFactorCargaMasa(obj,factor)
@@ -63,39 +64,44 @@
 %       e = equals(obj,obj)
 %       objID = obtenerIDObjeto(obj)
 
-classdef CargaVigaPuntual < CargaEstatica
+classdef CargaVigaColumna2DPuntual < CargaEstatica
     
     properties(Access = private)
         carga % Valor de la carga
         dist % Distancia de la carga al primer nodo del elemento
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-    end % private properties CargaVigaPuntual
+        theta % Angulo de aplicacion de la carga con respecto a la normal
+    end % private properties CargaVigaColumna2DPuntual
     
     methods(Access = public)
         
-        function obj = CargaVigaPuntual(etiquetaCarga, elemObjeto, carga, distancia)
-            % CargaVigaPuntual: es el constructor de la clase CargaVigaPuntual
+        function obj = CargaVigaColumna2DPuntual(etiquetaCarga, ...
+                elemObjeto, carga, distancia, theta)
+            % CargaVigaColumna2DPuntual: es el constructor de la clase CargaVigaColumna2DPuntual
             %
-            % Crea un objeto de la clase CargaVigaPuntual, en donde toma como atributo
+            % Crea un objeto de la clase CargaVigaColumna2DPuntual, en donde toma como atributo
             % el objeto a aplicar la carga, la distancia como porcentaje
-            % del largo del elemento con respecto al primer nodo y el
-            % elemento tipo viga. En este caso no tiene sentido aplicar un
-            % angulo debido a que el elemento en particular no admite
-            % cargas horizontales
+            % del largo del elemento con respecto al primer nodo, el
+            % elemento tipo viga y el angulo de aplicacion de la carga con respecto a la normal
             
             if nargin == 0
                 carga = 0;
                 distancia = 0;
                 elemObjeto = [];
                 etiquetaCarga = '';
+                theta = 0;
             end
             
-            if ~isa(elemObjeto, 'Viga2D')
-                error('Objeto de la carga no es una Viga2D @CargaVigaPuntual %s', etiquetaCarga);
+            if ~exist('theta', 'var')
+                theta = 0;
+            end
+            
+            if ~isa(elemObjeto, 'VigaColumna2D')
+                error('Objeto de la carga no es una VigaColumna2D @CargaVigaColumna2DPuntual %s', etiquetaCarga);
             end
             
             if distancia<0 || distancia>1
-                error('Distancia de la carga debe estar dentro del rango [0, 1] @CargaVigaPuntual %s', etiquetaCarga);
+                error('Distancia de la carga debe estar dentro del rango [0, 1] @CargaVigaColumna2DPuntual %s', etiquetaCarga);
             end
             
             % Llamamos al constructor de la SuperClass que es la clase Carga
@@ -106,10 +112,11 @@ classdef CargaVigaPuntual < CargaEstatica
             obj.dist = distancia * elemObjeto.obtenerLargo();
             obj.elemObj = elemObjeto;
             obj.nodosCarga = elemObjeto.obtenerNodos();
+            obj.theta = theta;
             
-        end % CargaVigaPuntual constructor
+        end % CargaVigaColumna2DPuntual constructor
         
-        function [v1, v2, theta1, theta2] = calcularCarga(obj)
+        function [u1, u2, v1, v2, theta1, theta2] = calcularCarga(obj)
             % calcularCarga: Calcula la carga
             
             % Largo de la viga
@@ -118,57 +125,64 @@ classdef CargaVigaPuntual < CargaEstatica
             % Posicion de la carga
             d = obj.dist;
             
-            % Carga
-            P = obj.carga;
+            % Carga normal
+            P = obj.carga * cos(obj.theta);
+            
+            % Carga axial
+            H = -obj.carga * sin(obj.theta);
             
             % Se calculan apoyos y reacciones en un caso de viga empotrada
             % sometida a una carga P aplicada a (L-d) de un apoyo y d del
             % otro. Esto se hizo al no tener la funcion dirac(x) y
-            % distintos errores fruto de la evaluacion de la integral. El
-            % caso con las funciones de interpolacion N1..N4 se realizo
-            % correctamente para el caso de la carga distribuida
+            % distintos errores fruto de la evaluacion de la integral
             v1 = P * ((L - d)^2 / L^2) * (3 - 2 * (L - d) / L);
             v2 = P * (d^2 / L^2) * (3 - 2 * d / L);
             theta1 = P * d * (L - d)^2 / (L^2);
             theta2 = -P * (d^2) * (L - d) / (L^2);
+            
+            % Para el caso de las cargas normales se usan las funciones de
+            % interpolacion
+            Nu1 = @(x) (1 - x / L);
+            Nu2 = @(x) x / L;
+            u1 = H * Nu1(d);
+            u2 = H * Nu2(d);
             
         end % calcularCarga function
         
         function masa = obtenerMasa(obj)
             % obtenerMasa: Obtiene la masa asociada a la carga
             
-            [v1, v2, ~, ~] = obj.calcularCarga();
-            masa = abs(v1+v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
+            [u1, u2, v1, v2, ~, ~] = obj.calcularCarga();
+            masa = abs(u1+u2+v1+v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         
         function aplicarCarga(obj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase CargaVigaPuntual que se usa para aplicar
-            % la carga sobre los dos nodos del elemento
+            % aplicarCarga: es un metodo de la clase CargaVigaColumna2DPuntual
+            % que se usa para aplicar la carga sobre los dos nodos del elemento
             
             % Calcula la carga
-            [v1, v2, theta1, theta2] = obj.calcularCarga();
-            vectorCarga1 = factorDeCarga * [0, v1, theta1]';
-            vectorCarga2 = factorDeCarga * [0, v2, theta2]';
-            obj.elemObj.sumarFuerzaEquivalente([ ...
-                vectorCarga1(2), vectorCarga1(3), vectorCarga2(2), vectorCarga2(3)]');
+            [u1, u2, v1, v2, theta1, theta2] = obj.calcularCarga();
+            vectorCarga = factorDeCarga * [u1, v1, theta1, u2, v2, theta2]';
+            obj.elemObj.sumarFuerzaEquivalente(vectorCarga);
             
-            % Aplica vectores de carga
+            % Aplica vectores de carga en coordenadas globales
+            vectorCarga = obj.elemObj.obtenerMatrizTransformacion()' * vectorCarga;
             nodos = obj.elemObj.obtenerNodos();
-            nodos{1}.agregarCarga(vectorCarga1);
-            nodos{2}.agregarCarga(vectorCarga2);
+            nodos{1}.agregarCarga([vectorCarga(1), vectorCarga(2), vectorCarga(3)]');
+            nodos{2}.agregarCarga([vectorCarga(4), vectorCarga(5), vectorCarga(6)]');
             
         end % aplicarCarga function
         
         function disp(obj)
-            % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
+            % disp: es un metodo de la clase CargaViga2DPuntual que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
             % elemento
             %
             % Imprime la informacion guardada en la carga puntual de la
-            % Viga (obj) en pantalla
+            % Viga-Columna (obj) en pantalla
             
-            fprintf('Propiedades carga viga puntual:\n');
+            fprintf('Propiedades carga viga-columna puntual:\n');
             disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento
@@ -178,15 +192,21 @@ classdef CargaVigaPuntual < CargaEstatica
             nodo1etiqueta = obj.elemObj.obtenerNodos();
             nodo1etiqueta = nodo1etiqueta{1}.obtenerEtiqueta();
             
-            fprintf('\tCarga: %.3f aplicada en Elemento: %s a %.3f del Nodo: %s\n', ...
-                obj.carga, etiqueta, obj.dist, nodo1etiqueta);
-            [v1, v2, t1, t2] = obj.calcularCarga();
-            fprintf('\tCarga (v1, t1, v2, t2):\t[%.3f, %.3f, %.3f, %.3f]\n', ...
-                v1, t1, v2, t2);
+            % Obtiene cargas axiales y normales
+            P = obj.carga * cos(obj.theta);
+            H = obj.carga * sin(obj.theta);
+            
+            fprintf('\tCarga aplicada en Elemento: %s a %.3f del Nodo: %s\n', ...
+                etiqueta, obj.dist, nodo1etiqueta);
+            fprintf('\t\tComponente NORMAL:\t%.3f\n', P);
+            fprintf('\t\tComponente AXIAL:\t%.3f\n', H);
+            [u1, u2, v1, v2, t1, t2] = obj.calcularCarga();
+            fprintf('\tCarga (u1,v1,t1,u2,v2,t2):\t[%.3f, %.3f, %.3f, %.3f, %.3f, %.3f]\n', ...
+                u1, v1, t1, u2, v2, t2);
             dispMetodoTEFAME();
             
         end % disp function
         
-    end % public methods CargaVigaPuntual
+    end % public methods CargaVigaColumna2DPuntual
     
-end % class CargaVigaPuntual
+end % class CargaVigaColumna2DPuntual

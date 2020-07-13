@@ -75,8 +75,8 @@ modeloObj.agregarRestricciones(restricciones);
 % Creamos la carga
 cargas = cell(3, 1);
 cargas{1} = CargaNodo('Momento nodo 2', nodos{2}, [0, 0, -150]');
-cargas{2} = CargaVigaColumnaPuntual('Carga elem 1 @125[kN]', elementos{1}, -125, 0.5, 0);
-cargas{3} = CargaVigaColumnaDistribuida('Carga dist elem 2 @24[kN/m]', elementos{2}, -24, 0, -24, 1, 0);
+cargas{2} = CargaVigaColumna2DPuntual('Carga elem 1 @125[kN]', elementos{1}, -125, 0.5, 0);
+cargas{3} = CargaVigaColumna2DDistribuida('Carga dist elem 2 @24[kN/m]', elementos{2}, -24, 0, -24, 1, 0);
 
 % Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);

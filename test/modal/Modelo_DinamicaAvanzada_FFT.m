@@ -88,7 +88,7 @@ modeloObj.agregarRestricciones(restricciones);
 %% Creamos las cargas estaticas
 cargasEstaticas = cell(103, 1);
 for i = 1:103
-    cargasEstaticas{i} = CargaVigaColumnaDistribuida('Carga distribuida piso', ...
+    cargasEstaticas{i} = CargaVigaColumna2DDistribuida('Carga distribuida piso', ...
         elementos{i}, -4, 0, -4, 1, 0);
     cargasEstaticas{i}.definirFactorCargaMasa(1);
     cargasEstaticas{i}.definirFactorUnidadMasa(1/9.80665);

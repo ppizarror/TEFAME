@@ -75,7 +75,7 @@ gdl = N * 2 + 2;
 
 % Creamos el modelo
 modeloObj = Modelo(2, gdl);
-modeloObj.definirNombre('Membrana 3');
+modeloObj.definirNombre('Membrana2D 3');
 
 % Creamos los nodos
 nodos = cell(gdl, 1);
@@ -100,7 +100,7 @@ for i = 1:N
     n2 = N + i + 1;
     n3 = N + i + 2;
     n4 = i + 1;
-    elementos{i} = Membrana(sprintf('MEM%d', i), nodos{n1}, nodos{n2}, nodos{n3}, nodos{n4}, E, nu, t);
+    elementos{i} = Membrana2D(sprintf('MEM%d', i), nodos{n1}, nodos{n2}, nodos{n3}, nodos{n4}, E, nu, t);
 end % for i
 
 % Agregamos los elementos al modelo
@@ -116,7 +116,7 @@ modeloObj.agregarRestricciones(restricciones);
 
 % Creamos la carga
 cargas = cell(1, 1);
-cargas{1} = CargaMembranaDistribuida(sprintf('DV100KN V@%d', N), elementos{N}, 4, 3, -100, 0, -100, 1);
+cargas{1} = CargaMembrana2DDistribuida(sprintf('DV100KN V@%d', N), elementos{N}, 4, 3, -100, 0, -100, 1);
 
 % Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);

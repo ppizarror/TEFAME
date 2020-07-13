@@ -14,15 +14,16 @@
 %| Repositorio: https://github.com/ppizarror/TEFAME                     |
 %|______________________________________________________________________|
 %|                                                                      |
-%| Clase CargaVigaDistribuida                                           |
+%| Clase CargaMembrana2DDistribuida                                       |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase CargaVigaDistribuida |
-%| CargaVigaDistribuida es una subclase de la clase Carga y corresponde |
-%| a la representacion de una carga distribuida en un elemento tipo Viga|
+%| Este archivo contiene la definicion de CargaMembrana2DDistribuida      |
+%| CargaMembrana2DDistribuida es una subclase de la clase Carga y         |
+%| corresponde a la representacion de una carga distribuida en un       |
+%| elemento tipo Membrana2D.                                              |
 %|                                                                      |
-%| La clase CargaVigaDistribuida es una clase que contiene el elemento  |
-%| al que se le va a aplicar la carga, las cargas en cada punto y las   |
-%| distancias de las dos cargas.                                        |
+%| La clase CargaMembrana2DDistribuida es una clase que contiene el       |
+%| elemento al que se le va a aplicar la carga, los nodos al que se     |
+%| aplica las cargas y las distancias de las dos cargas.                |
 %|______________________________________________________________________|
 %|                                                                      |
 %| MIT License                                                          |
@@ -49,10 +50,10 @@
 %|______________________________________________________________________|
 %
 %  Methods(Access=public):
-%       obj = CargaVigaDistribuida(etiquetaCarga,elemObjeto,carga1,distancia1,carga2,distancia2)
+%       obj = CargaMembrana2DDistribuida(etiquetaCarga,elemObjeto,nodo1,nodo2,carga1,distancia1,carga2,distancia2)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)
-%  Methods SuperClass (Carga):
+%  Methods SuperClass (CargaEstatica):
 %       masa = obtenerMasa(obj)
 %       definirFactorUnidadMasa(obj,factor)
 %       definirFactorCargaMasa(obj,factor)
@@ -62,7 +63,7 @@
 %       e = equals(obj,obj)
 %       objID = obtenerIDObjeto(obj)
 
-classdef CargaVigaDistribuida < CargaEstatica
+classdef CargaMembrana2DDistribuida < CargaEstatica
     
     properties(Access = private)
         carga1 % Valor de la carga 1
@@ -70,59 +71,97 @@ classdef CargaVigaDistribuida < CargaEstatica
         dist1 % Distancia de la carga 1 al primer nodo del elemento
         dist2 % Distancia de la carga 2 al primer nodo del elemento
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-    end % private properties CargaVigaDistribuida
+        L % Largo de aplicacion de las cargas
+        nodo1 % Nodo 1 de aplicacion
+        nodo2 % Nodo 2 de aplicacion
+        theta % Angulo de aplicacion
+    end % private properties CargaMembrana2DDistribuida
     
     methods(Access = public)
         
-        function obj = CargaVigaDistribuida(etiquetaCarga, ...
-                elemObjeto, carga1, distancia1, carga2, distancia2)
-            % CargaVigaDistribuida: es el constructor de la clase CargaVigaDistribuida
+        function obj = CargaMembrana2DDistribuida(etiquetaCarga, elemObjeto, ...
+                nodo1, nodo2, carga1, distancia1, carga2, distancia2)
+            % CargaMembrana2DDistribuida: es el constructor de la clase
+            % CargaMembrana2DDistribuida
             %
             % Crea un objeto de la clase Carga, en donde toma como atributo
             % el objeto a aplicar la carga, las cargas y las distancias de
-            % aplicacion (en porcentaje con respecto al largo)
+            % aplicacion
+            % La enumeracion de los nodos de la membrana corresponde a:
+            %
+            %       4 ------------- 3
+            %       |               |
+            %       |               |
+            %       |               |
+            %       1 ------------- 2
+            %
+            % No se pueden aplicar cargas cruzadas, ie solo se permiten las
+            % combinaciones 1-2, 2-3, 3-4 o 1-4
             
             if nargin == 0
-                etiquetaCarga = '';
-                elemObjeto = [];
                 carga1 = 0;
-                distancia1 = 0;
                 carga2 = 0;
+                distancia1 = 0;
                 distancia2 = 0;
+                elemObjeto = [];
+                etiquetaCarga = '';
             end
             
-            % Llamamos al constructor de la SuperClass que es la clase Carga
+            % Llamamos al constructor de la SuperClass que es la clase
+            % CargaEstatica
             obj = obj@CargaEstatica(etiquetaCarga);
             
-            if ~isa(elemObjeto, 'Viga2D')
-                error('Objeto de la carga no es una Viga2D @CargaVigaDistribuida %s', etiquetaCarga);
+            if ~isa(elemObjeto, 'Membrana2D')
+                error('Objeto de la carga no es una Membrana2D @CargaMembrana2DDistribuida %s', etiquetaCarga);
+            end
+            
+            % Verifica que se cumplan los nodos
+            if abs(nodo1-nodo2) == 2
+                error('Nodo no puede ser cruzado @CargaMembrana2DDistribuida %s', etiquetaCarga);
+            end
+            if (nodo1 < 1 || nodo1 > 4 || nodo2 < 1 || nodo2 > 4)
+                error('Etiqueta nodo invalido, debe ser entre 1 y 4 @CargaMembrana2DDistribuida %s', etiquetaCarga);
             end
             
             % Aplica limites al minimo y maximo
             if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
-                error('Distancias deben estar dentro del rango [0, 1] @CargaVigaDistribuida %s', etiquetaCarga);
+                warning('Distancias deben estar dentro del rango [0, 1] @CargaVigaColumna2DDistribuida %s', etiquetaCarga);
             end
             if (distancia1 == distancia2)
-                error('Distancias son iguales @CargaVigaDistribuida %s', etiquetaCarga);
+                warning('Distancias son iguales @CargaVigaColumna2DDistribuida %s', etiquetaCarga);
             end
             distancia1 = max(0, min(distancia1, 1));
             distancia2 = min(1, max(distancia2, 0));
             
+            % Obtiene el largo entre los nodos
+            nodoMembrana = elemObjeto.obtenerNodos();
+            membranaNodo1 = nodoMembrana{nodo1}.obtenerCoordenadas();
+            membranaNodo2 = nodoMembrana{nodo2}.obtenerCoordenadas();
+            largo = sqrt((membranaNodo1(1) - membranaNodo2(1))^2+(membranaNodo1(2) - membranaNodo2(2))^2);
+            
+            % Calcula el angulo de aplicacion, puede ser 0 (en eje y) o 90 (eje x)
+            dx = (membranaNodo2(1) - membranaNodo1(1));
+            dy = (membranaNodo2(2) - membranaNodo1(2));
+            obj.theta = atan(dy/dx);
+            
             % Guarda los valores
-            obj.carga1 = carga1;
-            obj.carga2 = carga2;
-            obj.dist1 = distancia1 * elemObjeto.obtenerLargo();
-            obj.dist2 = distancia2 * elemObjeto.obtenerLargo();
             obj.elemObj = elemObjeto;
-            obj.nodosCarga = elemObjeto.obtenerNodos();
+            obj.L = largo;
             
-        end % CargaVigaDistribuida constructor
+            obj.carga1 = carga1;
+            obj.dist1 = distancia1 * largo;
+            obj.nodo1 = nodo1;
+            
+            obj.carga2 = carga2;
+            obj.dist2 = distancia2 * largo;
+            obj.nodo2 = nodo2;
+            
+            obj.nodosCarga = {nodo1, nodo2};
+            
+        end % CargaMembrana2DDistribuida constructor
         
-        function [v1, v2, theta1, theta2] = calcularCarga(obj)
+        function [v1, v2] = calcularCarga(obj)
             % calcularCarga: Calcula la carga
-            
-            % Largo de la viga
-            L = obj.elemObj.obtenerLargo();
             
             % Limites de las cargas
             d1 = obj.dist1;
@@ -136,54 +175,60 @@ classdef CargaVigaDistribuida < CargaEstatica
             rho = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
             
             % Funciones de interpolacion
-            N1 = @(x) 1 - 3 * (x / L).^2 + 2 * (x / L).^3;
-            N2 = @(x) x .* (1 - x / L).^2;
-            N3 = @(x) 3 * (x / L).^2 - 2 * (x / L).^3;
-            N4 = @(x) ((x.^2) / L) .* (x / L - 1);
+            N1 = @(x) 1 - 3 * (x / obj.L).^2 + 2 * (x / obj.L).^3;
+            N3 = @(x) 3 * (x / obj.L).^2 - 2 * (x / obj.L).^3;
             
             % Calcula cada valor
             v1 = integral(@(x) rho(x).*N1(x), d1, d2);
-            theta1 = integral(@(x) rho(x).*N2(x), d1, d2);
             v2 = integral(@(x) rho(x).*N3(x), d1, d2);
-            theta2 = integral(@(x) rho(x).*N4(x), d1, d2);
             
         end % calcularCarga function
         
         function masa = obtenerMasa(obj)
             % obtenerMasa: Obtiene la masa asociada a la carga
             
-            [v1, v2, ~, ~] = obj.calcularCarga();
+            [v1, v2] = obj.calcularCarga();
             masa = abs(v1+v2) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
             
         end % obtenerMasa function
         
         function aplicarCarga(obj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase obj que se usa para aplicar
-            % la carga sobre los dos nodos del elemento
+            % aplicarCarga: es un metodo de la clase obj
+            % que se usa para aplicar la carga sobre los dos nodos
+            % correspondientes del elemento
             
             % Calcula la carga
-            [v1, v2, theta1, theta2] = obj.calcularCarga();
-            vectorCarga1 = factorDeCarga * [0, v1, theta1]';
-            vectorCarga2 = factorDeCarga * [0, v2, theta2]';
-            obj.elemObj.sumarFuerzaEquivalente( ...
-                [vectorCarga1(2), vectorCarga1(3), vectorCarga2(2), vectorCarga2(3)]');
+            [v1, v2] = obj.calcularCarga();
+            
+            % Aplica el angulo
+            v1x = v1 * sin(obj.theta);
+            v1y = v1 * cos(obj.theta);
+            v2x = v2 * sin(obj.theta);
+            v2y = v2 * cos(obj.theta);
+            
+            vectorCarga1 = factorDeCarga * [v1x, v1y]';
+            vectorCarga2 = factorDeCarga * [v2x, v2y]';
+            
+            % Aplica fuerzas equivalentes;
+            obj.elemObj.sumarFuerzaEquivalente(obj.nodo1, vectorCarga1');
+            obj.elemObj.sumarFuerzaEquivalente(obj.nodo2, vectorCarga2');
             
             % Aplica vectores de carga
             nodos = obj.elemObj.obtenerNodos();
-            nodos{1}.agregarCarga(vectorCarga1);
-            nodos{2}.agregarCarga(vectorCarga2);
+            nodos{obj.nodo1}.agregarCarga(vectorCarga1);
+            nodos{obj.nodo2}.agregarCarga(vectorCarga2);
             
         end % aplicarCarga function
         
         function disp(obj)
-            % disp: es un metodo de la clase CargaVigaDistribuida que se usa para
-            % imprimir en el command Window la informacion de la carga aplicada
-            % sobre el elemento
+            % disp: es un metodo de la clase Carga que se usa para imprimir en
+            % command Window la informacion de la carga aplicada sobre el
+            % elemento membrana
             %
             % Imprime la informacion guardada en la carga distribuida de la
-            % Viga (obj) en pantalla
+            % membrana (obj) en pantalla
             
-            fprintf('Propiedades carga viga distribuida:\n');
+            fprintf('Propiedades carga membrana distribuida:\n');
             disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento
@@ -191,19 +236,27 @@ classdef CargaVigaDistribuida < CargaEstatica
             
             % Obtiene la etiqueta del primer nodo
             nodosetiqueta = obj.elemObj.obtenerNodos();
-            nodo1etiqueta = nodosetiqueta{1}.obtenerEtiqueta();
-            nodo2etiqueta = nodosetiqueta{2}.obtenerEtiqueta();
+            nodo1etiqueta = nodosetiqueta{obj.nodo1}.obtenerEtiqueta();
+            nodo2etiqueta = nodosetiqueta{obj.nodo2}.obtenerEtiqueta();
             
-            fprintf('\tCarga distribuida: %.3f en %.3f hasta %.3f en %.3f entre los Nodos: %s y %s del Elemento: %s\n', ...
+            % Obtiene si la carga es horizontal o vertical
+            if (obj.theta == 0)
+                dirc = 'Horizontal';
+            elseif (obj.theta == pi / 2)
+                dirc = 'Vertical';
+            else
+                dirc = sprintf('Diagonal theta=%.3f', obj.theta);
+            end
+            
+            fprintf('\tCarga distribuida: %.3f en %.3f hasta %.3f en %.3f (%s)\n', ...
                 obj.carga1, obj.dist1, obj.carga2, ...
-                obj.dist2, nodo1etiqueta, nodo2etiqueta, etiqueta);
-            [v1, v2, t1, t2] = obj.calcularCarga();
-            fprintf('\tCarga (v1, t1, v2, t2):\t[%.3f, %.3f, %.3f, %.3f]\n', ...
-                v1, t1, v2, t2);
+                obj.dist2, dirc);
+            fprintf('\t                   entre los Nodos: %s (%d) y %s (%d) del Elemento: %s\n', ...
+                nodo1etiqueta, obj.nodo1, nodo2etiqueta, obj.nodo2, etiqueta);
             dispMetodoTEFAME();
             
         end % disp function
         
-    end % public methods CargaVigaDistribuida
+    end % public methods CargaMembrana2DDistribuida
     
-end % class CargaVigaDistribuida
+end % class CargaMembrana2DDistribuida

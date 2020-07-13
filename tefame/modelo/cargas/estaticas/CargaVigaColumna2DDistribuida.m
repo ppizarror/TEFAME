@@ -14,17 +14,15 @@
 %| Repositorio: https://github.com/ppizarror/TEFAME                     |
 %|______________________________________________________________________|
 %|                                                                      |
-%| Clase CargaVigaColumnaPuntual                                        |
+%| Clase CargaVigaColumna2DDistribuida                                    |
 %|                                                                      |
-%| Este archivo contiene la definicion de CargaVigaColumnaPuntual       |
-%| CargaVigaColumnaPuntual es una subclase de la clase Carga y          |
-%| corresponde a la representacion de una carga puntual en un elemento  |
-%| tipo Viga-Columna.                                                   |
-%|                                                                      |
-%| La clase CargaVigaColumnaPuntual es una clase que contiene el        |
-%| elemento al al que se le va a aplicar la carga, el valor de esta     |
-%| carga, la distancia a uno de los nodos como porcentaje del largo y   |
-%| el angulo de aplicacion.                                             |
+%| Este archivo contiene la definicion de la Clase CargaVigaColumnaDist |
+%| ribuida, CargaViga2DDistribuida es una subclase de la clase Carga y    |
+%| corresponde a la representacion de una carga distribuida en un       |
+%| elemento tipo Viga. La clase CargaViga2DDistribuida es una clase que   |
+%| contiene el elemento, al que se le va a aplicar la carga, las cargas |
+%| en cada punto, las distancias de las dos cargas y el angulo con      |
+%| respecto a la normal.                                                |
 %|______________________________________________________________________|
 %|                                                                      |
 %| MIT License                                                          |
@@ -51,7 +49,8 @@
 %|______________________________________________________________________|
 %
 %  Methods(Access=public):
-%       obj = CargaVigaColumnaPuntual(etiquetaCarga,elemObjeto,carga,distancia,theta)
+%       obj = CargaVigaColumna2DDistribuida(etiquetaCarga,elemObjeto,carga1,
+%                                        distancia1,carga2,distancia2,theta)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)
 %  Methods SuperClass (CargaEstatica):
@@ -64,57 +63,70 @@
 %       e = equals(obj,obj)
 %       objID = obtenerIDObjeto(obj)
 
-classdef CargaVigaColumnaPuntual < CargaEstatica
+classdef CargaVigaColumna2DDistribuida < CargaEstatica
     
     properties(Access = private)
-        carga % Valor de la carga
-        dist % Distancia de la carga al primer nodo del elemento
+        carga1 % Valor de la carga 1
+        carga2 % Valor de la carga 2
+        dist1 % Distancia de la carga 1 al primer nodo del elemento (porcentaje del largo)
+        dist2 % Distancia de la carga 2 al primer nodo del elemento (porcentaje del largo)
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-        theta % Angulo de aplicacion de la carga con respecto a la normal
-    end % private properties CargaVigaColumnaPuntual
+        theta % Angulo de la carga
+    end % private properties CargaVigaColumna2DDistribuida
     
     methods(Access = public)
         
-        function obj = CargaVigaColumnaPuntual(etiquetaCarga, ...
-                elemObjeto, carga, distancia, theta)
-            % CargaVigaColumnaPuntual: es el constructor de la clase CargaVigaColumnaPuntual
+        function obj = CargaVigaColumna2DDistribuida(etiquetaCarga, ...
+                elemObjeto, carga1, distancia1, carga2, distancia2, theta)
+            % CargaVigaColumna2DDistribuida: es el constructor de la clase CargaVigaColumna2DDistribuida
             %
-            % Crea un objeto de la clase CargaVigaColumnaPuntual, en donde toma como atributo
-            % el objeto a aplicar la carga, la distancia como porcentaje
-            % del largo del elemento con respecto al primer nodo, el
-            % elemento tipo viga y el angulo de aplicacion de la carga con respecto a la normal
+            % Crea un objeto de la clase Carga, en donde toma como atributo
+            % el objeto a aplicar la carga, las cargas, las distancias de
+            % aplicacion y el angulo de la carga con respecto a la normal
+            % (0=Completamente normal, pi/2=Carga axial a la viga)
             
+            % Si no se pasan argumentos se crea una carga vacia
             if nargin == 0
-                carga = 0;
-                distancia = 0;
+                carga1 = 0;
+                carga2 = 0;
+                distancia1 = 0;
+                distancia2 = 0;
                 elemObjeto = [];
                 etiquetaCarga = '';
                 theta = 0;
             end
-            
             if ~exist('theta', 'var')
                 theta = 0;
             end
             
             if ~isa(elemObjeto, 'VigaColumna2D')
-                error('Objeto de la carga no es una VigaColumna2D @CargaVigaColumnaPuntual %s', etiquetaCarga);
+                error('Objeto de la carga no es una VigaColumna2D @CargaVigaColumna2DDistribuida %s', etiquetaCarga);
             end
             
-            if distancia<0 || distancia>1
-                error('Distancia de la carga debe estar dentro del rango [0, 1] @CargaVigaColumnaPuntual %s', etiquetaCarga);
-            end
-            
-            % Llamamos al constructor de la SuperClass que es la clase Carga
+            % Llamamos al constructor de la SuperClass que es la clase
+            % CargaEstatica
             obj = obj@CargaEstatica(etiquetaCarga);
             
+            % Aplica limites al minimo y maximo
+            if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
+                error('Distancias deben estar dentro del rango [0, 1] @CargaVigaColumna2DDistribuida %s', etiquetaCarga);
+            end
+            if (distancia1 == distancia2)
+                error('Distancias son iguales @CargaVigaColumna2DDistribuida %s', etiquetaCarga);
+            end
+            distancia1 = max(0, min(distancia1, 1));
+            distancia2 = min(1, max(distancia2, 0));
+            
             % Guarda los valores
-            obj.carga = carga;
-            obj.dist = distancia * elemObjeto.obtenerLargo();
+            obj.carga1 = carga1;
+            obj.carga2 = carga2;
+            obj.dist1 = distancia1 * elemObjeto.obtenerLargo();
+            obj.dist2 = distancia2 * elemObjeto.obtenerLargo();
             obj.elemObj = elemObjeto;
             obj.nodosCarga = elemObjeto.obtenerNodos();
             obj.theta = theta;
             
-        end % CargaVigaColumnaPuntual constructor
+        end % CargaVigaColumna2DDistribuida constructor
         
         function [u1, u2, v1, v2, theta1, theta2] = calcularCarga(obj)
             % calcularCarga: Calcula la carga
@@ -122,30 +134,40 @@ classdef CargaVigaColumnaPuntual < CargaEstatica
             % Largo de la viga
             L = obj.elemObj.obtenerLargo();
             
-            % Posicion de la carga
-            d = obj.dist;
+            % Limites de las cargas
+            d1 = obj.dist1;
+            d2 = obj.dist2;
             
-            % Carga normal
-            P = obj.carga * cos(obj.theta);
+            % Angulo de la carga
+            ang = obj.theta;
             
-            % Carga axial
-            H = -obj.carga * sin(obj.theta);
+            % Cargas normales
+            P1 = obj.carga1 * cos(ang);
+            P2 = obj.carga2 * cos(ang);
             
-            % Se calculan apoyos y reacciones en un caso de viga empotrada
-            % sometida a una carga P aplicada a (L-d) de un apoyo y d del
-            % otro. Esto se hizo al no tener la funcion dirac(x) y
-            % distintos errores fruto de la evaluacion de la integral
-            v1 = P * ((L - d)^2 / L^2) * (3 - 2 * (L - d) / L);
-            v2 = P * (d^2 / L^2) * (3 - 2 * d / L);
-            theta1 = P * d * (L - d)^2 / (L^2);
-            theta2 = -P * (d^2) * (L - d) / (L^2);
+            % Cargas axiales
+            H1 = obj.carga1 * sin(ang);
+            H2 = obj.carga2 * sin(ang);
             
-            % Para el caso de las cargas normales se usan las funciones de
-            % interpolacion
-            Nu1 = @(x) (1 - x / L);
-            Nu2 = @(x) x / L;
-            u1 = H * Nu1(d);
-            u2 = H * Nu2(d);
+            % Crea funcion de carga distribuida normal y axial
+            rhoV = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
+            rhoH = @(x) H1 + (x - d1) * ((H2 - H1) / d2);
+            
+            % Funciones de interpolacion
+            Nu1 = @(x) - (1 - x / L);
+            Nu2 = @(x) - x / L;
+            Nv1 = @(x) 1 - 3 * (x / L).^2 + 2 * (x / L).^3;
+            Nv2 = @(x) x .* (1 - x / L).^2;
+            Nv3 = @(x) 3 * (x / L).^2 - 2 * (x / L).^3;
+            Nv4 = @(x) ((x.^2) / L) .* (x / L - 1);
+            
+            % Calcula cada valor
+            u1 = integral(@(x) rhoH(x).*Nu1(x), d1, d2);
+            u2 = integral(@(x) rhoH(x).*Nu2(x), d1, d2);
+            v1 = integral(@(x) rhoV(x).*Nv1(x), d1, d2);
+            v2 = integral(@(x) rhoV(x).*Nv3(x), d1, d2);
+            theta1 = integral(@(x) rhoV(x).*Nv2(x), d1, d2);
+            theta2 = integral(@(x) rhoV(x).*Nv4(x), d1, d2);
             
         end % calcularCarga function
         
@@ -158,7 +180,7 @@ classdef CargaVigaColumnaPuntual < CargaEstatica
         end % obtenerMasa function
         
         function aplicarCarga(obj, factorDeCarga)
-            % aplicarCarga: es un metodo de la clase CargaVigaColumnaPuntual
+            % aplicarCarga: es un metodo de la clase obj
             % que se usa para aplicar la carga sobre los dos nodos del elemento
             
             % Calcula la carga
@@ -175,31 +197,37 @@ classdef CargaVigaColumnaPuntual < CargaEstatica
         end % aplicarCarga function
         
         function disp(obj)
-            % disp: es un metodo de la clase CargaVigaPuntual que se usa para imprimir en
+            % disp: es un metodo de la clase Carga que se usa para imprimir en
             % command Window la informacion de la carga aplicada sobre el
             % elemento
             %
-            % Imprime la informacion guardada en la carga puntual de la
-            % Viga-Columna (obj) en pantalla
+            % Imprime la informacion guardada en la carga viga-columna distribuida
+            % (obj) en pantalla
             
-            fprintf('Propiedades carga viga-columna puntual:\n');
+            fprintf('Propiedades carga viga-columna distribuida:\n');
             disp@CargaEstatica(obj);
             
             % Obtiene la etiqueta del elemento
             etiqueta = obj.elemObj.obtenerEtiqueta();
             
             % Obtiene la etiqueta del primer nodo
-            nodo1etiqueta = obj.elemObj.obtenerNodos();
-            nodo1etiqueta = nodo1etiqueta{1}.obtenerEtiqueta();
+            nodosetiqueta = obj.elemObj.obtenerNodos();
+            nodo1etiqueta = nodosetiqueta{1}.obtenerEtiqueta();
+            nodo2etiqueta = nodosetiqueta{2}.obtenerEtiqueta();
             
-            % Obtiene cargas axiales y normales
-            P = obj.carga * cos(obj.theta);
-            H = obj.carga * sin(obj.theta);
+            % Obtiene cargas horizontales y verticales
+            ang = obj.theta;
+            P1 = obj.carga1 * cos(ang);
+            P2 = obj.carga2 * cos(ang);
+            H1 = obj.carga1 * sin(ang);
+            H2 = obj.carga2 * sin(ang);
+            a = obj.dist1;
+            b = obj.dist2;
             
-            fprintf('\tCarga aplicada en Elemento: %s a %.3f del Nodo: %s\n', ...
-                etiqueta, obj.dist, nodo1etiqueta);
-            fprintf('\t\tComponente NORMAL:\t%.3f\n', P);
-            fprintf('\t\tComponente AXIAL:\t%.3f\n', H);
+            fprintf('\tCarga distribuida entre los Nodos: %s y %s del Elemento: %s\n', ...
+                nodo1etiqueta, nodo2etiqueta, etiqueta);
+            fprintf('\t\tComponente NORMAL:\t%.3f en %.3f hasta %.3f en %.3f\n', P1, a, P2, b);
+            fprintf('\t\tComponente AXIAL:\t%.3f en %.3f hasta %.3f en %.3f\n', H1, a, H2, b);
             [u1, u2, v1, v2, t1, t2] = obj.calcularCarga();
             fprintf('\tCarga (u1,v1,t1,u2,v2,t2):\t[%.3f, %.3f, %.3f, %.3f, %.3f, %.3f]\n', ...
                 u1, v1, t1, u2, v2, t2);
@@ -207,6 +235,6 @@ classdef CargaVigaColumnaPuntual < CargaEstatica
             
         end % disp function
         
-    end % public methods CargaVigaColumnaPuntual
+    end % public methods CargaVigaColumna2DDistribuida
     
-end % class CargaVigaColumnaPuntual
+end % class CargaVigaColumna2DDistribuida

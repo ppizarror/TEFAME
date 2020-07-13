@@ -102,19 +102,19 @@ modeloObj.agregarNodos(nodos);
 % 1 ------------- 2
 %
 elementos = cell(13, 1);
-elementos{1} = Membrana('MEM1', nodos{1}, nodos{2}, nodos{7}, nodos{6}, E, nu, t);
-elementos{2} = Membrana('MEM2', nodos{2}, nodos{3}, nodos{8}, nodos{7}, E, nu, t);
-elementos{3} = Membrana('MEM3', nodos{3}, nodos{4}, nodos{9}, nodos{8}, E, nu, t);
-elementos{4} = Membrana('MEM4', nodos{4}, nodos{5}, nodos{10}, nodos{9}, E, nu, t);
-elementos{5} = Membrana('MEM5', nodos{6}, nodos{7}, nodos{12}, nodos{11}, E, nu, t);
-elementos{6} = Membrana('MEM6', nodos{8}, nodos{9}, nodos{14}, nodos{13}, E, nu, t);
-elementos{7} = Membrana('MEM7', nodos{9}, nodos{10}, nodos{15}, nodos{14}, E, nu, t);
-elementos{8} = Membrana('MEM8', nodos{11}, nodos{12}, nodos{17}, nodos{16}, E, nu, t);
-elementos{9} = Membrana('MEM9', nodos{14}, nodos{15}, nodos{20}, nodos{19}, E, nu, t);
-elementos{10} = Membrana('MEM10', nodos{16}, nodos{17}, nodos{22}, nodos{21}, E, nu, t);
-elementos{11} = Membrana('MEM11', nodos{17}, nodos{18}, nodos{23}, nodos{22}, E, nu, t);
-elementos{12} = Membrana('MEM12', nodos{18}, nodos{19}, nodos{24}, nodos{23}, E, nu, t);
-elementos{13} = Membrana('MEM13', nodos{19}, nodos{20}, nodos{25}, nodos{24}, E, nu, t);
+elementos{1} = Membrana2D('MEM1', nodos{1}, nodos{2}, nodos{7}, nodos{6}, E, nu, t);
+elementos{2} = Membrana2D('MEM2', nodos{2}, nodos{3}, nodos{8}, nodos{7}, E, nu, t);
+elementos{3} = Membrana2D('MEM3', nodos{3}, nodos{4}, nodos{9}, nodos{8}, E, nu, t);
+elementos{4} = Membrana2D('MEM4', nodos{4}, nodos{5}, nodos{10}, nodos{9}, E, nu, t);
+elementos{5} = Membrana2D('MEM5', nodos{6}, nodos{7}, nodos{12}, nodos{11}, E, nu, t);
+elementos{6} = Membrana2D('MEM6', nodos{8}, nodos{9}, nodos{14}, nodos{13}, E, nu, t);
+elementos{7} = Membrana2D('MEM7', nodos{9}, nodos{10}, nodos{15}, nodos{14}, E, nu, t);
+elementos{8} = Membrana2D('MEM8', nodos{11}, nodos{12}, nodos{17}, nodos{16}, E, nu, t);
+elementos{9} = Membrana2D('MEM9', nodos{14}, nodos{15}, nodos{20}, nodos{19}, E, nu, t);
+elementos{10} = Membrana2D('MEM10', nodos{16}, nodos{17}, nodos{22}, nodos{21}, E, nu, t);
+elementos{11} = Membrana2D('MEM11', nodos{17}, nodos{18}, nodos{23}, nodos{22}, E, nu, t);
+elementos{12} = Membrana2D('MEM12', nodos{18}, nodos{19}, nodos{24}, nodos{23}, E, nu, t);
+elementos{13} = Membrana2D('MEM13', nodos{19}, nodos{20}, nodos{25}, nodos{24}, E, nu, t);
 
 % Agregamos los elementos al modelo
 modeloObj.agregarElementos(elementos);
@@ -135,19 +135,19 @@ cargas = cell(8, 1);
 
 % Cargas verticales
 vmax = 10; % 1 tonf/m = 0.01 tonf/cm = 10 kgf/cm
-cargas{1} = CargaMembranaDistribuida('V 1TONF/M @10', elementos{10}, 4, 3, -vmax, 0, -vmax, 1); % 1 tonf/m = 10 kgf/cm
-cargas{2} = CargaMembranaDistribuida('V 1TONF/M @11', elementos{11}, 4, 3, -vmax, 0, -vmax, 1);
-cargas{3} = CargaMembranaDistribuida('V 1TONF/M @12', elementos{12}, 4, 3, -vmax, 0, -vmax, 1);
-cargas{4} = CargaMembranaDistribuida('V 1TONF/M @13', elementos{13}, 4, 3, -vmax, 0, -vmax, 1);
+cargas{1} = CargaMembrana2DDistribuida('V 1TONF/M @10', elementos{10}, 4, 3, -vmax, 0, -vmax, 1); % 1 tonf/m = 10 kgf/cm
+cargas{2} = CargaMembrana2DDistribuida('V 1TONF/M @11', elementos{11}, 4, 3, -vmax, 0, -vmax, 1);
+cargas{3} = CargaMembrana2DDistribuida('V 1TONF/M @12', elementos{12}, 4, 3, -vmax, 0, -vmax, 1);
+cargas{4} = CargaMembrana2DDistribuida('V 1TONF/M @13', elementos{13}, 4, 3, -vmax, 0, -vmax, 1);
 
 hmax = 200; % 20 tonf/m = 0.2tonf/cm = 200 kgf/cm
 h = 5; % Altura maxima, asi calcula por tramos cuanto es el triangulo que corresponde
 
 % Cargas horizontales, triangular
-cargas{5} = CargaMembranaDistribuida('H 20TONF/M @1', elementos{1}, 1, 4, 0, 0, hmax*(1 / h), 1);
-cargas{6} = CargaMembranaDistribuida('H 20TONF/M @5', elementos{5}, 1, 4, hmax*(1 / h), 0, hmax*(2 / h), 1);
-cargas{7} = CargaMembranaDistribuida('H 20TONF/M @8', elementos{8}, 1, 4, hmax*(2 / h), 0, hmax*(3.5 / h), 1);
-cargas{8} = CargaMembranaDistribuida('H 20TONF/M @10', elementos{10}, 1, 4, hmax*(3.5 / h), 0, hmax, 1);
+cargas{5} = CargaMembrana2DDistribuida('H 20TONF/M @1', elementos{1}, 1, 4, 0, 0, hmax*(1 / h), 1);
+cargas{6} = CargaMembrana2DDistribuida('H 20TONF/M @5', elementos{5}, 1, 4, hmax*(1 / h), 0, hmax*(2 / h), 1);
+cargas{7} = CargaMembrana2DDistribuida('H 20TONF/M @8', elementos{8}, 1, 4, hmax*(2 / h), 0, hmax*(3.5 / h), 1);
+cargas{8} = CargaMembrana2DDistribuida('H 20TONF/M @10', elementos{10}, 1, 4, hmax*(3.5 / h), 0, hmax, 1);
 
 % Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);
