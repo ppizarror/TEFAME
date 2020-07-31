@@ -26,7 +26,7 @@
 %|______________________________________________________________________|
 %|                                                                      |
 %| MIT License                                                          |
-%| Copyright (c) 2018-2019 Pablo Pizarro R @ppizarror.com.              |
+%| Copyright (c) 2018-2020 Pablo Pizarro R @ppizarror.com.              |
 %|                                                                      |
 %| Permission is hereby granted, free of charge, to any person obtai-   |
 %| ning a copy of this software and associated documentation files (the |
@@ -49,8 +49,7 @@
 %|______________________________________________________________________|
 %
 %  Methods(Access=public):
-%       obj = CargaVigaColumna3DDistribuida(etiquetaCarga,elemObjeto,carga1,
-%                                        distancia1,carga2,distancia2,theta)
+%       obj = CargaVigaColumna3DDistribuida(etiquetaCarga,elemObjeto,px1,px2,py1,py2,pz1,pz2)
 %       aplicarCarga(obj,factorDeCarga)
 %       disp(obj)
 %  Methods SuperClass (CargaEstatica):
@@ -66,45 +65,34 @@
 classdef CargaVigaColumna3DDistribuida < CargaEstatica
     
     properties(Access = private)
-        carga1 % Valor de la carga 1
-        carga2 % Valor de la carga 2
-        dist1 % Distancia de la carga 1 al primer nodo del elemento (porcentaje del largo)
-        dist2 % Distancia de la carga 2 al primer nodo del elemento (porcentaje del largo)
+        px1 % Valor de la carga distribuida eje x en el inicio del elemento
+        py1 % Valor de la carga distribuida eje y en el inicio del elemento
+        pz1 % Valor de la carga distribuida eje z en el inicio del elemento
+        px2 % Valor de la carga distribuida eje x en el termino del elemento
+        py2 % Valor de la carga distribuida eje y en el termino del elemento
+        pz2 % Valor de la carga distribuida eje z en el termino del elemento
         elemObj % Variable que guarda el elemento que se le va a aplicar la carga
-        plano % En que plano se aplica (XZ o XY)
-        theta % Angulo de la carga
     end % private properties CargaVigaColumna3DDistribuida
     
     methods(Access = public)
         
-        function obj = CargaVigaColumna3DDistribuida(etiquetaCarga, ...
-                elemObjeto, plano, carga1, distancia1, carga2, distancia2, theta)
+        function obj = CargaVigaColumna3DDistribuida(etiquetaCarga, elemObjeto, px1, px2, py1, py2, pz1, pz2)
             % CargaVigaColumna3DDistribuida: es el constructor de la clase CargaVigaColumna3DDistribuida
             %
             % Crea un objeto de la clase Carga, en donde toma como atributo
-            % el objeto a aplicar la carga, las cargas, las distancias de
-            % aplicacion y el angulo de la carga con respecto a la normal
-            % (0=Completamente normal, pi/2=Carga axial a la viga)
-            %
-            % Ademas requiere de la definicion del plano. Se aceptan cargas
-            % en XZ o XY en coordenadas locales.
+            % el objeto a aplicar la carga, las cargas en los ejes x, y, z
+            % globales.
             
             % Si no se pasan argumentos se crea una carga vacia
             if nargin == 0
-                carga1 = 0;
-                carga2 = 0;
-                distancia1 = 0;
-                distancia2 = 0;
+                px1 = 0;
+                py1 = 0;
+                pz1 = 0;
+                px2 = 0;
+                py2 = 0;
+                pz2 = 0;
                 elemObjeto = [];
                 etiquetaCarga = '';
-                plano = 'XZ';
-                theta = 0;
-            end
-            if ~exist('theta', 'var')
-                theta = 0;
-            end
-            if ~(strcmp(plano, 'XY') || strcmp(plano, 'XZ'))
-                error('Plano debe ser XY o XZ')
             end
             
             if ~isa(elemObjeto, 'VigaColumna3D')
@@ -115,25 +103,15 @@ classdef CargaVigaColumna3DDistribuida < CargaEstatica
             % CargaEstatica
             obj = obj@CargaEstatica(etiquetaCarga);
             
-            % Aplica limites al minimo y maximo
-            if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
-                error('Distancias deben estar dentro del rango [0, 1] @CargaVigaColumna3DDistribuida %s', etiquetaCarga);
-            end
-            if (distancia1 == distancia2)
-                error('Distancias son iguales @CargaVigaColumna3DDistribuida %s', etiquetaCarga);
-            end
-            distancia1 = max(0, min(distancia1, 1));
-            distancia2 = min(1, max(distancia2, 0));
-            
             % Guarda los valores
-            obj.carga1 = carga1;
-            obj.carga2 = carga2;
-            obj.dist1 = distancia1 * elemObjeto.obtenerLargo();
-            obj.dist2 = distancia2 * elemObjeto.obtenerLargo();
+            obj.px1 = px1;
+            obj.py1 = py1;
+            obj.pz1 = pz1;
+            obj.px2 = px2;
+            obj.py2 = py2;
+            obj.pz2 = pz2;
             obj.elemObj = elemObjeto;
             obj.nodosCarga = elemObjeto.obtenerNodos();
-            obj.plano = plano;
-            obj.theta = theta;
             
         end % CargaVigaColumna3DDistribuida constructor
         
@@ -145,66 +123,31 @@ classdef CargaVigaColumna3DDistribuida < CargaEstatica
             % Largo de la viga
             L = obj.elemObj.obtenerLargo();
             
-            % Limites de las cargas
-            d1 = obj.dist1;
-            d2 = obj.dist2;
-            
-            % Angulo de la carga
-            ang = obj.theta;
-            
-            % Cargas normales
-            P1 = obj.carga1 * cos(ang);
-            P2 = obj.carga2 * cos(ang);
-            
-            % Cargas axiales
-            H1 = obj.carga1 * sin(ang);
-            H2 = obj.carga2 * sin(ang);
-            
-            % Crea funcion de carga distribuida normal y axial
-            rhoV = @(x) P1 + (x - d1) * ((P2 - P1) / d2);
-            rhoH = @(x) H1 + (x - d1) * ((H2 - H1) / d2);
-            
             % Funciones de interpolacion
-            Nu1 = @(x) - (1 - x / L);
-            Nu2 = @(x) - x / L;
+            Nu1 = @(x) (1 - x / L);
+            Nu2 = @(x) x / L;
             Nv1 = @(x) 1 - 3 * (x / L).^2 + 2 * (x / L).^3;
             Nv2 = @(x) x .* (1 - x / L).^2;
             Nv3 = @(x) 3 * (x / L).^2 - 2 * (x / L).^3;
             Nv4 = @(x) ((x.^2) / L) .* (x / L - 1);
             
-            % Calcula cada valor
-            u1 = integral(@(x) rhoH(x).*Nu1(x), d1, d2);
-            u2 = integral(@(x) rhoH(x).*Nu2(x), d1, d2);
-            v1 = integral(@(x) rhoV(x).*Nv1(x), d1, d2);
-            v2 = integral(@(x) rhoV(x).*Nv3(x), d1, d2);
-            theta1 = integral(@(x) rhoV(x).*Nv2(x), d1, d2);
-            theta2 = integral(@(x) rhoV(x).*Nv4(x), d1, d2);
+            px = @(x) obj.px1 + x * ((obj.px2 - obj.px1) / L);
+            py = @(x) obj.py1 + x * ((obj.py2 - obj.py1) / L);
+            pz = @(x) obj.pz1 + x * ((obj.pz2 - obj.pz1) / L);
             
-            v11 = u1;
-            v21 = u2;
-            if strcmp(obj.plano, 'XZ')
-                % OBS: Esto puede refactorizarse y usar un angulo c/r al
-                % eje x en vez de utilizar los planos XZ/XY
-                v12 = 0;
-                v13 = v1;
-                v22 = 0;
-                v23 = v2;
-                m12 = theta1;
-                m13 = 0;
-                m22 = theta2;
-                m23 = 0;
-            elseif strcmp(obj.plano, 'XY')
-                v12 = v1;
-                v13 = 0;
-                v22 = v2;
-                v23 = 0;
-                m12 = 0;
-                m13 = theta1;
-                m22 = 0;
-                m23 = theta2;
-            end
+            % Calcula cada valor
+            v11 = integral(@(x) px(x).*Nu1(x), 0, L);
+            v12 = integral(@(x) py(x).*Nv1(x), 0, L);
+            v13 = integral(@(x) pz(x).*Nv1(x), 0, L);
             m11 = 0;
+            m12 = -integral(@(x) pz(x).*Nv2(x), 0, L);
+            m13 = integral(@(x) py(x).*Nv2(x), 0, L);
+            v21 = integral(@(x) px(x).*Nu2(x), 0, L);
+            v22 = integral(@(x) py(x).*Nv3(x), 0, L);
+            v23 = integral(@(x) pz(x).*Nv3(x), 0, L);
             m21 = 0;
+            m22 = -integral(@(x) pz(x).*Nv4(x), 0, L);
+            m23 = integral(@(x) py(x).*Nv4(x), 0, L);
             
         end % calcularCarga function
         
@@ -253,19 +196,8 @@ classdef CargaVigaColumna3DDistribuida < CargaEstatica
             nodo2etiqueta = nodosetiqueta{2}.obtenerEtiqueta();
             
             % Obtiene cargas horizontales y verticales
-            ang = obj.theta;
-            P1 = obj.carga1 * cos(ang);
-            P2 = obj.carga2 * cos(ang);
-            H1 = obj.carga1 * sin(ang);
-            H2 = obj.carga2 * sin(ang);
-            a = obj.dist1;
-            b = obj.dist2;
-            
             fprintf('\tCarga distribuida entre los Nodos: %s y %s del Elemento: %s\n', ...
                 nodo1etiqueta, nodo2etiqueta, etiqueta);
-            fprintf('\t\tCarga siendo aplicada en plano %s', obj.plano);
-            fprintf('\t\tComponente NORMAL:\t%.3f en %.3f hasta %.3f en %.3f\n', P1, a, P2, b);
-            fprintf('\t\tComponente AXIAL:\t%.3f en %.3f hasta %.3f en %.3f\n', H1, a, H2, b);
             [v11, v12, v13, v21, v22, v23, m11, m12, m13, m21, m22, m23] = obj.calcularCarga();
             fprintf('\tCarga (v11, v12, v13, m11, m12, m13, v21, v22, v23, m21, m22, m23):\n\t\t[%.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f]\n', ...
                 v11, v12, v13, m11, m12, m13, v21, v22, v23, m21, m22, m23);
