@@ -15,7 +15,7 @@
 %|______________________________________________________________________|
 %|                                                                      |
 %| MIT License                                                          |
-%| Copyright (c) 2018-2019 Pablo Pizarro R @ppizarror.com.              |
+%| Copyright (c) 2018-2020 Pablo Pizarro R @ppizarror.com.              |
 %|                                                                      |
 %| Permission is hereby granted, free of charge, to any person obtai-   |
 %| ning a copy of this software and associated documentation files (the |
@@ -88,8 +88,7 @@ modeloObj.agregarRestricciones(restricciones);
 %% Creamos las cargas estaticas
 cargasEstaticas = cell(103, 1);
 for i = 1:103
-    cargasEstaticas{i} = CargaVigaColumna2DDistribuida('Carga distribuida piso', ...
-        elementos{i}, -4, 0, -4, 1, 0);
+    cargasEstaticas{i} = CargaVigaColumna2DDistribuidaConstante('Carga distribuida piso', elementos{i}, -4, 0);
     cargasEstaticas{i}.definirFactorCargaMasa(1);
     cargasEstaticas{i}.definirFactorUnidadMasa(1/9.80665);
 end % for i

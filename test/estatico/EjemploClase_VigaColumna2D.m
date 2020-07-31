@@ -15,7 +15,7 @@
 %|______________________________________________________________________|
 %|                                                                      |
 %| MIT License                                                          |
-%| Copyright (c) 2018-2019 Pablo Pizarro R @ppizarror.com.              |
+%| Copyright (c) 2018-2020 Pablo Pizarro R @ppizarror.com.              |
 %|                                                                      |
 %| Permission is hereby granted, free of charge, to any person obtai-   |
 %| ning a copy of this software and associated documentation files (the |
@@ -76,8 +76,8 @@ cargas = cell(5, 1);
 cargas{1} = CargaNodo('Momento nodo 2', nodos{2}, [0, 0, -120]');
 cargas{2} = CargaNodo('Carga vertical nodo 2', nodos{2}, [0, -40, 0]');
 cargas{3} = CargaVigaColumna2DPuntual('Carga elem 1 80[ton]', elementos{1}, -80, 0.5, pi/2-1.107);
-cargas{4} = CargaVigaColumna2DDistribuida('Carga dist elem 1 @15[ton]', elementos{1}, -15, 0, -15, 1, -1.107);
-cargas{5} = CargaVigaColumna2DDistribuida('Carga dist elem 2 @30[ton]', elementos{2}, -30, 0, -30, 1, 0);
+cargas{4} = CargaVigaColumna2DDistribuidaConstante('Carga dist elem 1 @15[ton]', elementos{1}, -15, -1.107);
+cargas{5} = CargaVigaColumna2DDistribuidaConstante('Carga dist elem 2 @30[ton]', elementos{2}, -30, 0);
 
 % Creamos el patron de cargas
 PatronesDeCargas = cell(1, 1);

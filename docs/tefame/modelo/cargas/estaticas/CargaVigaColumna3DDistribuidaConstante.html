@@ -2,8 +2,8 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of CargaSinusoidal</title>
-  <meta name="keywords" content="CargaSinusoidal">
+  <title>Description of CargaVigaColumna3DDistribuidaConstante</title>
+  <meta name="keywords" content="CargaVigaColumna3DDistribuidaConstante">
   <meta name="description" content="|______________________________________________________________________|">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
@@ -15,8 +15,8 @@
 </head>
 <body>
 <a name="_top"></a>
-<!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html dinamicas -->
-<h1>CargaSinusoidal
+<!-- # tefame --><!-- # modelo --><!-- ../menu.html cargas --><!-- menu.html estaticas -->
+<h1>CargaVigaColumna3DDistribuidaConstante
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
@@ -42,14 +42,9 @@
 | Repositorio: https://github.com/ppizarror/TEFAME                     |
 |______________________________________________________________________|
 |                                                                      |
-| Clase CargaSinusoidal                                                |
+| Clase CargaVigaColumna3DDistribuidaConstante                         |
 |                                                                      |
-| Este archivo contiene la definicion de la Clase CargaSinusoidal      |
-| CargaSinusoidal es una subclase de la clase CargaDinamica y          |
-| corresponde a la representacion de una carga sinusoidal en el metodo |
-| de elementos finitos o analisis matricial de estructuras.            |
-| La clase CargaSinusoidal es una clase que contiene el nodo al que se |
-| le va aplicar la carga y el valor de esta carga.                     |
+| Implementacion de CargaVigaColumna3DDistribuida con carga constante  |
 |______________________________________________________________________|
 |                                                                      |
 | MIT License                                                          |
@@ -76,40 +71,14 @@
 |______________________________________________________________________|
 
   Methods(Access=public):
-       CargaSinusoidal(etiquetaCargaSinusoidal,nodos,direccion,amplitud,w,tOscilacion,dt,tInicio,tAnalisis)
+       obj = CargaVigaColumna3DDistribuidaConstante(etiquetaCarga,elemObjeto,px,py,pz)
        aplicarCarga(obj,factorDeCarga)
        disp(obj)
-  Methods SuperClass (CargaDinamica):
-       cargaDinamicaObj = Carga(etiquetaCarga)
-       desactivarCarga(cargaDinamicaObj)
-       p = calcularCarga(cargaDinamicaObj,factor,m,r,dispinfo)
-       disp(cargaDinamicaObj)
-       y = cargaActivada(cargaDinamicaObj)
-       guardarCarga(cargaDinamicaObj,p)
-       guardarDesplazamiento(cargaDinamicaObj,u)
-       guardarVelocidad(cargaDinamicaObj,v)
-       guardarAceleracion(cargaDinamicaObj,a)
-       amortiguamientoRayleigh(cargaDinamicaObj,rayleigh)
-       usoDisipadores(cargaDinamicaObj,disipador)
-       descomposicionModal(cargaDinamicaObj,desmodal)
-       c = cargaSumaMasa(cargaDinamicaObj)
-       t = obtenerVectorTiempo(cargaDinamicaObj)
-       p = obtenerCarga(cargaDinamicaObj)
-       u = obtenerDesplazamiento(cargaDinamicaObj)
-       u = obtenerDesplazamientoTiempo(cargaDinamicaObj,gdl,tiempo)
-       v = obtenerVelocidad(cargaDinamicaObj)
-       a = obtenerAceleracion(cargaDinamicaObj)
-       r = usoAmortiguamientoRayleigh(cargaDinamicaObj)
-       dm = usoDescomposicionModal(cargaDinamicaObj)
-       disipador = usoDeDisipadores(cargaDinamicaObj)
-       masa = obtenerMasa(cargaDinamicaObj)
-       definirFactorUnidadMasa(cargaDinamicaObj,factor)
-       definirFactorCargaMasa(cargaDinamicaObj,factor)
-       nodos = obtenerNodos(cargaDinamicaObj)
-       activarCarga(cargaDinamicaObj)
-       establecerCargaCalculada(cargaDinamicaObj)
-       c = cargaCalculada(cargaDinamicaObj)
-       bloquearCargaMasa(cargaDinamicaObj)
+  Methods SuperClass (CargaEstatica):
+       masa = obtenerMasa(obj)
+       definirFactorUnidadMasa(obj,factor)
+       definirFactorCargaMasa(obj,factor)
+       nodos = obtenerNodos(obj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(obj)
        e = equals(obj,obj)
@@ -119,10 +88,10 @@
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="../../../../tefame/modelo/cargas/CargaDinamica.html" class="code" title="">CargaDinamica</a>	|______________________________________________________________________|</li><li><a href="CargaSinusoidal.html" class="code" title="">CargaSinusoidal</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li><li><a href="../../../../tefame/utils/verificarVectorDireccion.html" class="code" title="function y = verificarVectorDireccion(vec, ndg)">verificarVectorDireccion</a>	verificarVectorDireccion: Verifica que un vector direccion tenga sentido y</li></ul>
+<li><a href="CargaVigaColumna3DDistribuida.html" class="code" title="">CargaVigaColumna3DDistribuida</a>	|______________________________________________________________________|</li><li><a href="CargaVigaColumna3DDistribuidaConstante.html" class="code" title="">CargaVigaColumna3DDistribuidaConstante</a>	|______________________________________________________________________|</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../../../matlabicon.gif)">
-<li><a href="CargaSinusoidal.html" class="code" title="">CargaSinusoidal</a>	|______________________________________________________________________|</li></ul>
+<li><a href="CargaVigaColumna3DDistribuidaConstante.html" class="code" title="">CargaVigaColumna3DDistribuidaConstante</a>	|______________________________________________________________________|</li></ul>
 <!-- crossreference -->
 
 

@@ -23,7 +23,7 @@
 %|______________________________________________________________________|
 %|                                                                      |
 %| MIT License                                                          |
-%| Copyright (c) 2018-2019 Pablo Pizarro R @ppizarror.com.              |
+%| Copyright (c) 2018-2020 Pablo Pizarro R @ppizarror.com.              |
 %|                                                                      |
 %| Permission is hereby granted, free of charge, to any person obtai-   |
 %| ning a copy of this software and associated documentation files (the |
