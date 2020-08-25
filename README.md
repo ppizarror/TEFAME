@@ -29,6 +29,7 @@
 - Membrana2D (Shell 2D)
 - Viga 2D
 - Viga-columna 2D
+- Viga-columna 3D
 
 ## Tipo de disipadores
 
