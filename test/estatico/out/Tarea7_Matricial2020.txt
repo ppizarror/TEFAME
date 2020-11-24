@@ -1,0 +1,62 @@
+TEFAME - Toolbox para Elementos Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nombre modelo: Tarea 7
+Nodos:
+	Numero de nodos: 4
+	Nodo p1: 0          0          0
+	Nodo p2: 0          5.0000     0
+	Nodo p3: 3.5000     5.0000     0
+	Nodo p4: 3.5000     5.0000     -4.0000
+
+Elementos:
+	Numero de elementos: 3
+	Viga-Columna 3D E1:
+		Largo:		5
+		Inercia y:	0.0002
+		Inercia z:	0.0004
+		Eo:			22500000
+		Masa:		0
+	Viga-Columna 3D E2:
+		Largo:		3.5
+		Inercia y:	0.0002
+		Inercia z:	0.0004
+		Eo:			22500000
+		Masa:		0
+	Viga-Columna 3D E3:
+		Largo:		4
+		Inercia y:	0.0002
+		Inercia z:	0.0004
+		Eo:			22500000
+		Masa:		0
+
+-------------------------------------------------------------------------------
+Resultados del analisis estatico
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo p1: 0          0          0          0          0          0
+	Nodo p2: 0.0014     -0.0035    0.0037     0.0011     0.0010     -0.0043
+	Nodo p3: 0.0001     -0.0203    -0.00007   0.0076     0.0012     -0.0037
+	Nodo p4: 0          0          0          0          0          0
+
+Reacciones:
+	Nodo p1: 8.0246     15.9035    -0.3745    -1.9487    -0.0081    -12.3732
+	Nodo p2: 0          0          0          0          0          0
+	Nodo p3: 0          0          0          0          0          0
+	Nodo p4: 11.9754    8.5965     0.3745     -34.3101   9.2206     0.0375
+
+Esfuerzos Elementos:
+	Viga-Columna 3D E1:
+		Axial:		(8.0246     15.9035    -0.3745   ) (-8.0246    -15.9035   0.3745    )
+		Momento:	(-1.9487    -0.0081    -12.3732  ) (0.0759     0.0081     -27.7497  )
+	Viga-Columna 3D E2:
+		Axial:		(8.0246     15.9035    -0.3745   ) (-8.0246    8.5965     0.3745    )
+		Momento:	(-0.0759    -0.0081    12.7497   ) (0.0759     1.3190     0.0375    )
+	Viga-Columna 3D E3:
+		Axial:		(8.0246     -8.5965    -0.3745   ) (11.9754    8.5965     0.3745    )
+		Momento:	(-0.0759    -1.3190    -0.0375   ) (-34.3101   9.2206     0.0375    )

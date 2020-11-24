@@ -5,7 +5,7 @@ TEFAME - Toolbox para Elementos Finitos y Analisis
 Propiedades de entrada modelo
 -------------------------------------------------------------------------------
 
-Nombre modelo: Membrana 3
+Nombre modelo: Membrana2D 3
 Nodos:
 	Numero de nodos: 24
 	Nodo N1: 0          0

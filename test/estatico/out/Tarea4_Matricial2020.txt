@@ -1,0 +1,95 @@
+TEFAME - Toolbox para Elementos Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nombre modelo: Tarea 4
+Nodos:
+	Numero de nodos: 6
+	Nodo N1: 0          0
+	Nodo N2: 300.0000   0
+	Nodo N3: 300.0000   450.0000
+	Nodo N4: 600.0000   450.0000
+	Nodo N5: 600.0000   0
+	Nodo N6: 900.0000   0
+
+Elementos:
+	Numero de elementos: 9
+	Biela2D E1:
+		Largo:	540.8327
+		Area:	32
+		Eo:		2100
+		Masa:	0
+	Biela2D E2:
+		Largo:	300
+		Area:	27
+		Eo:		2100
+		Masa:	0
+	Biela2D E3:
+		Largo:	450
+		Area:	32
+		Eo:		2100
+		Masa:	0
+	Biela2D E4:
+		Largo:	300
+		Area:	27
+		Eo:		2100
+		Masa:	0
+	Biela2D E5:
+		Largo:	540.8327
+		Area:	32
+		Eo:		2100
+		Masa:	0
+	Biela2D E6:
+		Largo:	300
+		Area:	27
+		Eo:		2100
+		Masa:	0
+	Biela2D E7:
+		Largo:	450
+		Area:	32
+		Eo:		2100
+		Masa:	0
+	Biela2D E8:
+		Largo:	300
+		Area:	27
+		Eo:		2100
+		Masa:	0
+	Biela2D E9:
+		Largo:	540.8327
+		Area:	32
+		Eo:		2100
+		Masa:	0
+
+-------------------------------------------------------------------------------
+Resultados del analisis estatico
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo N1: 0          0
+	Nodo N2: 0.0630     -0.4657
+	Nodo N3: 0.2409     -0.2983
+	Nodo N4: 0.2243     0
+	Nodo N5: 0.1259     -0.2220
+	Nodo N6: 0.1425     0
+
+Reacciones:
+	Nodo N1: -4.0000    11.8466
+	Nodo N2: 0          0
+	Nodo N3: 0          0
+	Nodo N4: 0          28.4601
+	Nodo N5: 0          0
+	Nodo N6: 0          4.6933
+
+Esfuerzos Elementos:
+	Biela 2D E1:	14.2379        COMPRESION
+	Biela 2D E2:	-11.8978       TRACCION
+	Biela 2D E3:	-25            TRACCION
+	Biela 2D E4:	-11.8978       TRACCION
+	Biela 2D E5:	15.8084        COMPRESION
+	Biela 2D E6:	3.1288         COMPRESION
+	Biela 2D E7:	-33.1534       TRACCION
+	Biela 2D E8:	-3.1288        TRACCION
+	Biela 2D E9:	5.6406         COMPRESION

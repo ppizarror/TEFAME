@@ -1,19 +1,19 @@
-TEFAME - Toolbox para Elemento Finitos y Analisis
+TEFAME - Toolbox para Elementos Finitos y Analisis
          Matricial de Estructuras en MATLAB
 
 -------------------------------------------------------------------------------
 Propiedades de entrada modelo
 -------------------------------------------------------------------------------
 
-Nombre modelo: Membrana carga distribuida horizontal
+Nombre modelo: Membrana2D carga distribuida horizontal
 Nodos:
 	Numero de nodos: 6
-	Nodo N1: 0          0         
-	Nodo N2: 0          2.0000    
-	Nodo N3: 2.0000     0         
-	Nodo N4: 2.0000     2.0000    
-	Nodo N5: 4.0000     0         
-	Nodo N6: 4.0000     2.0000    
+	Nodo N1: 0          0
+	Nodo N2: 0          2.0000
+	Nodo N3: 2.0000     0
+	Nodo N4: 2.0000     2.0000
+	Nodo N5: 4.0000     0
+	Nodo N6: 4.0000     2.0000
 
 Elementos:
 	Numero de elementos: 2
@@ -23,6 +23,7 @@ Elementos:
 		Espesor (t):	0.25
 		E:				2000
 		v:				0.2
+		Masa:			0
 		Nodos:			N1 N3 N4 N2
 	Membrana MEM2:
 		Ancho (2b):		2
@@ -30,27 +31,28 @@ Elementos:
 		Espesor (t):	0.25
 		E:				2000
 		v:				0.2
+		Masa:			0
 		Nodos:			N3 N5 N6 N4
 
 -------------------------------------------------------------------------------
-Resultados del analisis
+Resultados del analisis estatico
 -------------------------------------------------------------------------------
 
 Desplazamientos nodos:
-	Nodo N1: 0          0         
-	Nodo N2: 0.5475     0.1130    
-	Nodo N3: 0.1346     -0.0942   
-	Nodo N4: 0.2057     -0.0754   
-	Nodo N5: 0          0         
-	Nodo N6: 0.1707     -0.0754   
+	Nodo N1: 0          0
+	Nodo N2: 0.5475     0.1130
+	Nodo N3: 0.1346     -0.0942
+	Nodo N4: 0.2057     -0.0754
+	Nodo N5: 0          0
+	Nodo N6: 0.1707     -0.0754
 
 Reacciones:
-	Nodo N1: -52.8972   -35.0000  
-	Nodo N2: 0          0         
-	Nodo N3: 0          0         
-	Nodo N4: 0          0         
-	Nodo N5: -47.1028   35.0000   
-	Nodo N6: 0          0         
+	Nodo N1: -52.8972   -35.0000
+	Nodo N2: 0          0
+	Nodo N3: 0          0
+	Nodo N4: 0          0
+	Nodo N5: -47.1028   35.0000
+	Nodo N6: 0          0
 
 Esfuerzos Elementos:
 	Membrana MEM1:

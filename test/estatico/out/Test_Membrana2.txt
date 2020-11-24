@@ -1,37 +1,37 @@
-TEFAME - Toolbox para Elemento Finitos y Analisis
+TEFAME - Toolbox para Elementos Finitos y Analisis
          Matricial de Estructuras en MATLAB
 
 -------------------------------------------------------------------------------
 Propiedades de entrada modelo
 -------------------------------------------------------------------------------
 
-Nombre modelo: Membrana 2
+Nombre modelo: Membrana2D 2
 Nodos:
 	Numero de nodos: 24
-	Nodo N1: 0          0         
-	Nodo N2: 100.0000   0         
-	Nodo N3: 200.0000   0         
-	Nodo N4: 300.0000   0         
-	Nodo N5: 400.0000   0         
-	Nodo N6: 500.0000   0         
-	Nodo N7: 600.0000   0         
-	Nodo N8: 700.0000   0         
-	Nodo N9: 800.0000   0         
-	Nodo N10: 900.0000   0         
-	Nodo N11: 1000.0000  0         
-	Nodo N12: 1100.0000  0         
-	Nodo N13: 0          100.0000  
-	Nodo N14: 100.0000   100.0000  
-	Nodo N15: 200.0000   100.0000  
-	Nodo N16: 300.0000   100.0000  
-	Nodo N17: 400.0000   100.0000  
-	Nodo N18: 500.0000   100.0000  
-	Nodo N19: 600.0000   100.0000  
-	Nodo N20: 700.0000   100.0000  
-	Nodo N21: 800.0000   100.0000  
-	Nodo N22: 900.0000   100.0000  
-	Nodo N23: 1000.0000  100.0000  
-	Nodo N24: 1100.0000  100.0000  
+	Nodo N1: 0          0
+	Nodo N2: 100.0000   0
+	Nodo N3: 200.0000   0
+	Nodo N4: 300.0000   0
+	Nodo N5: 400.0000   0
+	Nodo N6: 500.0000   0
+	Nodo N7: 600.0000   0
+	Nodo N8: 700.0000   0
+	Nodo N9: 800.0000   0
+	Nodo N10: 900.0000   0
+	Nodo N11: 1000.0000  0
+	Nodo N12: 1100.0000  0
+	Nodo N13: 0          100.0000
+	Nodo N14: 100.0000   100.0000
+	Nodo N15: 200.0000   100.0000
+	Nodo N16: 300.0000   100.0000
+	Nodo N17: 400.0000   100.0000
+	Nodo N18: 500.0000   100.0000
+	Nodo N19: 600.0000   100.0000
+	Nodo N20: 700.0000   100.0000
+	Nodo N21: 800.0000   100.0000
+	Nodo N22: 900.0000   100.0000
+	Nodo N23: 1000.0000  100.0000
+	Nodo N24: 1100.0000  100.0000
 
 Elementos:
 	Numero de elementos: 11
@@ -41,6 +41,7 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N1 N2 N14 N13
 	Membrana MEM2:
 		Ancho (2b):		100
@@ -48,6 +49,7 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N2 N3 N15 N14
 	Membrana MEM3:
 		Ancho (2b):		100
@@ -55,6 +57,7 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N3 N4 N16 N15
 	Membrana MEM4:
 		Ancho (2b):		100
@@ -62,6 +65,7 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N4 N5 N17 N16
 	Membrana MEM5:
 		Ancho (2b):		100
@@ -69,6 +73,7 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N5 N6 N18 N17
 	Membrana MEM6:
 		Ancho (2b):		100
@@ -76,6 +81,7 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N6 N7 N19 N18
 	Membrana MEM7:
 		Ancho (2b):		100
@@ -83,6 +89,7 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N7 N8 N20 N19
 	Membrana MEM8:
 		Ancho (2b):		100
@@ -90,6 +97,7 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N8 N9 N21 N20
 	Membrana MEM9:
 		Ancho (2b):		100
@@ -97,6 +105,7 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N9 N10 N22 N21
 	Membrana MEM10:
 		Ancho (2b):		100
@@ -104,6 +113,7 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N10 N11 N23 N22
 	Membrana MEM11:
 		Ancho (2b):		100
@@ -111,63 +121,64 @@ Elementos:
 		Espesor (t):	15
 		E:				300000
 		v:				0.15
+		Masa:			0
 		Nodos:			N11 N12 N24 N23
 
 -------------------------------------------------------------------------------
-Resultados del analisis
+Resultados del analisis estatico
 -------------------------------------------------------------------------------
 
 Desplazamientos nodos:
-	Nodo N1: 0          0         
-	Nodo N2: -0.0677    -0.4013   
-	Nodo N3: -0.0955    -0.8221   
-	Nodo N4: -0.0910    -1.2033   
-	Nodo N5: -0.0638    -1.4877   
-	Nodo N6: -0.0228    -1.6391   
-	Nodo N7: 0.0228     -1.6391   
-	Nodo N8: 0.0638     -1.4877   
-	Nodo N9: 0.0910     -1.2033   
-	Nodo N10: 0.0955     -0.8221   
-	Nodo N11: 0.0677     -0.4013   
-	Nodo N12: 0          0         
-	Nodo N13: 0.3265     -0.0141   
-	Nodo N14: 0.3367     -0.3948   
-	Nodo N15: 0.3044     -0.8192   
-	Nodo N16: 0.2403     -1.1998   
-	Nodo N17: 0.1533     -1.4844   
-	Nodo N18: 0.0526     -1.6357   
-	Nodo N19: -0.0526    -1.6357   
-	Nodo N20: -0.1533    -1.4844   
-	Nodo N21: -0.2403    -1.1998   
-	Nodo N22: -0.3044    -0.8192   
-	Nodo N23: -0.3367    -0.3948   
-	Nodo N24: -0.3265    -0.0141   
+	Nodo N1: 0          0
+	Nodo N2: -0.0677    -0.4013
+	Nodo N3: -0.0955    -0.8221
+	Nodo N4: -0.0910    -1.2033
+	Nodo N5: -0.0638    -1.4877
+	Nodo N6: -0.0228    -1.6391
+	Nodo N7: 0.0228     -1.6391
+	Nodo N8: 0.0638     -1.4877
+	Nodo N9: 0.0910     -1.2033
+	Nodo N10: 0.0955     -0.8221
+	Nodo N11: 0.0677     -0.4013
+	Nodo N12: 0          0
+	Nodo N13: 0.3265     -0.0141
+	Nodo N14: 0.3367     -0.3948
+	Nodo N15: 0.3044     -0.8192
+	Nodo N16: 0.2403     -1.1998
+	Nodo N17: 0.1533     -1.4844
+	Nodo N18: 0.0526     -1.6357
+	Nodo N19: -0.0526    -1.6357
+	Nodo N20: -0.1533    -1.4844
+	Nodo N21: -0.2403    -1.1998
+	Nodo N22: -0.3044    -0.8192
+	Nodo N23: -0.3367    -0.3948
+	Nodo N24: -0.3265    -0.0141
 
 Reacciones:
 	Nodo N1: 135086.0585 55000.0000
-	Nodo N2: 0          0         
-	Nodo N3: 0.00000    -0.00000  
-	Nodo N4: 0          0.00000   
-	Nodo N5: -0.00000   0.00000   
-	Nodo N6: 0.00000    -0.00000  
-	Nodo N7: 0.00000    0.00000   
-	Nodo N8: 0.00000    -0.00000  
-	Nodo N9: 0          0.00000   
-	Nodo N10: -0.00000   0.00000   
-	Nodo N11: 0          -0.00000  
+	Nodo N2: 0          0
+	Nodo N3: 0.00000    -0.00000
+	Nodo N4: 0          0.00000
+	Nodo N5: -0.00000   0.00000
+	Nodo N6: 0.00000    -0.00000
+	Nodo N7: 0.00000    0.00000
+	Nodo N8: 0.00000    -0.00000
+	Nodo N9: 0          0.00000
+	Nodo N10: -0.00000   0.00000
+	Nodo N11: 0          -0.00000
 	Nodo N12: -135086.0585 55000.0000
-	Nodo N13: 0          0         
-	Nodo N14: 0.00000    -0.00000  
-	Nodo N15: -0.00000   -0.00000  
-	Nodo N16: 0          -0.00000  
-	Nodo N17: 0.00000    0.00000   
-	Nodo N18: 0.00000    0.00000   
-	Nodo N19: -0.00000   0.00000   
-	Nodo N20: -0.00000   0.00000   
-	Nodo N21: 0.00000    0.00000   
-	Nodo N22: -0.00000   0.00000   
-	Nodo N23: 0.00000    0.00000   
-	Nodo N24: 0          -0.00000  
+	Nodo N13: 0          0
+	Nodo N14: 0.00000    -0.00000
+	Nodo N15: -0.00000   -0.00000
+	Nodo N16: 0          -0.00000
+	Nodo N17: 0.00000    0.00000
+	Nodo N18: 0.00000    0.00000
+	Nodo N19: -0.00000   0.00000
+	Nodo N20: -0.00000   0.00000
+	Nodo N21: 0.00000    0.00000
+	Nodo N22: -0.00000   0.00000
+	Nodo N23: 0.00000    0.00000
+	Nodo N24: 0          -0.00000
 
 Esfuerzos Elementos:
 	Membrana MEM1:

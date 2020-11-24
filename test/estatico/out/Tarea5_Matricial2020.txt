@@ -1,0 +1,88 @@
+TEFAME - Toolbox para Elementos Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nombre modelo: Tarea 5
+Nodos:
+	Numero de nodos: 5
+	Nodo N1: 0          0
+	Nodo N2: 0          4000.0000
+	Nodo N3: 4500.0000  5500.0000
+	Nodo N4: 9000.0000  4000.0000
+	Nodo N5: 9000.0000  0
+
+Elementos:
+	Numero de elementos: 5
+	Viga-Columna 2D E1:
+		Largo:		4000
+		Inercia:	145000000
+		Eo:			210
+		EI:			30450000000
+		Masa:		0
+	Viga-Columna 2D E2:
+		Largo:		4743.4165
+		Inercia:	280000000
+		Eo:			210
+		EI:			58800000000
+		Masa:		0
+	Viga-Columna 2D E3:
+		Largo:		9000
+		Inercia:	280000000
+		Eo:			210
+		EI:			58800000000
+		Masa:		0
+	Viga-Columna 2D E4:
+		Largo:		4743.4165
+		Inercia:	280000000
+		Eo:			210
+		EI:			58800000000
+		Masa:		0
+	Viga-Columna 2D E5:
+		Largo:		4000
+		Inercia:	145000000
+		Eo:			210
+		EI:			30450000000
+		Masa:		0
+
+-------------------------------------------------------------------------------
+Resultados del analisis estatico
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo N1: 0          0          0
+	Nodo N2: 33.9354    -0.2074    -0.0060
+	Nodo N3: 33.9042    -0.5184    0.0031
+	Nodo N4: 33.7211    -0.2280    -0.0026
+	Nodo N5: 0          0          0
+
+Reacciones:
+	Nodo N1: -124.8996  95.2797    295699.3772
+	Nodo N2: 0          0          -0.00000
+	Nodo N3: 0          0          0.00000
+	Nodo N4: 0          0          0
+	Nodo N5: -163.1004  104.7203   345818.0318
+
+Esfuerzos Elementos:
+	Viga-Columna 2D E1:
+		Axial:		-124.8996  124.8996  
+		Corte:		95.2797    -95.2797  
+		Momento:	295699.3772 203898.9750
+	Viga-Columna 2D E2:
+		Axial:		41.3422    -80.3422  
+		Corte:		32.7462    84.2538   
+		Momento:	-168298.4884 -38857.1873
+	Viga-Columna 2D E3:
+		Axial:		43.7582    -43.7582  
+		Corte:		62.5336    137.4664  
+		Momento:	-35600.4866 -301597.4946
+	Viga-Columna 2D E4:
+		Axial:		80.3422    -119.3422 
+		Corte:		-84.2538   -32.7462  
+		Momento:	38857.1873 -4986.1214
+	Viga-Columna 2D E5:
+		Axial:		163.1004   -163.1004 
+		Corte:		-104.7203  104.7203  
+		Momento:	306583.6160 345818.0318
