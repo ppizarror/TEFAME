@@ -313,7 +313,7 @@ classdef Nodo < ComponenteModelo
             obj.reacciones = zeros(obj.nGDL, 1);
             obj.cargas = zeros(obj.nGDL, 1);
             
-        end % reiniciar function
+        end % inicializar function
         
         function guardarPropiedades(obj, archivoSalidaHandle)
             % guardarPropiedades: es un metodo de la clase Nodo que se usa para
@@ -410,6 +410,8 @@ classdef Nodo < ComponenteModelo
             fprintf('\tID condensados de los grados de libertad: %s\n', [GdlID{:}]);
             desplazamientoNodo = arrayNum2str(obj.despl, nGDLNodo);
             fprintf('\tDesplazamientos: %s\n', [desplazamientoNodo{:}]);
+            cargasNodo = arrayNum2str(obj.cargas, nGDLNodo);
+            fprintf('\tCargas: %s\n', [cargasNodo{:}]);
             reaccionesNodo = arrayNum2str(obj.reacciones, nGDLNodo);
             fprintf('\tReacciones: %s\n', [reaccionesNodo{:}]);
             
