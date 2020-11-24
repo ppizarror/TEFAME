@@ -96,7 +96,7 @@ classdef Disipador < ComponenteModelo
             % inicializar las diferentes componentes que sean necesario en los
             % disipadores para realizar posteriormente el analisis
             %
-            % Inicializa los diferentes componetes del Disipador (obj),
+            % Inicializa los diferentes componentes del Disipador (obj),
             % para poder preparar estos para realizar el analisis
             
         end % inicializar function

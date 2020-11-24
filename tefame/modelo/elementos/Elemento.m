@@ -53,7 +53,7 @@
 %       obj = Elemento(etiquetaElemento)
 %       fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
 %       fr_local = obtenerFuerzaResistenteCoordLocal(obj)
-%       gdlID = obtenerGDL(obj)
+%       gdlID = obtenerGDLID(obj)
 %       k_global = obtenerMatrizRigidezCoordGlobal(obj)
 %       k_local = obtenerMatrizRigidezCoordLocal(obj)
 %       nodosElemento = obtenerNodos(obj)
@@ -135,7 +135,7 @@ classdef Elemento < ComponenteModelo
             
         end % obtenerNumeroGDL function
         
-        function gdlID = obtenerGDL(obj) %#ok<MANU>
+        function gdlID = obtenerGDLID(obj) %#ok<MANU>
             % obtenerGDL: es un metodo de la clase Elemento que se usa para
             % obtener un arreglo con los ID de los grados de libertad que estan
             % asociados al Elemento
@@ -145,7 +145,7 @@ classdef Elemento < ComponenteModelo
             
             gdlID = [];
             
-        end % obtenerGDL function
+        end % obtenerGDLID function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(obj) %#ok<MANU>
             % obtenerMatrizRigidezCoordGlobal: es un metodo de la clase Elemento
@@ -203,7 +203,7 @@ classdef Elemento < ComponenteModelo
             % inicializar las diferentes componentes que sean necesario en los
             % elementos para realizar posteriormente el analisis
             %
-            % Inicializa los diferentes componetes del Elemento (obj),
+            % Inicializa los diferentes componentes del Elemento (obj),
             % para poder preparar estos para realizar el analisis
             
         end % inicializar function
@@ -233,7 +233,7 @@ classdef Elemento < ComponenteModelo
             % actualizar las diferentes componentes que sean necesario en los
             % elementos posterior a realizar el analisis
             %
-            % Actualizar los diferentes componetes del Elemento (obj),
+            % Actualizar los diferentes componentes del Elemento (obj),
             % despues de realizar el analisis
             
         end % actualizar function
