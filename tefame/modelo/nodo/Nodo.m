@@ -122,12 +122,7 @@ classdef Nodo < ComponenteModelo
             obj.gdlID = -ones(nGDLNodo, 1);
             obj.gdlIDCondensado = -ones(nGDLNodo, 1);
             
-            % Definimos en zero todos los componentes guardados en el Nodo
-            obj.despl = zeros(obj.nGDL, 1);
-            obj.reacciones = zeros(obj.nGDL, 1);
-            obj.cargas = zeros(obj.nGDL, 1);
-            
-            % Crea el vector de eleentos
+            % Crea el vector de elementos
             obj.elementos = {};
             
         end % Nodo constructor
@@ -184,7 +179,7 @@ classdef Nodo < ComponenteModelo
             % el Nodo despues de aplicar todos los patrones de carga
             %
             % Entrega el vector con las cargas resultantes (cargasResultantesNodo)
-            % que son finalmente aplicads sobre cada Nodo (obj)
+            % que son finalmente aplicadas sobre cada Nodo (obj)
             
             cargasResultantesNodo = obj.cargas;
             
@@ -267,11 +262,12 @@ classdef Nodo < ComponenteModelo
             % un vector de fuerzas al nodo al aplicar el patron de cargas
             % Agrega al vector de fuerzas del Nodo (obj), el vector de fuerzas
             % entregado (cargaNodo)
+            
             % Se procede a sumar la carga entregada al vector de cargas del nodo
-            %             obj.cargas = obj.cargas + cargaNodo;
+            obj.cargas = obj.cargas + cargaNodo;
+            
             % Se resta la carga entregada al vector de reacciones para
             % obtener las reacciones posterior al analisis
-            
             obj.reacciones = obj.reacciones - cargaNodo;
             
         end % agregarCarga function
@@ -307,7 +303,7 @@ classdef Nodo < ComponenteModelo
         
         function inicializar(obj)
             % inicializar: es un metodo de la clase Nodo que se usa para inicializar
-            % las diferentes vectores que contienne los desplazamientos, cargas
+            % las diferentes vectores que contiene los desplazamientos, cargas
             % y reacciones en el nodo
             %
             % Inicializa los diferentes vectores del Nodo que estan guardados en

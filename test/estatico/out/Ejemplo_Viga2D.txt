@@ -1,0 +1,38 @@
+TEFAME - Toolbox para Elementos Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nombre modelo: Viga 2D
+Nodos:
+	Numero de nodos: 2
+	Nodo N1: 0          0
+	Nodo N2: 10.0000    0
+
+Elementos:
+	Numero de elementos: 1
+	Viga2D V1:
+		Largo:		10
+		Inercia:	0.0004
+		Eo:			200000000
+		EI:			80000
+		Masa:		0
+
+-------------------------------------------------------------------------------
+Resultados del analisis estatico
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo N1: 0          0          -0.0008
+	Nodo N2: 0          0          0.0008
+
+Reacciones:
+	Nodo N1: 0          5.0000     0
+	Nodo N2: 0          5.0000     0
+
+Esfuerzos Elementos:
+	Viga2D V1:
+		Momento:	0.0000     0.0000    
+		Corte:		5.0000     5.0000    

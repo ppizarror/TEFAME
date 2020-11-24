@@ -1,0 +1,53 @@
+TEFAME - Toolbox para Elementos Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nombre modelo: Enrejado 3D
+Nodos:
+	Numero de nodos: 4
+	Nodo N1: -200.0000  0          0
+	Nodo N2: 200.0000   -200.0000  0
+	Nodo N3: 0          200.0000   0
+	Nodo N4: 0          0          300.0000
+
+Elementos:
+	Numero de elementos: 3
+	Biela3D E1:
+		Largo:	360.5551
+		Area:	10
+		Eo:		1000
+		Masa:	0
+	Biela3D E2:
+		Largo:	412.3106
+		Area:	10
+		Eo:		1000
+		Masa:	0
+	Biela3D E3:
+		Largo:	360.5551
+		Area:	10
+		Eo:		1000
+		Masa:	0
+
+-------------------------------------------------------------------------------
+Resultados del analisis estatico
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo N1: 0          0          0
+	Nodo N2: 0          0          0
+	Nodo N3: 0          0          0
+	Nodo N4: 4.3575     1.5015     -0.8218
+
+Reacciones:
+	Nodo N1: -26.6667   0          -40.0000
+	Nodo N2: -23.3333   23.3333    35.0000
+	Nodo N3: 0          -23.3333   35.0000
+	Nodo N4: 0          0          0
+
+Esfuerzos Elementos:
+	Biela 3D E1:	-48.074        TRACCION
+	Biela 3D E2:	48.1029        COMPRESION
+	Biela 3D E3:	42.0648        COMPRESION

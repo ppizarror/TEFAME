@@ -1,0 +1,95 @@
+TEFAME - Toolbox para Elementos Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nombre modelo: Enrejado 2D
+Nodos:
+	Numero de nodos: 6
+	Nodo A: 0          0
+	Nodo B: 0          1.0000
+	Nodo C: 1.0000     0
+	Nodo D: 1.0000     1.0000
+	Nodo E: 2.0000     0
+	Nodo F: 2.0000     1.0000
+
+Elementos:
+	Numero de elementos: 9
+	Biela2D AB:
+		Largo:	1
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D AC:
+		Largo:	1
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D BC:
+		Largo:	1.4142
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D BD:
+		Largo:	1
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D DC:
+		Largo:	1
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D CE:
+		Largo:	1
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D CF:
+		Largo:	1.4142
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D DF:
+		Largo:	1
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D EF:
+		Largo:	1
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+
+-------------------------------------------------------------------------------
+Resultados del analisis estatico
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo A: 0          0
+	Nodo B: 0.00001    -0.00003
+	Nodo C: 0          -0.00008
+	Nodo D: 0          -0.0001
+	Nodo E: 0          0
+	Nodo F: -0.00001   -0.00003
+
+Reacciones:
+	Nodo A: 0          1.5000
+	Nodo B: 0          0
+	Nodo C: 0          0
+	Nodo D: 0          0
+	Nodo E: 0          1.5000
+	Nodo F: 0          0
+
+Esfuerzos Elementos:
+	Biela 2D AB:	1.5            COMPRESION
+	Biela 2D AC:	0              --
+	Biela 2D BC:	-0.70711       TRACCION
+	Biela 2D BD:	0.5            COMPRESION
+	Biela 2D DC:	1              COMPRESION
+	Biela 2D CE:	0              --
+	Biela 2D CF:	-0.70711       TRACCION
+	Biela 2D DF:	0.5            COMPRESION
+	Biela 2D EF:	1.5            COMPRESION

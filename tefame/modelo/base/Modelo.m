@@ -382,7 +382,7 @@ classdef Modelo < handle
             % analisis al resolver el sistema de ecuaciones, a las componentes
             % guardadas en el Modelo (obj)
             
-            % Se definen e informan los desplazmientos a cada nodo
+            % Se definen e informan los desplazamientos a cada nodo
             numeroNodos = length(obj.nodos);
             for i = 1:numeroNodos
                 

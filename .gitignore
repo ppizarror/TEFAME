@@ -22,8 +22,8 @@ dev/
 *.OUT
 
 # Salidas
-test/**/out/*
-test/**/*.gif
+test/**/**.gif
+test/**/**.png
 test/personal/*
 
 # Codigo opensees

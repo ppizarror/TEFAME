@@ -261,14 +261,14 @@ classdef AnalisisEstatico < Analisis
                 
                 ngdlid = nodoObjetos{i}.obtenerNumeroGDL(); % Numero grados de libertad del nodo
                 gdl = nodoObjetos{i}.obtenerGDLID(); % Grados de libertad del nodo
-                reacc = nodoObjetos{i}.obtenerReacciones(); % Reacciones del nodo
+                cargas = nodoObjetos{i}.obtenerCargasResultantes(); % Cargas del nodo
                 
                 % Recorre cada grado de libertad, si no es cero entonces
                 % hay una carga aplicada en ese grado de libertad para
                 % lograr el equilibrio
                 for j = 1:ngdlid
                     if (gdl(j) ~= 0)
-                        obj.F(gdl(j)) = -reacc(j);
+                        obj.F(gdl(j)) = cargas(j);
                     end
                 end % for j
                 

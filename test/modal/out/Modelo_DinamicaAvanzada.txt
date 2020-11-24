@@ -1,0 +1,4252 @@
+TEFAME - Toolbox para Elementos Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nombre modelo: Modelo Dinamica Avanzada
+Nodos:
+	Numero de nodos: 144
+	Nodo N01: 0          0
+	Nodo N02: 8.0000     0
+	Nodo N03: 16.0000    0
+	Nodo N04: 24.0000    0
+	Nodo N05: 32.0000    0
+	Nodo N06: 40.0000    0
+	Nodo N07: 48.0000    0
+	Nodo N08: 56.0000    0
+	Nodo N09: 64.0000    0
+	Nodo N010: 72.0000    0
+	Nodo N11: 0          3.0000
+	Nodo N12: 8.0000     3.0000
+	Nodo N13: 16.0000    3.0000
+	Nodo N14: 24.0000    3.0000
+	Nodo N15: 32.0000    3.0000
+	Nodo N16: 40.0000    3.0000
+	Nodo N17: 48.0000    3.0000
+	Nodo N18: 56.0000    3.0000
+	Nodo N19: 64.0000    3.0000
+	Nodo N110: 72.0000    3.0000
+	Nodo N21: 0          5.5000
+	Nodo N22: 8.0000     5.5000
+	Nodo N23: 16.0000    5.5000
+	Nodo N24: 24.0000    5.5000
+	Nodo N25: 32.0000    5.5000
+	Nodo N26: 40.0000    5.5000
+	Nodo N27: 48.0000    5.5000
+	Nodo N28: 56.0000    5.5000
+	Nodo N29: 64.0000    5.5000
+	Nodo N210: 72.0000    5.5000
+	Nodo N31: 0          8.0000
+	Nodo N32: 8.0000     8.0000
+	Nodo N33: 16.0000    8.0000
+	Nodo N34: 24.0000    8.0000
+	Nodo N35: 32.0000    8.0000
+	Nodo N36: 40.0000    8.0000
+	Nodo N37: 48.0000    8.0000
+	Nodo N38: 56.0000    8.0000
+	Nodo N39: 64.0000    8.0000
+	Nodo N310: 72.0000    8.0000
+	Nodo N41: 8.0000     10.5000
+	Nodo N42: 16.0000    10.5000
+	Nodo N43: 24.0000    10.5000
+	Nodo N44: 32.0000    10.5000
+	Nodo N45: 40.0000    10.5000
+	Nodo N46: 48.0000    10.5000
+	Nodo N47: 56.0000    10.5000
+	Nodo N48: 64.0000    10.5000
+	Nodo N51: 8.0000     13.0000
+	Nodo N52: 16.0000    13.0000
+	Nodo N53: 24.0000    13.0000
+	Nodo N54: 32.0000    13.0000
+	Nodo N55: 40.0000    13.0000
+	Nodo N56: 48.0000    13.0000
+	Nodo N57: 56.0000    13.0000
+	Nodo N58: 64.0000    13.0000
+	Nodo N61: 16.0000    15.5000
+	Nodo N62: 24.0000    15.5000
+	Nodo N63: 32.0000    15.5000
+	Nodo N64: 40.0000    15.5000
+	Nodo N65: 48.0000    15.5000
+	Nodo N66: 56.0000    15.5000
+	Nodo N71: 16.0000    18.0000
+	Nodo N72: 24.0000    18.0000
+	Nodo N73: 32.0000    18.0000
+	Nodo N74: 40.0000    18.0000
+	Nodo N75: 48.0000    18.0000
+	Nodo N76: 56.0000    18.0000
+	Nodo N81: 24.0000    20.5000
+	Nodo N82: 32.0000    20.5000
+	Nodo N83: 40.0000    20.5000
+	Nodo N84: 48.0000    20.5000
+	Nodo N91: 24.0000    23.0000
+	Nodo N92: 32.0000    23.0000
+	Nodo N93: 40.0000    23.0000
+	Nodo N94: 48.0000    23.0000
+	Nodo N101: 24.0000    25.5000
+	Nodo N102: 32.0000    25.5000
+	Nodo N103: 40.0000    25.5000
+	Nodo N104: 48.0000    25.5000
+	Nodo N111: 24.0000    28.0000
+	Nodo N112: 32.0000    28.0000
+	Nodo N113: 40.0000    28.0000
+	Nodo N114: 48.0000    28.0000
+	Nodo N121: 24.0000    30.5000
+	Nodo N122: 32.0000    30.5000
+	Nodo N123: 40.0000    30.5000
+	Nodo N124: 48.0000    30.5000
+	Nodo N131: 24.0000    33.0000
+	Nodo N132: 32.0000    33.0000
+	Nodo N133: 40.0000    33.0000
+	Nodo N134: 48.0000    33.0000
+	Nodo N141: 24.0000    35.5000
+	Nodo N142: 32.0000    35.5000
+	Nodo N143: 40.0000    35.5000
+	Nodo N144: 48.0000    35.5000
+	Nodo N151: 24.0000    38.0000
+	Nodo N152: 32.0000    38.0000
+	Nodo N153: 40.0000    38.0000
+	Nodo N154: 48.0000    38.0000
+	Nodo N161: 24.0000    40.5000
+	Nodo N162: 32.0000    40.5000
+	Nodo N163: 40.0000    40.5000
+	Nodo N164: 48.0000    40.5000
+	Nodo N171: 24.0000    43.0000
+	Nodo N172: 32.0000    43.0000
+	Nodo N173: 40.0000    43.0000
+	Nodo N174: 48.0000    43.0000
+	Nodo N181: 24.0000    45.5000
+	Nodo N182: 32.0000    45.5000
+	Nodo N183: 40.0000    45.5000
+	Nodo N184: 48.0000    45.5000
+	Nodo N191: 24.0000    48.0000
+	Nodo N192: 32.0000    48.0000
+	Nodo N193: 40.0000    48.0000
+	Nodo N194: 48.0000    48.0000
+	Nodo N201: 24.0000    50.5000
+	Nodo N202: 32.0000    50.5000
+	Nodo N203: 40.0000    50.5000
+	Nodo N204: 48.0000    50.5000
+	Nodo N211: 24.0000    53.0000
+	Nodo N212: 32.0000    53.0000
+	Nodo N213: 40.0000    53.0000
+	Nodo N214: 48.0000    53.0000
+	Nodo N221: 24.0000    55.5000
+	Nodo N222: 32.0000    55.5000
+	Nodo N223: 40.0000    55.5000
+	Nodo N224: 48.0000    55.5000
+	Nodo N231: 24.0000    58.0000
+	Nodo N232: 32.0000    58.0000
+	Nodo N233: 40.0000    58.0000
+	Nodo N234: 48.0000    58.0000
+	Nodo N241: 24.0000    60.5000
+	Nodo N242: 32.0000    60.5000
+	Nodo N243: 40.0000    60.5000
+	Nodo N244: 48.0000    60.5000
+	Nodo N251: 24.0000    63.0000
+	Nodo N252: 32.0000    63.0000
+	Nodo N253: 40.0000    63.0000
+	Nodo N254: 48.0000    63.0000
+	Nodo N261: 32.0000    65.5000
+	Nodo N262: 40.0000    65.5000
+	Nodo N271: 32.0000    68.0000
+	Nodo N272: 40.0000    68.0000
+
+Elementos:
+	Numero de elementos: 237
+	Viga-Columna 2D V11-12:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V12-13:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V13-14:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V14-15:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V15-16:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V16-17:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V17-18:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V18-19:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V19-110:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V21-22:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V22-23:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V23-24:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V24-25:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V25-26:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V26-27:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V27-28:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V28-29:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V29-210:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V31-32:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V32-33:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V33-34:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V34-35:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V35-36:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V36-37:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V37-38:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V38-39:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V39-310:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V41-42:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V42-43:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V43-44:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V44-45:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V45-46:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V46-47:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V47-48:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V51-52:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V52-53:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V53-54:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V54-55:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V55-56:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V56-57:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V57-58:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V61-62:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V62-63:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V63-64:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V64-65:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V65-66:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V71-72:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V72-73:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V73-74:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V74-75:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V75-76:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V81-82:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V82-83:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V83-84:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V91-92:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V92-93:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V93-94:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V101-102:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V102-103:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V103-104:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V111-112:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V112-113:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V113-114:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V121-122:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V122-123:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V123-124:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V131-132:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V132-133:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V133-134:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V141-142:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V142-143:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V143-144:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V151-152:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V152-153:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V153-154:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V161-162:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V162-163:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V163-164:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V171-172:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V173-174:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V181-182:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V183-184:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V191-192:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V193-194:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V201-202:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V203-204:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V211-212:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V212-213:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V213-214:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V221-222:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V222-223:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V223-224:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V231-232:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V232-233:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V233-234:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V241-242:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V242-243:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V243-244:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V251-252:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V252-253:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V253-254:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V261-262:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D V271-272:
+		Largo:		8
+		Inercia:	0.0091542
+		Eo:			2625051
+		EI:			24030.1544
+		Masa:		0.53025
+	Viga-Columna 2D C01-11:
+		Largo:		3
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.76479
+	Viga-Columna 2D C02-12:
+		Largo:		3
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.76479
+	Viga-Columna 2D C03-13:
+		Largo:		3
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.76479
+	Viga-Columna 2D C04-14:
+		Largo:		3
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.76479
+	Viga-Columna 2D C05-15:
+		Largo:		3
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.76479
+	Viga-Columna 2D C06-16:
+		Largo:		3
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.76479
+	Viga-Columna 2D C07-17:
+		Largo:		3
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.76479
+	Viga-Columna 2D C08-18:
+		Largo:		3
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.76479
+	Viga-Columna 2D C09-19:
+		Largo:		3
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.76479
+	Viga-Columna 2D C010-110:
+		Largo:		3
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.76479
+	Viga-Columna 2D C11-21:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C12-22:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C13-23:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C14-24:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C15-25:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C16-26:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C17-27:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C18-28:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C19-29:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C110-210:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C21-31:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C22-32:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C23-33:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C24-34:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C25-35:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C26-36:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C27-37:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C28-38:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C29-39:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C210-310:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C32-41:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C33-42:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C34-43:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C35-44:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C36-45:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C37-46:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C38-47:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C39-48:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C41-51:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C42-52:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C43-53:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C44-54:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C45-55:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C46-56:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C47-57:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C48-58:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C52-61:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C53-62:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C54-63:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C55-64:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C56-65:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C57-66:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C61-71:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C62-72:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C63-73:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C64-74:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C65-75:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C66-76:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C72-81:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C73-82:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C74-83:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C75-84:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C81-91:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C82-92:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C83-93:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C84-94:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C91-101:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C92-102:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C93-103:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C94-104:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C101-111:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C102-112:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C103-113:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C104-114:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C111-121:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C112-122:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C113-123:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C114-124:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C121-131:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C122-132:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C123-133:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C124-134:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C131-141:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C132-142:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C133-143:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C134-144:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C141-151:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C142-152:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C143-153:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C144-154:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C151-161:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C152-162:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C153-163:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C154-164:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C161-171:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C162-172:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C163-173:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C164-174:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C171-181:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C172-182:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C173-183:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C174-184:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C181-191:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C182-192:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C183-193:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C184-194:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C191-201:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C192-202:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C193-203:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C194-204:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C201-211:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C202-212:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C203-213:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C204-214:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C211-221:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C212-222:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C213-223:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C214-224:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C221-231:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C222-232:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C223-233:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C224-234:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C231-241:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C232-242:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C233-243:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C234-244:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C241-251:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C242-252:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C243-253:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C244-254:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C252-262:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C253-263:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C262-272:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+	Viga-Columna 2D C263-273:
+		Largo:		2.5
+		Inercia:	0.083333
+		Eo:			2625051
+		EI:			218754.25
+		Masa:		0.63732
+
+-------------------------------------------------------------------------------
+Resultados del analisis estatico
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo N01: 0          0          0
+	Nodo N02: 0          0          0
+	Nodo N03: 0          0          0
+	Nodo N04: 0          0          0
+	Nodo N05: 0          0          0
+	Nodo N06: 0          0          0
+	Nodo N07: 0          0          0
+	Nodo N08: 0          0          0
+	Nodo N09: 0          0          0
+	Nodo N010: 0          0          0
+	Nodo N11: -0.00005   -0.00005   -0.00002
+	Nodo N12: -0.00002   -0.0001    0
+	Nodo N13: -0.00001   -0.0002    0
+	Nodo N14: -0.00001   -0.0006    0
+	Nodo N15: 0          -0.0008    0
+	Nodo N16: 0          -0.0008    0
+	Nodo N17: 0.00001    -0.0006    0
+	Nodo N18: 0.00001    -0.0002    0
+	Nodo N19: 0.00002    -0.0001    0
+	Nodo N110: 0.00005    -0.00005   0.00002
+	Nodo N21: -0.00003   -0.00009   -0.00004
+	Nodo N22: -0.00001   -0.0002    -0.00001
+	Nodo N23: -0.00002   -0.0004    0
+	Nodo N24: -0.00001   -0.0011    0
+	Nodo N25: 0          -0.0015    0
+	Nodo N26: 0          -0.0015    0
+	Nodo N27: 0.00001    -0.0011    0
+	Nodo N28: 0.00002    -0.0004    0
+	Nodo N29: 0.00001    -0.0002    0.00001
+	Nodo N210: 0.00003    -0.00009   0.00004
+	Nodo N31: 0.0001     -0.0001    -0.0001
+	Nodo N32: -0.00001   -0.0003    0.00002
+	Nodo N33: -0.00002   -0.0005    0
+	Nodo N34: -0.00001   -0.0015    0
+	Nodo N35: -0.00001   -0.0022    0
+	Nodo N36: 0.00001    -0.0022    0
+	Nodo N37: 0.00001    -0.0015    0
+	Nodo N38: 0.00002    -0.0005    0
+	Nodo N39: 0.00001    -0.0003    -0.00002
+	Nodo N310: -0.0001    -0.0001    0.0001
+	Nodo N41: -0.00003   -0.0003    -0.00004
+	Nodo N42: -0.00001   -0.0006    -0.00001
+	Nodo N43: -0.00001   -0.0020    0
+	Nodo N44: -0.00001   -0.0028    0
+	Nodo N45: 0.00001    -0.0028    0
+	Nodo N46: 0.00001    -0.0020    0
+	Nodo N47: 0.00001    -0.0006    0.00001
+	Nodo N48: 0.00003    -0.0003    0.00004
+	Nodo N51: 0.0001     -0.0003    -0.0001
+	Nodo N52: -0.00001   -0.0007    0.00001
+	Nodo N53: -0.00001   -0.0024    -0.00001
+	Nodo N54: 0          -0.0034    0
+	Nodo N55: 0          -0.0034    0
+	Nodo N56: 0.00001    -0.0024    0.00001
+	Nodo N57: 0.00001    -0.0007    -0.00001
+	Nodo N58: -0.0001    -0.0003    0.0001
+	Nodo N61: -0.00001   -0.0007    -0.00006
+	Nodo N62: 0.00001    -0.0027    -0.00002
+	Nodo N63: 0          -0.0039    -0.00001
+	Nodo N64: 0          -0.0039    0.00001
+	Nodo N65: -0.00001   -0.0027    0.00002
+	Nodo N66: 0.00001    -0.0007    0.00006
+	Nodo N71: 0.0002     -0.0007    -0.0002
+	Nodo N72: 0.00004    -0.0030    0
+	Nodo N73: 0.00001    -0.0044    0
+	Nodo N74: -0.00001   -0.0044    0
+	Nodo N75: -0.00004   -0.0030    0
+	Nodo N76: -0.0002    -0.0007    0.0002
+	Nodo N81: 0          -0.0033    -0.00002
+	Nodo N82: 0          -0.0049    0
+	Nodo N83: 0          -0.0049    0
+	Nodo N84: 0          -0.0033    0.00002
+	Nodo N91: -0.00001   -0.0036    -0.00002
+	Nodo N92: 0          -0.0054    0
+	Nodo N93: 0          -0.0054    0
+	Nodo N94: 0.00001    -0.0036    0.00002
+	Nodo N101: -0.00001   -0.0039    -0.00003
+	Nodo N102: 0          -0.0058    0
+	Nodo N103: 0          -0.0058    0
+	Nodo N104: 0.00001    -0.0039    0.00003
+	Nodo N111: 0          -0.0041    -0.00002
+	Nodo N112: 0          -0.0062    0
+	Nodo N113: 0          -0.0062    0
+	Nodo N114: 0          -0.0041    0.00002
+	Nodo N121: 0          -0.0044    -0.00002
+	Nodo N122: 0          -0.0066    0
+	Nodo N123: 0          -0.0066    0
+	Nodo N124: 0          -0.0044    0.00002
+	Nodo N131: 0          -0.0046    -0.00002
+	Nodo N132: 0          -0.0070    0
+	Nodo N133: 0          -0.0070    0
+	Nodo N134: 0          -0.0046    0.00002
+	Nodo N141: 0          -0.0048    -0.00003
+	Nodo N142: 0          -0.0073    -0.00001
+	Nodo N143: 0          -0.0073    0.00001
+	Nodo N144: 0          -0.0048    0.00003
+	Nodo N151: 0.00001    -0.0050    -0.00003
+	Nodo N152: 0          -0.0076    -0.00001
+	Nodo N153: 0          -0.0076    0.00001
+	Nodo N154: -0.00001   -0.0050    0.00003
+	Nodo N161: 0.00004    -0.0051    -0.00004
+	Nodo N162: 0.00004    -0.0078    -0.00003
+	Nodo N163: -0.00004   -0.0078    0.00003
+	Nodo N164: -0.00004   -0.0051    0.00004
+	Nodo N171: 0.00005    -0.0053    -0.00002
+	Nodo N172: 0.00006    -0.0080    0.00003
+	Nodo N173: -0.00006   -0.0080    -0.00003
+	Nodo N174: -0.00005   -0.0053    0.00002
+	Nodo N181: 0.00001    -0.0054    -0.00001
+	Nodo N182: 0.00002    -0.0083    0.00004
+	Nodo N183: -0.00002   -0.0083    -0.00004
+	Nodo N184: -0.00001   -0.0054    0.00001
+	Nodo N191: -0.00004   -0.0055    -0.00001
+	Nodo N192: -0.00004   -0.0085    0.00004
+	Nodo N193: 0.00004    -0.0085    -0.00004
+	Nodo N194: 0.00004    -0.0055    0.00001
+	Nodo N201: -0.00007   -0.0056    -0.00003
+	Nodo N202: -0.00008   -0.0087    0.00002
+	Nodo N203: 0.00008    -0.0087    -0.00002
+	Nodo N204: 0.00007    -0.0056    0.00003
+	Nodo N211: -0.00005   -0.0057    -0.00004
+	Nodo N212: -0.00004   -0.0088    -0.00003
+	Nodo N213: 0.00004    -0.0088    0.00003
+	Nodo N214: 0.00005    -0.0057    0.00004
+	Nodo N221: -0.00002   -0.0058    -0.00003
+	Nodo N222: -0.00001   -0.0090    -0.00001
+	Nodo N223: 0.00001    -0.0090    0.00001
+	Nodo N224: 0.00002    -0.0058    0.00003
+	Nodo N231: -0.00002   -0.0058    -0.00003
+	Nodo N232: 0          -0.0091    -0.00001
+	Nodo N233: 0          -0.0091    0.00001
+	Nodo N234: 0.00002    -0.0058    0.00003
+	Nodo N241: 0          -0.0059    -0.00006
+	Nodo N242: 0.00001    -0.0092    -0.00002
+	Nodo N243: -0.00001   -0.0092    0.00002
+	Nodo N244: 0          -0.0059    0.00006
+	Nodo N251: 0.0002     -0.0059    -0.0002
+	Nodo N252: 0.00003    -0.0092    0.00001
+	Nodo N253: -0.00003   -0.0092    -0.00001
+	Nodo N254: -0.0002    -0.0059    0.0002
+	Nodo N261: -0.00001   -0.0093    -0.00002
+	Nodo N262: 0.00001    -0.0093    0.00002
+	Nodo N271: 0.00007    -0.0093    -0.0001
+	Nodo N272: -0.00007   -0.0093    0.0001
+
+Reacciones:
+	Nodo N01: 7.0958     47.8683    -9.4140
+	Nodo N02: 1.3841     128.3655   -2.3255
+	Nodo N03: 0.7684     196.5489   -1.3320
+	Nodo N04: 0.5899     535.6770   -0.9929
+	Nodo N05: 0.2142     739.5403   -0.3626
+	Nodo N06: -0.2142    739.5403   0.3626
+	Nodo N07: -0.5899    535.6770   0.9929
+	Nodo N08: -0.7684    196.5489   1.3320
+	Nodo N09: -1.3841    128.3655   2.3255
+	Nodo N010: -7.0958    47.8683    9.4140
+	Nodo N11: 0          0          0
+	Nodo N12: 0          0          0
+	Nodo N13: 0          0          0
+	Nodo N14: 0          0          0
+	Nodo N15: 0          0          0
+	Nodo N16: 0          0          0
+	Nodo N17: 0          0          0
+	Nodo N18: 0          0          0
+	Nodo N19: 0          0          0
+	Nodo N110: 0          0          0
+	Nodo N21: 0          0          0
+	Nodo N22: 0          0          0
+	Nodo N23: 0          0          0
+	Nodo N24: 0          0          0
+	Nodo N25: 0          0          0
+	Nodo N26: 0          0          0
+	Nodo N27: 0          0          0
+	Nodo N28: 0          0          0
+	Nodo N29: 0          0          0
+	Nodo N210: 0          0          0
+	Nodo N31: 0          0          0
+	Nodo N32: 0          0          0
+	Nodo N33: 0          0          0
+	Nodo N34: 0          0          0
+	Nodo N35: 0          0          0
+	Nodo N36: 0          0          0
+	Nodo N37: 0          0          0
+	Nodo N38: 0          0          0
+	Nodo N39: 0          0          0
+	Nodo N310: 0          0          0
+	Nodo N41: 0          0          0
+	Nodo N42: 0          0          0
+	Nodo N43: 0          0          0
+	Nodo N44: 0          0          0
+	Nodo N45: 0          0          0
+	Nodo N46: 0          0          0
+	Nodo N47: 0          0          0
+	Nodo N48: 0          0          0
+	Nodo N51: 0          0          0
+	Nodo N52: 0          0          0
+	Nodo N53: 0          0          0
+	Nodo N54: 0          0          0
+	Nodo N55: 0          0          0
+	Nodo N56: 0          0          0
+	Nodo N57: 0          0          0
+	Nodo N58: 0          0          0
+	Nodo N61: 0          0          0
+	Nodo N62: 0          0          0
+	Nodo N63: 0          0          0
+	Nodo N64: 0          0          0
+	Nodo N65: 0          0          0
+	Nodo N66: 0          0          0
+	Nodo N71: 0          0          0
+	Nodo N72: 0          0          0
+	Nodo N73: 0          0          0
+	Nodo N74: 0          0          0
+	Nodo N75: 0          0          0
+	Nodo N76: 0          0          0
+	Nodo N81: 0          0          0
+	Nodo N82: 0          0          0
+	Nodo N83: 0          0          0
+	Nodo N84: 0          0          0
+	Nodo N91: 0          0          0
+	Nodo N92: 0          0          0
+	Nodo N93: 0          0          0
+	Nodo N94: 0          0          0
+	Nodo N101: 0          0          0
+	Nodo N102: 0          0          0
+	Nodo N103: 0          0          0
+	Nodo N104: 0          0          0
+	Nodo N111: 0          0          0
+	Nodo N112: 0          0          0
+	Nodo N113: 0          0          0
+	Nodo N114: 0          0          0
+	Nodo N121: 0          0          0
+	Nodo N122: 0          0          0
+	Nodo N123: 0          0          0
+	Nodo N124: 0          0          0
+	Nodo N131: 0          0          0
+	Nodo N132: 0          0          0
+	Nodo N133: 0          0          0
+	Nodo N134: 0          0          0
+	Nodo N141: 0          0          0
+	Nodo N142: 0          0          0
+	Nodo N143: 0          0          0
+	Nodo N144: 0          0          0
+	Nodo N151: 0          0          0
+	Nodo N152: 0          0          0
+	Nodo N153: 0          0          0
+	Nodo N154: 0          0          0
+	Nodo N161: 0          0          0
+	Nodo N162: 0          0          0
+	Nodo N163: 0          0          0
+	Nodo N164: 0          0          0
+	Nodo N171: 0          0          0
+	Nodo N172: 0          0          0
+	Nodo N173: 0          0          0
+	Nodo N174: 0          0          0
+	Nodo N181: 0          0          0
+	Nodo N182: 0          0          0
+	Nodo N183: 0          0          0
+	Nodo N184: 0          0          0
+	Nodo N191: 0          0          0
+	Nodo N192: 0          0          0
+	Nodo N193: 0          0          0
+	Nodo N194: 0          0          0
+	Nodo N201: 0          0          0
+	Nodo N202: 0          0          0
+	Nodo N203: 0          0          0
+	Nodo N204: 0          0          0
+	Nodo N211: 0          0          0
+	Nodo N212: 0          0          0
+	Nodo N213: 0          0          0
+	Nodo N214: 0          0          0
+	Nodo N221: 0          0          0
+	Nodo N222: 0          0          0
+	Nodo N223: 0          0          0
+	Nodo N224: 0          0          0
+	Nodo N231: 0          0          0
+	Nodo N232: 0          0          0
+	Nodo N233: 0          0          0
+	Nodo N234: 0          0          0
+	Nodo N241: 0          0          0
+	Nodo N242: 0          0          0
+	Nodo N243: 0          0          0
+	Nodo N244: 0          0          0
+	Nodo N251: 0          0          0
+	Nodo N252: 0          0          0
+	Nodo N253: 0          0          0
+	Nodo N254: 0          0          0
+	Nodo N261: 0          0          0
+	Nodo N262: 0          0          0
+	Nodo N271: 0          0          0
+	Nodo N272: 0          0          0
+
+Esfuerzos Elementos:
+	Viga-Columna 2D V11-12:
+		Axial:		-2.4161    2.4161    
+		Corte:		16.0215    15.9785   
+		Momento:	21.3585    -21.1863  
+	Viga-Columna 2D V12-13:
+		Axial:		-0.6631    0.6631    
+		Corte:		16.0571    15.9429   
+		Momento:	21.5648    -21.1077  
+	Viga-Columna 2D V13-14:
+		Axial:		-0.2818    0.2818    
+		Corte:		16.2272    15.7728   
+		Momento:	22.2449    -20.4276  
+	Viga-Columna 2D V14-15:
+		Axial:		-0.4470    0.4470    
+		Corte:		16.1358    15.8642   
+		Momento:	21.8794    -20.7928  
+	Viga-Columna 2D V15-16:
+		Axial:		-0.5207    0.5207    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3367    -21.3367  
+	Viga-Columna 2D V16-17:
+		Axial:		-0.4470    0.4470    
+		Corte:		15.8642    16.1358   
+		Momento:	20.7928    -21.8794  
+	Viga-Columna 2D V17-18:
+		Axial:		-0.2818    0.2818    
+		Corte:		15.7728    16.2272   
+		Momento:	20.4276    -22.2449  
+	Viga-Columna 2D V18-19:
+		Axial:		-0.6631    0.6631    
+		Corte:		15.9429    16.0571   
+		Momento:	21.1077    -21.5648  
+	Viga-Columna 2D V19-110:
+		Axial:		-2.4161    2.4161    
+		Corte:		15.9785    16.0215   
+		Momento:	21.1863    -21.3585  
+	Viga-Columna 2D V21-22:
+		Axial:		-1.3791    1.3791    
+		Corte:		15.9688    16.0312   
+		Momento:	21.0988    -21.3486  
+	Viga-Columna 2D V22-23:
+		Axial:		0.3295     -0.3295   
+		Corte:		16.0600    15.9400   
+		Momento:	21.5533    -21.0734  
+	Viga-Columna 2D V23-24:
+		Axial:		-0.2413    0.2413    
+		Corte:		16.3941    15.6059   
+		Momento:	22.9107    -19.7583  
+	Viga-Columna 2D V24-25:
+		Axial:		-0.6695    0.6695    
+		Corte:		16.2358    15.7642   
+		Momento:	22.2734    -20.3869  
+	Viga-Columna 2D V25-26:
+		Axial:		-0.8200    0.8200    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3301    -21.3301  
+	Viga-Columna 2D V26-27:
+		Axial:		-0.6695    0.6695    
+		Corte:		15.7642    16.2358   
+		Momento:	20.3869    -22.2734  
+	Viga-Columna 2D V27-28:
+		Axial:		-0.2413    0.2413    
+		Corte:		15.6059    16.3941   
+		Momento:	19.7583    -22.9107  
+	Viga-Columna 2D V28-29:
+		Axial:		0.3295     -0.3295   
+		Corte:		15.9400    16.0600   
+		Momento:	21.0734    -21.5533  
+	Viga-Columna 2D V29-210:
+		Axial:		-1.3791    1.3791    
+		Corte:		16.0312    15.9688   
+		Momento:	21.3486    -21.0988  
+	Viga-Columna 2D V31-32:
+		Axial:		10.8911    -10.8911  
+		Corte:		15.8780    16.1220   
+		Momento:	20.4238    -21.3999  
+	Viga-Columna 2D V32-33:
+		Axial:		0.3195     -0.3195   
+		Corte:		16.1507    15.8493   
+		Momento:	22.0000    -20.7941  
+	Viga-Columna 2D V33-34:
+		Axial:		-0.2263    0.2263    
+		Corte:		16.5676    15.4324   
+		Momento:	23.6053    -19.0646  
+	Viga-Columna 2D V34-35:
+		Axial:		-0.6816    0.6816    
+		Corte:		16.3391    15.6609   
+		Momento:	22.6827    -19.9697  
+	Viga-Columna 2D V35-36:
+		Axial:		-0.8902    0.8902    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3260    -21.3260  
+	Viga-Columna 2D V36-37:
+		Axial:		-0.6816    0.6816    
+		Corte:		15.6609    16.3391   
+		Momento:	19.9697    -22.6827  
+	Viga-Columna 2D V37-38:
+		Axial:		-0.2263    0.2263    
+		Corte:		15.4324    16.5676   
+		Momento:	19.0646    -23.6053  
+	Viga-Columna 2D V38-39:
+		Axial:		0.3195     -0.3195   
+		Corte:		15.8493    16.1507   
+		Momento:	20.7941    -22.0000  
+	Viga-Columna 2D V39-310:
+		Axial:		10.8911    -10.8911  
+		Corte:		16.1220    15.8780   
+		Momento:	21.3999    -20.4238  
+	Viga-Columna 2D V41-42:
+		Axial:		-2.0085    2.0085    
+		Corte:		16.0435    15.9565   
+		Momento:	21.4092    -21.0612  
+	Viga-Columna 2D V42-43:
+		Axial:		0.1468     -0.1468   
+		Corte:		16.7370    15.2630   
+		Momento:	24.2711    -18.3752  
+	Viga-Columna 2D V43-44:
+		Axial:		-0.6478    0.6478    
+		Corte:		16.4448    15.5552   
+		Momento:	23.1046    -19.5460  
+	Viga-Columna 2D V44-45:
+		Axial:		-0.8762    0.8762    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3218    -21.3218  
+	Viga-Columna 2D V45-46:
+		Axial:		-0.6478    0.6478    
+		Corte:		15.5552    16.4448   
+		Momento:	19.5460    -23.1046  
+	Viga-Columna 2D V46-47:
+		Axial:		0.1468     -0.1468   
+		Corte:		15.2630    16.7370   
+		Momento:	18.3752    -24.2711  
+	Viga-Columna 2D V47-48:
+		Axial:		-2.0085    2.0085    
+		Corte:		15.9565    16.0435   
+		Momento:	21.0612    -21.4092  
+	Viga-Columna 2D V51-52:
+		Axial:		10.5025    -10.5025  
+		Corte:		15.9224    16.0776   
+		Momento:	20.6092    -21.2299  
+	Viga-Columna 2D V52-53:
+		Axial:		-0.1951    0.1951    
+		Corte:		16.9528    15.0472   
+		Momento:	25.2087    -17.5859  
+	Viga-Columna 2D V53-54:
+		Axial:		-0.5578    0.5578    
+		Corte:		16.5381    15.4619   
+		Momento:	23.4688    -19.1642  
+	Viga-Columna 2D V54-55:
+		Axial:		-0.4873    0.4873    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3089    -21.3089  
+	Viga-Columna 2D V55-56:
+		Axial:		-0.5578    0.5578    
+		Corte:		15.4619    16.5381   
+		Momento:	19.1642    -23.4688  
+	Viga-Columna 2D V56-57:
+		Axial:		-0.1951    0.1951    
+		Corte:		15.0472    16.9528   
+		Momento:	17.5859    -25.2087  
+	Viga-Columna 2D V57-58:
+		Axial:		10.5025    -10.5025  
+		Corte:		16.0776    15.9224   
+		Momento:	21.2299    -20.6092  
+	Viga-Columna 2D V61-62:
+		Axial:		-2.3840    2.3840    
+		Corte:		16.9528    15.0472   
+		Momento:	25.0384    -17.4163  
+	Viga-Columna 2D V62-63:
+		Axial:		0.7898     -0.7898   
+		Corte:		16.6157    15.3843   
+		Momento:	23.7466    -18.8209  
+	Viga-Columna 2D V63-64:
+		Axial:		0.7814     -0.7814   
+		Corte:		16.0000    16.0000   
+		Momento:	21.2990    -21.2990  
+	Viga-Columna 2D V64-65:
+		Axial:		0.7898     -0.7898   
+		Corte:		15.3843    16.6157   
+		Momento:	18.8209    -23.7466  
+	Viga-Columna 2D V65-66:
+		Axial:		-2.3840    2.3840    
+		Corte:		15.0472    16.9528   
+		Momento:	17.4163    -25.0384  
+	Viga-Columna 2D V71-72:
+		Axial:		12.4300    -12.4300  
+		Corte:		16.9513    15.0487   
+		Momento:	24.6439    -17.0338  
+	Viga-Columna 2D V72-73:
+		Axial:		2.6049     -2.6049   
+		Corte:		16.7904    15.2096   
+		Momento:	24.5105    -18.1873  
+	Viga-Columna 2D V73-74:
+		Axial:		1.6309     -1.6309   
+		Corte:		16.0000    16.0000   
+		Momento:	21.3205    -21.3205  
+	Viga-Columna 2D V74-75:
+		Axial:		2.6049     -2.6049   
+		Corte:		15.2096    16.7904   
+		Momento:	18.1873    -24.5105  
+	Viga-Columna 2D V75-76:
+		Axial:		12.4300    -12.4300  
+		Corte:		15.0487    16.9513   
+		Momento:	17.0338    -24.6439  
+	Viga-Columna 2D V81-82:
+		Axial:		-0.1386    0.1386    
+		Corte:		16.8630    15.1370   
+		Momento:	24.7377    -17.8334  
+	Viga-Columna 2D V82-83:
+		Axial:		0.2558     -0.2558   
+		Corte:		16.0000    16.0000   
+		Momento:	21.3338    -21.3338  
+	Viga-Columna 2D V83-84:
+		Axial:		-0.1386    0.1386    
+		Corte:		15.1370    16.8630   
+		Momento:	17.8334    -24.7377  
+	Viga-Columna 2D V91-92:
+		Axial:		-0.3876    0.3876    
+		Corte:		16.9402    15.0598   
+		Momento:	25.0316    -17.5103  
+	Viga-Columna 2D V92-93:
+		Axial:		-0.5115    0.5115    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3146    -21.3146  
+	Viga-Columna 2D V93-94:
+		Axial:		-0.3876    0.3876    
+		Corte:		15.0598    16.9402   
+		Momento:	17.5103    -25.0316  
+	Viga-Columna 2D V101-102:
+		Axial:		-0.2429    0.2429    
+		Corte:		17.0290    14.9710   
+		Momento:	25.3868    -17.1545  
+	Viga-Columna 2D V102-103:
+		Axial:		-0.4496    0.4496    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3069    -21.3069  
+	Viga-Columna 2D V103-104:
+		Axial:		-0.2429    0.2429    
+		Corte:		14.9710    17.0290   
+		Momento:	17.1545    -25.3868  
+	Viga-Columna 2D V111-112:
+		Axial:		-0.1525    0.1525    
+		Corte:		17.1169    14.8831   
+		Momento:	25.7397    -16.8042  
+	Viga-Columna 2D V112-113:
+		Axial:		-0.3013    0.3013    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3063    -21.3063  
+	Viga-Columna 2D V113-114:
+		Axial:		-0.1525    0.1525    
+		Corte:		14.8831    17.1169   
+		Momento:	16.8042    -25.7397  
+	Viga-Columna 2D V121-122:
+		Axial:		-0.1579    0.1579    
+		Corte:		17.1979    14.8021   
+		Momento:	26.0648    -16.4818  
+	Viga-Columna 2D V122-123:
+		Axial:		-0.2775    0.2775    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3062    -21.3062  
+	Viga-Columna 2D V123-124:
+		Axial:		-0.1579    0.1579    
+		Corte:		14.8021    17.1979   
+		Momento:	16.4818    -26.0648  
+	Viga-Columna 2D V131-132:
+		Axial:		-0.2167    0.2167    
+		Corte:		17.2700    14.7300   
+		Momento:	26.3529    -16.1930  
+	Viga-Columna 2D V132-133:
+		Axial:		-0.3555    0.3555    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3057    -21.3057  
+	Viga-Columna 2D V133-134:
+		Axial:		-0.2167    0.2167    
+		Corte:		14.7300    17.2700   
+		Momento:	16.1930    -26.3529  
+	Viga-Columna 2D V141-142:
+		Axial:		-0.0510    0.0510    
+		Corte:		17.3278    14.6722   
+		Momento:	26.5771    -15.9547  
+	Viga-Columna 2D V142-143:
+		Axial:		-0.4456    0.4456    
+		Corte:		16.0000    16.0000   
+		Momento:	21.3025    -21.3025  
+	Viga-Columna 2D V143-144:
+		Axial:		-0.0510    0.0510    
+		Corte:		14.6722    17.3278   
+		Momento:	15.9547    -26.5771  
+	Viga-Columna 2D V151-152:
+		Axial:		0.6371     -0.6371   
+		Corte:		17.3574    14.6426   
+		Momento:	26.6929    -15.8334  
+	Viga-Columna 2D V152-153:
+		Axial:		0.4383     -0.4383   
+		Corte:		16.0000    16.0000   
+		Momento:	21.2670    -21.2670  
+	Viga-Columna 2D V153-154:
+		Axial:		0.6371     -0.6371   
+		Corte:		14.6426    17.3574   
+		Momento:	15.8334    -26.6929  
+	Viga-Columna 2D V161-162:
+		Axial:		-0.0442    0.0442    
+		Corte:		17.3639    14.6361   
+		Momento:	26.7719    -15.8609  
+	Viga-Columna 2D V162-163:
+		Axial:		6.3928     -6.3928   
+		Corte:		16.0000    16.0000   
+		Momento:	21.1540    -21.1540  
+	Viga-Columna 2D V163-164:
+		Axial:		-0.0442    0.0442    
+		Corte:		14.6361    17.3639   
+		Momento:	15.8609    -26.7719  
+	Viga-Columna 2D V171-172:
+		Axial:		-1.4531    1.4531    
+		Corte:		17.5654    14.4346   
+		Momento:	27.4524    -14.9294  
+	Viga-Columna 2D V173-174:
+		Axial:		-1.4531    1.4531    
+		Corte:		14.4346    17.5654   
+		Momento:	14.9294    -27.4524  
+	Viga-Columna 2D V181-182:
+		Axial:		-0.2587    0.2587    
+		Corte:		17.6734    14.3266   
+		Momento:	27.8950    -14.5080  
+	Viga-Columna 2D V183-184:
+		Axial:		-0.2587    0.2587    
+		Corte:		14.3266    17.6734   
+		Momento:	14.5080    -27.8950  
+	Viga-Columna 2D V191-192:
+		Axial:		0.2826     -0.2826   
+		Corte:		17.7102    14.2898   
+		Momento:	28.0427    -14.3612  
+	Viga-Columna 2D V193-194:
+		Axial:		0.2826     -0.2826   
+		Corte:		14.2898    17.7102   
+		Momento:	14.3612    -28.0427  
+	Viga-Columna 2D V201-202:
+		Axial:		1.3665     -1.3665   
+		Corte:		17.6835    14.3165   
+		Momento:	27.9282    -14.4604  
+	Viga-Columna 2D V203-204:
+		Axial:		1.3665     -1.3665   
+		Corte:		14.3165    17.6835   
+		Momento:	14.4604    -27.9282  
+	Viga-Columna 2D V211-212:
+		Axial:		-0.3399    0.3399    
+		Corte:		17.5877    14.4123   
+		Momento:	27.6704    -14.9688  
+	Viga-Columna 2D V212-213:
+		Axial:		-7.4820    7.4820    
+		Corte:		16.0000    16.0000   
+		Momento:	21.1318    -21.1318  
+	Viga-Columna 2D V213-214:
+		Axial:		-0.3399    0.3399    
+		Corte:		14.4123    17.5877   
+		Momento:	14.9688    -27.6704  
+	Viga-Columna 2D V221-222:
+		Axial:		-1.2872    1.2872    
+		Corte:		17.6977    14.3023   
+		Momento:	28.0610    -14.4794  
+	Viga-Columna 2D V222-223:
+		Axial:		-1.4558    1.4558    
+		Corte:		16.0000    16.0000   
+		Momento:	21.2688    -21.2688  
+	Viga-Columna 2D V223-224:
+		Axial:		-1.2872    1.2872    
+		Corte:		14.3023    17.6977   
+		Momento:	14.4794    -28.0610  
+	Viga-Columna 2D V231-232:
+		Axial:		-1.4623    1.4623    
+		Corte:		17.7522    14.2478   
+		Momento:	28.2905    -14.2732  
+	Viga-Columna 2D V232-233:
+		Axial:		-0.8490    0.8490    
+		Corte:		16.0000    16.0000   
+		Momento:	21.2797    -21.2797  
+	Viga-Columna 2D V233-234:
+		Axial:		-1.4623    1.4623    
+		Corte:		14.2478    17.7522   
+		Momento:	14.2732    -28.2905  
+	Viga-Columna 2D V241-242:
+		Axial:		-0.8362    0.8362    
+		Corte:		17.6884    14.3116   
+		Momento:	27.9717    -14.4642  
+	Viga-Columna 2D V242-243:
+		Axial:		2.2032     -2.2032   
+		Corte:		16.0000    16.0000   
+		Momento:	21.2175    -21.2175  
+	Viga-Columna 2D V243-244:
+		Axial:		-0.8362    0.8362    
+		Corte:		14.3116    17.6884   
+		Momento:	14.4642    -27.9717  
+	Viga-Columna 2D V251-252:
+		Axial:		14.1897    -14.1897  
+		Corte:		17.5354    14.4646   
+		Momento:	26.9623    -14.6794  
+	Viga-Columna 2D V252-253:
+		Axial:		4.8393     -4.8393   
+		Corte:		16.0000    16.0000   
+		Momento:	21.3783    -21.3783  
+	Viga-Columna 2D V253-254:
+		Axial:		14.1897    -14.1897  
+		Corte:		14.4646    17.5354   
+		Momento:	14.6794    -26.9623  
+	Viga-Columna 2D V261-262:
+		Axial:		-1.9996    1.9996    
+		Corte:		16.0000    16.0000   
+		Momento:	21.2169    -21.2169  
+	Viga-Columna 2D V271-272:
+		Axial:		11.2321    -11.2321  
+		Corte:		16.0000    16.0000   
+		Momento:	20.7558    -20.7558  
+	Viga-Columna 2D C01-11:
+		Axial:		7.0958     -7.0958   
+		Corte:		47.8683    -47.8683  
+		Momento:	-9.4140    -11.8735  
+	Viga-Columna 2D C02-12:
+		Axial:		1.3841     -1.3841   
+		Corte:		128.3655   -128.3655 
+		Momento:	-2.3255    -1.8267   
+	Viga-Columna 2D C03-13:
+		Axial:		0.7684     -0.7684   
+		Corte:		196.5489   -196.5489 
+		Momento:	-1.3320    -0.9731   
+	Viga-Columna 2D C04-14:
+		Axial:		0.5899     -0.5899   
+		Corte:		535.6770   -535.6770 
+		Momento:	-0.9929    -0.7767   
+	Viga-Columna 2D C05-15:
+		Axial:		0.2142     -0.2142   
+		Corte:		739.5403   -739.5403 
+		Momento:	-0.3626    -0.2802   
+	Viga-Columna 2D C06-16:
+		Axial:		-0.2142    0.2142    
+		Corte:		739.5403   -739.5403 
+		Momento:	0.3626     0.2802    
+	Viga-Columna 2D C07-17:
+		Axial:		-0.5899    0.5899    
+		Corte:		535.6770   -535.6770 
+		Momento:	0.9929     0.7767    
+	Viga-Columna 2D C08-18:
+		Axial:		-0.7684    0.7684    
+		Corte:		196.5489   -196.5489 
+		Momento:	1.3320     0.9731    
+	Viga-Columna 2D C09-19:
+		Axial:		-1.3841    1.3841    
+		Corte:		128.3655   -128.3655 
+		Momento:	2.3255     1.8267    
+	Viga-Columna 2D C010-110:
+		Axial:		-7.0958    7.0958    
+		Corte:		47.8683    -47.8683  
+		Momento:	9.4140     11.8735   
+	Viga-Columna 2D C11-21:
+		Axial:		9.5119     -9.5119   
+		Corte:		31.8468    -31.8468  
+		Momento:	-9.4850    -14.2949  
+	Viga-Columna 2D C12-22:
+		Axial:		-0.3690    0.3690    
+		Corte:		96.3299    -96.3299  
+		Momento:	1.4483     -0.5259   
+	Viga-Columna 2D C13-23:
+		Axial:		0.3871     -0.3871   
+		Corte:		164.3789   -164.3789 
+		Momento:	-0.1641    -0.8037   
+	Viga-Columna 2D C14-24:
+		Axial:		0.7550     -0.7550   
+		Corte:		503.7683   -503.7683 
+		Momento:	-0.6751    -1.2125   
+	Viga-Columna 2D C15-25:
+		Axial:		0.2879     -0.2879   
+		Corte:		707.6762   -707.6762 
+		Momento:	-0.2638    -0.4559   
+	Viga-Columna 2D C16-26:
+		Axial:		-0.2879    0.2879    
+		Corte:		707.6762   -707.6762 
+		Momento:	0.2638     0.4559    
+	Viga-Columna 2D C17-27:
+		Axial:		-0.7550    0.7550    
+		Corte:		503.7683   -503.7683 
+		Momento:	0.6751     1.2125    
+	Viga-Columna 2D C18-28:
+		Axial:		-0.3871    0.3871    
+		Corte:		164.3789   -164.3789 
+		Momento:	0.1641     0.8037    
+	Viga-Columna 2D C19-29:
+		Axial:		0.3690     -0.3690   
+		Corte:		96.3299    -96.3299  
+		Momento:	-1.4483    0.5259    
+	Viga-Columna 2D C110-210:
+		Axial:		-9.5119    9.5119    
+		Corte:		31.8468    -31.8468  
+		Momento:	9.4850     14.2949   
+	Viga-Columna 2D C21-31:
+		Axial:		10.8911    -10.8911  
+		Corte:		15.8780    -15.8780  
+		Momento:	-6.8039    -20.4238  
+	Viga-Columna 2D C22-32:
+		Axial:		-2.0776    2.0776    
+		Corte:		64.2387    -64.2387  
+		Momento:	0.3212     4.8727    
+	Viga-Columna 2D C23-33:
+		Axial:		0.9579     -0.9579   
+		Corte:		132.0448   -132.0448 
+		Momento:	-1.0336    -1.3612   
+	Viga-Columna 2D C24-34:
+		Axial:		1.1832     -1.1832   
+		Corte:		471.9266   -471.9266 
+		Momento:	-1.3026    -1.6555   
+	Viga-Columna 2D C25-35:
+		Axial:		0.4383     -0.4383   
+		Corte:		675.9120   -675.9120 
+		Momento:	-0.4873    -0.6085   
+	Viga-Columna 2D C26-36:
+		Axial:		-0.4383    0.4383    
+		Corte:		675.9120   -675.9120 
+		Momento:	0.4873     0.6085    
+	Viga-Columna 2D C27-37:
+		Axial:		-1.1832    1.1832    
+		Corte:		471.9266   -471.9266 
+		Momento:	1.3026     1.6555    
+	Viga-Columna 2D C28-38:
+		Axial:		-0.9579    0.9579    
+		Corte:		132.0448   -132.0448 
+		Momento:	1.0336     1.3612    
+	Viga-Columna 2D C29-39:
+		Axial:		2.0776     -2.0776   
+		Corte:		64.2387    -64.2387  
+		Momento:	-0.3212    -4.8727   
+	Viga-Columna 2D C210-310:
+		Axial:		-10.8911   10.8911   
+		Corte:		15.8780    -15.8780  
+		Momento:	6.8039     20.4238   
+	Viga-Columna 2D C32-41:
+		Axial:		8.4940     -8.4940   
+		Corte:		31.9659    -31.9659  
+		Momento:	-5.4728    -15.7621  
+	Viga-Columna 2D C33-42:
+		Axial:		1.5038     -1.5038   
+		Corte:		99.6279    -99.6279  
+		Momento:	-1.4500    -2.3096   
+	Viga-Columna 2D C34-43:
+		Axial:		1.6385     -1.6385   
+		Corte:		440.1551   -440.1551 
+		Momento:	-1.9626    -2.1336   
+	Viga-Columna 2D C35-44:
+		Axial:		0.6469     -0.6469   
+		Corte:		644.2511   -644.2511 
+		Momento:	-0.7478    -0.8696   
+	Viga-Columna 2D C36-45:
+		Axial:		-0.6469    0.6469    
+		Corte:		644.2511   -644.2511 
+		Momento:	0.7478     0.8696    
+	Viga-Columna 2D C37-46:
+		Axial:		-1.6385    1.6385    
+		Corte:		440.1551   -440.1551 
+		Momento:	1.9626     2.1336    
+	Viga-Columna 2D C38-47:
+		Axial:		-1.5038    1.5038    
+		Corte:		99.6279    -99.6279  
+		Momento:	1.4500     2.3096    
+	Viga-Columna 2D C39-48:
+		Axial:		-8.4940    8.4940    
+		Corte:		31.9659    -31.9659  
+		Momento:	5.4728     15.7621   
+	Viga-Columna 2D C41-51:
+		Axial:		10.5025    -10.5025  
+		Corte:		15.9224    -15.9224  
+		Momento:	-5.6471    -20.6092  
+	Viga-Columna 2D C42-52:
+		Axial:		-0.6515    0.6515    
+		Corte:		66.9345    -66.9345  
+		Momento:	-0.9003    2.5292    
+	Viga-Columna 2D C43-53:
+		Axial:		2.4331     -2.4331   
+		Corte:		408.4472   -408.4472 
+		Momento:	-2.5959    -3.4868   
+	Viga-Columna 2D C44-54:
+		Axial:		0.8753     -0.8753   
+		Corte:		612.6959   -612.6959 
+		Momento:	-0.9062    -1.2822   
+	Viga-Columna 2D C45-55:
+		Axial:		-0.8753    0.8753    
+		Corte:		612.6959   -612.6959 
+		Momento:	0.9062     1.2822    
+	Viga-Columna 2D C46-56:
+		Axial:		-2.4331    2.4331    
+		Corte:		408.4472   -408.4472 
+		Momento:	2.5959     3.4868    
+	Viga-Columna 2D C47-57:
+		Axial:		0.6515     -0.6515   
+		Corte:		66.9345    -66.9345  
+		Momento:	0.9003     -2.5292   
+	Viga-Columna 2D C48-58:
+		Axial:		-10.5025   10.5025   
+		Corte:		15.9224    -15.9224  
+		Momento:	5.6471     20.6092   
+	Viga-Columna 2D C52-61:
+		Axial:		10.0461    -10.0461  
+		Corte:		33.9040    -33.9040  
+		Momento:	-6.5080    -18.6072  
+	Viga-Columna 2D C53-62:
+		Axial:		2.7958     -2.7958   
+		Corte:		376.8620   -376.8620 
+		Momento:	-2.3961    -4.5933   
+	Viga-Columna 2D C54-63:
+		Axial:		0.8048     -0.8048   
+		Corte:		581.2340   -581.2340 
+		Momento:	-0.8625    -1.1496   
+	Viga-Columna 2D C55-64:
+		Axial:		-0.8048    0.8048    
+		Corte:		581.2340   -581.2340 
+		Momento:	0.8625     1.1496    
+	Viga-Columna 2D C56-65:
+		Axial:		-2.7958    2.7958    
+		Corte:		376.8620   -376.8620 
+		Momento:	2.3961     4.5933    
+	Viga-Columna 2D C57-66:
+		Axial:		-10.0461   10.0461   
+		Corte:		33.9040    -33.9040  
+		Momento:	6.5080     18.6072   
+	Viga-Columna 2D C61-71:
+		Axial:		12.4300    -12.4300  
+		Corte:		16.9513    -16.9513  
+		Momento:	-6.4312    -24.6439  
+	Viga-Columna 2D C62-72:
+		Axial:		-0.3780    0.3780    
+		Corte:		345.1990   -345.1990 
+		Momento:	-1.7370    2.6820    
+	Viga-Columna 2D C63-73:
+		Axial:		0.8132     -0.8132   
+		Corte:		549.8497   -549.8497 
+		Momento:	-1.3286    -0.7044   
+	Viga-Columna 2D C64-74:
+		Axial:		-0.8132    0.8132    
+		Corte:		549.8497   -549.8497 
+		Momento:	1.3286     0.7044    
+	Viga-Columna 2D C65-75:
+		Axial:		0.3780     -0.3780   
+		Corte:		345.1990   -345.1990 
+		Momento:	1.7370     -2.6820   
+	Viga-Columna 2D C66-76:
+		Axial:		-12.4300   12.4300   
+		Corte:		16.9513    -16.9513  
+		Momento:	6.4312     24.6439   
+	Viga-Columna 2D C72-81:
+		Axial:		9.4471     -9.4471   
+		Corte:		313.3599   -313.3599 
+		Momento:	-10.1586   -13.4592  
+	Viga-Columna 2D C73-82:
+		Axial:		1.7872     -1.7872   
+		Corte:		518.6401   -518.6401 
+		Momento:	-2.4287    -2.0393   
+	Viga-Columna 2D C74-83:
+		Axial:		-1.7872    1.7872    
+		Corte:		518.6401   -518.6401 
+		Momento:	2.4287     2.0393    
+	Viga-Columna 2D C75-84:
+		Axial:		-9.4471    9.4471    
+		Corte:		313.3599   -313.3599 
+		Momento:	10.1586    13.4592   
+	Viga-Columna 2D C81-91:
+		Axial:		9.5858     -9.5858   
+		Corte:		296.4969   -296.4969 
+		Momento:	-11.2785   -12.6859  
+	Viga-Columna 2D C82-92:
+		Axial:		1.3927     -1.3927   
+		Corte:		487.5031   -487.5031 
+		Momento:	-1.4612    -2.0206   
+	Viga-Columna 2D C83-93:
+		Axial:		-1.3927    1.3927    
+		Corte:		487.5031   -487.5031 
+		Momento:	1.4612     2.0206    
+	Viga-Columna 2D C84-94:
+		Axial:		-9.5858    9.5858    
+		Corte:		296.4969   -296.4969 
+		Momento:	11.2785    12.6859   
+	Viga-Columna 2D C91-101:
+		Axial:		9.9734     -9.9734   
+		Corte:		279.5567   -279.5567 
+		Momento:	-12.3457   -12.5876  
+	Viga-Columna 2D C92-102:
+		Axial:		1.5166     -1.5166   
+		Corte:		456.4433   -456.4433 
+		Momento:	-1.7837    -2.0078   
+	Viga-Columna 2D C93-103:
+		Axial:		-1.5166    1.5166    
+		Corte:		456.4433   -456.4433 
+		Momento:	1.7837     2.0078    
+	Viga-Columna 2D C94-104:
+		Axial:		-9.9734    9.9734    
+		Corte:		279.5567   -279.5567 
+		Momento:	12.3457    12.5876   
+	Viga-Columna 2D C101-111:
+		Axial:		10.2163    -10.2163  
+		Corte:		262.5277   -262.5277 
+		Momento:	-12.7992   -12.7415  
+	Viga-Columna 2D C102-112:
+		Axial:		1.7233     -1.7233   
+		Corte:		425.4723   -425.4723 
+		Momento:	-2.1446    -2.1635   
+	Viga-Columna 2D C103-113:
+		Axial:		-1.7233    1.7233    
+		Corte:		425.4723   -425.4723 
+		Momento:	2.1446     2.1635    
+	Viga-Columna 2D C104-114:
+		Axial:		-10.2163   10.2163   
+		Corte:		262.5277   -262.5277 
+		Momento:	12.7992    12.7415   
+	Viga-Columna 2D C111-121:
+		Axial:		10.3688    -10.3688  
+		Corte:		245.4107   -245.4107 
+		Momento:	-12.9982   -12.9238  
+	Viga-Columna 2D C112-122:
+		Axial:		1.8720     -1.8720   
+		Corte:		394.5893   -394.5893 
+		Momento:	-2.3385    -2.3415   
+	Viga-Columna 2D C113-123:
+		Axial:		-1.8720    1.8720    
+		Corte:		394.5893   -394.5893 
+		Momento:	2.3385     2.3415    
+	Viga-Columna 2D C114-124:
+		Axial:		-10.3688   10.3688   
+		Corte:		245.4107   -245.4107 
+		Momento:	12.9982    12.9238   
+	Viga-Columna 2D C121-131:
+		Axial:		10.5267    -10.5267  
+		Corte:		228.2128   -228.2128 
+		Momento:	-13.1410   -13.1758  
+	Viga-Columna 2D C122-132:
+		Axial:		1.9916     -1.9916   
+		Corte:		363.7872   -363.7872 
+		Momento:	-2.4829    -2.4960   
+	Viga-Columna 2D C123-133:
+		Axial:		-1.9916    1.9916    
+		Corte:		363.7872   -363.7872 
+		Momento:	2.4829     2.4960    
+	Viga-Columna 2D C124-134:
+		Axial:		-10.5267   10.5267   
+		Corte:		228.2128   -228.2128 
+		Momento:	13.1410    13.1758   
+	Viga-Columna 2D C131-141:
+		Axial:		10.7434    -10.7434  
+		Corte:		210.9429   -210.9429 
+		Momento:	-13.1771   -13.6814  
+	Viga-Columna 2D C132-142:
+		Axial:		2.1304     -2.1304   
+		Corte:		333.0571   -333.0571 
+		Momento:	-2.6167    -2.7093   
+	Viga-Columna 2D C133-143:
+		Axial:		-2.1304    2.1304    
+		Corte:		333.0571   -333.0571 
+		Momento:	2.6167     2.7093    
+	Viga-Columna 2D C134-144:
+		Axial:		-10.7434   10.7434   
+		Corte:		210.9429   -210.9429 
+		Momento:	13.1771    13.6814   
+	Viga-Columna 2D C141-151:
+		Axial:		10.7944    -10.7944  
+		Corte:		193.6151   -193.6151 
+		Momento:	-12.8957   -14.0902  
+	Viga-Columna 2D C142-152:
+		Axial:		2.5251     -2.5251   
+		Corte:		302.3849   -302.3849 
+		Momento:	-2.6386    -3.6741   
+	Viga-Columna 2D C143-153:
+		Axial:		-2.5251    2.5251    
+		Corte:		302.3849   -302.3849 
+		Momento:	2.6386     3.6741    
+	Viga-Columna 2D C144-154:
+		Axial:		-10.7944   10.7944   
+		Corte:		193.6151   -193.6151 
+		Momento:	12.8957    14.0902   
+	Viga-Columna 2D C151-161:
+		Axial:		10.1572    -10.1572  
+		Corte:		176.2576   -176.2576 
+		Momento:	-12.6026   -12.7905  
+	Viga-Columna 2D C152-162:
+		Axial:		2.7238     -2.7238   
+		Corte:		271.7424   -271.7424 
+		Momento:	-1.7595    -5.0501   
+	Viga-Columna 2D C153-163:
+		Axial:		-2.7238    2.7238    
+		Corte:		271.7424   -271.7424 
+		Momento:	1.7595     5.0501    
+	Viga-Columna 2D C154-164:
+		Axial:		-10.1572   10.1572   
+		Corte:		176.2576   -176.2576 
+		Momento:	12.6026    12.7905   
+	Viga-Columna 2D C161-171:
+		Axial:		10.2014    -10.2014  
+		Corte:		158.8938   -158.8938 
+		Momento:	-13.9814   -11.5222  
+	Viga-Columna 2D C162-172:
+		Axial:		-3.7131    3.7131    
+		Corte:		241.1062   -241.1062 
+		Momento:	-0.2430    9.5259    
+	Viga-Columna 2D C163-173:
+		Axial:		3.7131     -3.7131   
+		Corte:		241.1062   -241.1062 
+		Momento:	0.2430     -9.5259   
+	Viga-Columna 2D C164-174:
+		Axial:		-10.2014   10.2014   
+		Corte:		158.8938   -158.8938 
+		Momento:	13.9814    11.5222   
+	Viga-Columna 2D C171-181:
+		Axial:		11.6545    -11.6545  
+		Corte:		141.3284   -141.3284 
+		Momento:	-15.9303   -13.2060  
+	Viga-Columna 2D C172-182:
+		Axial:		-5.1662    5.1662    
+		Corte:		226.6716   -226.6716 
+		Momento:	5.4035     7.5120    
+	Viga-Columna 2D C173-183:
+		Axial:		5.1662     -5.1662   
+		Corte:		226.6716   -226.6716 
+		Momento:	-5.4035    -7.5120   
+	Viga-Columna 2D C174-184:
+		Axial:		-11.6545   11.6545   
+		Corte:		141.3284   -141.3284 
+		Momento:	15.9303    13.2060   
+	Viga-Columna 2D C181-191:
+		Axial:		11.9132    -11.9132  
+		Corte:		123.6550   -123.6550 
+		Momento:	-14.6890   -15.0939  
+	Viga-Columna 2D C182-192:
+		Axial:		-5.4249    5.4249    
+		Corte:		212.3450   -212.3450 
+		Momento:	6.9960     6.5661    
+	Viga-Columna 2D C183-193:
+		Axial:		5.4249     -5.4249   
+		Corte:		212.3450   -212.3450 
+		Momento:	-6.9960    -6.5661   
+	Viga-Columna 2D C184-194:
+		Axial:		-11.9132   11.9132   
+		Corte:		123.6550   -123.6550 
+		Momento:	14.6890    15.0939   
+	Viga-Columna 2D C191-201:
+		Axial:		11.6306    -11.6306  
+		Corte:		105.9448   -105.9448 
+		Momento:	-12.9488   -16.1276  
+	Viga-Columna 2D C192-202:
+		Axial:		-5.1423    5.1423    
+		Corte:		198.0552   -198.0552 
+		Momento:	7.7950     5.0607    
+	Viga-Columna 2D C193-203:
+		Axial:		5.1423     -5.1423   
+		Corte:		198.0552   -198.0552 
+		Momento:	-7.7950    -5.0607   
+	Viga-Columna 2D C194-204:
+		Axial:		-11.6306   11.6306   
+		Corte:		105.9448   -105.9448 
+		Momento:	12.9488    16.1276   
+	Viga-Columna 2D C201-211:
+		Axial:		10.2641    -10.2641  
+		Corte:		88.2613    -88.2613  
+		Momento:	-11.8006   -13.8596  
+	Viga-Columna 2D C202-212:
+		Axial:		-3.7758    3.7758    
+		Corte:		183.7387   -183.7387 
+		Momento:	9.3997     0.0398    
+	Viga-Columna 2D C203-213:
+		Axial:		3.7758     -3.7758   
+		Corte:		183.7387   -183.7387 
+		Momento:	-9.3997    -0.0398   
+	Viga-Columna 2D C204-214:
+		Axial:		-10.2641   10.2641   
+		Corte:		88.2613    -88.2613  
+		Momento:	11.8006    13.8596   
+	Viga-Columna 2D C211-221:
+		Axial:		10.6040    -10.6040  
+		Corte:		70.6737    -70.6737  
+		Momento:	-13.8108   -12.6993  
+	Viga-Columna 2D C212-222:
+		Axial:		3.3662     -3.3662   
+		Corte:		153.3263   -153.3263 
+		Momento:	-6.2028    -2.2128   
+	Viga-Columna 2D C213-223:
+		Axial:		-3.3662    3.3662    
+		Corte:		153.3263   -153.3263 
+		Momento:	6.2028     2.2128    
+	Viga-Columna 2D C214-224:
+		Axial:		-10.6040   10.6040   
+		Corte:		70.6737    -70.6737  
+		Momento:	13.8108    12.6993   
+	Viga-Columna 2D C221-231:
+		Axial:		11.8912    -11.8912  
+		Corte:		52.9760    -52.9760  
+		Momento:	-15.3617   -14.3663  
+	Viga-Columna 2D C222-232:
+		Axial:		3.5348     -3.5348   
+		Corte:		123.0240   -123.0240 
+		Momento:	-4.5766    -4.2604   
+	Viga-Columna 2D C223-233:
+		Axial:		-3.5348    3.5348    
+		Corte:		123.0240   -123.0240 
+		Momento:	4.5766     4.2604    
+	Viga-Columna 2D C224-234:
+		Axial:		-11.8912   11.8912   
+		Corte:		52.9760    -52.9760  
+		Momento:	15.3617    14.3663   
+	Viga-Columna 2D C231-241:
+		Axial:		13.3536    -13.3536  
+		Corte:		35.2238    -35.2238  
+		Momento:	-13.9242   -19.4597  
+	Viga-Columna 2D C232-242:
+		Axial:		2.9215     -2.9215   
+		Corte:		92.7762    -92.7762  
+		Momento:	-2.7460    -4.5577   
+	Viga-Columna 2D C233-243:
+		Axial:		-2.9215    2.9215    
+		Corte:		92.7762    -92.7762  
+		Momento:	2.7460     4.5577    
+	Viga-Columna 2D C234-244:
+		Axial:		-13.3536   13.3536   
+		Corte:		35.2238    -35.2238  
+		Momento:	13.9242    19.4597   
+	Viga-Columna 2D C241-251:
+		Axial:		14.1897    -14.1897  
+		Corte:		17.5354    -17.5354  
+		Momento:	-8.5120    -26.9623  
+	Viga-Columna 2D C242-252:
+		Axial:		-0.1178    0.1178    
+		Corte:		62.4646    -62.4646  
+		Momento:	-2.1956    2.4902    
+	Viga-Columna 2D C243-253:
+		Axial:		0.1178     -0.1178   
+		Corte:		62.4646    -62.4646  
+		Momento:	2.1956     -2.4902   
+	Viga-Columna 2D C244-254:
+		Axial:		-14.1897   14.1897   
+		Corte:		17.5354    -17.5354  
+		Momento:	8.5120     26.9623   
+	Viga-Columna 2D C252-262:
+		Axial:		9.2325     -9.2325   
+		Corte:		32.0000    -32.0000  
+		Momento:	-9.1890    -13.8923  
+	Viga-Columna 2D C253-263:
+		Axial:		-9.2325    9.2325    
+		Corte:		32.0000    -32.0000  
+		Momento:	9.1890     13.8923   
+	Viga-Columna 2D C262-272:
+		Axial:		11.2321    -11.2321  
+		Corte:		16.0000    -16.0000  
+		Momento:	-7.3245    -20.7558  
+	Viga-Columna 2D C263-273:
+		Axial:		-11.2321   11.2321   
+		Corte:		16.0000    -16.0000  
+		Momento:	7.3245     20.7558   
+
+-------------------------------------------------------------------------------
+Resultados del analisis dinamico
+-------------------------------------------------------------------------------
+
+Elemento: V11-12
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [18.3603    0.0530     0.2120]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V12-13
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [11.8611    -0.0811    -0.3243]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V13-14
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-8.0337    0.7284     2.9137]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V14-15
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [4.6412     1.1846     4.7384]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V15-16
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-0.9142    0.3129     1.2515]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V16-17
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-5.2128    1.1331     4.5323]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V17-18
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-8.0812    -0.7947    -3.1789]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V18-19
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-11.7323   -0.0848    -0.3392]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V19-110
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-18.3288   -0.0507    -0.2028]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V21-22
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [44.3469    0.0855     0.3419]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V22-23
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [40.5865    -0.1472    -0.5887]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V23-24
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [31.7401    1.3348     5.3393]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V24-25
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [15.7264    2.1712     8.6849]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V25-26
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-1.5771    0.5739     2.2956]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V26-27
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-16.8115   2.0766     8.3064]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V27-28
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-32.0891   -1.4568    -5.8273]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V28-29
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-40.6377   -0.1537    -0.6148]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V29-210
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-44.2892   0.0859     0.3436]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V31-32
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [179.9267   0.1369     0.5477]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V32-33
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [111.2129   -0.2106    -0.8425]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V33-34
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [60.0686    1.9403     7.7612]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V34-35
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [28.0574    3.1569     12.6274]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V35-36
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-2.0611    0.8355     3.3420]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V36-37
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-29.2671   3.0189     12.0757]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V37-38
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-60.6472   -2.1187    -8.4747]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V38-39
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-111.5844  -0.2194    -0.8777]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V39-310
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-180.1497  0.1271     0.5085]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V41-42
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [93.5205    -0.2708    -1.0833]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V42-43
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [69.5256    2.5443     10.1773]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V43-44
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [36.7287    4.1411     16.5643]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V44-45
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-2.2321    1.0979     4.3917]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V45-46
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-37.1778   3.9595     15.8381]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V46-47
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-69.6732   -2.7802    -11.1206]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V47-48
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-93.7522   -0.2818    -1.1273]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V51-52
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [149.5451   -0.3213    -1.2853]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V52-53
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [94.2268    3.1462     12.5846]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V53-54
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [43.9338    5.1234     20.4936]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V54-55
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-1.7574    1.3614     5.4457]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V55-56
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-43.6067   4.8979     19.5916]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V56-57
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-93.5049   -3.4410    -13.7639]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V57-58
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-149.6269  -0.3366    -1.3464]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V61-62
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-102.7619  3.7470     14.9878]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V62-63
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [41.4988    6.1033     24.4133]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V63-64
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1.5676     1.6262     6.5050]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V64-65
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-41.7689   5.8339     23.3354]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V65-66
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [102.9935   -4.1011    -16.4044]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V71-72
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [249.6523   4.3676     17.4704]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V72-73
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [107.6065   7.0805     28.3221]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V73-74
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-2.2048    1.8930     7.5720]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V74-75
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-108.1678  6.7673     27.0691]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V75-76
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-249.2959  -4.7667    -19.0667]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V81-82
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [61.3835    8.0540     32.2161]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V82-83
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-1.8801    2.1619     8.6477]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V83-84
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-61.7555   7.6963     30.7853]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V91-92
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-7.1671    9.0100     36.0399]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V92-93
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-1.2096    2.4325     9.7298]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V93-94
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [7.1002     8.6033     34.4131]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V101-102
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [3.5581     9.9473     39.7893]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V102-103
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-1.0424    2.7051     10.8204]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V103-104
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [3.2933     9.4869     37.9477]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V111-112
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-4.6300    10.8641    43.4563]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V112-113
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-0.9751    2.9802     11.9207]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V113-114
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [4.2299     10.3468    41.3872]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V121-122
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-4.1220    11.7569    47.0276]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V122-123
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-0.9284    3.2580     13.0319]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V123-124
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [3.7706     11.1822    44.7289]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V131-132
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-3.3898    12.6211    50.4844]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V132-133
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-0.7365    3.5387     14.1546]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V133-134
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [3.2100     11.9916    47.9664]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V141-142
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-5.1445    13.4508    53.8031]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V142-143
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [0.5974     3.8225     15.2900]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V143-144
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [5.0504     12.7718    51.0872]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V151-152
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-3.4544    14.2393    56.9573]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V152-153
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [0.5471     4.1097     16.4388]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V153-154
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [3.5050     13.5180    54.0722]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V161-162
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [37.6481    14.9796    59.9186]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V162-163
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [5.3266     4.4003     17.6011]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V163-164
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-39.1403   14.2238    56.8953]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V171-172
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [37.9879    15.6642    62.6567]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V173-174
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-38.8934   14.8812    59.5249]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V181-182
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [4.9689     16.2382    64.9529]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V183-184
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-4.8463    15.4363    61.7451]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V191-192
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-4.9358    16.6941    66.7765]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V193-194
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [5.0298     15.8785    63.5140]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V201-202
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-40.3875   17.0315    68.1261]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V203-204
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [40.1564    16.2045    64.8181]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V211-212
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-39.7520   17.2574    69.0297]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V212-213
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [5.0684     5.1336     20.5344]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V213-214
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [39.3408    16.4189    65.6757]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V221-222
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [3.2448     17.4247    69.6987]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V222-223
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-1.0531    5.1555     20.6222]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V223-224
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-3.0810    16.5758    66.3030]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V231-232
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-6.7657    17.5400    70.1600]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V232-233
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-1.2777    5.1813     20.7253]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V233-234
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-7.5751    16.6814    66.7257]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V241-242
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-28.7605   17.6097    70.4387]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V242-243
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [3.0045     5.2112     20.8447]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V243-244
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [28.6694    16.7422    66.9687]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V251-252
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-69.7239   17.6392    70.5567]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V252-253
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [13.2156    5.2448     20.9792]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V253-254
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [84.1131    16.7636    67.0543]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V261-262
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [8.0552     5.2793     21.1171]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: V271-272
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-0.9432    5.2964     21.1857]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C01-11
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [159.7103   -1608.3603 -2412.5404]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C02-12
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-156.4075  -1620.5114 -2430.7671]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C03-13
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [231.5280   -1628.3731 -2442.5597]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C04-14
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1240.2804  -1637.4356 -2456.1535]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C05-15
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-1009.3287 -1642.7004 -2464.0506]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C06-16
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1035.1641  -1642.1371 -2463.2056]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C07-17
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1297.5082  -1636.2243 -2454.3365]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C08-18
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [205.9874   -1627.1484 -2440.7226]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C09-19
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-187.7900  -1619.4558 -2429.1837]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C010-110
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-159.9704  -1607.4279 -2411.1418]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C11-21
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [117.4018   -4858.1053 -6072.6316]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C12-22
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-152.2556  -4850.7092 -6063.3865]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C13-23
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [223.8990   -4917.2604 -6146.5755]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C14-24
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1237.6119  -4964.2168 -6205.2710]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C15-25
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-1005.0201 -4986.0359 -6232.5449]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C16-26
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1031.0142  -4985.4256 -6231.7821]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C17-27
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1295.1089  -4962.6142 -6203.2678]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C18-28
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-199.5181  -4915.0686 -6143.8357]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C19-29
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-181.4456  -4848.1716 -6060.2145]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C110-210
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-117.6885  -4855.5904 -6069.4880]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C21-31
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [60.6848    -5504.8336 -6881.0420]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C22-32
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-144.1676  -5841.6974 -7302.1217]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C23-33
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [210.0085   -5981.7790 -7477.2237]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C24-34
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1233.4018  -6037.8725 -7547.3406]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C25-35
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-997.3368  -6062.0686 -7577.5857]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C26-36
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1023.6115  -6061.8178 -7577.2723]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C27-37
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1290.9307  -6037.1169 -7546.3962]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C28-38
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-188.3767  -5980.4788 -7475.5986]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C29-39
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-169.5458  -5839.5934 -7299.4918]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C210-310
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-60.8455   -5501.4152 -6876.7690]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C32-41
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-129.8787  -6453.7826 -8067.2283]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C33-42
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [191.3569   -6415.9010 -8019.8763]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C34-43
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1227.6677  -6435.4093 -8044.2616]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C35-44
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-986.3359  -6452.2170 -8065.2713]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C36-45
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1012.9989  -6452.1138 -8065.1422]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C37-46
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1285.1867  -6435.1603 -8043.9504]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C38-47
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-173.6042  -6415.5527 -8019.4409]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C39-48
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-150.4018  -6453.6963 -8067.1204]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C41-51
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-64.4979   -6338.5742 -7923.2177]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C42-52
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [169.2356   -6361.6986 -7952.1233]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C43-53
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1220.3398  -6407.2833 -8009.1042]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C44-54
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-972.2003  -6420.4721 -8025.5901]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C45-55
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [999.3374   -6420.0954 -8025.1193]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C46-56
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1278.1452  -6406.3098 -8007.8872]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C47-57
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-157.1882  -6360.3340 -7950.4175]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C48-58
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-72.8402   -6337.2273 -7921.5341]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C52-61
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [140.5151   -6144.7622 -7680.9527]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C53-62
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1211.9328  -6127.3487 -7659.1859]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C54-63
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-955.1479  -6121.4052 -7651.7565]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C55-64
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [982.7566   -6120.1350 -7650.1688]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C56-65
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1269.9871  -6123.6819 -7654.6023]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C57-66
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-137.0548  -6140.7514 -7675.9393]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C61-71
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [69.2709    -5692.0748 -7115.0935]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C62-72
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1203.0534  -5744.8991 -7181.1239]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C63-73
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-935.6409  -5832.9375 -7291.1719]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C64-74
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [963.6950   -5832.8266 -7291.0333]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C65-75
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1261.0698  -5744.7120 -7180.8901]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C66-76
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-64.0722   -5674.3812 -7092.9765]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C72-81
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1191.1971  -7549.6756 -9437.0945]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C73-82
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-913.8205  -7458.6520 -9323.3151]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C74-83
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [942.2827   -7458.8914 -9323.6143]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C75-84
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1251.4082  -7550.2879 -9437.8599]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C81-91
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1139.8333  -9247.9903 -11559.9879]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C82-92
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-889.2722  -9137.7212 -11422.1515]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C83-93
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [917.6674   -9137.7781 -11422.2226]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C84-94
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1225.2068  -9247.7956 -11559.7445]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C91-101
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1091.3861  -9975.8704 -12469.8380]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C92-102
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-863.1053  -9963.8877 -12454.8596]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C93-103
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [891.4092   -9963.9319 -12454.9149]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C94-104
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1191.7169  -9975.9170 -12469.8962]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C101-111
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1048.6650  -9999.5128 -12499.3909]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C102-112
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-835.4128  -10004.0950 -12505.1187]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C103-113
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [863.4310   -10004.1449 -12505.1811]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C104-114
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1149.5276  -9999.6261 -12499.5327]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C111-121
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1010.2351  9874.7681  12343.4601]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C112-122
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-806.3079  9877.1653  12346.4567]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C113-123
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [833.7017   9877.3023  12346.6278]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C114-124
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1098.2168  9875.0724  12343.8405]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C121-131
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [973.7054   9743.8268  12179.7835]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C122-132
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-775.9465  9746.7700  12183.4625]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C123-133
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [802.2749   9746.8828  12183.6035]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C124-134
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [1039.6751  9744.0910  12180.1138]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C131-141
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [935.9124   -9373.3044 -11716.6306]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C132-142
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-744.4640  -9376.8687 -11721.0859]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C133-143
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [769.1815   -9376.7259 -11720.9074]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C134-144
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [972.4222   -9373.0700 -11716.3375]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C141-151
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [893.1246   -8545.6101 -10682.0126]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C142-152
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-711.9403  -8541.8060 -10677.2575]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C143-153
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [734.3961   -8541.8096 -10677.2621]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C144-154
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-922.0437  -8545.7817 -10682.2271]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C151-161
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [841.4807   7808.3168  9760.3961]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C152-162
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-678.2724  7738.9859  9673.7323]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C153-163
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [697.7593   7747.0566  9683.8208]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C154-164
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-873.1617  7819.6289  9774.5362]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C161-171
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [778.5756   9182.8285  11478.5357]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C162-172
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-643.3305  9179.5317  11474.4147]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C163-173
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [659.1156   9206.1279  11507.6599]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C164-174
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-813.5998  9205.6590  11507.0737]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C171-181
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [700.4320   10356.8406 12946.0508]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C172-182
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-538.6011  10421.9010 13027.3762]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C173-183
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [571.5232   10437.6926 13047.1158]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C174-184
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-740.0085  10370.9768 12963.7210]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C181-191
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [609.6817   10869.9626 13587.4532]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C182-192
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-427.2720  10889.3665 13611.7081]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C183-193
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [472.8614   10889.1975 13611.4969]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C184-194
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-654.4314  10869.7915 13587.2394]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C191-201
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [510.6293   10589.6224 13237.0280]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C192-202
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [402.0383   10659.4120 13324.2650]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C193-203
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-413.2397  10650.9898 13313.7372]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C194-204
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-559.5039  10582.0433 13227.5541]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C201-211
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [409.0528   9592.2272  11990.2840]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C202-212
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [451.7108   9590.2554  11987.8192]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C203-213
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-466.9943  9585.0886  11981.3607]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C204-214
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-459.2650  9587.5922  11984.4902]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C211-221
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [313.0205   -8705.5499 -10881.9374]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C212-222
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [392.1269   -8640.4648 -10800.5811]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C213-223
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-410.9727  -8640.6971 -10800.8714]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C214-224
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-359.8786  -8706.1633 -10882.7042]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C221-231
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [222.3711   -8376.5108 -10470.6385]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C222-232
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [330.4761   -8376.2787 -10470.3484]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C223-233
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-353.9373  -8376.5231 -10470.6539]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C224-234
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-261.6838  -8377.1900 -10471.4875]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C231-241
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [139.0319   -7818.2153 -9772.7692]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C232-242
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [267.1045   -7848.7414 -9810.9267]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C233-243
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-296.1389  -7845.7722 -9807.2152]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C234-244
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-167.1818  -7813.7293 -9767.1617]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C241-251
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [64.4090    -7111.5415 -8889.4268]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C242-252
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [202.5125   -7154.8737 -8943.5922]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C243-253
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-237.6476  -7146.4939 -8933.1174]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C244-254
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-79.1103   -7085.9121 -8857.3901]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C252-262
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [140.9487   -6566.2338 -8207.7923]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C253-263
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-179.3532  -6570.6369 -8213.2961]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C262-272
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [65.9428    -5983.6963 -7479.6204]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada
+Elemento: C263-273
+	Carga: Registro Constitucion L+V
+		Esfuerzos: [-84.5296   -5991.5813 -7489.4766]
+	Carga Pulso no fue calculada
+	Carga Sinusoidal no fue calculada
+	Carga Generica Random no fue calculada

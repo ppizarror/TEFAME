@@ -1,0 +1,71 @@
+TEFAME - Toolbox para Elementos Finitos y Analisis
+         Matricial de Estructuras en MATLAB
+
+-------------------------------------------------------------------------------
+Propiedades de entrada modelo
+-------------------------------------------------------------------------------
+
+Nombre modelo: Tarea 2
+Nodos:
+	Numero de nodos: 4
+	Nodo N1: 0          0
+	Nodo N2: 800.0000   0
+	Nodo N3: 400.0000   400.0000
+	Nodo N4: 400.0000   800.0000
+
+Elementos:
+	Numero de elementos: 6
+	Biela2D E1:
+		Largo:	800
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D E2:
+		Largo:	565.6854
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D E3:
+		Largo:	565.6854
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D E4:
+		Largo:	894.4272
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D E5:
+		Largo:	400
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+	Biela2D E6:
+		Largo:	894.4272
+		Area:	20
+		Eo:		2248.089
+		Masa:	0
+
+-------------------------------------------------------------------------------
+Resultados del analisis estatico
+-------------------------------------------------------------------------------
+
+Desplazamientos nodos:
+	Nodo N1: 0          0
+	Nodo N2: 0.1423     0
+	Nodo N3: 0.0712     -0.1144
+	Nodo N4: 0.4769     -0.1450
+
+Reacciones:
+	Nodo N1: -8.1580    -2.0395
+	Nodo N2: 0          14.2765
+	Nodo N3: 0          0
+	Nodo N4: 0          0
+
+Esfuerzos Elementos:
+	Biela 2D E1:	-7.9976        TRACCION
+	Biela 2D E2:	2.4307         COMPRESION
+	Biela 2D E3:	2.4307         COMPRESION
+	Biela 2D E4:	-4.2019        TRACCION
+	Biela 2D E5:	3.4375         COMPRESION
+	Biela 2D E6:	14.04          COMPRESION
