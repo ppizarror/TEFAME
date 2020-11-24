@@ -16,7 +16,7 @@
 ## Métodos de análisis
 
 - Método de rigidez, análisis estático
-- Método modal espectral, análisis estático
+- Método modal espectral
   - Cálculo valores y vectores propios con múltiples metodologías (Vectores ritz, matriz de barrido, inversión por desplazamiento)
   - Cálculo de energía y esfuerzos
   - Soporte a disipadores
@@ -29,6 +29,7 @@
 - Membrana2D (Shell 2D)
 - Viga 2D
 - Viga-columna 2D
+- Viga-columna 3D
 
 ## Tipo de disipadores
 
