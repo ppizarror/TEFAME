@@ -72,10 +72,10 @@ classdef PatronDeCargas < ComponenteModelo
     
     properties(Access = protected)
         cargas % Variable que guarda en un arreglo de celdas todas las cargas aplicadas en el patron de cargas
+        patronEsDinamico
     end % protected properties PatronDeCargas
     
     properties(Access = public)
-        patronEsDinamico
     end % public properties PatronDeCargas
     
     methods(Access = public)
