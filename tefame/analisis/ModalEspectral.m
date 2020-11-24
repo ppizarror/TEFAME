@@ -186,6 +186,9 @@ classdef ModalEspectral < Analisis
             fprintf('Ejecutando analisis modal espectral:\n');
             fprintf('\tModelo %s:\n', obj.modeloObj.obtenerNombre());
             
+            % Inicia el modelo
+            obj.modeloObj.inicializar();
+            
             % Verifica que parametros obligatorios sean proporcionados
             if r.nModos <= 0
                 error('Numero de modos invalido');

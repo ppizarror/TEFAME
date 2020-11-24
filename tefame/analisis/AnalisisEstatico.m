@@ -157,6 +157,9 @@ classdef AnalisisEstatico < Analisis
             parse(p, varargin{:});
             r = p.Results;
             
+            % Inicia el modelo
+            obj.modeloObj.inicializar();
+            
             % Se definen los grados de libertad por nodo -> elementos
             obj.definirNumeracionGDL();
             
