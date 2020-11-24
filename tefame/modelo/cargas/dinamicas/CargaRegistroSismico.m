@@ -99,11 +99,11 @@ classdef CargaRegistroSismico < CargaDinamica
     methods(Access = public)
         
         function obj = CargaRegistroSismico(etiquetaCargaRegistroSismico, registro, direccion, tInicio, tAnalisis)
-            % CargaRegistroSismico: es el constructor de la clase CargaNodo
+            % CargaRegistroSismico: es el constructor de la clase CargaRegistroSismico
             %
             % Crea una carga del tipo registro de aceleracion, requiere un
             % vector registro [Nxr], una direccion [1xr] y un tiempo maximo
-            % de analisis, dt lo obtiene del registro
+            % de analisis, dt lo obtiene del registro. Es aplicada en nodos
             
             if nargin == 0
                 etiquetaCargaRegistroSismico = '';
