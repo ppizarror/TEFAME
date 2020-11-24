@@ -36,7 +36,7 @@
 %| SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.               |
 %|______________________________________________________________________|
 
-TEFAME_ver = 'v2.30';
+TEFAME_ver = 'v2.4.0';
 
 % Agrega las carpetas de la plataforma TEFAME al path
 addpath('tefame');

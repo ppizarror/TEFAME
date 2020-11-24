@@ -294,9 +294,9 @@ classdef Nodo < ComponenteModelo
             %
             % Agrega al vector de reacciones del Nodo (obj), el vector de
             % fuerzas resistente de un elemento entregados (cargaNodo)
+            
             % Se procede a sumar el vector con las fuerzas resistente entregada
             % de un elemento al vector de reacciones del nodo
-            
             obj.reacciones = obj.reacciones + esfuerzosElemento;
             
         end % agregarEsfuerzoAReaccion function
@@ -309,7 +309,6 @@ classdef Nodo < ComponenteModelo
             % Inicializa los diferentes vectores del Nodo que estan guardados en
             % este (obj), para poder preparar estos para realizar el analisis
             
-            % Se inicializan en zero los vectores del tamano de los numero de GDL
             obj.despl = zeros(obj.nGDL, 1);
             obj.reacciones = zeros(obj.nGDL, 1);
             obj.cargas = zeros(obj.nGDL, 1);
@@ -324,7 +323,6 @@ classdef Nodo < ComponenteModelo
             % Guarda las propiedades de los Nodos (obj), en un archivo de
             % salida (archivoSalidaHandle)
             
-            % Se procede a imprimir en el archivo
             fprintf(archivoSalidaHandle, ['\tNodo ', obj.obtenerEtiqueta(), ': ']);
             Crds = arrayNum2str(obj.coords, length(obj.coords));
             fprintf(archivoSalidaHandle, '%s\n', [Crds{2:end-1}]);
@@ -339,7 +337,6 @@ classdef Nodo < ComponenteModelo
             % Guarda el vector de desplazamientos del Nodo (obj), en un archivo
             % de salida (archivoSalidaHandle)
             
-            % Se procede a imprimir en el archivo
             fprintf(archivoSalidaHandle, ['\tNodo ', obj.obtenerEtiqueta(), ': ']);
             desplazamientos = arrayNum2str(round(obj.despl, 5), length(obj.despl));
             fprintf(archivoSalidaHandle, '%s\n', [desplazamientos{2:end-1}]);
@@ -354,7 +351,6 @@ classdef Nodo < ComponenteModelo
             % Guarda el vector de reacciones del Nodo (obj), en un archivo
             % de salida (archivoSalidaHandle)
             
-            % Se procede a imprimir en el archivo
             fprintf(archivoSalidaHandle, ['\tNodo ', obj.obtenerEtiqueta(), ': ']);
             reacc = arrayNum2str(obj.reacciones, length(obj.despl));
             fprintf(archivoSalidaHandle, '%s\n', [reacc{2:end-1}]);
@@ -370,7 +366,7 @@ classdef Nodo < ComponenteModelo
             
             coord = obj.obtenerCoordenadas();
             if ~length(deformada) == 0
-                for i=1:length(coord)
+                for i = 1:length(coord)
                     coord(i) = coord(i) + deformada(i);
                 end
             end
