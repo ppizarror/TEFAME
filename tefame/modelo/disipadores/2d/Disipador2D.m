@@ -16,9 +16,7 @@
 %|                                                                      |
 %| Clase Disipador2D                                                    |
 %|                                                                      |
-%| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |
-%| es una  subclase de la clase Disipador y  corresponde a la           |
-%| representacion de un disipador viscoso en 2D.                        |
+%| Clase abstracta que define un disipador                              |
 %|______________________________________________________________________|
 %|                                                                      |
 %| MIT License                                                          |
