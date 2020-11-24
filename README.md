@@ -44,7 +44,7 @@
 
 ## Combinaciones de cargas
 
-  Se da soporte a combinación elástica de cargas
+- Se da soporte a combinación elástica de cargas
 
 ## Tipo de cargas
 
