@@ -2,30 +2,30 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of Biela2D</title>
-  <meta name="keywords" content="Biela2D">
+  <title>Description of DisipadorFriccionalPuro2D</title>
+  <meta name="keywords" content="DisipadorFriccionalPuro2D">
   <meta name="description" content="|______________________________________________________________________|">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
-  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
   <script type="text/javascript">
-    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+    if (top.frames.length == 0) { top.location = "../../../../index.html"; };
   </script>
 </head>
 <body>
 <a name="_top"></a>
-<!-- # tefame --><!-- # modelo --><!-- menu.html elementos -->
-<h1>Biela2D
+<!-- # tefame --><!-- # modelo --><!-- ../menu.html disipadores --><!-- menu.html 2d -->
+<h1>DisipadorFriccionalPuro2D
 </h1>
 
-<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="box"><strong>|______________________________________________________________________|</strong></div>
 
-<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="box"><strong>This is a script file. </strong></div>
 
-<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment">|______________________________________________________________________|
 |                                                                      |
 |          TEFAME - Toolbox para Elementos Finitos y Analisis          |
@@ -42,12 +42,11 @@
 | Repositorio: https://github.com/ppizarror/TEFAME                     |
 |______________________________________________________________________|
 |                                                                      |
-| Clase Biela2D                                                        |
+| Clase DisipadorFriccionalPuro2D                                      |
 |                                                                      |
-| Este archivo contiene la definicion de la Clase Biela2D              |
-| Biela2D  es una  subclase de la  clase Elemento y  corresponde a  la |
-| representacion del elemento  biela o  barra que solo tiene  esfuerzo |
-| Axiales.                                                             |
+| Este archivo contiene la definicion de la Clase DisipadorViscoso 2D  |
+| es una  subclase de la clase Disipador2D y  corresponde a            |
+| la representacion de un disipador viscoso en 2D.                     |
 |______________________________________________________________________|
 |                                                                      |
 | MIT License                                                          |
@@ -74,8 +73,10 @@
 |______________________________________________________________________|
 
   Methods(Access=public):
-       obj = Biela2D(etiquetaBiela,nodo1Obj,nodo2Obj,AreaSeccion,Ematerial,densidad)
-       ae = obtenerAE(obj)
+       actualizardDisipador(obj,w,carga)
+       definirGDLID(obj)
+       obj = DisipadorFriccionalPuro2D(etiquetaDisipador,nodo1Obj,nodo2Obj,Cd,alpha)
+       disp(obj)
        fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
        fr_local = obtenerFuerzaResistenteCoordLocal(obj)
        gdlIDBiela = obtenerGDLID(obj)
@@ -85,33 +86,26 @@
        nodosBiela = obtenerNodos(obj)
        numeroGDL = obtenerNumeroGDL(obj)
        numeroNodos = obtenerNumeroNodos(obj)
+       plot(obj,tipoLinea,grosorLinea,colorLinea)
        T = obtenerMatrizTransformacion(obj)
-       theta = obtenerAngulo(obj)
-       theta = obtenerAngulo(obj)
-       definirGDLID(obj)
-       sumarCargaTemperaturaReaccion(obj,f)
-       agregarFuerzaResistenteAReacciones(obj)
-       guardarPropiedades(obj,archivoSalidaHandle)
-       guardarEsfuerzosInternos(obj,archivoSalidaHandle)
-       disp(obj)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(obj)
        e = equals(obj,obj)
        objID = obtenerIDObjeto(obj)</pre></div>
 
 <!-- crossreference -->
-<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 This function calls:
-<ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	|______________________________________________________________________|</li><li><a href="Biela2D.html" class="code" title="">Biela2D</a>	|______________________________________________________________________|</li><li><a href="Elemento.html" class="code" title="">Elemento</a>	|______________________________________________________________________|</li><li><a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	|______________________________________________________________________|</li><li><a href="Disipador2D.html" class="code" title="">Disipador2D</a>	|______________________________________________________________________|</li><li><a href="DisipadorFriccionalPuro2D.html" class="code" title="">DisipadorFriccionalPuro2D</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
 This function is called by:
-<ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="Biela2D.html" class="code" title="">Biela2D</a>	|______________________________________________________________________|</li></ul>
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="DisipadorFriccionalPuro2D.html" class="code" title="">DisipadorFriccionalPuro2D</a>	|______________________________________________________________________|</li></ul>
 <!-- crossreference -->
 
 
 
 
-<hr><address>Generated on Fri 31-Jul-2020 15:50:56 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Tue 24-Nov-2020 01:42:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>

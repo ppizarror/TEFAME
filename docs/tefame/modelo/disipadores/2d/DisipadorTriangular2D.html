@@ -2,30 +2,30 @@
                 "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
-  <title>Description of VigaColumna2D</title>
-  <meta name="keywords" content="VigaColumna2D">
+  <title>Description of DisipadorTriangular2D</title>
+  <meta name="keywords" content="DisipadorTriangular2D">
   <meta name="description" content="|______________________________________________________________________|">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
   <meta name="robots" content="index, follow">
-  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
   <script type="text/javascript">
-    if (top.frames.length == 0) { top.location = "../../../index.html"; };
+    if (top.frames.length == 0) { top.location = "../../../../index.html"; };
   </script>
 </head>
 <body>
 <a name="_top"></a>
-<!-- # tefame --><!-- # modelo --><!-- menu.html elementos -->
-<h1>VigaColumna2D
+<!-- # tefame --><!-- # modelo --><!-- ../menu.html disipadores --><!-- menu.html 2d -->
+<h1>DisipadorTriangular2D
 </h1>
 
-<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="box"><strong>|______________________________________________________________________|</strong></div>
 
-<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="box"><strong>This is a script file. </strong></div>
 
-<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 <div class="fragment"><pre class="comment">|______________________________________________________________________|
 |                                                                      |
 |          TEFAME - Toolbox para Elementos Finitos y Analisis          |
@@ -42,12 +42,11 @@
 | Repositorio: https://github.com/ppizarror/TEFAME                     |
 |______________________________________________________________________|
 |                                                                      |
-| Clase VigaColumna2D                                                  |
+| Clase DisipadorTriangular2D                                          |
 |                                                                      |
-| Este archivo contiene la definicion de la Clase VigaColumna 2D       |
-| ColumnaViga2D es una  subclase de la clase Elemento y  corresponde a |
-| la representacion del elemento viga-columna que transmite esfuerzos  |
-| axiales y de corte.                                                  |
+| Este archivo contiene la definicion de la Clase DisipadorTriangular2D|
+| es una  subclase de la clase Disipador2D y corresponde a la represe- |
+| ntacion de un disipador triangular planar.                           |
 |______________________________________________________________________|
 |                                                                      |
 | MIT License                                                          |
@@ -74,43 +73,39 @@
 |______________________________________________________________________|
 
   Methods(Access=public):
-       obj = VigaColumna2D(etiquetaViga,nodo1Obj,nodo2Obj,Imaterial,Ematerial,densidad)
+       actualizarDisipador(obj,w,carga)
+       definirGDLID(obj)
+       obj = DisipadorTriangular2D(etiquetaDisipador,nodo1Obj,nodo2Obj,k1,k2)
+       disp(obj)
        fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
        fr_local = obtenerFuerzaResistenteCoordLocal(obj)
        gdlIDBiela = obtenerGDLID(obj)
        k_global = obtenerMatrizRigidezCoordGlobal(obj)
        k_local = obtenerMatrizRigidezCoordLocal(obj)
        l = obtenerLargo(obj)
-       m = obtenerMasa(obj)
-       m_masa = obtenerVectorMasa(obj)
        nodosBiela = obtenerNodos(obj)
        numeroGDL = obtenerNumeroGDL(obj)
        numeroNodos = obtenerNumeroNodos(obj)
+       plot(obj,tipoLinea,grosorLinea,colorLinea)
        T = obtenerMatrizTransformacion(obj)
-       theta = obtenerAngulo(obj)
-       agregarFuerzaResistenteAReacciones(obj)
-       definirGDLID(obj)
-       disp(obj)
-       guardarEsfuerzosInternos(obj,archivoSalidaHandle)
-       guardarPropiedades(obj,archivoSalidaHandle)
   Methods SuperClass (ComponenteModelo):
        etiqueta = obtenerEtiqueta(obj)
        e = equals(obj,obj)
        objID = obtenerIDObjeto(obj)</pre></div>
 
 <!-- crossreference -->
-<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
 This function calls:
-<ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	|______________________________________________________________________|</li><li><a href="Elemento.html" class="code" title="">Elemento</a>	|______________________________________________________________________|</li><li><a href="VigaColumna2D.html" class="code" title="">VigaColumna2D</a>	|______________________________________________________________________|</li><li><a href="../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../tefame/modelo/base/ComponenteModelo.html" class="code" title="">ComponenteModelo</a>	|______________________________________________________________________|</li><li><a href="Disipador2D.html" class="code" title="">Disipador2D</a>	|______________________________________________________________________|</li><li><a href="DisipadorTriangular2D.html" class="code" title="">DisipadorTriangular2D</a>	|______________________________________________________________________|</li><li><a href="../../../../tefame/utils/dispMetodoTEFAME.html" class="code" title="function dispMetodoTEFAME()">dispMetodoTEFAME</a>	dispMetodoTEFAME: Normaliza la salida estandar disp en consola de los</li></ul>
 This function is called by:
-<ul style="list-style-image:url(../../../matlabicon.gif)">
-<li><a href="VigaColumna2D.html" class="code" title="">VigaColumna2D</a>	|______________________________________________________________________|</li></ul>
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="DisipadorTriangular2D.html" class="code" title="">DisipadorTriangular2D</a>	|______________________________________________________________________|</li></ul>
 <!-- crossreference -->
 
 
 
 
-<hr><address>Generated on Fri 31-Jul-2020 15:50:56 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+<hr><address>Generated on Tue 24-Nov-2020 01:42:04 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
 </body>
 </html>
