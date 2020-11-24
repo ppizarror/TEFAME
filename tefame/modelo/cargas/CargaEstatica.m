@@ -89,7 +89,7 @@ classdef CargaEstatica < ComponenteModelo
             % Llamamos al constructor de la SuperClass que es la clase ComponenteModelo
             obj = obj@ComponenteModelo(etiquetaCarga);
             obj.cargaActiva = true;
-            obj.cargaSumoMasa = false;
+            obj.cargaSumoMasa = true;
             obj.factorCargaMasa = 0;
             obj.factorUnidadMasa = 1;
             
@@ -98,14 +98,14 @@ classdef CargaEstatica < ComponenteModelo
         function bloquearCargaMasa(obj)
             % bloquearCargaMasa: La carga deja de sumar masa
             
-            obj.cargaSumoMasa = true;
+            obj.cargaSumoMasa = false;
             
         end % bloquearCargaMasa function
         
         function c = cargaSumaMasa(obj)
             % cargaSumaMasa: Indica que la carga suma masa al sistema
             
-            c = ~obj.cargaSumoMasa;
+            c = obj.cargaSumoMasa;
             
         end % cargaSumaMasa function
         

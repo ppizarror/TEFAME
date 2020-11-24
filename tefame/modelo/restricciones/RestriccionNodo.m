@@ -62,12 +62,11 @@ classdef RestriccionNodo < ComponenteModelo
     properties(Access = private)
         gdlRestringidos % Grados de libertad restringidos
         nodoObj % Nodos
-        valoresRestriccion % Restriccion de los nodos
     end % private properties RestriccionNodo
     
     methods(Access = public)
         
-        function obj = RestriccionNodo(etiquetaRestriccion, nodoObjeto, gdlRestringidosNodo, ~)
+        function obj = RestriccionNodo(etiquetaRestriccion, nodoObjeto, gdlRestringidosNodo)
             % RestriccionNodo: es el constructor de la clase RestriccionNodo
             % Crea un objeto de la clase RestriccionNodo, con un identificador
             % unico (etiquetaRestriccion), indicando a que nodo restringe (nodoObjeto)
