@@ -113,9 +113,13 @@ classdef Biela2D < Elemento
             coordNodo1 = nodo1Obj.obtenerCoordenadas();
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             
-            obj.dx = coordNodo2(1)-coordNodo1(1);
-            obj.dy = coordNodo2(2)-coordNodo1(2);
+            obj.dx = coordNodo2(1) - coordNodo1(1);
+            obj.dy = coordNodo2(2) - coordNodo1(2);
             obj.theta = atan(obj.dy/obj.dx);
+            obj.T = [cos(obj.theta), sin(obj.theta), 0, 0; ...
+                -sin(obj.theta), cos(obj.theta), 0, 0; ...
+                0, 0, cos(obj.theta), sin(obj.theta); ...
+                0, 0, -sin(obj.theta), cos(obj.theta);];
             
             obj.L = sqrt(obj.dx^2+obj.dy^2);
             obj.TcargaReacc = [0, 0, 0, 0]';
@@ -210,17 +214,8 @@ classdef Biela2D < Elemento
             % Obtiene la matriz de coordenadas locales
             k_local = obj.obtenerMatrizRigidezCoordLocal();
             
-            % Obtiene el angulo
-            tht = obj.obtenerAngulo();
-            
-            % Se crea matriz de transformacion
-            t_theta = [cos(tht), sin(tht), 0, 0; ...
-                -sin(tht), cos(tht), 0, 0; ...
-                0, 0, cos(tht), sin(tht); ...
-                0, 0, -sin(tht), cos(tht);];
-            
             % Multiplica k*t_theta
-            k_global = t_theta' * k_local * t_theta;
+            k_global = obj.T' * k_local * obj.T;
             
         end % obtenerMatrizRigidezCoordGlobal function
         
@@ -243,15 +238,8 @@ classdef Biela2D < Elemento
             % Obtiene fr local
             fr_local = obj.obtenerFuerzaResistenteCoordLocal();
             
-            % Calcula matriz transformacion
-            tht = obj.obtenerAngulo();
-            t_theta = [cos(tht), sin(tht), 0, 0; ...
-                -sin(tht), cos(tht), 0, 0; ...
-                0, 0, cos(tht), sin(tht); ...
-                0, 0, -sin(tht), cos(tht);];
-            
             % Calcula fuerza resistente global
-            fr_global = t_theta' * fr_local;
+            fr_global = obj.T' * fr_local;
             
         end % obtenerFuerzaResistenteCoordGlobal function
         
@@ -270,15 +258,8 @@ classdef Biela2D < Elemento
             % Vector desplazamientos u'
             u = [u1(1); u1(2); u2(1); u2(2)];
             
-            % Calcula matriz de transformacion
-            tht = obj.obtenerAngulo();
-            t_theta = [cos(tht), sin(tht), 0, 0; ...
-                -sin(tht), cos(tht), 0, 0; ...
-                0, 0, cos(tht), sin(tht); ...
-                0, 0, -sin(tht), cos(tht);];
-            
             % Calcula u''
-            f = t_theta * u;
+            f = obj.T * u;
             
             % Obtiene K local
             k_local = obj.obtenerMatrizRigidezCoordLocal();
@@ -380,7 +361,7 @@ classdef Biela2D < Elemento
             
             % Si hay deformadas
             if ~isempty(deformadas)
-                for i=1:length(coord1)
+                for i = 1:length(coord1)
                     coord1(i) = coord1(i) + deformadas{1}(i);
                     coord2(i) = coord2(i) + deformadas{2}(i);
                 end
