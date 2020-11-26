@@ -214,7 +214,7 @@ classdef AnalisisEstatico < Analisis
                         
                         % Si corresponden a grados de libertad -> puntos en (i,j)
                         % se suma contribucion metodo indicial
-                        if (i_ ~= 0 && j_ ~= 0)
+                        if (i_ > 0 && j_ > 0)
                             obj.Kt(i_, j_) = obj.Kt(i_, j_) + k_globl_elem(r, s);
                         end
                     end % for s
@@ -270,7 +270,7 @@ classdef AnalisisEstatico < Analisis
                 % hay una carga aplicada en ese grado de libertad para
                 % lograr el equilibrio
                 for j = 1:ngdlid
-                    if (gdl(j) ~= 0)
+                    if gdl(j) > 0
                         obj.F(gdl(j)) = cargas(j);
                     end
                 end % for j

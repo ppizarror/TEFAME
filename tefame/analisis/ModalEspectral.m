@@ -4257,7 +4257,7 @@ classdef ModalEspectral < Analisis
                         
                         % Si corresponden a grados de libertad -> puntos en (i,j)
                         % se suma contribucion metodo indicial
-                        if (i_ ~= 0 && j_ ~= 0)
+                        if (i_ > 0 && j_ > 0)
                             obj.Kt(i_, j_) = obj.Kt(i_, j_) + k_globl_elem(r, s);
                         end
                         
@@ -4493,7 +4493,7 @@ classdef ModalEspectral < Analisis
                 % hay una carga aplicada en ese grado de libertad para
                 % lograr el equilibrio
                 for j = 1:ngdlid
-                    if (gdl(j) ~= 0)
+                    if gdl(j) > 0
                         obj.F(gdl(j)) = cargas(j);
                     end
                 end % for j
@@ -4677,7 +4677,7 @@ classdef ModalEspectral < Analisis
                     coordi = coord;
                     if (obj.analisisFinalizado && modo > 0) || defcarga
                         def = obj.obtenerDeformadaNodo(nodoElemento{j}, modo, gdl, defcarga, carga, -1);
-                        for k=1:length(coord)
+                        for k = 1:length(coord)
                             coordi(k) = coord(k) + def(k) .* factor;
                         end
                     end

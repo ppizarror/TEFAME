@@ -394,7 +394,7 @@ classdef Modelo < handle
                 ngrados = nodo.obtenerNumeroGDL();
                 d = zeros(ngrados, 1);
                 for j = 1:ngrados
-                    if (gdlnodo(j) ~= 0)
+                    if gdlnodo(j) > 0
                         d(j) = u(gdlnodo(j));
                     end
                 end % for j
