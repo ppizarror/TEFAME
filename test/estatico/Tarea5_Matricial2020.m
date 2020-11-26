@@ -58,4 +58,4 @@ modeloObj.agregarPatronesDeCargas(PatronesDeCargas);
 analisisObj = AnalisisEstatico(modeloObj);
 analisisObj.analizar();
 analisisObj.plot('deformada', true, 'defElem', false, 'factor', 20, 'unidad', 'mm');
-modeloObj.guardarResultados('test/personal/out/Tarea5_Matricial2020.txt');
+modeloObj.guardarResultados('test/estatico/out/Tarea5_Matricial2020.txt');
