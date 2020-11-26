@@ -109,15 +109,18 @@ classdef CargaBielaTemperatura < CargaEstatica
         function c = calcularCarga(obj)
             % calcularCarga: Calcula la carga
             
-            c = obj.carga;
+            c = [-obj.carga; 0; obj.carga; 0];
             
         end % calcularCarga function
         
         function masa = obtenerMasa(obj)
             % obtenerMasa: Obtiene la masa asociada a la carga
             
-            c = obj.calcularCarga();
-            masa = abs(c) .* (obj.factorCargaMasa * obj.factorUnidadMasa);
+            if isa(obj.elemObj, 'Biela2D')
+                masa = [0, 0, 0, 0];
+            elseif isa(obj.elemObj, 'Biela3D')
+                masa = [0, 0, 0, 0, 0, 0];
+            end
             
         end % obtenerMasa function
         
@@ -125,17 +128,17 @@ classdef CargaBielaTemperatura < CargaEstatica
             % aplicarCarga: es un metodo de la clase CargaBielaTemperatura
             % que se usa para aplicar la carga en los nodos
             
-            % Obtiene el angulo de la Biela
-            theta = obj.elemObj.obtenerAngulo();
-            
             % Carga sin cambiar el angulo
-            c = obj.calcularCarga();
+            cTemp = (obj.elemObj.obtenerMatrizTransformacion()' * obj.calcularCarga() * factorDeCarga)';
             
-            % Genera las cargas nodales
-            vectorCarga1 = factorDeCarga * [-c * cos(theta), -c * sin(theta)]';
-            vectorCarga2 = factorDeCarga * [c * cos(theta), c * sin(theta)]';
-            obj.elemObj.sumarCargaTemperaturaReaccion( ...
-                factorDeCarga*[vectorCarga1(1), vectorCarga1(2), vectorCarga2(1), vectorCarga2(2)]');
+            if isa(obj.elemObj, 'Biela2D')
+                vectorCarga1 = [cTemp(1), cTemp(2)]';
+                vectorCarga2 = [cTemp(3), cTemp(4)]';
+            elseif isa(obj.elemObj, 'Biela3D')
+                vectorCarga1 = [cTemp(1), cTemp(2), cTemp(3)]';
+                vectorCarga2 = [cTemp(4), cTemp(5), cTemp(6)]';
+            end
+            obj.elemObj.sumarCargaTemperaturaReaccion(cTemp);
             
             % Aplica vectores de carga
             nodos = obj.elemObj.obtenerNodos();
