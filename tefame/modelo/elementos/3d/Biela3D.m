@@ -81,6 +81,7 @@ classdef Biela3D < Elemento
         nodosObj % Cell con los nodos
         rho % Densidad de la biela
         T % Matriz de transformacion
+        TcargaReacc % Reaccion de la biela guardada como un vector
     end % private properties Biela3D
     
     methods(Access = public)
@@ -108,9 +109,9 @@ classdef Biela3D < Elemento
             coordNodo2 = nodo2Obj.obtenerCoordenadas();
             
             % Calcula propiedades geometricas
-            obj.dx = coordNodo2(1)-coordNodo1(1);
-            obj.dy = coordNodo2(2)-coordNodo1(2);
-            obj.dz = coordNodo2(3)-coordNodo1(3);
+            obj.dx = coordNodo2(1) - coordNodo1(1);
+            obj.dy = coordNodo2(2) - coordNodo1(2);
+            obj.dz = coordNodo2(3) - coordNodo1(3);
             obj.rho = densidad;
             
             % Largo de la biela
@@ -121,6 +122,8 @@ classdef Biela3D < Elemento
             cosy = obj.dy / obj.L;
             cosz = obj.dz / obj.L;
             obj.T = [cosx, cosy, cosz, 0, 0, 0; 0, 0, 0, cosx, cosy, cosz];
+            
+            obj.TcargaReacc = [0, 0, 0, 0, 0, 0]';
             
         end % Biela2D constructor
         
@@ -206,6 +209,17 @@ classdef Biela3D < Elemento
             
         end % obtenerMatrizRigidezCoordLocal function
         
+        function sumarCargaTemperaturaReaccion(obj, f)
+            % sumarCargaTemperaturaReaccion: Suma temperatura a reacciones
+            
+            for i = 1:length(f)
+                if (obj.gdlID(i) == 0)
+                    obj.TcargaReacc(i) = obj.TcargaReacc(i) + f(i);
+                end
+            end % for i
+            
+        end % sumarCargaTemperaturaReaccion function
+        
         function fr_global = obtenerFuerzaResistenteCoordGlobal(obj)
             % obtenerFuerzaResistenteCoordGlobal: Retorna la fuerza
             % resistente en coordenadas globales
@@ -279,6 +293,10 @@ classdef Biela3D < Elemento
             nodo1 = obj.nodosObj{1};
             nodo2 = obj.nodosObj{2};
             
+            % Suma fuerza de temperatura en reacciones
+            nodo1.agregarEsfuerzosElementoAReaccion(-[obj.TcargaReacc(1); obj.TcargaReacc(2); obj.TcargaReacc(3)]);
+            nodo2.agregarEsfuerzosElementoAReaccion(-[obj.TcargaReacc(4); obj.TcargaReacc(5); obj.TcargaReacc(6)]);
+            
             % Agrega fuerzas resistentes como cargas
             nodo1.agregarEsfuerzosElementoAReaccion([fr_global(1); fr_global(2); fr_global(3)]);
             nodo2.agregarEsfuerzosElementoAReaccion([fr_global(4); fr_global(5); fr_global(6)]);
@@ -342,7 +360,7 @@ classdef Biela3D < Elemento
             
             % Si hay deformadas
             if ~isempty(deformadas)
-                for i=1:length(coord1)
+                for i = 1:length(coord1)
                     coord1(i) = coord1(i) + deformadas{1}(i);
                     coord2(i) = coord2(i) + deformadas{2}(i);
                 end
@@ -361,10 +379,6 @@ classdef Biela3D < Elemento
             disp@ComponenteModelo(obj);
             fprintf('\tLargo: %s\tArea: %s\tE: %s\n', pad(num2str(obj.L), 12), ...
                 pad(num2str(obj.Ao), 10), pad(num2str(obj.Eo), 10));
-            
-            % Imprime la matiz de transformacion
-            fprintf('\tMatriz de transformacion:\n');
-            disp(obj.T);
             
             % Se imprime matriz de rigidez local
             fprintf('\tMatriz de rigidez coordenadas locales:\n');

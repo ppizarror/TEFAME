@@ -40,7 +40,7 @@
 fprintf('>\tEJEMPLOCLASE_ENREJADO3D\n');
 
 % Creamos el modelo
-modeloObj = Modelo(3, 1);
+modeloObj = Modelo(3, 3);
 modeloObj.definirNombre('Enrejado 3D');
 
 % Creamos los nodos
