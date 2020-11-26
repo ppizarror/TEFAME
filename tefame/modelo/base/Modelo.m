@@ -474,7 +474,7 @@ classdef Modelo < handle
             fprintf(archivoSalida, '\n');
             
             % Se procede a guardar los esfuerzos en los elementos
-            fprintf(archivoSalida, 'Esfuerzos Elementos:');
+            fprintf(archivoSalida, 'Esfuerzos Elementos (Local):');
             for i = 1:length(obj.elementos)
                 obj.elementos{i}.guardarEsfuerzosInternos(archivoSalida);
             end % for i

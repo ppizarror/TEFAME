@@ -83,7 +83,7 @@ Reacciones:
 	Nodo E: 0          1.5000
 	Nodo F: 0          0
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Biela 2D AB:	1.5            COMPRESION
 	Biela 2D AC:	0              --
 	Biela 2D BC:	-0.70711       TRACCION

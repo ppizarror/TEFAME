@@ -54,12 +54,12 @@ Reacciones:
 	Nodo N5: -80.3738   200.0000
 	Nodo N6: 0          0
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Membrana MEM1:
 		Nodo 1 (-b, -h): 80.3738   	200.0000  
 		Nodo 2 (+b, -h): 19.6262   	0.0000    
-		Nodo 3 (+b, +h): -100.0000 	-0.0000   
-		Nodo 4 (-b, +h): -0.0000   	0.0000    
+		Nodo 3 (+b, +h): -100.0000 	-100.0000 
+		Nodo 4 (-b, +h): -0.0000   	-100.0000 
 		Tensiones MEM1 [GLOBALX GLOBALY X Y SIGMAX SIGMAY SIGMAXY DESPLX DESPLY]:
 			0.0000    	0.0000    	-1.0000   	-1.0000   	-162.3498 	-811.7490 	-337.7837 	0.0000    	0.0000    
 			0.0000    	0.1250    	-1.0000   	-0.8750   	-172.8638 	-813.8518 	-316.3551 	0.0101    	-0.0487   
@@ -353,8 +353,8 @@ Esfuerzos Elementos:
 	Membrana MEM2:
 		Nodo 1 (-b, -h): -19.6262  	0.0000    
 		Nodo 2 (+b, -h): -80.3738  	200.0000  
-		Nodo 3 (+b, +h): -0.0000   	0.0000    
-		Nodo 4 (-b, +h): 100.0000  	0.0000    
+		Nodo 3 (+b, +h): -0.0000   	-100.0000 
+		Nodo 4 (-b, +h): 100.0000  	-100.0000 
 		Tensiones MEM2 [GLOBALX GLOBALY X Y SIGMAX SIGMAY SIGMAXY DESPLX DESPLY]:
 			2.0000    	0.0000    	-1.0000   	-1.0000   	9.0788    	45.3939   	405.0734  	0.0000    	-0.9722   
 			2.0000    	0.1250    	-1.0000   	-0.8750   	-1.4352   	43.2911   	383.6449  	0.0000    	-0.9695   

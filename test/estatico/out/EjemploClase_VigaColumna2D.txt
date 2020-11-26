@@ -41,12 +41,12 @@ Reacciones:
 	Nodo N2: 0          0          0
 	Nodo N3: -133.9374  106.9203   -129.3220
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Viga-Columna 2D VC1:
-		Axial:		-53.4058   -133.9374 
-		Corte:		32.5853    -113.0797 
-		Momento:	117.0039   -147.8003 
+		Axial:		83.1508    -83.1508  
+		Corte:		-3.4431    3.4431    
+		Momento:	-7.7248    -23.0716  
 	Viga-Columna 2D VC2:
 		Axial:		133.9374   -133.9374 
-		Corte:		73.0797    106.9203  
-		Momento:	27.8003    -129.3220 
+		Corte:		-16.9203   16.9203   
+		Momento:	-62.1997   -39.3220  

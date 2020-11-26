@@ -101,7 +101,7 @@ Reacciones:
 	Nodo p6: 0          0          0
 	Nodo p7: 0          0          0
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Biela 3D E1:	269.2582       COMPRESION
 	Biela 3D E2:	0              --
 	Biela 3D E3:	0              --

@@ -305,7 +305,7 @@ classdef Viga2D < Elemento
             % guardarEsfuerzosInternos: Guarda los esfuerzos internos de la
             % viga en un archivo
             
-            fr = obj.obtenerFuerzaResistenteCoordGlobal();
+            fr = obj.obtenerFuerzaResistenteCoordLocal();
             m1 = pad(num2str(fr(2), '%.04f'), 10);
             m2 = pad(num2str(fr(4), '%.04f'), 10);
             v1 = pad(num2str(fr(1), '%.04f'), 10);

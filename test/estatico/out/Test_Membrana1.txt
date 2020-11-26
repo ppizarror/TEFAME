@@ -54,7 +54,7 @@ Reacciones:
 	Nodo N5: -369.1589  500.0000
 	Nodo N6: 0          0
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Membrana MEM1:
 		Nodo 1 (-b, -h): 369.1589  	500.0000  
 		Nodo 2 (+b, -h): 130.8411  	-0.0000   

@@ -359,7 +359,7 @@ classdef VigaColumna2D < Elemento
             % guardarEsfuerzosInternos: Guarda los esfuerzos internos del
             % elemento
             
-            fr = obj.obtenerFuerzaResistenteCoordGlobal();
+            fr = obj.obtenerFuerzaResistenteCoordLocal();
             n1 = pad(num2str(fr(1), '%.04f'), 10);
             n2 = pad(num2str(fr(4), '%.04f'), 10);
             v1 = pad(num2str(fr(2), '%.04f'), 10);

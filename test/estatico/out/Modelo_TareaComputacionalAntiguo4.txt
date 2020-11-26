@@ -101,7 +101,7 @@ Reacciones:
 	Nodo c2: 0          0          0
 	Nodo d: 0          0          0
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Biela 3D E1:	-7.752         TRACCION
 	Biela 3D E2:	11.6667        COMPRESION
 	Biela 3D E3:	-3.8818        TRACCION

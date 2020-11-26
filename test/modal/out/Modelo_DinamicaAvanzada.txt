@@ -1874,954 +1874,954 @@ Reacciones:
 	Nodo N271: 0          0          0
 	Nodo N272: 0          0          0
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Viga-Columna 2D V11-12:
 		Axial:		-2.4161    2.4161    
-		Corte:		16.0215    15.9785   
-		Momento:	21.3585    -21.1863  
+		Corte:		0.0215     -0.0215   
+		Momento:	0.0252     0.1470    
 	Viga-Columna 2D V12-13:
 		Axial:		-0.6631    0.6631    
-		Corte:		16.0571    15.9429   
-		Momento:	21.5648    -21.1077  
+		Corte:		0.0571     -0.0571   
+		Momento:	0.2314     0.2257    
 	Viga-Columna 2D V13-14:
 		Axial:		-0.2818    0.2818    
-		Corte:		16.2272    15.7728   
-		Momento:	22.2449    -20.4276  
+		Corte:		0.2272     -0.2272   
+		Momento:	0.9116     0.9057    
 	Viga-Columna 2D V14-15:
 		Axial:		-0.4470    0.4470    
-		Corte:		16.1358    15.8642   
-		Momento:	21.8794    -20.7928  
+		Corte:		0.1358     -0.1358   
+		Momento:	0.5461     0.5406    
 	Viga-Columna 2D V15-16:
 		Axial:		-0.5207    0.5207    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3367    -21.3367  
+		Corte:		-0.0000    0.0000    
+		Momento:	0.0034     -0.0034   
 	Viga-Columna 2D V16-17:
 		Axial:		-0.4470    0.4470    
-		Corte:		15.8642    16.1358   
-		Momento:	20.7928    -21.8794  
+		Corte:		-0.1358    0.1358    
+		Momento:	-0.5406    -0.5461   
 	Viga-Columna 2D V17-18:
 		Axial:		-0.2818    0.2818    
-		Corte:		15.7728    16.2272   
-		Momento:	20.4276    -22.2449  
+		Corte:		-0.2272    0.2272    
+		Momento:	-0.9057    -0.9116   
 	Viga-Columna 2D V18-19:
 		Axial:		-0.6631    0.6631    
-		Corte:		15.9429    16.0571   
-		Momento:	21.1077    -21.5648  
+		Corte:		-0.0571    0.0571    
+		Momento:	-0.2257    -0.2314   
 	Viga-Columna 2D V19-110:
 		Axial:		-2.4161    2.4161    
-		Corte:		15.9785    16.0215   
-		Momento:	21.1863    -21.3585  
+		Corte:		-0.0215    0.0215    
+		Momento:	-0.1470    -0.0252   
 	Viga-Columna 2D V21-22:
 		Axial:		-1.3791    1.3791    
-		Corte:		15.9688    16.0312   
-		Momento:	21.0988    -21.3486  
+		Corte:		-0.0312    0.0312    
+		Momento:	-0.2345    -0.0153   
 	Viga-Columna 2D V22-23:
 		Axial:		0.3295     -0.3295   
-		Corte:		16.0600    15.9400   
-		Momento:	21.5533    -21.0734  
+		Corte:		0.0600     -0.0600   
+		Momento:	0.2199     0.2600    
 	Viga-Columna 2D V23-24:
 		Axial:		-0.2413    0.2413    
-		Corte:		16.3941    15.6059   
-		Momento:	22.9107    -19.7583  
+		Corte:		0.3941     -0.3941   
+		Momento:	1.5774     1.5750    
 	Viga-Columna 2D V24-25:
 		Axial:		-0.6695    0.6695    
-		Corte:		16.2358    15.7642   
-		Momento:	22.2734    -20.3869  
+		Corte:		0.2358     -0.2358   
+		Momento:	0.9401     0.9464    
 	Viga-Columna 2D V25-26:
 		Axial:		-0.8200    0.8200    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3301    -21.3301  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0032    0.0032    
 	Viga-Columna 2D V26-27:
 		Axial:		-0.6695    0.6695    
-		Corte:		15.7642    16.2358   
-		Momento:	20.3869    -22.2734  
+		Corte:		-0.2358    0.2358    
+		Momento:	-0.9464    -0.9401   
 	Viga-Columna 2D V27-28:
 		Axial:		-0.2413    0.2413    
-		Corte:		15.6059    16.3941   
-		Momento:	19.7583    -22.9107  
+		Corte:		-0.3941    0.3941    
+		Momento:	-1.5750    -1.5774   
 	Viga-Columna 2D V28-29:
 		Axial:		0.3295     -0.3295   
-		Corte:		15.9400    16.0600   
-		Momento:	21.0734    -21.5533  
+		Corte:		-0.0600    0.0600    
+		Momento:	-0.2600    -0.2199   
 	Viga-Columna 2D V29-210:
 		Axial:		-1.3791    1.3791    
-		Corte:		16.0312    15.9688   
-		Momento:	21.3486    -21.0988  
+		Corte:		0.0312     -0.0312   
+		Momento:	0.0153     0.2345    
 	Viga-Columna 2D V31-32:
 		Axial:		10.8911    -10.8911  
-		Corte:		15.8780    16.1220   
-		Momento:	20.4238    -21.3999  
+		Corte:		-0.1220    0.1220    
+		Momento:	-0.9096    -0.0666   
 	Viga-Columna 2D V32-33:
 		Axial:		0.3195     -0.3195   
-		Corte:		16.1507    15.8493   
-		Momento:	22.0000    -20.7941  
+		Corte:		0.1507     -0.1507   
+		Momento:	0.6667     0.5392    
 	Viga-Columna 2D V33-34:
 		Axial:		-0.2263    0.2263    
-		Corte:		16.5676    15.4324   
-		Momento:	23.6053    -19.0646  
+		Corte:		0.5676     -0.5676   
+		Momento:	2.2720     2.2688    
 	Viga-Columna 2D V34-35:
 		Axial:		-0.6816    0.6816    
-		Corte:		16.3391    15.6609   
-		Momento:	22.6827    -19.9697  
+		Corte:		0.3391     -0.3391   
+		Momento:	1.3493     1.3636    
 	Viga-Columna 2D V35-36:
 		Axial:		-0.8902    0.8902    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3260    -21.3260  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0074    0.0074    
 	Viga-Columna 2D V36-37:
 		Axial:		-0.6816    0.6816    
-		Corte:		15.6609    16.3391   
-		Momento:	19.9697    -22.6827  
+		Corte:		-0.3391    0.3391    
+		Momento:	-1.3636    -1.3493   
 	Viga-Columna 2D V37-38:
 		Axial:		-0.2263    0.2263    
-		Corte:		15.4324    16.5676   
-		Momento:	19.0646    -23.6053  
+		Corte:		-0.5676    0.5676    
+		Momento:	-2.2688    -2.2720   
 	Viga-Columna 2D V38-39:
 		Axial:		0.3195     -0.3195   
-		Corte:		15.8493    16.1507   
-		Momento:	20.7941    -22.0000  
+		Corte:		-0.1507    0.1507    
+		Momento:	-0.5392    -0.6667   
 	Viga-Columna 2D V39-310:
 		Axial:		10.8911    -10.8911  
-		Corte:		16.1220    15.8780   
-		Momento:	21.3999    -20.4238  
+		Corte:		0.1220     -0.1220   
+		Momento:	0.0666     0.9096    
 	Viga-Columna 2D V41-42:
 		Axial:		-2.0085    2.0085    
-		Corte:		16.0435    15.9565   
-		Momento:	21.4092    -21.0612  
+		Corte:		0.0435     -0.0435   
+		Momento:	0.0759     0.2722    
 	Viga-Columna 2D V42-43:
 		Axial:		0.1468     -0.1468   
-		Corte:		16.7370    15.2630   
-		Momento:	24.2711    -18.3752  
+		Corte:		0.7370     -0.7370   
+		Momento:	2.9377     2.9581    
 	Viga-Columna 2D V43-44:
 		Axial:		-0.6478    0.6478    
-		Corte:		16.4448    15.5552   
-		Momento:	23.1046    -19.5460  
+		Corte:		0.4448     -0.4448   
+		Momento:	1.7713     1.7873    
 	Viga-Columna 2D V44-45:
 		Axial:		-0.8762    0.8762    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3218    -21.3218  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0115    0.0115    
 	Viga-Columna 2D V45-46:
 		Axial:		-0.6478    0.6478    
-		Corte:		15.5552    16.4448   
-		Momento:	19.5460    -23.1046  
+		Corte:		-0.4448    0.4448    
+		Momento:	-1.7873    -1.7713   
 	Viga-Columna 2D V46-47:
 		Axial:		0.1468     -0.1468   
-		Corte:		15.2630    16.7370   
-		Momento:	18.3752    -24.2711  
+		Corte:		-0.7370    0.7370    
+		Momento:	-2.9581    -2.9377   
 	Viga-Columna 2D V47-48:
 		Axial:		-2.0085    2.0085    
-		Corte:		15.9565    16.0435   
-		Momento:	21.0612    -21.4092  
+		Corte:		-0.0435    0.0435    
+		Momento:	-0.2722    -0.0759   
 	Viga-Columna 2D V51-52:
 		Axial:		10.5025    -10.5025  
-		Corte:		15.9224    16.0776   
-		Momento:	20.6092    -21.2299  
+		Corte:		-0.0776    0.0776    
+		Momento:	-0.7242    0.1034    
 	Viga-Columna 2D V52-53:
 		Axial:		-0.1951    0.1951    
-		Corte:		16.9528    15.0472   
-		Momento:	25.2087    -17.5859  
+		Corte:		0.9528     -0.9528   
+		Momento:	3.8753     3.7474    
 	Viga-Columna 2D V53-54:
 		Axial:		-0.5578    0.5578    
-		Corte:		16.5381    15.4619   
-		Momento:	23.4688    -19.1642  
+		Corte:		0.5381     -0.5381   
+		Momento:	2.1355     2.1691    
 	Viga-Columna 2D V54-55:
 		Axial:		-0.4873    0.4873    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3089    -21.3089  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0245    0.0245    
 	Viga-Columna 2D V55-56:
 		Axial:		-0.5578    0.5578    
-		Corte:		15.4619    16.5381   
-		Momento:	19.1642    -23.4688  
+		Corte:		-0.5381    0.5381    
+		Momento:	-2.1691    -2.1355   
 	Viga-Columna 2D V56-57:
 		Axial:		-0.1951    0.1951    
-		Corte:		15.0472    16.9528   
-		Momento:	17.5859    -25.2087  
+		Corte:		-0.9528    0.9528    
+		Momento:	-3.7474    -3.8753   
 	Viga-Columna 2D V57-58:
 		Axial:		10.5025    -10.5025  
-		Corte:		16.0776    15.9224   
-		Momento:	21.2299    -20.6092  
+		Corte:		0.0776     -0.0776   
+		Momento:	-0.1034    0.7242    
 	Viga-Columna 2D V61-62:
 		Axial:		-2.3840    2.3840    
-		Corte:		16.9528    15.0472   
-		Momento:	25.0384    -17.4163  
+		Corte:		0.9528     -0.9528   
+		Momento:	3.7050     3.9171    
 	Viga-Columna 2D V62-63:
 		Axial:		0.7898     -0.7898   
-		Corte:		16.6157    15.3843   
-		Momento:	23.7466    -18.8209  
+		Corte:		0.6157     -0.6157   
+		Momento:	2.4132     2.5125    
 	Viga-Columna 2D V63-64:
 		Axial:		0.7814     -0.7814   
-		Corte:		16.0000    16.0000   
-		Momento:	21.2990    -21.2990  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0343    0.0343    
 	Viga-Columna 2D V64-65:
 		Axial:		0.7898     -0.7898   
-		Corte:		15.3843    16.6157   
-		Momento:	18.8209    -23.7466  
+		Corte:		-0.6157    0.6157    
+		Momento:	-2.5125    -2.4132   
 	Viga-Columna 2D V65-66:
 		Axial:		-2.3840    2.3840    
-		Corte:		15.0472    16.9528   
-		Momento:	17.4163    -25.0384  
+		Corte:		-0.9528    0.9528    
+		Momento:	-3.9171    -3.7050   
 	Viga-Columna 2D V71-72:
 		Axial:		12.4300    -12.4300  
-		Corte:		16.9513    15.0487   
-		Momento:	24.6439    -17.0338  
+		Corte:		0.9513     -0.9513   
+		Momento:	3.3106     4.2995    
 	Viga-Columna 2D V72-73:
 		Axial:		2.6049     -2.6049   
-		Corte:		16.7904    15.2096   
-		Momento:	24.5105    -18.1873  
+		Corte:		0.7904     -0.7904   
+		Momento:	3.1771     3.1461    
 	Viga-Columna 2D V73-74:
 		Axial:		1.6309     -1.6309   
-		Corte:		16.0000    16.0000   
-		Momento:	21.3205    -21.3205  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0129    0.0129    
 	Viga-Columna 2D V74-75:
 		Axial:		2.6049     -2.6049   
-		Corte:		15.2096    16.7904   
-		Momento:	18.1873    -24.5105  
+		Corte:		-0.7904    0.7904    
+		Momento:	-3.1461    -3.1771   
 	Viga-Columna 2D V75-76:
 		Axial:		12.4300    -12.4300  
-		Corte:		15.0487    16.9513   
-		Momento:	17.0338    -24.6439  
+		Corte:		-0.9513    0.9513    
+		Momento:	-4.2995    -3.3106   
 	Viga-Columna 2D V81-82:
 		Axial:		-0.1386    0.1386    
-		Corte:		16.8630    15.1370   
-		Momento:	24.7377    -17.8334  
+		Corte:		0.8630     -0.8630   
+		Momento:	3.4043     3.4999    
 	Viga-Columna 2D V82-83:
 		Axial:		0.2558     -0.2558   
-		Corte:		16.0000    16.0000   
-		Momento:	21.3338    -21.3338  
+		Corte:		-0.0000    0.0000    
+		Momento:	0.0005     -0.0005   
 	Viga-Columna 2D V83-84:
 		Axial:		-0.1386    0.1386    
-		Corte:		15.1370    16.8630   
-		Momento:	17.8334    -24.7377  
+		Corte:		-0.8630    0.8630    
+		Momento:	-3.4999    -3.4043   
 	Viga-Columna 2D V91-92:
 		Axial:		-0.3876    0.3876    
-		Corte:		16.9402    15.0598   
-		Momento:	25.0316    -17.5103  
+		Corte:		0.9402     -0.9402   
+		Momento:	3.6983     3.8230    
 	Viga-Columna 2D V92-93:
 		Axial:		-0.5115    0.5115    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3146    -21.3146  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0187    0.0187    
 	Viga-Columna 2D V93-94:
 		Axial:		-0.3876    0.3876    
-		Corte:		15.0598    16.9402   
-		Momento:	17.5103    -25.0316  
+		Corte:		-0.9402    0.9402    
+		Momento:	-3.8230    -3.6983   
 	Viga-Columna 2D V101-102:
 		Axial:		-0.2429    0.2429    
-		Corte:		17.0290    14.9710   
-		Momento:	25.3868    -17.1545  
+		Corte:		1.0290     -1.0290   
+		Momento:	4.0535     4.1788    
 	Viga-Columna 2D V102-103:
 		Axial:		-0.4496    0.4496    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3069    -21.3069  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0264    0.0264    
 	Viga-Columna 2D V103-104:
 		Axial:		-0.2429    0.2429    
-		Corte:		14.9710    17.0290   
-		Momento:	17.1545    -25.3868  
+		Corte:		-1.0290    1.0290    
+		Momento:	-4.1788    -4.0535   
 	Viga-Columna 2D V111-112:
 		Axial:		-0.1525    0.1525    
-		Corte:		17.1169    14.8831   
-		Momento:	25.7397    -16.8042  
+		Corte:		1.1169     -1.1169   
+		Momento:	4.4064     4.5291    
 	Viga-Columna 2D V112-113:
 		Axial:		-0.3013    0.3013    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3063    -21.3063  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0271    0.0271    
 	Viga-Columna 2D V113-114:
 		Axial:		-0.1525    0.1525    
-		Corte:		14.8831    17.1169   
-		Momento:	16.8042    -25.7397  
+		Corte:		-1.1169    1.1169    
+		Momento:	-4.5291    -4.4064   
 	Viga-Columna 2D V121-122:
 		Axial:		-0.1579    0.1579    
-		Corte:		17.1979    14.8021   
-		Momento:	26.0648    -16.4818  
+		Corte:		1.1979     -1.1979   
+		Momento:	4.7315     4.8515    
 	Viga-Columna 2D V122-123:
 		Axial:		-0.2775    0.2775    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3062    -21.3062  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0272    0.0272    
 	Viga-Columna 2D V123-124:
 		Axial:		-0.1579    0.1579    
-		Corte:		14.8021    17.1979   
-		Momento:	16.4818    -26.0648  
+		Corte:		-1.1979    1.1979    
+		Momento:	-4.8515    -4.7315   
 	Viga-Columna 2D V131-132:
 		Axial:		-0.2167    0.2167    
-		Corte:		17.2700    14.7300   
-		Momento:	26.3529    -16.1930  
+		Corte:		1.2700     -1.2700   
+		Momento:	5.0195     5.1403    
 	Viga-Columna 2D V132-133:
 		Axial:		-0.3555    0.3555    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3057    -21.3057  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0276    0.0276    
 	Viga-Columna 2D V133-134:
 		Axial:		-0.2167    0.2167    
-		Corte:		14.7300    17.2700   
-		Momento:	16.1930    -26.3529  
+		Corte:		-1.2700    1.2700    
+		Momento:	-5.1403    -5.0195   
 	Viga-Columna 2D V141-142:
 		Axial:		-0.0510    0.0510    
-		Corte:		17.3278    14.6722   
-		Momento:	26.5771    -15.9547  
+		Corte:		1.3278     -1.3278   
+		Momento:	5.2437     5.3787    
 	Viga-Columna 2D V142-143:
 		Axial:		-0.4456    0.4456    
-		Corte:		16.0000    16.0000   
-		Momento:	21.3025    -21.3025  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0308    0.0308    
 	Viga-Columna 2D V143-144:
 		Axial:		-0.0510    0.0510    
-		Corte:		14.6722    17.3278   
-		Momento:	15.9547    -26.5771  
+		Corte:		-1.3278    1.3278    
+		Momento:	-5.3787    -5.2437   
 	Viga-Columna 2D V151-152:
 		Axial:		0.6371     -0.6371   
-		Corte:		17.3574    14.6426   
-		Momento:	26.6929    -15.8334  
+		Corte:		1.3574     -1.3574   
+		Momento:	5.3595     5.4999    
 	Viga-Columna 2D V152-153:
 		Axial:		0.4383     -0.4383   
-		Corte:		16.0000    16.0000   
-		Momento:	21.2670    -21.2670  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0663    0.0663    
 	Viga-Columna 2D V153-154:
 		Axial:		0.6371     -0.6371   
-		Corte:		14.6426    17.3574   
-		Momento:	15.8334    -26.6929  
+		Corte:		-1.3574    1.3574    
+		Momento:	-5.4999    -5.3595   
 	Viga-Columna 2D V161-162:
 		Axial:		-0.0442    0.0442    
-		Corte:		17.3639    14.6361   
-		Momento:	26.7719    -15.8609  
+		Corte:		1.3639     -1.3639   
+		Momento:	5.4385     5.4724    
 	Viga-Columna 2D V162-163:
 		Axial:		6.3928     -6.3928   
-		Corte:		16.0000    16.0000   
-		Momento:	21.1540    -21.1540  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.1793    0.1793    
 	Viga-Columna 2D V163-164:
 		Axial:		-0.0442    0.0442    
-		Corte:		14.6361    17.3639   
-		Momento:	15.8609    -26.7719  
+		Corte:		-1.3639    1.3639    
+		Momento:	-5.4724    -5.4385   
 	Viga-Columna 2D V171-172:
 		Axial:		-1.4531    1.4531    
-		Corte:		17.5654    14.4346   
-		Momento:	27.4524    -14.9294  
+		Corte:		1.5654     -1.5654   
+		Momento:	6.1191     6.4039    
 	Viga-Columna 2D V173-174:
 		Axial:		-1.4531    1.4531    
-		Corte:		14.4346    17.5654   
-		Momento:	14.9294    -27.4524  
+		Corte:		-1.5654    1.5654    
+		Momento:	-6.4039    -6.1191   
 	Viga-Columna 2D V181-182:
 		Axial:		-0.2587    0.2587    
-		Corte:		17.6734    14.3266   
-		Momento:	27.8950    -14.5080  
+		Corte:		1.6734     -1.6734   
+		Momento:	6.5616     6.8253    
 	Viga-Columna 2D V183-184:
 		Axial:		-0.2587    0.2587    
-		Corte:		14.3266    17.6734   
-		Momento:	14.5080    -27.8950  
+		Corte:		-1.6734    1.6734    
+		Momento:	-6.8253    -6.5616   
 	Viga-Columna 2D V191-192:
 		Axial:		0.2826     -0.2826   
-		Corte:		17.7102    14.2898   
-		Momento:	28.0427    -14.3612  
+		Corte:		1.7102     -1.7102   
+		Momento:	6.7094     6.9722    
 	Viga-Columna 2D V193-194:
 		Axial:		0.2826     -0.2826   
-		Corte:		14.2898    17.7102   
-		Momento:	14.3612    -28.0427  
+		Corte:		-1.7102    1.7102    
+		Momento:	-6.9722    -6.7094   
 	Viga-Columna 2D V201-202:
 		Axial:		1.3665     -1.3665   
-		Corte:		17.6835    14.3165   
-		Momento:	27.9282    -14.4604  
+		Corte:		1.6835     -1.6835   
+		Momento:	6.5949     6.8729    
 	Viga-Columna 2D V203-204:
 		Axial:		1.3665     -1.3665   
-		Corte:		14.3165    17.6835   
-		Momento:	14.4604    -27.9282  
+		Corte:		-1.6835    1.6835    
+		Momento:	-6.8729    -6.5949   
 	Viga-Columna 2D V211-212:
 		Axial:		-0.3399    0.3399    
-		Corte:		17.5877    14.4123   
-		Momento:	27.6704    -14.9688  
+		Corte:		1.5877     -1.5877   
+		Momento:	6.3371     6.3645    
 	Viga-Columna 2D V212-213:
 		Axial:		-7.4820    7.4820    
-		Corte:		16.0000    16.0000   
-		Momento:	21.1318    -21.1318  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.2015    0.2015    
 	Viga-Columna 2D V213-214:
 		Axial:		-0.3399    0.3399    
-		Corte:		14.4123    17.5877   
-		Momento:	14.9688    -27.6704  
+		Corte:		-1.5877    1.5877    
+		Momento:	-6.3645    -6.3371   
 	Viga-Columna 2D V221-222:
 		Axial:		-1.2872    1.2872    
-		Corte:		17.6977    14.3023   
-		Momento:	28.0610    -14.4794  
+		Corte:		1.6977     -1.6977   
+		Momento:	6.7277     6.8539    
 	Viga-Columna 2D V222-223:
 		Axial:		-1.4558    1.4558    
-		Corte:		16.0000    16.0000   
-		Momento:	21.2688    -21.2688  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0645    0.0645    
 	Viga-Columna 2D V223-224:
 		Axial:		-1.2872    1.2872    
-		Corte:		14.3023    17.6977   
-		Momento:	14.4794    -28.0610  
+		Corte:		-1.6977    1.6977    
+		Momento:	-6.8539    -6.7277   
 	Viga-Columna 2D V231-232:
 		Axial:		-1.4623    1.4623    
-		Corte:		17.7522    14.2478   
-		Momento:	28.2905    -14.2732  
+		Corte:		1.7522     -1.7522   
+		Momento:	6.9572     7.0601    
 	Viga-Columna 2D V232-233:
 		Axial:		-0.8490    0.8490    
-		Corte:		16.0000    16.0000   
-		Momento:	21.2797    -21.2797  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.0537    0.0537    
 	Viga-Columna 2D V233-234:
 		Axial:		-1.4623    1.4623    
-		Corte:		14.2478    17.7522   
-		Momento:	14.2732    -28.2905  
+		Corte:		-1.7522    1.7522    
+		Momento:	-7.0601    -6.9572   
 	Viga-Columna 2D V241-242:
 		Axial:		-0.8362    0.8362    
-		Corte:		17.6884    14.3116   
-		Momento:	27.9717    -14.4642  
+		Corte:		1.6884     -1.6884   
+		Momento:	6.6384     6.8692    
 	Viga-Columna 2D V242-243:
 		Axial:		2.2032     -2.2032   
-		Corte:		16.0000    16.0000   
-		Momento:	21.2175    -21.2175  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.1159    0.1159    
 	Viga-Columna 2D V243-244:
 		Axial:		-0.8362    0.8362    
-		Corte:		14.3116    17.6884   
-		Momento:	14.4642    -27.9717  
+		Corte:		-1.6884    1.6884    
+		Momento:	-6.8692    -6.6384   
 	Viga-Columna 2D V251-252:
 		Axial:		14.1897    -14.1897  
-		Corte:		17.5354    14.4646   
-		Momento:	26.9623    -14.6794  
+		Corte:		1.5354     -1.5354   
+		Momento:	5.6289     6.6539    
 	Viga-Columna 2D V252-253:
 		Axial:		4.8393     -4.8393   
-		Corte:		16.0000    16.0000   
-		Momento:	21.3783    -21.3783  
+		Corte:		-0.0000    0.0000    
+		Momento:	0.0450     -0.0450   
 	Viga-Columna 2D V253-254:
 		Axial:		14.1897    -14.1897  
-		Corte:		14.4646    17.5354   
-		Momento:	14.6794    -26.9623  
+		Corte:		-1.5354    1.5354    
+		Momento:	-6.6539    -5.6289   
 	Viga-Columna 2D V261-262:
 		Axial:		-1.9996    1.9996    
-		Corte:		16.0000    16.0000   
-		Momento:	21.2169    -21.2169  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.1165    0.1165    
 	Viga-Columna 2D V271-272:
 		Axial:		11.2321    -11.2321  
-		Corte:		16.0000    16.0000   
-		Momento:	20.7558    -20.7558  
+		Corte:		-0.0000    0.0000    
+		Momento:	-0.5775    0.5775    
 	Viga-Columna 2D C01-11:
-		Axial:		7.0958     -7.0958   
-		Corte:		47.8683    -47.8683  
+		Axial:		47.8683    -47.8683  
+		Corte:		-7.0958    7.0958    
 		Momento:	-9.4140    -11.8735  
 	Viga-Columna 2D C02-12:
-		Axial:		1.3841     -1.3841   
-		Corte:		128.3655   -128.3655 
+		Axial:		128.3655   -128.3655 
+		Corte:		-1.3841    1.3841    
 		Momento:	-2.3255    -1.8267   
 	Viga-Columna 2D C03-13:
-		Axial:		0.7684     -0.7684   
-		Corte:		196.5489   -196.5489 
+		Axial:		196.5489   -196.5489 
+		Corte:		-0.7684    0.7684    
 		Momento:	-1.3320    -0.9731   
 	Viga-Columna 2D C04-14:
-		Axial:		0.5899     -0.5899   
-		Corte:		535.6770   -535.6770 
+		Axial:		535.6770   -535.6770 
+		Corte:		-0.5899    0.5899    
 		Momento:	-0.9929    -0.7767   
 	Viga-Columna 2D C05-15:
-		Axial:		0.2142     -0.2142   
-		Corte:		739.5403   -739.5403 
+		Axial:		739.5403   -739.5403 
+		Corte:		-0.2142    0.2142    
 		Momento:	-0.3626    -0.2802   
 	Viga-Columna 2D C06-16:
-		Axial:		-0.2142    0.2142    
-		Corte:		739.5403   -739.5403 
+		Axial:		739.5403   -739.5403 
+		Corte:		0.2142     -0.2142   
 		Momento:	0.3626     0.2802    
 	Viga-Columna 2D C07-17:
-		Axial:		-0.5899    0.5899    
-		Corte:		535.6770   -535.6770 
+		Axial:		535.6770   -535.6770 
+		Corte:		0.5899     -0.5899   
 		Momento:	0.9929     0.7767    
 	Viga-Columna 2D C08-18:
-		Axial:		-0.7684    0.7684    
-		Corte:		196.5489   -196.5489 
+		Axial:		196.5489   -196.5489 
+		Corte:		0.7684     -0.7684   
 		Momento:	1.3320     0.9731    
 	Viga-Columna 2D C09-19:
-		Axial:		-1.3841    1.3841    
-		Corte:		128.3655   -128.3655 
+		Axial:		128.3655   -128.3655 
+		Corte:		1.3841     -1.3841   
 		Momento:	2.3255     1.8267    
 	Viga-Columna 2D C010-110:
-		Axial:		-7.0958    7.0958    
-		Corte:		47.8683    -47.8683  
+		Axial:		47.8683    -47.8683  
+		Corte:		7.0958     -7.0958   
 		Momento:	9.4140     11.8735   
 	Viga-Columna 2D C11-21:
-		Axial:		9.5119     -9.5119   
-		Corte:		31.8468    -31.8468  
+		Axial:		31.8468    -31.8468  
+		Corte:		-9.5119    9.5119    
 		Momento:	-9.4850    -14.2949  
 	Viga-Columna 2D C12-22:
-		Axial:		-0.3690    0.3690    
-		Corte:		96.3299    -96.3299  
+		Axial:		96.3299    -96.3299  
+		Corte:		0.3690     -0.3690   
 		Momento:	1.4483     -0.5259   
 	Viga-Columna 2D C13-23:
-		Axial:		0.3871     -0.3871   
-		Corte:		164.3789   -164.3789 
+		Axial:		164.3789   -164.3789 
+		Corte:		-0.3871    0.3871    
 		Momento:	-0.1641    -0.8037   
 	Viga-Columna 2D C14-24:
-		Axial:		0.7550     -0.7550   
-		Corte:		503.7683   -503.7683 
+		Axial:		503.7683   -503.7683 
+		Corte:		-0.7550    0.7550    
 		Momento:	-0.6751    -1.2125   
 	Viga-Columna 2D C15-25:
-		Axial:		0.2879     -0.2879   
-		Corte:		707.6762   -707.6762 
+		Axial:		707.6762   -707.6762 
+		Corte:		-0.2879    0.2879    
 		Momento:	-0.2638    -0.4559   
 	Viga-Columna 2D C16-26:
-		Axial:		-0.2879    0.2879    
-		Corte:		707.6762   -707.6762 
+		Axial:		707.6762   -707.6762 
+		Corte:		0.2879     -0.2879   
 		Momento:	0.2638     0.4559    
 	Viga-Columna 2D C17-27:
-		Axial:		-0.7550    0.7550    
-		Corte:		503.7683   -503.7683 
+		Axial:		503.7683   -503.7683 
+		Corte:		0.7550     -0.7550   
 		Momento:	0.6751     1.2125    
 	Viga-Columna 2D C18-28:
-		Axial:		-0.3871    0.3871    
-		Corte:		164.3789   -164.3789 
+		Axial:		164.3789   -164.3789 
+		Corte:		0.3871     -0.3871   
 		Momento:	0.1641     0.8037    
 	Viga-Columna 2D C19-29:
-		Axial:		0.3690     -0.3690   
-		Corte:		96.3299    -96.3299  
+		Axial:		96.3299    -96.3299  
+		Corte:		-0.3690    0.3690    
 		Momento:	-1.4483    0.5259    
 	Viga-Columna 2D C110-210:
-		Axial:		-9.5119    9.5119    
-		Corte:		31.8468    -31.8468  
+		Axial:		31.8468    -31.8468  
+		Corte:		9.5119     -9.5119   
 		Momento:	9.4850     14.2949   
 	Viga-Columna 2D C21-31:
-		Axial:		10.8911    -10.8911  
-		Corte:		15.8780    -15.8780  
+		Axial:		15.8780    -15.8780  
+		Corte:		-10.8911   10.8911   
 		Momento:	-6.8039    -20.4238  
 	Viga-Columna 2D C22-32:
-		Axial:		-2.0776    2.0776    
-		Corte:		64.2387    -64.2387  
+		Axial:		64.2387    -64.2387  
+		Corte:		2.0776     -2.0776   
 		Momento:	0.3212     4.8727    
 	Viga-Columna 2D C23-33:
-		Axial:		0.9579     -0.9579   
-		Corte:		132.0448   -132.0448 
+		Axial:		132.0448   -132.0448 
+		Corte:		-0.9579    0.9579    
 		Momento:	-1.0336    -1.3612   
 	Viga-Columna 2D C24-34:
-		Axial:		1.1832     -1.1832   
-		Corte:		471.9266   -471.9266 
+		Axial:		471.9266   -471.9266 
+		Corte:		-1.1832    1.1832    
 		Momento:	-1.3026    -1.6555   
 	Viga-Columna 2D C25-35:
-		Axial:		0.4383     -0.4383   
-		Corte:		675.9120   -675.9120 
+		Axial:		675.9120   -675.9120 
+		Corte:		-0.4383    0.4383    
 		Momento:	-0.4873    -0.6085   
 	Viga-Columna 2D C26-36:
-		Axial:		-0.4383    0.4383    
-		Corte:		675.9120   -675.9120 
+		Axial:		675.9120   -675.9120 
+		Corte:		0.4383     -0.4383   
 		Momento:	0.4873     0.6085    
 	Viga-Columna 2D C27-37:
-		Axial:		-1.1832    1.1832    
-		Corte:		471.9266   -471.9266 
+		Axial:		471.9266   -471.9266 
+		Corte:		1.1832     -1.1832   
 		Momento:	1.3026     1.6555    
 	Viga-Columna 2D C28-38:
-		Axial:		-0.9579    0.9579    
-		Corte:		132.0448   -132.0448 
+		Axial:		132.0448   -132.0448 
+		Corte:		0.9579     -0.9579   
 		Momento:	1.0336     1.3612    
 	Viga-Columna 2D C29-39:
-		Axial:		2.0776     -2.0776   
-		Corte:		64.2387    -64.2387  
+		Axial:		64.2387    -64.2387  
+		Corte:		-2.0776    2.0776    
 		Momento:	-0.3212    -4.8727   
 	Viga-Columna 2D C210-310:
-		Axial:		-10.8911   10.8911   
-		Corte:		15.8780    -15.8780  
+		Axial:		15.8780    -15.8780  
+		Corte:		10.8911    -10.8911  
 		Momento:	6.8039     20.4238   
 	Viga-Columna 2D C32-41:
-		Axial:		8.4940     -8.4940   
-		Corte:		31.9659    -31.9659  
+		Axial:		31.9659    -31.9659  
+		Corte:		-8.4940    8.4940    
 		Momento:	-5.4728    -15.7621  
 	Viga-Columna 2D C33-42:
-		Axial:		1.5038     -1.5038   
-		Corte:		99.6279    -99.6279  
+		Axial:		99.6279    -99.6279  
+		Corte:		-1.5038    1.5038    
 		Momento:	-1.4500    -2.3096   
 	Viga-Columna 2D C34-43:
-		Axial:		1.6385     -1.6385   
-		Corte:		440.1551   -440.1551 
+		Axial:		440.1551   -440.1551 
+		Corte:		-1.6385    1.6385    
 		Momento:	-1.9626    -2.1336   
 	Viga-Columna 2D C35-44:
-		Axial:		0.6469     -0.6469   
-		Corte:		644.2511   -644.2511 
+		Axial:		644.2511   -644.2511 
+		Corte:		-0.6469    0.6469    
 		Momento:	-0.7478    -0.8696   
 	Viga-Columna 2D C36-45:
-		Axial:		-0.6469    0.6469    
-		Corte:		644.2511   -644.2511 
+		Axial:		644.2511   -644.2511 
+		Corte:		0.6469     -0.6469   
 		Momento:	0.7478     0.8696    
 	Viga-Columna 2D C37-46:
-		Axial:		-1.6385    1.6385    
-		Corte:		440.1551   -440.1551 
+		Axial:		440.1551   -440.1551 
+		Corte:		1.6385     -1.6385   
 		Momento:	1.9626     2.1336    
 	Viga-Columna 2D C38-47:
-		Axial:		-1.5038    1.5038    
-		Corte:		99.6279    -99.6279  
+		Axial:		99.6279    -99.6279  
+		Corte:		1.5038     -1.5038   
 		Momento:	1.4500     2.3096    
 	Viga-Columna 2D C39-48:
-		Axial:		-8.4940    8.4940    
-		Corte:		31.9659    -31.9659  
+		Axial:		31.9659    -31.9659  
+		Corte:		8.4940     -8.4940   
 		Momento:	5.4728     15.7621   
 	Viga-Columna 2D C41-51:
-		Axial:		10.5025    -10.5025  
-		Corte:		15.9224    -15.9224  
+		Axial:		15.9224    -15.9224  
+		Corte:		-10.5025   10.5025   
 		Momento:	-5.6471    -20.6092  
 	Viga-Columna 2D C42-52:
-		Axial:		-0.6515    0.6515    
-		Corte:		66.9345    -66.9345  
+		Axial:		66.9345    -66.9345  
+		Corte:		0.6515     -0.6515   
 		Momento:	-0.9003    2.5292    
 	Viga-Columna 2D C43-53:
-		Axial:		2.4331     -2.4331   
-		Corte:		408.4472   -408.4472 
+		Axial:		408.4472   -408.4472 
+		Corte:		-2.4331    2.4331    
 		Momento:	-2.5959    -3.4868   
 	Viga-Columna 2D C44-54:
-		Axial:		0.8753     -0.8753   
-		Corte:		612.6959   -612.6959 
+		Axial:		612.6959   -612.6959 
+		Corte:		-0.8753    0.8753    
 		Momento:	-0.9062    -1.2822   
 	Viga-Columna 2D C45-55:
-		Axial:		-0.8753    0.8753    
-		Corte:		612.6959   -612.6959 
+		Axial:		612.6959   -612.6959 
+		Corte:		0.8753     -0.8753   
 		Momento:	0.9062     1.2822    
 	Viga-Columna 2D C46-56:
-		Axial:		-2.4331    2.4331    
-		Corte:		408.4472   -408.4472 
+		Axial:		408.4472   -408.4472 
+		Corte:		2.4331     -2.4331   
 		Momento:	2.5959     3.4868    
 	Viga-Columna 2D C47-57:
-		Axial:		0.6515     -0.6515   
-		Corte:		66.9345    -66.9345  
+		Axial:		66.9345    -66.9345  
+		Corte:		-0.6515    0.6515    
 		Momento:	0.9003     -2.5292   
 	Viga-Columna 2D C48-58:
-		Axial:		-10.5025   10.5025   
-		Corte:		15.9224    -15.9224  
+		Axial:		15.9224    -15.9224  
+		Corte:		10.5025    -10.5025  
 		Momento:	5.6471     20.6092   
 	Viga-Columna 2D C52-61:
-		Axial:		10.0461    -10.0461  
-		Corte:		33.9040    -33.9040  
+		Axial:		33.9040    -33.9040  
+		Corte:		-10.0461   10.0461   
 		Momento:	-6.5080    -18.6072  
 	Viga-Columna 2D C53-62:
-		Axial:		2.7958     -2.7958   
-		Corte:		376.8620   -376.8620 
+		Axial:		376.8620   -376.8620 
+		Corte:		-2.7958    2.7958    
 		Momento:	-2.3961    -4.5933   
 	Viga-Columna 2D C54-63:
-		Axial:		0.8048     -0.8048   
-		Corte:		581.2340   -581.2340 
+		Axial:		581.2340   -581.2340 
+		Corte:		-0.8048    0.8048    
 		Momento:	-0.8625    -1.1496   
 	Viga-Columna 2D C55-64:
-		Axial:		-0.8048    0.8048    
-		Corte:		581.2340   -581.2340 
+		Axial:		581.2340   -581.2340 
+		Corte:		0.8048     -0.8048   
 		Momento:	0.8625     1.1496    
 	Viga-Columna 2D C56-65:
-		Axial:		-2.7958    2.7958    
-		Corte:		376.8620   -376.8620 
+		Axial:		376.8620   -376.8620 
+		Corte:		2.7958     -2.7958   
 		Momento:	2.3961     4.5933    
 	Viga-Columna 2D C57-66:
-		Axial:		-10.0461   10.0461   
-		Corte:		33.9040    -33.9040  
+		Axial:		33.9040    -33.9040  
+		Corte:		10.0461    -10.0461  
 		Momento:	6.5080     18.6072   
 	Viga-Columna 2D C61-71:
-		Axial:		12.4300    -12.4300  
-		Corte:		16.9513    -16.9513  
+		Axial:		16.9513    -16.9513  
+		Corte:		-12.4300   12.4300   
 		Momento:	-6.4312    -24.6439  
 	Viga-Columna 2D C62-72:
-		Axial:		-0.3780    0.3780    
-		Corte:		345.1990   -345.1990 
+		Axial:		345.1990   -345.1990 
+		Corte:		0.3780     -0.3780   
 		Momento:	-1.7370    2.6820    
 	Viga-Columna 2D C63-73:
-		Axial:		0.8132     -0.8132   
-		Corte:		549.8497   -549.8497 
+		Axial:		549.8497   -549.8497 
+		Corte:		-0.8132    0.8132    
 		Momento:	-1.3286    -0.7044   
 	Viga-Columna 2D C64-74:
-		Axial:		-0.8132    0.8132    
-		Corte:		549.8497   -549.8497 
+		Axial:		549.8497   -549.8497 
+		Corte:		0.8132     -0.8132   
 		Momento:	1.3286     0.7044    
 	Viga-Columna 2D C65-75:
-		Axial:		0.3780     -0.3780   
-		Corte:		345.1990   -345.1990 
+		Axial:		345.1990   -345.1990 
+		Corte:		-0.3780    0.3780    
 		Momento:	1.7370     -2.6820   
 	Viga-Columna 2D C66-76:
-		Axial:		-12.4300   12.4300   
-		Corte:		16.9513    -16.9513  
+		Axial:		16.9513    -16.9513  
+		Corte:		12.4300    -12.4300  
 		Momento:	6.4312     24.6439   
 	Viga-Columna 2D C72-81:
-		Axial:		9.4471     -9.4471   
-		Corte:		313.3599   -313.3599 
+		Axial:		313.3599   -313.3599 
+		Corte:		-9.4471    9.4471    
 		Momento:	-10.1586   -13.4592  
 	Viga-Columna 2D C73-82:
-		Axial:		1.7872     -1.7872   
-		Corte:		518.6401   -518.6401 
+		Axial:		518.6401   -518.6401 
+		Corte:		-1.7872    1.7872    
 		Momento:	-2.4287    -2.0393   
 	Viga-Columna 2D C74-83:
-		Axial:		-1.7872    1.7872    
-		Corte:		518.6401   -518.6401 
+		Axial:		518.6401   -518.6401 
+		Corte:		1.7872     -1.7872   
 		Momento:	2.4287     2.0393    
 	Viga-Columna 2D C75-84:
-		Axial:		-9.4471    9.4471    
-		Corte:		313.3599   -313.3599 
+		Axial:		313.3599   -313.3599 
+		Corte:		9.4471     -9.4471   
 		Momento:	10.1586    13.4592   
 	Viga-Columna 2D C81-91:
-		Axial:		9.5858     -9.5858   
-		Corte:		296.4969   -296.4969 
+		Axial:		296.4969   -296.4969 
+		Corte:		-9.5858    9.5858    
 		Momento:	-11.2785   -12.6859  
 	Viga-Columna 2D C82-92:
-		Axial:		1.3927     -1.3927   
-		Corte:		487.5031   -487.5031 
+		Axial:		487.5031   -487.5031 
+		Corte:		-1.3927    1.3927    
 		Momento:	-1.4612    -2.0206   
 	Viga-Columna 2D C83-93:
-		Axial:		-1.3927    1.3927    
-		Corte:		487.5031   -487.5031 
+		Axial:		487.5031   -487.5031 
+		Corte:		1.3927     -1.3927   
 		Momento:	1.4612     2.0206    
 	Viga-Columna 2D C84-94:
-		Axial:		-9.5858    9.5858    
-		Corte:		296.4969   -296.4969 
+		Axial:		296.4969   -296.4969 
+		Corte:		9.5858     -9.5858   
 		Momento:	11.2785    12.6859   
 	Viga-Columna 2D C91-101:
-		Axial:		9.9734     -9.9734   
-		Corte:		279.5567   -279.5567 
+		Axial:		279.5567   -279.5567 
+		Corte:		-9.9734    9.9734    
 		Momento:	-12.3457   -12.5876  
 	Viga-Columna 2D C92-102:
-		Axial:		1.5166     -1.5166   
-		Corte:		456.4433   -456.4433 
+		Axial:		456.4433   -456.4433 
+		Corte:		-1.5166    1.5166    
 		Momento:	-1.7837    -2.0078   
 	Viga-Columna 2D C93-103:
-		Axial:		-1.5166    1.5166    
-		Corte:		456.4433   -456.4433 
+		Axial:		456.4433   -456.4433 
+		Corte:		1.5166     -1.5166   
 		Momento:	1.7837     2.0078    
 	Viga-Columna 2D C94-104:
-		Axial:		-9.9734    9.9734    
-		Corte:		279.5567   -279.5567 
+		Axial:		279.5567   -279.5567 
+		Corte:		9.9734     -9.9734   
 		Momento:	12.3457    12.5876   
 	Viga-Columna 2D C101-111:
-		Axial:		10.2163    -10.2163  
-		Corte:		262.5277   -262.5277 
+		Axial:		262.5277   -262.5277 
+		Corte:		-10.2163   10.2163   
 		Momento:	-12.7992   -12.7415  
 	Viga-Columna 2D C102-112:
-		Axial:		1.7233     -1.7233   
-		Corte:		425.4723   -425.4723 
+		Axial:		425.4723   -425.4723 
+		Corte:		-1.7233    1.7233    
 		Momento:	-2.1446    -2.1635   
 	Viga-Columna 2D C103-113:
-		Axial:		-1.7233    1.7233    
-		Corte:		425.4723   -425.4723 
+		Axial:		425.4723   -425.4723 
+		Corte:		1.7233     -1.7233   
 		Momento:	2.1446     2.1635    
 	Viga-Columna 2D C104-114:
-		Axial:		-10.2163   10.2163   
-		Corte:		262.5277   -262.5277 
+		Axial:		262.5277   -262.5277 
+		Corte:		10.2163    -10.2163  
 		Momento:	12.7992    12.7415   
 	Viga-Columna 2D C111-121:
-		Axial:		10.3688    -10.3688  
-		Corte:		245.4107   -245.4107 
+		Axial:		245.4107   -245.4107 
+		Corte:		-10.3688   10.3688   
 		Momento:	-12.9982   -12.9238  
 	Viga-Columna 2D C112-122:
-		Axial:		1.8720     -1.8720   
-		Corte:		394.5893   -394.5893 
+		Axial:		394.5893   -394.5893 
+		Corte:		-1.8720    1.8720    
 		Momento:	-2.3385    -2.3415   
 	Viga-Columna 2D C113-123:
-		Axial:		-1.8720    1.8720    
-		Corte:		394.5893   -394.5893 
+		Axial:		394.5893   -394.5893 
+		Corte:		1.8720     -1.8720   
 		Momento:	2.3385     2.3415    
 	Viga-Columna 2D C114-124:
-		Axial:		-10.3688   10.3688   
-		Corte:		245.4107   -245.4107 
+		Axial:		245.4107   -245.4107 
+		Corte:		10.3688    -10.3688  
 		Momento:	12.9982    12.9238   
 	Viga-Columna 2D C121-131:
-		Axial:		10.5267    -10.5267  
-		Corte:		228.2128   -228.2128 
+		Axial:		228.2128   -228.2128 
+		Corte:		-10.5267   10.5267   
 		Momento:	-13.1410   -13.1758  
 	Viga-Columna 2D C122-132:
-		Axial:		1.9916     -1.9916   
-		Corte:		363.7872   -363.7872 
+		Axial:		363.7872   -363.7872 
+		Corte:		-1.9916    1.9916    
 		Momento:	-2.4829    -2.4960   
 	Viga-Columna 2D C123-133:
-		Axial:		-1.9916    1.9916    
-		Corte:		363.7872   -363.7872 
+		Axial:		363.7872   -363.7872 
+		Corte:		1.9916     -1.9916   
 		Momento:	2.4829     2.4960    
 	Viga-Columna 2D C124-134:
-		Axial:		-10.5267   10.5267   
-		Corte:		228.2128   -228.2128 
+		Axial:		228.2128   -228.2128 
+		Corte:		10.5267    -10.5267  
 		Momento:	13.1410    13.1758   
 	Viga-Columna 2D C131-141:
-		Axial:		10.7434    -10.7434  
-		Corte:		210.9429   -210.9429 
+		Axial:		210.9429   -210.9429 
+		Corte:		-10.7434   10.7434   
 		Momento:	-13.1771   -13.6814  
 	Viga-Columna 2D C132-142:
-		Axial:		2.1304     -2.1304   
-		Corte:		333.0571   -333.0571 
+		Axial:		333.0571   -333.0571 
+		Corte:		-2.1304    2.1304    
 		Momento:	-2.6167    -2.7093   
 	Viga-Columna 2D C133-143:
-		Axial:		-2.1304    2.1304    
-		Corte:		333.0571   -333.0571 
+		Axial:		333.0571   -333.0571 
+		Corte:		2.1304     -2.1304   
 		Momento:	2.6167     2.7093    
 	Viga-Columna 2D C134-144:
-		Axial:		-10.7434   10.7434   
-		Corte:		210.9429   -210.9429 
+		Axial:		210.9429   -210.9429 
+		Corte:		10.7434    -10.7434  
 		Momento:	13.1771    13.6814   
 	Viga-Columna 2D C141-151:
-		Axial:		10.7944    -10.7944  
-		Corte:		193.6151   -193.6151 
+		Axial:		193.6151   -193.6151 
+		Corte:		-10.7944   10.7944   
 		Momento:	-12.8957   -14.0902  
 	Viga-Columna 2D C142-152:
-		Axial:		2.5251     -2.5251   
-		Corte:		302.3849   -302.3849 
+		Axial:		302.3849   -302.3849 
+		Corte:		-2.5251    2.5251    
 		Momento:	-2.6386    -3.6741   
 	Viga-Columna 2D C143-153:
-		Axial:		-2.5251    2.5251    
-		Corte:		302.3849   -302.3849 
+		Axial:		302.3849   -302.3849 
+		Corte:		2.5251     -2.5251   
 		Momento:	2.6386     3.6741    
 	Viga-Columna 2D C144-154:
-		Axial:		-10.7944   10.7944   
-		Corte:		193.6151   -193.6151 
+		Axial:		193.6151   -193.6151 
+		Corte:		10.7944    -10.7944  
 		Momento:	12.8957    14.0902   
 	Viga-Columna 2D C151-161:
-		Axial:		10.1572    -10.1572  
-		Corte:		176.2576   -176.2576 
+		Axial:		176.2576   -176.2576 
+		Corte:		-10.1572   10.1572   
 		Momento:	-12.6026   -12.7905  
 	Viga-Columna 2D C152-162:
-		Axial:		2.7238     -2.7238   
-		Corte:		271.7424   -271.7424 
+		Axial:		271.7424   -271.7424 
+		Corte:		-2.7238    2.7238    
 		Momento:	-1.7595    -5.0501   
 	Viga-Columna 2D C153-163:
-		Axial:		-2.7238    2.7238    
-		Corte:		271.7424   -271.7424 
+		Axial:		271.7424   -271.7424 
+		Corte:		2.7238     -2.7238   
 		Momento:	1.7595     5.0501    
 	Viga-Columna 2D C154-164:
-		Axial:		-10.1572   10.1572   
-		Corte:		176.2576   -176.2576 
+		Axial:		176.2576   -176.2576 
+		Corte:		10.1572    -10.1572  
 		Momento:	12.6026    12.7905   
 	Viga-Columna 2D C161-171:
-		Axial:		10.2014    -10.2014  
-		Corte:		158.8938   -158.8938 
+		Axial:		158.8938   -158.8938 
+		Corte:		-10.2014   10.2014   
 		Momento:	-13.9814   -11.5222  
 	Viga-Columna 2D C162-172:
-		Axial:		-3.7131    3.7131    
-		Corte:		241.1062   -241.1062 
+		Axial:		241.1062   -241.1062 
+		Corte:		3.7131     -3.7131   
 		Momento:	-0.2430    9.5259    
 	Viga-Columna 2D C163-173:
-		Axial:		3.7131     -3.7131   
-		Corte:		241.1062   -241.1062 
+		Axial:		241.1062   -241.1062 
+		Corte:		-3.7131    3.7131    
 		Momento:	0.2430     -9.5259   
 	Viga-Columna 2D C164-174:
-		Axial:		-10.2014   10.2014   
-		Corte:		158.8938   -158.8938 
+		Axial:		158.8938   -158.8938 
+		Corte:		10.2014    -10.2014  
 		Momento:	13.9814    11.5222   
 	Viga-Columna 2D C171-181:
-		Axial:		11.6545    -11.6545  
-		Corte:		141.3284   -141.3284 
+		Axial:		141.3284   -141.3284 
+		Corte:		-11.6545   11.6545   
 		Momento:	-15.9303   -13.2060  
 	Viga-Columna 2D C172-182:
-		Axial:		-5.1662    5.1662    
-		Corte:		226.6716   -226.6716 
+		Axial:		226.6716   -226.6716 
+		Corte:		5.1662     -5.1662   
 		Momento:	5.4035     7.5120    
 	Viga-Columna 2D C173-183:
-		Axial:		5.1662     -5.1662   
-		Corte:		226.6716   -226.6716 
+		Axial:		226.6716   -226.6716 
+		Corte:		-5.1662    5.1662    
 		Momento:	-5.4035    -7.5120   
 	Viga-Columna 2D C174-184:
-		Axial:		-11.6545   11.6545   
-		Corte:		141.3284   -141.3284 
+		Axial:		141.3284   -141.3284 
+		Corte:		11.6545    -11.6545  
 		Momento:	15.9303    13.2060   
 	Viga-Columna 2D C181-191:
-		Axial:		11.9132    -11.9132  
-		Corte:		123.6550   -123.6550 
+		Axial:		123.6550   -123.6550 
+		Corte:		-11.9132   11.9132   
 		Momento:	-14.6890   -15.0939  
 	Viga-Columna 2D C182-192:
-		Axial:		-5.4249    5.4249    
-		Corte:		212.3450   -212.3450 
+		Axial:		212.3450   -212.3450 
+		Corte:		5.4249     -5.4249   
 		Momento:	6.9960     6.5661    
 	Viga-Columna 2D C183-193:
-		Axial:		5.4249     -5.4249   
-		Corte:		212.3450   -212.3450 
+		Axial:		212.3450   -212.3450 
+		Corte:		-5.4249    5.4249    
 		Momento:	-6.9960    -6.5661   
 	Viga-Columna 2D C184-194:
-		Axial:		-11.9132   11.9132   
-		Corte:		123.6550   -123.6550 
+		Axial:		123.6550   -123.6550 
+		Corte:		11.9132    -11.9132  
 		Momento:	14.6890    15.0939   
 	Viga-Columna 2D C191-201:
-		Axial:		11.6306    -11.6306  
-		Corte:		105.9448   -105.9448 
+		Axial:		105.9448   -105.9448 
+		Corte:		-11.6306   11.6306   
 		Momento:	-12.9488   -16.1276  
 	Viga-Columna 2D C192-202:
-		Axial:		-5.1423    5.1423    
-		Corte:		198.0552   -198.0552 
+		Axial:		198.0552   -198.0552 
+		Corte:		5.1423     -5.1423   
 		Momento:	7.7950     5.0607    
 	Viga-Columna 2D C193-203:
-		Axial:		5.1423     -5.1423   
-		Corte:		198.0552   -198.0552 
+		Axial:		198.0552   -198.0552 
+		Corte:		-5.1423    5.1423    
 		Momento:	-7.7950    -5.0607   
 	Viga-Columna 2D C194-204:
-		Axial:		-11.6306   11.6306   
-		Corte:		105.9448   -105.9448 
+		Axial:		105.9448   -105.9448 
+		Corte:		11.6306    -11.6306  
 		Momento:	12.9488    16.1276   
 	Viga-Columna 2D C201-211:
-		Axial:		10.2641    -10.2641  
-		Corte:		88.2613    -88.2613  
+		Axial:		88.2613    -88.2613  
+		Corte:		-10.2641   10.2641   
 		Momento:	-11.8006   -13.8596  
 	Viga-Columna 2D C202-212:
-		Axial:		-3.7758    3.7758    
-		Corte:		183.7387   -183.7387 
+		Axial:		183.7387   -183.7387 
+		Corte:		3.7758     -3.7758   
 		Momento:	9.3997     0.0398    
 	Viga-Columna 2D C203-213:
-		Axial:		3.7758     -3.7758   
-		Corte:		183.7387   -183.7387 
+		Axial:		183.7387   -183.7387 
+		Corte:		-3.7758    3.7758    
 		Momento:	-9.3997    -0.0398   
 	Viga-Columna 2D C204-214:
-		Axial:		-10.2641   10.2641   
-		Corte:		88.2613    -88.2613  
+		Axial:		88.2613    -88.2613  
+		Corte:		10.2641    -10.2641  
 		Momento:	11.8006    13.8596   
 	Viga-Columna 2D C211-221:
-		Axial:		10.6040    -10.6040  
-		Corte:		70.6737    -70.6737  
+		Axial:		70.6737    -70.6737  
+		Corte:		-10.6040   10.6040   
 		Momento:	-13.8108   -12.6993  
 	Viga-Columna 2D C212-222:
-		Axial:		3.3662     -3.3662   
-		Corte:		153.3263   -153.3263 
+		Axial:		153.3263   -153.3263 
+		Corte:		-3.3662    3.3662    
 		Momento:	-6.2028    -2.2128   
 	Viga-Columna 2D C213-223:
-		Axial:		-3.3662    3.3662    
-		Corte:		153.3263   -153.3263 
+		Axial:		153.3263   -153.3263 
+		Corte:		3.3662     -3.3662   
 		Momento:	6.2028     2.2128    
 	Viga-Columna 2D C214-224:
-		Axial:		-10.6040   10.6040   
-		Corte:		70.6737    -70.6737  
+		Axial:		70.6737    -70.6737  
+		Corte:		10.6040    -10.6040  
 		Momento:	13.8108    12.6993   
 	Viga-Columna 2D C221-231:
-		Axial:		11.8912    -11.8912  
-		Corte:		52.9760    -52.9760  
+		Axial:		52.9760    -52.9760  
+		Corte:		-11.8912   11.8912   
 		Momento:	-15.3617   -14.3663  
 	Viga-Columna 2D C222-232:
-		Axial:		3.5348     -3.5348   
-		Corte:		123.0240   -123.0240 
+		Axial:		123.0240   -123.0240 
+		Corte:		-3.5348    3.5348    
 		Momento:	-4.5766    -4.2604   
 	Viga-Columna 2D C223-233:
-		Axial:		-3.5348    3.5348    
-		Corte:		123.0240   -123.0240 
+		Axial:		123.0240   -123.0240 
+		Corte:		3.5348     -3.5348   
 		Momento:	4.5766     4.2604    
 	Viga-Columna 2D C224-234:
-		Axial:		-11.8912   11.8912   
-		Corte:		52.9760    -52.9760  
+		Axial:		52.9760    -52.9760  
+		Corte:		11.8912    -11.8912  
 		Momento:	15.3617    14.3663   
 	Viga-Columna 2D C231-241:
-		Axial:		13.3536    -13.3536  
-		Corte:		35.2238    -35.2238  
+		Axial:		35.2238    -35.2238  
+		Corte:		-13.3536   13.3536   
 		Momento:	-13.9242   -19.4597  
 	Viga-Columna 2D C232-242:
-		Axial:		2.9215     -2.9215   
-		Corte:		92.7762    -92.7762  
+		Axial:		92.7762    -92.7762  
+		Corte:		-2.9215    2.9215    
 		Momento:	-2.7460    -4.5577   
 	Viga-Columna 2D C233-243:
-		Axial:		-2.9215    2.9215    
-		Corte:		92.7762    -92.7762  
+		Axial:		92.7762    -92.7762  
+		Corte:		2.9215     -2.9215   
 		Momento:	2.7460     4.5577    
 	Viga-Columna 2D C234-244:
-		Axial:		-13.3536   13.3536   
-		Corte:		35.2238    -35.2238  
+		Axial:		35.2238    -35.2238  
+		Corte:		13.3536    -13.3536  
 		Momento:	13.9242    19.4597   
 	Viga-Columna 2D C241-251:
-		Axial:		14.1897    -14.1897  
-		Corte:		17.5354    -17.5354  
+		Axial:		17.5354    -17.5354  
+		Corte:		-14.1897   14.1897   
 		Momento:	-8.5120    -26.9623  
 	Viga-Columna 2D C242-252:
-		Axial:		-0.1178    0.1178    
-		Corte:		62.4646    -62.4646  
+		Axial:		62.4646    -62.4646  
+		Corte:		0.1178     -0.1178   
 		Momento:	-2.1956    2.4902    
 	Viga-Columna 2D C243-253:
-		Axial:		0.1178     -0.1178   
-		Corte:		62.4646    -62.4646  
+		Axial:		62.4646    -62.4646  
+		Corte:		-0.1178    0.1178    
 		Momento:	2.1956     -2.4902   
 	Viga-Columna 2D C244-254:
-		Axial:		-14.1897   14.1897   
-		Corte:		17.5354    -17.5354  
+		Axial:		17.5354    -17.5354  
+		Corte:		14.1897    -14.1897  
 		Momento:	8.5120     26.9623   
 	Viga-Columna 2D C252-262:
-		Axial:		9.2325     -9.2325   
-		Corte:		32.0000    -32.0000  
+		Axial:		32.0000    -32.0000  
+		Corte:		-9.2325    9.2325    
 		Momento:	-9.1890    -13.8923  
 	Viga-Columna 2D C253-263:
-		Axial:		-9.2325    9.2325    
-		Corte:		32.0000    -32.0000  
+		Axial:		32.0000    -32.0000  
+		Corte:		9.2325     -9.2325   
 		Momento:	9.1890     13.8923   
 	Viga-Columna 2D C262-272:
-		Axial:		11.2321    -11.2321  
-		Corte:		16.0000    -16.0000  
+		Axial:		16.0000    -16.0000  
+		Corte:		-11.2321   11.2321   
 		Momento:	-7.3245    -20.7558  
 	Viga-Columna 2D C263-273:
-		Axial:		-11.2321   11.2321   
-		Corte:		16.0000    -16.0000  
+		Axial:		16.0000    -16.0000  
+		Corte:		11.2321    -11.2321  
 		Momento:	7.3245     20.7558   
 
 -------------------------------------------------------------------------------

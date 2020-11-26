@@ -54,12 +54,12 @@ Reacciones:
 	Nodo N5: -47.1028   35.0000
 	Nodo N6: 0          0
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Membrana MEM1:
-		Nodo 1 (-b, -h): -52.8972  	-35.0000  
+		Nodo 1 (-b, -h): -22.8972  	-35.0000  
 		Nodo 2 (+b, -h): -12.1028  	11.4486   
 		Nodo 3 (+b, +h): -35.0000  	23.5514   
-		Nodo 4 (-b, +h): 0.0000    	-0.0000   
+		Nodo 4 (-b, +h): 70.0000   	-0.0000   
 		Tensiones MEM1 [GLOBALX GLOBALY X Y SIGMAX SIGMAY SIGMAXY DESPLX DESPLY]:
 			0.0000    	0.0000    	-1.0000   	-1.0000   	163.7383  	145.7944  	188.8785  	0.0000    	0.0000    
 			0.0000    	0.1250    	-1.0000   	-0.8750   	132.7220  	139.5911  	186.4252  	0.0342    	0.0071    

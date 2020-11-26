@@ -62,7 +62,7 @@ Reacciones:
 	Nodo N3: 0          0
 	Nodo N4: 0          0
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Biela 2D E1:	-7.9976        TRACCION
 	Biela 2D E2:	2.4307         COMPRESION
 	Biela 2D E3:	2.4307         COMPRESION

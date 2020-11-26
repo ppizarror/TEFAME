@@ -50,7 +50,7 @@ Reacciones:
 	Nodo N3: 0          46.4286    0
 	Nodo N4: 0          0          0
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Viga2D V1:
 		Momento:	-714.2857  -1428.5714
 		Corte:		-5.3571    5.3571    

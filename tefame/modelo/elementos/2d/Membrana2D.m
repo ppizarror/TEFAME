@@ -582,7 +582,7 @@ classdef Membrana2D < Elemento
             % guardarEsfuerzosInternos: Guarda los esfuerzos internos de la
             % membrana en un archivo
             
-            fr = obj.obtenerFuerzaResistenteCoordGlobal();
+            fr = obj.obtenerFuerzaResistenteCoordLocal();
             
             % Indica si se guardan las tensiones
             GUARDAR_TENSIONES = true;

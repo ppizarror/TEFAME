@@ -65,24 +65,24 @@ Reacciones:
 	Nodo N4: 0          0          0
 	Nodo N5: -163.1004  104.7203   345818.0318
 
-Esfuerzos Elementos:
+Esfuerzos Elementos (Local):
 	Viga-Columna 2D E1:
-		Axial:		-124.8996  124.8996  
-		Corte:		95.2797    -95.2797  
+		Axial:		95.2797    -95.2797  
+		Corte:		124.8996   -124.8996 
 		Momento:	295699.3772 203898.9750
 	Viga-Columna 2D E2:
-		Axial:		41.3422    -80.3422  
-		Corte:		32.7462    84.2538   
-		Momento:	-168298.4884 -38857.1873
+		Axial:		49.5759    -49.5759  
+		Corte:		-43.6723   43.6723   
+		Momento:	-217048.4884 9892.8127 
 	Viga-Columna 2D E3:
 		Axial:		43.7582    -43.7582  
-		Corte:		62.5336    137.4664  
-		Momento:	-35600.4866 -301597.4946
+		Corte:		-37.4664   37.4664   
+		Momento:	-191156.0422 -146041.9390
 	Viga-Columna 2D E4:
-		Axial:		80.3422    -119.3422 
-		Corte:		-84.2538   -32.7462  
-		Momento:	38857.1873 -4986.1214
+		Axial:		102.8628   -102.8628 
+		Corte:		7.1406     -7.1406   
+		Momento:	87607.1873 -53736.1214
 	Viga-Columna 2D E5:
-		Axial:		163.1004   -163.1004 
-		Corte:		-104.7203  104.7203  
+		Axial:		104.7203   -104.7203 
+		Corte:		163.1004   -163.1004 
 		Momento:	306583.6160 345818.0318
