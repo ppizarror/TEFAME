@@ -117,14 +117,10 @@ classdef CargaBielaTemperatura < CargaEstatica
             
         end % calcularCarga function
         
-        function masa = obtenerMasa(obj)
+        function masa = obtenerMasa(obj) %#ok<MANU>
             % obtenerMasa: Obtiene la masa asociada a la carga
             
-            if isa(obj.elemObj, 'Biela2D')
-                masa = [0, 0, 0, 0];
-            elseif isa(obj.elemObj, 'Biela3D')
-                masa = [0, 0, 0, 0, 0, 0];
-            end
+            masa = 0;
             
         end % obtenerMasa function
         
