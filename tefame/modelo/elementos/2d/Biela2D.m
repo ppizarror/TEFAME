@@ -58,8 +58,6 @@
 %       numeroGDL = obtenerNumeroGDL(obj)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       T = obtenerMatrizTransformacion(obj)
-%       theta = obtenerAngulo(obj)
-%       theta = obtenerAngulo(obj)
 %       definirGDLID(obj)
 %       sumarCargaTemperaturaReaccion(obj,f)
 %       agregarFuerzaResistenteAReacciones(obj)
@@ -165,13 +163,6 @@ classdef Biela2D < Elemento
             ae = obj.Ao * obj.Eo;
             
         end % obtenerAE function
-        
-        function theta = obtenerAngulo(obj)
-            % obtenerAngulo: Obtiene el angulo de inclinacion de la biela
-            
-            theta = obj.theta;
-            
-        end % obtenerAngulo function
         
         function T = obtenerMatrizTransformacion(obj)
             % obtenerMatrizTransformacion: Obtiene la matriz de

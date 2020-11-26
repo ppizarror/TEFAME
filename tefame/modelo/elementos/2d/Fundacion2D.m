@@ -58,7 +58,6 @@
 %       numeroGDL = obtenerNumeroGDL(obj)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       T = obtenerMatrizTransformacion(obj)
-%       theta = obtenerAngulo(obj)
 %       agregarFuerzaResistenteAReacciones(obj)
 %       definirGDLID(obj)
 %       disp(obj)

@@ -59,7 +59,6 @@
 %       numeroGDL = obtenerNumeroGDL(obj)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       T = obtenerMatrizTransformacion(obj)
-%       theta = obtenerAngulo(obj)
 %       agregarFuerzaResistenteAReacciones(obj)
 %       definirGDLID(obj)
 %       disp(obj)
@@ -200,13 +199,6 @@ classdef VigaColumna2D < Elemento
             T = obj.T;
             
         end % obtenerMatrizTransformacion function
-        
-        function theta = obtenerAngulo(obj)
-            % obtenerAngulo: Retorna el angulo de inclinacion del elemento
-            
-            theta = obj.theta;
-            
-        end % obtenerAngulo function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(obj)
             % obtenerMatrizRigidezCoordGlobal: Retorna la matriz de rigidez
