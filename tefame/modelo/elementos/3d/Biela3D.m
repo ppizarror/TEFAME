@@ -58,7 +58,6 @@
 %       numeroGDL = obtenerNumeroGDL(obj)
 %       numeroNodos = obtenerNumeroNodos(obj)
 %       T = obtenerMatrizTransformacion(obj)
-%       theta = obtenerAngulo(obj)
 %       agregarFuerzaResistenteAReacciones(obj)
 %       definirGDLID(obj)
 %       disp(obj)
@@ -82,7 +81,6 @@ classdef Biela3D < Elemento
         nodosObj % Cell con los nodos
         rho % Densidad de la biela
         T % Matriz de transformacion
-        theta % Angulo de inclinacion de la viga
     end % private properties Biela3D
     
     methods(Access = public)
@@ -113,7 +111,6 @@ classdef Biela3D < Elemento
             obj.dx = coordNodo2(1)-coordNodo1(1);
             obj.dy = coordNodo2(2)-coordNodo1(2);
             obj.dz = coordNodo2(3)-coordNodo1(3);
-            obj.theta = atan(obj.dy/obj.dx);
             obj.rho = densidad;
             
             % Largo de la biela
@@ -184,13 +181,6 @@ classdef Biela3D < Elemento
             m_masa(6) = 1e-6;
             
         end % obtenerMatrizMasa function
-        
-        function theta = obtenerAngulo(obj)
-            % obtenerAngulo: Retorna el angulo de inclinacion de la biela
-            
-            theta = obj.theta;
-            
-        end % obtenerAngulo function
         
         function k_global = obtenerMatrizRigidezCoordGlobal(obj)
             % obtenerMatrizRigidezCoordGlobal: Retorna la matriz de rigidez
