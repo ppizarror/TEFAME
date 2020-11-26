@@ -109,7 +109,11 @@ classdef CargaBielaTemperatura < CargaEstatica
         function c = calcularCarga(obj)
             % calcularCarga: Calcula la carga
             
-            c = [-obj.carga; 0; obj.carga; 0];
+            if isa(obj.elemObj, 'Biela2D')
+                c = [-obj.carga; 0; obj.carga; 0];
+            elseif isa(obj.elemObj, 'Biela3D')
+                c = [-obj.carga; obj.carga];
+            end
             
         end % calcularCarga function
         
