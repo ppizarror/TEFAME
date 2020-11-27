@@ -31,8 +31,8 @@ modeloObj.agregarElementos(elementos);
 
 % Creamos las restricciones
 restricciones = cell(2, 1);
-restricciones{1} = RestriccionNodo('R1', nodos{1}, [1, 2, 3, 4, 5, 6]'); % p1
-restricciones{2} = RestriccionNodo('R2', nodos{4}, [1, 2, 3, 4, 5, 6]'); % p2
+restricciones{1} = RestriccionNodo('R1', nodos{1}, [1, 2, 3, 4, 5, 6]');
+restricciones{2} = RestriccionNodo('R4', nodos{4}, [1, 2, 3, 4, 5, 6]');
 
 % Agregamos las restricciones al modelo
 modeloObj.agregarRestricciones(restricciones);

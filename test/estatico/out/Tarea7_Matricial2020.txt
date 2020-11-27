@@ -17,18 +17,21 @@ Elementos:
 	Numero de elementos: 3
 	Viga-Columna 3D E1:
 		Largo:		5
+		Area:		0.001
 		Inercia y:	0.0002
 		Inercia z:	0.0004
 		Eo:			22500000
 		Masa:		0
 	Viga-Columna 3D E2:
 		Largo:		3.5
+		Area:		0.001
 		Inercia y:	0.0002
 		Inercia z:	0.0004
 		Eo:			22500000
 		Masa:		0
 	Viga-Columna 3D E3:
 		Largo:		4
+		Area:		0.001
 		Inercia y:	0.0002
 		Inercia z:	0.0004
 		Eo:			22500000
