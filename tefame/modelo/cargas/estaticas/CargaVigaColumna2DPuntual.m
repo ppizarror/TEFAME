@@ -111,7 +111,6 @@ classdef CargaVigaColumna2DPuntual < CargaEstatica
             obj.carga = carga;
             obj.dist = distancia * elemObjeto.obtenerLargo();
             obj.elemObj = elemObjeto;
-            obj.nodosCarga = elemObjeto.obtenerNodos();
             obj.theta = theta;
             
         end % CargaVigaColumna2DPuntual constructor

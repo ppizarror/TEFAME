@@ -95,7 +95,7 @@ classdef VigaColumna3D < Elemento
         
         function obj = VigaColumna3D(etiquetaViga, nodo1Obj, nodo2Obj, r3, Iy, Iz, E, A, G, J, densidad)
             % Para definir el angulo de la viga se requiere de un vector de
-            % 3 componentes que defina la posici�n de un punto en el eje y
+            % 3 componentes que defina la posicion de un punto en el eje y
             % de la viga. Debe esar dentro del plano (x,y) y no puede estar
             % en el eje x. (y==x) Se recomienda que se defina con respecto
             % al primer punto (x1).
