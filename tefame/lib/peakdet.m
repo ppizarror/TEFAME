@@ -30,7 +30,7 @@ else
     end
 end
 
-if (length(delta(:))) > 1
+if length(delta(:)) > 1
     error('Input argument DELTA must be a scalar');
 end
 

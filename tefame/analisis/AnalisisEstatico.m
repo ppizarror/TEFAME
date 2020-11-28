@@ -114,7 +114,7 @@ classdef AnalisisEstatico < Analisis
                 
                 % Si no es reaccion entonces se agrega como GDL
                 for j = 1:length(gdlidNodo)
-                    if (gdlidNodo(j) == -1)
+                    if gdlidNodo(j) == -1
                         contadorGDL = contadorGDL + 1;
                         gdlidNodo(j) = contadorGDL;
                     end
@@ -214,7 +214,7 @@ classdef AnalisisEstatico < Analisis
                         
                         % Si corresponden a grados de libertad -> puntos en (i,j)
                         % se suma contribucion metodo indicial
-                        if (i_ > 0 && j_ > 0)
+                        if i_ > 0 && j_ > 0
                             obj.Kt(i_, j_) = obj.Kt(i_, j_) + k_globl_elem(r, s);
                         end
                     end % for s

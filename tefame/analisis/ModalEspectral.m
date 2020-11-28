@@ -211,7 +211,7 @@ classdef ModalEspectral < Analisis
             end
             
             % Amortiguamiento Rayleigh
-            if (betaAlg == 0 || betaAlg == 1)
+            if betaAlg == 0 || betaAlg == 1
                 if isempty(r.rayleighBeta)
                     error('Vector amortiguamiento de Rayleigh no puede ser nulo');
                 end
@@ -246,7 +246,7 @@ classdef ModalEspectral < Analisis
             end
             
             % Amortiguamiento Cpenzien
-            if (betaAlg == 0 || betaAlg == 2)
+            if betaAlg == 0 || betaAlg == 2
                 if isempty(r.cpenzienBeta)
                     error('Vector amortiguamiento cpenzien no puede ser nulo');
                 end
@@ -3820,7 +3820,7 @@ classdef ModalEspectral < Analisis
                 
                 % Si no es reaccion entonces se agrega como GDL
                 for j = 1:length(gdlidNodo)
-                    if (gdlidNodo(j) == -1)
+                    if gdlidNodo(j) == -1
                         contadorGDL = contadorGDL + 1;
                         gdlidNodo(j) = contadorGDL;
                     end
@@ -4140,7 +4140,7 @@ classdef ModalEspectral < Analisis
             end % for j
             
             % -------- CALCULO DE AMORTIGUAMIENTO DE RAYLEIGH -------------
-            if (betaAlg == 0 || betaAlg == 1)
+            if betaAlg == 0 || betaAlg == 1
                 
                 % Se recorren los numero de modos, si alguno es mayor a los
                 % modos de analisis se reajusta y lanza warning
@@ -4189,7 +4189,7 @@ classdef ModalEspectral < Analisis
             end
             
             % ------ CALCULO DE AMORTIGUAMIENTO DE WILSON-PENZIEN ----------
-            if (betaAlg == 0 || betaAlg == 2)
+            if betaAlg == 0 || betaAlg == 2
                 
                 % Se declaran todos los amortiguamientos criticos del sistema,
                 % (horizontal, vertical y rotacional)
@@ -4257,7 +4257,7 @@ classdef ModalEspectral < Analisis
                         
                         % Si corresponden a grados de libertad -> puntos en (i,j)
                         % se suma contribucion metodo indicial
-                        if (i_ > 0 && j_ > 0)
+                        if i_ > 0 && j_ > 0
                             obj.Kt(i_, j_) = obj.Kt(i_, j_) + k_globl_elem(r, s);
                         end
                         
@@ -4301,7 +4301,7 @@ classdef ModalEspectral < Analisis
                         
                         % Si corresponden a grados de libertad -> puntos en (i,j)
                         % se suma contribucion metodo indicial
-                        if (i_ ~= 0 && j_ ~= 0 && r == s)
+                        if i_ > 0 && j_ > 0 && r == s
                             obj.Mt(i_, j_) = obj.Mt(i_, j_) + m_elem(r);
                         end
                         
@@ -4411,7 +4411,7 @@ classdef ModalEspectral < Analisis
                         
                         % Si corresponden a grados de libertad -> puntos en (i,j)
                         % se suma contribucion metodo indicial
-                        if (i_ ~= 0 && j_ ~= 0)
+                        if i_ > 0 && j_ > 0
                             Cdv(i_, j_) = Cdv(i_, j_) + c_globl_elem(r, s);
                         end
                         
@@ -4457,7 +4457,7 @@ classdef ModalEspectral < Analisis
                         
                         % Si corresponden a grados de libertad -> puntos en (i,j)
                         % se suma contribucion metodo indicial
-                        if (i_ ~= 0 && j_ ~= 0)
+                        if i_ > 0 && j_ > 0
                             Kdv(i_, j_) = Kdv(i_, j_) + k_globl_elem(r, s);
                         end
                         

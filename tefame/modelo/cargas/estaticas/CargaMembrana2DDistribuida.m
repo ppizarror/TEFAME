@@ -119,15 +119,15 @@ classdef CargaMembrana2DDistribuida < CargaEstatica
             if abs(nodo1-nodo2) == 2
                 error('Nodo no puede ser cruzado @CargaMembrana2DDistribuida %s', etiquetaCarga);
             end
-            if (nodo1 < 1 || nodo1 > 4 || nodo2 < 1 || nodo2 > 4)
+            if nodo1 < 1 || nodo1 > 4 || nodo2 < 1 || nodo2 > 4
                 error('Etiqueta nodo invalido, debe ser entre 1 y 4 @CargaMembrana2DDistribuida %s', etiquetaCarga);
             end
             
             % Aplica limites al minimo y maximo
-            if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
+            if distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0
                 warning('Distancias deben estar dentro del rango [0, 1] @CargaVigaColumna2DDistribuida %s', etiquetaCarga);
             end
-            if (distancia1 == distancia2)
+            if distancia1 == distancia2
                 warning('Distancias son iguales @CargaVigaColumna2DDistribuida %s', etiquetaCarga);
             end
             distancia1 = max(0, min(distancia1, 1));
@@ -240,9 +240,9 @@ classdef CargaMembrana2DDistribuida < CargaEstatica
             nodo2etiqueta = nodosetiqueta{obj.nodo2}.obtenerEtiqueta();
             
             % Obtiene si la carga es horizontal o vertical
-            if (obj.theta == 0)
+            if obj.theta == 0
                 dirc = 'Horizontal';
-            elseif (obj.theta == pi / 2)
+            elseif obj.theta == pi / 2
                 dirc = 'Vertical';
             else
                 dirc = sprintf('Diagonal theta=%.3f', obj.theta);

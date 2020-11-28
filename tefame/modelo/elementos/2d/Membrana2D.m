@@ -138,10 +138,10 @@ classdef Membrana2D < Elemento
             db2 = abs(coordNodo3(1)-coordNodo4(1)) / 2;
             dh1 = abs(coordNodo1(2)-coordNodo4(2)) / 2;
             dh2 = abs(coordNodo2(2)-coordNodo3(2)) / 2;
-            if (db1 ~= db2)
+            if db1 ~= db2
                 error('Dimensiones no correctas en @x Membrana2D ID %s', etiquetaMembrana);
             end
-            if (dh1 ~= dh2)
+            if dh1 ~= dh2
                 error('Dimensiones no correctas en @y Membrana2D ID %s', etiquetaMembrana);
             end
             
@@ -302,7 +302,7 @@ classdef Membrana2D < Elemento
             % Aplica traspuesta
             for i = 2:8 % fila
                 for j = 1:8 % columna
-                    if (j < i)
+                    if j < i
                         k_local(i, j) = k_local(j, i);
                     end
                 end % for j
@@ -313,7 +313,7 @@ classdef Membrana2D < Elemento
         function validarXY(obj, x, y)
             % validarXY: Valida que un punto (x,y) pertenezca a la membrana
             
-            if (abs(x) > obj.b || abs(y) > obj.h)
+            if abs(x) > obj.b || abs(y) > obj.h
                 error('Valores x e y exceden dimensiones permitidas');
             end
             
@@ -480,7 +480,7 @@ classdef Membrana2D < Elemento
             
             fnodo = length(f); % Largo del vector
             nodo = floor(nodo); % Se redondea
-            if (nodo < 0 || nodo > 4)
+            if nodo < 0 || nodo > 4
                 error('Numero de nodo invalido @sumarFuerzaEquivalente Nodo %s', nodo);
             end
             pos = nodo * fnodo - 1; % Posicion de la fuerza

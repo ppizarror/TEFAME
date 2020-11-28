@@ -285,7 +285,7 @@ classdef Biela2D < Elemento
             % sumarCargaTemperaturaReaccion: Suma temperatura a reacciones
             
             for i = 1:length(f)
-                if (obj.gdlID(i) == 0)
+                if obj.gdlID(i) == 0
                     obj.TcargaReacc(i) = obj.TcargaReacc(i) + f(i);
                 end
             end % for i

@@ -99,10 +99,10 @@ classdef CargaViga2DDistribuida < CargaEstatica
             end
             
             % Aplica limites al minimo y maximo
-            if (distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0)
+            if distancia1 < 0 || distancia1 > 1 || distancia2 > 1 || distancia2 < 0
                 error('Distancias deben estar dentro del rango [0, 1] @CargaViga2DDistribuida %s', etiquetaCarga);
             end
-            if (distancia1 == distancia2)
+            if distancia1 == distancia2
                 error('Distancias son iguales @CargaViga2DDistribuida %s', etiquetaCarga);
             end
             distancia1 = max(0, min(distancia1, 1));

@@ -131,7 +131,7 @@ classdef RestriccionNodo < ComponenteModelo
             
             % Se extrae la etiqueta del Nodo que tiene la restriccion
             etiquetaStr = obj.nodoObj.obtenerEtiqueta();
-            if (isnumeric(etiquetaStr) == 1)
+            if isnumeric(etiquetaStr) == 1
                 etiquetaStr = num2str(etiquetaStr);
             end
             

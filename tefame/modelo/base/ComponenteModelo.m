@@ -103,7 +103,7 @@ classdef ComponenteModelo < handle
             
             % Se procede a imprimir en pantalla la etiqueta
             etiquetaStr = obj.etiquetaID;
-            if (isnumeric(obj.etiquetaID) == 1)
+            if isnumeric(obj.etiquetaID) == 1
                 etiquetaStr = num2str(etiquetaStr);
             end
             fprintf('\tEtiqueta: %s\n', etiquetaStr);
