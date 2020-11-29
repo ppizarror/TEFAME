@@ -4295,17 +4295,10 @@ classdef ModalEspectral < Analisis
                 
                 % Se calcula el metodo indicial
                 for r = 1:ngdl
-                    for s = 1:ngdl
-                        i_ = gdl(r);
-                        j_ = gdl(s);
-                        
-                        % Si corresponden a grados de libertad -> puntos en (i,j)
-                        % se suma contribucion metodo indicial
-                        if i_ > 0 && j_ > 0 && r == s
-                            obj.Mt(i_, j_) = obj.Mt(i_, j_) + m_elem(r);
-                        end
-                        
-                    end % for s
+                    i_ = gdl(r);
+                    if i_ > 0
+                        obj.Mt(i_, i_) = obj.Mt(i_, i_) + m_elem(r);
+                    end
                 end % for r
                 
             end % for i
@@ -4343,8 +4336,6 @@ classdef ModalEspectral < Analisis
                         n = nodoCarga{k}.obtenerGDLID();
                         if length(n) >= 2
                             obj.Mt(n(1), n(1)) = obj.Mt(n(1), n(1)) + 0.5 * m;
-                        end
-                        if length(n) >= 2
                             obj.Mt(n(2), n(2)) = obj.Mt(n(2), n(2)) + 0.5 * m;
                         end
                         if length(n) >= 3
@@ -4474,7 +4465,6 @@ classdef ModalEspectral < Analisis
             %
             % Ensambla el vector de fuerzas del modelo analizado usando el metodo
             % indicial
-            
             obj.F = zeros(obj.numeroGDL, 1);
             
             % En esta funcion se tiene que ensamblar el vector de fuerzas
