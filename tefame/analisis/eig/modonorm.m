@@ -17,7 +17,7 @@ end
 
 % Normaliza con primera linea
 if opt == 1
-    aux = (phi(1, :));
+    aux = phi(1, :);
     if min(abs(aux)) <= eps
         opt = 3;
         warning('No se puede dividir debido a un valor nulo, se usa opt=3');

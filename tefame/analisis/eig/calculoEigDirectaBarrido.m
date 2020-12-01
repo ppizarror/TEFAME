@@ -20,17 +20,16 @@ end
 
 % Matriz de iteracion directa
 D = K^-1 * M;
+S = eye(size(M));
 
 % Iteracion para cada modo
 for i = 1:nModos
     
     % Matriz de barrido
-    if i == 1
-        S = eye(size(M));
-    else
-        S = S - (v(:, i-1) * v(:, i-1)' * M) / (v(:, i-1)' * M * v(:, i-1));
+    if i > 1
+        S = S - (v0Temp * v0Temp' * M) / (v0Temp' * M * v0Temp);
+        D = D * S;
     end
-    D = D * S;
     
     % Vector inicial
     v0Temp = rand(size(M, 2));
@@ -58,8 +57,8 @@ for i = 1:nModos
     
     % Variables finales del proceso
     if i == 1
-        w = wTemp;
-        v = vTemp;
+        w = w0Temp;
+        v = v0Temp;
         error = err;
     else
         w = [w, w0Temp]; %#ok<*AGROW>

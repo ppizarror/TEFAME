@@ -4167,7 +4167,7 @@ classdef ModalEspectral < Analisis
                         countcR(2) = countcR(2) + 1;
                         if direcR(1) == 'v' && modocR(1) == countcR(2)
                             m = i;
-                        elseif direcR(2) == 'h' && modocR(2) == countcR(2)
+                        elseif direcR(2) == 'v' && modocR(2) == countcR(2)
                             n = i;
                         end
                     end
@@ -4176,7 +4176,7 @@ classdef ModalEspectral < Analisis
                 if m == 0 || n == 0
                     warning('Se requiere aumentar el numero de modos para determinar matriz de amortiguamiento de Rayleigh');
                     m = 1;
-                    n = 1;
+                    n = 2;
                 end
                 w = obj.wn;
                 a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...

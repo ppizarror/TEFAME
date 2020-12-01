@@ -42,6 +42,7 @@ fprintf('>\tMODELO_TALLER\n');
 %% Creamos el modelo
 modeloObj = Modelo(2, 3);
 modeloObj.definirNombre('Modelo Taller');
+resolve_dyn = false;
 
 %% Nodos modelo
 nodos = {}; % Nodos Modelo
@@ -149,14 +150,18 @@ patronesDeCargas{2} = PatronDeCargasDinamico('CargaDinamica', cargasDinamicas, a
 
 % Agregamos las cargas al modelo
 modeloObj.agregarPatronesDeCargas(patronesDeCargas);
-analisisObj.plot();
 
 %% Analiza el sistema y resuelve para cargas estaticas
 analisisObj.analizar('nModos', 24, 'rayleighBeta', [0.02, 0.05], 'rayleighModo', [1, 2], ...
-    'rayleighDir', ['h', 'h'], 'amortiguamiento', 'rayleigh', 'condensar', true);
+    'rayleighDir', ['h', 'h'], 'amortiguamiento', 'rayleigh', 'condensar', true, ...
+    'valvecAlgoritmo', 'eigs');
 analisisObj.disp();
 
 %% Calcula y grafica las cargas dinamicas
+if ~resolve_dyn
+    return;
+end
+analisisObj.plot();
 analisisObj.resolverCargasDinamicas();
 
 %% Grafica
