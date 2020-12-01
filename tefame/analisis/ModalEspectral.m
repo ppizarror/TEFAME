@@ -293,17 +293,20 @@ classdef ModalEspectral < Analisis
             fprintf('\tParametros analisis:\n');
             fprintf('\t\tNumero de modos: %d\n', r.nModos);
             
-            fprintf('\t\tAmortiguamiento Rayleigh:\n');
-            s = arrayIntNum2str(r.rayleighModo);
-            fprintf('\t\t\tModos:\t\t%s\n', [s{:}]);
-            s = arrayNum2str(r.rayleighBeta);
-            fprintf('\t\t\tBeta:\t\t%s\n', [s{:}]);
-            s = arrayStr2str(r.rayleighDir);
-            fprintf('\t\t\tDireccion:\t%s\n', [s{:}]);
-            
-            fprintf('\t\tAmortiguamiento cpenzien:\n');
-            s = arrayNum2str(r.cpenzienBeta);
-            fprintf('\t\t\tBeta:\t\t%s\n', [s{:}]);
+            if strcmp(betaAlgoritmo, 'all') || strcmp(betaAlgoritmo, 'rayleigh')
+                fprintf('\t\tAmortiguamiento Rayleigh:\n');
+                s = arrayIntNum2str(r.rayleighModo);
+                fprintf('\t\t\tModos:\t\t%s\n', [s{:}]);
+                s = arrayNum2str(r.rayleighBeta);
+                fprintf('\t\t\tBeta:\t\t%s\n', [s{:}]);
+                s = arrayStr2str(r.rayleighDir);
+                fprintf('\t\t\tDireccion:\t%s\n', [s{:}]);
+            end
+            if strcmp(betaAlgoritmo, 'all') || strcmp(betaAlgoritmo, 'cpenzien')
+                fprintf('\t\tAmortiguamiento cpenzien:\n');
+                s = arrayNum2str(r.cpenzienBeta);
+                fprintf('\t\t\tBeta:\t\t%s\n', [s{:}]);
+            end
             
             % Se definen los grados de libertad por nodo -> elementos
             obj.definirNumeracionGDL();
@@ -3704,7 +3707,7 @@ classdef ModalEspectral < Analisis
             % Propiedades de las matrices
             detKt = det(obj.Kt);
             detMt = det(obj.Mt);
-            if detKt ~= Inf
+            if detKt ~= Inf && detKt < 1e20
                 fprintf('\tMatriz de rigidez:\n');
                 fprintf('\t\tDeterminante: %f\n', detKt);
             end
@@ -3870,7 +3873,7 @@ classdef ModalEspectral < Analisis
             % Primero se genera matriz para reordenar elementos (rot)
             vz = []; % Vector que identifica indices a condensar
             j = 1;
-            if maxcond >= 0
+            if maxcond > 0
                 for i = 1:length(diagMt)
                     if diagMt(i) <= maxcond
                         vz(j) = i; %#ok<AGROW>
@@ -3881,10 +3884,8 @@ classdef ModalEspectral < Analisis
             
             % Si condensa grados
             obj.gdlCond = length(vz);
-            realizaCond = false;
             if obj.gdlCond > 0
                 
-                realizaCond = true;
                 % Chequea cuantos grados quedan
                 nndg = ndg;
                 if ndg > 2
@@ -3903,9 +3904,9 @@ classdef ModalEspectral < Analisis
                 rot = zeros(length(diagMt), length(diagMt));
                 aux0 = 1;
                 aux1 = 1;
-                aux2 = length(diagMt) - lpasivos + 1;
+                aux2 = lactivos + 1;
                 for i = 1:1:length(rot)
-                    if aux0 <= length(vz) && i == vz(aux0)
+                    if aux0 <= lpasivos && i == vz(aux0)
                         rot(i, aux2) = 1;
                         aux2 = aux2 + 1;
                         aux0 = aux0 + 1;
@@ -3923,12 +3924,12 @@ classdef ModalEspectral < Analisis
                 Kap = Krot(1:lactivos, lactivos+1:end);
                 Kpa = Krot(lactivos+1:end, 1:lactivos);
                 Kpp = Krot(lactivos+1:end, lactivos+1:end);
-                Keq = Kaa - Kap * Kpp^(-1) * Kpa;
+                Kppinv = Kpp^(-1);
+                Keq = Kaa - Kap * Kppinv * Kpa;
                 
                 % Generacion de matriz T de condensacion
-                If = size(Kaa, 1);
-                T1 = eye(If);
-                T2 = -(Kpp)^(-1) * (Kpa);
+                T1 = eye(size(Kaa, 1));
+                T2 = -Kppinv * Kpa;
                 T = vertcat(T1, T2);
                 
                 % Se determina matriz de masa condensada (Meq)
@@ -3936,12 +3937,10 @@ classdef ModalEspectral < Analisis
                 Meq = T' * Mrot * T;
                 
                 % Condensa la fuerza estatica
-                obj.F = rot' * obj.F;
-                obj.F = T' * obj.F;
+                obj.F = T' * rot' * obj.F;
                 
                 % Condensa los desplazamientos estaticos
-                obj.u = rot' * obj.u;
-                obj.u = T' * obj.u;
+                obj.u = T' * rot' * obj.u;
                 
                 % Actualiza los grados
                 cngdl = length(Meq);
@@ -3963,7 +3962,7 @@ classdef ModalEspectral < Analisis
                             elseif vz(k) < gdl(j)
                                 gdlaux(j) = gdlaux(j) - 1;
                             else
-                                gdlaux(j) = gdlaux(j);
+                                break;
                             end
                         end % for k
                     end % for j
@@ -4054,7 +4053,7 @@ classdef ModalEspectral < Analisis
             
             % Se recuperan los grados de libertad condensados y se
             % ordenan de acuerdo a la configuracion original
-            if realizaCond
+            if obj.gdlCond > 0
                 modalPhinFull = T * modalPhin;
                 rot_inv = rot^(-1);
                 modalPhinFull = rot_inv' * modalPhinFull;
@@ -4359,11 +4358,11 @@ classdef ModalEspectral < Analisis
             
             % Despliega informacion
             fprintf('\tDistribucion de masa:\n');
-            fprintf('\t\tMasa de elementos: %.1f (%.2f%%)\n', mElementos, ...
+            fprintf('\t\tMasa de elementos: %.1f (%.4f%%)\n', mElementos, ...
                 mElementos/mTotal*100);
-            fprintf('\t\tMasa de cargas: %.1f (%.2f%%)\n', mCargas, ...
+            fprintf('\t\tMasa de cargas: %.1f (%.4f%%)\n', mCargas, ...
                 mCargas/mTotal*100);
-            fprintf('\t\tMasa total: %.1f\n', mTotal);
+            fprintf('\t\tMasa total: %.4f\n', mTotal);
             
         end % ensamblarMatrizMasa function
         
@@ -4375,7 +4374,7 @@ classdef ModalEspectral < Analisis
             % Ensambla la matriz de rigidez del modelo analizado usando el metodo
             % indicial
             
-            % fprintf('\tEnsamblando matriz de amortiguamiento disipadores\n');
+            fprintf('\tEnsamblando matriz de amortiguamiento disipadores\n');
             ndglc = obj.numeroGDL - obj.gdlCond; % Numero de grados de libertad condensados
             Cdv = zeros(ndglc, ndglc);
             
@@ -4422,7 +4421,7 @@ classdef ModalEspectral < Analisis
             % Ensambla la matriz de rigidez de los disipadores del modelo
             % analizado usando el metodo indicial
             
-            % fprintf('\tEnsamblando matriz de rigidez disipadores\n');
+            fprintf('\tEnsamblando matriz de rigidez disipadores\n');
             ndglc = obj.numeroGDL - obj.gdlCond; % Numero de grados de libertad condensados
             Kdv = zeros(ndglc, ndglc);
             
