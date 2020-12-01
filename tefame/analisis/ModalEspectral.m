@@ -4065,8 +4065,8 @@ classdef ModalEspectral < Analisis
                 obj.condMatRot = eye(length(modalPhin));
             end
             
-            % Calcula las frecuencias del sistema
-            modalTn = (modalWn.^-1) .* 2 * pi(); % Calcula los periodos
+            % Calcula los periodos
+            modalTn = (modalWn.^-1) .* 2 * pi();
             
             % Calcula las matrices
             modalMmt = modalPhin' * Meq * modalPhin;
