@@ -25,8 +25,7 @@ V = zeros(m , nConCarga * nritz);
 M_b = u_s' * M * u_s;
 K_b = u_s' * K * u_s;
 [Z] = eig(K_b, M_b);
-V(:, 1:nConCarga) = u_s * Z;
-[V(:, 1:nConCarga)] = modonorm(V(:, 1:nConCarga), M);
+V(:, 1:nConCarga) = modonorm(u_s * Z, M);
 
 % II.- GENERATE BLOCKS OF RITZ VECTORS
 for i = 1:nritz - 1
@@ -35,9 +34,8 @@ for i = 1:nritz - 1
     M_b = X_i' * M * X_i;
     K_b = X_i' * K * X_i;
     [Z] = eig(K_b, M_b);
-    V(:, i*nConCarga+1:(i + 1)*nConCarga) = X_i * Z;
-    V(:, i*nConCarga+1:(i + 1)*nConCarga) = GSM(V(:, i* ...
-        nConCarga+1:(i + 1)*nConCarga), M, V(:, 1:i*nConCarga));
+    % V(:, i*nConCarga+1:(i + 1)*nConCarga) = GSM(X_i * Z, M, V(:, 1:i*nConCarga));
+    V(:, i*nConCarga+1:(i + 1)*nConCarga) = GSM(X_i * Z, M, V(:, 1:i*nConCarga));
     V(:, i*nConCarga+1:(i + 1)*nConCarga) = GSM(V(:, i* ...
         nConCarga+1:(i + 1)*nConCarga), M, V(:, 1:i*nConCarga));
 end

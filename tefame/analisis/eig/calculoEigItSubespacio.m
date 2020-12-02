@@ -27,6 +27,7 @@ L = L';
 
 % Genera vector a partir de numeros aleatorios
 X = rand(ngdl, min(6, ngdl));
+% X = eye(ngdl);
 
 phi = X; % Matriz que contendra los vectores finales
 wfinal = zeros(nModos, 1); % Contendra las frecuencias
@@ -51,13 +52,12 @@ for i = 1:nModos
         % Genera bloque de vectores u_s, rigidez y masa ortogonal
         M_b = X' * M * X;
         K_b = X' * K * X;
-        Z = eig(K_b, M_b);
+        [Z] = eig(K_b, M_b);
         X = X * Z; % Vectores ortogonales
         
         % Calcula Gram-Schmidt para hacer X ortogonal a todos los
         % demas vectores
         if i ~= 1
-            size(X)
             X = GSM(X, M, phi(:, 1:i-1));
         end
         X = modonorm(X, M); % Normalizacion modal
