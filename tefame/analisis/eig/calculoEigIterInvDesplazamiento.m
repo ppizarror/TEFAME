@@ -19,7 +19,9 @@ K_eff = K - mu .* M;
 
 % Primera iteracion
 vo = rand(length(K), 1); % Primer desplazamiento
-w = sqrt(mu + sqrt((vo' * K * vo)/(vo' * M * vo))); % Primera aproximacion
+% vo = [1, 1, 1]';
+w = sqrt(mu+sqrt((vo' * K * vo)/(vo' * M * vo))); % Primera aproximacion
+w = w(1);
 error = err;
 v = vo;
 b = M * vo;
@@ -30,8 +32,8 @@ while tol <= err
     yTemp = (L * D) \ b;
     vTemp = L' \ yTemp;
     vTemp = modonorm(vTemp, M, 3);
-    wTemp = sqrt(mu + sqrt((vTemp' * K * vTemp)/(vTemp' * M * vTemp)));
-    
+    wTemp = sqrt(mu+sqrt((vTemp' * K * vTemp)/(vTemp' * M * vTemp)));
+    wTemp = wTemp(1);
     err = abs(wTemp-w(contador-1));
     b = M * vTemp;
     
@@ -43,5 +45,8 @@ end
 
 error = error';
 w = w';
+
+v = v(:, 2:end);
+w = w(2:end);
 
 end

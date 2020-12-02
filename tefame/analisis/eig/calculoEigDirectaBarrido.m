@@ -33,6 +33,7 @@ for i = 1:nModos
     
     % Vector inicial
     v0Temp = rand(size(M, 2));
+    % v0Temp = [1,1,1]';
     v0Temp = v0Temp(:, 1);
     w0Temp = sqrt((v0Temp' * K * v0Temp)/(v0Temp' * M * v0Temp));
     err = 1000 * tol;

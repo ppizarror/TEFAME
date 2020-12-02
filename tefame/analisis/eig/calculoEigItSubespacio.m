@@ -25,23 +25,21 @@ ngdl = length(K);
 U = U';
 L = L';
 
-% Genera vector v a partir de numeros aleatorios
-Vsize = min(6, ngdl);
-X = (rand(ngdl, Vsize));
+% Genera vector a partir de numeros aleatorios
+X = rand(ngdl, min(6, ngdl));
 
 phi = X; % Matriz que contendra los vectores finales
 wfinal = zeros(nModos, 1); % Contendra las frecuencias
 
 % Primera estimacion de la frecuencia
-wo = sqrt(X(:, 1)'*K*X(:, 1)) / (X(:, 1)' * X(:, 1));
+Xo = X(:, 1);
+wo = sqrt(Xo'*K*Xo) / (Xo' * M * Xo);
 
 % Genera los vectores propios iterando
 for i = 1:nModos
     
-    err = 1000; % Reinicializa error
-    temp = []; %#ok<NASGU>
-    
-    while err > tol
+    err = 1000 * tol; % Reinicializa error
+    while err >= tol
         
         % Resuelve el sistema de ecuaciones en dos etapas
         %   L*D*y=b y
@@ -53,24 +51,25 @@ for i = 1:nModos
         % Genera bloque de vectores u_s, rigidez y masa ortogonal
         M_b = X' * M * X;
         K_b = X' * K * X;
-        [Z] = eig(K_b, M_b);
+        Z = eig(K_b, M_b);
         X = X * Z; % Vectores ortogonales
         
         % Calcula Gram-Schmidt para hacer X ortogonal a todos los
         % demas vectores
         if i ~= 1
+            size(X)
             X = GSM(X, M, phi(:, 1:i-1));
         end
         X = modonorm(X, M); % Normalizacion modal
         
-        % Verifio tolerancia con valores propios
+        % Verifico tolerancia con valores propios
         Xo = X(:, 1);
         w = sqrt(Xo'*K*Xo) / (Xo' * M * Xo);
         err = abs((wo - w)/wo);
-        if err <= tol
+        if err < tol
             wfinal(i) = w;
             phi(:, i) = X(:, 1);
-            X = [X(:, 2:end), (rand(ngdl, 1))];
+            X = [X(:, 2:end), rand(ngdl, 1)];
         else
             wo = w;
         end

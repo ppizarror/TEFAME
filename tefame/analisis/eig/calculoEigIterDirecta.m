@@ -26,6 +26,7 @@ D = K^-1 * M;
 % Primera iteracion
 v0Temp = rand(size(M, 2));
 v0Temp = v0Temp(:, 1);
+% v0Temp = [1, 1, 1]';
 w = sqrt((v0Temp' * K * v0Temp)/(v0Temp' * M * v0Temp));
 error = err;
 v = v0Temp;
@@ -53,5 +54,8 @@ while err >= tol
 end
 
 w = w';
+
+v = v(:, 2:end);
+w = w(2:end);
 
 end

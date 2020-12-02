@@ -32,8 +32,7 @@ if opt == 2
 end
 
 if opt == 3
-    aux = max(phi);
-    phi = phi * diag(1./aux);
+    phi = phi .* (1 / max(phi));
 end
 
 % Simplemente normaliza por el valor absoluto
