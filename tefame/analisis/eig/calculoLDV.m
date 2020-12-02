@@ -44,7 +44,6 @@ end
 K_b = V' * K * V;
 [Z, w2] = eig(K_b);
 phi = V * Z;
-T = 2 * pi ./ diag(w2).^0.5;
-wn = 2 * pi ./ T;
+wn = diag(w2).^0.5;
 
 end

@@ -4181,9 +4181,9 @@ classdef ModalEspectral < Analisis
                     n = 2;
                 end
                 w = obj.wn;
-                a = (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2) .* [w(n), -w(m); ...
-                    -1 / w(n), 1 / w(m)] * betacR';
-                obj.cRayleigh = a(1) .* Meq + a(2) .* Keq;
+                awn = [w(n), -w(m); -1 / w(n), 1 / w(m)];
+                a = (awn * betacR') .* (2 * w(m) * w(n)) / (w(n)^2 - w(m)^2);
+                obj.cRayleigh = a(1) * Meq + a(2) * Keq;
                 
             else
                 obj.cRayleigh = [];

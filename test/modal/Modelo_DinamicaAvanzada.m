@@ -140,6 +140,7 @@ analisisObj.analizar('nModos', 50, 'rayleighBeta', rayBeta, 'rayleighModo', [1, 
     'valvecAlgoritmo', 'eigs', 'valvecTolerancia', 0.0001, ...
     'muIterDespl', wIterDespl, 'nRitz', 192);
 analisisObj.disp();
+
 w = analisisObj.obtenerValoresPropios();
 cargaEstatica = analisisObj.obtenerCargaEstatica();
 % plt = analisisObj.plot('modo', 1, 'factor', 20, 'cuadros', 25, 'defElem', true, 'gif', ...
@@ -161,7 +162,7 @@ analisisObj.calcularDesplazamientoDrift(cargasDinamicas{1}, 32);
 analisisObj.plotEsfuerzosElemento(cargasDinamicas{1}, elementos{104}, [1, 0, 0]);
 analisisObj.plotTrayectoriaNodo(cargasDinamicas{1}, nodos{102}, [1, 0, 0]);
 plt = analisisObj.plot('carga', cargasDinamicas{1}, 'cuadros', 400, ...
-	'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_sis.gif');
+    'gif', 'test/modal/out/Modelo_DinamicaAvanzada_carga_sis.gif');
 
 %% Finaliza el analisis
 modeloObj.guardarResultados('test/modal/out/Modelo_DinamicaAvanzada.txt');
