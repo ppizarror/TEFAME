@@ -338,7 +338,7 @@ classdef Nodo < ComponenteModelo
             % de salida (archivoSalidaHandle)
             
             fprintf(archivoSalidaHandle, ['\tNodo ', obj.obtenerEtiqueta(), ': ']);
-            desplazamientos = arrayNum2str(round(obj.despl, 5), length(obj.despl));
+            desplazamientos = arrayNum2str(round(obj.despl, 6), length(obj.despl));
             fprintf(archivoSalidaHandle, '%s\n', [desplazamientos{2:end-1}]);
             
         end % guardarDesplazamientos function

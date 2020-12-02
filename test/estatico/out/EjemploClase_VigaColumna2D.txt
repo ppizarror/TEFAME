@@ -33,7 +33,7 @@ Resultados del analisis estatico
 
 Desplazamientos nodos:
 	Nodo N1: 0          0          0
-	Nodo N2: 0.0076     -0.0118    -0.0082
+	Nodo N2: 0.0077     -0.0117    -0.0082
 	Nodo N3: 0          0          0
 
 Reacciones:

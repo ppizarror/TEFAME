@@ -71,7 +71,7 @@ Desplazamientos nodos:
 	Nodo A: 0          0
 	Nodo B: 0.00001    -0.00003
 	Nodo C: 0          -0.00008
-	Nodo D: 0          -0.0001
+	Nodo D: 0          -0.00010
 	Nodo E: 0          0
 	Nodo F: -0.00001   -0.00003
 
