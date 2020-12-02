@@ -157,6 +157,7 @@ classdef ModalEspectral < Analisis
             %   toleranciaMasa      Tolerancia de la masa para la condensacion
             %   valvecAlgoritmo     eigs,itDir,matBarr,itInvDesp,itSubEsp,ritz
             %   valvecTolerancia    Tolerancia calculo valores y vectores propios
+            tInicio = clock;
             
             % Define parametros
             p = inputParser;
@@ -331,6 +332,7 @@ classdef ModalEspectral < Analisis
                 r.rayleighModo, r.rayleighDir, r.cpenzienBeta, ...
                 maxcond, r.valvecAlgoritmo, r.valvecTolerancia, ...
                 r.muIterDespl, r.nRitz, betaAlg);
+            fprintf('\tAnalisis finalizado en %.3f segundos\n', etime(clock, tInicio));
             
             % Termina el analisis
             dispMetodoTEFAME();
@@ -4218,7 +4220,7 @@ classdef ModalEspectral < Analisis
             obj.analisisFinalizado = true;
             obj.numDG = ndg;
             obj.numDGReal = obj.modeloObj.obtenerNumerosGDL();
-            fprintf('\tSe completo el analisis en %.3f segundos\n', etime(clock, tInicio));
+            fprintf('\t\tProceso completado en %.3f segundos\n', etime(clock, tInicio));
             
         end % calcularModalEspectral function
         
