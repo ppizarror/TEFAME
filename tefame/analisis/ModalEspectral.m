@@ -3721,9 +3721,11 @@ classdef ModalEspectral < Analisis
             
             fprintf('\tPeriodos y participacion modal:\n');
             if obj.numDG == 2
+                fprintf('\t\t---------------------------------------------------------------------------------\n');
                 fprintf('\t\t|\tN\t|\tT (s)\t| w (rad/s)\t|\tU1\t\t|\tU2\t\t|\tSum U1\t|\tSum U2\t|\n');
                 fprintf('\t\t---------------------------------------------------------------------------------\n');
             elseif obj.numDG == 3
+                fprintf('\t\t--------------------------------------------------------------------------------------------------------\n');
                 fprintf('\t\t|\tN\t|\tT (s)\t| w (rad/s)\t|\tU1\t\t|\tU2\t\t|\tU3\t\t|\tSum U1\t|\tSum U2\t|\tSum U3\t|\n');
                 fprintf('\t\t--------------------------------------------------------------------------------------------------------\n');
             end
